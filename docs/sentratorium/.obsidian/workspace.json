@@ -1,0 +1,221 @@
+{
+  "main": {
+    "id": "2bea12806a5700ae",
+    "type": "split",
+    "children": [
+      {
+        "id": "15f6b9110da02747",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dc0dc42d135149c5",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "0bd7c87f39c7a76d",
+    "type": "split",
+    "children": [
+      {
+        "id": "b761b30a5ba3372e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e32ab5b09fd727a1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "50f9da8a82a9bf9d",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "793a2395c65712f1",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "61337e8584246f0b",
+    "type": "split",
+    "children": [
+      {
+        "id": "3eaaa27fb123fa2d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "be3bc3676a3b4df6",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Untitled.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Untitled"
+            }
+          },
+          {
+            "id": "49694268623bd558",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Untitled.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Untitled"
+            }
+          },
+          {
+            "id": "067779fe51b68bf5",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "413e99ac8a50414a",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "b336d15938d26931",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Untitled.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Untitled"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "dc0dc42d135149c5",
+  "lastOpenFiles": [
+    "price-model.md",
+    "sessions/_template.md",
+    "sessions",
+    "projects/sentra-assist/07-sentra-assist-integrasi-dengan-puskesmas-dashboard.md",
+    "projects/sentra-assist/06-concept-semantic.md",
+    "projects/sentra-assist/05-functional-specification-document.md",
+    "projects/sentra-assist/04-api-documentation.md",
+    "projects/sentra-assist/03-system-architecture-design.md",
+    "projects/sentra-assist/02-business-requirements-document.md",
+    "projects/sentra-assist/01-project-charter.md",
+    "projects/sentra-assist/00-agent-context.md",
+    "projects/intelligence-dashboard/14-technical-overview.md",
+    "projects/intelligence-dashboard/13-dokumentasi.md",
+    "projects/intelligence-dashboard/12-telemedicine-modul.md",
+    "projects/intelligence-dashboard/11-sentra-intelligence-dashboard.md",
+    "projects/intelligence-dashboard/10-roadmap-ide-pengembangan.md",
+    "projects/intelligence-dashboard/09-konsep-anamnesa-modern.md",
+    "projects/intelligence-dashboard/08-concept-ocr.md",
+    "projects/intelligence-dashboard/07a-clinical-trajectory-chart.md",
+    "projects/intelligence-dashboard/07-feature-explanation.md",
+    "projects/intelligence-dashboard/06-api-documentation.md",
+    "projects/intelligence-dashboard/05-functional-specification-document.md",
+    "projects/intelligence-dashboard/04-system-architecture-design.md",
+    "projects/intelligence-dashboard/03a-taskmaster-summary.md",
+    "projects/intelligence-dashboard/03-business-requirements-document.md",
+    "projects/intelligence-dashboard/02-project-charter.md",
+    "projects/intelligence-dashboard/01-concept-pkm-dashboard.md",
+    "projects/academic--solutions/ai-context",
+    "projects/genesis-framework",
+    "projects/theabyss",
+    "projects/theabbyss",
+    "projects/sentra artificial",
+    "projects/sentraartificial",
+    "projects/sentra-assist",
+    "projects/intelligence-dashboard",
+    "projects/melinda-dhai"
+  ]
+}

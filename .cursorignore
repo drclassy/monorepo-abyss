@@ -1,0 +1,38 @@
+﻿# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+.next/
+dist/
+build/
+.turbo/
+coverage/
+.cache/
+
+# Git internals
+.git/
+
+# Python
+__pycache__/
+.venv/
+venv/
+*.pyc
+.mypy_cache/
+.pytest_cache/
+
+# Large / binary
+*.wasm
+*.pdf
+*.zip
+*.tar.gz
+*.7z
+
+# Env / secrets
+.env*
+*.pem
+*.key
+
+# IDE junk
+.DS_Store
+Thumbs.db

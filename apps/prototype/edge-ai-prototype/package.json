@@ -1,0 +1,22 @@
+{
+  "name": "@the-abyss/edge-ai-prototype",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Setup edge AI prototype'",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@the-abyss/ai-core": "workspace:*",
+    "@the-abyss/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "@the-abyss/config-typescript": "workspace:*",
+    "@the-abyss/config-eslint": "workspace:*"
+  }
+}

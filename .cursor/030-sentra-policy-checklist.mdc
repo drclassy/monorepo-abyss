@@ -1,0 +1,226 @@
+---
+# Sentra Policy & Checklist Enforcement
+
+description: "Sentra core policy, security, quality, clinical safety, and checklist enforcement for all work."
+priority: critical
+version: 1
+labels:
+  - sentra
+  - policy
+  - security
+  - clinical
+  - quality
+  - compliance
+scope:
+  globs:
+    - "**/*"
+    - "*.ts"
+    - "*.tsx"
+    - "*.js"
+    - "*.jsx"
+    - "*.py"
+    - "*.md"
+    - "*.json"
+    - "*.yaml"
+    - "*.yml"
+---
+
+# When this rule applies
+
+This rule is **always active** for all work in the repository. Before proposing any change, code, plan, or PR, you must:
+
+- Run through the relevant checklists below.
+- Flag any violations explicitly.
+- Propose mitigations or alternatives for violations.
+- Never suggest work that violates core policy.
+
+---
+
+## Core Policy (Mandatory)
+
+These are non-negotiable:
+
+- Every important change must have a clear **owner**.
+- Every API must have a **validation schema** and safe defaults.
+- Every cross-domain or cross-application decision must have an **ADR**.
+- Every sensitive change must have an **audit trail** and rollback path.
+- Every task must have **testable acceptance criteria**.
+- Every release must be **observable** after it goes live.
+
+---
+
+## Security Policy (High Risk)
+
+- **NO PHI**: Never use, store, or process real patient data in code, tests, fixtures, logs, or examples. Use only dummy/fake data.
+- Do not store sensitive data without **classification**, encryption, and access controls.
+- Do not expand access or permissions without a clear reason and approval path.
+- Do not add silent fallbacks for important errors; make failures **visible and traceable**.
+- Do not hide validation failures; surface them clearly to callers and logs.
+- Do not bypass guardrails or checks just to "unblock" delivery.
+- Configuration like `enableGuardrails: true` must remain enabled; never suggest disabling safety features.
+
+---
+
+## Quality Policy
+
+- Do not merge work without basic verification (tests, types, lint) for the affected area.
+- Do not add a new dependency when an internal alternative already exists.
+- Do not create a new helper or utility when an existing pattern already fits.
+- Do not change a public contract without a compatibility or migration plan.
+- Do not remove, ignore, or disable relevant tests when behavior changes.
+
+---
+
+## Clinical Safety Policy (Patient Safety First)
+
+- Never invent or propose clinical behavior, workflows, or thresholds without being grounded in documented domain knowledge.
+- Treat all patient-related flows as **high risk by default**.
+- Ensure all clinical logic has:
+  - Clear validation and error handling.
+  - Audit trail for decisions affecting care.
+  - Rollback capability.
+  - Observability for real-time monitoring.
+- Clinical changes require **Chief approval** and must reference relevant guidelines or ADRs.
+
+---
+
+## Design Checklist
+
+Before any design or architecture work:
+
+- [ ] Scope is clear and testable.
+- [ ] Major risks (clinical, security, operational) are identified.
+- [ ] Schema or data model is defined and aligns with `packages/types`.
+- [ ] API contract is clear and validated.
+- [ ] An ADR is written or referenced for significant decisions.
+- [ ] File and module ownership is clear.
+- [ ] Pattern reuses existing helpers or shared packages where possible.
+
+---
+
+## Build Checklist
+
+For code implementation:
+
+- [ ] Implementation follows the agreed contract and schema.
+- [ ] Naming and structure follow Sentra patterns.
+- [ ] No unnecessary duplicate logic.
+- [ ] Error handling is explicit and traceable.
+- [ ] Type safety is preserved (no `any`, strict typing).
+- [ ] Uses design tokens and shared UI packages.
+
+---
+
+## Verify Checklist
+
+For testing and validation:
+
+- [ ] Relevant tests are written or updated.
+- [ ] Type-check passes (`tsc --noEmit` or equivalent).
+- [ ] Lint passes.
+- [ ] Main edge cases are tested.
+- [ ] Regressions against the old flow are checked.
+- [ ] Integration tests cover contract boundaries.
+
+---
+
+## Release Checklist
+
+Before any deployment:
+
+- [ ] Release notes are written.
+- [ ] Impact on users or other teams is understood.
+- [ ] Observability is ready (logs, metrics, alerts).
+- [ ] Rollback path is clear.
+- [ ] No blocking issue remains.
+- [ ] Chief approval artifact exists for production changes.
+
+---
+
+## Operations Checklist
+
+Post-release:
+
+- [ ] Logs and metrics are available and monitored.
+- [ ] Audit trail is active for important changes.
+- [ ] Alerts or monitoring are in place as needed.
+- [ ] Recovery path is documented.
+- [ ] Handoff notes exist if work is transferred.
+- [ ] Final notes are recorded in Sentratorium.
+
+---
+
+## Final Review Checklist
+
+Before declaring work complete:
+
+- [ ] Is this the simplest safe solution?
+- [ ] Can this pattern be reused by another team?
+- [ ] Does this change reduce or increase cognitive load?
+- [ ] Are important decisions documented in ADRs?
+- [ ] Can this release be monitored after launch?
+- [ ] Does this align with patient safety and clinical governance?
+
+---
+
+## Skills for Policy Enforcement
+
+When Sentra plugin skills are available:
+
+- `sentra.policy.checker` – run full policy validation before declaring work "done".
+- `sentra.testplan.generator` – generate test plans that cover checklists.
+- `sentra.observability.notes` – generate monitoring and Sentratorium logs.
+
+Output these checklists in your responses so humans can tick them off.
+
+---
+
+## MCP for Policy Compliance
+
+Use MCP to verify compliance:
+
+- **DB MCP**: Check schemas match contracts before changes.
+- **Git MCP**: Verify ADRs and docs exist for decisions.
+- **CI MCP**: Confirm tests pass before release suggestions.
+- **Observability MCP**: Check logs/metrics for post-release validation.
+
+---
+
+## Git Commit Trailers (Mandatory)
+
+All proposed commits must include:
+
+```
+Agent: <agent-name>
+Phase: <Genesis phase or workflow step>
+Handoff: <team/person>
+Policy: checked
+```
+
+Example:
+```
+Fix validation edge case in referral API
+
+- Added missing null check
+- Updated tests
+- Verified against clinical safety policy
+
+Agent: Claudesy
+Phase: Digital Trial
+Handoff: clinical-team
+Policy: checked
+```
+
+---
+
+## Refusal Triggers
+
+**Immediately refuse** or flag for escalation if a request violates:
+
+- NO PHI policy
+- Disabling guardrails or safety features
+- Clinical decisions without domain grounding
+- Bypassing ADR or approval processes
+- Proposing insecure data handling
+
+Propose the compliant alternative instead.

@@ -1,0 +1,327 @@
+{
+  "project": "Claudesy CTE2 Landing Page",
+  "description": "Complete text content replacement from Brillance SaaS to CTE2 Prompt Transformer Engine",
+  "date": "2026-03-22",
+  "total_files_changed": 11,
+  "total_replacements": 47,
+  "replacements": [
+    {
+      "file": "components/header.tsx",
+      "section": "brand_name",
+      "original_text": "Brillance",
+      "new_text": "Claudesy CTE2"
+    },
+    {
+      "file": "components/header.tsx",
+      "section": "navigation_products",
+      "original_text": "Products",
+      "new_text": "How It Works"
+    },
+    {
+      "file": "components/header.tsx",
+      "section": "navigation_pricing",
+      "original_text": "Pricing",
+      "new_text": "Features"
+    },
+    {
+      "file": "components/header.tsx",
+      "section": "navigation_docs",
+      "original_text": "Docs",
+      "new_text": "Documentation"
+    },
+    {
+      "file": "components/header.tsx",
+      "section": "login_button",
+      "original_text": "Log in",
+      "new_text": "Sign In"
+    },
+    {
+      "file": "components/hero-section.tsx",
+      "section": "main_headline",
+      "original_text": "Effortless custom contract billing by Brillance",
+      "new_text": "Transform Raw Prompts Into SuperPrompts"
+    },
+    {
+      "file": "components/hero-section.tsx",
+      "section": "subheading",
+      "original_text": "Streamline your billing process with seamless automation for every custom contract, tailored by Brillance.",
+      "new_text": "Claudesy Transformer Prompt Engine 2 (CTE2) optimizes your instructions for modern LLMs with intelligent context engineering, structured output, and intelligent strategy injection."
+    },
+    {
+      "file": "components/hero-section.tsx",
+      "section": "cta_button",
+      "original_text": "Start for free",
+      "new_text": "Try Now"
+    },
+    {
+      "file": "components/feature-cards.tsx",
+      "section": "feature_1_title",
+      "original_text": "Plan your schedules",
+      "new_text": "Strategy Injection"
+    },
+    {
+      "file": "components/feature-cards.tsx",
+      "section": "feature_1_description",
+      "original_text": "Explore your data, build your dashboard, bring your team together.",
+      "new_text": "Automatically insert task-specific hints and best practices based on your use case (Coding, Analysis, Marketing)."
+    },
+    {
+      "file": "components/feature-cards.tsx",
+      "section": "feature_2_title",
+      "original_text": "Data to insights in the minutes",
+      "new_text": "SuperPrompt Structuring"
+    },
+    {
+      "file": "components/feature-cards.tsx",
+      "section": "feature_2_description",
+      "original_text": "Explore your data, build your dashboard, bring your team together.",
+      "new_text": "Generate organized prompts with Role, Chain of Thought, Constraints, and Format specifications."
+    },
+    {
+      "file": "components/feature-cards.tsx",
+      "section": "feature_3_title",
+      "original_text": "Data to insights in the minutes",
+      "new_text": "Context Engineering"
+    },
+    {
+      "file": "components/feature-cards.tsx",
+      "section": "feature_3_description",
+      "original_text": "Explore your data, build your dashboard, bring your team together.",
+      "new_text": "Leverage modular architecture to ensure predictable, reliable, and high-quality LLM outputs."
+    },
+    {
+      "file": "components/testimonials-section.tsx",
+      "section": "testimonial_1_quote",
+      "original_text": "In just a few minutes, we transformed our data into actionable insights. The process was seamless and incredibly efficient!",
+      "new_text": "CTE2 revolutionized how we engineer prompts at scale. The meta-prompting approach combined with strategy injection ensures our AI outputs are consistently structured and predictable. It's like having a prompt engineering expert embedded in every request."
+    },
+    {
+      "file": "components/testimonials-section.tsx",
+      "section": "testimonial_1_name",
+      "original_text": "Jamie Marshall",
+      "new_text": "Dr. Elena Vasquez"
+    },
+    {
+      "file": "components/testimonials-section.tsx",
+      "section": "testimonial_1_company",
+      "original_text": "Co-founder, Exponent",
+      "new_text": "Lead AI Architect, Claudesy Labs"
+    },
+    {
+      "file": "components/testimonials-section.tsx",
+      "section": "testimonial_2_quote",
+      "original_text": "Brillance has revolutionized how we handle custom contracts. The automation saves us hours every week and eliminates errors completely.",
+      "new_text": "The contextual orchestration in CTE2 saves us from manual prompt refinement. What once took hours of iteration now happens in seconds with better quality output. The modular structure makes it trivial to adapt across different task types."
+    },
+    {
+      "file": "components/testimonials-section.tsx",
+      "section": "testimonial_2_name",
+      "original_text": "Sarah Chen",
+      "new_text": "Marcus Thornton"
+    },
+    {
+      "file": "components/testimonials-section.tsx",
+      "section": "testimonial_2_company",
+      "original_text": "VP Operations, TechFlow",
+      "new_text": "Principal Engineer, Context Labs"
+    },
+    {
+      "file": "components/testimonials-section.tsx",
+      "section": "testimonial_3_quote",
+      "original_text": "The billing automation is a game-changer. What used to take our team days now happens automatically with perfect accuracy.",
+      "new_text": "The agentic-ready prompt design in CTE2 is precisely what we need for building reliable AI pipelines. The structured output format integrates seamlessly with our reasoning loops and dramatically reduces error cases."
+    },
+    {
+      "file": "components/testimonials-section.tsx",
+      "section": "testimonial_3_name",
+      "original_text": "Marcus Rodriguez",
+      "new_text": "Sophia Kumar"
+    },
+    {
+      "file": "components/testimonials-section.tsx",
+      "section": "testimonial_3_company",
+      "original_text": "Finance Director, InnovateCorp",
+      "new_text": "VP Product, NextGen AI Solutions"
+    },
+    {
+      "file": "components/cta-section.tsx",
+      "section": "cta_headline",
+      "original_text": "Ready to transform your business?",
+      "new_text": "Ready to unlock SuperPrompt power?"
+    },
+    {
+      "file": "components/cta-section.tsx",
+      "section": "cta_description",
+      "original_text": "Join thousands of businesses streamlining their operations, managing schedules, and growing with data-driven insights.",
+      "new_text": "Transform your raw ideas into structured, optimized prompts that work seamlessly across OpenAI, Anthropic, Mistral, and other leading LLMs."
+    },
+    {
+      "file": "components/footer-section.tsx",
+      "section": "footer_brand",
+      "original_text": "Brillance",
+      "new_text": "Claudesy CTE2"
+    },
+    {
+      "file": "components/footer-section.tsx",
+      "section": "footer_tagline",
+      "original_text": "Coding made effortless",
+      "new_text": "Prompt Engineering for the AI Era"
+    },
+    {
+      "file": "components/footer-section.tsx",
+      "section": "footer_product_link_1",
+      "original_text": "Features",
+      "new_text": "How It Works"
+    },
+    {
+      "file": "components/footer-section.tsx",
+      "section": "footer_product_link_3",
+      "original_text": "Integrations",
+      "new_text": "LLM Compatibility"
+    },
+    {
+      "file": "components/footer-section.tsx",
+      "section": "footer_product_link_4",
+      "original_text": "Real-time Previews",
+      "new_text": "Use Cases"
+    },
+    {
+      "file": "components/footer-section.tsx",
+      "section": "footer_product_link_5",
+      "original_text": "Multi-Agent Coding",
+      "new_text": "SuperPrompt Gallery"
+    },
+    {
+      "file": "components/pricing-section.tsx",
+      "section": "pricing_title",
+      "original_text": "Choose the perfect plan for your business",
+      "new_text": "Plans that scale with your ambition"
+    },
+    {
+      "file": "components/pricing-section.tsx",
+      "section": "pricing_description",
+      "original_text": "Scale your operations with flexible pricing that grows with your team. Start free, upgrade when you're ready.",
+      "new_text": "From individual developers to enterprise teams, CTE2 adapts to your needs. Start optimizing prompts instantly—no credit card required."
+    },
+    {
+      "file": "components/pricing-section.tsx",
+      "section": "pricing_starter_name",
+      "original_text": "Starter",
+      "new_text": "Explorer"
+    },
+    {
+      "file": "components/pricing-section.tsx",
+      "section": "pricing_starter_description",
+      "original_text": "Perfect for individuals and small teams getting started.",
+      "new_text": "Perfect for developers exploring prompt optimization."
+    },
+    {
+      "file": "components/pricing-section.tsx",
+      "section": "pricing_professional_description",
+      "original_text": "Advanced features for growing teams and businesses.",
+      "new_text": "For teams and enterprises building AI applications at scale."
+    },
+    {
+      "file": "components/pricing-section.tsx",
+      "section": "pricing_enterprise_description",
+      "original_text": "Complete solution for large organizations and enterprises.",
+      "new_text": "Turnkey solution with dedicated support and infrastructure."
+    },
+    {
+      "file": "components/documentation-section.tsx",
+      "section": "doc_card_1_title",
+      "original_text": "Plan your schedules",
+      "new_text": "Input Raw Ideas"
+    },
+    {
+      "file": "components/documentation-section.tsx",
+      "section": "doc_card_1_description",
+      "original_text": "Explore your data, build your dashboard, bring your team together.",
+      "new_text": "Submit your rough instructions, task type, tone, and desired output format."
+    },
+    {
+      "file": "components/documentation-section.tsx",
+      "section": "doc_card_2_title",
+      "original_text": "Data to insights in minutes",
+      "new_text": "Automatic Strategy Injection"
+    },
+    {
+      "file": "components/documentation-section.tsx",
+      "section": "doc_card_2_description",
+      "original_text": "Transform raw data into actionable insights with powerful analytics tools.",
+      "new_text": "CTE2 adds intelligent hints based on your task type to optimize the prompt."
+    },
+    {
+      "file": "components/documentation-section.tsx",
+      "section": "doc_card_3_title",
+      "original_text": "Collaborate seamlessly",
+      "new_text": "Get SuperPrompts"
+    },
+    {
+      "file": "components/documentation-section.tsx",
+      "section": "doc_card_3_description",
+      "original_text": "Work together in real-time with your team and share insights instantly.",
+      "new_text": "Receive structured, optimized prompts with Role, CoT, Constraints, and Format specs."
+    },
+    {
+      "file": "components/documentation-section.tsx",
+      "section": "doc_header_badge",
+      "original_text": "Platform Features",
+      "new_text": "How CTE2 Works"
+    },
+    {
+      "file": "components/documentation-section.tsx",
+      "section": "doc_header_title",
+      "original_text": "Streamline your business operations",
+      "new_text": "The transformation pipeline"
+    },
+    {
+      "file": "components/documentation-section.tsx",
+      "section": "doc_header_description",
+      "original_text": "Manage schedules, analyze data, and collaborate with your team all in one powerful platform.",
+      "new_text": "From raw instructions to fully optimized SuperPrompts in three intelligent steps."
+    },
+    {
+      "file": "components/faq-section.tsx",
+      "section": "faq_description",
+      "original_text": "Explore your data, build your dashboard, bring your team together.",
+      "new_text": "Learn how CTE2 transforms your prompt engineering workflow and delivers structured, optimized outputs at scale."
+    },
+    {
+      "file": "app/page.tsx",
+      "section": "page_nav_brand",
+      "original_text": "Brillance",
+      "new_text": "Claudesy CTE2"
+    },
+    {
+      "file": "app/page.tsx",
+      "section": "page_nav_menu_1",
+      "original_text": "Products",
+      "new_text": "How It Works"
+    },
+    {
+      "file": "app/page.tsx",
+      "section": "page_nav_menu_2",
+      "original_text": "Pricing",
+      "new_text": "Features"
+    },
+    {
+      "file": "app/page.tsx",
+      "section": "page_nav_menu_3",
+      "original_text": "Docs",
+      "new_text": "Documentation"
+    },
+    {
+      "file": "app/page.tsx",
+      "section": "page_hero_headline",
+      "original_text": "Effortless custom contract billing by Brillance",
+      "new_text": "Transform Raw Prompts Into SuperPrompts"
+    },
+    {
+      "file": "app/page.tsx",
+      "section": "page_hero_description",
+      "original_text": "Streamline your billing process with seamless automation for every custom contract, tailored by Brillance.",
+      "new_text": "Claudesy Transformer Prompt Engine 2 (CTE2) intelligently optimizes your instructions for modern LLMs with context engineering."
+    }
+  ]
+}

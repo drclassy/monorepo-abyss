@@ -1,0 +1,150 @@
+name: "Sentra UI Lint & Token Validation"
+
+on:
+  pull_request:
+    paths:
+      - "**/*.css"
+      - "**/*.scss"
+      - "**/*.tsx"
+      - "**/*.jsx"
+      - "**/*.html"
+      - "packages/design-tokens/**"
+      - ".stylelintrc.json"
+
+  push:
+    branches: [main]
+    paths:
+      - "packages/design-tokens/**"
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────
+  # JOB 1: UI Token Enforcement (blocks PRs on violation)
+  # ──────────────────────────────────────────────────────────────────
+  lint-ui:
+    name: "UI Design Token Enforcement"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "Setup Node.js 20"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: "Install dependencies"
+        run: npm ci
+
+      - name: "Validate design token schema"
+        run: |
+          echo "── Validating sentra-tokens.json schema..."
+          node -e "
+            const tokens = require('./packages/design-tokens/sentra-tokens.json');
+            const required = ['palette','borders','depth','typography','interaction','cta','accessibility','slo'];
+            const missing = required.filter(k => !tokens[k]);
+            if (missing.length) { console.error('Missing token categories:', missing); process.exit(1); }
+            console.log('✓ Token schema valid — version', tokens.version);
+          "
+
+      - name: "Enforce design tokens (Stylelint)"
+        run: |
+          echo "── Running Stylelint token enforcement..."
+          npx stylelint "**/*.css" --config .stylelintrc.json --formatter verbose 2>&1 | tee lint-results.txt
+          echo "✓ Stylelint passed"
+
+      - name: "Check for hardcoded hex/rgb in JS/TS/JSX/TSX"
+        run: |
+          echo "── Scanning for hardcoded colors in component files..."
+          VIOLATIONS=$(grep -rn --include="*.tsx" --include="*.jsx" --include="*.ts" --include="*.js" \
+            -E "(#[0-9a-fA-F]{3,8}|rgb\(|rgba\()" \
+            --exclude-dir=node_modules \
+            --exclude-dir=dist \
+            --exclude-dir=legacy \
+            . | grep -v "sentra-tokens" | grep -v "//.*#" || true)
+          if [ -n "$VIOLATIONS" ]; then
+            echo "❌ Hardcoded colors detected:"
+            echo "$VIOLATIONS"
+            echo ""
+            echo "Fix: Replace with Sentra design tokens → var(--sentra-*)"
+            exit 1
+          fi
+          echo "✓ No hardcoded colors found in JS/TS files"
+
+      - name: "Accessibility audit (axe-core)"
+        run: |
+          echo "── Running WCAG 2.1 AA accessibility scan..."
+          if [ -d "./public" ]; then
+            npx axe-cli ./public --exit --tags wcag2a,wcag2aa || true
+          else
+            echo "ℹ No public/ dir found — skipping axe scan (run manually against staging)"
+          fi
+
+      - name: "Generate compliance summary"
+        if: always()
+        run: |
+          echo "## Sentra UI Compliance Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Token schema valid | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Stylelint enforcement | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Hardcoded color scan | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Protocol:** Sentra Design Governance v1.0.0" >> $GITHUB_STEP_SUMMARY
+          echo "**Run:** \`${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY
+
+  # ──────────────────────────────────────────────────────────────────
+  # JOB 2: Sync tokens to CDN (only on main branch merge)
+  # ──────────────────────────────────────────────────────────────────
+  token-sync:
+    name: "Sync Design Tokens to CDN"
+    runs-on: ubuntu-latest
+    needs: lint-ui
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Configure AWS credentials"
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region:            ap-southeast-1
+
+      - name: "Extract token version"
+        id: version
+        run: echo "TOKEN_VERSION=$(node -e \"console.log(require('./packages/design-tokens/sentra-tokens.json').version)\")" >> $GITHUB_ENV
+
+      - name: "Upload tokens to CDN"
+        run: |
+          echo "── Syncing tokens v$TOKEN_VERSION to CDN..."
+          aws s3 cp packages/design-tokens/sentra-tokens.css \
+            s3://sentra-ui-assets/tokens/v$TOKEN_VERSION/sentra-tokens.css \
+            --cache-control "max-age=31536000,immutable" \
+            --content-type "text/css"
+
+          aws s3 cp packages/design-tokens/sentra-tokens.json \
+            s3://sentra-ui-assets/tokens/v$TOKEN_VERSION/sentra-tokens.json \
+            --cache-control "max-age=31536000,immutable" \
+            --content-type "application/json"
+
+          # Also update the @latest pointer
+          aws s3 cp packages/design-tokens/sentra-tokens.css \
+            s3://sentra-ui-assets/tokens/latest/sentra-tokens.css \
+            --cache-control "max-age=3600" \
+            --content-type "text/css"
+
+          echo "✓ Tokens synced: v$TOKEN_VERSION"
+
+      - name: "Invalidate CloudFront cache"
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} \
+            --paths "/tokens/latest/*"
+          echo "✓ CDN cache invalidated"

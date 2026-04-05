@@ -1,0 +1,316 @@
+---
+description: Sub-Task 4.5–4.7 — Promptfoo/Ragas Quality Gates, Sentratorium Flow Dashboard, and Deployment Pipeline. Governs all testing, monitoring, and CI/CD for Phase 4.
+globs:
+  - "flows/tests/**"
+  - "apps/internal/sentratorium-web/src/components/flows/**"
+  - "apps/internal/sentratorium-web/src/pages/flows/**"
+  - ".github/workflows/test-flows.yml"
+  - ".github/workflows/deploy-flows.yml"
+  - "infrastructure/monitoring/**"
+  - "infrastructure/kubernetes/**"
+alwaysApply: false
+---
+
+# Sub-Task 4.5: Flow Quality Testing (Promptfoo + Ragas)
+
+## QUALITY GATES — NON-NEGOTIABLE
+- Promptfoo: ≥ 95% pass rate before any PR can merge
+- Ragas: ≥ 0.85 score for RAG flows
+- These gates are enforced via GitHub Actions — cannot be bypassed
+
+## PROMPTFOO CONFIG — `flows/tests/promptfoo-config-fhir-validator.yaml`
+
+```yaml
+testCases:
+  - input:
+      resource_type: Patient
+      resource_data:
+        resourceType: Patient
+        id: patient-123
+        name:
+          - family: Smith
+            given: [John]
+        birthDate: "1980-01-01"
+        gender: male
+    expected:
+      valid: true
+      errors: []
+
+  - input:
+      resource_type: Patient
+      resource_data:
+        resourceType: Patient
+        id: patient-456
+        # Missing required fields
+    expected:
+      valid: false
+      errors:
+        - path: "/name"
+          message: "Required field missing"
+
+prompts:
+  - flows/definitions/healthcare/fhir-validator-v1.json
+  - flows/definitions/healthcare/fhir-validator-v2.json
+
+evaluators:
+  - type: "factuality"
+    threshold: 0.95
+  - type: "javascript"
+    code: |
+      (output) => {
+        const result = JSON.parse(output);
+        return {
+          pass: result.valid === expected.valid,
+          score: result.valid === expected.valid ? 1.0 : 0.0,
+        };
+      }
+```
+
+## RAGAS CONFIG — `flows/tests/ragas-config.py`
+
+```python
+from ragas import evaluate
+from ragas.metrics import context_precision, context_recall, faithfulness, answer_relevancy
+from datasets import Dataset
+
+test_data = {
+    "question": [
+        "What is the treatment for hypertension?",
+        "How to validate a FHIR Patient resource?",
+    ],
+    "answer": [
+        "Hypertension is treated with lifestyle changes and medications...",
+        "Use the FHIR validation engine with US Core profile...",
+    ],
+    "contexts": [
+        ["Hypertension is a common cardiovascular condition...",
+         "First-line medications include ACE inhibitors..."],
+        ["FHIR Patient resource requires name and identifier...",
+         "US Core profile defines additional requirements..."],
+    ],
+}
+
+dataset = Dataset.from_dict(test_data)
+results = evaluate(
+    dataset=dataset,
+    metrics=[context_precision, context_recall, faithfulness, answer_relevancy],
+)
+
+assert results['faithfulness'] >= 0.85, f"RAGAS faithfulness failed: {results['faithfulness']}"
+assert results['answer_relevancy'] >= 0.85, f"RAGAS relevancy failed: {results['answer_relevancy']}"
+```
+
+## GITHUB ACTIONS — `test-flows.yml`
+
+```yaml
+name: Test Flow Definitions
+on:
+  pull_request:
+    paths: ["flows/definitions/**"]
+
+jobs:
+  test-flows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - uses: actions/setup-python@v4
+        with: { python-version: "3.11" }
+      - name: Install dependencies
+        run: |
+          npm install -g promptfoo
+          pip install ragas datasets
+      - name: Run Promptfoo tests
+        run: promptfoo eval -c flows/tests/promptfoo-config.yaml
+      - name: Run Ragas tests
+        run: python flows/tests/ragas-config.py
+      - name: Check quality gates
+        run: |
+          PASS_RATE=$(promptfoo view --json | jq .passRate)
+          [ "$PASS_RATE" -ge 95 ] || (echo "❌ Promptfoo failed: ${PASS_RATE}% < 95%" && exit 1)
+      - name: Report results
+        if: always()
+        run: cat flows/tests/.promptfoo/results.md >> $GITHUB_STEP_SUMMARY
+```
+
+---
+
+# Sub-Task 4.6: Sentratorium Flow Dashboard
+
+## DASHBOARD PAGE — `apps/internal/sentratorium-web/src/pages/flows/dashboard.tsx`
+
+```typescript
+import { FlowMetricsCard } from '@/components/flows/FlowMetricsCard';
+import { RealTimeExecutionFeed } from '@/components/flows/RealTimeExecutionFeed';
+import { CostAnalysisChart } from '@/components/flows/CostAnalysisChart';
+import { ModelPerformanceComparison } from '@/components/flows/ModelPerformanceComparison';
+import { ShadowModeCard } from '@/components/flows/ShadowModeCard';
+
+export default function FlowsDashboard() {
+  return (
+    <div className="space-y-6 p-6">
+      {/* KPI Row */}
+      <div className="grid grid-cols-4 gap-4">
+        <FlowMetricsCard metric="totalExecutions" />
+        <FlowMetricsCard metric="successRate" />
+        <FlowMetricsCard metric="avgLatency" />
+        <FlowMetricsCard metric="dailyCost" />
+      </div>
+      <RealTimeExecutionFeed />
+      <div className="grid grid-cols-2 gap-6">
+        <CostAnalysisChart />
+        <ShadowModeCard flowId="fhir-validator-v1" />
+      </div>
+      <ModelPerformanceComparison />
+    </div>
+  );
+}
+```
+
+## REAL-TIME FEED — WebSocket hook pattern
+
+```typescript
+// src/components/flows/RealTimeExecutionFeed.tsx
+import { useWebSocket } from '@/hooks/useWebSocket';
+
+export function RealTimeExecutionFeed() {
+  const [executions, setExecutions] = useState<any[]>([]);
+  const { data } = useWebSocket('/api/flows/ws/executions');
+
+  useEffect(() => {
+    if (data) setExecutions(prev => [data, ...prev].slice(0, 50));
+  }, [data]);
+
+  // Table: flowId | status | latency | cost | timestamp
+}
+```
+
+## DASHBOARD SLAs
+- Load time: < 3 seconds
+- WebSocket latency: < 5 seconds
+- Available filters: date range, flow ID, domain, status
+- Model comparison table updated: every 1 hour
+
+---
+
+# Sub-Task 4.7: Monitoring, Alerts & Deploy Pipeline
+
+## PROMETHEUS ALERT RULES — `infrastructure/monitoring/prometheus-rules.yaml`
+
+```yaml
+groups:
+  - name: flow-alerts
+    interval: 30s
+    rules:
+      - alert: HighFlowErrorRate
+        expr: |
+          (sum(rate(flow_execution_errors[5m])) / sum(rate(flow_executions[5m]))) > 0.05
+        for: 5m
+        annotations:
+          summary: "Flow error rate > 5%"
+
+      - alert: FlowCostOverrun
+        expr: increase(flow_cost_usd[1h]) > 1000
+        for: 10m
+        annotations:
+          summary: "Hourly cost exceeded $1,000"
+
+      - alert: LowShadowModeAgreement
+        expr: shadow_mode_agreement_rate < 0.90
+        for: 30m
+        annotations:
+          summary: "Shadow mode agreement rate < 90%"
+
+      - alert: FlowExecutionLatencyHigh
+        expr: histogram_quantile(0.95, flow_execution_latency_ms) > 5000
+        for: 5m
+        annotations:
+          summary: "Flow p95 latency > 5 seconds"
+```
+
+## DEPLOY PIPELINE — `.github/workflows/deploy-flows.yml`
+
+```yaml
+name: Deploy Flows to Production
+on:
+  workflow_dispatch:
+    inputs:
+      flowId: { required: true }
+      environment: { default: staging, type: choice, options: [staging, production] }
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate flow JSON
+        run: jq empty flows/definitions/${{ github.event.inputs.flowId }}.json
+      - name: Run quality gates
+        run: |
+          promptfoo eval -c flows/tests/promptfoo-config.yaml
+          PASS=$(promptfoo view --json | jq .passRate)
+          [ "$PASS" -ge 95 ] || exit 1
+
+  deploy-staging:
+    needs: validate
+    environment: staging
+    steps:
+      - name: Deploy to Langflow staging
+        run: |
+          curl -X POST http://langflow-staging:7860/api/flows \
+            -H "Authorization: Bearer ${{ secrets.LANGFLOW_API_KEY_STAGING }}" \
+            -d @flows/definitions/${{ github.event.inputs.flowId }}.json
+
+  deploy-production:
+    needs: deploy-staging
+    if: github.event.inputs.environment == 'production'
+    environment: production
+    steps:
+      - name: Canary deploy (10% traffic)
+        run: kubectl patch service orchestrator -p '{"spec":{"selector":{"version":"canary"}}}'
+      - name: Monitor for 5 minutes
+        run: sleep 300
+      - name: Check canary success rate
+        run: |
+          RATE=$(curl http://metrics-server/success-rate?flow=${{ github.event.inputs.flowId }})
+          [ "$RATE" -ge 98 ] || (kubectl rollout undo deployment/orchestrator && exit 1)
+      - name: Complete rollout
+        run: kubectl patch service orchestrator -p '{"spec":{"selector":{"version":"stable"}}}'
+```
+
+## KUBERNETES DEPLOYMENT — `infrastructure/kubernetes/orchestrator-deployment.yaml`
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: orchestrator
+          image: sentra/orchestrator:latest
+          livenessProbe:
+            httpGet: { path: /health, port: 3000 }
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /ready, port: 3000 }
+            initialDelaySeconds: 10
+            periodSeconds: 5
+```
+
+## SUCCESS CRITERIA 4.5 + 4.6 + 4.7
+- [ ] Promptfoo ≥ 95% on all 8+ flows
+- [ ] Ragas ≥ 0.85 on all RAG flows
+- [ ] PR merge blocked until quality gates pass
+- [ ] Dashboard live with real-time WebSocket feed
+- [ ] Prometheus alerts firing correctly in staging
+- [ ] Canary deploy pipeline functional
+- [ ] Rollback executes in < 5 minutes
+- [ ] Cost alerts at 50% / 75% / 90% thresholds
+- [ ] Kubernetes 3-replica deployment healthy
+- [ ] Incident runbooks documented and tested

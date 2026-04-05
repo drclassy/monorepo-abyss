@@ -1,0 +1,238 @@
+---
+description: Sub-Task 4.1 & 4.2 — Flow Version Control + Custom Langflow Components. Governs flows/definitions/, flows/components/, sync-flows.ts, git hooks, and all custom Python/JS Langflow nodes.
+globs:
+  - "flows/definitions/**"
+  - "flows/components/**"
+  - "flows/scripts/**"
+  - ".github/workflows/sync-flows.yml"
+alwaysApply: false
+---
+
+# Sub-Task 4.1: Langflow Version Control Setup
+
+## OBJECTIVE
+Establish Git as single source of truth for all Langflow flow definitions.
+Every flow deployed to Langflow MUST have a corresponding versioned JSON in Git.
+
+## FLOW METADATA SCHEMA
+Every `flows/definitions/{domain}/metadata.yaml` MUST follow this schema:
+
+```yaml
+flows:
+  fhir-validator-v1:
+    flowId: "flow-fhir-v1"
+    domain: "healthcare"           # healthcare | academic | orchestrator
+    version: "1.0.0"
+    owner: "healthcare-team"
+    description: "Validates FHIR Patient resources against R4 profiles"
+    status: "production"           # draft | staging | production | rollback
+    testCoverage: 0.95
+    expectedLatency: "2000ms"
+    costPerRun: "$0.025"
+    dependencies:
+      - "@the-abyss/fhir-engine"
+      - "@the-abyss/ai-core"
+    shadowMode:
+      enabled: true
+      shadowFlowId: "flow-fhir-v2"
+      minAgreementRate: 0.90
+```
+
+## SYNC FLOWS CLI — `flows/scripts/sync-flows.ts`
+
+```typescript
+import { LangflowClient } from '@the-abyss/langflow-client';
+import * as fs from 'fs';
+
+async function syncFlows() {
+  const client = new LangflowClient({
+    baseUrl: process.env.LANGFLOW_API_URL,
+    apiKey: process.env.LANGFLOW_API_KEY,
+  });
+
+  const flows = await client.listFlows();
+  for (const flow of flows) {
+    const definition = await client.exportFlow(flow.id);
+    const filePath = `flows/definitions/${flow.domain}/${flow.name}-v${flow.version}.json`;
+    fs.writeFileSync(filePath, JSON.stringify(definition, null, 2));
+    console.log(`✅ Exported: ${filePath}`);
+  }
+}
+
+syncFlows();
+```
+
+## GIT HOOKS CONFIGURATION
+
+```bash
+# .husky/pre-commit
+pnpm abyss validate-flows        # Validate JSON schema
+jq empty flows/definitions/**/*.json  # JSON syntax check
+
+# .husky/pre-push
+pnpm abyss validate-flows        # Component compatibility check
+
+# .husky/post-merge
+pnpm abyss sync-flows --target staging  # Auto-sync to staging
+```
+
+## GITHUB ACTIONS — `sync-flows.yml`
+
+```yaml
+name: Sync Langflow Definitions
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync Flows from Langflow
+        run: pnpm abyss sync-flows
+      - name: Validate Flow Definitions
+        run: pnpm abyss validate-flows
+      - name: Commit Changes
+        run: |
+          git config user.name "Langflow Bot"
+          git add flows/definitions/
+          git diff --staged --quiet || git commit -m "chore: sync flows from Langflow"
+          git push
+```
+
+---
+
+# Sub-Task 4.2: Custom Domain-Specific Langflow Components
+
+## TARGET: 10 COMPONENTS (5 Python + 5 JavaScript)
+
+### Python Components
+
+**1. FHIRValidatorComponent** — `flows/components/python/fhir-validator-component/component.py`
+
+```python
+from langflow.custom.base import Component
+from the_abyss.fhir_engine import FHIRValidator
+from the_abyss.database import create_audit_log
+
+class FHIRValidatorComponent(Component):
+    display_name = "FHIR Validator"
+    description = "Validates FHIR Patient, Observation, Practitioner resources"
+
+    def build(self, resource_type: str, resource_data: dict,
+              profile: str = "us-core", organization_id: str = None):
+        validator = FHIRValidator(profile=profile, strict=True)
+        result = validator.validate(resource_type, resource_data)
+
+        if organization_id:
+            await create_audit_log(
+                organization_id=organization_id,
+                action="validated",
+                resource=resource_type,
+                metadata={"valid": result.valid, "errors": result.errors}
+            )
+
+        return {
+            "valid": result.valid,
+            "errors": result.errors,
+            "warnings": result.warnings,
+            "resource": resource_data if result.valid else None,
+        }
+```
+
+**2. MedicalCodeLookupComponent** — Resolves SNOMED CT, LOINC, RxNorm codes
+
+```python
+from langflow.custom.base import Component
+from the_abyss.fhir_engine import CodeSystemValidator
+
+class MedicalCodeLookupComponent(Component):
+    display_name = "Medical Code Lookup"
+    description = "Resolves medical codes (SNOMED CT, LOINC, RxNorm)"
+
+    def build(self, code_system: str, code: str):
+        validator = CodeSystemValidator()
+        result = await validator.lookup(
+            system=f"http://terminology.hl7.org/{code_system}",
+            code=code,
+        )
+        return {"code": code, "system": code_system,
+                "display": result.display, "valid": result.valid}
+```
+
+**3. SentimentAnalyzerComponent** — Academic feedback classification
+
+```python
+from langflow.custom.base import Component
+from transformers import pipeline
+
+class SentimentAnalyzerComponent(Component):
+    display_name = "Sentiment Analyzer"
+    description = "Classifies academic feedback sentiment"
+
+    def build(self, feedback_text: str):
+        classifier = pipeline("sentiment-analysis",
+                               model="distilbert-base-uncased-finetuned-sst-2-english")
+        result = classifier(feedback_text)
+        return {"sentiment": result['label'],
+                "confidence": result['score'],
+                "feedback": feedback_text}
+```
+
+### JavaScript Components
+
+**4. FHIRBundleBuilderComponent** — `flows/components/javascript/fhir-bundle-builder/index.ts`
+
+```typescript
+import { Component } from "langflow";
+
+export class FHIRBundleBuilderComponent extends Component {
+  displayName = "FHIR Bundle Builder";
+  description = "Constructs FHIR Bundles from resources";
+
+  async build(bundleType: string, resources: Record<string, unknown>[]) {
+    const bundle = {
+      resourceType: "Bundle",
+      type: bundleType,
+      entry: resources.map((resource) => ({
+        request: { method: bundleType === "transaction" ? "POST" : "GET",
+                   url: resource.resourceType },
+        resource,
+      })),
+    };
+    return { bundle, entryCount: resources.length, valid: true };
+  }
+}
+```
+
+## COMPONENT METADATA TEMPLATE — `metadata.json`
+
+```json
+{
+  "name": "fhir-validator",
+  "version": "1.0.0",
+  "author": "Healthcare Team",
+  "inputs": {
+    "resource_type": { "type": "string", "enum": ["Patient", "Practitioner", "Observation", "Bundle"] },
+    "resource_data": { "type": "object" },
+    "profile": { "type": "string", "default": "us-core" },
+    "organization_id": { "type": "string" }
+  },
+  "outputs": {
+    "valid": { "type": "boolean" },
+    "errors": { "type": "array" },
+    "warnings": { "type": "array" },
+    "resource": { "type": "object" }
+  }
+}
+```
+
+## SUCCESS CRITERIA 4.1 + 4.2
+- [ ] `flows/definitions/` structure created with metadata schema
+- [ ] `abyss sync-flows` command exports all flows to JSON
+- [ ] Git hooks prevent invalid flows from being committed
+- [ ] 10+ custom components deployed (5 Python, 5 JS)
+- [ ] All components have `metadata.json` with input/output schemas
+- [ ] FHIR validator integrates with `packages/fhir-engine`
+- [ ] Unit test coverage > 80% per component

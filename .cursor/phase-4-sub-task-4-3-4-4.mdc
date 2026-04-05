@@ -1,0 +1,342 @@
+---
+description: Sub-Task 4.3 & 4.4 — Orchestrator Gateway API (NestJS) + Shadow Mode A/B Testing. Central nervous system of The Abyss — all flow executions route here.
+globs:
+  - "apps/orchestrator/**"
+alwaysApply: false
+---
+
+# Sub-Task 4.3: Orchestrator Gateway API
+
+## ARCHITECTURE RULE
+ALL applications (Referralink, Simulator, Sentratorium) MUST execute flows via:
+`POST /flows/:flowId/run` → Orchestrator → Langflow → aiSession log → return
+
+## BOOTSTRAP
+
+```bash
+pnpm create-app orchestrator --template nestjs
+cd apps/orchestrator
+pnpm add @nestjs/common @nestjs/core @nestjs/websockets socket.io \
+  @the-abyss/langflow-client @the-abyss/database \
+  @the-abyss/ai-core class-validator class-transformer \
+  @opentelemetry/api @opentelemetry/sdk-node
+```
+
+## FLOWS CONTROLLER — `src/flows/flows.controller.ts`
+
+```typescript
+import { Controller, Post, Get, Body, Param, Query } from '@nestjs/common';
+import { FlowsService } from './flows.service';
+import { FlowExecutionDto } from './dto/flow-execution.dto';
+
+@Controller('flows')
+export class FlowsController {
+  constructor(private flowsService: FlowsService) {}
+
+  @Post(':flowId/run')
+  async executeFlow(
+    @Param('flowId') flowId: string,
+    @Body() dto: FlowExecutionDto,
+  ) {
+    return await this.flowsService.executeFlow({
+      flowId,
+      input: dto.input,
+      sessionId: dto.sessionId,
+      organizationId: dto.organizationId,
+      shadowMode: dto.shadowMode || false,
+    });
+  }
+
+  @Get('health')
+  async health() {
+    const langflowHealthy = await this.flowsService.checkLangflow();
+    const databaseHealthy = await this.flowsService.checkDatabase();
+    return {
+      status: langflowHealthy && databaseHealthy ? 'healthy' : 'degraded',
+      langflow: langflowHealthy,
+      database: databaseHealthy,
+      timestamp: new Date(),
+    };
+  }
+
+  @Get('metrics')
+  async metrics() {
+    const lastHour = new Date(Date.now() - 3600000);
+    return await this.flowsService.getMetrics(lastHour);
+  }
+}
+```
+
+## FLOWS SERVICE — `src/flows/flows.service.ts`
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { LangflowClient } from '@the-abyss/langflow-client';
+import { prisma, createAuditLog } from '@the-abyss/database';
+
+@Injectable()
+export class FlowsService {
+  constructor(private langflowClient: LangflowClient) {}
+
+  async executeFlow(params: {
+    flowId: string;
+    input: Record<string, unknown>;
+    sessionId?: string;
+    organizationId: string;
+    shadowMode?: boolean;
+  }) {
+    const startTime = Date.now();
+    const sessionId = params.sessionId || `sess_${Date.now()}`;
+
+    try {
+      // 1. Cost limit check — MANDATORY
+      const costAllowed = await this.costLimiter.checkCostLimit(params.organizationId);
+      if (!costAllowed) throw new Error('COST_LIMIT_EXCEEDED');
+
+      // 2. Get flow metadata
+      const flowMetadata = await this.getFlowMetadata(params.flowId);
+
+      // 3. Execute flow
+      const result = await this.langflowClient.executeFlow({
+        flowId: params.flowId,
+        input: params.input,
+      });
+
+      const latencyMs = Date.now() - startTime;
+      const costUsd = this.calculateCost(flowMetadata, result.tokensUsed);
+
+      // 4. Log to Sentratorium — ALWAYS
+      await prisma.aiSession.create({
+        data: {
+          sessionId,
+          organizationId: params.organizationId,
+          agentType: 'flow-executor',
+          domain: flowMetadata.domain,
+          inputPrompt: JSON.stringify(params.input),
+          modelUsed: flowMetadata.modelUsed || 'langflow',
+          tokenUsed: result.tokensUsed || 0,
+          latencyMs,
+          output: JSON.stringify(result.output),
+          costUsd,
+          metadata: { flowId: params.flowId, shadowMode: params.shadowMode || false },
+        },
+      });
+
+      // 5. HIPAA audit log — healthcare domain only
+      if (flowMetadata.domain === 'healthcare') {
+        await createAuditLog({
+          organizationId: params.organizationId,
+          action: 'executed_flow',
+          resource: 'Flow',
+          resourceId: params.flowId,
+          metadata: { sessionId, latencyMs, success: true },
+        });
+      }
+
+      return { sessionId, output: result.output, latencyMs, costUsd, tokensUsed: result.tokensUsed };
+
+    } catch (error) {
+      // Error path — STILL log to Sentratorium
+      await prisma.aiSession.create({
+        data: {
+          sessionId,
+          organizationId: params.organizationId,
+          agentType: 'flow-executor',
+          domain: 'unknown',
+          inputPrompt: JSON.stringify(params.input),
+          modelUsed: 'langflow',
+          tokenUsed: 0,
+          latencyMs: Date.now() - startTime,
+          output: JSON.stringify({ error: error.message }),
+          metadata: { flowId: params.flowId, error: true },
+        },
+      });
+      throw error;
+    }
+  }
+
+  private calculateCost(flowMetadata: any, tokensUsed: number): number {
+    const pricing: Record<string, number> = {
+      'gpt-4': 0.00003,
+      'claude-3.5-sonnet': 0.00003,
+      'ollama': 0,
+    };
+    return tokensUsed * (pricing[flowMetadata.modelUsed] || 0.00003);
+  }
+}
+```
+
+## DTO — `src/flows/dto/flow-execution.dto.ts`
+
+```typescript
+import { IsString, IsObject, IsOptional, IsBoolean } from 'class-validator';
+
+export class FlowExecutionDto {
+  @IsObject()
+  input: Record<string, unknown>;
+
+  @IsString()
+  organizationId: string;
+
+  @IsOptional()
+  @IsString()
+  sessionId?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  shadowMode?: boolean;
+}
+```
+
+## WEBSOCKET GATEWAY — `src/websocket/flows.gateway.ts`
+
+```typescript
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { Server } from 'socket.io';
+
+@WebSocketGateway({ namespace: 'flows', cors: { origin: '*' } })
+export class FlowsGateway {
+  @WebSocketServer()
+  server: Server;
+
+  broadcastExecution(execution: any) {
+    this.server.emit('execution', execution);
+  }
+}
+```
+
+---
+
+# Sub-Task 4.4: Shadow Mode A/B Testing Framework
+
+## SHADOW MODE SERVICE — `src/flows/shadow-mode.service.ts`
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { LangflowClient } from '@the-abyss/langflow-client';
+import { prisma } from '@the-abyss/database';
+
+@Injectable()
+export class ShadowModeService {
+  constructor(private langflowClient: LangflowClient) {}
+
+  async executeShadowMode(params: {
+    primaryFlowId: string;
+    shadowFlowId: string;
+    input: Record<string, unknown>;
+    organizationId: string;
+    comparisonStrategy: 'output-diff' | 'quality-score' | 'cost';
+  }) {
+    // Execute BOTH flows in parallel — primary result always returned
+    const [primaryResult, shadowResult] = await Promise.all([
+      this.langflowClient.executeFlow({ flowId: params.primaryFlowId, input: params.input }),
+      this.langflowClient.executeFlow({ flowId: params.shadowFlowId, input: params.input }),
+    ]);
+
+    const comparison = this.compareOutputs(
+      primaryResult.output, shadowResult.output, params.comparisonStrategy
+    );
+
+    // Log shadow execution to Sentratorium
+    await prisma.aiSession.create({
+      data: {
+        sessionId: `sess_shadow_${Date.now()}`,
+        organizationId: params.organizationId,
+        agentType: 'shadow-mode',
+        domain: 'orchestration',
+        inputPrompt: JSON.stringify(params.input),
+        modelUsed: 'langflow-shadow',
+        tokenUsed: shadowResult.tokensUsed,
+        latencyMs: shadowResult.latencyMs,
+        output: JSON.stringify({ primaryOutput: primaryResult.output,
+                                  shadowOutput: shadowResult.output, comparison }),
+        metadata: {
+          primaryFlowId: params.primaryFlowId,
+          shadowFlowId: params.shadowFlowId,
+          match: comparison.match,
+          latencyDiff: shadowResult.latencyMs - primaryResult.latencyMs,
+          costDiff: (shadowResult.costUsd || 0) - (primaryResult.costUsd || 0),
+        },
+      },
+    });
+
+    // ALWAYS return primary output — shadow is monitoring only
+    return {
+      output: primaryResult.output,
+      sessionId: `sess_${Date.now()}`,
+      shadowMetadata: { executed: true, match: comparison.match,
+                        latencyDiff: shadowResult.latencyMs - primaryResult.latencyMs },
+    };
+  }
+
+  private compareOutputs(primary: unknown, shadow: unknown, strategy: string) {
+    switch (strategy) {
+      case 'output-diff':
+        return { match: JSON.stringify(primary) === JSON.stringify(shadow),
+                 similarity: 0.95 };
+      case 'quality-score':
+        return { match: Math.abs(this.score(primary) - this.score(shadow)) < 0.05,
+                 primaryScore: this.score(primary), shadowScore: this.score(shadow) };
+      default:
+        return { match: false };
+    }
+  }
+
+  private score(output: unknown): number { return 0.9; }
+}
+```
+
+## ROLLBACK SERVICE — `src/flows/rollback.service.ts`
+
+```typescript
+@Injectable()
+export class RollbackService {
+  async monitorShadowFlow(
+    primaryFlowId: string,
+    shadowFlowId: string,
+    minAgreementRate: number = 0.90,
+  ) {
+    // Check every 5 minutes
+    setInterval(async () => {
+      const lastExecutions = await prisma.aiSession.findMany({
+        where: {
+          metadata: { path: ['shadowFlowId'], equals: shadowFlowId },
+          createdAt: { gte: new Date(Date.now() - 3600000) },
+        },
+        take: 100,
+      });
+
+      const agreementRate = lastExecutions.filter(
+        (s: any) => s.metadata?.match === true
+      ).length / lastExecutions.length;
+
+      if (agreementRate < minAgreementRate) {
+        await this.rollbackFlow(shadowFlowId);
+        await this.sendAlert({
+          type: 'SHADOW_MODE_ROLLBACK',
+          flowId: shadowFlowId,
+          agreementRate,
+          threshold: minAgreementRate,
+        });
+      }
+    }, 300_000);
+  }
+
+  private async rollbackFlow(shadowFlowId: string) {
+    await prisma.$executeRaw`
+      UPDATE flow_metadata SET status = 'rollback' WHERE flow_id = ${shadowFlowId}
+    `;
+  }
+}
+```
+
+## SUCCESS CRITERIA 4.3 + 4.4
+- [ ] `POST /flows/:flowId/run` endpoint operational
+- [ ] All executions logged to `aiSession` — including error paths
+- [ ] Latency p99 < 500ms (excluding LLM)
+- [ ] Healthcare flows trigger HIPAA `createAuditLog()`
+- [ ] Cost limiter blocks execution when limits exceeded
+- [ ] Shadow mode runs in parallel without impacting primary latency
+- [ ] Rollback auto-triggers when agreement rate < 90%
+- [ ] WebSocket gateway broadcasts live executions
+- [ ] 99.9% uptime in staging for 1 week

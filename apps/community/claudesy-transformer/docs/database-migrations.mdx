@@ -1,0 +1,205 @@
+---
+title: Database Migrations
+description: "Safe Prisma migration workflow for Claudesy Transformer Engine V2."
+---
+
+## Overview
+
+CTE V2 now tracks Prisma schema history in `prisma/migrations/` with:
+
+- `20260322000000_init`
+- `20260322222500_shared_rate_limit_email_queue`
+
+Use the baseline migration carefully if your target database was created before these Prisma artifacts existed.
+
+## When to Mark `init` as Applied
+
+Mark `20260322000000_init` as already applied when:
+
+- the target database already contains the baseline CTE V2 tables such as `users`, `prompts`, `subscriptions`, and `payments`
+- the schema was previously created from the legacy `migration_init.sql` or by `db push`
+- you only want Prisma to apply the newer delta migration for shared rate limits and email queue tables
+
+Do **not** mark it as applied on a fresh empty database. Fresh databases should run the full migration history normally.
+
+## Recommended PowerShell Flow
+
+From `app/ctev2` on a machine that can reach the target database:
+
+```powershell
+./scripts/apply-prisma-migrations.ps1 -MarkInitApplied
+```
+
+For a fresh empty database:
+
+```powershell
+./scripts/apply-prisma-migrations.ps1
+```
+
+To skip client regeneration:
+
+```powershell
+./scripts/apply-prisma-migrations.ps1 -MarkInitApplied -SkipGenerate
+```
+
+## Equivalent Manual Commands
+
+Baseline already exists:
+
+```bash
+npx prisma validate
+npx prisma migrate resolve --applied 20260322000000_init
+npx prisma migrate deploy
+npx prisma generate
+```
+
+Fresh empty database:
+
+```bash
+npx prisma validate
+npx prisma migrate deploy
+npx prisma generate
+```
+
+## Verification
+
+After deployment:
+
+```bash
+npx prisma migrate status
+npm run typecheck
+npm test
+```
+
+Check that the following objects now exist when the shared queue migration is applied:
+
+- `rate_limit_counters`
+- `email_jobs`
+- `RateLimitScope`
+- `EmailJobType`
+- `EmailJobStatus`
+
+## Post-Apply Checklist
+
+Run this checklist on the target database after `prisma migrate deploy` completes.
+
+If you want to run the verification as a single SQL script, use:
+
+```sql
+docs/sql/post-apply-rate-limit-email-queue-check.sql
+```
+
+If you want a rollout-friendly summary table with `check_name | passed | details`, use:
+
+```sql
+docs/sql/post-apply-rate-limit-email-queue-summary.sql
+```
+
+### 1. Confirm Prisma history is clean
+
+- [ ] `npx prisma migrate status` shows the migration history is up to date
+- [ ] `20260322000000_init` is marked as applied
+- [ ] `20260322222500_shared_rate_limit_email_queue` is marked as applied
+
+### 2. Confirm the new enums exist
+
+```sql
+SELECT t.typname
+FROM pg_type t
+JOIN pg_namespace n ON n.oid = t.typnamespace
+WHERE n.nspname = 'public'
+  AND t.typname IN ('RateLimitScope', 'EmailJobType', 'EmailJobStatus')
+ORDER BY t.typname;
+```
+
+- [ ] Result contains `RateLimitScope`
+- [ ] Result contains `EmailJobType`
+- [ ] Result contains `EmailJobStatus`
+
+### 3. Confirm the new tables exist
+
+```sql
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
+  AND table_name IN ('rate_limit_counters', 'email_jobs')
+ORDER BY table_name;
+```
+
+- [ ] Result contains `rate_limit_counters`
+- [ ] Result contains `email_jobs`
+
+### 4. Confirm `rate_limit_counters` columns
+
+```sql
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_schema = 'public'
+  AND table_name = 'rate_limit_counters'
+ORDER BY ordinal_position;
+```
+
+- [ ] Columns include `id`, `action`, `scope`, `keyHash`, `windowStart`, `windowEnd`, `count`, `createdAt`, `updatedAt`
+- [ ] `scope` is backed by the `RateLimitScope` enum
+- [ ] `count` has a default value
+
+### 5. Confirm `email_jobs` columns
+
+```sql
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_schema = 'public'
+  AND table_name = 'email_jobs'
+ORDER BY ordinal_position;
+```
+
+- [ ] Columns include `id`, `type`, `toEmail`, `payload`, `status`, `attempts`, `maxAttempts`, `nextAttemptAt`, `lastAttemptAt`, `sentAt`, `lastError`, `idempotencyKey`, `createdAt`, `updatedAt`
+- [ ] `type` is backed by the `EmailJobType` enum
+- [ ] `status` is backed by the `EmailJobStatus` enum
+- [ ] `payload` is stored as `jsonb`
+
+### 6. Confirm indexes are present
+
+```sql
+SELECT indexname, indexdef
+FROM pg_indexes
+WHERE schemaname = 'public'
+  AND tablename IN ('rate_limit_counters', 'email_jobs')
+ORDER BY tablename, indexname;
+```
+
+- [ ] `rate_limit_counters_action_scope_keyHash_windowStart_key` exists
+- [ ] `rate_limit_counters_windowEnd_idx` exists
+- [ ] `email_jobs_idempotencyKey_key` exists
+- [ ] `email_jobs_status_nextAttemptAt_idx` exists
+
+### 7. Confirm Prisma client can read the new tables
+
+From `app/ctev2`:
+
+```bash
+npx prisma studio
+```
+
+- [ ] `RateLimitCounter` appears in Prisma Studio
+- [ ] `EmailJob` appears in Prisma Studio
+- [ ] Opening both models does not throw schema or introspection errors
+
+### 8. Optional smoke checks with application behavior
+
+- [ ] Trigger an auth flow that uses shared rate limiting and confirm a row appears in `rate_limit_counters`
+- [ ] Trigger a welcome email enqueue path and confirm a row appears in `email_jobs`
+- [ ] If queue processing is enabled, confirm `email_jobs.status` transitions from `PENDING` to `SENT` or `RETRYING`
+
+### 9. Rollout completion criteria
+
+- [ ] Database objects exist with the expected columns and indexes
+- [ ] Prisma migration history is clean
+- [ ] App `typecheck` and `test` remain green against the deployed schema
+- [ ] No unexpected errors appear in application logs during the first auth/email smoke test
+
+## Safety Notes
+
+- Run this only from an environment with the correct `DATABASE_URL` and `DIRECT_URL`
+- Never use `prisma migrate reset` against shared or production-like databases
+- Production rollout still requires Chief approval and normal deployment gate review

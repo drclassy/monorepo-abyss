@@ -1,0 +1,210 @@
+---
+# Sentra Standard Workflows & Execution Patterns
+
+description: "Sentra 9-step standard workflows, Claudesy 9-phase micro workflow, and Genesis lifecycle integration for implementation work."
+priority: high
+version: 1
+labels:
+  - sentra
+  - workflows
+  - execution
+  - genesis
+scope:
+  globs:
+    - "src/**/*"
+    - "app/**/*"
+    - "packages/**/*"
+    - "**/*.ts"
+    - "**/*.tsx"
+    - "**/*.js"
+    - "**/*.jsx"
+    - "**/*.py"
+    - "**/*.spec.ts"
+    - "**/*.test.ts"
+    - "**/*.md"
+    - "HANDOFF.md"
+    - "**/tests/**/*"
+---
+
+# When this rule applies
+
+Apply these rules when you:
+
+- Plan, break down, build, or verify code changes.
+- Propose or execute implementation work.
+- Generate tests, refactor code, or update existing modules.
+- Work on tasks that involve creating, modifying, or testing code.
+
+This rule complements `010-sentra-operating-model.mdc` and enforces the execution side of the operating model.
+
+---
+
+## Macro 9-Step Standard Workflow
+
+Every task must be mapped to these 9 steps. You cannot skip steps or reorder them arbitrarily:
+
+1. **Intake**
+   - Accept work from a written issue, brief, or request.
+   - Ensure the problem, target, and constraints are clear and testable.
+   - Reject work that is still a raw idea with no defined outcome.
+
+2. **Discovery**
+   - Find existing artifacts: schemas, ADRs, tests, documentation, and related code.
+   - Identify the components that will be affected.
+   - Separate core requirements from nice-to-have items.
+   - Flag domain, security, and dependency risks.
+
+3. **Design**
+   - Write a short design before coding.
+   - Define the data model and API contract first (refer to `010-sentra-operating-model.mdc`).
+   - Set file ownership and module boundaries.
+   - Write or reference an ADR for decisions with broad or hard-to-reverse impact.
+
+4. **Breakdown**
+   - Split work into atomic tasks.
+   - Each task must have **one primary output**.
+   - Every task should fit into a **single work session**.
+   - Order tasks by dependency, not by personal preference.
+
+5. **Build**
+   - Implement against the agreed schema and contract.
+   - Use the same folder and naming patterns.
+   - Do not add a new helper if an existing one already works.
+   - Avoid duplicate logic across apps or services.
+
+6. **Verify**
+   - Run tests that are relevant to the change.
+   - Validate edge cases and failure paths.
+   - Ensure type-checking and linting pass.
+   - If behavior changes, add a regression test.
+
+7. **Release**
+   - Confirm the release checklist is complete.
+   - Ensure contract changes are compatible or have a migration plan.
+   - Record the impact on users, operations, and other integrations.
+   - Release through the official path, not as a manual one-off.
+
+8. **Observe**
+   - Review logs, errors, and metrics after release.
+   - Ensure the audit trail captures who, what, when, and why.
+   - Track issues that need follow-up or rollback.
+
+9. **Document**
+   - Update the ADR if a new decision was made.
+   - Add notes to platform or domain documentation.
+   - Turn repeating patterns into templates.
+   - Write a handoff note if the task is transferred to another team.
+   - Record final notes in Sentratorium / Cognitorium.
+
+**Always explain which macro step you are operating in and what the next step should be.**
+
+---
+
+## Claudesy 9-Phase Micro Workflow (Inner Loop)
+
+For **every individual task** within the macro workflow, follow this micro execution pattern:
+
+1. **Context Gathering** – read the current instruction, relevant repo files, MCP data (Git, CI, logs, DB), and configuration.
+2. **Best Practice Check** – validate against `.cursor/index.mdc` and `.cursor/rules/*.mdc`.
+3. **Diagnosis** – identify root cause, affected files/modules, and risks.
+4. **Plan** – draft concise plan and `HANDOFF.md` outline (scope, risks, rollback, dependencies).
+5. **WAIT FOR GO** – **stop completely** and wait for "GO" from Chief/Boss before any code or config changes.
+6. **Execution** – after GO, implement as small, reviewable patches. Use MCP tools for read/write if available.
+7. **Verification** – run unit/integration/E2E tests, type-check, lint. Fix failures using research protocol.
+8. **Documentation** – update docs, ADR, Sentratorium log, HANDOFF.md.
+9. **Commit/Handoff** – propose Git commit with trailers:
+   ```
+   Agent: <your-name>
+   Phase: <Genesis phase, e.g. Trinity Swarm>
+   Handoff: <team/person>
+   ```
+
+**Never skip phase 5 (WAIT FOR GO) for risky or non-trivial changes.**
+
+---
+
+## Genesis 7-Phase Lifecycle Alignment
+
+Map your work to Genesis phases within the macro steps:
+
+- **Oracle Chamber (Plan)** → Intake + Discovery (clinical safety check).
+- **Hamster Chamber (Decompose)** → Breakdown.
+- **Foundation (Setup)** → Build setup (environment, least privilege).
+- **Scaffold (Design)** → Design + contracts.
+- **Trinity Swarm (Build)** → Build (parallel frontend/backend/DevOps).
+- **Digital Trial (Validate)** → Verify (lint && typecheck && test as gate).
+- **Trust Bridge (Deploy)** → Release + Observe + Chief approval.
+
+Explicitly name the Genesis phase(s) in your plans and outputs.
+
+---
+
+## Skills Usage Points
+
+When the Sentra plugin skills are available, call them at these points:
+
+- **Intake/Discovery**: `sentra.workflow.planner` to structure the request into macro/micro steps.
+- **Design/Breakdown**: `sentra.adr.drafter` for ADR outlines, `sentra.policy.checker` for policy alignment.
+- **Build**: Use domain-specific skills (e.g. `sentra.testplan.generator` for test scaffolding).
+- **Verify**: `sentra.testplan.generator` to ensure comprehensive coverage.
+- **Release/Document**: `sentra.observability.notes` for monitoring plans and Sentratorium logs.
+
+If skills are unavailable, produce equivalent plain-text outputs (plans, checklists, logs).
+
+---
+
+## MCP Usage Points (Required for Deep Work)
+
+Use MCP servers at these workflow stages when available:
+
+- **Context Gathering (1)**: MCP Git for file structure, MCP DB for schema inspection, MCP CI for recent build status.
+- **Discovery (2)**: MCP issue tracker for related tickets, MCP observability for runtime behavior.
+- **Verification (6)**: MCP CI for test results, MCP observability for integration tests.
+- **Observe (8)**: MCP logs/metrics for post-release monitoring.
+
+**Prefer MCP read operations** to ground your reasoning in real system state. Avoid destructive operations unless explicitly approved via "GO".
+
+---
+
+## Failure and Research Protocol (Verification Phase)
+
+If builds or tests fail during Verification (phase 6):
+
+1. **Inspect with MCP**: Use MCP CI/logs to read full error output and stack traces.
+2. **Local diagnosis**: Check configuration, dependencies, and recent changes in the repo.
+3. **Official docs first**: Research the specific error in framework/tool documentation:
+   - Next.js 14/15: https://nextjs.org/docs
+   - FastAPI: https://fastapi.tiangolo.com/
+   - Supabase/PostgreSQL: https://supabase.com/docs
+   - Prisma: https://www.prisma.io/docs
+   - Tailwind CSS 4.x: https://tailwindcss.com/docs
+4. **Secondary sources**: GitHub issues (official repos), reputable engineering blogs.
+5. **Propose fix**: Only after grounding in official sources. Never suggest disabling tests, linting, type-checking, or guardrails.
+
+Document your research and reasoning in the plan before proposing the fix.
+
+---
+
+## Definition of Done (Per Macro Step)
+
+- **Intake**: Clear, testable acceptance criteria.
+- **Design**: Schema/contract defined, ADR written if needed.
+- **Build**: Code matches contract, uses existing patterns.
+- **Verify**: All relevant tests pass, type-check/lint clean.
+- **Release**: Compatibility ensured, migration planned.
+- **Document**: ADRs/docs updated, Sentratorium logged.
+
+---
+
+## Anti-Patterns to Avoid
+
+- Starting coding before contracts are clear (violates Design).
+- Splitting work too broadly (violates Breakdown).
+- Accumulating changes without verification (violates Verify).
+- Relying on personal knowledge without documentation (violates Document).
+- Creating a different workflow for the same type of problem (violates Golden Path).
+- Proposing workarounds that bypass policies or guardrails.
+
+When you detect an anti-pattern, call it out and suggest the standard path instead.
+
+EOF

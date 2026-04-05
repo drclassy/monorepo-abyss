@@ -1,0 +1,70 @@
+---
+title: "API Endpoints"
+description: "Direct interaction with the Prompt Transformer engine."
+---
+
+While our Dashboard is the easiest way to interact with our engine, we also provide a robust API for programmatic access.
+
+## Base URL
+
+```bash
+https://ctev2.sentra.ai/api
+```
+
+## Authentication
+
+All requests must include a Bearer token in the `Authorization` header. You can generate API keys in your **Account Settings**.
+
+```bash
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Endpoints
+
+### 1. Transform Prompt
+`POST /transform`
+
+Transforms a base prompt into a provider-specific optimized format.
+
+**Request Body:**
+```json
+{
+  "prompt": "Write a patient discharge summary",
+  "provider": "anthropic",
+  "model": "claude-3-5-sonnet-latest",
+  "options": {
+    "temperature": 0.7,
+    "max_tokens": 1000
+  }
+}
+```
+
+**Successful Response:**
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "originalPrompt": "Write a patient discharge summary",
+  "transformedPrompt": "You are a senior clinician. Write a concise patient discharge summary...",
+  "model": "claude-3-5-sonnet-latest",
+  "mode": "PRO",
+  "metadata": {
+    "tokensEstimate": 450,
+    "transformedAt": "2026-03-22T21:46:21.000Z",
+    "processingTimeMs": 124
+  }
+}
+```
+
+### 2. Evaluate Prompt
+`POST /evaluate`
+
+Runs a battery of tests against your prompt to determine its quality and potential improvements.
+
+### 3. Save to Library
+`POST /prompts`
+
+Saves a prompt template to your personal or shared library.
+
+<Note>
+  For detailed schema definitions, check out our [OpenAPI Specification](/docs/openapi.yml).
+</Note>

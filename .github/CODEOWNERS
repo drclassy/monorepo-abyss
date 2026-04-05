@@ -1,0 +1,51 @@
+# Code Owners for The Abyss Monorepo
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global Owners
+* @Claudesy
+
+# AI Steering & Governance
+.agents/ @Claudesy
+.agents/AGENTS.md @Claudesy
+.agents/MCP-CONFIG.json @Claudesy
+
+# CI/CD & Automation
+.github/ @Claudesy
+.github/workflows/ @Claudesy
+turbo.json @Claudesy
+pnpm-workspace.yaml @Claudesy
+
+# Healthcare Domain (Strict Compliance)
+apps/healthcare/ @Claudesy
+packages/fhir-engine/ @Claudesy
+packages/database/ @Claudesy
+
+# Academic Domain
+apps/academic/ @Claudesy
+
+# Internal Tools
+apps/internal/ @Claudesy
+tooling/ @Claudesy
+
+# Incubator (R&D)
+apps/incubator/ @Claudesy
+
+# Orchestrator & AI Flows
+apps/orchestrator/ @Claudesy
+flows/ @Claudesy
+packages/langflow-client/ @Claudesy
+packages/ai-core/ @Claudesy
+
+# Shared Packages
+packages/ui/ @Claudesy
+packages/shared-types/ @Claudesy
+packages/vector-store/ @Claudesy
+packages/iskandar-gatekeeper/ @Claudesy
+
+# Infrastructure
+infrastructure/ @Claudesy
+docs/ @Claudesy
+
+# Documentation
+*.md @Claudesy
+docs/sentratorium/ @Claudesy

@@ -1,0 +1,72 @@
+# Docker Compose for local development
+# Usage: docker-compose up -d
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: abyss-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: abyss
+      POSTGRES_PASSWORD: abyss_dev_password
+      POSTGRES_DB: abyss_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U abyss"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Langflow (AI Orchestration)
+  langflow:
+    image: langflowai/langflow:latest
+    container_name: abyss-langflow
+    restart: unless-stopped
+    ports:
+      - "7860:7860"
+    environment:
+      - LANGFLOW_DATABASE_URL=sqlite:///app/langflow.db
+      - LANGFLOW_SECRET_KEY=your_secret_key_here
+    volumes:
+      - langflow_data:/app
+    depends_on:
+      - postgres
+
+  # Redis (Caching & Queue)
+  redis:
+    image: redis:7-alpine
+    container_name: abyss-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # pgAdmin (Database Management)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: abyss-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@abyss.local
+      PGADMIN_DEFAULT_PASSWORD: admin_password
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  langflow_data:
+  redis_data:
+
+networks:
+  default:
+    name: abyss-network

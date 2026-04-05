@@ -1,0 +1,15 @@
+# Skip indexing but still allow AI to read if explicitly referenced
+# This dramatically speeds up codebase indexing
+
+# Lock files (huge, no value for AI)
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Docs (reference only, don't index)
+docs/archive/
+
+# Generated
+*.generated.*
+*.min.js
+*.min.css

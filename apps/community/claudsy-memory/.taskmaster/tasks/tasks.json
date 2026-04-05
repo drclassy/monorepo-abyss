@@ -1,0 +1,194 @@
+{
+  "tasks": [],
+  "metadata": {
+    "projectName": "Claudesy Memory Landing Page",
+    "lastUpdated": "2026-03-26"
+  },
+  "master": {
+    "tasks": [
+      {
+        "id": "1",
+        "title": "Install New Dependencies",
+        "description": "Install required libraries as specified in the PRD to support animations, 3D backgrounds, and carousels.",
+        "details": "Run the command `npm install gsap three swiper` in the project root. Ensure compatibility with Next.js 16.2.1 and React 19. Update package.json accordingly. No pseudo-code needed; this is a straightforward package installation.",
+        "testStrategy": "Verify installation by checking package.json for gsap, three, and swiper entries, and run `npm ls` to ensure no conflicts. Manually import and use a simple function from each library in a test component.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T13:47:11.858Z"
+      },
+      {
+        "id": "2",
+        "title": "Set Up Fonts and Global CSS",
+        "description": "Configure custom fonts and extend globals.css with WQF-inspired color tokens, typography, and styles.",
+        "details": "Copy font files (roc-grotesk-*.woff2 and azeret-mono-regular.otf) from site-concept/assets/ to public/fonts/. In globals.css, add @font-face declarations for Roc Grotesk and Azeret Mono, then extend Tailwind theme with color tokens like --rich-carbon: #111111, and typography classes. Use Tailwind's theme extension in tailwind.config.js if needed. Example: @font-face { font-family: 'Roc Grotesk'; src: url('/fonts/roc-grotesk-medium.woff2'); }",
+        "testStrategy": "Inspect the page in the browser to confirm fonts load correctly (e.g., check computed styles for headings using Roc Grotesk). Verify color tokens by applying classes like bg-rich-carbon and checking element backgrounds.",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T13:47:12.984Z"
+      },
+      {
+        "id": "3",
+        "title": "Implement Header Component",
+        "description": "Create a fixed header that auto-hides on scroll down and reveals on scroll up, with logo and navigation.",
+        "details": "In src/components/landing/Header.tsx, use React 19 and GSAP for scroll-based animations. Set up a useEffect hook with GSAP ScrollTrigger to handle auto-hiding: gsap.to(headerRef.current, { y: '-100%', scrollTrigger: { trigger: window, start: 'top top', onUpdate: self => self.direction === 1 ? hide() : show() } }). Add compact styling with rounded pill on scroll. Use Tailwind classes for styling.",
+        "testStrategy": "Scroll the page manually; confirm header hides below 1 viewport on scroll down and reappears on scroll up. Test on different devices for responsiveness.",
+        "priority": "high",
+        "dependencies": [
+          "1",
+          "2"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T13:47:09.123Z"
+      },
+      {
+        "id": "4",
+        "title": "Implement Hero Section",
+        "description": "Build the full-viewport hero section with Three.js background, title, and CTA button.",
+        "details": "In src/components/landing/HeroSection.tsx, create a canvas element and initialize Three.js for a particle/neural-net style background. Use useEffect to set up the scene: const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(); renderer.render(scene, camera); Add GSAP for any additional animations. Include Sentra-branded text and CTA button with corner accents.",
+        "testStrategy": "Load the page and verify the Three.js canvas renders correctly (e.g., particles moving). Click the CTA button to ensure it links to the dashboard and check for visual fidelity to the PRD reference.",
+        "priority": "high",
+        "dependencies": [
+          "1",
+          "2",
+          "3"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T13:47:14.008Z"
+      },
+      {
+        "id": "5",
+        "title": "Implement Ethos Section",
+        "description": "Create the light background section with vision text and expanding feature cards.",
+        "details": "In src/components/landing/EthosSection.tsx, use Tailwind classes like bg-neural-fog and text-rich-carbon. Build 4 expanding cards for features (e.g., Semantic Memory) with hover effects. Use GSAP for clip-path reveals: gsap.from(cardRef, { clipPath: 'inset(0 0 100% 0)', scrollTrigger: { trigger: cardRef } }). Ensure mobile stacking via responsive Tailwind utilities.",
+        "testStrategy": "Hover over cards on desktop to check expansion; on mobile, verify they stack vertically. Confirm content matches Sentra branding and animations trigger on scroll.",
+        "priority": "medium",
+        "dependencies": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T14:20:00.000Z"
+      },
+      {
+        "id": "6",
+        "title": "Implement Focus Section",
+        "description": "Develop the centered text section explaining the memory engine pipeline.",
+        "details": "In src/components/landing/FocusSection.tsx, use Tailwind for centering and styling. Add text content like 'Four Memory Categories. One Unified Engine.' with subtext. Apply GSAP SplitText for character-by-character reveals: const split = new SplitText(element, {type: 'chars'}); gsap.from(split.chars, {y: 50, opacity: 0, stagger: 0.02}).",
+        "testStrategy": "Render the section and verify text alignment and animation on scroll. Check that the pipeline description is accurately displayed.",
+        "priority": "medium",
+        "dependencies": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T14:20:00.000Z"
+      },
+      {
+        "id": "7",
+        "title": "Implement Capabilities Section",
+        "description": "Build the interactive list with hover-reveal for capabilities.",
+        "details": "In src/components/landing/CapabilitiesSection.tsx, create a list of items (e.g., Extract, Consolidate) with hover effects using GSAP. For image reveals, use CSS transitions or GSAP: gsap.to(imageRef, {opacity: 1, onHover: true}). Add corner accents via the CornerAccent component. Ensure responsiveness for mobile.",
+        "testStrategy": "Hover over list items to confirm reveals; test on mobile for touch interactions. Verify all capabilities are listed as per PRD.",
+        "priority": "medium",
+        "dependencies": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T14:31:00.000Z"
+      },
+      {
+        "id": "8",
+        "title": "Implement Showcase Section",
+        "description": "Create the Swiper carousel for showcasing agents/tools.",
+        "details": "In src/components/landing/ShowcaseSection.tsx, import Swiper and set up a carousel: <Swiper slidesPerView={3} centeredSlides={true}> {agents.map(agent => <SwiperSlide key={agent.id}><div>{agent.name}</div></SwiperSlide>)} </Swiper>. Style slides with Tailwind and add hover effects.",
+        "testStrategy": "Swipe through the carousel and ensure it's centered with active slide highlighting. Verify agent icons and names display correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T14:31:00.000Z"
+      },
+      {
+        "id": "9",
+        "title": "Implement Remaining Sections",
+        "description": "Build Architecture, Developer, Teams, CTA, and Footer sections with stacking cards and other interactions.",
+        "details": "In respective files like ArchitectureSection.tsx, use GSAP ScrollTrigger for pinning stacking cards: gsap.to(cardRef, {pin: true, scrollTrigger: {trigger: sectionRef}}). For CTA and Footer, add simple components with links and branding. Use reusable components like WQFButton.",
+        "testStrategy": "Navigate through sections via scrolling; confirm stacking cards pin correctly and CTA links work. Check footer for correct branding.",
+        "priority": "medium",
+        "dependencies": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T14:08:28.552Z"
+      },
+      {
+        "id": "10",
+        "title": "Integrate Animations and Final Testing",
+        "description": "Add global animations and perform comprehensive testing for the entire landing page.",
+        "details": "In src/app/page.tsx, wrap the page with GSAP context for smooth scrolling: useGSAP(() => { ScrollTrigger.create({ /* configs */ }); }). Ensure all animations respect prefers-reduced-motion. Update routing in next.config.ts if needed.",
+        "testStrategy": "Test the full page flow, check for regressions in /dashboard, and verify responsiveness across devices. Use browser dev tools to confirm no errors and that all PRD criteria are met.",
+        "priority": "high",
+        "dependencies": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-26T14:08:29.811Z"
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "lastModified": "2026-03-26T14:31:00.000Z",
+      "taskCount": 10,
+      "completedCount": 10,
+      "tags": [
+        "master"
+      ]
+    }
+  }
+}

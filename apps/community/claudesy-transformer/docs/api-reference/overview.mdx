@@ -1,0 +1,30 @@
+---
+title: "API Overview"
+description: "Technical specifications for Prompt Transformer APIs."
+---
+
+## Authentication
+
+All API requests must include a valid Bearer Token in the `Authorization` header.
+
+```bash
+Authorization: Bearer YOUR_TOKEN
+```
+
+## Base URL
+
+```bash
+https://api.prompt-transformer.ai/v1
+```
+
+## Core Endpoints
+
+| Endpoint | Method | Description |
+| -------- | ------ | ----------- |
+| `/transform` | POST | Optimize a prompt for a target LLM. |
+| `/history` | GET | Retrieve past transformations. |
+| `/providers` | GET | List available LLM providers. |
+
+<Note>
+  Detailed endpoint documentation is coming soon.
+</Note>

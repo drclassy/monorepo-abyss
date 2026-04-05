@@ -1,0 +1,42 @@
+---
+title: "Component Library"
+description: "Reference for the CTEV2 UI components and design system."
+---
+
+Prompt Transformer uses a custom design system built on top of **Tailwind CSS v4** and **Shadcn/UI**, tailored for the Sentra Abyss luxury aesthetic.
+
+## Design Tokens
+
+Our components adhere to a strict color and typography palette defined in `tailwind.config.ts`.
+
+- **Primary**: `#eb5939` (Action buttons, highlights)
+- **Background**: `#0d0d0d` (Deep luxury dark mode)
+- **Foreground**: `#b7ab98` (Soft parchment for readability)
+- **Accents**: Subtle glows and glassmorphism effects.
+
+## Base Components
+
+We utilize a robust set of base components for consistent interaction patterns:
+
+| Component | Purpose | Key Props |
+| :--- | :--- | :--- |
+| **Button** | Primary actions | `variant`, `size`, `loading` |
+| **Input** | Data entry | `error`, `icon`, `placeholder` |
+| **Card** | Content grouping | `glassmorphic`, `hoverEffect` |
+| **Badge** | Status/Tagging | `status` (success, warning, etc.) |
+
+## Feature-Specific Components
+
+The application architecture favors **composition over inheritance**, with feature-specific components located in `components/[feature]`.
+
+### Evaluator Components
+- **ScoreCard**: Displays the 1-10 gauge for dimensions.
+- **FeedbackList**: Categorized actionable suggestions.
+
+### Optimizer Components
+- **SuperPromptView**: Syntax-highlighted view of the generated super prompt.
+- **StrategySelector**: Modal for choosing optimization targets.
+
+## Usage Guidelines
+
+All components are fully typed with **TypeScript** and validated using **Zod** where applicable. For clinical safety, components that display sensitive data implement automatic masking triggers based on the `PHI_REDACTION` flag.

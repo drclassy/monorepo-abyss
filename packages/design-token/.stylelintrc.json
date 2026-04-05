@@ -1,0 +1,92 @@
+{
+  "_comment": "Sentra Design Governance Protocol v1.0.0 — CSS Enforcement Rules",
+  "_version": "1.0.0",
+  "_docs": "Violations in CI will block PRs. To request an allowlist exception, contact #sentra-ui-governance.",
+
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recommended"
+  ],
+
+  "plugins": [
+    "stylelint-order",
+    "stylelint-declaration-strict-value"
+  ],
+
+  "rules": {
+
+    "_section_colors": "──── COLOR ENFORCEMENT: No hardcoded values ────────────",
+    "color-no-hex": true,
+    "color-named": "never",
+    "color-no-invalid-hex": true,
+
+    "_section_borders": "──── BORDER ENFORCEMENT: Max 1px, must use token ────────",
+    "declaration-property-value-disallowed-list": {
+      "border-width": ["2px", "3px", "4px", "5px", "thick", "medium"],
+      "border-style": ["double", "ridge", "groove", "inset", "outset"]
+    },
+
+    "_section_tokens": "──── TOKEN USAGE: All color/border/shadow must use var() ──",
+    "scale-unlimited/declaration-strict-value": [
+      ["/color/", "background-color", "border-color", "box-shadow", "text-shadow"],
+      {
+        "disableFix": true,
+        "ignoreValues": [
+          "/^var\\(--sentra-/",
+          "transparent",
+          "currentColor",
+          "inherit",
+          "initial",
+          "none",
+          "unset"
+        ],
+        "message": "Use a Sentra design token: var(--sentra-*). Hardcoded values are not permitted in Sentra UI."
+      }
+    ],
+
+    "_section_naming": "──── CLASS NAMING: All classes must follow sentra- prefix ──",
+    "selector-class-pattern": [
+      "^(sentra-[a-z0-9-]+|neu-[a-z0-9-]+|btn-[a-z0-9-]+|form-[a-z0-9-]+|card-[a-z0-9-]+|modal-[a-z0-9-]+|priority-[a-z0-9-]+|compliance-[a-z0-9-]+|audit-[a-z0-9-]+)$",
+      {
+        "message": "Class names must use the sentra-* prefix pattern. See Design Governance Protocol v1.0.0."
+      }
+    ],
+
+    "_section_misc": "──── MISCELLANEOUS QUALITY RULES ────────────────────────",
+    "declaration-no-important": true,
+    "max-nesting-depth": 3,
+    "unit-allowed-list": ["px", "rem", "em", "%", "ms", "s", "vw", "vh", "fr", "deg"],
+    "font-family-no-missing-generic-family-keyword": true,
+    "shorthand-property-no-redundant-values": true,
+    "no-duplicate-selectors": true,
+    "no-empty-source": true,
+
+    "_section_order": "──── PROPERTY ORDER: Alphabetical for consistency ────────",
+    "order/properties-alphabetical-order": true
+  },
+
+  "ignoreFiles": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/legacy/**",
+    "**/*.min.css",
+    "**/*.generated.css"
+  ],
+
+  "overrides": [
+    {
+      "files": ["**/*.css"],
+      "rules": {
+        "function-url-quotes": "always",
+        "string-quotes": "double"
+      }
+    },
+    {
+      "files": ["**/*.scss", "**/*.sass"],
+      "rules": {
+        "max-nesting-depth": 4
+      }
+    }
+  ]
+}

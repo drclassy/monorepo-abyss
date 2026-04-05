@@ -1,0 +1,47 @@
+# ArgoCD Application Configuration for The Abyss
+# This is a placeholder - actual configuration will depend on your Kubernetes setup
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: the-abyss
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/Claudesy/abyss-monorepo.git
+    targetRevision: HEAD
+    path: infrastructure/kubernetes/base
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: abyss
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
+  
+  info:
+    - name: Documentation
+      value: https://github.com/Claudesy/abyss-monorepo/blob/main/README.md

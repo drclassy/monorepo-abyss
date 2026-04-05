@@ -1,0 +1,69 @@
+# =============================================================================
+# Labeler Configuration
+# Defines labels based on file patterns
+# =============================================================================
+
+# Frontend changes
+frontend:
+  - changed-files:
+      - any-glob-to-any-file: 'apps/**/*'
+      - any-glob-to-any-file: 'packages/**/src/**/*.{tsx,ts,jsx,js}'
+
+# Backend changes
+backend:
+  - changed-files:
+      - any-glob-to-any-file: 'apps/api/**/*'
+      - any-glob-to-any-file: 'packages/**/server/**/*'
+
+# Documentation changes
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: '**/*.md'
+      - any-glob-to-any-file: 'docs/**/*'
+
+# Configuration changes
+configuration:
+  - changed-files:
+      - any-glob-to-any-file: '**/*.json'
+      - any-glob-to-any-file: '**/*.yaml'
+      - any-glob-to-any-file: '**/*.yml'
+      - any-glob-to-any-file: '**/.env*'
+
+# TypeScript changes
+typescript:
+  - changed-files:
+      - any-glob-to-any-file: '**/*.ts'
+      - any-glob-to-any-file: '**/*.tsx'
+
+# Test changes
+tests:
+  - changed-files:
+      - any-glob-to-any-file: '**/*.test.*'
+      - any-glob-to-any-file: '**/*.spec.*'
+      - any-glob-to-any-file: '**/__tests__/**/*'
+
+# Infrastructure changes
+infrastructure:
+  - changed-files:
+      - any-glob-to-any-file: 'infrastructure/**/*'
+      - any-glob-to-any-file: '**/Dockerfile*'
+      - any-glob-to-any-file: '**/docker-compose*.yml'
+
+# CI/CD changes
+ci-cd:
+  - changed-files:
+      - any-glob-to-any-file: '.github/workflows/**/*'
+      - any-glob-to-any-file: '.github/**/*'
+
+# Security changes
+security:
+  - changed-files:
+      - any-glob-to-any-file: '**/*security*'
+      - any-glob-to-any-file: '**/*auth*'
+
+# Healthcare/Compliance changes (Sentra AI specific)
+healthcare:
+  - changed-files:
+      - any-glob-to-any-file: '**/*hipaa*'
+      - any-glob-to-any-file: '**/*fhir*'
+      - any-glob-to-any-file: '**/*phi*'

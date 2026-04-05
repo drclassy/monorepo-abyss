@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@the-abyss/*": ["packages/*/src"],
+      "@the-abyss/ui": ["packages/ui/src"],
+      "@the-abyss/database": ["packages/database/src"],
+      "@the-abyss/ai-core": ["packages/ai-core/src"],
+      "@the-abyss/langflow-client": ["packages/langflow-client/src"],
+      "@the-abyss/fhir-engine": ["packages/fhir-engine/src"],
+      "@the-abyss/vector-store": ["packages/vector-store/src"],
+      "@the-abyss/shared-types": ["packages/shared-types/src"],
+      "@the-abyss/iskandar-gatekeeper": ["packages/iskandar-gatekeeper/src"]
+    },
+    "types": ["node"]
+  },
+  "include": ["packages/**/src/**/*", "apps/**/src/**/*", "tooling/**/src/**/*"],
+  "exclude": ["node_modules", "dist", "build", ".next", "coverage"]
+}

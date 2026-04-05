@@ -1,0 +1,484 @@
+{
+  "last_sync": "2026-04-05T17:07:51.0004471Z",
+  "account_id": "9d664084-581d-4df8-8b6a-ca90554bd7f3",
+  "account_name": "Sentra Artificial Intelligence",
+  "account_slug": "sentra-artificial-intelligence",
+  "entities": {
+    "briefs": {
+      "524e2de2-084c-4fc6-a0dc-1cd379f06b52": {
+        "updated_at": "2026-04-05T17:04:47.755382Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\brief.md",
+        "slug": "the-abyss-monorepo-foundation",
+        "document_id": "498ddf74-07cd-47d7-916c-bc03d1c29495",
+        "title": "The Abyss Monorepo Foundation"
+      }
+    },
+    "tasks": {
+      "0720debf-eedf-43fd-b85b-4694cff35bbb": {
+        "updated_at": "2026-03-31T21:30:09.044196Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-14-configure-architectural-boundary-enforcement-as-a-dedicated-ci-job-notes.md",
+        "slug": "configure-architectural-boundary-enforcement-as-a-dedicated-ci-job-notes",
+        "document_id": "a4fe60b5-1180-46ae-9673-db3b40a7ccf9",
+        "title": "Configure architectural boundary enforcement as a dedicated CI job - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-14"
+      },
+      "11a2dca9-4210-4c08-a839-2fc6c4712321": {
+        "updated_at": "2026-03-31T21:21:49.419303Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-5-developer-documentation-onboarding-can-guide-any-engineer-from-zero-to-productiv.md",
+        "slug": "developer-documentation-onboarding-can-guide-any-engineer-from-zero-to-productiv",
+        "document_id": "fcdb0e56-45a7-49f6-a6f2-976533773142",
+        "title": "Developer Documentation \u0026 Onboarding can guide any engineer from zero to productive in under 30 minutes - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-5"
+      },
+      "129f85ad-3fbe-411f-aae9-c37b8e87165a": {
+        "updated_at": "2026-03-31T21:29:51.583894Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-8-implement-the-core-ci-workflow-with-nx-affected-lint-type-check-build-and-test-j.md",
+        "slug": "implement-the-core-ci-workflow-with-nx-affected-lint-type-check-build-and-test-j",
+        "document_id": "00d8f623-494b-4d6a-b656-9045ae1415a0",
+        "title": "Implement the core CI workflow with Nx-affected lint, type-check, build, and test jobs - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-8"
+      },
+      "181cc22c-e3a7-4c11-ba77-1f1c595cb9ca": {
+        "updated_at": "2026-03-31T21:26:24.512569Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-22-author-architecture-decision-records-capturing-monorepo-design-rationale-notes.md",
+        "slug": "author-architecture-decision-records-capturing-monorepo-design-rationale-notes",
+        "document_id": "7a9fe436-ad91-4520-801a-0c8f093799c0",
+        "title": "Author Architecture Decision Records capturing monorepo design rationale - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-22"
+      },
+      "1cf545c9-854e-4b36-9a77-8cb167de5e08": {
+        "updated_at": "2026-03-31T21:25:37.300424Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-16-create-developer-onboarding-guides-covering-environment-setup-workspace-commands.md",
+        "slug": "create-developer-onboarding-guides-covering-environment-setup-workspace-commands",
+        "document_id": "45d8a623-47ef-445f-bb89-9e0c6d8accb0",
+        "title": "Create developer onboarding guides covering environment setup, workspace commands, and code quality standards - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-16"
+      },
+      "21abd633-0853-4f0f-9bd0-6d9dcb111cb8": {
+        "updated_at": "2026-03-31T21:25:05.376801Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-11-configure-turborepo-task-pipeline-with-dependency-ordering-and-caching-policies.md",
+        "slug": "configure-turborepo-task-pipeline-with-dependency-ordering-and-caching-policies",
+        "document_id": "e20640d5-65f5-4b3c-a6e4-bda80c26f02e",
+        "title": "Configure Turborepo task pipeline with dependency ordering and caching policies - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-11"
+      },
+      "2ed059df-21c6-410e-a017-9f97ee56e858": {
+        "updated_at": "2026-03-31T21:39:24.768231Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-24-implement-nx-architectural-boundary-rules-with-domain-tags-and-import-constraint.md",
+        "slug": "implement-nx-architectural-boundary-rules-with-domain-tags-and-import-constraint",
+        "document_id": "6a6a1202-b677-4516-8844-c027222389f6",
+        "title": "Implement Nx architectural boundary rules with domain tags and import constraint matrix - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-24"
+      },
+      "3343d7e1-e19e-4ebe-95ac-adc7874b3c4b": {
+        "updated_at": "2026-03-31T21:25:52.178981Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-19-establish-codeowners-governance-and-standardized-pr-template-notes.md",
+        "slug": "establish-codeowners-governance-and-standardized-pr-template-notes",
+        "document_id": "6719db32-c89e-413d-a708-48e0a5f2b74e",
+        "title": "Establish CODEOWNERS governance and standardized PR template - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-19"
+      },
+      "455f8b9a-45e6-460c-af6a-8c7c35f73930": {
+        "updated_at": "2026-03-31T21:24:26.523775Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-7-author-root-readmemd-with-project-overview-and-quick-start-guide-notes.md",
+        "slug": "author-root-readmemd-with-project-overview-and-quick-start-guide-notes",
+        "document_id": "1f450e34-7a8c-4adf-8f56-e4ba833d1d77",
+        "title": "Author root README.md with project overview and quick-start guide - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-7"
+      },
+      "5a4799f6-2c04-472f-b3b6-e01d48e2b6dd": {
+        "updated_at": "2026-03-31T21:39:48.348887Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-6-ci-cd-governance-pipeline-can-automatically-validate-code-quality-architectural.md",
+        "slug": "ci-cd-governance-pipeline-can-automatically-validate-code-quality-architectural",
+        "document_id": "e19b2955-ecb7-49fa-8b43-f12999bf03cd",
+        "title": "CI/CD Governance Pipeline can automatically validate code quality, architectural boundaries, and GO-Gate approval on every pull request - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-6"
+      },
+      "5b73ba68-b1b6-422b-b1ae-3c326696d559": {
+        "updated_at": "2026-03-31T21:27:09.954857Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-28-create-the-handoffmd-execution-plan-template-and-inaugural-architecture-decision.md",
+        "slug": "create-the-handoffmd-execution-plan-template-and-inaugural-architecture-decision",
+        "document_id": "c39d88dc-0e34-4eb1-bf47-24e1559db1d1",
+        "title": "Create the HANDOFF.md execution plan template and inaugural Architecture Decision Record - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-28"
+      },
+      "66a86085-1c76-4a0c-9d9e-3efc31d88b9c": {
+        "updated_at": "2026-03-31T21:25:31.752647Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-15-create-the-shareable-typescript-config-package-and-per-package-tsconfig-extends.md",
+        "slug": "create-the-shareable-typescript-config-package-and-per-package-tsconfig-extends",
+        "document_id": "681f20c1-80ad-4f51-a498-f8e82c2eefed",
+        "title": "Create the shareable TypeScript config package and per-package tsconfig extends - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-15"
+      },
+      "67974976-b267-4c81-b2f4-b504136421d8": {
+        "updated_at": "2026-03-31T21:25:10.028967Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-13-initialize-git-repository-with-version-control-conventions-and-husky-hooks-notes.md",
+        "slug": "initialize-git-repository-with-version-control-conventions-and-husky-hooks-notes",
+        "document_id": "11d33d0d-5712-423f-8a3b-26751c80dbb1",
+        "title": "Initialize Git repository with version control conventions and Husky hooks - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-13"
+      },
+      "70608f53-b13d-47ae-a262-1c68b79577a6": {
+        "updated_at": "2026-03-31T21:40:12.294223Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-18-scaffold-minimal-packagejson-manifests-for-all-workspace-packages-and-applicatio.md",
+        "slug": "scaffold-minimal-packagejson-manifests-for-all-workspace-packages-and-applicatio",
+        "document_id": "290e0a2d-246e-4f0e-ae91-385d6bc2997b",
+        "title": "Scaffold minimal package.json manifests for all workspace packages and applications - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-18"
+      },
+      "8143069d-676b-4e71-84d6-8e36b3d251c8": {
+        "updated_at": "2026-03-31T21:25:43.174581Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-17-configure-and-validate-turborepo-remote-cache-provider-for-shared-build-artefact.md",
+        "slug": "configure-and-validate-turborepo-remote-cache-provider-for-shared-build-artefact",
+        "document_id": "ea2baf61-86cd-4cb3-bd88-dc4f08d121b6",
+        "title": "Configure and validate Turborepo remote cache provider for shared build artefacts - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-17"
+      },
+      "86416b54-fe7e-49ed-99bf-92404f630e74": {
+        "updated_at": "2026-03-31T21:30:50.579575Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-25-scaffold-the-go-gate-verification-ci-job-and-manual-deployment-workflow-notes.md",
+        "slug": "scaffold-the-go-gate-verification-ci-job-and-manual-deployment-workflow-notes",
+        "document_id": "bd6c88ff-2f6d-43a9-a6c8-2b8beac4f05f",
+        "title": "Scaffold the GO-Gate verification CI job and manual deployment workflow - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-25"
+      },
+      "8a613e82-cbcc-45af-b3b8-057235b03249": {
+        "updated_at": "2026-03-31T21:29:30.945578Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-2-nx-build-pipeline-can-orchestrate-incremental-builds-with-remote-caching-and-arc.md",
+        "slug": "nx-build-pipeline-can-orchestrate-incremental-builds-with-remote-caching-and-arc",
+        "document_id": "f159d039-d08a-47c8-a64b-e64e4a084c32",
+        "title": "Nx Build Pipeline can orchestrate incremental builds with remote caching and architectural boundary enforcement - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-2"
+      },
+      "92affbfb-4430-473d-965e-9f8feb9be49f": {
+        "updated_at": "2026-03-31T21:24:58.894286Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-10-author-contributingmd-with-branch-commit-and-pr-conventions-and-add-editorconfig.md",
+        "slug": "author-contributingmd-with-branch-commit-and-pr-conventions-and-add-editorconfig",
+        "document_id": "bf889514-6dff-4bec-815d-6aa1938ebb8b",
+        "title": "Author CONTRIBUTING.md with branch, commit, and PR conventions, and add .editorconfig - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-10"
+      },
+      "934b393a-593c-44ff-9dc8-687ede2662f5": {
+        "updated_at": "2026-03-31T21:26:42.18058Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-26-create-shareable-eslint-config-package-prettierignore-and-lint-staged-integratio.md",
+        "slug": "create-shareable-eslint-config-package-prettierignore-and-lint-staged-integratio",
+        "document_id": "24fcc4ad-7348-467d-9737-c9ea10a21585",
+        "title": "Create shareable ESLint config package, .prettierignore, and lint-staged integration - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-26"
+      },
+      "a1813520-d6ac-4847-8d10-7aba7bd3956c": {
+        "updated_at": "2026-03-31T21:20:16.996998Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-3-typescript-code-quality-standards-can-be-enforced-consistently-across-all-worksp.md",
+        "slug": "typescript-code-quality-standards-can-be-enforced-consistently-across-all-worksp",
+        "document_id": "b23db912-0a36-47d5-a501-cd5846d42ecc",
+        "title": "TypeScript \u0026 Code Quality Standards can be enforced consistently across all workspace packages - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-3"
+      },
+      "ac782654-8b5c-4c56-b3fb-aca81a26ac55": {
+        "updated_at": "2026-03-31T21:18:49.741784Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-1-repository-pnpm-workspace-can-be-initialized-as-the-monorepo-foundation-notes.md",
+        "slug": "repository-pnpm-workspace-can-be-initialized-as-the-monorepo-foundation-notes",
+        "document_id": "e866e0b0-1038-4847-a771-b44c4eb6d534",
+        "title": "Repository \u0026 pnpm Workspace can be initialized as the monorepo foundation - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-1"
+      },
+      "b3869d99-838c-44e0-a950-29406277603d": {
+        "updated_at": "2026-03-31T21:25:07.252795Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-12-create-the-complete-monorepo-directory-topology-with-gitkeep-markers-and-section.md",
+        "slug": "create-the-complete-monorepo-directory-topology-with-gitkeep-markers-and-section",
+        "document_id": "774f288c-39db-4a11-a41c-e399205df911",
+        "title": "Create the complete monorepo directory topology with .gitkeep markers and section-level READMEs - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-12"
+      },
+      "bc9561cc-fdf4-435c-81b1-b3828643b46d": {
+        "updated_at": "2026-03-31T21:26:04.189849Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-20-install-code-quality-dependencies-and-configure-root-eslint-rules-notes.md",
+        "slug": "install-code-quality-dependencies-and-configure-root-eslint-rules-notes",
+        "document_id": "dcce59b0-a269-411c-a4db-5654211a8e82",
+        "title": "Install code quality dependencies and configure root ESLint rules - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-20"
+      },
+      "c6c45ee6-a661-424b-acff-38a7d143e08f": {
+        "updated_at": "2026-03-31T21:26:27.268372Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-23-initialize-agents-governance-hierarchy-with-global-agentsmd-template-and-domain.md",
+        "slug": "initialize-agents-governance-hierarchy-with-global-agentsmd-template-and-domain",
+        "document_id": "b97fb66e-43d2-42bc-a1f1-b5011292cf20",
+        "title": "Initialize .agents/ governance hierarchy with global AGENTS.md template and domain-specific steering files - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-23"
+      },
+      "d2086067-a5da-488a-88fa-0c0df722e2f6": {
+        "updated_at": "2026-03-31T21:24:53.644546Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-9-configure-root-typescript-with-strict-mode-and-workspace-path-aliases-notes.md",
+        "slug": "configure-root-typescript-with-strict-mode-and-workspace-path-aliases-notes",
+        "document_id": "abfac59c-c2b2-43ae-ba7e-d7437d573ceb",
+        "title": "Configure root TypeScript with strict mode and workspace path aliases - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-9"
+      },
+      "d542ab02-573d-4839-8b82-827e49146e15": {
+        "updated_at": "2026-03-31T21:21:03.956479Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-4-monorepo-directory-structure-agent-scaffolding-can-be-fully-initialized-for-all.md",
+        "slug": "monorepo-directory-structure-agent-scaffolding-can-be-fully-initialized-for-all",
+        "document_id": "e594f1ed-c9f4-4ec5-acc8-822bafa1ecb4",
+        "title": "Monorepo Directory Structure \u0026 Agent Scaffolding can be fully initialized for all domains and AI workflows - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-4"
+      },
+      "ee5f35a2-1bdb-4353-b2a9-1a112d07c515": {
+        "updated_at": "2026-03-31T21:26:04.461352Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-21-configure-pnpm-workspace-with-root-packagejson-workspace-manifest-and-npm-settin.md",
+        "slug": "configure-pnpm-workspace-with-root-packagejson-workspace-manifest-and-npm-settin",
+        "document_id": "6683d9c7-7e1e-4306-97b2-61285c39fb01",
+        "title": "Configure pnpm workspace with root package.json, workspace manifest, and npm settings - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-21"
+      },
+      "fc8358ce-5b2a-4e0e-9bd4-40c3e0a8c0b4": {
+        "updated_at": "2026-03-31T21:31:12.901027Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\briefs\\the-abyss-monorepo-foundation\\tasks\\sen-27-configure-nx-affected-detection-and-workspace-wide-build-scripts-for-incremental.md",
+        "slug": "configure-nx-affected-detection-and-workspace-wide-build-scripts-for-incremental",
+        "document_id": "5053c84c-dca4-45a9-8f79-fff982a05eae",
+        "title": "Configure Nx affected detection and workspace-wide build scripts for incremental execution - Notes",
+        "brief_id": "524e2de2-084c-4fc6-a0dc-1cd379f06b52",
+        "display_id": "SEN-27"
+      }
+    },
+    "methods": {},
+    "blueprints": {
+      "02813bc3-55af-4e7b-a5fd-c52f85ad63f5": {
+        "updated_at": "2026-03-31T05:18:39.218791Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-2-governance-steering-2.md",
+        "slug": "phase-2-governance-steering-2",
+        "document_id": "02813bc3-55af-4e7b-a5fd-c52f85ad63f5",
+        "title": "Phase 2: Governance \u0026 Steering"
+      },
+      "0d50048d-5dd2-4ac3-9730-ffa45c20f58e": {
+        "updated_at": "2026-03-31T09:43:32.986307Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\security-compliance-policy-the-abyss-healthcare-platform.md",
+        "slug": "security-compliance-policy-the-abyss-healthcare-platform",
+        "document_id": "0d50048d-5dd2-4ac3-9730-ffa45c20f58e",
+        "title": "Security \u0026 Compliance Policy - The Abyss Healthcare Platform"
+      },
+      "0e2e7051-b62c-48d2-a35c-4b97b79641ae": {
+        "updated_at": "2026-03-31T09:40:51.296048Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\sla-support-model-for-the-abyss-platform-2.md",
+        "slug": "sla-support-model-for-the-abyss-platform-2",
+        "document_id": "0e2e7051-b62c-48d2-a35c-4b97b79641ae",
+        "title": "SLA \u0026 Support Model for The Abyss Platform"
+      },
+      "172db709-401e-425f-b8f6-92cf1a22e7ba": {
+        "updated_at": "2026-03-31T08:47:30.465377Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-7-ci-cd-gitops-containerization.md",
+        "slug": "phase-7-ci-cd-gitops-containerization",
+        "document_id": "172db709-401e-425f-b8f6-92cf1a22e7ba",
+        "title": "Phase 7: CI/CD, GitOps \u0026 Containerization"
+      },
+      "19839f88-cf84-47e4-ae77-1c178996fa02": {
+        "updated_at": "2026-03-31T10:39:05.147582Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\the-abyss-executive-summary-execution-plan.md",
+        "slug": "the-abyss-executive-summary-execution-plan",
+        "document_id": "19839f88-cf84-47e4-ae77-1c178996fa02",
+        "title": "The Abyss: Executive Summary \u0026 Execution Plan"
+      },
+      "29ef3db1-5537-4ec6-8f16-52b5161aa7e3": {
+        "updated_at": "2026-03-31T09:41:35.706729Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\security-compliance-policy-for-the-abyss.md",
+        "slug": "security-compliance-policy-for-the-abyss",
+        "document_id": "29ef3db1-5537-4ec6-8f16-52b5161aa7e3",
+        "title": "Security \u0026 Compliance Policy for The Abyss"
+      },
+      "3ea1ba1e-f34c-4396-a886-c6fdb948326b": {
+        "updated_at": "2026-03-31T08:01:27.063031Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-4-langflow-orchestration.md",
+        "slug": "phase-4-langflow-orchestration",
+        "document_id": "3ea1ba1e-f34c-4396-a886-c6fdb948326b",
+        "title": "Phase 4: Langflow \u0026 Orchestration"
+      },
+      "4da74b55-d020-43fb-9767-de8900e13d17": {
+        "updated_at": "2026-03-30T09:05:59.651767Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\the-abyss.md",
+        "slug": "the-abyss",
+        "document_id": "4da74b55-d020-43fb-9767-de8900e13d17",
+        "title": "The Abyss"
+      },
+      "4f260006-066b-4d75-9b67-f3524950911e": {
+        "updated_at": "2026-03-31T10:32:54.833595Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\the-abyss-executive-summary-execution-plan-2.md",
+        "slug": "the-abyss-executive-summary-execution-plan-2",
+        "document_id": "4f260006-066b-4d75-9b67-f3524950911e",
+        "title": "The Abyss: Executive Summary \u0026 Execution Plan"
+      },
+      "55a000ae-134c-467a-b88a-d0774567882d": {
+        "updated_at": "2026-03-31T10:32:06.325267Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\sentra-ai-strategic-business-technical-architecture-blueprint.md",
+        "slug": "sentra-ai-strategic-business-technical-architecture-blueprint",
+        "document_id": "55a000ae-134c-467a-b88a-d0774567882d",
+        "title": "Sentra AI: Strategic Business \u0026 Technical Architecture Blueprint"
+      },
+      "572031b7-bfbf-4439-9656-b8cb9142cb16": {
+        "updated_at": "2026-03-31T09:40:42.03427Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\ai-governance-prompt-engineering-standards.md",
+        "slug": "ai-governance-prompt-engineering-standards",
+        "document_id": "572031b7-bfbf-4439-9656-b8cb9142cb16",
+        "title": "AI Governance \u0026 Prompt Engineering Standards"
+      },
+      "5b407ea0-c9ad-44e5-856e-be6630a75b5a": {
+        "updated_at": "2026-03-31T10:33:24.829748Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-2-governance-steering-the-abyss.md",
+        "slug": "phase-2-governance-steering-the-abyss",
+        "document_id": "5b407ea0-c9ad-44e5-856e-be6630a75b5a",
+        "title": "Phase 2: Governance \u0026 Steering - The Abyss"
+      },
+      "69323d8c-adf7-4dc6-900b-fefcc56eec00": {
+        "updated_at": "2026-03-31T07:10:28.680787Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-4-langflow-orchestration-2.md",
+        "slug": "phase-4-langflow-orchestration-2",
+        "document_id": "69323d8c-adf7-4dc6-900b-fefcc56eec00",
+        "title": "Phase 4: Langflow \u0026 Orchestration"
+      },
+      "80ea6523-c545-47a0-82df-bb43e5bc9265": {
+        "updated_at": "2026-03-31T09:06:54.652997Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-6-abyss-cli-automation-complete-technical-specification.md",
+        "slug": "phase-6-abyss-cli-automation-complete-technical-specification",
+        "document_id": "80ea6523-c545-47a0-82df-bb43e5bc9265",
+        "title": "Phase 6: Abyss CLI \u0026 Automation – Complete Technical Specification"
+      },
+      "84f5d512-c295-4bf5-bbac-10affef7c6cc": {
+        "updated_at": "2026-03-31T10:34:11.753943Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-5-project-scaffolding-domain-applications.md",
+        "slug": "phase-5-project-scaffolding-domain-applications",
+        "document_id": "84f5d512-c295-4bf5-bbac-10affef7c6cc",
+        "title": "Phase 5: Project Scaffolding - Domain Applications"
+      },
+      "8c75f1af-b8e4-48f0-bbc2-c1d6087f25cb": {
+        "updated_at": "2026-03-31T05:08:25.069086Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-1-monorepo-foundation-project-brief.md",
+        "slug": "phase-1-monorepo-foundation-project-brief",
+        "document_id": "8c75f1af-b8e4-48f0-bbc2-c1d6087f25cb",
+        "title": "Phase 1: Monorepo Foundation - Project Brief"
+      },
+      "907c1fe9-f3e3-4f97-8cff-c2999d2a53c5": {
+        "updated_at": "2026-03-31T19:02:25.302307Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\sentra-ai-company-profile-investor-overview.md",
+        "slug": "sentra-ai-company-profile-investor-overview",
+        "document_id": "907c1fe9-f3e3-4f97-8cff-c2999d2a53c5",
+        "title": "Sentra AI: Company Profile \u0026 Investor Overview"
+      },
+      "9fe88b08-36fa-4eeb-b9d9-4335069189e7": {
+        "updated_at": "2026-03-31T08:46:42.564523Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-7-ci-cd-gitops-containerization-2.md",
+        "slug": "phase-7-ci-cd-gitops-containerization-2",
+        "document_id": "9fe88b08-36fa-4eeb-b9d9-4335069189e7",
+        "title": "Phase 7: CI/CD, GitOps \u0026 Containerization"
+      },
+      "a1edca32-35b3-4787-adea-41c2d3081f44": {
+        "updated_at": "2026-03-31T09:50:20.273708Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\sla-support-model-for-the-abyss-platform.md",
+        "slug": "sla-support-model-for-the-abyss-platform",
+        "document_id": "a1edca32-35b3-4787-adea-41c2d3081f44",
+        "title": "SLA \u0026 Support Model for The Abyss Platform"
+      },
+      "aa9241a0-a157-47a6-b5d0-39613b14388b": {
+        "updated_at": "2026-03-31T08:04:08.370507Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-5-project-scaffolding-domain-applications-2.md",
+        "slug": "phase-5-project-scaffolding-domain-applications-2",
+        "document_id": "aa9241a0-a157-47a6-b5d0-39613b14388b",
+        "title": "Phase 5: Project Scaffolding - Domain Applications"
+      },
+      "bb68db62-17e8-4a34-9c95-ce82f010576c": {
+        "updated_at": "2026-03-31T23:00:42.7036Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\index-master-struktur-blueprint-sentra-ai.md",
+        "slug": "index-master-struktur-blueprint-sentra-ai",
+        "document_id": "bb68db62-17e8-4a34-9c95-ce82f010576c",
+        "title": "Index Master - Struktur Blueprint Sentra AI"
+      },
+      "c30e0ead-0f81-4b14-ac58-80feb5d1dcc8": {
+        "updated_at": "2026-03-31T05:21:07.402901Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-2-governance-steering.md",
+        "slug": "phase-2-governance-steering",
+        "document_id": "c30e0ead-0f81-4b14-ac58-80feb5d1dcc8",
+        "title": "Phase 2: Governance \u0026 Steering"
+      },
+      "cb8d15e2-d63c-410d-b55b-1d80dba52aef": {
+        "updated_at": "2026-03-31T10:30:42.266784Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\disaster-recovery-business-continuity-plan.md",
+        "slug": "disaster-recovery-business-continuity-plan",
+        "document_id": "cb8d15e2-d63c-410d-b55b-1d80dba52aef",
+        "title": "Disaster Recovery \u0026 Business Continuity Plan"
+      },
+      "d32859e5-d87d-4ff8-90b8-842bc566bc1a": {
+        "updated_at": "2026-03-31T09:41:29.350344Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\disaster-recovery-business-continuity-plan-2.md",
+        "slug": "disaster-recovery-business-continuity-plan-2",
+        "document_id": "d32859e5-d87d-4ff8-90b8-842bc566bc1a",
+        "title": "Disaster Recovery \u0026 Business Continuity Plan"
+      },
+      "d7e44198-ed8c-472d-a600-d78fb79146bf": {
+        "updated_at": "2026-03-31T06:15:32.490095Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-3-reusable-substrate-shared-libraries.md",
+        "slug": "phase-3-reusable-substrate-shared-libraries",
+        "document_id": "d7e44198-ed8c-472d-a600-d78fb79146bf",
+        "title": "Phase 3: Reusable Substrate (Shared Libraries)"
+      },
+      "dbd9801e-4759-4379-8beb-d346aaf81baa": {
+        "updated_at": "2026-03-31T09:31:26.048511Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\ai-governance-prompt-engineering-standards-2.md",
+        "slug": "ai-governance-prompt-engineering-standards-2",
+        "document_id": "dbd9801e-4759-4379-8beb-d346aaf81baa",
+        "title": "AI Governance \u0026 Prompt Engineering Standards"
+      },
+      "dc1c3f1d-03a6-46bd-b01e-a29f9928f819": {
+        "updated_at": "2026-03-30T09:02:36.515397Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\the-abyss-2.md",
+        "slug": "the-abyss-2",
+        "document_id": "dc1c3f1d-03a6-46bd-b01e-a29f9928f819",
+        "title": "The Abyss"
+      },
+      "dccc840f-9e90-4d13-b4d2-4c69609cd007": {
+        "updated_at": "2026-03-31T18:00:39.243501Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\hybrid-resources-clinical-governance-plan.md",
+        "slug": "hybrid-resources-clinical-governance-plan",
+        "document_id": "dccc840f-9e90-4d13-b4d2-4c69609cd007",
+        "title": "Hybrid Resources \u0026 Clinical Governance Plan"
+      },
+      "ec50c733-ab6d-4750-84ed-3b9665cb598b": {
+        "updated_at": "2026-03-31T20:49:59.604701Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\model-sumber-daya-hybrid-tata-kelola-klinis-the-abyss.md",
+        "slug": "model-sumber-daya-hybrid-tata-kelola-klinis-the-abyss",
+        "document_id": "ec50c733-ab6d-4750-84ed-3b9665cb598b",
+        "title": "Model Sumber Daya Hybrid \u0026 Tata Kelola Klinis The Abyss"
+      },
+      "f93a8c2f-a7a7-409f-ac16-55776482d7cc": {
+        "updated_at": "2026-03-31T09:38:17.840703Z",
+        "local_file": ".hamster\\sentra-artificial-intelligence\\blueprints\\phase-1-monorepo-foundation-implementation-guide.md",
+        "slug": "phase-1-monorepo-foundation-implementation-guide",
+        "document_id": "f93a8c2f-a7a7-409f-ac16-55776482d7cc",
+        "title": "Phase 1: Monorepo Foundation - Implementation Guide"
+      }
+    }
+  }
+}

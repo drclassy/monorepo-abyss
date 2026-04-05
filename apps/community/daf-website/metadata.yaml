@@ -1,0 +1,10 @@
+# File: app/daf-website/metadata.yaml | Repo: abyss-monorepo | Phase: security-audit
+# Architected and built by Claudesy.
+
+agent: claude
+last_modified: 2026-03-26
+
+provenance:
+  created: 2026-03-26
+  architect: Claudesy
+  builder: Claudesy

@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "mcpVersion": "2026-03-30",
+  "description": "Model Context Protocol configuration for The Abyss monorepo",
+  "protocols": {
+    "turbo": {
+      "enabled": true,
+      "cacheStrategy": "content-addressable",
+      "affectedDetection": "git-diff"
+    },
+    "pnpm": {
+      "enabled": true,
+      "workspaceProtocol": "strict",
+      "hoistPattern": ["eslint*", "prettier*", "typescript", "turbo"]
+    },
+    "typescript": {
+      "enabled": true,
+      "strictMode": true,
+      "moduleResolution": "bundler",
+      "pathAliases": {
+        "@the-abyss/*": "packages/*/src"
+      }
+    }
+  },
+  "agents": {
+    "planner": {
+      "promptPath": ".agents/prompts/planner.md",
+      "skills": ["requirements-analysis", "architecture-design"]
+    },
+    "coder": {
+      "promptPath": ".agents/prompts/coder.md",
+      "skills": ["typescript", "react", "nodejs", "prisma"]
+    },
+    "reviewer": {
+      "promptPath": ".agents/prompts/reviewer.md",
+      "skills": ["code-review", "test-verification", "security-scan"]
+    },
+    "devops": {
+      "promptPath": ".agents/prompts/devops.md",
+      "skills": ["ci-cd", "docker", "terraform", "kubernetes"]
+    }
+  },
+  "governance": {
+    "handoffRequired": true,
+    "goGateEnabled": true,
+    "traceabilityEnforced": true,
+    "sessionLogPath": "docs/sentratorium/sessions"
+  }
+}

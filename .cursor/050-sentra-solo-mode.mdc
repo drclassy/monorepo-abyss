@@ -1,0 +1,134 @@
+# Sentra Solo Mode (Chief Comprehensive)
+
+description: "Sentra Solo Mode for Chief one-shot comprehensive implementation sessions."
+priority: medium
+version: 1
+labels:
+  - sentra
+  - solo-mode
+  - chief
+  - comprehensive
+scope:
+  globs:
+    - "**/*"
+---
+
+# When Solo Mode activates
+
+Solo Mode activates when Chief/Boss explicitly requests:
+
+- "Mode Solo"
+- "implementasi lengkap satu sesi" 
+- "full feature one-shot"
+- "comprehensive implementation"
+- or equivalent "build everything now" phrasing.
+
+Solo Mode overrides standard workflows for high-velocity Chief-directed work while maintaining safety gates.
+
+---
+
+## Solo Mode Pipeline (7 Steps)
+
+When activated, follow this exact pipeline:
+
+1. **Understand** – confirm requirements, constraints, clinical safety, and scope.
+2. **Plan** – generate HANDOFF.md + rollback strategy + risk register.
+3. **WAIT FOR GO** – **mandatory approval gate** before any code changes.
+4. **Design** – contracts, schemas, architecture (ADR if cross-domain).
+5. **Implement** – frontend, backend, tests in parallel (Trinity Swarm style).
+6. **Validate** – full verification (lint, type, unit/integration/E2E).
+7. **Self-Review + Document** – Sentratorium log, observability notes, final handoff.
+
+---
+
+## Skills & MCP Priority in Solo Mode
+
+**Skills (call automatically when available):**
+- `sentra.workflow.planner` – step 1-2
+- `sentra.adr.drafter` – step 4 (if needed)
+- `sentra.testplan.generator` – step 6
+- `sentra.observability.notes` – step 7
+
+**MCP (use aggressively):**
+- Git MCP – existing code review
+- DB MCP – schema validation
+- CI MCP – rapid test feedback
+- Observability MCP – performance validation
+
+---
+
+## Safety Gates (Never Skip)
+
+Even in Solo Mode:
+
+1. **Phase 3 WAIT FOR GO** – Chief must explicitly approve before execution.
+2. **NO PHI** – dummy data only.
+3. **Guardrails enabled** – no disabling safety features.
+4. **Chief approval artifact** – `chief-approval.md` for production impact.
+5. **Clinical safety review** – explicit sign-off for patient-impacting logic.
+
+---
+
+## Output Format (Solo Mode)
+
+Structure all Solo Mode responses as:
+
+```
+## Solo Mode Active - Phase X/7
+
+**Status**: [Phase name]
+**Macro Step**: [Sentra 9-step position]
+**Genesis Phase**: [Genesis mapping]
+
+### Risks & Rollback
+[list]
+
+### HANDOFF.md Preview
+[mini handoff]
+
+**Waiting for GO before [next phase]**
+```
+
+---
+
+## Commit Convention (Solo Mode)
+
+Use enhanced trailers:
+```
+Agent: Claudesy-Solo
+Mode: Solo
+Phase: [current Genesis phase]
+Chief-GO: yes
+Handoff: [team]
+Policy: checked
+```
+
+Example:
+```
+Solo Mode: Complete referral workflow implementation
+
+- Frontend forms + validation
+- Backend API + Prisma migration
+- Full test suite
+- Observability complete
+
+Agent: Claudesy-Solo
+Mode: Solo
+Phase: Trust Bridge
+Chief-GO: yes
+Handoff: clinical-team
+Policy: checked
+```
+
+---
+
+## Refusal in Solo Mode
+
+Refuse Solo Mode activation if:
+
+- Request violates NO PHI or clinical safety.
+- Scope too large for single session (>3 major components).
+- Missing Chief explicit activation trigger.
+- Guardrails would need to be disabled.
+
+Propose standard workflow instead.

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentra Healthcare — UI Reference Component v1.0.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+     * SENTRA DESIGN TOKENS v1.0.0
+     * Source of truth: packages/design-tokens/sentra-tokens.css
+     * In production: <link rel="stylesheet" href="/tokens/latest/sentra-tokens.css">
+     * ═══════════════════════════════════════════════════════════════ */
+    :root {
+      /* DEPTH HIERARCHY */
+      --sentra-bg-base:          #050505;
+      --sentra-surface:          #0F1012;
+      --sentra-inset:            #0A0A0C;
+      --sentra-surface-elevated: #161922;
+
+      /* LIVING EDGE BORDER */
+      --sentra-border-glow:      rgba(255, 255, 255, 0.12);
+      --sentra-border-subtle:    rgba(255, 255, 255, 0.06);
+      --sentra-border-highlight: rgba(255, 255, 255, 0.04);
+      --sentra-border-main:      1px solid rgba(255, 255, 255, 0.12);
+      --sentra-top-shimmer:      linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+
+      /* SILENT DEPTH NEUMORPHISM */
+      --sentra-neu-inset:
+        inset 2px 2px 5px rgba(0, 0, 0, 0.50),
+        inset -1px -1px 2px rgba(255, 255, 255, 0.02);
+      --sentra-neu-raised:
+        3px 3px 8px rgba(0, 0, 0, 0.50),
+        -2px -2px 6px rgba(255, 255, 255, 0.03);
+      --sentra-neu-selected:
+        0 2px 4px rgba(0, 0, 0, 0.40),
+        0 1px 0 rgba(255, 255, 255, 0.05);
+      --sentra-card-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.50),
+        0 0 0 1px rgba(255, 255, 255, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sentra-card-shadow-hover:
+        0 16px 32px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+      /* TYPOGRAPHY */
+      --sentra-font-stack:       'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --sentra-text-primary:     #EDEDED;
+      --sentra-text-secondary:   #A0AEC0;
+      --sentra-text-muted:       #737373;
+      --sentra-label-size:       12px;
+      --sentra-label-spacing:    0.04em;
+      --sentra-title-weight:     600;
+      --sentra-title-tracking:   -0.01em;
+      --sentra-line-height:      1.5;
+      --sentra-body-size:        14px;
+
+      /* INTERACTION */
+      --sentra-transition:       180ms cubic-bezier(0.4, 0, 0.2, 1);
+      --sentra-hover-lift:       translateY(-2px);
+      --sentra-hover-lift-sm:    translateY(-1px);
+      --sentra-focus-visible:    0 0 0 3px rgba(59, 130, 246, 0.50);
+      --sentra-input-focus-border: rgba(255, 255, 255, 0.30);
+
+      /* CTA */
+      --sentra-cta-bg:           #FFFFFF;
+      --sentra-cta-color:        #000000;
+      --sentra-cta-glow:         0 0 15px rgba(255, 255, 255, 0.15);
+      --sentra-cta-glow-hover:   0 0 22px rgba(255, 255, 255, 0.28);
+
+      /* STATUS */
+      --sentra-error:            #FC8181;
+      --sentra-success:          #68D391;
+      --sentra-warning:          #F6AD55;
+      --sentra-compliance-color: #00C9B1;
+      --sentra-compliance-border: rgba(0, 201, 177, 0.25);
+      --sentra-compliance-bg:    linear-gradient(135deg, rgba(0,201,177,0.08), rgba(0,119,182,0.08));
+
+      /* LAYOUT */
+      --sentra-card-radius:  16px;
+      --sentra-input-radius: 8px;
+      --sentra-btn-radius:   8px;
+      --sentra-card-padding: 24px;
+      --sentra-form-gap:     16px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root {
+        --sentra-transition: 0ms;
+        --sentra-hover-lift: translateY(0);
+        --sentra-hover-lift-sm: translateY(0);
+      }
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────────── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ─── PAGE ───────────────────────────────────────────────────── */
+    body {
+      font-family: var(--sentra-font-stack);
+      background: var(--sentra-bg-base);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      color: var(--sentra-text-primary);
+      line-height: var(--sentra-line-height);
+    }
+
+    /* ─── CARD — Rule 2: Living Edge ─────────────────────────────── */
+    .sentra-card {
+      position: relative;
+      background: var(--sentra-surface);
+      border: var(--sentra-border-main);
+      border-radius: var(--sentra-card-radius);
+      padding: var(--sentra-card-padding);
+      width: 100%;
+      max-width: 460px;
+      box-shadow: var(--sentra-card-shadow);
+      transition: transform var(--sentra-transition), box-shadow var(--sentra-transition);
+      overflow: hidden;
+      animation: cardIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* Top shimmer — living edge indicator */
+    .sentra-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--sentra-top-shimmer);
+      pointer-events: none;
+    }
+
+    .sentra-card:hover {
+      transform: var(--sentra-hover-lift);
+      box-shadow: var(--sentra-card-shadow-hover);
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ─── CARD HEADER ────────────────────────────────────────────── */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      gap: 12px;
+    }
+
+    .card-title-group {}
+
+    .card-title {
+      font-size: 17px;
+      font-weight: var(--sentra-title-weight);
+      letter-spacing: var(--sentra-title-tracking);
+      color: var(--sentra-text-primary);
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .card-title .title-icon {
+      opacity: 0.45;
+      font-size: 14px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--sentra-text-muted);
+    }
+
+    /* ─── COMPLIANCE BADGE ───────────────────────────────────────── */
+    .compliance-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      background: var(--sentra-compliance-bg);
+      border: 1px solid var(--sentra-compliance-border);
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--sentra-compliance-color);
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .compliance-badge .badge-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sentra-compliance-color);
+      box-shadow: 0 0 6px var(--sentra-compliance-color);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    /* ─── FORM STRUCTURE ─────────────────────────────────────────── */
+    .form-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sentra-form-gap);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Labels — Rule 4: Clinical Clarity */
+    .form-label {
+      font-size: var(--sentra-label-size);
+      font-weight: 500;
+      letter-spacing: var(--sentra-label-spacing);
+      text-transform: uppercase;
+      color: var(--sentra-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .required-mark {
+      color: var(--sentra-error);
+    }
+
+    /* ─── INPUTS — Rule 3: Neumorphic Inset (Accent #1) ─────────── */
+    .sentra-input {
+      width: 100%;
+      padding: 10px 13px;
+      font-size: var(--sentra-body-size);
+      font-family: var(--sentra-font-stack);
+      color: var(--sentra-text-primary);
+      background: var(--sentra-inset);
+      border: 1px solid var(--sentra-border-subtle);
+      border-radius: var(--sentra-input-radius);
+      box-shadow: var(--sentra-neu-inset);        /* Neumorphic inset */
+      transition: all var(--sentra-transition);
+      outline: none;
+    }
+
+    .sentra-input::placeholder {
+      color: var(--sentra-text-muted);
+      opacity: 0.7;
+    }
+
+    .sentra-input:focus {
+      border-color: var(--sentra-input-focus-border);
+      background: #0D0E10;
+    }
+
+    .sentra-input:focus-visible {
+      box-shadow: var(--sentra-neu-inset), var(--sentra-focus-visible);
+    }
+
+    textarea.sentra-input {
+      min-height: 80px;
+      resize: vertical;
+      line-height: var(--sentra-line-height);
+    }
+
+    select.sentra-input {
+      appearance: none;
+      cursor: pointer;
+      padding-right: 34px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23737373' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+
+    select.sentra-input option {
+      background: var(--sentra-surface-elevated);
+      color: var(--sentra-text-primary);
+    }
+
+    /* ─── PRIORITY SELECTOR — Rule 3: Neumorphic Raised (Accent #2) */
+    .priority-wrapper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      padding: 5px;
+      background: var(--sentra-inset);
+      border-radius: 10px;
+      border: 1px solid var(--sentra-border-subtle);
+      box-shadow: var(--sentra-neu-raised);       /* Neumorphic raised */
+    }
+
+    .priority-option {
+      position: relative;
+    }
+
+    .priority-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .priority-label {
+      display: block;
+      text-align: center;
+      padding: 8px 4px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--sentra-text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all var(--sentra-transition);
+      user-select: none;
+    }
+
+    .priority-label:hover {
+      color: var(--sentra-text-secondary);
+    }
+
+    .priority-option input[type="radio"]:checked + .priority-label {
+      background: #1A1C20;
+      color: var(--sentra-text-primary);
+      border-color: var(--sentra-border-glow);
+      box-shadow: var(--sentra-neu-selected);
+    }
+
+    .priority-option input[type="radio"]:focus-visible + .priority-label {
+      box-shadow: var(--sentra-focus-visible);
+    }
+
+    /* Priority urgency encoding */
+    .priority-option[data-urgency="urgent"] input:checked + .priority-label {
+      border-left: 2px solid var(--sentra-error);
+      color: var(--sentra-error);
+    }
+    .priority-option[data-urgency="high"] input:checked + .priority-label {
+      border-left: 2px solid var(--sentra-warning);
+      color: var(--sentra-warning);
+    }
+
+    /* ─── CARD FOOTER ────────────────────────────────────────────── */
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--sentra-border-subtle);
+    }
+
+    /* ─── BUTTONS ────────────────────────────────────────────────── */
+    .sentra-btn {
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: var(--sentra-font-stack);
+      border-radius: var(--sentra-btn-radius);
+      border: none;
+      cursor: pointer;
+      transition: all var(--sentra-transition);
+      line-height: 1;
+    }
+
+    /* Ghost */
+    .btn-ghost {
+      background: transparent;
+      color: var(--sentra-text-muted);
+    }
+    .btn-ghost:hover {
+      color: var(--sentra-text-secondary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* Primary CTA — Rule 6: FLAT, white, outer glow only */
+    .btn-primary {
+      background: var(--sentra-cta-bg);
+      color: var(--sentra-cta-color);
+      box-shadow: var(--sentra-cta-glow);
+    }
+    .btn-primary:hover:not(:disabled) {
+      transform: var(--sentra-hover-lift-sm);
+      box-shadow: var(--sentra-cta-glow-hover);
+    }
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .btn-primary:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-primary:focus-visible {
+      box-shadow: var(--sentra-cta-glow), var(--sentra-focus-visible);
+      outline: none;
+    }
+
+    /* ─── AUDIT TRAIL TOAST ──────────────────────────────────────── */
+    .audit-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 9px 15px;
+      background: var(--sentra-surface);
+      border: var(--sentra-border-main);
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--sentra-text-muted);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity var(--sentra-transition), transform var(--sentra-transition);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      z-index: 100;
+    }
+
+    .audit-toast::before {
+      content: '✓';
+      color: var(--sentra-success);
+      font-size: 10px;
+    }
+
+    .audit-toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 520px) {
+      .card-header { flex-direction: column; }
+      .priority-wrapper { grid-template-columns: repeat(2, 1fr); }
+      .card-footer { flex-direction: column-reverse; }
+      .sentra-btn { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!--
+    SENTRA REFERENCE COMPONENT — Create Issue Modal
+    Protocol: Sentra Design Governance Protocol v1.0.0
+    Neumorphic accents: #1 = inputs (inset), #2 = priority selector (raised)
+    CTA: flat white — NO neumorphism
+  -->
+  <div
+    class="sentra-card"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    data-metric="ui.card.render"
+    data-compliance="HIPAA"
+  >
+
+    <!-- HEADER -->
+    <div class="card-header">
+      <div class="card-title-group">
+        <h2 class="card-title" id="modal-title">
+          <span class="title-icon" aria-hidden="true">✦</span>
+          Create New Issue
+        </h2>
+        <p class="card-subtitle">Add a new task to your project backlog</p>
+      </div>
+      <div class="compliance-badge" title="HIPAA Compliant System" aria-label="HIPAA Ready">
+        <span class="badge-dot" aria-hidden="true"></span>
+        HIPAA Ready
+      </div>
+    </div>
+
+    <!-- FORM BODY -->
+    <div class="form-body" id="issue-form">
+
+      <!-- Title — Neumorphic inset (Accent #1) -->
+      <div class="form-group">
+        <label class="form-label" for="issue-title">
+          Title <span class="required-mark" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="issue-title"
+          class="sentra-input"
+          placeholder="Brief description of the issue"
+          maxlength="120"
+          required
+          aria-required="true"
+          data-metric="ui.input.title.latency"
+        >
+      </div>
+
+      <!-- Description — Neumorphic inset (Accent #1 continued) -->
+      <div class="form-group">
+        <label class="form-label" for="issue-description">Description</label>
+        <textarea
+          id="issue-description"
+          class="sentra-input"
+          placeholder="Provide context and details..."
+          aria-label="Issue description"
+          data-metric="ui.input.description.latency"
+        ></textarea>
+      </div>
+
+      <!-- Project -->
+      <div class="form-group">
+        <label class="form-label" for="issue-project">Project</label>
+        <select
+          id="issue-project"
+          class="sentra-input"
+          aria-label="Select project"
+          data-metric="ui.select.project"
+        >
+          <option value="">Select project...</option>
+          <option value="web">Web Application</option>
+          <option value="mobile">Mobile App</option>
+          <option value="infra">Infrastructure</option>
+          <option value="docs">Documentation</option>
+        </select>
+      </div>
+
+      <!-- Priority — Neumorphic raised (Accent #2) -->
+      <div class="form-group">
+        <label class="form-label" id="priority-label">Priority</label>
+        <div class="priority-wrapper" role="radiogroup" aria-labelledby="priority-label">
+          <div class="priority-option" data-urgency="low">
+            <input type="radio" id="p-low" name="priority" value="low">
+            <label class="priority-label" for="p-low">Low</label>
+          </div>
+          <div class="priority-option" data-urgency="medium">
+            <input type="radio" id="p-med" name="priority" value="medium" checked>
+            <label class="priority-label" for="p-med">Med</label>
+          </div>
+          <div class="priority-option" data-urgency="high">
+            <input type="radio" id="p-high" name="priority" value="high">
+            <label class="priority-label" for="p-high">High</label>
+          </div>
+          <div class="priority-option" data-urgency="urgent">
+            <input type="radio" id="p-urgent" name="priority" value="urgent">
+            <label class="priority-label" for="p-urgent">Urgent</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assignee -->
+      <div class="form-group">
+        <label class="form-label" for="issue-assignee">Assignee</label>
+        <select
+          id="issue-assignee"
+          class="sentra-input"
+          aria-label="Assign to team member"
+          data-metric="ui.select.assignee"
+        >
+          <option value="">Unassigned</option>
+          <option value="s1">Sarah Johnson</option>
+          <option value="s2">Mike Chen</option>
+          <option value="s3">Alex Rodriguez</option>
+          <option value="s4">David Kim</option>
+        </select>
+      </div>
+
+    </div><!-- /form-body -->
+
+    <!-- FOOTER — CTA: flat white, no neumorphism -->
+    <div class="card-footer">
+      <button
+        type="button"
+        class="sentra-btn btn-ghost"
+        onclick="handleCancel()"
+        data-metric="ui.modal.cancel"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="sentra-btn btn-primary"
+        id="submit-btn"
+        onclick="handleSubmit()"
+        data-metric="ui.issue.submit"
+        data-slo="ui.issue.submit.p95"
+      >
+        Create Issue
+      </button>
+    </div>
+
+  </div><!-- /sentra-card -->
+
+  <!-- AUDIT TRAIL TOAST — HIPAA compliance indicator -->
+  <div class="audit-toast" id="audit-toast" role="status" aria-live="polite">
+    Action logged for compliance
+  </div>
+
+  <script>
+    // ─── Audit trail logging ─────────────────────────────────────
+    const auditToast = document.getElementById('audit-toast');
+    let auditTimer;
+
+    function showAudit(message = 'Action logged for compliance') {
+      clearTimeout(auditTimer);
+      auditToast.textContent = message;
+      auditToast.classList.add('visible');
+      auditTimer = setTimeout(() => auditToast.classList.remove('visible'), 2200);
+      console.log(`[SENTRA AUDIT] ${message} @ ${new Date().toISOString()}`);
+    }
+
+    // Track field interactions for audit trail
+    document.querySelectorAll('.sentra-input').forEach(field => {
+      field.addEventListener('change', () => {
+        showAudit('Field change logged for compliance');
+      });
+    });
+
+    // ─── Submit handler ──────────────────────────────────────────
+    function handleSubmit() {
+      const title = document.getElementById('issue-title').value.trim();
+
+      if (!title) {
+        document.getElementById('issue-title').focus();
+        document.getElementById('issue-title').style.borderColor = 'var(--sentra-error)';
+        showAudit('Validation error logged');
+        return;
+      }
+
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Creating...';
+
+      // Simulate p95 < 150ms SLO target
+      const start = performance.now();
+      setTimeout(() => {
+        const latency = performance.now() - start;
+        console.log(`[SENTRA SLO] ui.issue.submit.p95 = ${latency.toFixed(1)}ms`);
+        showAudit('Issue created — audit trail saved');
+        btn.textContent = '✓ Created';
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = 'Create Issue';
+          document.getElementById('issue-title').value = '';
+          document.getElementById('issue-title').style.borderColor = '';
+        }, 1600);
+      }, 480);
+    }
+
+    // ─── Cancel handler ──────────────────────────────────────────
+    function handleCancel() {
+      showAudit('Action cancelled — logged for audit');
+      console.log('[SENTRA] Modal dismissed by user');
+    }
+
+    // ─── Keyboard navigation ─────────────────────────────────────
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') handleCancel();
+    });
+  </script>
+
+</body>
+</html>

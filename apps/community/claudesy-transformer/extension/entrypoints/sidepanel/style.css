@@ -1,0 +1,36 @@
+/* Claudesy Transformer Engine V2 — Extension Sidepanel Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cte-bg: #0d0d0d;
+  --cte-fg: #b7ab98;
+  --cte-accent: #eb5939;
+  --cte-accent-hover: #d14e30;
+  --cte-surface: #161616;
+  --cte-surface-hover: #1c1c1c;
+  --cte-border: #2a2a2a;
+  --cte-muted: #6b6560;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--cte-bg);
+  color: var(--cte-fg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-width: 320px;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,35 @@
+---
+title: "Multi-Provider Support"
+description: "Seamlessly integrate with the world's leading AI models."
+---
+
+Prompt Transformer is designed to be model-agnostic. We support a wide range of providers out of the box.
+
+## Supported Providers
+
+| Provider | Models | Status |
+| -------- | ------ | ------ |
+| **Anthropic** | Claude 3.5 Sonnet, Haiku, Opus | Stable |
+| **OpenAI** | GPT-4o, GPT-4 Turbo, GPT-3.5 | Stable |
+| **Google** | Gemini 1.5 Pro/Flash | Stable |
+| **Mistral** | Mistral Large, Mixtral | Stable |
+
+## How it Works
+
+Our unified transformation engine converts your base prompt into the optimal format for each provider. This includes:
+
+- **System Prompts**: Automatically adjusting system message formats.
+- **Stop Sequences**: Normalizing stop conditions.
+- **Temperature & Top-P**: Standardizing parameter mapping.
+
+```typescript
+const result = await transform({
+  prompt: "Generate a react component",
+  target: "anthropic",
+  model: "claude-3-5-sonnet-latest"
+});
+```
+
+<Tip>
+  You can compare outputs from different providers side-by-side in our Dashboard.
+</Tip>
