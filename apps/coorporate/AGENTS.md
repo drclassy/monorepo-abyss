@@ -29,6 +29,15 @@ The Corporate domain maintains the structural integrity of the Abyss Monorepo an
 - Next.js 16 (Turbopack), React 19, Tailwind CSS 4.
 - High-performance animations via GSAP and Framer Motion.
 
+### Mandatory to read native folder
+Claude native folder "C:\Users\claud\.claude\CLAUDE.md"
+Codex native folder "C:\Users\claud\.codex\AGENTS.md"
+Rocode native folder "C:\Users\claud\roocode\AGENT.md"
+Jen Gemini native folder "C:\Users\claud\.gemini\GEMINI.md"
+Github Copilot native folder "C:\Users\claud\.copilot\AGENTS..md"
+Kilocode native folder "C:\Users\claud\.kilo\AGENTS.md"
+
+
 ### Testing Strategy
 
 | Test Type | Target Coverage | Requirement |

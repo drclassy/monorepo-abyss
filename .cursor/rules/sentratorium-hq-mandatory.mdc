@@ -1,0 +1,27 @@
+---
+description: 'Wajib: jejak Sentratorium setelah sesi mengubah kode, konfigurasi build, skema, atau tes.'
+priority: high
+alwaysApply: true
+labels:
+  - sentra
+  - sentratorium
+  - governance
+scope:
+  globs:
+    - '**/*'
+---
+
+# Sentratorium HQ (wajib setelah perubahan bermakna)
+
+**HQ:** `docs/sentratorium/` di root monorepo (bukan typo `sentrarorium`).
+
+Setelah sesi yang mengubah **kode**, **konfigurasi build**, **skema**, atau **tes** (atau artefak merge bermakna):
+
+1. Perbarui `docs/sentratorium/latest.md` (bagian _Current_ / rolling).
+2. Tambahkan **satu baris** ke `docs/sentratorium/AGENT_SESSION_LOG.md` mengikuti format pipa di header file tersebut.
+
+Sebelum coding substansial, baca `docs/sentratorium/latest.md` bila ada, untuk kontinuitas.
+
+Detail indeks & sesi besar: `docs/sentratorium/README.md`.
+
+Rujukan domain: `apps/healthcare/AGENTS.md` — bagian Sentratorium.

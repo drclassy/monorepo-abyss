@@ -25,7 +25,9 @@
     "db:push": "turbo run db:push",
     "db:migrate": "turbo run db:migrate",
     "db:studio": "pnpm --filter @the-abyss/database db:studio",
-    "flows:test": "turbo run flows:test"
+    "flows:test": "turbo run flows:test",
+    "sentratorium:check": "node tooling/sentratorium-check.mjs",
+    "security:primary-healthcare": "pnpm --filter @the-abyss/puskesmas-dashboard run security:catch-scan && pnpm --filter @the-abyss/puskesmas-dashboard run security:secret-scan && pnpm --filter @the-abyss/puskesmas-website run security:catch-scan && pnpm --filter @the-abyss/puskesmas-website run security:secret-scan && pnpm --filter @the-abyss/puskesmas-dashboard run security:audit && pnpm --filter @the-abyss/puskesmas-website run security:audit"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -48,6 +50,19 @@
     "typescript": "^5.7.0"
   },
   "packageManager": "pnpm@9.15.0",
+  "pnpm": {
+    "overrides": {
+      "@types/react": "18.3.18",
+      "@types/react-dom": "18.3.6",
+      "minimatch@<3.1.4": "3.1.5",
+      "minimatch@>=9.0.0 <9.0.7": "9.0.9",
+      "minimatch@>=10.0.0 <10.2.3": "10.2.4",
+      "rollup@>=4.0.0 <4.59.0": "4.59.0",
+      "esbuild@<0.25.0": "0.25.12",
+      "markdown-it@<14.1.1": "14.1.1",
+      "ajv@>=6.0.0 <6.14.0": "6.14.0"
+    }
+  },
   "workspaces": [
     "apps/**",
     "packages/*",

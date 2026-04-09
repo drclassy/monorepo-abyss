@@ -1,0 +1,39 @@
+---
+description: 'Pemisahan sumber skill — Cursor tidak mencampur ~/.claude, ~/.agents, atau tool lain.'
+alwaysApply: true
+priority: high
+labels:
+  - cursor
+  - skills
+  - governance
+scope:
+  globs:
+    - '**/*'
+---
+
+# Pemisahan skill Cursor vs agen lain
+
+## Tujuan
+
+Mencegah artefak skill dari **Claude Code**, **folder `.agents` generik**, atau editor lain **secara otomatis diperlakukan sebagai skill Cursor** (duplikasi, konflik path, atau kebingungan konteks).
+
+## Yang wajib dipatuhi agen Cursor di repo ini
+
+1. **Jangan mengubah, menghapus, atau “merapikan”** isi pohon berikut **kecuali** Chief secara eksplisit meminta itu **untuk tool yang bersangkutan**:
+   - `~/.claude/**` (termasuk `~/.claude/skills`, `~/.claude/plugins`)
+   - `~/.agents/**` (dipakai konvensi terpisah; bukan sumber skill Cursor)
+   - Folder konfigurasi agen lain (Codex, Gemini, dll.) di luar scope tugas
+
+2. **Skill untuk Cursor** hanya disatukan lewat mekanisme yang **ditujukan untuk Cursor**:
+   - **Rules:** `.cursor/rules/*.mdc` (monorepo root atau per-proyek)
+   - **Agent Skills (Cursor):** `SKILL.md` di bawah path yang didokumentasikan Cursor untuk **Cursor** (mis. `.cursor/skills/<nama>/SKILL.md` pada suatu workspace), **bukan** dengan menyalin atau mengarahkan folder `~/.claude/skills` / `~/.agents/skills` sebagai satu pool.
+
+3. **Dilarang** membuat **symlink atau junction** dari `~/.claude/skills` atau `~/.agents/skills` ke `.cursor/skills` (atau sebaliknya), agar skill agen lain tidak “otomatis” muncul sebagai skill Cursor.
+
+4. **Pengaturan GUI Cursor:** jika Chief mengisi **Additional skills directories** / path global skill, path tersebut harus **khusus artefak Cursor**, bukan folder yang sama dipakai Claude Code atau tool lain.
+
+5. **Plugin & cache:** cache plugin di `~/.cursor/plugins/cache` dan skill di dalam **ekstensi VS Code** adalah milik ekosistem Cursor/Marketplace — terpisah dari `~/.claude`; jangan diasumsikan identik dengan skill Claude.
+
+## Rujukan paket
+
+Lihat juga `apps/healthcare/sentra-assist/AGENTS.md` — bagian pemisahan skill.

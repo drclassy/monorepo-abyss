@@ -59,6 +59,10 @@ temp/
 # Debug
 *.pdb
 
+# Cursor — hook audit logs (local only; do not commit)
+.cursor/hooks/edit-log.txt
+.cursor/hooks/*.log
+
 logs
 dev-debug.log
 # Dependency directories
@@ -76,4 +80,8 @@ dev-debug.log
 
 # Task files
 # tasks.json
-# tasks/ 
+# tasks/
+
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md

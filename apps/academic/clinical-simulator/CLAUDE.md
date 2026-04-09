@@ -75,11 +75,7 @@ RISK   : [what could break]
 - Build pass ≠ problem solved
 - Wait for Chief confirmation from actual output
 
-### [6] SENTRARORIUM
-- MANDATORY to write at Sentrarorium folder 
-- Follow rules of writting
-
-### [7] REPORT
+### [6] REPORT
 ```
 STATUS : [DONE / PARTIAL / FAILED]
 DONE   : [what changed]

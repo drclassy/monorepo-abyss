@@ -1,4 +1,4 @@
-﻿# Dependencies
+# Dependencies
 node_modules/
 .pnpm-store/
 
@@ -36,3 +36,33 @@ venv/
 # IDE junk
 .DS_Store
 Thumbs.db
+
+# ============================================
+# Apps not in active focus (working on healthcare)
+# ============================================
+apps/academic/
+apps/community/
+apps/coorporate/
+apps/orchestrator/
+apps/prototype/
+
+# ============================================
+# Infrastructure (devops only, not dev)
+# ============================================
+infrastructure/terraform/
+infrastructure/argocd/
+
+# ============================================
+# Non-active packages
+# ============================================
+packages/iskandar-gatekeeper/
+packages/langflow-client/
+
+# ============================================
+# GitHub config
+# ============================================
+
+# ============================================
+# CLI tooling cache
+# ============================================
+tooling/abyss-cli/dist/

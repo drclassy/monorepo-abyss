@@ -8,8 +8,48 @@ yarn.lock
 
 # Docs (reference only, don't index)
 docs/archive/
+docs/
 
 # Generated
 *.generated.*
 *.min.js
 *.min.css
+
+# ============================================
+# Apps not in active focus
+# ============================================
+apps/academic/
+apps/community/
+apps/coorporate/
+apps/orchestrator/
+apps/prototype/
+
+# ============================================
+# Infrastructure (not dev concern)
+# ============================================
+infrastructure/terraform/
+infrastructure/argocd/
+infrastructure/docker/
+
+# ============================================
+# Non-active packages
+# ============================================
+packages/iskandar-gatekeeper/
+packages/langflow-client/
+
+# ============================================
+# GitHub & CI config
+# ============================================
+.flows/
+
+# ============================================
+# Config packages (shared configs, not app code)
+# ============================================
+packages/config-eslint/
+packages/config-typescript/
+
+# ============================================
+# Tooling dist
+# ============================================
+tooling/abyss-cli/dist/
+tooling/abyss-cli/node_modules/
