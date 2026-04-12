@@ -7,3 +7,6 @@
 [submodule "apps/prototype/agent-hermes/vendor/mission-control"]
 	path = apps/prototype/agent-hermes/vendor/mission-control
 	url = https://github.com/builderz-labs/mission-control.git
+[submodule "apps/prototype/agent-hermes/vendor/workspace-ui"]
+	path = apps/prototype/agent-hermes/vendor/workspace-ui
+	url = https://github.com/outsourc-e/hermes-workspace.git
