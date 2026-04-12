@@ -5,10 +5,9 @@
 # Model selection
 # =============================================================
 model:
-  # Default: Claude Opus (requires ANTHROPIC_API_KEY).
-  # Change to "nous/hermes-4-405b" with NOUS_API_KEY for native Hermes.
-  default: "anthropic/claude-opus-4.6"
-  provider: "auto"
+  # Chief runs native Hermes via Nous Portal API (NOUS_API_KEY in .env).
+  default: "nous/hermes-4-405b"
+  provider: "nous-api"
 
 # =============================================================
 # Gateway (HTTP API on port 8642)
