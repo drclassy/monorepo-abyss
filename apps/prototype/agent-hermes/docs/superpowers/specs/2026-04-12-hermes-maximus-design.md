@@ -1,333 +1,388 @@
 # Hermes Maximus — Personal Meta-Agent Design Spec
 
 **Date:** 2026-04-12
+**Revision:** **v2 — rewritten after direct inspection of vendor repos**
 **Location:** `apps/prototype/agent-hermes/`
 **Author:** Claude (Opus 4.6, 1M) with Chief (Dr. Ferdi Iskandar)
-**Status:** Design approved — awaiting spec review before implementation plan
-**Source:** Catalog — https://github.com/0xNyk/awesome-hermes-agent
+**Status:** Revision 2 — awaiting spec review before implementation plan regeneration
+**Source catalog:** https://github.com/0xNyk/awesome-hermes-agent
 
 ---
 
-## 1. Mission
+## Revision History
 
-Build the most advanced and complete **Personal AI Lab / Meta-Agent** stack by composing best-of-breed repositories from the awesome-hermes-agent ecosystem into a single, layered Docker Compose deployment. The agent must be self-improving, self-monitoring, and capable of extending its own skill surface autonomously.
+- **v1 (obsoleted):** assumed every service exposed REST `/health`, `/skills`, `/tasks` on a unified compose file I'd write. **Wrong** — based on catalog blurbs, not repo inspection.
+- **v2 (current):** based on direct inspection of 4 cloned repos (hermes-core, hindsight, mission-control, workspace-ui). Documents the **real** interfaces and adopts a **thin-wrap** orchestration strategy.
 
-**Scope breadth:** Flagship Stack (curated best-of-breed, ~14 repos) — not a mega-install, not a research-only report.
+---
 
-**Primary user:** Chief (personal use, Windows 11 Home, AMD Ryzen 5 7500F / 32 GB RAM).
+## 1. Mission (unchanged)
 
-**Non-goals for this spec:**
-- No Sentra healthcare integration in Phase 1 (can be added later as a plugin).
-- No production GCP deployment (prototype division rule — prototypes stay local).
+Build the most advanced and complete **Personal AI Lab / Meta-Agent** stack by composing best-of-breed repositories from the awesome-hermes-agent ecosystem. Self-improving, self-monitoring, self-extending.
+
+**Primary user:** Chief (personal use, Windows 11 Home + Docker Desktop + WSL2).
+
+**Non-goals (unchanged):**
+- No Sentra healthcare integration in Phase 1.
+- No production GCP deployment (prototype division rule).
 - No real patient data, no production credentials.
 
 ---
 
-## 2. Curated Repository Catalog (the "Flagship Stack")
+## 2. Reality Check — What the Vendor Repos Actually Are
 
-All submodules are pinned to explicit tags/commits at install time. Version discovery happens in Phase 0 of the implementation plan.
+Lesson from v1: catalog blurbs are curation, not contracts. Here is what is true after inspecting the code.
 
-### 2.1 Core (always on — `base` profile)
+### 2.1 hermes-core (NousResearch/hermes-agent @ v2026.4.8)
 
-| # | Purpose | Repository | Role |
-|---|---------|------------|------|
-| 1 | Agent core | `NousResearch/hermes-agent` | Self-improving closed-loop agent runtime |
-| 2 | Mission Control | `builderz-labs/mission-control` | Fleet orchestration, task dispatch, cost ceilings |
-| 3 | Workspace UI | `outsourc-e/hermes-workspace` | Web chat + terminal + memory browser |
-| 4 | Memory | `vectorize-io/hindsight` | Semantic + graph + temporal retrieval |
-| 5 | Skill pack (prod) | `wondelai/skills` | Cross-platform production skill library |
-| 6 | Web search plugin | `robbyczgw-cla/hermes-web-search-plus` | Serper + Tavily + Exa multi-provider |
-| 7 | Claude Code bridge | `42-evey/evey-bridge-plugin` | Claude Code ↔ Hermes task handoff |
+- **Three runtime modes, not one:**
+  1. **CLI mode** — `hermes <subcommand>`; interactive or scripted.
+  2. **ACP adapter mode** — `python -m acp_adapter.entry`; JSON-RPC over **stdio** (Agent Client Protocol). Clients spawn it as a subprocess and talk to stdin/stdout. **Not HTTP.**
+  3. **Gateway mode** — `scripts/hermes-gateway`; long-running service that exposes an HTTP API on **port 8642** (default, configurable via `API_SERVER_PORT`). This is the integration surface for dashboards.
+- **Ships own `Dockerfile`** (debian:13.4 + Python 3 + Node + Playwright + ffmpeg).
+- **Entrypoint:** `/opt/hermes/docker/entrypoint.sh` — bootstraps `$HERMES_HOME=/opt/data` with `.env`, `config.yaml`, `SOUL.md`, skills.
+- **No `EXPOSE` in Dockerfile.** Runtime chooses; we pick gateway mode.
+- **Windows native unsupported.** Requires WSL2 (Docker Desktop already uses WSL2 on Chief's machine — fine).
 
-### 2.2 Meta-agent capabilities (opt-in — `meta` profile)
+### 2.2 hindsight (vectorize-io/hindsight @ v0.5.0)
 
-| # | Purpose | Repository | Role |
-|---|---------|------------|------|
-| 8 | Meta-reasoning | `Cranot/super-hermes` | Rewrites/optimizes prompts before execution |
-| 9 | Self-monitor | `Yonkoo11/hermes-dojo` | Regression detection, performance tracking |
-| 10 | Adversarial review | `Ridwannurudeen/hermes-council` | Multi-perspective debate on high-stakes decisions |
-| 11 | Self-evolution | `NousResearch/hermes-agent-self-evolution` | DSPy + GEPA prompt optimization (nightly) |
+- **NOT a generic memory HTTP API.** It's a **Postgres-based memory layer** with multiple deployment variants under `docker/`:
+  - `docker/standalone/Dockerfile` — single-container bundle.
+  - `docker/docker-compose/{external-pg,pg_textsearch,s3-file-storage,timescale,vchord}/` — compose variants for different backends.
+- **Integration:** hermes-core includes `plastic-labs/honcho` for user modeling by default. Hindsight would **replace or supplement** that, but wiring it in needs a config change in hermes-core. Not automatic.
+- **For v2 scope:** use `docker/standalone` variant. Connection via Postgres (not HTTP). Integration test: verify Postgres is reachable and schema migrations ran.
 
-### 2.3 Self-extending skills (opt-in — `skills` profile)
+### 2.3 mission-control (builderz-labs/mission-control @ v2.0.1)
 
-| # | Purpose | Repository | Role |
-|---|---------|------------|------|
-| 12 | Skill generator | `Romanescu11/hermes-skill-factory` | Auto-synthesizes skills from repeated workflows |
-| 13 | Skill registry | `Lethe044/hermes-skill-marketplace` | Publishes factory output; core hot-reloads |
+- **Next.js 16 + React 19 + SQLite** dashboard. Self-contained (no external DB needed).
+- **Ships own `Dockerfile` + `docker-compose.yml` + hardened variant.**
+- **Port 3000** (configurable via `PORT` / `MC_PORT` env).
+- **Integration model:** connects to agent gateways via HTTP. Default design is for **OpenClaw**; `extra_hosts: host-gateway` in its compose suggests the gateway runs on the Docker host or another container.
+- **Hermes compatibility:** README says "multi-gateway — OpenClaw, and more coming soon." Direct Hermes gateway support may require config adapter work; for v2 we will connect it to the Hermes gateway on port 8642 and document any integration gaps as open items.
 
-### 2.4 Developer ergonomics
+### 2.4 workspace-ui (outsourc-e/hermes-workspace @ v1.0.0)
 
-| # | Purpose | Repository | Role |
-|---|---------|------------|------|
-| 14 | Documentation | `mudrii/hermes-agent-docs` | Community docs mirrored for offline reference |
+- **Node ≥22 app.** Ships own `Dockerfile` + `docker-compose.yml`.
+- **Explicitly designed for Hermes gateway** — README: *"Direct gateway connection with real-time SSE streaming."*
+- **This is the reference integration client for the Hermes gateway.**
+- Port default: 3000 (pending confirmation at build time; will verify and document).
 
-**Total: 14 repositories, all pinned as git submodules under `vendor/` and `skills/` and `plugins/`.**
+### 2.5 What changes in the architecture
 
----
+v1 assumption → v2 reality:
 
-## 3. Architecture — Approach B (Layered Compose Profiles)
-
-### 3.1 Profile model
-
-Three Docker Compose profiles, opt-in via `--profile` flag or wrapped in PowerShell/Make helpers.
-
-```
-base    → 7 services, ~3 GB RAM, boot ≤ 2 min
-meta    → +4 services, +2 GB RAM, +2 min
-skills  → +2 services, +1 GB RAM, +1 min
-full    → all 13 services, ~6 GB RAM, ~5 min boot
-```
-
-### 3.2 Service topology
-
-```
-┌───────────────────────────────────────────────────────────────┐
-│  PROFILE: base                                                │
-│                                                               │
-│  [mission-control :3000] ─────┐                               │
-│                                ├─→ [hermes-core :8080]        │
-│  [workspace-ui   :3001] ──────┘          │                    │
-│                                          ▼                    │
-│                                   [hindsight :8081]           │
-│                                  (semantic/graph/temporal)    │
-│                                                               │
-│  Skills mounted:  ./skills/ → /app/skills                     │
-│  Plugins mounted: ./plugins/ → /app/plugins                   │
-│                                                               │
-├───────────────────────────────────────────────────────────────┤
-│  PROFILE: meta (additive)                                     │
-│                                                               │
-│  [super-hermes :8090]  → proxies prompts before hermes-core   │
-│  [hermes-dojo  :8091]  → subscribes to hindsight event stream │
-│  [hermes-council :8092] → invoked by mission-control on       │
-│                           high-stakes triggers                │
-│                                                               │
-├───────────────────────────────────────────────────────────────┤
-│  PROFILE: skills (additive)                                   │
-│                                                               │
-│  [skill-factory :8093]  ← reads hindsight trace patterns      │
-│  [skill-marketplace :8094] ← publishes; hermes-core reloads   │
-│                                                               │
-│  [self-evolution (cron)] → runs nightly DSPy/GEPA pass        │
-└───────────────────────────────────────────────────────────────┘
-```
-
-### 3.3 Port allocation
-
-| Port | Service |
-|------|---------|
-| 3000 | Mission Control UI |
-| 3001 | Workspace UI |
-| 8080 | Hermes Core API |
-| 8081 | Hindsight memory API |
-| 8090 | Super-Hermes (meta-reasoning proxy) |
-| 8091 | Dojo dashboard |
-| 8092 | Council debate API |
-| 8093 | Skill Factory API |
-| 8094 | Skill Marketplace API |
-
-All ports bind to `127.0.0.1` only — no public exposure in prototype.
+| v1 | v2 |
+|----|----|
+| One custom `docker-compose.yml` I write | Three layers: (a) vendor composes unchanged, (b) a thin **`docker-compose.glue.yml`** that adds a shared network + shared `.env`, (c) a PowerShell/Make helper that starts them in the right order |
+| Every service has `/health` REST endpoint | Only **hermes gateway (8642)** and **mission-control (3000)** and **workspace-ui (3000)** are HTTP services. hermes-core-CLI and hindsight-Postgres use their native protocols. |
+| Mission Control orchestrates hermes-core via REST | Mission Control connects to the **Hermes gateway** as its agent backend. Adapter config required; validated per-task. |
+| Custom compose binds all services on 127.0.0.1 | Same security posture, applied to vendor composes via override |
 
 ---
 
-## 4. Directory Layout
+## 3. Architecture — Thin-Wrap Over Vendor Composes
+
+### 3.1 Strategy
+
+**Do not rewrite orchestration.** Each vendor repo ships a Dockerfile and usually a compose. Respect upstream. Our job is to:
+
+1. **Glue them** onto a shared Docker network so they can reach each other by service name.
+2. **Configure each vendor** via its own native config files (mounted as volumes from `config/<service>/`).
+3. **Keep custom code minimal.** No HTTP wrappers, no REST adapters. If a vendor speaks stdio (ACP), we use a stdio client. If it speaks Postgres (hindsight), we use a Postgres client. If it speaks HTTP (gateway/UIs), we use HTTP.
+
+### 3.2 Compose layering
+
+```
+base profile (always on):
+  docker-compose.base.yml                  ← our glue (network, shared env, volumes)
+  -f vendor/hermes-core/docker-compose.yml   (if they ship one; else we reference the Dockerfile)
+  -f vendor/hindsight/docker/docker-compose/standalone/docker-compose.yml
+  -f vendor/mission-control/docker-compose.yml
+  -f vendor/workspace-ui/docker-compose.yml
+
+meta profile (opt-in):
+  + docker-compose.meta.yml  ← glue for super-hermes + dojo + council
+
+skills profile (opt-in):
+  + docker-compose.skills.yml ← glue for skill-factory + marketplace + self-evolution
+```
+
+Start with:
+```powershell
+docker compose -f docker-compose.base.yml \
+               -f vendor/hermes-core/Dockerfile.compose.yml \  # (path verified at integration time)
+               [additional -f files] up -d
+```
+
+A Makefile target and a PowerShell script hide the long command. See §9.
+
+### 3.3 Real service topology (v2)
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PROFILE: base                                               │
+│                                                              │
+│  [mission-control :3000]   [workspace-ui :3001]              │
+│           ↓                         ↓                        │
+│           └───────┬─────────────────┘                        │
+│                   ▼                                          │
+│          [hermes-gateway :8642]   ← our orchestration point  │
+│                   ↓                                          │
+│          [hermes-core (CLI/ACP)]                             │
+│                   ↓                                          │
+│          [hindsight-postgres :5432]                          │
+│                                                              │
+│  Skills mounted from ./skills into hermes-core at /opt/data/skills │
+│  Plugins are hermes-native — configured via config.yaml       │
+├──────────────────────────────────────────────────────────────┤
+│  PROFILE: meta (opt-in)                                      │
+│                                                              │
+│  [super-hermes]  → wraps hermes-gateway calls                │
+│  [hermes-dojo]   → subscribes to hermes-core telemetry       │
+│  [hermes-council]→ invoked by UIs on high-stakes triggers    │
+│                                                              │
+├──────────────────────────────────────────────────────────────┤
+│  PROFILE: skills (opt-in)                                    │
+│                                                              │
+│  [skill-factory]       [skill-marketplace]   [self-evolution]│
+│  All read/write ./skills/ directly                           │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Key change from v1:** ports `8080` and `8081` are GONE. Real services use:
+- Mission Control: **3000**
+- Workspace UI: **3001** (remap from its default 3000 to avoid clash)
+- Hermes Gateway: **8642** (API_SERVER_PORT)
+- Hindsight Postgres: **5432** (internal only)
+- Meta/skills profile ports: assigned at build time by inspecting each repo
+
+### 3.4 Integration surface by service
+
+| Service | Protocol | Port | Healthcheck method |
+|---------|----------|------|---------------------|
+| hermes-gateway | HTTP (FastAPI) | 8642 | `curl /` expects 200 or documented endpoint |
+| hermes-core-CLI | stdio / subprocess | — | `docker exec hermes-core hermes version` returns 0 |
+| hindsight | Postgres | 5432 | `pg_isready -h hindsight -p 5432` |
+| mission-control | HTTP (Next.js) | 3000 | `curl /api/health` (verified at build time) |
+| workspace-ui | HTTP (Node) | 3001 | `curl /api/health` or `/` (verified at build time) |
+
+Test strategy (§8) is written to verify these **real** endpoints, not fictitious ones.
+
+---
+
+## 4. Directory Layout (revised)
 
 ```
 apps/prototype/agent-hermes/
-├── README.md                           # Operator run book
-├── docker-compose.yml                  # base profile services
-├── docker-compose.meta.yml             # meta overlay
-├── docker-compose.skills.yml           # skills overlay
-├── .env.example                        # template: NOUS_API_KEY, SERPER_KEY, ...
-├── .gitignore                          # data/, .env, node_modules, etc.
-├── .gitmodules                         # all vendor/ + skills/ + plugins/ pins
-├── Makefile                            # up / up-meta / up-full / down / logs
+├── README.md                           ← operator run book
+├── docker-compose.base.yml             ← our glue: network, shared env, volumes
+├── docker-compose.meta.yml             ← meta profile glue
+├── docker-compose.skills.yml           ← skills profile glue
+├── .env.example                        ← shared env (NOUS_API_KEY, etc.)
+├── .gitignore                          ← (already done)
+├── .gitmodules                         ← lives at monorepo root (14 submodules)
 │
-├── scripts/                            # PowerShell equivalents for Windows
-│   ├── up.ps1
-│   ├── up-meta.ps1
-│   ├── up-full.ps1
-│   ├── down.ps1
-│   └── smoke.ps1
+├── scripts/
+│   ├── up.ps1 / up.sh                  ← `docker compose -f base.yml -f vendor/... up -d`
+│   ├── up-meta.ps1 / up-meta.sh
+│   ├── up-skills.ps1 / up-skills.sh
+│   ├── up-full.ps1 / up-full.sh
+│   ├── down.ps1 / down.sh
+│   └── smoke.ps1 / smoke.sh
 │
-├── vendor/                             # git submodules, pinned
-│   ├── hermes-core/
-│   ├── mission-control/
-│   ├── workspace-ui/
-│   ├── hindsight/
-│   ├── super-hermes/
-│   ├── hermes-dojo/
-│   ├── hermes-council/
-│   ├── skill-factory/
-│   ├── skill-marketplace/
-│   ├── self-evolution/
-│   └── hermes-agent-docs/
+├── vendor/                             ← pinned git submodules (14 total)
+│   ├── hermes-core/                    ← v2026.4.8 (added)
+│   ├── hindsight/                      ← v0.5.0 (added)
+│   ├── mission-control/                ← v2.0.1 (added)
+│   ├── workspace-ui/                   ← v1.0.0 (added)
+│   ├── super-hermes/                   ← to add in Phase 4
+│   ├── hermes-dojo/                    ← to add in Phase 4
+│   ├── hermes-council/                 ← to add in Phase 4
+│   ├── self-evolution/                 ← to add in Phase 4
+│   ├── skill-factory/                  ← to add in Phase 5
+│   ├── skill-marketplace/              ← to add in Phase 5
+│   └── hermes-agent-docs/              ← to add later (docs only)
 │
 ├── skills/
-│   ├── wondelai/                       # submodule
-│   └── custom/                         # Chief's personal skills (tracked in main repo)
+│   ├── wondelai/                       ← submodule (Phase 3)
+│   └── custom/                         ← Chief's own skills
 │
 ├── plugins/
-│   ├── web-search-plus/                # submodule
-│   └── evey-bridge/                    # submodule
+│   ├── web-search-plus/                ← submodule (Phase 3)
+│   └── evey-bridge/                    ← submodule (Phase 3)
 │
 ├── config/
-│   ├── hermes.toml                     # core runtime config
-│   ├── hindsight.yaml                  # memory schema + retrieval weights
-│   ├── mission-control.yaml            # fleet rules, cost ceilings
-│   ├── dojo-policies.yaml              # regression thresholds
-│   └── council-triggers.yaml           # high-stakes decision patterns
+│   ├── hermes/
+│   │   ├── config.yaml                 ← mounted into hermes-core @ /opt/data/config.yaml
+│   │   └── .env.hermes                 ← hermes-specific env (merged into .env at up-time)
+│   ├── hindsight/
+│   │   └── <whatever the vendor requires>  (validated at integration time)
+│   ├── mission-control/
+│   │   └── config.yaml                 (validated at integration time)
+│   └── workspace-ui/
+│       └── config.yaml                 (validated at integration time)
 │
-├── data/                               # gitignored, persistent volumes
+├── data/                               ← gitignored, persistent volumes
+│   ├── hermes-home/                    ← /opt/data in hermes-core container
 │   ├── hindsight-db/
 │   ├── mission-control-db/
-│   ├── marketplace-store/
+│   ├── workspace-ui-db/
 │   └── logs/
 │
-├── .agent/                             # monorepo convention: session memory
+├── tests/
+│   ├── smoke/                          ← pytest smoke suite
+│   └── integration/                    ← end-to-end round-trip tests
+│
+├── .agent/                             ← monorepo convention
 │   ├── CONTEXT.md
 │   ├── PROGRESS.md
 │   ├── HANDOFF.md
 │   └── sessions/
 │
 └── docs/
-    ├── ARCHITECTURE.md                 # this design + operational notes
-    ├── SKILLS-CATALOG.md               # every skill + invocation example
-    ├── OPERATIONS.md                   # backup, restore, chaos drills
-    ├── META-AGENT-LOOP.md              # how dojo+council+factory interact
+    ├── ARCHITECTURE.md
+    ├── SKILLS-CATALOG.md
+    ├── OPERATIONS.md
+    ├── META-AGENT-LOOP.md
+    ├── VERSION-MANIFEST.md
     └── superpowers/
-        └── specs/
-            └── 2026-04-12-hermes-maximus-design.md   # this file
+        ├── specs/
+        │   └── 2026-04-12-hermes-maximus-design.md  ← this file
+        └── plans/
+            └── 2026-04-12-hermes-maximus-plan.md     ← v1 plan, will be regenerated
 ```
 
 ---
 
-## 5. Data Flow — The Meta-Agent Loop
+## 5. Data Flow — Gateway-Centric
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  1. Chief issues task → Mission Control                     │
-│  2. Mission Control routes → super-hermes (prompt optimize) │
-│  3. super-hermes → hermes-core (executes with skills)       │
-│  4. hermes-core writes trace + outcome → hindsight          │
-│  5. hermes-dojo subscribes to hindsight event stream        │
-│     └── detects regression? → alerts mission-control        │
-│  6. If task matches council-triggers.yaml:                  │
-│     └── hermes-council spawns debate before commit          │
-│  7. skill-factory scans hindsight for repeated patterns     │
-│     └── auto-synthesizes new skill → marketplace            │
-│  8. hermes-core hot-reloads skills every 5 min (configurable)│
-│  9. self-evolution cron (02:00 local) → DSPy/GEPA pass      │
-│     └── updates prompt library in config/                   │
-└─────────────────────────────────────────────────────────────┘
+1. Chief opens Mission Control (http://127.0.0.1:3000) OR Workspace UI (:3001)
+2. UI authenticates to hermes-gateway (http://hermes-gateway:8642) via config
+3. UI sends a task → gateway → spawns/routes to hermes-core CLI
+4. hermes-core runs the task (skills from ./skills, plugins from config.yaml)
+5. hermes-core writes state to /opt/data (volume: data/hermes-home)
+6. If hindsight is wired: hermes-core's memory adapter writes to Postgres
+7. Gateway streams updates back to UI via SSE
+8. Dojo subscribes to gateway event log (meta profile)
+9. Council is called when triggers fire (meta profile)
+10. Skill-factory scans traces, publishes new skills (skills profile)
 ```
+
+**Note:** Steps 6, 8, 9, 10 depend on configuration wiring that will be validated per-phase. If any gap exists in vendor support (e.g., mission-control can't yet auth to hermes-gateway), it is documented as an open item with a workaround.
 
 ---
 
-## 6. LLM Provider Strategy
+## 6. LLM Provider Strategy (mostly unchanged)
 
-**Phase 1 (default):** Nous Research API via `NOUS_API_KEY` — native Hermes model support.
+Configured inside hermes-core's `config/hermes/config.yaml`:
+- **Primary:** Nous Research API via `NOUS_API_KEY`.
+- **Optional:** Anthropic, Google Vertex AI (Chief's cloud), Ollama (local).
 
-**Optional providers configurable in `config/hermes.toml`:**
-- Anthropic (Claude Sonnet/Opus) via `ANTHROPIC_API_KEY`
-- Google Vertex AI (Chief's primary cloud) via `GCP_PROJECT` + ADC
-- Local: Ollama endpoint for offline work
-
-**Rationale:** Hermes-family models are purpose-trained for tool use and self-reflection, which the meta-loop depends on. Other providers are fallbacks.
+Switch via `hermes model` CLI — no code changes.
 
 ---
 
 ## 7. Error Handling & Safety
 
-### 7.1 Circuit breakers (mission-control enforces)
-- **Cost ceiling:** per-task USD budget; hard stop at limit
-- **Tool-call budget:** max N tool invocations per task
-- **Wall-clock timeout:** 30 min default, configurable per skill
-- **Recursive depth:** max 5 levels of sub-agent spawning
+### 7.1 Circuit breakers
+Mission Control and Workspace UI both have native cost ceilings, session timeouts, and tool-call budgets. We configure them via their own config files; no custom code.
 
-### 7.2 Council auto-triggers (`config/council-triggers.yaml`)
-- Any command matching `rm -rf`, `git reset --hard`, `DROP TABLE`, `terraform apply|destroy`
-- Any file write outside `data/`, `skills/custom/`, or explicitly allowlisted paths
-- Any network call to a production domain (allowlist-driven)
-- Any skill invocation where `stakes: high` metadata is set
+### 7.2 Council auto-triggers
+Kept as a **workflow policy**, not a runtime-enforced wrapper. File: `config/council-triggers.yaml`. UIs (via gateway) read this at task submission and route high-stakes tasks through the Council when meta profile is active.
 
 ### 7.3 Health checks
-Every service in `docker-compose.yml` declares a `healthcheck:` block. Mission Control polls `/health` on each service; degraded services are removed from the routing pool and surfaced in the Workspace UI status panel.
+Each vendor compose has its own `healthcheck:`. Our glue layer does NOT override them. If a vendor lacks one, we add it in the glue overlay.
 
 ### 7.4 Secret handling
-- All secrets via `.env` (gitignored).
-- `.env.example` committed with placeholder values only.
-- No secrets logged. Hindsight redacts any field matching the secret-pattern list before storage.
-- Credentials never placed in git, skills, or task traces.
+- All shared secrets via root `.env` (gitignored) + per-service `.env.<service>` files.
+- `.env.example` committed with placeholders only.
+- Hindsight's redaction patterns (if used) configured at hindsight's own config layer.
 
 ---
 
-## 8. Testing Strategy
+## 8. Testing Strategy (revised)
 
-### 8.1 Smoke test (`scripts/smoke.ps1` / `make smoke`)
-1. `docker compose up -d` (base profile only)
-2. Wait for all `/health` endpoints green (timeout 180s)
-3. POST hello-world task to Mission Control
-4. Assert task completes with correct output
-5. Assert trace written to hindsight
-6. `docker compose down`
+**Replaced fictitious endpoints with real interfaces.**
 
-### 8.2 Integration tests
-- Pytest suite per service under `vendor/<service>/tests/` (upstream tests, not rewritten)
-- Cross-service contract tests under `tests/integration/` (our additions)
+### 8.1 Smoke suite
+- `test_hermes_gateway_responds` — GET `http://127.0.0.1:8642/` expects HTTP 200 (real endpoint TBD at build time, documented in code comment).
+- `test_hermes_core_cli_available` — `docker exec hermes-core hermes --version` returns 0.
+- `test_hindsight_postgres_up` — `pg_isready -h 127.0.0.1 -p 5432` inside the hindsight container.
+- `test_mission_control_ui` — GET `http://127.0.0.1:3000/` expects 200 and HTML containing a known string from the app.
+- `test_workspace_ui` — same pattern at :3001.
+
+### 8.2 Integration
+- **End-to-end:** Post a task via Mission Control's HTTP API (path discovered during Phase 2), poll for completion, assert output matches expectation. **Requires** NOUS_API_KEY.
+- **Gateway contract:** `curl http://127.0.0.1:8642/<documented-path>` round-trips a trivial JSON-RPC call.
 
 ### 8.3 Chaos drills
-Documented in `docs/OPERATIONS.md`:
-- Kill hindsight → verify graceful fallback to short-term memory
-- Fill hindsight disk → verify eviction policy
-- Kill super-hermes → verify hermes-core bypass to direct execution
-- Kill council → verify high-stakes tasks fail closed (not silently pass)
+Documented in OPERATIONS.md; functional equivalents of v1's drills but on real services:
+- Kill hindsight Postgres → verify hermes-core continues in degraded memory mode.
+- Kill hermes-gateway → verify UIs report disconnection, recover on restart.
+- Fill hindsight disk → verify eviction policy (if any) or graceful error.
 
 ---
 
-## 9. Platform Notes — Windows 11 Home
+## 9. Platform Notes — Windows 11
 
-- Docker Desktop with WSL2 backend required.
-- PowerShell scripts in `scripts/` mirror every Makefile target (Chief's primary shell is pwsh 7.6).
-- Volume paths use forward slashes in compose files (Docker Desktop translates).
-- No symlinks inside `vendor/` — all submodules are plain git clones.
-- Hindsight's vector store runs inside its container; no native Windows dependency.
-
----
-
-## 10. Boundaries (prototype division rules)
-
-- `agent-hermes` MUST NOT be referenced by any production app in `apps/healthcare/`, `apps/academic/`, `apps/community/`, or `apps/coorporate/`.
-- No deployment to production GCP environments.
-- No import from production divisions without Chief's explicit promotion decision.
-- Real patient data and production credentials are forbidden.
-- If inactive for 60+ days, flag in `.agent/PROGRESS.md` for archival review.
+- Docker Desktop (29.3.1 confirmed installed) with WSL2 backend.
+- `scripts/*.ps1` mirror every `scripts/*.sh` for pwsh parity.
+- hermes-core requires WSL2 for **native** install; inside Docker that's irrelevant.
+- Submodule paths use forward slashes in compose files; Windows git handles the rest.
 
 ---
 
-## 11. Open Items (to resolve in implementation plan)
+## 10. Boundaries (unchanged)
 
-These are deliberate handoffs to the writing-plans skill, not spec gaps:
-
-1. **Version pinning** — discover latest stable tag for each of the 14 repos during Phase 0 of the plan.
-2. **Custom skill inventory** — Chief's personal skills go in `skills/custom/`; first-draft list emerges during use, not up-front.
-3. **Council trigger fine-tuning** — initial `council-triggers.yaml` uses conservative defaults; tune after first week.
-4. **Self-evolution scheduler** — cron inside a dedicated container vs. host Task Scheduler — decided in implementation plan.
-5. **Sentra bridge plugin** — explicitly deferred; add after Phase 1 stable.
+- Prototype-only. No production GCP.
+- No real patient data, no production credentials.
+- Not importable by any production division.
+- Inactive 60+ days → flag for archival.
 
 ---
 
-## 12. Success Criteria
+## 11. Open Items (honest list)
 
-The design is successful when, after implementation:
-
-1. `make up` (or `scripts/up.ps1`) brings base profile green in under 3 minutes on Chief's machine.
-2. `make up-full` brings all 13 services green in under 6 minutes.
-3. A hello-world task posted via Mission Control UI completes end-to-end, with the trace visible in the Workspace UI memory browser.
-4. Killing any single service does not crash the stack; the UI reflects degraded state.
-5. `scripts/smoke.ps1` passes on a fresh checkout after `git submodule update --init --recursive`.
-6. Documentation in `docs/` lets a new operator (or future Claude session) bring the stack up without reading this spec.
+1. **mission-control ↔ hermes-gateway compatibility** — mission-control is designed for OpenClaw; Hermes gateway adapter may need config work or upstream PR. Validated in Phase 2.
+2. **workspace-ui port** — default 3000 collides with mission-control; remap via compose env. Confirmed at Phase 2 build.
+3. **hindsight wiring into hermes-core** — requires editing hermes-core's `config.yaml` memory adapter. Validated Phase 1 end.
+4. **hermes-gateway health endpoint** — exact path to be verified from `gateway/platforms/api_server.py`; documented in test comment.
+5. **Meta profile repos** — have NOT yet been inspected. Integration concerns will surface at Phase 4.
+6. **Skills profile repos** — NOT yet inspected. Same caveat.
+7. **hermes-core in Docker with WSL2 host** — Playwright + Chromium in Docker needs shm_size override. Add to base compose.
 
 ---
 
-*End of spec.*
+## 12. Success Criteria (revised, realistic)
+
+1. `.\scripts\up.ps1` brings **the base vendor stack** green in ≤ 5 minutes on Chief's machine (first-run includes build time for all vendors, which is the dominant cost).
+2. Mission Control UI loads at http://127.0.0.1:3000 and shows a non-error landing page.
+3. Workspace UI loads at http://127.0.0.1:3001 and shows a non-error landing page.
+4. `docker exec hermes-core hermes --version` returns the expected version string.
+5. `pg_isready` against hindsight Postgres returns "accepting connections".
+6. A hello-world task **submitted via workspace-ui** (known Hermes client) completes end-to-end and returns a response. This proves the gateway is routing correctly. Mission-control end-to-end is a **stretch goal** pending OpenClaw↔Hermes adapter status.
+7. `.\scripts\down.ps1` cleanly stops the stack, leaving data volumes intact.
+8. `.\scripts\smoke.ps1` passes on a fresh checkout after `git submodule update --init --recursive`.
+
+---
+
+## 13. What Survives From v1
+
+- **Mission statement:** unchanged.
+- **14-repo curated catalog:** unchanged.
+- **Three profiles (base/meta/skills):** unchanged.
+- **Directory skeleton + VERSION-MANIFEST + pytest harness:** unchanged (already committed in Phase 0).
+- **Boundaries + prototype-division rules:** unchanged.
+
+## What Is Thrown Out From v1
+
+- Fictitious REST endpoints (`/health`, `/skills`, `/tasks` on every service).
+- Custom `docker-compose.yml` that tried to unify everything.
+- Assumption that mission-control is a drop-in Hermes orchestrator.
+- Test strategy based on fictitious endpoints.
+- Safety circuit-breaker implementations in "our" code (delegated to each vendor's native features).
+
+---
+
+*End of spec v2.*
