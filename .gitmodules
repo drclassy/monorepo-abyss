@@ -4,3 +4,6 @@
 [submodule "apps/prototype/agent-hermes/vendor/hindsight"]
 	path = apps/prototype/agent-hermes/vendor/hindsight
 	url = https://github.com/vectorize-io/hindsight.git
+[submodule "apps/prototype/agent-hermes/vendor/mission-control"]
+	path = apps/prototype/agent-hermes/vendor/mission-control
+	url = https://github.com/builderz-labs/mission-control.git
