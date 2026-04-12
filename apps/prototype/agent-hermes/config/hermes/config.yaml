@@ -1,0 +1,58 @@
+# Hermes Core — Gateway Mode Config
+# Mounted into hermes-core container at /opt/data/config.yaml (read-only)
+
+# =============================================================
+# Model selection
+# =============================================================
+model:
+  # Default: Claude Opus (requires ANTHROPIC_API_KEY).
+  # Change to "nous/hermes-4-405b" with NOUS_API_KEY for native Hermes.
+  default: "anthropic/claude-opus-4.6"
+  provider: "auto"
+
+# =============================================================
+# Gateway (HTTP API on port 8642)
+# =============================================================
+gateway:
+  api_server:
+    enabled: true
+    port: 8642
+    host: 0.0.0.0
+
+# =============================================================
+# Memory (local default — wire Hindsight in Phase 2)
+# =============================================================
+memory:
+  backend: "honcho"   # hermes-core's built-in default
+
+# =============================================================
+# Skills (mounted volume)
+# =============================================================
+skills:
+  search_paths:
+    - /opt/data/skills
+  hot_reload:
+    enabled: true
+    interval_seconds: 300
+
+# =============================================================
+# Plugins (hermes-native plugin layer)
+# =============================================================
+plugins:
+  search_paths:
+    - /opt/data/plugins
+
+# =============================================================
+# Safety
+# =============================================================
+safety:
+  max_tool_calls_per_task: 50
+  max_recursive_depth: 5
+  wall_clock_timeout_seconds: 1800
+
+# =============================================================
+# Logging
+# =============================================================
+logging:
+  level: INFO
+  destination: /opt/data/logs/hermes.log
