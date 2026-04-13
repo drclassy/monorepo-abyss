@@ -10,3 +10,12 @@
 [submodule "apps/prototype/agent-hermes/vendor/workspace-ui"]
 	path = apps/prototype/agent-hermes/vendor/workspace-ui
 	url = https://github.com/outsourc-e/hermes-workspace.git
+[submodule "apps/prototype/agent-hermes/skills/wondelai"]
+	path = apps/prototype/agent-hermes/skills/wondelai
+	url = https://github.com/wondelai/skills.git
+[submodule "apps/prototype/agent-hermes/plugins/web-search-plus"]
+	path = apps/prototype/agent-hermes/plugins/web-search-plus
+	url = https://github.com/robbyczgw-cla/hermes-web-search-plus.git
+[submodule "apps/prototype/agent-hermes/plugins/evey-bridge"]
+	path = apps/prototype/agent-hermes/plugins/evey-bridge
+	url = https://github.com/42-evey/evey-bridge-plugin.git

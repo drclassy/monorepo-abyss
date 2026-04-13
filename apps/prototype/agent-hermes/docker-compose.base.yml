@@ -69,6 +69,7 @@ services:
       - ./config/hermes/config.yaml:/opt/data/config.yaml:ro
       - ./skills:/opt/data/skills
       - ./plugins:/opt/data/plugins
+      - ./plugins:/opt/data/plugins
     shm_size: 1gb
     networks: [hermes-net]
     depends_on:
