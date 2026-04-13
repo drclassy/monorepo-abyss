@@ -42,3 +42,12 @@
 **What happened:** Assumed mission-control could directly orchestrate hermes-core.  
 **Reality:** Its gateway integration is hardcoded for OpenClaw paths/env vars.  
 **Takeaway:** Document adapter gaps honestly as open items rather than pretending integration is drop-in.
+
+---
+
+## Lesson 6 — WSL2 memory limits silently throttle or crash heavy Docker builds
+
+**What happened:** `mission-control` Next.js build repeatedly crashed Docker Desktop (500 Internal Server Error) or timed out after >15 minutes.  
+**Reality:** `C:\Users\claud\.wslconfig` was capped at `memory=2GB` / `processors=2`. The Turbopack build exhausted VM RAM, causing the Docker engine to hang or die.  
+**Fix:** Raised WSL2 limits to `memory=10GB` / `processors=4`. The same build then compiled in ~35s and completed end-to-end in ~61s without engine instability.  
+**Takeaway:** On Windows + Docker Desktop + WSL2, always inspect `.wslconfig` before blaming the Dockerfile or application code for build crashes.

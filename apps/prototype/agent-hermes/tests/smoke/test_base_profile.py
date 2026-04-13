@@ -21,7 +21,7 @@ def http_client():
 def test_hindsight_postgres_ready():
     """hindsight standalone must accept Postgres connections."""
     result = subprocess.run(
-        ["docker", "exec", "hindsight", "pg_isready", "-U", "postgres"],
+        ["docker", "exec", "hindsight", "/home/hindsight/.pg0/installation/18.1.0/bin/pg_isready", "-U", "postgres"],
         capture_output=True,
         text=True,
         timeout=10,

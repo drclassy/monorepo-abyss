@@ -50,8 +50,8 @@ services:
   # ─────────────────────────────────────────────────────────
   hermes-core:
     build:
-      context: ./vendor/hermes-core
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/hermes-core/Dockerfile
     container_name: hermes-core
     command: ["gateway", "run"]
     environment:
@@ -90,7 +90,7 @@ services:
   mission-control:
     build:
       context: ./vendor/mission-control
-      dockerfile: Dockerfile
+      dockerfile: ../../docker/mission-control/Dockerfile
     container_name: mission-control
     environment:
       PORT: "3000"

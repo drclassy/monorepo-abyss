@@ -1,6 +1,6 @@
 # Agent Hermes — HANDOFF.md
 
-**Session goal:** Complete the stalled Phase 1 operator tooling, tests, and documentation; then mount pending skills/plugins submodules and write integration tests.
+**Session goal:** Complete the stalled Phase 1 operator tooling, tests, and documentation; then mount pending skills/plugins submodules, build all 4 vendor images, and verify the stack with smoke + integration tests.
 
 **Date:** 2026-04-13  
 **Agent:** Kimi Code CLI  
@@ -8,42 +8,42 @@
 
 ---
 
-## Active Plan
+## Outcome
 
-### Step 1 — Memory & Compliance
-- Write `.agent/CONTEXT.md`, `PROGRESS.md`, `HANDOFF.md`, `LESSONS.md`, `DECISIONS.md`.
-- Update `apps/prototype/AGENTS.md` sub-app table if needed.
+✅ **All objectives achieved.**
 
-### Step 2 — Operator Ergonomics
-- Create `scripts/up.ps1`, `scripts/down.ps1`, `scripts/smoke.ps1`.
-- Create `Makefile` with `up`, `down`, `logs`, `ps`, `smoke`, `smoke-all` targets.
+- All 4 vendor images (`hermes-core`, `hindsight`, `mission-control`, `workspace-ui`) build successfully.
+- The base stack starts cleanly and all health checks pass.
+- `tests/smoke/test_base_profile.py`: **5/5 passing**.
+- `tests/integration/test_skill_discovery.py`: **2/2 passing**.
 
-### Step 3 — Real Smoke Tests
-- Write `tests/smoke/test_base_profile.py` covering:
-  1. hindsight postgres ready (`pg_isready`)
-  2. hermes-core CLI responds (`hermes --version`)
-  3. hermes gateway HTTP reachable (httpx GET :8642)
-  4. mission-control UI loads (httpx GET :3000)
-  5. workspace-ui loads (httpx GET :3001)
+---
 
-### Step 4 — Documentation
-- Rewrite `README.md` as operator runbook (quickstart, ports, profiles, troubleshooting).
-- Create `docs/ARCHITECTURE.md` (condense spec v2 §3-5).
-- Create `docs/OPERATIONS.md` (backup/restore, chaos drills, secret rotation).
+## Key Fix
 
-### Step 5 — Skills + Plugins
-- Add `skills/wondelai` submodule (pinned to `4d322538`).
-- Add `plugins/web-search-plus` submodule (pinned to `v1.3.0`).
-- Add `plugins/evey-bridge` submodule (pinned to `663b240c`).
-- Update `config/hermes/config.yaml` to wire plugin search paths.
-- Write `tests/integration/test_skill_discovery.py`.
+**Mission Control build kept crashing Docker Desktop** during `next build` (Next.js 16 + Turbopack).  
+**Root cause:** `C:\Users\claud\.wslconfig` was hard-capped at `memory=2GB` / `processors=2`.  
+**Resolution:** Raised to `memory=10GB` / `processors=4`. Build completed in ~60s and Docker engine remained stable.
 
-### Step 6 — Session Log
-- Write `.agent/sessions/2026-04-13.md`.
-- Commit all changes with appropriate trailers.
+---
+
+## Files Changed
+
+- `docker/mission-control/Dockerfile` — local resilient wrapper with telemetry disabled and `NODE_OPTIONS` tuning.
+- `docker-compose.base.yml` — switched `mission-control` build to use the local wrapper.
+- `tests/smoke/test_base_profile.py` — fixed `pg_isready` path for hindsight embedded Postgres.
 
 ---
 
 ## Rollback Plan
-- If any submodule add fails (network issues), skip it and leave a TODO comment in `PROGRESS.md`.
-- If Docker is unavailable, write tests but mark them as pending/skippable if containers are not running.
+
+- Revert `docker-compose.base.yml` to upstream `Dockerfile` path.
+- Revert WSL2 config if side effects appear (unlikely given 32GB host RAM).
+
+---
+
+## Next Session Priorities
+
+1. Meta Profile submodules and `docker-compose.meta.yml`.
+2. Skills Profile submodules and `docker-compose.skills.yml`.
+3. Mission Control → Hermes gateway bridge research.

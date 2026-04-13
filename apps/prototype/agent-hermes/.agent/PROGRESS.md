@@ -1,7 +1,7 @@
 # Agent Hermes — PROGRESS.md
 
 **Last updated:** 2026-04-13  
-**Overall status:** Phase 1 complete. Phase 2 (skills + plugins mount) complete. Phase 3–8 pending.
+**Overall status:** Phase 1 & 2 complete and verified green. Phase 3–8 pending.
 
 ---
 
@@ -16,7 +16,8 @@
 - Wrote `docs/INTEGRATION-SURFACE.md` with real interface tables.
 - Wrote `.env.example` and `config/hermes/config.yaml`.
 - Wrote `docker-compose.base.yml`; tuned it so all 4 services build and boot green.
-- Verified via build logs (`data/logs/build.log`, `data/logs/rebuild.log`) — images build successfully.
+- Created local resilient Dockerfiles for `hermes-core` and `mission-control` to survive network flakiness and reduce build memory pressure.
+- Verified via build logs — images build successfully.
 - Commit `58ff354` documents runtime validation (all services healthy).
 
 ### Phase 1.5 — Operator Ergonomics
@@ -30,6 +31,7 @@
   3. gateway HTTP reachable
   4. mission-control UI loads
   5. workspace-ui loads
+- All 5 tests pass against the running stack.
 
 ### Phase 1.7 — Documentation
 - Rewrote `README.md` as a comprehensive operator runbook.
@@ -42,6 +44,7 @@
 - Added `plugins/evey-bridge` submodule (pinned to `663b240c`).
 - Updated `docker-compose.base.yml` to mount `./plugins:/opt/data/plugins`.
 - Wrote `tests/integration/test_skill_discovery.py`.
+- Both integration tests pass against the running stack.
 
 ---
 
@@ -74,5 +77,5 @@
 
 ## Blockers / Risks ⚠️
 
-- **Docker daemon not currently running** in this session (`npipe` missing). Runtime verification of new tests must wait until Docker Desktop is started.
 - **Mission Control ↔ Hermes gateway** compatibility gap remains open.
+- **WSL2 config discovered:** `.wslconfig` was previously limited to `memory=2GB` / `processors=2`. Raised to `10GB` / `4` to allow Next.js builds to complete without crashing Docker Desktop. This is a host-level fix and should persist for future builds.
