@@ -1,87 +1,151 @@
-# Dependencies
+# ========================================
+# ABYSS-MONOREPO — ROOT .gitignore
+# Generated: 2026-04-15 · Audit: 2026-04-15-audit-clearance
+# Owner: Dr. Ferdi Iskandar (Claudesy)
+# ========================================
+#
+# GOLDEN RULE: .agent/, .claude/settings.json, .cursor/rules/*.mdc,
+#              .cursor/README.md, .cursor/index.mdc, and pnpm-lock.yaml
+#              are TRACKED BY DESIGN. See load-bearing negations at the end.
+# ========================================
+
+# ---- SECRETS & ENV (NEVER COMMIT) ----
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.cert
+*.crt
+secrets.json
+secrets.yaml
+secrets.yml
+credentials.json
+service-account*.json
+*-service-account.json
+firebase-adminsdk*.json
+google-credentials*.json
+*.gpg
+*.asc
+
+# ---- AI CONFIG — LOCAL OVERRIDES ONLY ----
+# (.agent/, .claude/settings.json, .cursor/rules TRACKED — see negations)
+.claude/settings.local.json
+.cursor/hooks/edit-log.txt
+.cursor/hooks/*.log
+.cursor/rules/*.local.*
+llm-config.local.*
+model-config.local.*
+prompts/private/
+.aider*
+.continue/
+.copilot/
+.lingma/
+.roo/
+.windsurf/
+.codex/
+
+# ---- DEPENDENCIES ----
 node_modules/
 .pnp
 .pnp.js
+.pnpm-store/
 
-# Build outputs
+# ---- BUILD ARTIFACTS ----
 dist/
 build/
-.next/
 out/
-*.tsbuildinfo
-
-# Turbo cache
+.next/
+.nuxt/
 .turbo/
+.cache/
+.parcel-cache/
+.vercel/
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+*.pdb
 
-# Environment files
-.env*
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Logs
+# ---- RUNTIME & LOGS ----
 *.log
+logs/
+logs
+dev-debug.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# IDE
-.idea/
-.vscode/
+# ---- OS FILES ----
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 *.swp
 *.swo
+*.sw?
 *~
 
-# OS
-.DS_Store
-Thumbs.db
-Desktop.ini
-
-# Testing
-coverage/
-.nyc_output/
-
-# Prisma
-packages/database/prisma/*.db
-packages/database/prisma/*.db-journal
-
-# Langflow local
-flows/.langflow/
-
-# Temporary files
-tmp/
-temp/
-.cache/
-
-# Debug
-*.pdb
-
-# Cursor — hook audit logs (local only; do not commit)
-.cursor/hooks/edit-log.txt
-.cursor/hooks/*.log
-
-logs
-dev-debug.log
-# Dependency directories
-# Environment variables
-.env
-# Editor directories and files
-.idea
-.vscode
+# ---- IDE & EDITOR ----
+.idea/
 *.suo
+*.user
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
-# OS specific
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.shared.json
 
-# Task files
-# tasks.json
-# tasks/
+# ---- TEST COVERAGE ----
+coverage/
+.nyc_output/
+.jest-cache/
+.pytest_cache/
+test-results/
+playwright-report/
 
+# ---- DATABASE & LOCAL STORES ----
+*.sqlite
+*.sqlite3
+*.db
+!apps/community/daf-website/prisma/dev.db
+packages/database/prisma/*.db
+packages/database/prisma/*.db-journal
+vector-store/local/
+chroma-data/
+pinecone-cache/
+embeddings-cache/
 
-#Ignore vscode AI rules
-.github\instructions\codacy.instructions.md
+# ---- INFRASTRUCTURE & DOCKER ----
+docker-compose.override.yml
+.docker/secrets/
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
+*.tfvars
+!*.tfvars.example
+
+# ---- TEMPORARY & MISC ----
+tmp/
+temp/
+flows/.langflow/
+.github/instructions/codacy.instructions.md
+
+# ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
+# Load-bearing negations — DO NOT REMOVE.
+# Git evaluates .gitignore top-down; trailing negations override earlier rules.
+!.agent/
+!.agent/**
+!.claude/settings.json
+!.cursor/rules/
+!.cursor/rules/**
+!.cursor/README.md
+!.cursor/index.mdc
+!pnpm-lock.yaml

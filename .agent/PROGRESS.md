@@ -322,3 +322,254 @@ packages/fhir-engine/README.md
   decision
 
 ---
+## 2026-04-15 01:31 — `3411015` — master
+
+- **Agent**: Claudesy
+- **Commit**: chore(monorepo): orchestrator tests, sentra-portal/main tooling, TASKS sweep
+- **Files changed**: 305 file(s)
+
+```
+.agent/PROGRESS.md
+apps/healthcare/sentra-main/.agent/CONTEXT.md
+apps/healthcare/sentra-main/.agent/DECISIONS.md
+apps/healthcare/sentra-main/.agent/HANDOFF.md
+apps/healthcare/sentra-main/.agent/LESSONS.md
+apps/healthcare/sentra-main/.agent/PROGRESS.md
+apps/healthcare/sentra-main/.agent/sessions/2026-04-12.md
+apps/healthcare/sentra-main/.editorconfig
+apps/healthcare/sentra-main/.gitattributes
+apps/healthcare/sentra-main/.github/ISSUE_TEMPLATE/bug_report.md
+apps/healthcare/sentra-main/.github/ISSUE_TEMPLATE/feature_request.md
+apps/healthcare/sentra-main/.github/PULL_REQUEST_TEMPLATE.md
+apps/healthcare/sentra-main/.github/workflows/cd.yml
+apps/healthcare/sentra-main/.github/workflows/ci.yml
+apps/healthcare/sentra-main/.github/workflows/security.yml
+apps/healthcare/sentra-main/.gitignore
+apps/healthcare/sentra-main/AGENTS.md
+apps/healthcare/sentra-main/ARCHITECTURE.md
+apps/healthcare/sentra-main/CHANGELOG.md
+apps/healthcare/sentra-main/CLAUDE.md
+```
+
+---
+## 2026-04-15 01:31 — `1574085` — master
+
+- **Agent**: Claudesy
+- **Commit**: chore(monorepo): orchestrator tests, sentra-portal/main tooling, TASKS sweep
+- **Files changed**: 306 file(s)
+
+```
+.agent/PROGRESS.md
+.agent/sessions/2026-04-15.md
+apps/healthcare/sentra-main/.agent/CONTEXT.md
+apps/healthcare/sentra-main/.agent/DECISIONS.md
+apps/healthcare/sentra-main/.agent/HANDOFF.md
+apps/healthcare/sentra-main/.agent/LESSONS.md
+apps/healthcare/sentra-main/.agent/PROGRESS.md
+apps/healthcare/sentra-main/.agent/sessions/2026-04-12.md
+apps/healthcare/sentra-main/.editorconfig
+apps/healthcare/sentra-main/.gitattributes
+apps/healthcare/sentra-main/.github/ISSUE_TEMPLATE/bug_report.md
+apps/healthcare/sentra-main/.github/ISSUE_TEMPLATE/feature_request.md
+apps/healthcare/sentra-main/.github/PULL_REQUEST_TEMPLATE.md
+apps/healthcare/sentra-main/.github/workflows/cd.yml
+apps/healthcare/sentra-main/.github/workflows/ci.yml
+apps/healthcare/sentra-main/.github/workflows/security.yml
+apps/healthcare/sentra-main/.gitignore
+apps/healthcare/sentra-main/AGENTS.md
+apps/healthcare/sentra-main/ARCHITECTURE.md
+apps/healthcare/sentra-main/CHANGELOG.md
+```
+
+---
+## 2026-04-15 01:31 — `42a494b` — master
+
+- **Agent**: Claudesy
+- **Commit**: chore(monorepo): orchestrator tests, sentra-portal/main tooling, TASKS sweep
+- **Files changed**: 306 file(s)
+
+```
+.agent/PROGRESS.md
+.agent/sessions/2026-04-15.md
+apps/healthcare/sentra-main/.agent/CONTEXT.md
+apps/healthcare/sentra-main/.agent/DECISIONS.md
+apps/healthcare/sentra-main/.agent/HANDOFF.md
+apps/healthcare/sentra-main/.agent/LESSONS.md
+apps/healthcare/sentra-main/.agent/PROGRESS.md
+apps/healthcare/sentra-main/.agent/sessions/2026-04-12.md
+apps/healthcare/sentra-main/.editorconfig
+apps/healthcare/sentra-main/.gitattributes
+apps/healthcare/sentra-main/.github/ISSUE_TEMPLATE/bug_report.md
+apps/healthcare/sentra-main/.github/ISSUE_TEMPLATE/feature_request.md
+apps/healthcare/sentra-main/.github/PULL_REQUEST_TEMPLATE.md
+apps/healthcare/sentra-main/.github/workflows/cd.yml
+apps/healthcare/sentra-main/.github/workflows/ci.yml
+apps/healthcare/sentra-main/.github/workflows/security.yml
+apps/healthcare/sentra-main/.gitignore
+apps/healthcare/sentra-main/AGENTS.md
+apps/healthcare/sentra-main/ARCHITECTURE.md
+apps/healthcare/sentra-main/CHANGELOG.md
+```
+
+---
+## 2026-04-15 01:32 — `c007506` — master
+
+- **Agent**: Claudesy
+- **Commit**: chore(monorepo): orchestrator tests, sentra-portal/main tooling, TASKS sweep
+- **Files changed**: 306 file(s)
+
+```
+.agent/PROGRESS.md
+.agent/sessions/2026-04-15.md
+apps/healthcare/sentra-main/.agent/CONTEXT.md
+apps/healthcare/sentra-main/.agent/DECISIONS.md
+apps/healthcare/sentra-main/.agent/HANDOFF.md
+apps/healthcare/sentra-main/.agent/LESSONS.md
+apps/healthcare/sentra-main/.agent/PROGRESS.md
+apps/healthcare/sentra-main/.agent/sessions/2026-04-12.md
+apps/healthcare/sentra-main/.editorconfig
+apps/healthcare/sentra-main/.gitattributes
+apps/healthcare/sentra-main/.github/ISSUE_TEMPLATE/bug_report.md
+apps/healthcare/sentra-main/.github/ISSUE_TEMPLATE/feature_request.md
+apps/healthcare/sentra-main/.github/PULL_REQUEST_TEMPLATE.md
+apps/healthcare/sentra-main/.github/workflows/cd.yml
+apps/healthcare/sentra-main/.github/workflows/ci.yml
+apps/healthcare/sentra-main/.github/workflows/security.yml
+apps/healthcare/sentra-main/.gitignore
+apps/healthcare/sentra-main/AGENTS.md
+apps/healthcare/sentra-main/ARCHITECTURE.md
+apps/healthcare/sentra-main/CHANGELOG.md
+```
+
+---
+## 2026-04-15 01:33 — `393754f` — master
+
+- **Agent**: Claudesy
+- **Commit**: feat(packages): implement iskandar-gatekeeper auth + add vitest tests + fix brand naming
+- **Files changed**: 286 file(s)
+
+```
+.kilo/plans/1776182977057-playful-engine.md
+apps/community/AGENTS.md
+apps/community/claudsy-memory/.github/ISSUE_TEMPLATE/bug_report.md
+apps/community/claudsy-memory/.github/PULL_REQUEST_TEMPLATE.md
+apps/community/claudsy-memory/.gitignore
+apps/community/claudsy-memory/.taskmaster/config.json
+apps/community/claudsy-memory/.taskmaster/specs/landing-page.md
+apps/community/claudsy-memory/.taskmaster/state.json
+apps/community/claudsy-memory/.taskmaster/tasks/task_001.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_002.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_003.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_004.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_005.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_006.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_007.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_008.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_009.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_010.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_011.md
+apps/community/claudsy-memory/.taskmaster/tasks/task_012.md
+```
+
+---
+## 2026-04-15 01:49 — `3f63c45` — feature/simplify-pass-2026-04-12
+
+- **Agent**: Claudesy
+- **Commit**: chore(sentra-dashboard): establish core structure and data schema
+- **Files changed**: 59 file(s)
+
+```
+apps/healthcare/sentra-dashboard/.agent/CONTEXT.md
+apps/healthcare/sentra-dashboard/.agent/DECISIONS.md
+apps/healthcare/sentra-dashboard/.agent/HANDOFF.md
+apps/healthcare/sentra-dashboard/.agent/LESSONS.md
+apps/healthcare/sentra-dashboard/.agent/PROGRESS.md
+apps/healthcare/sentra-dashboard/.agent/sessions/2026-04-10.md
+apps/healthcare/sentra-dashboard/.agent/sessions/2026-04-12.md
+apps/healthcare/sentra-dashboard/.agent/sessions/2026-04-13.md
+apps/healthcare/sentra-dashboard/.agent/sessions/2026-04-14.md
+apps/healthcare/sentra-dashboard/AGENTS.md
+apps/healthcare/sentra-dashboard/CLAUDE.md
+apps/healthcare/sentra-dashboard/database/144_penyakit_puskesmas.json
+apps/healthcare/sentra-dashboard/database/audrey.md
+apps/healthcare/sentra-dashboard/database/backups/144_penyakit.2026-03-13T20-48-20.bak.json
+apps/healthcare/sentra-dashboard/database/backups/144_penyakit_pubdata.2026-03-13T21-11-28.bak.json
+apps/healthcare/sentra-dashboard/database/backups/144_penyakit_puskesmas.pre-ppk2022.2026-03-13T21-52-21-579Z.bak.json
+apps/healthcare/sentra-dashboard/database/backups/icdx-extensions.2026-03-13T20-48-20.bak.json
+apps/healthcare/sentra-dashboard/database/backups/obat_data.pre-fornas2023.2026-03-13T21-42-20.bak.json
+apps/healthcare/sentra-dashboard/database/backups/penyakit.2026-03-13T20-46-29.bak.json
+apps/healthcare/sentra-dashboard/database/backups/penyakit.pre-patch.2026-03-13T21-06-13.bak.json
+```
+
+---
+## 2026-04-15 01:49 — `7e54125` — feature/simplify-pass-2026-04-12
+
+- **Agent**: Claudesy
+- **Commit**: perf(sentra-dashboard): implement core business logic and CDSS engines
+- **Files changed**: 235 file(s)
+
+```
+apps/healthcare/sentra-dashboard/src/app/api/admin/dev-updates/[id]/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/dev-updates/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/institutions/[id]/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/institutions/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/notam/[id]/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/notam/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/overview/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/registrations/[id]/approve/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/registrations/[id]/reject/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/registrations/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/users/[username]/deactivate/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/users/[username]/delete/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/users/[username]/logbook/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/users/[username]/profile/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/users/[username]/reactivate/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/users/[username]/reset-password/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/users/[username]/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/admin/users/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/auth/login/route.ts
+apps/healthcare/sentra-dashboard/src/app/api/auth/logout/route.ts
+```
+
+---
+## 2026-04-15 01:49 — `7e05f59` — feature/simplify-pass-2026-04-12
+
+- **Agent**: Claudesy
+- **Commit**: refactor(sentra-dashboard): modular UI components and patient trajectory pages
+- **Files changed**: 143 file(s)
+
+```
+apps/healthcare/sentra-dashboard/src/app/acars/[username]/page.tsx
+apps/healthcare/sentra-dashboard/src/app/acars/page.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminAnalytics.module.css
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminAnalytics.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminCommandCenter.module.css
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminCommandCenter.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminCrewTab.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminDevUpdates.module.css
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminDevUpdates.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminEklaimReadiness.module.css
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminEklaimReadiness.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminInstitutionsTab.module.css
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminInstitutionsTab.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminNotam.module.css
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminNotam.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminOperationalSummary.module.css
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminOperationalSummary.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminOverviewTab.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminPlaceholder.tsx
+apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminRpaMonitoring.tsx
+```
+
+---
+
+## 2026-04-15 02:20 — Pre-Push Safety Audit ✅ SAFE
+
+- Root `.gitignore` hardened (88→149 lines) dengan explicit secret/infra patterns + load-bearing EXEMPTION negations.
+- 4 deliverables di `.agent/sessions/2026-04-15-audit-*` (scan, patches, clearance, remediation.sh).
+- Zero tracked secrets detected. `pnpm-lock.yaml`, `.agent/**`, `.cursor/rules/**` semua preserved.
+- Clearance: **SAFE TO PUSH** (verified via 8 automated tests + `remediation.sh`).
+- Follow-up non-blocking: rotate claudesy-memory API keys; audit 3 submodules (sentra-assist, academic-solutions, ferdiiskandar).
+- Handoff: `2026-04-15-audit`.
+
+---
