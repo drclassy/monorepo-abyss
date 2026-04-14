@@ -3,13 +3,14 @@
 ## Current Status
 
 **Last Updated:** 2026-04-15  
-**Phase:** Phase A & C Complete — Phase B Pending
+**Phase:** Phase A, C & 4 Complete — Phase B Ready
 
 ---
 
 ## ✅ Completed
 
 ### Phase A: Database Schema & Saga Persistence
+
 - [x] SagaExecution model in Prisma schema
 - [x] SagaRepository service for persistence
 - [x] BaseSaga dengan logging hooks
@@ -17,16 +18,24 @@
 - [x] GET /flows/:executionId/status endpoint
 
 ### Phase C: Health Check & API Security
+
 - [x] @nestjs/terminus installed
 - [x] HealthController dengan /health endpoint
 - [x] ApiKeyGuard applied ke FlowsController
 - [x] Swagger docs updated dengan auth info
 
+### Phase 4: Validation
+
+- [x] Test suite complete — 25 tests passing
+- [x] Vitest configured and running
+- [x] All core functionality covered
+
 ---
 
-## 🔄 In Progress
+## 🔄 Ready
 
 ### Phase B: LangFlow Integration
+
 - [ ] Wire AbyssFlowClient ke diagnosis-flow.saga
 - [ ] Wire AbyssFlowClient ke referral-flow.saga
 - [ ] Remove mock data dari CDSS query
@@ -37,7 +46,6 @@
 ## ⏳ Not Started
 
 - [ ] WebSocket integration (FlowsGateway → FlowsService)
-- [ ] Test coverage (Vitest tests)
 - [ ] Staging deployment
 
 ---
@@ -45,4 +53,3 @@
 ## Blockers
 
 - None — Phase B ready untuk dikerjakan
-
