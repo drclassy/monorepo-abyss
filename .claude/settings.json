@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"$files = @('.agent/CONTEXT.md','.agent/PROGRESS.md','.agent/HANDOFF.md','.agent/LESSONS.md','.agent/DECISIONS.md'); $missing = $files | Where-Object { !(Test-Path $_) }; if ($missing) { Write-Error ('GUARD 1 FAILED: Missing files: ' + ($missing -join ', ')); exit 2 }\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"$cmd = $env:CLAUDE_BASH_COMMAND; $blocked = @('rm -rf','git reset --hard','git clean -fd','DROP TABLE','DROP DATABASE','terraform apply','del /f /s /q'); foreach ($b in $blocked) { if ($cmd -match [regex]::Escape($b)) { Write-Error ('BLOCKED: Destructive command detected — ' + $b); exit 2 } }\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"$date = Get-Date -Format 'yyyy-MM-dd HH:mm'; Add-Content -Path '.agent/sessions/$(Get-Date -Format yyyy-MM-dd).md' -Value ('## Session end: ' + $date)\""
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "deny": []
+  }
+}
