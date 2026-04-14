@@ -1,9 +1,30 @@
+// ============================================
+// ISKANDAR GATEKEEPER - Security & Validation Layer
+// ============================================
+
 import * as fs from 'fs'
 import * as path from 'path'
 import { glob } from 'glob'
 
+/**
+ * Auth middleware and verification functions.
+ * Only HS256 JWT is accepted — algorithm confusion attacks are rejected at the header level.
+ * API key comparison uses timing-safe equality to prevent timing oracle attacks.
+ */
+export {
+  verifyJwt,
+  validateApiKey,
+  loadApiKeysFromEnv,
+  jwtMiddleware,
+  apiKeyMiddleware,
+  authMiddleware,
+} from './auth'
+
+/** Type contracts for JWT payloads, API key configs, and auth results. */
+export type { JwtPayload, ApiKeyConfig, ValidationError, AuthResult } from './auth'
+
 // ============================================
-// ISKANDAR GATEKEEPER - GO-GATE VALIDATOR
+// GO-GATE VALIDATOR - Session Approval Check
 // ============================================
 
 /**
@@ -23,14 +44,9 @@ interface SessionStatus {
   status: 'PENDING' | 'GO' | 'COMPLETED' | 'FAILED'
 }
 
-const GO_APPROVAL_PATTERNS = [
-  '✅ GO',
-  'GO APPROVED',
-  '✅ GO APPROVED BY CHIEF',
-  'GO APPROVED',
-]
+const GO_APPROVAL_PATTERNS = ['✅ GO', 'GO APPROVED', '✅ GO APPROVED BY CHIEF', 'GO APPROVED']
 
-const SESSIONS_PATH = path.join(process.cwd(), 'docs/sentratorium/sessions')
+const SESSIONS_PATH = path.join(process.cwd(), '.agent/sessions')
 
 async function main(): Promise<void> {
   console.log('🛡️  Iskandar Gatekeeper - GO-Gate Validator')
@@ -58,7 +74,7 @@ async function main(): Promise<void> {
     console.error('❌ CI/CD REJECTED: GO-Gate validation failed!')
     console.error()
     console.error('To fix this:')
-    console.error('1. Create HANDOFF.md in docs/sentratorium/sessions/')
+    console.error('1. Create HANDOFF.md in .agent/sessions/')
     console.error('2. Get GO approval from Chief')
     console.error('3. Add approval string: "✅ GO APPROVED BY CHIEF"')
     console.error()

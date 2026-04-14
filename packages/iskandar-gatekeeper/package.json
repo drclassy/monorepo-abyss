@@ -6,6 +6,8 @@
   "types": "./src/index.ts",
   "scripts": {
     "start": "tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf .turbo node_modules dist"
@@ -15,7 +17,9 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "@types/express": "^4.17.21",
     "tsx": "^4.0.0",
+    "vitest": "^2.0.0",
     "@the-abyss/config-typescript": "workspace:*",
     "@the-abyss/config-eslint": "workspace:*"
   }
