@@ -2,6 +2,7 @@
 // SHARED TYPES FOR THE ABYSS MONOREPO
 // ============================================
 
+/** User identity, roles, and session types — used across all authentication flows. */
 // User & Authentication
 export interface User {
   id: string
@@ -20,6 +21,7 @@ export interface Session {
   createdAt: Date
 }
 
+/** Organization and app configuration types. */
 // Organization & Apps
 export interface Organization {
   id: string
@@ -38,6 +40,7 @@ export interface App {
   active: boolean
 }
 
+/** AI session types — lifecycle, status, and performance metrics for agent executions. */
 // AI Sessions
 export interface AiSession {
   id: string
@@ -69,6 +72,7 @@ export interface AiSessionMetrics {
   confidence: number
 }
 
+/** Immutable audit log entry — records every significant action with actor and resource context. */
 // Audit Logs
 export interface AuditLog {
   id: string
@@ -85,6 +89,7 @@ export interface AuditLog {
   createdAt: Date
 }
 
+/** Flow definition and execution types — contracts for the Langflow-based AI orchestration layer. */
 // Flow Definitions
 export interface FlowDefinition {
   id: string
@@ -118,6 +123,7 @@ export interface FlowExecution {
 
 export type FlowExecutionStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'SHADOW'
 
+/** API key type as stored in the database — distinct from `ApiKeyConfig` in iskandar-gatekeeper which is the runtime form. */
 // API Keys
 export interface ApiKey {
   id: string
@@ -131,6 +137,7 @@ export interface ApiKey {
   updatedAt: Date
 }
 
+/** Standard API envelope types — all HTTP responses should be wrapped in `ApiResponse`. */
 // Common Response Types
 export interface ApiResponse<T = unknown> {
   success: boolean
@@ -145,6 +152,7 @@ export interface ApiError {
   details?: Record<string, unknown>
 }
 
+/** Pagination request params and paginated response wrapper for list endpoints. */
 // Pagination
 export interface PaginationParams {
   page: number
@@ -163,6 +171,7 @@ export interface PaginatedResponse<T> {
   }
 }
 
+/** Agent handoff and session approval types — used by iskandar-gatekeeper GO-Gate and session management. */
 // Handoff & Sessions
 export interface Handoff {
   id: string
@@ -183,6 +192,7 @@ export interface HandoffApproval {
   comments?: string
 }
 
+/** JET workflow configuration — governs GO-Gate, handoff, and session traceability behavior. */
 // Claudesy Workflow
 export interface ClaudesyWorkflowConfig {
   handoffRequired: boolean

@@ -4,6 +4,7 @@ import { z } from 'zod'
 // TYPES & SCHEMAS
 // ============================================
 
+/** Zod schema for validating flow input payloads before sending to Langflow. */
 export const FlowInputSchema = z.object({
   input_value: z.string(),
   input_type: z.string().optional().default('text'),
@@ -51,6 +52,7 @@ export type FlowMetadata = z.infer<typeof FlowMetadataSchema>
 // ABYSS FLOW CLIENT
 // ============================================
 
+/** Configuration options for `AbyssFlowClient`. All fields default to environment variables if not provided. */
 export interface AbyssFlowClientConfig {
   baseUrl?: string
   apiKey?: string
@@ -181,6 +183,11 @@ export class AbyssFlowClient {
 
 let globalClient: AbyssFlowClient | undefined
 
+/**
+ * Returns the shared `AbyssFlowClient` singleton, creating it on first call.
+ * Pass `config` only on first call — subsequent calls ignore the argument.
+ * Use `resetFlowClient()` in tests to get a fresh instance.
+ */
 export function getFlowClient(config?: AbyssFlowClientConfig): AbyssFlowClient {
   if (!globalClient) {
     globalClient = new AbyssFlowClient(config)
@@ -188,6 +195,7 @@ export function getFlowClient(config?: AbyssFlowClientConfig): AbyssFlowClient {
   return globalClient
 }
 
+/** Reset the singleton — use in test teardown to ensure isolation between test cases. */
 export function resetFlowClient(): void {
   globalClient = undefined
 }

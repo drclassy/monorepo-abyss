@@ -40,16 +40,10 @@
       "type": "bugfix",
       "agent": "Kilocode",
       "project": "sentra-dashboard",
-      "file_refs": [
-        "apps/healthcare/sentra-dashboard/src/lib/report/clinical-report-store.ts"
-      ],
-      "line_refs": [
-        37
-      ],
+      "file_refs": ["apps/healthcare/sentra-dashboard/src/lib/report/clinical-report-store.ts"],
+      "line_refs": [37],
       "blocked_by": [],
-      "blocks": [
-        "B1-B"
-      ],
+      "blocks": ["B1-B"],
       "status": "done",
       "completed_at": "2026-04-14",
       "notes": "Bug already resolved in backup - renamed to reportJsonArtifactPath. File path corrected: src/lib/report/ (not src/stores/)."
@@ -62,9 +56,7 @@
       "type": "review",
       "agent": "claude",
       "project": "sentra-dashboard",
-      "file_refs": [
-        "apps/healthcare/sentra-dashboard/src/lib/report/clinical-report-store.ts"
-      ],
+      "file_refs": ["apps/healthcare/sentra-dashboard/src/lib/report/clinical-report-store.ts"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -80,10 +72,7 @@
       "type": "security",
       "agent": "chief",
       "project": "referralink",
-      "file_refs": [
-        "apps/healthcare/referralink/.env.production",
-        "apps/healthcare/referralink/.env.vercel"
-      ],
+      "file_refs": ["apps/healthcare/referralink/.env.production", "apps/healthcare/referralink/.env.vercel"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -99,15 +88,10 @@
       "type": "audit",
       "agent": "claude",
       "project": "packages",
-      "file_refs": [
-        "packages/iskandar-gatekeeper/src/index.ts",
-        "packages/iskandar-gatekeeper/package.json"
-      ],
+      "file_refs": ["packages/iskandar-gatekeeper/src/index.ts", "packages/iskandar-gatekeeper/package.json"],
       "line_refs": [],
       "blocked_by": [],
-      "blocks": [
-        "B3-B"
-      ],
+      "blocks": ["B3-B"],
       "status": "done",
       "completed_at": "2026-04-14",
       "notes": "Audit complete. AUDIT.md created at packages/iskandar-gatekeeper/AUDIT.md. Package is dual-purpose: (1) GO-Gate CI/CD validator [functional], (2) Auth/Security middleware [skeleton — not production-ready]. 7 gaps identified. B3-B recommendations documented in AUDIT.md §5."
@@ -120,16 +104,13 @@
       "type": "implement",
       "agent": "Kilocode",
       "project": "packages",
-      "file_refs": [
-        "packages/iskandar-gatekeeper/src/auth.ts",
-        "packages/iskandar-gatekeeper/src/index.ts"
-      ],
+      "file_refs": ["packages/iskandar-gatekeeper/src/auth.ts", "packages/iskandar-gatekeeper/src/index.ts"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
       "status": "done",
-      "completed_at": "2026-04-14",
-      "notes": "Implemented: JWT verification (HS256), API key validation with env loading, Express middleware (jwtMiddleware, apiKeyMiddleware, authMiddleware). All exported from index.ts."
+      "completed_at": "2026-04-15",
+      "notes": "Hardened auth.ts: (1) top-level import { createHmac, timingSafeEqual } from node:crypto replacing inline require; (2) JWT alg header enforcement — rejects anything not HS256 (algorithm confusion prevention); (3) timing-safe API key comparison via timingSafeEqual; (4) requiredPermissions enforcement in apiKeyMiddleware and authMiddleware; (5) fixed loadApiKeysFromEnv _PERMISSIONS/_EXPIRES suffix bug. Added vitest + vitest.config.ts + src/__tests__/auth.test.ts (15 tests covering attack scenarios)."
     },
     {
       "id": "B4-A",
@@ -139,15 +120,10 @@
       "type": "scaffold",
       "agent": "cursor",
       "project": "orchestrator",
-      "file_refs": [
-        "apps/platform/orchestrator/src/"
-      ],
+      "file_refs": ["apps/platform/orchestrator/src/"],
       "line_refs": [],
       "blocked_by": [],
-      "blocks": [
-        "B4-B",
-        "B4-C"
-      ],
+      "blocks": ["B4-B", "B4-C"],
       "status": "done",
       "completed_at": "2026-04-14",
       "notes": "Cursor verified 2026-04-14: src/commands/ and src/queries/ with index.ts barrels; RunFlowCommand + GetFlowStatusQuery placeholders present. Barrel comments aligned (wire to @nestjs/cqrs when adopted). Prior Claude scaffold retained."
@@ -160,9 +136,7 @@
       "type": "implement",
       "agent": "Kilocode",
       "project": "orchestrator",
-      "file_refs": [
-        "apps/platform/orchestrator/src/sagas/"
-      ],
+      "file_refs": ["apps/platform/orchestrator/src/sagas/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -178,9 +152,7 @@
       "type": "implement",
       "agent": "Kilocode",
       "project": "orchestrator",
-      "file_refs": [
-        "apps/platform/orchestrator/src/sagas/"
-      ],
+      "file_refs": ["apps/platform/orchestrator/src/sagas/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -196,12 +168,7 @@
       "type": "decision",
       "agent": "chief",
       "project": "infrastructure",
-      "file_refs": [
-        "flows/",
-        "flows/definitions/",
-        "flows/components/",
-        "flows/tests/"
-      ],
+      "file_refs": ["flows/", "flows/definitions/", "flows/components/", "flows/tests/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -217,9 +184,7 @@
       "type": "decision",
       "agent": "chief",
       "project": "root",
-      "file_refs": [
-        "ORCHESTRATOR.md"
-      ],
+      "file_refs": ["ORCHESTRATOR.md"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -235,13 +200,9 @@
       "type": "decision",
       "agent": "chief",
       "project": "referralink",
-      "file_refs": [
-        "apps/healthcare/referralink/"
-      ],
+      "file_refs": ["apps/healthcare/referralink/"],
       "line_refs": [],
-      "blocked_by": [
-        "B2"
-      ],
+      "blocked_by": ["B2"],
       "blocks": [],
       "status": "done",
       "completed_at": "2026-04-14",
@@ -255,10 +216,7 @@
       "type": "decision",
       "agent": "chief",
       "project": "academic",
-      "file_refs": [
-        "apps/academic/clinical-simulator/",
-        "apps/academic/evaluation-engine/"
-      ],
+      "file_refs": ["apps/academic/clinical-simulator/", "apps/academic/evaluation-engine/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -274,9 +232,7 @@
       "type": "decision",
       "agent": "chief",
       "project": "prototype",
-      "file_refs": [
-        "apps/prototype/edge-ai-prototype/"
-      ],
+      "file_refs": ["apps/prototype/edge-ai-prototype/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -292,9 +248,7 @@
       "type": "decision",
       "agent": "chief",
       "project": "agent-hermes",
-      "file_refs": [
-        "apps/prototype/agent-hermes/"
-      ],
+      "file_refs": ["apps/prototype/agent-hermes/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -310,18 +264,13 @@
       "type": "refactor",
       "agent": "cursor",
       "project": "sentra-dashboard",
-      "file_refs": [
-        "apps/healthcare/sentra-dashboard/package.json",
-        "pnpm-workspace.yaml"
-      ],
+      "file_refs": ["apps/healthcare/sentra-dashboard/package.json", "pnpm-workspace.yaml"],
       "line_refs": [],
-      "blocked_by": [
-        "S2"
-      ],
+      "blocked_by": ["S2"],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "Update semua import references setelah rename"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "Package name aligned to @the-abyss/sentra-dashboard; workspace/docs references updated (Cursor session)."
     },
     {
       "id": "S7",
@@ -350,9 +299,7 @@
       "type": "cleanup",
       "agent": "Kilocode",
       "project": "sentra-dashboard",
-      "file_refs": [
-        "apps/healthcare/sentra-dashboard/scripts/reset-crew-password.mjs"
-      ],
+      "file_refs": ["apps/healthcare/sentra-dashboard/scripts/reset-crew-password.mjs"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -375,9 +322,9 @@
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "Quick win — 5 menit"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": ".semgrep-out.json in .gitignore; file not tracked — no rm --cached needed."
     },
     {
       "id": "P1-03",
@@ -387,18 +334,13 @@
       "type": "commit",
       "agent": "cursor",
       "project": "sentra-dashboard",
-      "file_refs": [
-        "apps/healthcare/sentra-dashboard/"
-      ],
+      "file_refs": ["apps/healthcare/sentra-dashboard/"],
       "line_refs": [],
-      "blocked_by": [
-        "B1-A",
-        "B1-B"
-      ],
+      "blocked_by": [],
       "blocks": [],
-      "status": "blocked",
+      "status": "todo",
       "completed_at": null,
-      "notes": "Commit setelah B1 bug fix included agar tidak ada broken commit"
+      "notes": "B1-A/B1-B done — tree may still be untracked locally; needs Chief scope for git add / branch / commit strategy."
     },
     {
       "id": "P1-04",
@@ -408,9 +350,7 @@
       "type": "cleanup",
       "agent": "Kilocode",
       "project": "sentra-assist",
-      "file_refs": [
-        "apps/healthcare/sentra-assist/.agent/"
-      ],
+      "file_refs": ["apps/healthcare/sentra-assist/.agent/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -426,15 +366,13 @@
       "type": "bugfix",
       "agent": "cursor",
       "project": "packages",
-      "file_refs": [
-        "packages/config-typescript/package.json"
-      ],
+      "file_refs": ["packages/config-typescript/package.json"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "BOM bisa cause JSON parse errors di beberapa tools"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "package.json + tsconfig rewritten UTF-8 (no BOM) for tooling compatibility."
     },
     {
       "id": "P1-06",
@@ -444,15 +382,13 @@
       "type": "bugfix",
       "agent": "cursor",
       "project": "packages",
-      "file_refs": [
-        "packages/integration-bridge/package.json"
-      ],
+      "file_refs": ["packages/integration-bridge/package.json"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "Batch dengan P1-05 — satu commit: fix(packages): remove BOM from package.json files"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "integration-bridge/package.json normalized UTF-8 JSON (batch with P1-05)."
     },
     {
       "id": "P1-07",
@@ -462,9 +398,7 @@
       "type": "test",
       "agent": "Kilocode",
       "project": "packages",
-      "file_refs": [
-        "packages/fhir-engine/src/__tests__/fhir-engine.test.ts"
-      ],
+      "file_refs": ["packages/fhir-engine/src/__tests__/fhir-engine.test.ts"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -480,9 +414,7 @@
       "type": "test",
       "agent": "Kilocode",
       "project": "packages",
-      "file_refs": [
-        "packages/vector-store/src/__tests__/vector-store.test.ts"
-      ],
+      "file_refs": ["packages/vector-store/src/__tests__/vector-store.test.ts"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -498,9 +430,7 @@
       "type": "test",
       "agent": "Kilocode",
       "project": "packages",
-      "file_refs": [
-        "packages/artificial-core/src/__tests__/artificial-core.test.ts"
-      ],
+      "file_refs": ["packages/artificial-core/src/__tests__/artificial-core.test.ts"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -516,13 +446,8 @@
       "type": "docs",
       "agent": "claude",
       "project": "root",
-      "file_refs": [
-        "CONTEXT.md"
-      ],
-      "line_refs": [
-        55,
-        57
-      ],
+      "file_refs": ["CONTEXT.md"],
+      "line_refs": [55, 57],
       "blocked_by": [],
       "blocks": [],
       "status": "done",
@@ -537,9 +462,7 @@
       "type": "cleanup",
       "agent": "cursor",
       "project": "root",
-      "file_refs": [
-        "pnpm-lock.yaml"
-      ],
+      "file_refs": ["pnpm-lock.yaml"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -555,18 +478,13 @@
       "type": "test",
       "agent": "Kilocode",
       "project": "orchestrator",
-      "file_refs": [
-        "apps/platform/orchestrator/src/",
-        "apps/platform/orchestrator/vitest.config.ts"
-      ],
+      "file_refs": ["apps/platform/orchestrator/src/", "apps/platform/orchestrator/vitest.config.ts"],
       "line_refs": [],
-      "blocked_by": [
-        "B4-A"
-      ],
+      "blocked_by": [],
       "blocks": [],
-      "status": "blocked",
-      "completed_at": null,
-      "notes": "Lebih mudah setelah CQRS scaffold B4-A done"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "vitest.config.ts + base.saga, kafka, health (unit + module compile) specs; B4-A satisfied."
     },
     {
       "id": "P1-13",
@@ -576,33 +494,13 @@
       "type": "cleanup",
       "agent": "cursor",
       "project": "sentra-portal",
-      "file_refs": [
-        "apps/platform/sentra-portal/src/proxy.disabled.ts"
-      ],
-      "line_refs": [],
-      "blocked_by": [],
-      "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "Quick cleanup — disabled files tidak boleh hidup di src/"
-    },
-    {
-      "id": "P1-07",
-      "title": "Add Vitest unit tests untuk fhir-engine package",
-      "description": "Buat packages/fhir-engine/src/__tests__/fhir-engine.test.ts. Minimal 5 test cases: (1) transform valid FHIR R4 resource, (2) validate Patient resource, (3) validate Observation resource, (4) handle invalid input gracefully, (5) FHIR bundle parsing.",
-      "priority": "p1",
-      "type": "test",
-      "agent": "Kilocode",
-      "project": "packages",
-      "file_refs": [
-        "packages/fhir-engine/src/__tests__/fhir-engine.test.ts"
-      ],
+      "file_refs": ["apps/platform/sentra-portal/src/proxy.disabled.ts"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
       "status": "done",
-      "completed_at": "2026-04-14",
-      "notes": "Created 12 test cases: FhirValidator (Patient/Observation validation, errors), helper functions, FhirTransformer. All tests passed."
+      "completed_at": "2026-04-15",
+      "notes": "proxy.disabled.ts removed from src/; example moved to docs/proxy.disabled.example.ts"
     },
     {
       "id": "P2-01",
@@ -612,9 +510,7 @@
       "type": "review",
       "agent": "claude",
       "project": "sentra-dashboard",
-      "file_refs": [
-        "apps/healthcare/sentra-dashboard/package.json"
-      ],
+      "file_refs": ["apps/healthcare/sentra-dashboard/package.json"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -630,15 +526,13 @@
       "type": "verify",
       "agent": "cursor",
       "project": "sentra-main",
-      "file_refs": [
-        "apps/healthcare/sentra-main/.gitignore"
-      ],
+      "file_refs": ["apps/healthcare/sentra-main/.gitignore"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "Build artifact — tidak perlu di-track"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "Added Next.js-oriented .gitignore including *.tsbuildinfo; tsbuildinfo not in git index."
     },
     {
       "id": "P2-03",
@@ -648,15 +542,13 @@
       "type": "verify",
       "agent": "cursor",
       "project": "sentra-portal",
-      "file_refs": [
-        "apps/platform/sentra-portal/.gitignore"
-      ],
+      "file_refs": ["apps/platform/sentra-portal/.gitignore"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "Standard Next.js — harusnya sudah ada tapi verify"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "Verified: /.next/ and *.tsbuildinfo already present; added Playwright artifact dirs."
     },
     {
       "id": "P2-04",
@@ -666,15 +558,13 @@
       "type": "verify",
       "agent": "cursor",
       "project": "sentra-assist",
-      "file_refs": [
-        "apps/healthcare/sentra-assist/.gitignore"
-      ],
+      "file_refs": ["apps/healthcare/sentra-assist/.gitignore"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "WXT standard output — batch dengan P2-02 dan P2-03"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": ".output/ was present; added dist/"
     },
     {
       "id": "P2-05",
@@ -692,9 +582,9 @@
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "Nested .git = risiko git operations yang unexpected"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "Recursive search under the three roots: no nested .git directories found."
     },
     {
       "id": "P2-06",
@@ -724,10 +614,7 @@
       "type": "migrate",
       "agent": "claude",
       "project": "academic",
-      "file_refs": [
-        "apps/academic/academic-solutions/AGENT_MEMORY.md",
-        "apps/academic/academic-solutions/.agent/"
-      ],
+      "file_refs": ["apps/academic/academic-solutions/AGENT_MEMORY.md", "apps/academic/academic-solutions/.agent/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -743,16 +630,13 @@
       "type": "test",
       "agent": "cursor",
       "project": "sentra-portal",
-      "file_refs": [
-        "apps/platform/sentra-portal/package.json",
-        "apps/platform/sentra-portal/"
-      ],
+      "file_refs": ["apps/platform/sentra-portal/package.json", "apps/platform/sentra-portal/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "v2.2.0 most mature app tapi no tests — ironi"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "vitest + utils.spec.ts; Playwright e2e smoke for /dashboard/default, /dashboard/crm, /dashboard/analytics (actual routes). Fixed broken import on default dashboard page."
     },
     {
       "id": "P2-09",
@@ -762,9 +646,7 @@
       "type": "refactor",
       "agent": "Kilocode",
       "project": "community",
-      "file_refs": [
-        "apps/community/claudesy-memory/"
-      ],
+      "file_refs": ["apps/community/claudesy-memory/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
@@ -780,17 +662,13 @@
       "type": "docs",
       "agent": "claude",
       "project": "packages",
-      "file_refs": [
-        "packages/"
-      ],
+      "file_refs": ["packages/"],
       "line_refs": [],
-      "blocked_by": [
-        "B3-B"
-      ],
+      "blocked_by": ["B3-B"],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "Lakukan setelah iskandar-gatekeeper implementation done (B3-B)"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "JSDoc added to all public exports in index.ts for 9 packages with code (fhir-engine, vector-store, artificial-core, iskandar-gatekeeper, database, langflow-client, sentra-ui, shared-types, integration-bridge). README.md created for all 11 packages without READMEs (design-token already had one). config-eslint and config-typescript received README only (no index.ts)."
     },
     {
       "id": "P2-11",
@@ -800,15 +678,13 @@
       "type": "test",
       "agent": "cursor",
       "project": "sentra-main",
-      "file_refs": [
-        "apps/healthcare/sentra-main/"
-      ],
+      "file_refs": ["apps/healthcare/sentra-main/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "Marketing site — brand-critical, minimal smoke test cukup"
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "playwright.config.ts (ESM __dirname), e2e/smoke.spec.ts: main landmark, /insights /story /privacy /terms, #contact + Join Waiting List CTA (no HTML form on site)."
     },
     {
       "id": "P2-12",

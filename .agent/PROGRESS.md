@@ -137,6 +137,14 @@ apps/prototype/agent-hermes/tests/smoke/test_base_profile.py
 
 ---
 
+## 2026-04-15 — TASKS.json sweep (S6, P1 hygiene, P2 tests) — Cursor
+
+- **Output**: `.agent/sessions/2026-04-15.md` (session append)
+- **Status**: TASK board items closed except **B5**, **S1** (deferred),
+  **P1-03** (todo — git scope Chief)
+
+---
+
 ## 2026-04-15 — B4-A CQRS verify + P1-11 lockfile (Cursor)
 
 - **Agent**: Cursor
@@ -185,3 +193,80 @@ pnpm-lock.yaml
   - `apps/platform/orchestrator/.agent/sessions/2026-04-15.md`
   - 5 new files created, 5 files modified
 - **Status**: ✅ Phase A & C Complete — Phase B (LangFlow wiring) pending
+
+## 2026-04-15 00:25 — `1abef09` — master
+
+- **Agent**: Claudesy
+- **Commit**: feat(orchestrator): implement saga persistence, health checks, and
+  api security
+- **Files changed**: 14 file(s)
+
+```
+.agent/PROGRESS.md
+apps/platform/orchestrator/.agent/PROGRESS.md
+apps/platform/orchestrator/.agent/sessions/2026-04-15.md
+apps/platform/orchestrator/src/app.module.ts
+apps/platform/orchestrator/src/flows/flows.controller.ts
+apps/platform/orchestrator/src/flows/flows.module.ts
+apps/platform/orchestrator/src/flows/flows.service.ts
+apps/platform/orchestrator/src/health/health.controller.ts
+apps/platform/orchestrator/src/health/health.module.ts
+apps/platform/orchestrator/src/sagas/base.saga.ts
+apps/platform/orchestrator/src/sagas/saga.repository.ts
+apps/platform/orchestrator/src/sagas/sagas.module.ts
+packages/database/prisma/schema.prisma
+packages/database/src/index.ts
+```
+
+---
+
+## 2026-04-15 00:44 — `7234dd3` — master
+
+- **Agent**: Claudesy
+- **Commit**: test(orchestrator): add comprehensive test suite for Phase 4
+  validation
+- **Files changed**: 5 file(s)
+
+```
+apps/platform/orchestrator/.agent/PROGRESS.md
+apps/platform/orchestrator/.agent/sessions/2026-04-15.md
+apps/platform/orchestrator/src/flows/flows.controller.spec.ts
+apps/platform/orchestrator/src/flows/flows.service.spec.ts
+apps/platform/orchestrator/src/sagas/saga.repository.spec.ts
+```
+
+---
+
+## 2026-04-15 — Orchestrator Phase 4 Testing (Kilo)
+
+- **Agent**: Claude (Kilo)
+- **Action**: Implemented comprehensive test suite for orchestrator (Phase 4
+  Validation)
+- **Tests Created:**
+  - `saga.repository.spec.ts` - 9 tests for saga persistence
+  - `flows.service.spec.ts` - 8 tests for flow execution
+  - `flows.controller.spec.ts` - 3 tests for API endpoints
+- **Results:** 25 tests total | 6 test files | 100% pass
+- **Output:**
+  - `apps/platform/orchestrator/.agent/sessions/2026-04-15.md` updated
+  - `apps/platform/orchestrator/.agent/PROGRESS.md` updated
+- **Status**: ✅ Phase 4 Complete — Ready for Phase B (LangFlow wiring)
+
+---
+## 2026-04-15 01:28 — `7c6b834` — master
+
+- **Agent**: Claudesy
+- **Commit**: fix(security): harden iskandar-gatekeeper auth layer [B3-B]
+- **Files changed**: 7 file(s)
+
+```
+packages/iskandar-gatekeeper/AUDIT.md
+packages/iskandar-gatekeeper/README.md
+packages/iskandar-gatekeeper/package.json
+packages/iskandar-gatekeeper/src/__tests__/auth.test.ts
+packages/iskandar-gatekeeper/src/auth.ts
+packages/iskandar-gatekeeper/src/index.ts
+packages/iskandar-gatekeeper/vitest.config.ts
+```
+
+---

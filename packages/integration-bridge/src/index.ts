@@ -6,6 +6,11 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+/**
+ * Integration bridge between the Abyss monorepo and external project management tools.
+ * Requires `NOTION_API_KEY` + `NOTION_DATABASE_ID` for Notion sync, and `LINEAR_API_KEY` for Linear updates.
+ * Gracefully skips sync if the corresponding API key is absent.
+ */
 export class AbyssIntegrationBridge {
   private notion: Client | null = null
   private linear: LinearClient | null = null
