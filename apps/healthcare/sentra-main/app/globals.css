@@ -1,0 +1,147 @@
+/* Designed and constructed by Claudesy. */
+/* Sentra Healthcare AI — Design System */
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--sentra-bg);
+  --color-foreground: var(--sentra-fg);
+  --color-accent: var(--sentra-accent);
+  --color-muted: var(--sentra-muted-text);
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  /* ── Core Palette ── */
+  --sentra-bg: #0d0d0d;
+  --sentra-fg: #b7ab98;
+  --sentra-accent: #eb5939;
+  --sentra-white: #fff;
+
+  /* ── Muted Scale ── */
+  --sentra-muted: #b8ac99;
+  --sentra-muted-text: #b8ac99cc; /* 80% — primary muted text */
+  --sentra-muted-half: #b8ac9980; /* 50% */
+  --sentra-muted-subtle: #b8ac9933; /* 20% */
+  --sentra-muted-faint: #b8ac991a; /* 10% */
+  --sentra-muted-line: #b8ac9940; /* 25% — grid lines */
+
+  /* ── Canvas (elevated surfaces) ── */
+  --sentra-canvas: #1c1b1a;
+  --sentra-canvas-dark: #141311;
+  --sentra-panel-1: #111110;
+  --sentra-panel-2: #17160f;
+  --sentra-panel-3: #1c1b17;
+
+  /* ── Semantic ── */
+  --sentra-critical: #e65a4c;
+  --sentra-critical-rgb: 230 90 76;
+  --sentra-warning: #fbbf24;
+  --sentra-warning-rgb: 251 191 36;
+  --sentra-critical-faint: rgb(var(--sentra-critical-rgb) / 0.04);
+  --sentra-critical-border: rgb(var(--sentra-critical-rgb) / 0.2);
+  --sentra-warning-faint: rgb(var(--sentra-warning-rgb) / 0.05);
+  --sentra-warning-soft: rgb(var(--sentra-warning-rgb) / 0.3);
+  --sentra-warning-muted: rgb(var(--sentra-warning-rgb) / 0.7);
+  --sentra-grid-line-strong: rgb(183 171 152 / 0.3);
+  --sentra-neutral-soft: rgb(183 171 152 / 0.04);
+  --sentra-neutral-border: rgb(183 171 152 / 0.1);
+  --sentra-neutral-text: rgb(183 171 152 / 0.6);
+
+  /* ── Audrey AI ── */
+  --sentra-audrey: #c4956a;
+  --sentra-audrey-muted: #c4956a80;
+  --sentra-audrey-faint: #c4956a15;
+  --sentra-audrey-glow: #c4956a08;
+  --sentra-audrey-bubble: #f2ebe0;
+  --sentra-audrey-bubble-text: #1a1510;
+  --sentra-audrey-rgb: 196 149 106;
+  --sentra-audrey-ambient: rgb(var(--sentra-audrey-rgb) / 0.04);
+  --sentra-audrey-ring-border: rgb(var(--sentra-audrey-rgb) / 0.08);
+  --sentra-audrey-accent-border: rgb(var(--sentra-audrey-rgb) / 0.19);
+  --sentra-audrey-accent-bubble: rgb(var(--sentra-audrey-rgb) / 0.06);
+  --sentra-audrey-accent-bubble-border: rgb(var(--sentra-audrey-rgb) / 0.09);
+  --sentra-audrey-feature-divider: rgb(var(--sentra-audrey-rgb) / 0.08);
+  --sentra-audrey-corner-border: rgb(var(--sentra-audrey-rgb) / 0.07);
+  --sentra-audrey-line: rgb(var(--sentra-audrey-rgb) / 0.31);
+  --sentra-audrey-gradient-line: linear-gradient(
+    to right,
+    rgb(var(--sentra-audrey-rgb) / 0.6),
+    var(--sentra-audrey),
+    rgb(var(--sentra-audrey-rgb) / 0.6)
+  );
+  --sentra-audrey-teal: #6b9b8a;
+  --sentra-audrey-teal-faint: #6b9b8a18;
+  --sentra-audrey-teal-rgb: 107 155 138;
+  --sentra-shadow-card:
+    8px 8px 20px #050505, -8px -8px 20px #1a1a1a, inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  --sentra-shadow-elevated: 6px 6px 16px #050505, -6px -6px 16px #1a1a1a;
+  --sentra-shadow-subtle: 3px 3px 8px #050505, -2px -2px 6px #2a2a2a;
+  --sentra-shadow-accent: 0 0 32px rgba(235, 89, 57, 0.4);
+  --sentra-shadow-accent-strong: 0 0 32px rgba(235, 89, 57, 0.5);
+
+  /* ── SentraSim Section ── */
+  --sdx-bg-canvas: var(--sentra-canvas);
+  --sdx-bg-page: var(--sentra-bg);
+  --sdx-text-main: var(--sentra-fg);
+  --sdx-text-muted: var(--sentra-muted-text);
+  --sdx-line-base: var(--sentra-muted-line);
+  --sdx-grid-faint: rgba(184, 172, 153, 0.03);
+  --sdx-c-anamnesa: var(--sentra-muted-text);
+  --sdx-c-asesmen: var(--sentra-accent);
+  --sdx-c-critical: var(--sentra-critical);
+  --sdx-c-warning: var(--sentra-warning);
+}
+
+body {
+  background: var(--sentra-bg);
+  color: var(--sentra-fg);
+  font-size: 19px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scoped Sentra Sim Reset */
+[data-sentra-sim] * {
+  box-sizing: border-box;
+}
+
+@keyframes sdxPulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes sdxBlurReveal {
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px);
+    color: var(--sdx-text-main);
+    text-shadow: 0 0 12px rgba(212, 122, 87, 0.15);
+  }
+}
+
+@keyframes sdxSmoothBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 60s linear infinite;
+}
