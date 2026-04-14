@@ -185,7 +185,7 @@ enum AiSessionStatus {
 }
 
 // ============================================
-// AUDIT TRAIL (HIPAA Compliance)
+// AUDIT TRAIL (Compliance Audit)
 // ============================================
 
 model AuditLog {
@@ -254,4 +254,34 @@ enum FlowExecutionStatus {
   COMPLETED
   FAILED
   SHADOW // Shadow mode execution
+}
+
+// ============================================
+// SAGA EXECUTION TRACKING (Orchestrator)
+// ============================================
+
+model SagaExecution {
+  id            String   @id @default(cuid())
+  flowId        String
+  sagaType      String   // "diagnosis-flow" | "referral-flow" | "generic-flow"
+  status        SagaExecutionStatus @default(RUNNING)
+  input         Json
+  output        Json?
+  error         String?
+  steps         Json     // Array of { name, status, startedAt, completedAt, output?, error? }
+  startedAt     DateTime @default(now())
+  completedAt   DateTime?
+  organizationId String?
+  
+  @@index([flowId])
+  @@index([status])
+  @@index([startedAt])
+  @@index([organizationId])
+}
+
+enum SagaExecutionStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+  COMPENSATED
 }

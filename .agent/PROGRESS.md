@@ -1,11 +1,12 @@
 # PROGRESS.md — The Abyss (Monorepo Root)
+
 <!-- Agent MUST update at every session end or completed JET phase. -->
 
 ## Current Status
 
-**Last updated:** 2026-04-15
-**Last session:** B4-A orchestrator CQRS barrel polish + P1-11 pnpm-lock refresh (TASKS.json updated)
-**Active JET phase:** Complete — awaiting next Chief instruction
+**Last updated:** 2026-04-15 **Last session:** B4-A orchestrator CQRS barrel
+polish + P1-11 pnpm-lock refresh (TASKS.json updated) **Active JET phase:**
+Complete — awaiting next Chief instruction
 
 ---
 
@@ -13,7 +14,8 @@
 
 - [x] Root AGENTS.md written (supreme authority with NestJS §5)
 - [x] Root CLAUDE.md written (Claude Code CLI entry point)
-- [x] .cursor/rules/_constitution.mdc written (GUARD 1 + GUARD 2 + GUARD 3 NestJS)
+- [x] .cursor/rules/\_constitution.mdc written (GUARD 1 + GUARD 2 + GUARD 3
+      NestJS)
 - [x] .agent/ 5-file structure scaffolded at monorepo root
 - [x] .claude/ folder structure created (agents/, commands/, skills/)
 - [x] Dual session log protocol established
@@ -54,6 +56,7 @@
 4. Await Chief instruction
 
 ---
+
 <!-- Agent: append session updates below this line -->
 
 ## 2026-04-13 (evening) — Project-by-Project Evaluation Sweep — Claude Code
@@ -61,7 +64,9 @@
 - **Agent**: Claude (Opus 4.6, 1M context)
 - **Action**: Audited 14 projects + final report (15 tasks completed)
 - **Output**: `.agent/sessions/2026-04-13.md` (full per-project findings)
-- **Critical findings**: artifactPathUnder bug (sentra-dashboard P0), ORCHESTRATOR Phase A/B/C pending GO, flows/ empty, referralink potential .env.production leak
+- **Critical findings**: artifactPathUnder bug (sentra-dashboard P0),
+  ORCHESTRATOR Phase A/B/C pending GO, flows/ empty, referralink potential
+  .env.production leak
 - **Status**: ✅ Complete — awaiting Chief direction on P0 items
 
 ---
@@ -69,7 +74,8 @@
 ## 2026-04-13 15:39 — `24da75f` — master
 
 - **Agent**: Claudesy
-- **Commit**: feat(agent-hermes): complete Phase 1 ops + Phase 2 skills/plugins mount
+- **Commit**: feat(agent-hermes): complete Phase 1 ops + Phase 2 skills/plugins
+  mount
 - **Files changed**: 23 file(s)
 
 ```
@@ -96,10 +102,12 @@ apps/prototype/agent-hermes/scripts/up.ps1
 ```
 
 ---
+
 ## 2026-04-13 17:11 — `b9d5bad` — master
 
 - **Agent**: Claudesy
-- **Commit**: feat(agent-hermes): complete base stack build verification + fix smoke tests
+- **Commit**: feat(agent-hermes): complete base stack build verification + fix
+  smoke tests
 - **Files changed**: 8 file(s)
 
 ```
@@ -120,9 +128,11 @@ apps/prototype/agent-hermes/tests/smoke/test_base_profile.py
 ## 2026-04-14 16:30 — Sentra Portal Enhancement & Rebranding
 
 - **Agent**: Gemini (Sentra Assistant)
-- **Action**: Layout alignment, Rebranding, AI Flows Enhancement, Command Center Transformation, Runtime Safety fixes.
+- **Action**: Layout alignment, Rebranding, AI Flows Enhancement, Command Center
+  Transformation, Runtime Safety fixes.
 - **Output**: .agent/sessions/2026-04-14.md
-- **Key changes**: Moved AI Flows page, renamed Studio Admin to Sentra Portal, added AbyssChat & SagaVisualizer, improved runtime safety for AI chat.
+- **Key changes**: Moved AI Flows page, renamed Studio Admin to Sentra Portal,
+  added AbyssChat & SagaVisualizer, improved runtime safety for AI chat.
 - **Status**: ✅ Complete — Sentra Portal more aligned with Abyss vision.
 
 ---
@@ -130,6 +140,48 @@ apps/prototype/agent-hermes/tests/smoke/test_base_profile.py
 ## 2026-04-15 — B4-A CQRS verify + P1-11 lockfile (Cursor)
 
 - **Agent**: Cursor
-- **Action**: Verifikasi scaffold `commands/` + `queries/` orchestrator, polish barrel exports; refresh `pnpm-lock.yaml` (install + dedupe dengan `--ignore-scripts` di Windows); update `TASKS.json` untuk B4-A notes dan P1-11 `done`.
+- **Action**: Verifikasi scaffold `commands/` + `queries/` orchestrator, polish
+  barrel exports; refresh `pnpm-lock.yaml` (install + dedupe dengan
+  `--ignore-scripts` di Windows); update `TASKS.json` untuk B4-A notes dan P1-11
+  `done`.
 - **Output**: `.agent/sessions/2026-04-15.md`
 - **Status**: ✅ Complete
+
+## 2026-04-15 00:15 — `1c7c60c` — master
+
+- **Agent**: Claudesy
+- **Commit**: chore(monorepo): B4-A CQRS barrels + P1-11 lockfile sync
+- **Files changed**: 6 file(s)
+
+```
+.agent/PROGRESS.md
+.agent/sessions/2026-04-15.md
+.agent/tasks/TASKS.json
+apps/platform/orchestrator/src/commands/index.ts
+apps/platform/orchestrator/src/queries/index.ts
+pnpm-lock.yaml
+```
+
+---
+
+## 2026-04-15 — Orchestrator Phase A & C Implementation (Kilo)
+
+- **Agent**: Claude (Kilo)
+- **Action**: Implemented Saga persistence, Health checks, and API security for
+  Orchestrator
+- **Phase A Complete:**
+  - Added SagaExecution model to Prisma schema
+  - Created SagaRepository service for CRUD operations
+  - Updated BaseSaga with persistence hooks (setExecutionContext, logStepStart,
+    logStepComplete, logStepFailed)
+  - Integrated SagaRepository into FlowsService
+  - Added GET /flows/:executionId/status endpoint
+- **Phase C Complete:**
+  - Installed @nestjs/terminus
+  - Created HealthController with /health endpoint
+  - Applied ApiKeyGuard to FlowsController
+  - Updated Swagger docs with auth info
+- **Output**:
+  - `apps/platform/orchestrator/.agent/sessions/2026-04-15.md`
+  - 5 new files created, 5 files modified
+- **Status**: ✅ Phase A & C Complete — Phase B (LangFlow wiring) pending

@@ -1,5 +1,5 @@
 // @the-abyss/database - Public API
-export { PrismaClient } from '@prisma/client'
+export { PrismaClient, SagaExecutionStatus } from '@prisma/client'
 export type {
   Prisma,
   User,
@@ -11,7 +11,8 @@ export type {
   FlowExecution,
   Role,
   AiSessionStatus,
-  FlowExecutionStatus
+  FlowExecutionStatus,
+  SagaExecution,
 } from '@prisma/client'
 
 // Re-export prisma client singleton
