@@ -1,5 +1,7 @@
 import { createHmac } from 'node:crypto'
+
 import { describe, it, expect, afterEach } from 'vitest'
+
 import {
   verifyJwt,
   validateApiKey,

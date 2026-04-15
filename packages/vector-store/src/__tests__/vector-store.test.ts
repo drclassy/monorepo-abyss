@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
+
 import { VectorStore, createVectorStore } from '../store'
 import type { VectorDocument, VectorStoreConfig } from '../types'
 

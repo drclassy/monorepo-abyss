@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { PromptManager } from '../prompt-manager'
+
 import { AiCoreClient, getConsensus } from '../client'
+import { PromptManager } from '../prompt-manager'
 import type { PromptTemplate, ModelConfig, ModelProvider } from '../types'
 
 describe('PromptManager', () => {

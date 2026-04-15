@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander'
-import chalk from 'chalk'
-import ora from 'ora'
-import fs from 'fs-extra'
 import path from 'path'
 import { fileURLToPath } from 'url'
+
+import chalk from 'chalk'
+import { Command } from 'commander'
+import fs from 'fs-extra'
+import ora from 'ora'
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

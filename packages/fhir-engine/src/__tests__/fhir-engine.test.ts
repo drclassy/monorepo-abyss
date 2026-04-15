@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { FhirValidator, validatePatient, validateObservation } from '../validator'
+
 import { FhirTransformer } from '../transformer'
 import type { FhirPatient, FhirObservation } from '../types'
+import { FhirValidator, validatePatient, validateObservation } from '../validator'
 
 describe('FhirValidator', () => {
   const validator = new FhirValidator()
