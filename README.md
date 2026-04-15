@@ -228,6 +228,8 @@ Applications have been migrated to their own repositories. This repo is **core o
 
 ## Claudesy Workflow
 
+<img src=".github/claudesy.png" alt="Claudesy" width="80" align="right" />
+
 All development in this monorepo — whether by human engineers or Artificial Intelligence agents — follows the three-phase Claudesy Workflow. There are no exceptions.
 
 ### Phase 1 — HANDOFF First
