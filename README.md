@@ -11,6 +11,27 @@
 
 ---
 
+## Overview
+
+<table>
+<tr>
+<td valign="middle" width="180">
+  <img src=".github/abyss.png" alt="The Abyss" width="160" />
+</td>
+<td valign="top">
+
+The Abyss is the unified engineering backbone of Sentra Artificial Intelligence — a production-grade monorepo that houses every application, shared library, and infrastructure definition across the organization's healthcare and academic Artificial Intelligence product lines.
+
+It runs a medical referral system, a diagnostic orchestration service, a clinical education simulator, and an Artificial Intelligence evaluation engine — all sharing a single database schema, design system, FHIR validation engine, and multi-model consensus layer. Every Artificial Intelligence workflow is orchestrated through an integrated Langflow gateway, with vector search and RAG pipelines built directly into the shared package layer.
+
+Beyond the products themselves, The Abyss enforces a disciplined development protocol called the Claudesy Workflow — no task starts without a declaration, no deployment ships without a GO approval, and no commit lands without a full audit trail. This makes the codebase as navigable by Artificial Intelligence agents as it is by human engineers, by design.
+
+</td>
+</tr>
+</table>
+
+---
+
 ## Claudesy Genesis Framework
 
 <table>
@@ -165,27 +186,6 @@ Phase 4: GOVERNANCE & RELEASE
 │  (Immutable Record)  │ --> GITHUB COPILOT
 └──────────────────────┘
 ```
-
----
-
-## Overview
-
-<table>
-<tr>
-<td valign="middle" width="180">
-  <img src=".github/abyss.png" alt="The Abyss" width="160" />
-</td>
-<td valign="top">
-
-The Abyss is the unified engineering backbone of Sentra Artificial Intelligence — a production-grade monorepo that houses every application, shared library, and infrastructure definition across the organization's healthcare and academic Artificial Intelligence product lines.
-
-It runs a medical referral system, a diagnostic orchestration service, a clinical education simulator, and an Artificial Intelligence evaluation engine — all sharing a single database schema, design system, FHIR validation engine, and multi-model consensus layer. Every Artificial Intelligence workflow is orchestrated through an integrated Langflow gateway, with vector search and RAG pipelines built directly into the shared package layer.
-
-Beyond the products themselves, The Abyss enforces a disciplined development protocol called the Claudesy Workflow — no task starts without a declaration, no deployment ships without a GO approval, and no commit lands without a full audit trail. This makes the codebase as navigable by Artificial Intelligence agents as it is by human engineers, by design.
-
-</td>
-</tr>
-</table>
 
 ---
 
