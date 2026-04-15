@@ -203,10 +203,16 @@ jobs:
 
       - name: Validate Flow JSON Files
         run: |
-          for file in flows/definitions/*.json; do
-            echo "Validating $file"
-            node -e "JSON.parse(require('fs').readFileSync('$file', 'utf8'))" || exit 1
-          done
+          shopt -s nullglob
+          files=(flows/definitions/*.json)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No flow definitions found — skipping validation"
+          else
+            for file in "${files[@]}"; do
+              echo "Validating $file"
+              node -e "JSON.parse(require('fs').readFileSync('$file', 'utf8'))" || exit 1
+            done
+          fi
 
       - name: Run Flow Tests
         run: pnpm flows:test || echo "No flow tests found"
