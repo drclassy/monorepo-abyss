@@ -135,7 +135,7 @@ pnpm db:studio      # Open Prisma Studio
 pnpm abyss init-task "Implement FHIR validation pipeline"
 
 # Grant GO approval for a session
-pnpm abyss go docs/sentratorium/sessions/SESSION-... --by "Chief"
+pnpm abyss go .agent/sessions/YYYY-MM-DD --by "Chief"
 
 # Sync a Langflow flow definition to the repository
 pnpm abyss sync-flow path/to/flow.json
@@ -153,14 +153,23 @@ pnpm abyss status
 
 ### Applications
 
-| App | Domain | Description |
-|-----|--------|-------------|
-| `referralink-api` | Healthcare | AI-driven medical referral system |
-| `aadi-service` | Healthcare | Diagnostic orchestration with multi-model consensus |
-| `clinical-simulator` | Academic | Medical education simulator |
-| `evaluation-engine` | Academic | AI model performance benchmarking |
-| `admin-dashboard` | Internal | Internal admin panel |
-| `orchestrator` | AI | Langflow Gateway — entry point for all AI flows |
+Applications have been migrated to their own repositories. This repo is **core only** — shared packages & agent governance.
+
+| Repo | Division | Description |
+|------|----------|--------------|
+| `sentra-dashboard` | Healthcare | Puskesmas staff dashboard — patient records, CDSS, reports |
+| `puskesmas` | Healthcare | Public website + ICD-10 database |
+| `sentra-assist` | Healthcare | AI assistant for Puskesmas staff |
+| `sentra-main` | Healthcare | Main healthcare application |
+| `platform-orchestrator` | Platform | NestJS + Kafka AI flow orchestrator |
+| `sentra-portal` | Platform | Monorepo monitoring dashboard |
+| `academic-solutions` | Academic | AI-based academic solutions |
+| `clinical-simulator` | Academic | Clinical training simulator |
+| `evaluation-engine` | Academic | Clinical evaluation engine |
+| `claudesy-transformer` | Community | AI transformer for community |
+| `claudesy-memory` | Community | Memory management system |
+| `agent-hermes` | Prototype | Multi-service AI agent stack |
+
 
 ### Shared Libraries
 
@@ -234,7 +243,7 @@ pnpm abyss init-task "Implement FHIR validation pipeline"
 Execution only proceeds after a `GO` approval is recorded by an authorized principal. The `iskandar-gatekeeper` package enforces this requirement programmatically in CI.
 
 ```bash
-pnpm abyss go docs/sentratorium/sessions/SESSION-... --by "Chief"
+pnpm abyss go .agent/sessions/YYYY-MM-DD --by "Chief"
 ```
 
 ### Phase 3 — Traceability
@@ -245,12 +254,12 @@ Every commit carries structured trailers linking it to the originating agent, ph
 feat: implement FHIR R4 resource validation
 
 - Add schema validation for Patient, Encounter, and Condition resources
-- Integrate validation middleware with referralink-api request pipeline
+- Integrate validation middleware with @the-abyss/fhir-engine package
 - Add unit tests for all supported FHIR resource types
 
 Agent: coder-agent
 Phase: 3
-Handoff: docs/sentratorium/sessions/SESSION-.../HANDOFF.md
+Handoff: .agent/sessions/YYYY-MM-DD/HANDOFF.md
 ```
 
 ---
@@ -304,7 +313,7 @@ All contributors — human or AI agent — must follow the same workflow.
 | Resource | Location |
 |----------|----------|
 | Global Agent Steering | [.agent/AGENTS.md](.agent/AGENTS.md) |
-| Session Logs | [docs/sentratorium/](.agent\PROGRESS.md") |
+| Session Logs | [.agent/sessions/](.agent/sessions/) |
 | Document Templates | [docs/templates/](docs/templates/) |
 | Architecture Decision Records | [docs/adr/](docs/adr/) |
 | CLI Documentation | [tooling/abyss-cli/](tooling/abyss-cli/) |
