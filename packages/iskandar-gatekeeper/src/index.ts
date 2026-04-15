@@ -4,6 +4,7 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
+
 import { glob } from 'glob'
 
 /**
@@ -110,8 +111,6 @@ async function validateSessions(): Promise<ValidationResult> {
   }
 
   const sessions: SessionStatus[] = []
-  let allPassed = true
-
   for (const file of handoffFiles) {
     const fullPath = path.join(SESSIONS_PATH, file)
     const content = fs.readFileSync(fullPath, 'utf-8')
@@ -124,10 +123,6 @@ async function validateSessions(): Promise<ValidationResult> {
       hasGoApproval,
       status,
     })
-
-    if (!hasGoApproval && status === 'PENDING') {
-      allPassed = false
-    }
   }
 
   // Check if any session is PENDING without GO approval

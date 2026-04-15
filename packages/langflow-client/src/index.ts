@@ -158,7 +158,7 @@ export class AbyssFlowClient {
   /**
    * Get flow details
    */
-  async getFlow(flowId: string): Promise<any> {
+  async getFlow(flowId: string): Promise<unknown> {
     const response = await fetch(`${this.baseUrl}/api/v1/flows/${flowId}`, {
       headers: {
         ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),

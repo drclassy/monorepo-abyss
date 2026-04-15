@@ -1,5 +1,13 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
+
 import type { Request, Response, NextFunction } from 'express'
+
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: unknown
+    apiKey?: unknown
+  }
+}
 
 export interface JwtPayload {
   sub: string
@@ -211,7 +219,7 @@ export function jwtMiddleware(secret: string) {
       return
     }
 
-    ;(req as any).user = result.payload
+    req.user = result.payload
     next()
   }
 }
@@ -241,7 +249,7 @@ export function apiKeyMiddleware(apiKeys?: ApiKeyConfig[], requiredPermissions?:
     }
 
     if (requiredPermissions && requiredPermissions.length > 0) {
-      const keyPerms = result.apiKey!.permissions
+      const keyPerms = result.apiKey?.permissions ?? []
       const missing = requiredPermissions.filter((p) => !keyPerms.includes(p))
       if (missing.length > 0) {
         res.status(403).json({ error: 'Insufficient permissions', required: requiredPermissions, missing })
@@ -249,7 +257,7 @@ export function apiKeyMiddleware(apiKeys?: ApiKeyConfig[], requiredPermissions?:
       }
     }
 
-    ;(req as any).apiKey = result.apiKey
+    req.apiKey = result.apiKey
     next()
   }
 }
@@ -271,7 +279,7 @@ export function authMiddleware(options: {
       if (scheme === 'Bearer' && token && options.jwtSecret) {
         const result = verifyJwt(token, options.jwtSecret)
         if (result.valid) {
-          ;(req as any).user = result.payload
+          req.user = result.payload
           next()
           return
         }
@@ -282,7 +290,7 @@ export function authMiddleware(options: {
       const result = validateApiKey(apiKey, options.apiKeys)
       if (result.valid) {
         if (options.requiredPermissions && options.requiredPermissions.length > 0) {
-          const keyPerms = result.apiKey!.permissions
+          const keyPerms = result.apiKey?.permissions ?? []
           const missing = options.requiredPermissions.filter((p) => !keyPerms.includes(p))
           if (missing.length > 0) {
             res.status(403).json({
@@ -293,7 +301,7 @@ export function authMiddleware(options: {
             return
           }
         }
-        ;(req as any).apiKey = result.apiKey
+        req.apiKey = result.apiKey
         next()
         return
       }

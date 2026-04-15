@@ -58,7 +58,7 @@ export async function getConsensus(
   client: AiCoreClient,
   prompt: string,
   providers: ModelProvider[] = ['openai', 'anthropic', 'ollama']
-): Promise<any> {
+): Promise<unknown> {
   const responses = await Promise.all(providers.map((p) => client.generate(p, prompt)))
 
   // Simple consensus - pick most common response
