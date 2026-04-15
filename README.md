@@ -1,6 +1,9 @@
 # The Abyss
 
 **AI-Native Monorepo for the Sentra AI Ecosystem**
+<div align="center">
+  <img src=".github/abyss.png" alt="The Abyss" width="160" />
+</div>
 
 [![CI](https://img.shields.io/github/actions/workflow/status/Docsynapse/abyss-monorepo/ci.yml?branch=main)](https://github.com/Docsynapse/abyss-monorepo/actions)
 [![License](https://img.shields.io/badge/license-UNLICENSED-red)](LICENSE)
