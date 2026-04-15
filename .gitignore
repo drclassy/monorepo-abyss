@@ -31,12 +31,15 @@ google-credentials*.json
 *.gpg
 *.asc
 
-# ---- AI CONFIG — LOCAL OVERRIDES ONLY ----
-# (.agent/, .claude/settings.json, .cursor/rules TRACKED — see negations)
-.claude/settings.local.json
-.cursor/hooks/edit-log.txt
-.cursor/hooks/*.log
-.cursor/rules/*.local.*
+# ---- AI TOOL CONFIG — NOT PUSHED (tool-specific, local) ----
+# (.agent/ and CLAUDE.md are TRACKED — see exemptions at bottom)
+.claude/
+.cursor/
+.kilo/
+.qwen/
+.gemini/
+.cursorignore
+.cursorindexingignore
 llm-config.local.*
 model-config.local.*
 prompts/private/
@@ -146,11 +149,7 @@ apps/
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
 # Git evaluates .gitignore top-down; trailing negations override earlier rules.
+# KEPT: .agent/ (multi-agent coordination memory) + CLAUDE.md (Claude Code project instructions)
 !.agent/
 !.agent/**
-!.claude/settings.json
-!.cursor/rules/
-!.cursor/rules/**
-!.cursor/README.md
-!.cursor/index.mdc
 !pnpm-lock.yaml
