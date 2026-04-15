@@ -320,21 +320,46 @@ All contributors — human or AI agent — must follow the same workflow.
 
 ---
 
-## Roadmap
+## Product Ecosystem
 
-### Q2 2026
+### Under Testing (Active Pilots)
 
-- [ ] ReferraLink API — production launch
-- [ ] Clinical Simulator — public beta
-- [ ] Multi-Model Consensus integration
-- [ ] RAGOps pipeline — full deployment
+| Product | Description |
+|---------|-------------|
+| **AADI** | Autonomous diagnostic inference engine — 45,030 validated records, ICD-10 mapping, 8-rule safety gates |
+| **Audrey** | Voice-first clinical intelligence — Google Gemini Live, 24kHz streaming, MedGemma grounding |
+| **Intelligence Dashboard** | Unified clinical ops — EMR auto-fill, ICD-X, LB1 reporting, telemedicine WebRTC |
+| **Sentra Assist** | Chrome Extension RPA — automates data transfer between dashboard and EMR systems |
+| **Telemedicine** | WebRTC peer-to-peer — HD 720p adaptive bitrate, e-prescription, auto SOAP notes |
+| **Med-Cognitive** | Neural memory architecture — semantic embedding-based memory retrieval across agents |
 
-### Q3 2026
+Pilot sites: **RSIA Melinda DHAI** (Mother & Child Hospital) · **Puskesmas Balowerti Kota Kediri**
 
-- [ ] Edge AI prototype — proof of concept
-- [ ] Kubernetes production deployment
-- [ ] Advanced monitoring and observability dashboard
-- [ ] Mobile application (React Native)
+### Under Development
+
+| Product | Focus Area |
+|---------|-----------|
+| **ReferraLink** | BPJS/insurance claim optimization via real-time regulatory analysis |
+| **MELLY** | Hyper-personalized patient agent (prenatal to age 18) |
+| **Melinda Dashboard** | Inter-departmental data interoperability |
+| **Melinda Shield** | Five-layer cybersecurity with AES-256 GCM encryption |
+| **Autonomous Admission** | Zero-queue digital admission with Vision AI |
+| **Smart Triage** | Pediatric/maternal asynchronous assessment |
+| **Proactive Care Navigator** | Post-discharge preventive monitoring |
+| **Ambient Scribe** | Voice-to-EMR clinical documentation engine |
+| **Critical Alert System** | NICU/telemetry anomaly detection |
+| **Predictive Bed Management** | Autonomous discharge orchestration |
+| **AI Coding Auditor** | ICD-10 coding validation against medical records |
+| **OR Orchestrator** | Operating room logistics and scheduling |
+
+### Planned Modules
+
+| Module | Description |
+|--------|-------------|
+| **POGS** | Pregnancy observation system (Obstetric focus) |
+| **CDOS** | Clinical Decision Orchestration System |
+| **TRIAGE** | Algorithmic emergency triage scoring |
+| **PREDICTION** | Machine learning prognostic modeling |
 
 ---
 
