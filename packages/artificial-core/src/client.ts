@@ -1,4 +1,4 @@
-import type { ModelConfig, ModelResponse, ModelProvider } from './types'
+import type { ModelConfig, ModelResponse, ModelProvider, ConsensusResult } from './types'
 
 export class AiCoreClient {
   private configs: Map<ModelProvider, ModelConfig>
@@ -61,7 +61,7 @@ export async function getConsensus(
   client: AiCoreClient,
   prompt: string,
   providers: ModelProvider[] = ['openai', 'anthropic', 'ollama']
-): Promise<unknown> {
+): Promise<ConsensusResult> {
   const responses = await Promise.all(providers.map((p) => client.generate(p, prompt)))
 
   // Simple consensus - pick most common response
