@@ -2,7 +2,7 @@
 
 **AI-Native Monorepo for the Sentra AI Ecosystem**
 
-[![CI](https://img.shields.io/github/actions/workflow/status/Claudesy/abyss-monorepo/ci.yml?branch=main)](https://github.com/Claudesy/abyss-monorepo/actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/Docsynapse/abyss-monorepo/ci.yml?branch=main)](https://github.com/Docsynapse/abyss-monorepo/actions)
 [![License](https://img.shields.io/badge/license-UNLICENSED-red)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen)](https://nodejs.org)
 [![pnpm](https://img.shields.io/badge/pnpm-%3E%3D9.0.0-yellow)](https://pnpm.io)
@@ -26,15 +26,10 @@ It enforces a disciplined, agent-compatible engineering workflow through three c
 │                         THE ABYSS MONOREPO                           │
 ├──────────────────────────────────────────────────────────────────────┤
 │                                                                      │
-│  .agents/              AI Steering & agent governance rules          │
+│  .agent/              AI Steering & agent governance rules          │
 │  .github/              CI/CD pipelines & GO-Gate enforcement         │
 │                                                                      │
-│  apps/                                                               │
-│    ├── healthcare/     ReferraLink API, AADI Service                 │
-│    ├── academic/       Clinical Simulator, Evaluation Engine         │
-│    ├── internal/       Admin Dashboard, Design System                │
-│    ├── incubator/      R&D sandbox for pre-GO prototypes             │
-│    └── orchestrator/   Langflow Gateway                              │
+│  apps/                 (migrated to separate repos — see polyrepo)  │
 │                                                                      │
 │  flows/                Versioned Langflow JSON definitions           │
 │                                                                      │
@@ -74,7 +69,7 @@ It enforces a disciplined, agent-compatible engineering workflow through three c
 
 ```bash
 # Clone the repository
-git clone https://github.com/Claudesy/abyss-monorepo.git
+git clone https://github.com/Docsynapse/abyss-monorepo.git
 cd abyss-monorepo
 
 # Install all workspace dependencies
@@ -276,7 +271,7 @@ All contributors — human or AI agent — must follow the same workflow.
 
 ### For AI Agents
 
-1. Read [.agents/AGENTS.md](.agents/AGENTS.md) — understand behavioral constraints
+1. Read [.agent/AGENTS.md](.agent/AGENTS.md) — understand behavioral constraints
 2. Create a task session via `pnpm abyss init-task`
 3. Wait for GO approval before writing any code
 4. Implement with full commit traceability
@@ -295,7 +290,7 @@ All contributors — human or AI agent — must follow the same workflow.
 
 | Resource | Location |
 |----------|----------|
-| Global Agent Steering | [.agents/AGENTS.md](.agents/AGENTS.md) |
+| Global Agent Steering | [.agent/AGENTS.md](.agent/AGENTS.md) |
 | Session Logs | [docs/sentratorium/](docs/sentratorium/) |
 | Document Templates | [docs/templates/](docs/templates/) |
 | Architecture Decision Records | [docs/adr/](docs/adr/) |
