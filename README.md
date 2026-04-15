@@ -444,9 +444,9 @@ Applications have been migrated to their own repositories. This repo is **core o
 
 | Repo | Division | Description |
 |------|----------|--------------|
-| `sentra-dashboard` | Healthcare | Puskesmas staff dashboard — patient records, CDSS, reports |
+| `sentra-dashboard` | Healthcare | Clinical staff dashboard — patient records, CDSS, and operational reports |
 | `puskesmas` | Healthcare | Public website + ICD-10 database |
-| `sentra-assist` | Healthcare | Artificial Intelligence assistant for Puskesmas staff |
+| `sentra-assist` | Healthcare | Artificial Intelligence assistant for clinical workflow automation |
 | `sentra-main` | Healthcare | Main healthcare application |
 | `platform-orchestrator` | Platform | NestJS + Kafka Artificial Intelligence flow orchestrator |
 | `sentra-portal` | Platform | Monorepo monitoring dashboard |
@@ -569,7 +569,7 @@ All deployments must satisfy all four gates before reaching any production envir
 ### Compliance Standards
 
 | Domain | Standards |
-|--------|-----------|
+|---------|-------------|
 | Healthcare | HIPAA compliance, FHIR R4 interoperability |
 | Academic | Student data privacy, institutional data governance |
 | General | OWASP Top 10, secure dependency management |
@@ -615,8 +615,8 @@ The Abyss is not a prototype. It is actively running a comprehensive pilot test 
 
 | Site | Type | Active Products |
 |------|------|-----------------|
-| **RSIA Melinda DHAI** | Rumah Sakit Ibu & Anak (Maternal Hospital) | MELLY, Melinda Dashboard, Melinda Shield, Autonomous Admission, Smart Triage, Ambient Scribe, Critical Alert System, Predictive Bed Management, OR Orchestrator |
-| **Puskesmas Balowerti Kota Kediri** | Primary Healthcare | AADI, Audrey, Intelligence Dashboard, Sentra Assist, Telemedicine, ReferraLink |
+| **Maternal Hospital** | MELLY, Melinda Dashboard, Melinda Shield, Autonomous Admission, Smart Triage, Ambient Scribe, Critical Alert System, Predictive Bed Management, OR Orchestrator |
+| **Primary Healthcare Site** | AADI, Audrey, Intelligence Dashboard, Sentra Assist, Telemedicine, ReferraLink |
 
 **Active validation objectives:**
 
@@ -631,40 +631,40 @@ The Abyss is not a prototype. It is actively running a comprehensive pilot test 
 
 ## Product Ecosystem
 
-Pilot sites: **RSIA Melinda DHAI** (Rumah Sakit Ibu & Anak) · **Puskesmas Balowerti Kota Kediri**
+Pilot sites: **Maternal Hospital** · **Primary Healthcare Site**
 
-### Sedang Diuji (Active Pilots)
+### Under Testing — Active Pilots
 
-| Produk | Ringkasan |
+| Product | Description |
+|---------|-------------|
+| **AADI** — Autonomous Artificial Diagnostic Intelligence | Autonomous diagnostic inference engine with multi-layer reasoning; Iskandar Engine V4.3, 159 diseases, 1,930 ICD-10 codes, safety gates, drug interaction detection (~95% accuracy) |
+| **Audrey** — Voice-First Clinical Intelligence | Real-time voice assistant (Gemini Live, 24 kHz), medical grounding, primary care clinical insights; SFT training + clinical alignment |
+| **Intelligence Dashboard** — Unified Clinical Operations Platform | Unified command center — EMR/RPA automation, ICD-X unification, LB1 national reporting, SenCall calculator, telemedicine WebRTC, ACARS, KPI monitoring via Socket.IO |
+| **Sentra Assist** — Clinical Workflow Automation | Chrome Extension (MV3) automating data transfer between Dashboard and national EMR systems via RPA — anamnesis, diagnosis, and prescription workflows |
+| **Telemedicine** — Remote Clinical Consultation | HD WebRTC consultation with virtual waiting room, e-prescription, lab upload, automated SOAP note generation, and schedule integration |
+| **ReferraLink** — Awareness-Intelligence Protocol | Reasoning engine for BPJS and insurance regulatory flux — dynamic claim optimization and actionable recommendations for claim verification officers |
+
+### Deployed — Production Ready
+
+| Product | Description |
+|---------|-------------|
+| **Med-Cognitive** — Neural Memory Architecture for Clinical Artificial Intelligence | Persistent memory layer for Artificial Intelligence agents — semantic embedding with cross-session decision retrieval and patient context continuity |
+
+### Under Development
+
+| Product | Description |
 |--------|-----------|
-| **AADI** — Autonomous Artificial Diagnostic Intelligence | Mesin diagnostik otonom dengan reasoning berlapis; Iskandar Engine V4.3, 159 penyakit, 1.930 ICD-10, safety gate, cek interaksi obat (~95% akurasi) |
-| **Audrey** — Voice-First Clinical Intelligence | Asisten suara real-time (Gemini Live, 24 kHz), grounding medis, insight layanan primer; pelatihan SFT + alignment klinis |
-| **Intelligence Dashboard** — Unified Clinical Operations Platform | Command center satu layar: EMR/RPA, ICD-X, LB1, SenCall, telemedicine WebRTC, ACARS, admin KPI, Socket.IO |
-| **Sentra Assist** — Clinical Workflow Automation | Ekstensi Chrome (MV3) yang mengotomatisasi alur data antara Dashboard dan EMR nasional via RPA (anamnesis, diagnosis, resep) |
-| **Telemedicine** — Remote Clinical Consultation | Konsultasi WebRTC HD, virtual waiting room, e-resep, unggah lab, SOAP otomatis, terintegrasi jadwal |
-| **ReferraLink** — Awareness-Intelligence Protocol | Mesin reasoning untuk fluktuasi regulasi BPJS/asuransi; optimasi klaim dinamis dan rekomendasi untuk verifikator |
-
-### Sudah Dibangun (Built)
-
-| Produk | Ringkasan |
-|--------|-----------|
-| **Med-Cognitive** — Neural Memory Architecture for Clinical Artificial Intelligence | Lapisan memori persisten untuk agen Artificial Intelligence — embedding semantik, retrieval keputusan dan konteks pasien lintas sesi |
-
-### Sedang Dibangun (Under Development)
-
-| Produk | Ringkasan |
-|--------|-----------|
-| **MELLY** — Hyper-Personalized Augmented Virtual Agent | Agen per pasien (prakonsepsi → pediatrik), orkestrasi multi-agen Vertex, edukasi WHO, sintesis laporan ke EMR |
-| **Melinda Dashboard** — Zero-Friction Interoperability Platform | SPA interoperabilitas antar-departemen RSIA Melinda; KPI, jasa, RME; integrasi Lifestyle Artificial Intelligence / suara |
-| **Melinda Shield** — Cognitive Cybersecurity Infrastructure | Keamanan berlapis: enkripsi, ledger, perilaku Artificial Intelligence, geofencing akses EHR, containment cepat, threat intel, dashboard compliance |
-| **Autonomous Admission** — Admission & Journey Tracking | Kurangi antrean: ekstraksi dokumen rujukan (Vision Artificial Intelligence), cek jadwal SIMRS, bridging asuransi; pengingat USG/suplemen sepanjang kehamilan |
-| **Smart Triage** — Pediatric & Maternal Algorithmic Assessment | Triase async sebelum tatap muka; parameter pediatri/obstetri; draf SOAP; eskalasi darurat (mis. ketuban pecah dini) |
-| **Proactive Care Navigator** — Post-Partum & Preventive Monitoring | Tindak lanjut pasca-pulang: imunisasi, luka/laktasi, skrining depresi pascasalin dari data RME |
-| **Ambient Scribe** — Clinical Voice-to-EMR Engine | NLP memisahkan dialog klinis dari noise; vital ke EMR (BB janin, DJJ, dll.) |
-| **Critical Alert System** — Proactive NICU & Telemetry Intelligence | Alert dari lab & telemetri NICU ke perangkat dokter jika parameter kritis |
-| **Predictive Bed Management** — Autonomous Turnaround Orchestration | Saat discharge: rantai otomatis keuangan, farmasi pulang, housekeeping dengan SLA untuk meningkatkan BOR |
-| **Artificial Intelligence Coding Auditor** — Clinical Coding & Claim Defense | Cocokkan ICD-10/ICD-9-CM dengan dokumentasi klinis; kurangi sengketa klaim |
-| **OR Orchestrator** — Smart Operating Room Logistics | Logistik OK: prioritas sectio cito, tim on-call, kantong darah, utilisasi ruang operasi |
+| **MELLY** — Hyper-Personalized Augmented Virtual Agent | Per-patient Artificial Intelligence agent spanning preconception through pediatric care; Vertex multi-agent orchestration, WHO education protocols, and automated report synthesis to EMR |
+| **Melinda Dashboard** — Zero-Friction Interoperability Platform | Inter-departmental interoperability platform for the Maternal Hospital — KPI dashboards, service management, medical records, and Lifestyle Artificial Intelligence voice integration |
+| **Melinda Shield** — Cognitive Cybersecurity Infrastructure | Multi-layer cognitive security — AES-256 encryption, immutable audit ledger, Artificial Intelligence behavioral monitoring, EHR access geofencing, rapid threat containment, threat intelligence, and compliance dashboard |
+| **Autonomous Admission** — Admission & Journey Tracking | Zero-queue digital admission — referral document extraction (Vision Artificial Intelligence), SIMRS schedule verification, insurance bridging, and automated prenatal reminders (ultrasound, supplements) throughout pregnancy |
+| **Smart Triage** — Pediatric & Maternal Algorithmic Assessment | Pre-visit asynchronous triage assessment using pediatric and obstetric parameters; automated SOAP draft generation; emergency escalation protocol (e.g. premature rupture of membranes) |
+| **Proactive Care Navigator** — Post-Partum & Preventive Monitoring | Post-discharge follow-up — immunization tracking, wound and lactation care, postpartum depression screening derived from medical record data |
+| **Ambient Scribe** — Clinical Voice-to-EMR Engine | NLP engine separating clinical dialogue from ambient noise; automated vital sign transcription to EMR (fetal weight, fetal heart rate, and related parameters) |
+| **Critical Alert System** — Proactive NICU & Telemetry Intelligence | Real-time critical alerts from lab results and NICU telemetry pushed to clinician devices when monitored parameters breach defined thresholds |
+| **Predictive Bed Management** — Autonomous Turnaround Orchestration | At discharge — automated orchestration chain across billing, take-home pharmacy, and housekeeping with SLA enforcement to maximize bed occupancy rate |
+| **Artificial Intelligence Coding Auditor** — Clinical Coding & Claim Defense | Cross-reference ICD-10 and ICD-9-CM codes against clinical documentation; reduce claim disputes and denial rates |
+| **OR Orchestrator** — Smart Operating Room Logistics | Operating room logistics — emergency C-section prioritization, on-call team coordination, blood supply management, and OR utilization optimization |
 
 ---
 
