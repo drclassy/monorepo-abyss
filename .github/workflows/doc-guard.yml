@@ -1,0 +1,179 @@
+# ============================================================
+# CLAUDESY — Documentation Guard v2
+# Rebuilt by Claudesy — 2026-04-11
+# ============================================================
+# Runs on every push/PR to main or develop.
+# Checks that documentation is complete and healthy.
+# ============================================================
+
+name: ⚡ CLAUDESY — Doc Guard
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+
+  # ── JOB 1: Doc Completeness ────────────────────────────────
+  doc-completeness:
+    name: 📋 Doc Completeness
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check root-level mandatory documents
+        run: |
+          echo "Checking mandatory documents at monorepo root..."
+
+          REQUIRED=(
+            "README.md"
+            "CHANGELOG.md"
+            "CONTRIBUTING.md"
+            "SECURITY.md"
+            ".env.example"
+          )
+
+          MISSING=0
+          PRESENT=0
+          TOTAL=${#REQUIRED[@]}
+
+          for doc in "${REQUIRED[@]}"; do
+            if [ -f "$doc" ]; then
+              echo "  ✅ $doc"
+              PRESENT=$((PRESENT + 1))
+            else
+              echo "  ❌ $doc — MISSING"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          DCS=$(echo "scale=0; $PRESENT * 100 / $TOTAL" | bc)
+          echo ""
+          echo "─────────────────────────────────────────"
+          echo "  DCS Score: ${DCS}% ($PRESENT/$TOTAL)"
+
+          if [ $DCS -lt 60 ]; then
+            echo "  STATUS: ❌ CRITICAL — DCS below 60%"
+            echo "─────────────────────────────────────────"
+            exit 1
+          elif [ $DCS -lt 100 ]; then
+            echo "  STATUS: ⚠️  INCOMPLETE — some docs missing"
+            echo "─────────────────────────────────────────"
+          else
+            echo "  STATUS: ✅ COMPLETE"
+            echo "─────────────────────────────────────────"
+          fi
+
+  # ── JOB 2: No Large Files in Docs ─────────────────────────
+  repo-efficiency:
+    name: ⚡ Repo Efficiency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for oversized markdown files
+        run: |
+          echo "Scanning for large markdown files (>500KB)..."
+
+          LARGE=$(find . -not -path './.git/*' -not -path '*/node_modules/*' \
+            -name "*.md" -size +500k 2>/dev/null || true)
+
+          if [ -n "$LARGE" ]; then
+            echo "⚠️  Large markdown files detected:"
+            echo "$LARGE"
+            echo "Consider splitting these documents."
+          else
+            echo "✅ All markdown files are within size limits"
+          fi
+
+  # ── JOB 3: Mermaid Diagram Validation ─────────────────────
+  mermaid-check:
+    name: 📊 Mermaid Diagrams
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate Mermaid diagram syntax
+        run: |
+          echo "Validating Mermaid diagrams..."
+
+          python3 - <<'PYEOF'
+          import os, re, sys
+
+          KEYWORDS = ['graph', 'sequenceDiagram', 'flowchart', 'stateDiagram',
+                      'erDiagram', 'gantt', 'classDiagram', 'pie', 'journey']
+          failed = 0
+          checked = 0
+
+          for root, dirs, files in os.walk('.'):
+              dirs[:] = [d for d in dirs if d not in ['.git', 'node_modules', '.next', 'dist']]
+              for fname in files:
+                  if not fname.endswith('.md'):
+                      continue
+                  path = os.path.join(root, fname)
+                  try:
+                      content = open(path, encoding='utf-8', errors='ignore').read()
+                  except:
+                      continue
+                  blocks = re.findall(r'```mermaid\n(.*?)```', content, re.DOTALL)
+                  for i, block in enumerate(blocks):
+                      checked += 1
+                      if not any(block.strip().startswith(k) for k in KEYWORDS):
+                          print(f'  ⚠️  {path} — block {i+1} missing diagram type')
+                          failed += 1
+                      else:
+                          print(f'  ✅ {path} — block {i+1} valid')
+
+          print(f'\nChecked {checked} Mermaid block(s), {failed} issue(s) found.')
+          if failed > 0:
+              sys.exit(1)
+          PYEOF
+
+  # ── JOB 4: CHANGELOG Updated ──────────────────────────────
+  changelog-check:
+    name: 📝 Changelog Updated
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check CHANGELOG.md was updated in this PR
+        run: |
+          echo "Checking if CHANGELOG.md was updated..."
+
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep "CHANGELOG.md" || true)
+
+          if [ -z "$CHANGED" ]; then
+            echo "⚠️  CHANGELOG.md not updated in this PR."
+            echo "    Please document your changes."
+            # Warning only — does not block merge
+          else
+            echo "✅ CHANGELOG.md updated"
+          fi
+
+  # ── SUMMARY ───────────────────────────────────────────────
+  summary:
+    name: 📊 Summary
+    runs-on: ubuntu-latest
+    needs: [doc-completeness, repo-efficiency, mermaid-check, changelog-check]
+    if: always()
+    steps:
+      - name: Print results
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "  ⚡ CLAUDESY Doc Guard — Results"
+          echo "  Rebuilt by Claudesy — 2026"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "  Doc Completeness : ${{ needs.doc-completeness.result }}"
+          echo "  Repo Efficiency  : ${{ needs.repo-efficiency.result }}"
+          echo "  Mermaid Diagrams : ${{ needs.mermaid-check.result }}"
+          echo "  Changelog Check  : ${{ needs.changelog-check.result }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

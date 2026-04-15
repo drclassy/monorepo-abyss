@@ -1,5 +1,7 @@
 packages:
   - 'apps/**'
+  - '!apps/**/.pytest_cache/**'
+  - '!apps/**/.venv/**'
   - 'packages/**'
   - 'tooling/**'
   - 'flows/**'

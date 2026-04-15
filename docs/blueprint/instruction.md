@@ -119,7 +119,7 @@ mkdir -p packages/ui packages/ai-core packages/langflow-client packages/database
 mkdir -p infrastructure/terraform infrastructure/argocd infrastructure/docker
 mkdir -p tooling/abyss-cli tooling/generators
 # 7. Documentation & Logs
-mkdir -p docs/adr docs/sentratorium/sessions docs/templates
+mkdir -p docs/adr .agent/sessions docs/templates
 ```
 
 ####
@@ -192,7 +192,7 @@ Anda adalah bagian dari **Sentra AI Agent Swarm**. Semua tindakan Anda harus mem
 - Aturan lokal mengesampingkan aturan global jika terjadi konflik.
 
 ### 3. Traceability (Audit Trail)
-- Setiap sesi pengerjaan harus dicatat di `docs/sentratorium/sessions/`.
+- Setiap sesi pengerjaan harus dicatat di `.agent/sessions/`.
 - Gunakan trailer commit: `Agent: [Nama]`, `Phase: [Fase]`, `Handoff: [Link/Path]`.
 
 ### 4. Standar Kode
@@ -236,7 +236,7 @@ Buat package di `packages/iskandar-gatekeeper/index.ts` untuk memvalidasi aturan
 
 1. Inisialisasi package: `pnpm init` di dalam folder tersebut.
 2. Buat script sederhana (Node.js/TypeScript) yang:
-    - Memeriksa apakah ada file `.md` baru di folder `docs/sentratorium/sessions/`.
+    - Memeriksa apakah ada file `.md` baru di folder `.agent/sessions/`.
     - Memastikan file tersebut mengandung string `✅ GO` atau `GO` di bagian Approval.
     - Melempar `process.exit(1)` jika tidak valid (untuk menggagalkan build CI).
 
@@ -257,7 +257,7 @@ Buat file `apps/healthcare/AGENTS.md` untuk menunjukkan cara kerja hirarki:
 
 Langkah 5: Setup Session Logging
 
-Buat file `.gitkeep` di `docs/sentratorium/sessions/` agar folder tersebut tetap terlacak di Git. Instruksikan agen untuk selalu membuat file Markdown baru di sini setiap kali memulai tugas baru (misal: `SESSION-2026-03-30-INIT.md`).
+Buat file `.gitkeep` di `.agent/sessions/` agar folder tersebut tetap terlacak di Git. Instruksikan agen untuk selalu membuat file Markdown baru di sini setiap kali memulai tugas baru (misal: `SESSION-2026-03-30-INIT.md`).
 
 ---
 
@@ -307,7 +307,7 @@ Pusat data untuk seluruh monorepo:
 2. **Schema Definition:** Buat `schema.prisma` awal yang mencakup:
     - `User` & `Organization` (Multi-tenant).
     - `AuditLog` (Untuk mencatat aksi Agen AI & Manusia).
-    - `AiSession` (Menghubungkan ke `docs/sentratorium`).
+    - `AiSession` (Menghubungkan ke `.agent/sessions`).
 3. **Client Export:** Pastikan paket ini mengekspor `PrismaClient` agar bisa di-import oleh `apps/healthcare`, dll.
 
 ####
@@ -429,9 +429,9 @@ Agar kita bisa menguji flow baru tanpa merusak produksi:
 
 ####
 
-Langkah 5: Integration dengan Sentratorium Logs
+Langkah 5: Integration dengan Agent Sessions Logs
 
-1. Pastikan setiap kali `apps/orchestrator` menjalankan flow, ID sesi tersebut dicatat dan dihubungkan ke folder `docs/sentratorium/sessions/`.
+1. Pastikan setiap kali `apps/orchestrator` menjalankan flow, ID sesi tersebut dicatat dan dihubungkan ke folder `.agent/sessions/`.
 2. Simpan metadata seperti: _latency, token usage, dan model confidence score_.
 
 ####
@@ -482,13 +482,13 @@ Fokus pada **ReferraLink API** (Sistem Rujukan AI):
 
 ####
 
-Langkah 2: Sentratorium Dashboard (`apps/internal/sentratorium-web/`)
+Langkah 2: Agent Sessions Dashboard (`apps/internal/agent-sessions-web/`)
 
 Ini adalah "pusat kendali" untuk memantau aktivitas monorepo dan Agen AI:
 
 1. **Scaffold:** Inisialisasi **Next.js** (App Router) di folder ini.
 2. **Visualizer:** Buat dashboard untuk:
-    - Menampilkan daftar sesi dari `docs/sentratorium/sessions/`.
+    - Menampilkan daftar sesi dari `.agent/sessions/`.
     - Menampilkan statistik eksekusi AI dari `packages/database` (Audit Log).
     - Visualisasi grafik dependensi monorepo (Integrasikan dengan output `turbo graph`).
 3. **Internal UI:** Gunakan secara eksklusif komponen dari `packages/ui` (Shadcn UI).
@@ -541,7 +541,7 @@ Langkah 6: Audit Trail Middleware
 ### Cara Verifikasi Fase 5:
 
 - **Turbo Build:** Jalankan `pnpm turbo run build --filter="./apps/*"` untuk memastikan semua aplikasi bisa di-build dengan dependensi lokalnya.
-- **Sentratorium Test:** Buka dashboard `sentratorium-web` dan pastikan Anda bisa melihat log sesi yang dibuat selama pengembangan monorepo ini.
+- **Agent Sessions Test:** Buka dashboard `agent-sessions-web` dan pastikan Anda bisa melihat log sesi yang dibuat selama pengembangan monorepo ini.
 - **Data Flow:** Masukkan data pasien dummy di `healthcare-api` dan pastikan data tersebut divalidasi oleh `fhir-engine` sebelum masuk ke database.
 
 **Setelah Fase 5 selesai, "The Abyss" sudah memiliki aplikasi fungsional yang siap digunakan! Beri tahu saya jika sudah siap lanjut ke Fase 6: Abyss CLI & Automation (The Tools) untuk membuat workflow pengembangan menjadi 10x lebih cepat!** [DONE]
@@ -575,7 +575,7 @@ Perintah ini digunakan setiap kali ada tugas baru dimulai:
 
 1. **Input:** Judul tugas (misal: `abyss init-task "Fitur Chat Medis"`).
 2. **Logic:**
-    - Buat folder sesi baru di `docs/sentratorium/sessions/SESSION-[TIMESTAMP]-[JUDUL]/`.
+    - Buat folder sesi baru di `.agent/sessions/SESSION-[TIMESTAMP]-[JUDUL]/`.
     - Salin template `docs/templates/HANDOFF.md` ke folder tersebut.
     - Isi metadata awal secara otomatis (Nama Agent, Tanggal, Path Sesi).
 3. **Output:** Path ke file `HANDOFF.md` yang baru dibuat agar agen bisa langsung mengisinya.
@@ -721,8 +721,8 @@ Pipeline untuk pengiriman ke produksi:
 
 Langkah 6: Proof-of-Verification Audit
 
-1. Tambahkan step akhir di CI untuk mengunggah laporan hasil test (Jest/Playwright) dan security scan (Snyk/OWASP) ke folder `docs/sentratorium/sessions/`.
-2. Ini memastikan bahwa setiap deployment memiliki bukti verifikasi yang bisa diperiksa oleh manusia di dashboard **Sentratorium**.
+1. Tambahkan step akhir di CI untuk mengunggah laporan hasil test (Jest/Playwright) dan security scan (Snyk/OWASP) ke folder `.agent/sessions/`.
+2. Ini memastikan bahwa setiap deployment memiliki bukti verifikasi yang bisa diperiksa oleh manusia di dashboard **Agent Sessions**.
 
 ---
 

@@ -29,7 +29,7 @@ program
     try {
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)
       const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 50)
-      const sessionDir = path.join(process.cwd(), 'docs/sentratorium/sessions', `session-${timestamp}-${slug}`)
+      const sessionDir = path.join(process.cwd(), '.agent/sessions', `session-${timestamp}-${slug}`)
 
       await fs.ensureDir(sessionDir)
 
@@ -122,8 +122,8 @@ program
     const spinner = ora('Retrieving focus context...').start()
 
     try {
-      const sessionsPath = path.join(process.cwd(), 'docs/sentratorium/sessions')
-      
+      const sessionsPath = path.join(process.cwd(), '.agent/sessions')
+
       if (!(await fs.pathExists(sessionsPath))) {
         spinner.warn(chalk.yellow('No sessions found.'))
         return
@@ -195,11 +195,11 @@ program
 
     try {
       console.log()
-      console.log(chalk.bold.cyan('🛡️  The Abyss - Monorepo Status'))   
+      console.log(chalk.bold.cyan('🛡️  The Abyss - Monorepo Status'))
       console.log('='.repeat(50))
       console.log()
 
-      const sessionsPath = path.join(process.cwd(), 'docs/sentratorium/sessions')
+      const sessionsPath = path.join(process.cwd(), '.agent/sessions')
       let sessionCount = 0
       if (await fs.pathExists(sessionsPath)) {
         const sessions = await fs.readdir(sessionsPath)

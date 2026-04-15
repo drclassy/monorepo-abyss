@@ -338,9 +338,9 @@
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
-      "status": "todo",
-      "completed_at": null,
-      "notes": "B1-A/B1-B done — tree may still be untracked locally; needs Chief scope for git add / branch / commit strategy."
+      "status": "done",
+      "completed_at": "2026-04-15",
+      "notes": "Staging simplify pass 400+ files successfully committed by Gemini (Supervisor) into feature/simplify-pass-2026-04-12. Grouped into 3 logical commits: (1) core/schema, (2) business logic/API, (3) UI/pages. Audit diff verified."
     },
     {
       "id": "P1-04",

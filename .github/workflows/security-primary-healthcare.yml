@@ -46,15 +46,15 @@ jobs:
 
       - name: Catch Pattern Scan
         run: |
-          pnpm --filter @the-abyss/puskesmas-dashboard run security:catch-scan
+          pnpm --filter @the-abyss/sentra-dashboard run security:catch-scan
           pnpm --filter @the-abyss/puskesmas-website run security:catch-scan
 
       - name: Secret Pattern Scan
         run: |
-          pnpm --filter @the-abyss/puskesmas-dashboard run security:secret-scan
+          pnpm --filter @the-abyss/sentra-dashboard run security:secret-scan
           pnpm --filter @the-abyss/puskesmas-website run security:secret-scan
 
       - name: Dependency Audit (High/Critical)
         run: |
-          pnpm --filter @the-abyss/puskesmas-dashboard run security:audit
+          pnpm --filter @the-abyss/sentra-dashboard run security:audit
           pnpm --filter @the-abyss/puskesmas-website run security:audit

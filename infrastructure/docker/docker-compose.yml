@@ -1,72 +1,95 @@
-# Docker Compose for local development
-# Usage: docker-compose up -d
-
-version: '3.8'
+# Abyss Platform - Infrastructure Configuration
+# Single Source of Truth for Abyss Microservices
 
 services:
-  # PostgreSQL Database
-  postgres:
+  # Abyss Database (PostgreSQL)
+  abyss-database:
     image: postgres:16-alpine
-    container_name: abyss-postgres
+    container_name: Abyss-Database
     restart: unless-stopped
     environment:
-      POSTGRES_USER: abyss
-      POSTGRES_PASSWORD: abyss_dev_password
-      POSTGRES_DB: abyss_db
+      POSTGRES_USER: ${DATABASE_USER:-abyss}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-abyss_secure_password}
+      POSTGRES_DB: ${DATABASE_NAME:-abyss_db}
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - abyss_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U abyss"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Langflow (AI Orchestration)
-  langflow:
+  # Abyss Message Broker (Kafka via Confluent)
+  abyss-zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: Abyss-Zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  abyss-kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: Abyss-Kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: abyss-zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://abyss-kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - abyss-zookeeper
+
+  # Abyss AI Engine (Langflow)
+  abyss-ai-engine:
     image: langflowai/langflow:latest
-    container_name: abyss-langflow
+    container_name: Abyss-AI-Engine
     restart: unless-stopped
     ports:
       - "7860:7860"
     environment:
       - LANGFLOW_DATABASE_URL=sqlite:///app/langflow.db
-      - LANGFLOW_SECRET_KEY=your_secret_key_here
     volumes:
-      - langflow_data:/app
+      - abyss_langflow_data:/app
     depends_on:
-      - postgres
+      - abyss-database
 
-  # Redis (Caching & Queue)
-  redis:
+  # Abyss Cache (Redis)
+  abyss-cache:
     image: redis:7-alpine
-    container_name: abyss-redis
+    container_name: Abyss-Cache
     restart: unless-stopped
     ports:
       - "6379:6379"
     volumes:
-      - redis_data:/data
-    command: redis-server --appendonly yes
+      - abyss_redis_data:/data
 
-  # pgAdmin (Database Management)
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: abyss-pgadmin
-    restart: unless-stopped
+  # Abyss Orchestrator (NestJS)
+  abyss-orchestrator:
+    build:
+      context: ../../
+      dockerfile: ./apps/platform/orchestrator/Dockerfile
+    container_name: Abyss-Orchestrator
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@abyss.local
-      PGADMIN_DEFAULT_PASSWORD: admin_password
-    ports:
-      - "5050:80"
+      - DATABASE_URL=postgresql://abyss:abyss_secure_password@abyss-database:5432/abyss_db
+      - KAFKA_BROKER=abyss-kafka:29092
     depends_on:
-      - postgres
+      - abyss-database
+      - abyss-kafka
+    ports:
+      - "3001:3001"
 
 volumes:
-  postgres_data:
-  langflow_data:
-  redis_data:
+  abyss_postgres_data:
+  abyss_langflow_data:
+  abyss_redis_data:
 
 networks:
   default:
-    name: abyss-network
+    name: abyss-platform-network

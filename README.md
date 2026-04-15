@@ -138,7 +138,7 @@ pnpm abyss init-task "Implement FHIR validation"
 Eksekusi hanya setelah ada `✅ GO`:
 
 ```bash
-pnpm abyss go docs/sentratorium/sessions/SESSION-... --by "Chief"
+pnpm abyss go .agent/sessions/SESSION-... --by "Chief"
 ```
 
 ### 3. TRACEABILITY
@@ -153,7 +153,7 @@ feat: implement FHIR validation
 
 Agent: coder-agent
 Phase: 3
-Handoff: docs/sentratorium/sessions/SESSION-.../HANDOFF.md
+Handoff: .agent/sessions/SESSION-.../HANDOFF.md
 ```
 
 ---
@@ -228,8 +228,11 @@ Handoff: docs/sentratorium/sessions/SESSION-.../HANDOFF.md
 
 ## 📚 DOCUMENTATION
 
-- **[.agents/AGENTS.md](.agents/AGENTS.md)** — Global Agent Steering
-- **[docs/sentratorium/](docs/sentratorium/)** — Session Logs
+- **[.agent/CONTEXT.md](.agent/CONTEXT.md)** — Agent Context
+- **[.agent/PROGRESS.md](.agent/PROGRESS.md)** — Progress Tracking
+- **[.agent/HANDOFF.md](.agent/HANDOFF.md)** — Session Handoffs
+- **[.agent/DECISIONS.md](.agent/DECISIONS.md)** — Architecture Decisions
+- **[.agent/LESSONS.md](.agent/LESSONS.md)** — Lessons Learned
 - **[docs/templates/](docs/templates/)** — Document Templates
 - **[docs/adr/](docs/adr/)** — Architecture Decision Records
 - **[tooling/abyss-cli/](tooling/abyss-cli/)** — CLI Documentation

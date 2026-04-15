@@ -42,13 +42,15 @@ jobs:
         run: pnpm --filter @the-abyss/iskandar-gatekeeper run start
         continue-on-error: false
 
-      - name: Check HANDOFF.md Status
+      - name: Check Agent Memory Status
         run: |
-          echo "Checking for HANDOFF.md files in docs/sentratorium/sessions/"
-          if [ ! -d "docs/sentratorium/sessions" ]; then
-            echo "⚠️ No sessions directory found"
+          echo "Checking for .agent/ directories across the monorepo"
+          agent_count=$(find . -type d -name ".agent" | wc -l)
+          if [ "$agent_count" -eq 0 ]; then
+            echo "⚠️ No .agent/ directories found"
           else
-            echo "✅ Sessions directory exists"
+            echo "✅ Found $agent_count .agent/ directories"
+            find . -type d -name ".agent" -exec echo "  - {}" \;
           fi
 
   build:

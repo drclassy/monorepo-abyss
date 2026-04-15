@@ -62,7 +62,7 @@ pnpm dev
    ```
 3. **Wait for GO approval**
    ```bash
-   pnpm abyss go docs/sentratorium/sessions/SESSION-... --by "Chief"
+   pnpm abyss go .agent/sessions/SESSION-... --by "Chief"
    ```
 4. **Implement changes** following domain guidelines
 5. **Run verification**
@@ -79,7 +79,7 @@ pnpm dev
 
    Agent: your-agent
    Phase: 1
-   Handoff: docs/sentratorium/sessions/SESSION-.../HANDOFF.md"
+   Handoff: .agent/sessions/SESSION-.../HANDOFF.md"
    ```
 
 ### For Humans
@@ -135,7 +135,7 @@ feat(healthcare): implement FHIR patient validation
 
 Agent: coder-agent
 Phase: 3
-Handoff: docs/sentratorium/sessions/SESSION-2026-03-30-fhir/HANDOFF.md
+Handoff: .agent/sessions/SESSION-2026-03-30-fhir/HANDOFF.md
 ```
 
 ```bash

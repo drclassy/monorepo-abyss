@@ -21,7 +21,7 @@ This creates a new session folder with HANDOFF.md template.
 ### Add GO approval
 
 ```bash
-pnpm abyss go docs/sentratorium/sessions/SESSION-2026-03-30-my-task --by "Chief" --comments "Looks good"
+pnpm abyss go .agent/sessions/SESSION-2026-03-30-my-task --by "Chief" --comments "Looks good"
 ```
 
 ### Sync Langflow

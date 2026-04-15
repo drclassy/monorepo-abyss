@@ -140,6 +140,7 @@ tmp/
 temp/
 flows/.langflow/
 .github/instructions/codacy.instructions.md
+.mcp.json
 
 # ---- POLYREPO SPLIT — apps/ MIGRATED TO SEPARATE REPOS ----
 # apps/ is excluded from abyss-core. Each app lives in its own repo.

@@ -28,7 +28,7 @@ graph TD
     P1 --> N3[Roadmap 2026]
 
     P2 --> N4[Engineering Hub]
-    P2 --> N5[Sentratorium Mirror]
+    P2 --> N5[Agent Sessions]
     P2 --> N6[Linear Dashboard]
 
     P3 --> N7[Meeting OS]
@@ -38,7 +38,7 @@ graph TD
 
 ### Pillar Detail:
 1.  **The Brain (Strategi)**: Fokus pada dokumentasi jangka panjang. Sinkron dengan `/docs/blueprint` dan `/docs/adr`.
-2.  **The Muscle (Operasional)**: Jembatan antara kode dan manajemen. Sinkron dengan `/docs/sentratorium` dan tiket Linear.
+2.  **The Muscle (Operasional)**: Jembatan antara kode dan manajemen. Sinkron dengan `.agent/sessions/` dan tiket Linear.
 3.  **The Heartbeat (Kolaborasi)**: Aktivitas harian tim, catatan rapat, dan kepatuhan (HIPAA/FHIR untuk Healthcare domain).
 
 ## 📊 3. Data Schema (Notion Databases)
@@ -46,7 +46,7 @@ graph TD
 | Database Name | Fields | Sync Source |
 |---------------|--------|-------------|
 | **ADR Registry** | ID, Title, Status, Date, Owner, Tags | `docs/adr/*.md` |
-| **Session Logs** | Session ID, Agent, Phase, Result, Handoff Link | `docs/sentratorium/sessions/*/` |
+| **Session Logs** | Session ID, Agent, Phase, Result, Handoff Link | `.agent/sessions/*/` |
 | **Roadmap Q2** | Feature, Priority, Status, Target Date | Notion Internal |
 | **Action Items** | Task Name, Owner, Due Date, Status | Linear Issues |
 

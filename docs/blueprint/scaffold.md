@@ -109,8 +109,8 @@ Semua Agen AI wajib mematuhi **Claudesy Workflow**:
 import fs from 'fs';
 import path from 'path';
 
-// Script untuk mengecek file HANDOFF terbaru di docs/sentratorium/sessions
-const sessionsPath = path.join(__dirname, '../../docs/sentratorium/sessions');
+// Script untuk mengecek file HANDOFF terbaru di .agent/sessions
+const sessionsPath = path.join(__dirname, '../../.agent/sessions');
 const files = fs.readdirSync(sessionsPath).filter(f => f.endsWith('.md'));
 
 if (files.length === 0) {
@@ -269,7 +269,7 @@ program
   .command('init-task <title>')
   .action((title) => {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const sessionDir = path.join(process.cwd(), 'docs/sentratorium/sessions', `SESSION-${timestamp}`);
+    const sessionDir = path.join(process.cwd(), '.agent/sessions', `SESSION-${timestamp}`);
     fs.mkdirSync(sessionDir, { recursive: true });
     
     const template = fs.readFileSync(path.join(process.cwd(), 'docs/templates/HANDOFF.md'), 'utf-8');

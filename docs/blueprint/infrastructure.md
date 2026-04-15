@@ -23,7 +23,7 @@
 ├── │ │   ├── edge-ai-prototype/ # Eksperimen SLM (Small Language Models)
 ├── │ │   └── AGENTS.md # Aturan lokal: Minimal testing, rapid prototyping
 ├── │ ├── 🛠️ internal/ # Corporate & Operational Tools
-├── │ │   ├── sentratorium-web/ # NEW Dashboard Monitoring Agent Swarm & Logs
+├── │ │   ├── agent-sessions-web/ # NEW Dashboard Monitoring Agent Swarm & Logs
 ├── │ │   └── design-system-docs/ # Dokumentasi UI/UX (Storybook/Astro)
 ├── │ └── 🌊 orchestrator/ # NEW Langflow API Gateway & Shadow Mode
 ├── │
@@ -55,7 +55,7 @@
 ├── │
 ├── ├── docs/ # 📚 KNOWLEDGE BASE & AUDIT TRAIL
 ├── │ ├── adr/ # Architecture Decision Records
-├── │ └── sentratorium/ # Session Logs: Riwayat interaksi Agen AI & Manusia
+├── │ └── .agent/ # Session Logs: Riwayat interaksi Agen AI & Manusia
 ├── │
 ├── ├── turbo.json # Konfigurasi Pipelines & Remote Caching
 ├── ├── pnpm-workspace.yaml # Definisi Workspace pnpm

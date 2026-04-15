@@ -137,9 +137,9 @@
 
 ---
 
-**Handoff Created:** [ISO Timestamp]  
-**Last Updated:** [ISO Timestamp]  
-**Session Path:** `docs/sentratorium/sessions/SESSION-[DATE]-[SLUG]/`
+**Handoff Created:** [ISO Timestamp]
+**Last Updated:** [ISO Timestamp]
+**Session Path:** `.agent/sessions/SESSION-[DATE]-[SLUG]/`
 
 ---
 

@@ -44,7 +44,7 @@ This directory contains all Architecture Decision Records (ADRs) for The Abyss m
 
 ## 🔗 Related
 
-- [Sentratorium](../sentratorium/) - Session logs
+- [.agent/](../../.agent/) - Agent sessions and handoffs
 - [Templates](../templates/) - Document templates
 
 ---

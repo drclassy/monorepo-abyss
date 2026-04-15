@@ -573,3 +573,134 @@ apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminRpaMonitoring.ts
 - Handoff: `2026-04-15-audit`.
 
 ---
+## 2026-04-15 02:20 — `d60d243` — feature/simplify-pass-2026-04-12
+
+- **Agent**: Claudesy
+- **Commit**: chore(security): pre-push gitignore hardening + audit clearance
+- **Files changed**: 7 file(s)
+
+```
+.agent/PROGRESS.md
+.agent/sessions/2026-04-15-audit-clearance.md
+.agent/sessions/2026-04-15-audit-gitignore-patches.md
+.agent/sessions/2026-04-15-audit-scan.md
+.agent/sessions/2026-04-15-remediation.sh
+.agent/sessions/2026-04-15.md
+.gitignore
+```
+
+---
+## 2026-04-15 02:29 — `3e597c9` — feature/simplify-pass-2026-04-12
+
+- **Agent**: Claudesy
+- **Commit**: chore(claude): track .claude/settings.json (EXEMPTED)
+- **Files changed**: 1 file(s)
+
+```
+.claude/settings.json
+```
+
+---
+## 2026-04-15 12:17 — `baa568c` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: chore(restructure): exclude apps/ — The Abyss core only
+- **Files changed**: 1389 file(s)
+
+```
+.gitignore
+apps/README.md
+apps/academic/AGENTS.md
+apps/academic/CLAUDE.md
+apps/academic/academic-solutions
+apps/academic/clinical-simulator/CLAUDE.md
+apps/academic/clinical-simulator/package.json
+apps/academic/evaluation-engine/CLAUDE.md
+apps/academic/evaluation-engine/package.json
+apps/community/AGENTS.md
+apps/community/CLAUDE.md
+apps/community/claudesy-transformer/.gitignore
+apps/community/claudesy-transformer/CLAUDE.md
+apps/community/claudesy-transformer/PROJECT_CONTEXT.md
+apps/community/claudesy-transformer/__tests__/api/auth-abuse-routes.test.ts
+apps/community/claudesy-transformer/__tests__/api/internal-billing-process-expirations.test.ts
+apps/community/claudesy-transformer/__tests__/api/internal-email-process.test.ts
+apps/community/claudesy-transformer/__tests__/api/prompts-idor.test.ts
+apps/community/claudesy-transformer/__tests__/api/prompts-list-create.test.ts
+apps/community/claudesy-transformer/__tests__/api/provider-key-resolution.test.ts
+```
+
+---
+## 2026-04-15 12:33 — `233b25c` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: chore(gitignore): Opsi B — exclude AI tool configs from remote
+- **Files changed**: 24 file(s)
+
+```
+.claude/settings.json
+.claude/settings.local.json
+.cursor/README.md
+.cursor/hooks.json
+.cursor/hooks/after-edit.mjs
+.cursor/hooks/autofix-loop.mjs
+.cursor/index.mdc
+.cursor/rules/010-sentra-operating-model.mdc
+.cursor/rules/020-sentra-standard-workflows.mdc
+.cursor/rules/030-sentra-policy-checklist.mdc
+.cursor/rules/040-sentra-tech-stack-standards.mdc
+.cursor/rules/050-sentra-solo-mode.mdc
+.cursor/rules/front-end-cursor-rules.mdc
+.cursor/rules/phase-4-langflow-orchestration.mdc
+.cursor/rules/phase-4-sub-task-4-1-4-2.mdc
+.cursor/rules/phase-4-sub-task-4-3-4-4.mdc
+.cursor/rules/phase-4-sub-task-4-5-4-7.mdc
+.cursor/rules/sentratorium-hq-mandatory.mdc
+.cursor/rules/skill-source-isolation.mdc
+.cursor/sandbox.json
+```
+
+---
+## 2026-04-15 12:35 — `f7c35a7` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: chore: remove .agents/ — obsolete, replaced by .agent/ (no 's')
+- **Files changed**: 5 file(s)
+
+```
+.agents/AGENTS.md
+.agents/HANDOFF.md
+.agents/MCP-CONFIG.json
+.agents/prompts/README.md
+.agents/skills/README.md
+```
+
+---
+## 2026-04-15 12:36 — `19d829f` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: chore(cleanup): remove obsolete files — docs/sentratorium, .github artifacts, flows readme
+- **Files changed**: 18 file(s)
+
+```
+.github/claudesy-pr-temp.psm1
+.github/claudesy-pr.psm1
+.github/instructions/codacy.instructions.md
+docs/sentratorium/.obsidian/app.json
+docs/sentratorium/.obsidian/appearance.json
+docs/sentratorium/.obsidian/core-plugins.json
+docs/sentratorium/.obsidian/workspace.json
+docs/sentratorium/AGENT_SESSION_LOG.md
+docs/sentratorium/README.md
+docs/sentratorium/ceo_directives.md
+docs/sentratorium/executive_profile.md
+docs/sentratorium/latest.md
+docs/sentratorium/price-model.md
+docs/sentratorium/sessions/SESSION-2026-04-05-PHASE1-COMPLETION/HANDOFF.md
+flows/README.md
+packages/README.md
+setup-sentra-notion.js
+tooling/sentratorium-check.mjs
+```
+
+---
