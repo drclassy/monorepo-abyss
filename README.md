@@ -238,7 +238,7 @@ Phase 4: GOVERNANCE & RELEASE
 +-----------------------------------------------------------------------------------+
                                         |
                                         v
-+------------------------------- SHARED FOUNDATION LAYER ---------------------------+
++----------------------------- SHARED FOUNDATION LAYER -----------------------------+
 |                                                                                   |
 |  +---------------------+  +---------------------+  +---------------------+       |
 |  |      database       |  |         ui          |  |    shared-types     |       |
@@ -255,7 +255,7 @@ Phase 4: GOVERNANCE & RELEASE
 +-----------------------------------------------------------------------------------+
                                         |
                                         v
-+------------------------------- DATA & INFRASTRUCTURE -----------------------------+
++------------------------------ DATA & INFRASTRUCTURE ------------------------------+
 |                                                                                   |
 |   PostgreSQL 16         Redis 7               Langflow                            |
 |   Primary DB            Cache & pub/sub        AI flow orchestration              |
@@ -269,7 +269,7 @@ Phase 4: GOVERNANCE & RELEASE
                           @the-abyss/* via pnpm workspace
                                         |
                                         v
-+------------------------------- POLYREPO CONSUMER APPS ----------------------------+
++------------------------------ POLYREPO CONSUMER APPS -----------------------------+
 |                                                                                   |
 |  HEALTHCARE              PLATFORM              ACADEMIC          COMMUNITY        |
 |  sentra-dashboard        platform-orchestrator clinical-         claudesy-        |
@@ -343,15 +343,15 @@ This codebase is operated by a structured multi-agent system — each agent has 
 </table>
 </div>
 
-| Agent | Model | Role | Responsibility                                             |
-|-------|-------|------|----------------                                            |
-| **Claude Code** | Opus 4.6 High · Sonnet 4.6 High | Architect & Execution | Primar|
-| **Cursor Composer** | Composer Agent | Implementation | In-editor agentic coding —|
-| **Kilo Code** | Best Available | Implementation | Parallel in-editor development a|
-| **Codex** | Codex 5.4 High | Backend Fabrication | API scaffolding, schema generat|
-| **Kimi** | Kimi 2.5 Thinking | Deep Reasoning | Extended reasoning tasks — archite|
-| **Gemini** | Gemini 2.5 Pro | Supervisor & Audit | Reviews outputs from all agents|
-| **Antigravity** | Agent | Scaffold | Project initialization, monorepo scaffolding,|
+| Agent | Model | Role | Responsibility |
+|-------|-------|------|----------------|
+| **Claude Code** | Opus 4.6 High · Sonnet 4.6 High | Architect & Execution | Primary decision-making agent. Owns system design, HANDOFF creation, GO-Gate validation, and end-to-end implementation oversight |
+| **Cursor Composer** | Composer Agent | Implementation | In-editor agentic coding — long-context task execution, multi-file edits, and iterative refinement within defined task scopes |
+| **Kilo Code** | Best Available | Implementation | Parallel in-editor development agent for component-level coding, scaffolding, and task-scoped iterative work |
+| **Codex** | Codex 5.4 High | Backend Fabrication | API scaffolding, schema generation, and high-throughput code generation tasks |
+| **Kimi** | Kimi 2.5 Thinking | Deep Reasoning | Extended reasoning tasks — architecture analysis, complex debugging, and multi-step technical problem solving |
+| **Gemini** | Gemini 2.5 Pro | Supervisor & Audit | Reviews outputs from all agents, performs cross-validation, and flags inconsistencies before GO-Gate submission |
+| **Antigravity** | Agent | Scaffold | Project initialization, monorepo scaffolding, and contract-first structure generation |
 
 All agent activity is traceable via commit trailers. No agent output ships without a human GO approval.
 
@@ -361,12 +361,12 @@ All agent activity is traceable via commit trailers. No agent output ships witho
 
 ### Prerequisites
 
-| Requirement | Version                                                             |
-|-------------|---------                                                            |
-| Node.js | >= 22.0.0                                                               |
-| pnpm | >= 9.0.0                                                                   |
-| Git | >= 2.40.0                                                                   |
-| Docker | optional, for local infra                                                |
+| Requirement | Version |
+|-------------|---------|
+| Node.js | >= 22.0.0 |
+| pnpm | >= 9.0.0 |
+| Git | >= 2.40.0 |
+| Docker | optional, for local infra |
 
 ### Installation
 
@@ -445,34 +445,34 @@ pnpm abyss status
 
 Applications have been migrated to their own repositories. This repo is **core only** — shared packages & agent governance.
 
-| Repo | Division | Description                                                     |
-|------|----------|--------------                                                   |
-| `sentra-dashboard` | Healthcare | Clinical staff dashboard — patient records, CDSS|
-| `puskesmas` | Healthcare | Public website + ICD-10 database                       |
-| `sentra-assist` | Healthcare | Artificial Intelligence assistant for clinical work|
-| `sentra-main` | Healthcare | Main healthcare application                          |
-| `platform-orchestrator` | Platform | NestJS + Kafka Artificial Intelligence flow o|
-| `sentra-portal` | Platform | Monorepo monitoring dashboard                        |
-| `academic-solutions` | Academic | Artificial Intelligence-based academic solutions|
-| `clinical-simulator` | Academic | Clinical training simulator                     |
-| `evaluation-engine` | Academic | Clinical evaluation engine                       |
-| `claudesy-transformer` | Community | Artificial Intelligence transformer for commu|
-| `claudesy-memory` | Community | Memory management system                          |
-| `agent-hermes` | Prototype | Multi-service Artificial Intelligence agent stack    |
+| Repo | Division | Description |
+|------|----------|--------------|
+| `sentra-dashboard` | Healthcare | Clinical staff dashboard — patient records, CDSS, and operational reports |
+| `puskesmas` | Healthcare | Public website + ICD-10 database |
+| `sentra-assist` | Healthcare | Artificial Intelligence assistant for clinical workflow automation |
+| `sentra-main` | Healthcare | Main healthcare application |
+| `platform-orchestrator` | Platform | NestJS + Kafka Artificial Intelligence flow orchestrator |
+| `sentra-portal` | Platform | Monorepo monitoring dashboard |
+| `academic-solutions` | Academic | Artificial Intelligence-based academic solutions |
+| `clinical-simulator` | Academic | Clinical training simulator |
+| `evaluation-engine` | Academic | Clinical evaluation engine |
+| `claudesy-transformer` | Community | Artificial Intelligence transformer for community |
+| `claudesy-memory` | Community | Memory management system |
+| `agent-hermes` | Prototype | Multi-service Artificial Intelligence agent stack |
 
 
 ### Shared Libraries
 
-| Package | Description                                                             |
-|---------|-------------                                                            |
-| `@the-abyss/ui` | Unified design system built on Shadcn UI. Consumed by all fronte|
-| `@the-abyss/database` | Prisma ORM schema and generated client. Single source of t|
-| `@the-abyss/ai-core` | Multi-model consensus engine. Abstracts provider-specific A|
-| `@the-abyss/langflow-client` | TypeScript SDK for interacting with the Langflow AP|
-| `@the-abyss/fhir-engine` | FHIR R4 schema validation and resource normalization.  |
-| `@the-abyss/vector-store` | RAGOps pipeline and vector search abstraction for retr|
-| `@the-abyss/iskandar-gatekeeper` | GO-Gate validator. Programmatically enforces de|
-| `@the-abyss/shared-types` | Global TypeScript type definitions shared across the e|
+| Package | Description |
+|---------|-------------|
+| `@the-abyss/ui` | Unified design system built on Shadcn UI. Consumed by all frontend applications. |
+| `@the-abyss/database` | Prisma ORM schema and generated client. Single source of truth for all database models. |
+| `@the-abyss/ai-core` | Multi-model consensus engine. Abstracts provider-specific APIs into a unified interface. |
+| `@the-abyss/langflow-client` | TypeScript SDK for interacting with the Langflow API. |
+| `@the-abyss/fhir-engine` | FHIR R4 schema validation and resource normalization. |
+| `@the-abyss/vector-store` | RAGOps pipeline and vector search abstraction for retrieval-augmented generation. |
+| `@the-abyss/iskandar-gatekeeper` | GO-Gate validator. Programmatically enforces deployment approval in CI/CD. |
+| `@the-abyss/shared-types` | Global TypeScript type definitions shared across the entire monorepo. |
 
 ---
 
@@ -480,39 +480,39 @@ Applications have been migrated to their own repositories. This repo is **core o
 
 ### Core Runtime
 
-| Technology | Version | Purpose                                                    |
-|------------|---------|---------                                                   |
-| Node.js | 22.x | Runtime                                                          |
-| TypeScript | 5.7.x | Language                                                     |
-| pnpm | 9.x | Package manager                                                      |
-| Turborepo | 2.x | Build system                                                    |
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Node.js | 22.x | Runtime |
+| TypeScript | 5.7.x | Language |
+| pnpm | 9.x | Package manager |
+| Turborepo | 2.x | Build system |
 
 ### Frontend
 
-| Technology | Version | Purpose                                                    |
-|------------|---------|---------                                                   |
-| Next.js | 16.x | Application framework                                            |
-| React | 19.x | UI library                                                         |
-| Tailwind CSS | 3.4.x | Styling                                                    |
-| Shadcn UI | latest | Component library                                            |
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Next.js | 16.x | Application framework |
+| React | 19.x | UI library |
+| Tailwind CSS | 3.4.x | Styling |
+| Shadcn UI | latest | Component library |
 
 ### Backend & Data
 
-| Technology | Version | Purpose                                                    |
-|------------|---------|---------                                                   |
-| Prisma | 6.x | ORM                                                                |
-| PostgreSQL | 16.x | Primary database                                              |
-| Redis | 7.x | Cache & pub/sub                                                     |
-| Langflow | latest | Artificial Intelligence flow orchestration                    |
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Prisma | 6.x | ORM |
+| PostgreSQL | 16.x | Primary database |
+| Redis | 7.x | Cache & pub/sub |
+| Langflow | latest | Artificial Intelligence flow orchestration |
 
 ### Infrastructure
 
-| Technology | Purpose                                                              |
-|------------|---------                                                             |
-| Docker | Containerization & local development                                     |
-| Terraform | Infrastructure-as-Code                                                |
-| ArgoCD | GitOps delivery                                                          |
-| GitHub Actions | CI/CD pipelines                                                  |
+| Technology | Purpose |
+|------------|---------|
+| Docker | Containerization & local development |
+| Terraform | Infrastructure-as-Code |
+| ArgoCD | GitOps delivery |
+| GitHub Actions | CI/CD pipelines |
 
 ---
 
@@ -562,20 +562,20 @@ Handoff: .agent/sessions/YYYY-MM-DD/HANDOFF.md
 
 All deployments must satisfy all four gates before reaching any production environment:
 
-| Gate | Requirement                                                                |
-|------|-------------                                                               |
-| 01 | `HANDOFF.md` created and declared prior to implementation                    |
-| 02 | GO approval recorded by an authorized principal                              |
-| 03 | All CI/CD test suites pass with no regressions                               |
-| 04 | Automated security scan passes OWASP Top 10 checks                           |
+| Gate | Requirement |
+|------|-------------|
+| 01 | `HANDOFF.md` created and declared prior to implementation |
+| 02 | GO approval recorded by an authorized principal |
+| 03 | All CI/CD test suites pass with no regressions |
+| 04 | Automated security scan passes OWASP Top 10 checks |
 
 ### Compliance Standards
 
-| Domain | Standards                                                                |
-|---------|-------------                                                            |
-| Healthcare | HIPAA compliance, FHIR R4 interoperability                           |
-| Academic | Student data privacy, institutional data governance                    |
-| General | OWASP Top 10, secure dependency management                              |
+| Domain | Standards |
+|---------|-------------|
+| Healthcare | HIPAA compliance, FHIR R4 interoperability |
+| Academic | Student data privacy, institutional data governance |
+| General | OWASP Top 10, secure dependency management |
 
 ---
 
@@ -602,13 +602,13 @@ All contributors — human or Artificial Intelligence agent — must follow the 
 
 ## Documentation
 
-| Resource | Location                                                               |
-|----------|----------                                                              |
-| Global Agent Steering | [.agent/AGENTS.md](.agent/AGENTS.md)                      |
-| Session Logs | [.agent/sessions/](.agent/sessions/)                               |
-| Document Templates | [docs/templates/](docs/templates/)                           |
-| Architecture Decision Records | [docs/adr/](docs/adr/)                            |
-| CLI Documentation | [tooling/abyss-cli/](tooling/abyss-cli/)                      |
+| Resource | Location |
+|----------|----------|
+| Global Agent Steering | [.agent/AGENTS.md](.agent/AGENTS.md) |
+| Session Logs | [.agent/sessions/](.agent/sessions/) |
+| Document Templates | [docs/templates/](docs/templates/) |
+| Architecture Decision Records | [docs/adr/](docs/adr/) |
+| CLI Documentation | [tooling/abyss-cli/](tooling/abyss-cli/) |
 
 ---
 
@@ -616,10 +616,10 @@ All contributors — human or Artificial Intelligence agent — must follow the 
 
 The Abyss is not a prototype. It is actively running a comprehensive pilot test program validated at two clinical sites in East Java, Indonesia.
 
-| Site | Type | Active Products                                                     |
-|------|------|-----------------                                                    |
-| **Maternal Hospital** | MELLY, Melinda Dashboard, Melinda Shield, Autonomous Admis|
-| **Primary Healthcare Site** | AADI, Audrey, Intelligence Dashboard, Sentra Assist,|
+| Site | Type | Active Products |
+|------|------|-----------------|
+| **Maternal Hospital** | MELLY, Melinda Dashboard, Melinda Shield, Autonomous Admission, Smart Triage, Ambient Scribe, Critical Alert System, Predictive Bed Management, OR Orchestrator |
+| **Primary Healthcare Site** | AADI, Audrey, Intelligence Dashboard, Sentra Assist, Telemedicine, ReferraLink |
 
 **Active validation objectives:**
 
@@ -638,46 +638,46 @@ Pilot sites: **Maternal Hospital** · **Primary Healthcare Site**
 
 ### Under Testing — Active Pilots
 
-| Product | Description                                                             |
-|---------|-------------                                                            |
-| **AADI** — Autonomous Artificial Diagnostic Intelligence | Autonomous diagnostic i|
-| **Audrey** — Voice-First Clinical Intelligence | Real-time voice assistant (Gemini|
-| **Intelligence Dashboard** — Unified Clinical Operations Platform | Unified comman|
-| **Sentra Assist** — Clinical Workflow Automation | Chrome Extension (MV3) automati|
-| **Telemedicine** — Remote Clinical Consultation | HD WebRTC consultation with virt|
-| **ReferraLink** — Awareness-Intelligence Protocol | Reasoning engine for BPJS and |
+| Product | Description |
+|---------|-------------|
+| **AADI** — Autonomous Artificial Diagnostic Intelligence | Autonomous diagnostic inference engine with multi-layer reasoning; Iskandar Engine V4.3, 159 diseases, 1,930 ICD-10 codes, safety gates, drug interaction detection (multi-safety-gate validation) |
+| **Audrey** — Voice-First Clinical Intelligence | Real-time voice assistant (Gemini Live, 24 kHz), medical grounding, primary care clinical insights; SFT training + clinical alignment |
+| **Intelligence Dashboard** — Unified Clinical Operations Platform | Unified command center — EMR/RPA automation, ICD-X unification, LB1 national reporting, SenCall calculator, telemedicine WebRTC, ACARS, KPI monitoring via Socket.IO |
+| **Sentra Assist** — Clinical Workflow Automation | Chrome Extension (MV3) automating data transfer between Dashboard and national EMR systems via RPA — anamnesis, diagnosis, and prescription workflows |
+| **Telemedicine** — Remote Clinical Consultation | HD WebRTC consultation with virtual waiting room, e-prescription, lab upload, automated SOAP note generation, and schedule integration |
+| **ReferraLink** — Awareness-Intelligence Protocol | Reasoning engine for BPJS and insurance regulatory flux — dynamic claim optimization and actionable recommendations for claim verification officers |
 
 ### Deployed — Production Ready
 
-| Product | Description                                                             |
-|---------|-------------                                                            |
-| **Med-Cognitive** — Neural Memory Architecture for Clinical Artificial Intelligenc|
+| Product | Description |
+|---------|-------------|
+| **Med-Cognitive** — Neural Memory Architecture for Clinical Artificial Intelligence | Persistent memory layer for Artificial Intelligence agents — semantic embedding with cross-session decision retrieval and patient context continuity |
 
 ### Under Development
 
-| Product | Description                                                             |
-|--------|-----------                                                               |
-| **MELLY** — Hyper-Personalized Augmented Virtual Agent | Per-patient Artificial In|
-| **Melinda Dashboard** — Zero-Friction Interoperability Platform | Inter-department|
-| **Melinda Shield** — Cognitive Cybersecurity Infrastructure | Multi-layer cognitiv|
-| **Autonomous Admission** — Admission & Journey Tracking | Zero-queue digital admis|
-| **Smart Triage** — Pediatric & Maternal Algorithmic Assessment | Pre-visit asynchr|
-| **Proactive Care Navigator** — Post-Partum & Preventive Monitoring | Post-discharg|
-| **Ambient Scribe** — Clinical Voice-to-EMR Engine | NLP engine separating clinical|
-| **Critical Alert System** — Proactive NICU & Telemetry Intelligence | Real-time cr|
-| **Predictive Bed Management** — Autonomous Turnaround Orchestration | At discharge|
-| **Artificial Intelligence Coding Auditor** — Clinical Coding & Claim Defense | Cro|
-| **OR Orchestrator** — Smart Operating Room Logistics | Operating room logistics — |
+| Product | Description |
+|--------|-----------|
+| **MELLY** — Hyper-Personalized Augmented Virtual Agent | Per-patient Artificial Intelligence agent spanning preconception through pediatric care; Vertex multi-agent orchestration, WHO education protocols, and automated report synthesis to EMR |
+| **Melinda Dashboard** — Zero-Friction Interoperability Platform | Inter-departmental interoperability platform for the Maternal Hospital — KPI dashboards, service management, medical records, and Lifestyle Artificial Intelligence voice integration |
+| **Melinda Shield** — Cognitive Cybersecurity Infrastructure | Multi-layer cognitive security — AES-256 encryption, immutable audit ledger, Artificial Intelligence behavioral monitoring, EHR access geofencing, rapid threat containment, threat intelligence, and compliance dashboard |
+| **Autonomous Admission** — Admission & Journey Tracking | Zero-queue digital admission — referral document extraction (Vision Artificial Intelligence), SIMRS schedule verification, insurance bridging, and automated prenatal reminders (ultrasound, supplements) throughout pregnancy |
+| **Smart Triage** — Pediatric & Maternal Algorithmic Assessment | Pre-visit asynchronous triage assessment using pediatric and obstetric parameters; automated SOAP draft generation; emergency escalation protocol (e.g. premature rupture of membranes) |
+| **Proactive Care Navigator** — Post-Partum & Preventive Monitoring | Post-discharge follow-up — immunization tracking, wound and lactation care, postpartum depression screening derived from medical record data |
+| **Ambient Scribe** — Clinical Voice-to-EMR Engine | NLP engine separating clinical dialogue from ambient noise; automated vital sign transcription to EMR (fetal weight, fetal heart rate, and related parameters) |
+| **Critical Alert System** — Proactive NICU & Telemetry Intelligence | Real-time critical alerts from lab results and NICU telemetry pushed to clinician devices when monitored parameters breach defined thresholds |
+| **Predictive Bed Management** — Autonomous Turnaround Orchestration | At discharge — automated orchestration chain across billing, take-home pharmacy, and housekeeping with SLA enforcement to maximize bed occupancy rate |
+| **Artificial Intelligence Coding Auditor** — Clinical Coding & Claim Defense | Cross-reference ICD-10 and ICD-9-CM codes against clinical documentation; reduce claim disputes and denial rates |
+| **OR Orchestrator** — Smart Operating Room Logistics | Operating room logistics — emergency C-section prioritization, on-call team coordination, blood supply management, and OR utilization optimization |
 
 ---
 
 ## Team
 
-| Role | Name                                                                       |
-|------|------                                                                      |
-| CEO | Dr. Claudesy                                                                |
-| Company | Sentra Artificial Intelligence                                          |
-| Location | Surabaya, Indonesia (WIB / UTC+7)                                      |
+| Role | Name |
+|------|------|
+| CEO | Dr. Claudesy |
+| Company | Sentra Artificial Intelligence |
+| Location | Surabaya, Indonesia (WIB / UTC+7) |
 
 ---
 
