@@ -42,76 +42,6 @@ Every architectural decision within this codebase — from the stringent FHIR R4
 
 ---
 
-## Multi-Agent Governance Roster
-
-This codebase is operated by a structured multi-agent system — each agent has a defined role, scope, and audit obligation. No agent acts outside its designated function.
-
-<div align="center">
-<table>
-  <tr>
-    <td align="center" width="130">
-      <img src=".github/logos/claudecode.svg" width="56" height="56" alt="Claude Code"/><br/>
-      <sub><b>Claude Code</b></sub><br/>
-      <sub>Architect &amp; Execution</sub>
-    </td>
-    <td align="center" width="130">
-      <img src=".github/logos/cursor.svg" width="56" height="56" alt="Cursor"/><br/>
-      <sub><b>Cursor</b></sub><br/>
-      <sub>Implementation</sub>
-    </td>
-    <td align="center" width="130">
-      <img src=".github/logos/kilocode.svg" width="56" height="56" alt="Kilo Code"/><br/>
-      <sub><b>Kilo Code</b></sub><br/>
-      <sub>Implementation</sub>
-    </td>
-    <td align="center" width="130">
-      <img src=".github/logos/codex.svg" width="56" height="56" alt="Codex"/><br/>
-      <sub><b>Codex</b></sub><br/>
-      <sub>Backend Fabrication</sub>
-    </td>
-    <td align="center" width="130">
-      <img src=".github/logos/gemini.svg" width="56" height="56" alt="Gemini"/><br/>
-      <sub><b>Gemini</b></sub><br/>
-      <sub>Supervisor &amp; Audit</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="130">
-      <img src=".github/logos/antigravity.svg" width="56" height="56" alt="Antigravity"/><br/>
-      <sub><b>Antigravity</b></sub><br/>
-      <sub>Scaffold</sub>
-    </td>
-    <td align="center" width="130">
-      <img src=".github/logos/vertexai.svg" width="56" height="56" alt="Vertex AI"/><br/>
-      <sub><b>Vertex Artificial Intelligence</b></sub><br/>
-      <sub>Orchestration</sub>
-    </td>
-    <td align="center" width="130">
-      <img src=".github/logos/kimi.svg" width="56" height="56" alt="Kimi"/><br/>
-      <sub><b>Kimi</b></sub><br/>
-      <sub>Reasoning</sub>
-    </td>
-    <td align="center" width="130">
-      <img src=".github/logos/qwen.svg" width="56" height="56" alt="Qwen"/><br/>
-      <sub><b>Qwen</b></sub><br/>
-      <sub>Reasoning</sub>
-    </td>
-    <td align="center" width="130">&nbsp;</td>
-  </tr>
-</table>
-</div>
-
-| Agent | Role | Responsibility |
-|-------|------|----------------|
-| **Claude Code** | Architect & Execution | Primary decision-making agent. Owns system design, HANDOFF creation, GO-Gate validation, and end-to-end implementation oversight |
-| **Cursor / Kilo** | Implementation | In-editor development agent. Handles component-level coding and iterative refinement within defined task scopes |
-| **Codex** | Backend Fabrication | API scaffolding, schema generation, and high-throughput code generation tasks |
-| **Gemini** | Supervisor & Audit | Reviews outputs from all other agents, performs cross-validation, and flags inconsistencies before GO-Gate submission |
-
-All agent activity is traceable via commit trailers. No agent output ships without a human GO approval.
-
----
-
 ## Claudesy Genesis Framework
 
 <table>
@@ -272,35 +202,155 @@ Phase 4: GOVERNANCE & RELEASE
 ## Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│                         THE ABYSS MONOREPO                           │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  .agent/               Artificial Intelligence Steering & agent governance rules          │
-│  .github/              CI/CD pipelines & GO-Gate enforcement         │
-│                                                                      │
-│  apps/                 (migrated to separate repos — see polyrepo)  │
-│                                                                      │
-│  flows/                Versioned Langflow JSON definitions           │
-│                                                                      │
-│  packages/                                                           │
-│    ├── ui              Design System (Shadcn UI)                     │
-│    ├── database        Prisma Schema & Client                        │
-│    ├── ai-core         Multi-Model Consensus Engine                  │
-│    ├── langflow-client Langflow TypeScript SDK                       │
-│    ├── fhir-engine     FHIR R4 Validation                            │
-│    ├── vector-store    RAGOps & Vector Search                        │
-│    ├── iskandar-gatekeeper  GO-Gate Validator                        │
-│    └── shared-types    Global TypeScript Definitions                 │
-│                                                                      │
-│  tooling/                                                            │
-│    └── abyss-cli       Internal developer CLI                        │
-│                                                                      │
-│  infrastructure/       Terraform, ArgoCD, Docker Compose             │
-│  docs/                 ADRs, session logs, templates                 │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
++-----------------------------------------------------------------------------------+
+|               THE ABYSS -- CORE ENGINEERING FOUNDATION                            |
+|      Shared infrastructure for the Sentra AI Healthcare Ecosystem                 |
++-----------------------------------------------------------------------------------+
+
++--------------------------------- GOVERNANCE LAYER --------------------------------+
+|                                                                                    |
+|  .agent/            AI coordination: HANDOFF, GO-Gate, sessions, decisions        |
+|  iskandar-gatekeeper  Blocks deployment without GO approval (CI enforced)         |
+|  .github/workflows/ verify --> build --> test --> lint --> security               |
+|                                                                                    |
++------------------------------------------------------------------------------------+
+                                        |
+                              [GO approval required]
+                                        |
+                                        v
++--------------------------------- AI ENGINE LAYER ---------------------------------+
+|                                                                                    |
+|  +---------------------+  +---------------------+  +---------------------+       |
+|  |      ai-core        |  |    fhir-engine      |  |    vector-store     |       |
+|  |  Multi-Model        |  |  FHIR R4 Validation |  |  RAGOps + Vector    |       |
+|  |  Consensus Engine   |  |  & Normalization    |  |  Search (pgvector)  |       |
+|  |  Claude  Gemini     |  |                     |  |  Embed  Retrieve    |       |
+|  |  GPT-4   MedGemma   |  |  Patient / Encounter|  |  Rerank  Index      |       |
+|  +---------------------+  |  / Condition / Obs  |  +---------------------+       |
+|                            +---------------------+                                |
+|  +---------------------+  +------------------------------------------+          |
+|  |   langflow-client   |  |         iskandar-gatekeeper (auth)        |          |
+|  |  Langflow TS SDK    |  |  JWT  .  API key mgmt  .  Express middleware|          |
+|  |  Flow execution &   |  |  Permissions enforcement  .  Timing-safe  |          |
+|  |  AI orchestration   |  +------------------------------------------+          |
+|  +---------------------+                                                          |
+|                                                                                    |
++------------------------------------------------------------------------------------+
+                                        |
+                                        v
++------------------------------- SHARED FOUNDATION LAYER ---------------------------+
+|                                                                                    |
+|  +---------------------+  +---------------------+  +---------------------+       |
+|  |      database       |  |         ui          |  |    shared-types     |       |
+|  |  Prisma ORM +       |  |  Design System      |  |  Global TypeScript  |       |
+|  |  Schema (single     |  |  Shadcn UI +        |  |  definitions across |       |
+|  |  source of truth)   |  |  Tailwind CSS       |  |  all workspaces     |       |
+|  +---------------------+  +---------------------+  +---------------------+       |
+|                                                                                    |
+|  +-----------------------------------------------------------------------+       |
+|  |                         abyss-cli  (tooling/)                          |       |
+|  |      init-task  .  go  .  sync-flow  .  create  .  status             |       |
+|  +-----------------------------------------------------------------------+       |
+|                                                                                    |
++------------------------------------------------------------------------------------+
+                                        |
+                                        v
++------------------------------- DATA & INFRASTRUCTURE -----------------------------+
+|                                                                                    |
+|   PostgreSQL 16         Redis 7               Langflow                            |
+|   Primary DB            Cache & pub/sub        AI flow orchestration              |
+|   (Prisma managed)      (Socket.IO relay)      (clinical workflow engine)         |
+|                                                                                    |
+|   Terraform             ArgoCD                 Docker Compose                     |
+|   Infrastructure-as-Code  GitOps delivery      Local development                  |
+|                                                                                    |
++------------------------------------------------------------------------------------+
+                                        |
+                          @the-abyss/* via pnpm workspace
+                                        |
+                                        v
++------------------------------- POLYREPO CONSUMER APPS ----------------------------+
+|                                                                                    |
+|  HEALTHCARE              PLATFORM              ACADEMIC          COMMUNITY        |
+|  sentra-dashboard        platform-orchestrator clinical-         claudesy-        |
+|  puskesmas               (NestJS + Kafka)      simulator         transformer      |
+|  sentra-assist           sentra-portal         academic-         claudesy-memory  |
+|  sentra-main                                   solutions         agent-hermes     |
+|                                                evaluation-engine                  |
+|                                                                                    |
++------------------------------------------------------------------------------------+
 ```
+
+
+---
+
+## Multi-Agent Governance Roster
+
+This codebase is operated by a structured multi-agent system — each agent has a defined role, scope, and audit obligation. No agent acts outside its designated function.
+
+<div align="center">
+<table>
+  <tr>
+    <td align="center" width="130">
+      <img src=".github/logos/claudecode.svg" width="56" height="56" alt="Claude Code"/><br/>
+      <sub><b>Claude Code</b></sub><br/>
+      <sub>Architect &amp; Execution</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/cursor.svg" width="56" height="56" alt="Cursor"/><br/>
+      <sub><b>Cursor</b></sub><br/>
+      <sub>Implementation</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/kilocode.svg" width="56" height="56" alt="Kilo Code"/><br/>
+      <sub><b>Kilo Code</b></sub><br/>
+      <sub>Implementation</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/codex.svg" width="56" height="56" alt="Codex"/><br/>
+      <sub><b>Codex</b></sub><br/>
+      <sub>Backend Fabrication</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/gemini.svg" width="56" height="56" alt="Gemini"/><br/>
+      <sub><b>Gemini</b></sub><br/>
+      <sub>Supervisor &amp; Audit</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="130">
+      <img src=".github/logos/antigravity.svg" width="56" height="56" alt="Antigravity"/><br/>
+      <sub><b>Antigravity</b></sub><br/>
+      <sub>Scaffold</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/vertexai.svg" width="56" height="56" alt="Vertex AI"/><br/>
+      <sub><b>Vertex Artificial Intelligence</b></sub><br/>
+      <sub>Orchestration</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/kimi.svg" width="56" height="56" alt="Kimi"/><br/>
+      <sub><b>Kimi</b></sub><br/>
+      <sub>Reasoning</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/qwen.svg" width="56" height="56" alt="Qwen"/><br/>
+      <sub><b>Qwen</b></sub><br/>
+      <sub>Reasoning</sub>
+    </td>
+    <td align="center" width="130">&nbsp;</td>
+  </tr>
+</table>
+</div>
+
+| Agent | Role | Responsibility |
+|-------|------|----------------|
+| **Claude Code** | Architect & Execution | Primary decision-making agent. Owns system design, HANDOFF creation, GO-Gate validation, and end-to-end implementation oversight |
+| **Cursor / Kilo** | Implementation | In-editor development agent. Handles component-level coding and iterative refinement within defined task scopes |
+| **Codex** | Backend Fabrication | API scaffolding, schema generation, and high-throughput code generation tasks |
+| **Gemini** | Supervisor & Audit | Reviews outputs from all other agents, performs cross-validation, and flags inconsistencies before GO-Gate submission |
+
+All agent activity is traceable via commit trailers. No agent output ships without a human GO approval.
 
 ---
 
