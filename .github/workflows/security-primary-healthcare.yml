@@ -5,15 +5,11 @@ on:
     branches: [main, develop]
     paths:
       - 'apps/healthcare/primary-healthcare/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
       - '.github/workflows/security-primary-healthcare.yml'
   push:
     branches: [main, develop]
     paths:
       - 'apps/healthcare/primary-healthcare/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
       - '.github/workflows/security-primary-healthcare.yml'
 
 concurrency:
