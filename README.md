@@ -1,6 +1,6 @@
 # The Abyss
 
-**AI-Native Monorepo for the Sentra AI Ecosystem**
+**Artificial Intelligence-Native Monorepo for the Sentra Artificial Intelligence Ecosystem**
 
 [![CI](https://img.shields.io/github/actions/workflow/status/Docsynapse/abyss-monorepo/ci.yml?branch=main)](https://github.com/Docsynapse/abyss-monorepo/actions)
 [![License](https://img.shields.io/badge/license-UNLICENSED-red)](LICENSE)
@@ -20,11 +20,11 @@
 </td>
 <td valign="top">
 
-The Abyss is the unified engineering backbone of Sentra AI — a production-grade monorepo that houses every application, shared library, and infrastructure definition across the organization's healthcare and academic AI product lines.
+The Abyss is the unified engineering backbone of Sentra Artificial Intelligence — a production-grade monorepo that houses every application, shared library, and infrastructure definition across the organization's healthcare and academic Artificial Intelligence product lines.
 
-It runs a medical referral system, a diagnostic orchestration service, a clinical education simulator, and an AI evaluation engine — all sharing a single database schema, design system, FHIR validation engine, and multi-model consensus layer. Every AI workflow is orchestrated through an integrated Langflow gateway, with vector search and RAG pipelines built directly into the shared package layer.
+It runs a medical referral system, a diagnostic orchestration service, a clinical education simulator, and an Artificial Intelligence evaluation engine — all sharing a single database schema, design system, FHIR validation engine, and multi-model consensus layer. Every Artificial Intelligence workflow is orchestrated through an integrated Langflow gateway, with vector search and RAG pipelines built directly into the shared package layer.
 
-Beyond the products themselves, The Abyss enforces a disciplined development protocol called the Claudesy Workflow — no task starts without a declaration, no deployment ships without a GO approval, and no commit lands without a full audit trail. This makes the codebase as navigable by AI agents as it is by human engineers, by design.
+Beyond the products themselves, The Abyss enforces a disciplined development protocol called the Claudesy Workflow — no task starts without a declaration, no deployment ships without a GO approval, and no commit lands without a full audit trail. This makes the codebase as navigable by Artificial Intelligence agents as it is by human engineers, by design.
 
 </td>
 </tr>
@@ -39,7 +39,7 @@ Beyond the products themselves, The Abyss enforces a disciplined development pro
 │                         THE ABYSS MONOREPO                           │
 ├──────────────────────────────────────────────────────────────────────┤
 │                                                                      │
-│  .agent/               AI Steering & agent governance rules          │
+│  .agent/               Artificial Intelligence Steering & agent governance rules          │
 │  .github/              CI/CD pipelines & GO-Gate enforcement         │
 │                                                                      │
 │  apps/                 (migrated to separate repos — see polyrepo)  │
@@ -159,16 +159,16 @@ Applications have been migrated to their own repositories. This repo is **core o
 |------|----------|--------------|
 | `sentra-dashboard` | Healthcare | Puskesmas staff dashboard — patient records, CDSS, reports |
 | `puskesmas` | Healthcare | Public website + ICD-10 database |
-| `sentra-assist` | Healthcare | AI assistant for Puskesmas staff |
+| `sentra-assist` | Healthcare | Artificial Intelligence assistant for Puskesmas staff |
 | `sentra-main` | Healthcare | Main healthcare application |
-| `platform-orchestrator` | Platform | NestJS + Kafka AI flow orchestrator |
+| `platform-orchestrator` | Platform | NestJS + Kafka Artificial Intelligence flow orchestrator |
 | `sentra-portal` | Platform | Monorepo monitoring dashboard |
-| `academic-solutions` | Academic | AI-based academic solutions |
+| `academic-solutions` | Academic | Artificial Intelligence-based academic solutions |
 | `clinical-simulator` | Academic | Clinical training simulator |
 | `evaluation-engine` | Academic | Clinical evaluation engine |
-| `claudesy-transformer` | Community | AI transformer for community |
+| `claudesy-transformer` | Community | Artificial Intelligence transformer for community |
 | `claudesy-memory` | Community | Memory management system |
-| `agent-hermes` | Prototype | Multi-service AI agent stack |
+| `agent-hermes` | Prototype | Multi-service Artificial Intelligence agent stack |
 
 
 ### Shared Libraries
@@ -213,7 +213,7 @@ Applications have been migrated to their own repositories. This repo is **core o
 | Prisma | 6.x | ORM |
 | PostgreSQL | 16.x | Primary database |
 | Redis | 7.x | Cache & pub/sub |
-| Langflow | latest | AI flow orchestration |
+| Langflow | latest | Artificial Intelligence flow orchestration |
 
 ### Infrastructure
 
@@ -228,7 +228,7 @@ Applications have been migrated to their own repositories. This repo is **core o
 
 ## Claudesy Workflow
 
-All development in this monorepo — whether by human engineers or AI agents — follows the three-phase Claudesy Workflow. There are no exceptions.
+All development in this monorepo — whether by human engineers or Artificial Intelligence agents — follows the three-phase Claudesy Workflow. There are no exceptions.
 
 ### Phase 1 — HANDOFF First
 
@@ -289,9 +289,9 @@ All deployments must satisfy all four gates before reaching any production envir
 
 ## Contributing
 
-All contributors — human or AI agent — must follow the same workflow.
+All contributors — human or Artificial Intelligence agent — must follow the same workflow.
 
-### For AI Agents
+### For Artificial Intelligence Agents
 
 1. Read [.agent/AGENTS.md](.agent/AGENTS.md) — understand behavioral constraints
 2. Create a task session via `pnpm abyss init-task`
@@ -343,13 +343,13 @@ Pilot sites: **RSIA Melinda DHAI** (Mother & Child Hospital) · **Puskesmas Balo
 | **MELLY** | Hyper-personalized patient agent (prenatal to age 18) |
 | **Melinda Dashboard** | Inter-departmental data interoperability |
 | **Melinda Shield** | Five-layer cybersecurity with AES-256 GCM encryption |
-| **Autonomous Admission** | Zero-queue digital admission with Vision AI |
+| **Autonomous Admission** | Zero-queue digital admission with Vision Artificial Intelligence |
 | **Smart Triage** | Pediatric/maternal asynchronous assessment |
 | **Proactive Care Navigator** | Post-discharge preventive monitoring |
 | **Ambient Scribe** | Voice-to-EMR clinical documentation engine |
 | **Critical Alert System** | NICU/telemetry anomaly detection |
 | **Predictive Bed Management** | Autonomous discharge orchestration |
-| **AI Coding Auditor** | ICD-10 coding validation against medical records |
+| **Artificial Intelligence Coding Auditor** | ICD-10 coding validation against medical records |
 | **OR Orchestrator** | Operating room logistics and scheduling |
 
 ### Planned Modules
