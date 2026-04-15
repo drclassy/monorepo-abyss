@@ -1,9 +1,6 @@
 # The Abyss
 
 **AI-Native Monorepo for the Sentra AI Ecosystem**
-<div align="center">
-  <img src=".github/abyss.png" alt="The Abyss" width="160" />
-</div>
 
 [![CI](https://img.shields.io/github/actions/workflow/status/Docsynapse/abyss-monorepo/ci.yml?branch=main)](https://github.com/Docsynapse/abyss-monorepo/actions)
 [![License](https://img.shields.io/badge/license-UNLICENSED-red)](LICENSE)
@@ -16,9 +13,22 @@
 
 ## Overview
 
-The Abyss is an AI-native monorepo designed to serve as the unified infrastructure layer for all Sentra AI products — from healthcare referral systems and clinical simulators to AI orchestration and internal tooling.
+<table>
+<tr>
+<td valign="middle" width="180">
+  <img src=".github/abyss.png" alt="The Abyss" width="160" />
+</td>
+<td valign="top">
 
-It enforces a disciplined, agent-compatible engineering workflow through three core principles: every task is declared before execution, every deployment is gated, and every commit is traceable. The architecture is built on domain isolation with shared packages, enabling independent scaling of applications while preserving a single source of truth for cross-cutting concerns such as database schemas, AI model abstractions, FHIR validation, and design systems.
+The Abyss is the unified engineering backbone of Sentra AI — a production-grade monorepo that houses every application, shared library, and infrastructure definition across the organization's healthcare and academic AI product lines.
+
+It runs a medical referral system, a diagnostic orchestration service, a clinical education simulator, and an AI evaluation engine — all sharing a single database schema, design system, FHIR validation engine, and multi-model consensus layer. Every AI workflow is orchestrated through an integrated Langflow gateway, with vector search and RAG pipelines built directly into the shared package layer.
+
+Beyond the products themselves, The Abyss enforces a disciplined development protocol called the Claudesy Workflow — no task starts without a declaration, no deployment ships without a GO approval, and no commit lands without a full audit trail. This makes the codebase as navigable by AI agents as it is by human engineers, by design.
+
+</td>
+</tr>
+</table>
 
 ---
 
@@ -29,7 +39,7 @@ It enforces a disciplined, agent-compatible engineering workflow through three c
 │                         THE ABYSS MONOREPO                           │
 ├──────────────────────────────────────────────────────────────────────┤
 │                                                                      │
-│  .agent/              AI Steering & agent governance rules          │
+│  .agent/               AI Steering & agent governance rules          │
 │  .github/              CI/CD pipelines & GO-Gate enforcement         │
 │                                                                      │
 │  apps/                 (migrated to separate repos — see polyrepo)  │
@@ -335,7 +345,7 @@ All contributors — human or AI agent — must follow the same workflow.
 
 ---
 
-**Version:** 0.0.1
+**Version:** 0.0.1  
 **Last Updated:** 2026-03-30
 
 ---
