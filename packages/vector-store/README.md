@@ -1,6 +1,8 @@
 # @the-abyss/vector-store
 
-RAGOps and vector search abstraction for the Abyss monorepo. Wraps the underlying vector database (e.g., pgvector) with a consistent query interface used by `sentra-assist` for context retrieval.
+RAGOps and vector search abstraction for the Abyss monorepo. Wraps the
+underlying vector database (e.g., pgvector) with a consistent query interface
+used by `sentra-assist` for context retrieval.
 
 ## Install
 
@@ -24,10 +26,10 @@ const results = await store.query({ embedding: queryEmbedding, topK: 5 })
 
 ## Exports
 
-| Export | Type | Description |
-|--------|------|-------------|
-| `VectorStore` | class | Vector database client with upsert, query, delete |
+| Export              | Type     | Description                                           |
+| ------------------- | -------- | ----------------------------------------------------- |
+| `VectorStore`       | class    | Vector database client with upsert, query, delete     |
 | `createVectorStore` | function | Factory — returns a configured `VectorStore` instance |
-| `VectorDocument` | type | Document shape: id, content, embedding, metadata |
-| `QueryResult` | type | Search result shape with score and document |
-| `VectorStoreConfig` | type | Connection and index configuration |
+| `VectorDocument`    | type     | Document shape: id, content, embedding, metadata      |
+| `QueryResult`       | type     | Search result shape with score and document           |
+| `VectorStoreConfig` | type     | Connection and index configuration                    |

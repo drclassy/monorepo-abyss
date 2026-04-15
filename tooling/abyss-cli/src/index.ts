@@ -8,16 +8,12 @@ import { Command } from 'commander'
 import fs from 'fs-extra'
 import ora from 'ora'
 
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const program = new Command()
 
-program
-  .name('abyss')
-  .description('The Abyss CLI - Monorepo Development Tool')
-  .version('0.0.1')
+program.name('abyss').description('The Abyss CLI - Monorepo Development Tool').version('0.0.1')
 
 // ============================================
 // INIT-TASK COMMAND
@@ -30,7 +26,10 @@ program
 
     try {
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)
-      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 50)
+      const slug = title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .slice(0, 50)
       const sessionDir = path.join(process.cwd(), '.agent/sessions', `session-${timestamp}-${slug}`)
 
       await fs.ensureDir(sessionDir)
@@ -40,7 +39,7 @@ program
       if (!(await fs.pathExists(templatePath))) {
         resolvedTemplatePath = path.join(process.cwd(), 'docs/templates/HANDOFF.md')
       }
-      
+
       let template = await fs.readFile(resolvedTemplatePath, 'utf-8')
 
       template = template
@@ -52,7 +51,7 @@ program
       const handoffPath = path.join(sessionDir, 'handoff.md')
       await fs.writeFile(handoffPath, template)
 
-      spinner.succeed(chalk.green(`Task initialized successfully!`))    
+      spinner.succeed(chalk.green(`Task initialized successfully!`))
       console.log()
       console.log(chalk.cyan('Session Path:'))
       console.log(`  ${sessionDir}`)
@@ -81,12 +80,12 @@ program
       if (!(await fs.pathExists(handoffPath))) {
         handoffPath = path.join(sessionPath, 'HANDOFF.md')
         if (!(await fs.pathExists(handoffPath))) {
-          throw new Error(`handoff.md not found at ${sessionPath}`)       
+          throw new Error(`handoff.md not found at ${sessionPath}`)
         }
       }
 
       let content = await fs.readFile(handoffPath, 'utf-8')
-      content = content.replace(/Status:\s*🛑\s*PENDING/i, 'Status: ✅ GO')  
+      content = content.replace(/Status:\s*🛑\s*PENDING/i, 'Status: ✅ GO')
 
       const approvalSection = `
 ### Approval String
@@ -98,7 +97,7 @@ program
 
       if (content.toLowerCase().includes('### approval string')) {
         content = content.replace(
-          /### Approval String\s*\n>.*?(?=\n\n|\n##|$)/si,
+          /### Approval String\s*\n>.*?(?=\n\n|\n##|$)/is,
           approvalSection.trim()
         )
       } else {
@@ -134,7 +133,7 @@ program
       const sessions = await fs.readdir(sessionsPath)
       const validSessions = sessions
         .filter((s: string) => s.toLowerCase().startsWith('session-'))
-        .sort((a: string, b: string) => b.localeCompare(a)) 
+        .sort((a: string, b: string) => b.localeCompare(a))
 
       if (validSessions.length === 0) {
         spinner.warn(chalk.yellow('No valid task sessions found.'))
@@ -154,7 +153,7 @@ program
       }
 
       const content = await fs.readFile(handoffPath, 'utf-8')
-      
+
       spinner.stop()
       console.log()
       console.log(chalk.bold.green('🎯 CURRENT FOCUS: ') + chalk.bold.white(latestSession))
@@ -162,7 +161,7 @@ program
       console.log()
 
       const sections = content.split(/\n## /)
-      
+
       for (const section of sections) {
         if (section.toLowerCase().includes('diagnosis')) {
           console.log(chalk.cyan('Diagnosis & Context:'))
@@ -178,7 +177,12 @@ program
       }
 
       console.log(chalk.gray('-'.repeat(60)))
-      console.log(chalk.cyan('Action: ') + chalk.white('Edit ') + chalk.yellow(path.relative(process.cwd(), handoffPath)) + chalk.white(' to update progress.'))
+      console.log(
+        chalk.cyan('Action: ') +
+          chalk.white('Edit ') +
+          chalk.yellow(path.relative(process.cwd(), handoffPath)) +
+          chalk.white(' to update progress.')
+      )
       console.log()
     } catch (error) {
       spinner.fail(chalk.red('Failed to retrieve focus context'))

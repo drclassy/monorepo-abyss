@@ -44,13 +44,13 @@ pnpm abyss status
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `init-task <title>` | Initialize a new task with HANDOFF.md |
-| `go <sessionPath>` | Add GO approval to a HANDOFF.md |
-| `sync-flow <flowPath>` | Sync a Langflow JSON file |
-| `create app <name>` | Create a new application |
-| `status` | Show monorepo health status |
+| Command                | Description                           |
+| ---------------------- | ------------------------------------- |
+| `init-task <title>`    | Initialize a new task with HANDOFF.md |
+| `go <sessionPath>`     | Add GO approval to a HANDOFF.md       |
+| `sync-flow <flowPath>` | Sync a Langflow JSON file             |
+| `create app <name>`    | Create a new application              |
+| `status`               | Show monorepo health status           |
 
 ---
 

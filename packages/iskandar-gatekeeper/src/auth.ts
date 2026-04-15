@@ -162,7 +162,7 @@ export function loadApiKeysFromEnv(): ApiKeyConfig[] {
 
   // Collect base key vars — exclude _PERMISSIONS and _EXPIRES from being treated as key entries
   const keyEnvVars = Object.keys(process.env).filter(
-    (k) => k.startsWith('ISKANDAR_API_KEY_') && !metaSuffix.test(k),
+    (k) => k.startsWith('ISKANDAR_API_KEY_') && !metaSuffix.test(k)
   )
 
   for (const envVar of keyEnvVars) {
@@ -252,7 +252,9 @@ export function apiKeyMiddleware(apiKeys?: ApiKeyConfig[], requiredPermissions?:
       const keyPerms = result.apiKey?.permissions ?? []
       const missing = requiredPermissions.filter((p) => !keyPerms.includes(p))
       if (missing.length > 0) {
-        res.status(403).json({ error: 'Insufficient permissions', required: requiredPermissions, missing })
+        res
+          .status(403)
+          .json({ error: 'Insufficient permissions', required: requiredPermissions, missing })
         return
       }
     }

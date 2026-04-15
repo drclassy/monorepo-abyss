@@ -72,6 +72,7 @@ pnpm dev
    pnpm typecheck
    ```
 6. **Commit with trailers**
+
    ```bash
    git commit -m "feat: your change
 
@@ -160,6 +161,7 @@ Phase: 2
 ### 2. Status Checks
 
 All PRs must pass:
+
 - ✅ CI build
 - ✅ Tests
 - ✅ Lint

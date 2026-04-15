@@ -1,6 +1,8 @@
 # @the-abyss/langflow-client
 
-HTTP client for the Langflow AI orchestration server. Handles flow execution with retry + exponential backoff, shadow mode execution, and Zod-validated responses. Used by the platform orchestrator sagas.
+HTTP client for the Langflow AI orchestration server. Handles flow execution
+with retry + exponential backoff, shadow mode execution, and Zod-validated
+responses. Used by the platform orchestrator sagas.
 
 ## Install
 
@@ -10,10 +12,10 @@ pnpm add @the-abyss/langflow-client
 
 ## Environment variables
 
-| Variable | Description |
-|----------|-------------|
+| Variable           | Description                                                 |
+| ------------------ | ----------------------------------------------------------- |
 | `LANGFLOW_API_URL` | Langflow server base URL (default: `http://localhost:7860`) |
-| `LANGFLOW_API_KEY` | Bearer token for authenticated Langflow instances |
+| `LANGFLOW_API_KEY` | Bearer token for authenticated Langflow instances           |
 
 ## Usage
 
@@ -33,15 +35,15 @@ const meta = await client.runFlowShadow('my-flow-id', { input_value: '...' })
 
 ## Exports
 
-| Export | Type | Description |
-|--------|------|-------------|
-| `AbyssFlowClient` | class | Langflow HTTP client with retry and shadow mode |
-| `getFlowClient` | function | Singleton factory — returns a shared client instance |
-| `resetFlowClient` | function | Reset the singleton (useful in tests) |
-| `FlowInputSchema` | Zod schema | Input payload validation schema |
-| `FlowOutputSchema` | Zod schema | Output response validation schema |
-| `FlowMetadataSchema` | Zod schema | Execution metadata validation schema |
-| `FlowInput` | type | Inferred from `FlowInputSchema` |
-| `FlowOutput` | type | Inferred from `FlowOutputSchema` |
-| `FlowMetadata` | type | Inferred from `FlowMetadataSchema` |
-| `AbyssFlowClientConfig` | type | Constructor configuration options |
+| Export                  | Type       | Description                                          |
+| ----------------------- | ---------- | ---------------------------------------------------- |
+| `AbyssFlowClient`       | class      | Langflow HTTP client with retry and shadow mode      |
+| `getFlowClient`         | function   | Singleton factory — returns a shared client instance |
+| `resetFlowClient`       | function   | Reset the singleton (useful in tests)                |
+| `FlowInputSchema`       | Zod schema | Input payload validation schema                      |
+| `FlowOutputSchema`      | Zod schema | Output response validation schema                    |
+| `FlowMetadataSchema`    | Zod schema | Execution metadata validation schema                 |
+| `FlowInput`             | type       | Inferred from `FlowInputSchema`                      |
+| `FlowOutput`            | type       | Inferred from `FlowOutputSchema`                     |
+| `FlowMetadata`          | type       | Inferred from `FlowMetadataSchema`                   |
+| `AbyssFlowClientConfig` | type       | Constructor configuration options                    |

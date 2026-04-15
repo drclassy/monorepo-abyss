@@ -1,6 +1,7 @@
 # @the-abyss/config-typescript
 
-Shared TypeScript `tsconfig.json` base for the Abyss monorepo. Provides strict type-checking settings that all packages extend.
+Shared TypeScript `tsconfig.json` base for the Abyss monorepo. Provides strict
+type-checking settings that all packages extend.
 
 ## Usage
 

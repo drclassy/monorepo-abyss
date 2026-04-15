@@ -3,13 +3,15 @@
 All notable changes to The Abyss monorepo will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
 ## [Unreleased]
 
 ### Added
+
 - Initial monorepo structure with pnpm workspace
 - Turborepo configuration for build orchestration
 - Claudesy Workflow integration (HANDOFF.md, GO-Gate)
@@ -50,18 +52,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Architecture Decision Records
 
 ### Changed
+
 - N/A
 
 ### Deprecated
+
 - N/A
 
 ### Removed
+
 - N/A
 
 ### Fixed
+
 - N/A
 
 ### Security
+
 - GO-Gate CI/CD validation
 - Iskandar Gatekeeper for approval enforcement
 - CODEOWNERS for domain-specific access control
@@ -71,13 +78,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.1] - 2026-03-30
 
 ### Added
+
 - Initial release
 - Foundation structure
 - Core packages and tooling
 
 ---
 
-**Unreleased:** [Compare changes](https://github.com/Claudesy/abyss-monorepo/compare/main...develop)
+**Unreleased:**
+[Compare changes](https://github.com/Claudesy/abyss-monorepo/compare/main...develop)
 
 ---
 

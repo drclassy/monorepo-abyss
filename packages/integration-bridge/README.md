@@ -1,6 +1,8 @@
 # @the-abyss/integration-bridge
 
-External service integration layer for the Abyss monorepo. Syncs session handoffs to Notion databases and updates Linear ticket status. Used by automation scripts and the platform orchestrator.
+External service integration layer for the Abyss monorepo. Syncs session
+handoffs to Notion databases and updates Linear ticket status. Used by
+automation scripts and the platform orchestrator.
 
 ## Install
 
@@ -10,11 +12,11 @@ pnpm add @the-abyss/integration-bridge
 
 ## Environment variables
 
-| Variable | Description |
-|----------|-------------|
-| `NOTION_API_KEY` | Notion integration token |
+| Variable             | Description               |
+| -------------------- | ------------------------- |
+| `NOTION_API_KEY`     | Notion integration token  |
 | `NOTION_DATABASE_ID` | Target Notion database ID |
-| `LINEAR_API_KEY` | Linear API key |
+| `LINEAR_API_KEY`     | Linear API key            |
 
 ## Usage
 
@@ -32,6 +34,6 @@ await bridge.syncToLinear('ENG-123', 'GO APPROVED')
 
 ## Exports
 
-| Export | Type | Description |
-|--------|------|-------------|
+| Export                   | Type  | Description                        |
+| ------------------------ | ----- | ---------------------------------- |
 | `AbyssIntegrationBridge` | class | Notion + Linear integration client |

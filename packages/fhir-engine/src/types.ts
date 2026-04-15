@@ -46,7 +46,15 @@ export const FhirPatientSchema = z.object({
 export const FhirObservationSchema = z.object({
   resourceType: z.literal('Observation'),
   id: z.string().optional(),
-  status: z.enum(['registered', 'preliminary', 'final', 'amended', 'corrected', 'cancelled', 'entered-in-error']),
+  status: z.enum([
+    'registered',
+    'preliminary',
+    'final',
+    'amended',
+    'corrected',
+    'cancelled',
+    'entered-in-error',
+  ]),
   code: z.object({
     coding: z.array(
       z.object({

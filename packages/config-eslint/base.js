@@ -45,9 +45,18 @@ export const boundaries = [
         'error',
         {
           patterns: [
-            { group: ['**/apps/academic/**'], message: 'Healthcare cannot import from Academic domain.' },
-            { group: ['**/apps/incubator/**'], message: 'Healthcare cannot import from Incubator domain.' },
-            { group: ['**/apps/internal/**'], message: 'Healthcare cannot import from Internal domain.' },
+            {
+              group: ['**/apps/academic/**'],
+              message: 'Healthcare cannot import from Academic domain.',
+            },
+            {
+              group: ['**/apps/incubator/**'],
+              message: 'Healthcare cannot import from Incubator domain.',
+            },
+            {
+              group: ['**/apps/internal/**'],
+              message: 'Healthcare cannot import from Internal domain.',
+            },
           ],
         },
       ],
@@ -60,8 +69,14 @@ export const boundaries = [
         'error',
         {
           patterns: [
-            { group: ['**/apps/healthcare/**'], message: 'Academic cannot import from Healthcare domain.' },
-            { group: ['**/apps/incubator/**'], message: 'Academic cannot import from Incubator domain.' },
+            {
+              group: ['**/apps/healthcare/**'],
+              message: 'Academic cannot import from Healthcare domain.',
+            },
+            {
+              group: ['**/apps/incubator/**'],
+              message: 'Academic cannot import from Incubator domain.',
+            },
           ],
         },
       ],
@@ -74,7 +89,10 @@ export const boundaries = [
         'error',
         {
           patterns: [
-            { group: ['**/apps/healthcare/**'], message: 'Incubator cannot import from Healthcare domain.' },
+            {
+              group: ['**/apps/healthcare/**'],
+              message: 'Incubator cannot import from Healthcare domain.',
+            },
           ],
         },
       ],

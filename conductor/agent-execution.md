@@ -1,11 +1,15 @@
 # Agent Execution Plan: Direct Task Queue
 
-**Objective:**
-Bypass Orchestrator creation for current tasks. Enable Cursor, Codex, and Claude to execute their respective P0, P1, and P2 tasks immediately as defined in their queue files.
+**Objective:** Bypass Orchestrator creation for current tasks. Enable Cursor,
+Codex, and Claude to execute their respective P0, P1, and P2 tasks immediately
+as defined in their queue files.
 
 **Decisions Logged by Chief:**
-1. **[S1] Orchestrator Bypass:** Do NOT build or use the Orchestrator for the current phase.
-2. **[S2] Referralink Refactor:** Assigned directly to agents (Cursor, Codex, Claude) to handle instead of utilizing an orchestrator pattern.
+
+1. **[S1] Orchestrator Bypass:** Do NOT build or use the Orchestrator for the
+   current phase.
+2. **[S2] Referralink Refactor:** Assigned directly to agents (Cursor, Codex,
+   Claude) to handle instead of utilizing an orchestrator pattern.
 
 **Implementation Steps (to be executed by Agents once Plan Mode is exited):**
 
@@ -30,6 +34,7 @@ Bypass Orchestrator creation for current tasks. Enable Cursor, Codex, and Claude
    - Execute **[P2-08 & P2-11]** Setup Playwright and smoke tests.
 
 **Verification:**
+
 - `TASKS.json` accurately reflects the completed status of each item.
 - `DECISIONS.md` contains the formal record of bypassing the Orchestrator.
 - All high-priority (P0) blocking tasks are cleared.

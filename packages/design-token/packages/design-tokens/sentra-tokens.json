@@ -4,119 +4,115 @@
   "protocol": "Sentra Design Governance Protocol v1.0.0",
   "year": 2026,
   "description": "Official token registry for consistent, compliant UI across all Sentra Healthcare products and agents.",
-  "compliance": [
-    "WCAG 2.1 AA",
-    "HIPAA Visual Standards",
-    "GDPR UI Guidelines"
-  ],
+  "compliance": ["WCAG 2.1 AA", "HIPAA Visual Standards", "GDPR UI Guidelines"],
   "maintainer": "Sentra Platform Engineering",
   "channel": "#sentra-ui-governance",
 
   "palette": {
-    "bgBase":          "#050505",
-    "surface":         "#0F1012",
-    "inset":           "#0A0A0C",
+    "bgBase": "#050505",
+    "surface": "#0F1012",
+    "inset": "#0A0A0C",
     "surfaceElevated": "#161922",
     "_comment": "Depth order: bgBase (darkest) → inset → surface → surfaceElevated (lightest). NEVER reverse."
   },
 
   "borders": {
-    "glow":       "rgba(255,255,255,0.12)",
-    "subtle":     "rgba(255,255,255,0.06)",
-    "highlight":  "rgba(255,255,255,0.04)",
-    "main":       "1px solid rgba(255,255,255,0.12)",
+    "glow": "rgba(255,255,255,0.12)",
+    "subtle": "rgba(255,255,255,0.06)",
+    "highlight": "rgba(255,255,255,0.04)",
+    "main": "1px solid rgba(255,255,255,0.12)",
     "topShimmer": "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)",
     "_rule": "border-main is MANDATORY on all primary containers (cards, modals, dialogs). Max width: 1px."
   },
 
   "depth": {
-    "inset":    "inset 2px 2px 5px rgba(0,0,0,0.50), inset -1px -1px 2px rgba(255,255,255,0.02)",
-    "raised":   "3px 3px 8px rgba(0,0,0,0.50), -2px -2px 6px rgba(255,255,255,0.03)",
+    "inset": "inset 2px 2px 5px rgba(0,0,0,0.50), inset -1px -1px 2px rgba(255,255,255,0.02)",
+    "raised": "3px 3px 8px rgba(0,0,0,0.50), -2px -2px 6px rgba(255,255,255,0.03)",
     "selected": "0 2px 4px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.05)",
-    "cardShadow":      "0 12px 28px rgba(0,0,0,0.50), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06)",
+    "cardShadow": "0 12px 28px rgba(0,0,0,0.50), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06)",
     "cardShadowHover": "0 16px 32px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.06)",
     "_rule": "neu-inset → inputs/textareas ONLY. neu-raised → selectors/toggles ONLY. CTAs = FLAT (no neumorphism). MAX 2 accents per view."
   },
 
   "typography": {
-    "fontStack":       "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    "textPrimary":     "#EDEDED",
-    "textSecondary":   "#A0AEC0",
-    "textMuted":       "#737373",
-    "labelSize":       "12px",
-    "labelSpacing":    "0.04em",
-    "labelTransform":  "uppercase",
-    "titleSizeSm":     "16px",
-    "titleSizeMd":     "18px",
-    "titleWeight":     "600",
-    "titleTracking":   "-0.01em",
-    "lineHeight":      "1.5",
-    "bodySize":        "14px",
-    "smallSize":       "13px",
+    "fontStack": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    "textPrimary": "#EDEDED",
+    "textSecondary": "#A0AEC0",
+    "textMuted": "#737373",
+    "labelSize": "12px",
+    "labelSpacing": "0.04em",
+    "labelTransform": "uppercase",
+    "titleSizeSm": "16px",
+    "titleSizeMd": "18px",
+    "titleWeight": "600",
+    "titleTracking": "-0.01em",
+    "lineHeight": "1.5",
+    "bodySize": "14px",
+    "smallSize": "13px",
     "_rule": "Labels: always uppercase + 0.04em tracking + textMuted. Titles: 600 weight + textPrimary."
   },
 
   "interaction": {
-    "transition":       "180ms cubic-bezier(0.4, 0, 0.2, 1)",
-    "hoverLift":        "translateY(-2px)",
-    "hoverLiftSm":      "translateY(-1px)",
-    "focusRing":        "0 0 0 2px rgba(255,255,255,0.15)",
-    "focusVisible":     "0 0 0 3px rgba(59,130,246,0.50)",
+    "transition": "180ms cubic-bezier(0.4, 0, 0.2, 1)",
+    "hoverLift": "translateY(-2px)",
+    "hoverLiftSm": "translateY(-1px)",
+    "focusRing": "0 0 0 2px rgba(255,255,255,0.15)",
+    "focusVisible": "0 0 0 3px rgba(59,130,246,0.50)",
     "inputFocusBorder": "rgba(255,255,255,0.30)",
-    "ctaGlow":          "0 0 15px rgba(255,255,255,0.15)",
-    "ctaGlowHover":     "0 0 20px rgba(255,255,255,0.25)",
+    "ctaGlow": "0 0 15px rgba(255,255,255,0.15)",
+    "ctaGlowHover": "0 0 20px rgba(255,255,255,0.25)",
     "_rule": "One transition value everywhere. Hover = translateY(-2px) MAX. No neon/glow beyond focus state."
   },
 
   "cta": {
-    "bg":    "#FFFFFF",
+    "bg": "#FFFFFF",
     "color": "#000000",
     "_rule": "Primary CTA is ALWAYS white-on-black, FLAT. No neumorphism. Outer glow only on hover."
   },
 
   "accessibility": {
-    "error":       "#FC8181",
-    "errorBg":     "rgba(252,129,129,0.10)",
-    "success":     "#68D391",
-    "successBg":   "rgba(104,211,145,0.10)",
-    "warning":     "#F6AD55",
-    "warningBg":   "rgba(246,173,85,0.10)",
-    "info":        "#63B3ED",
+    "error": "#FC8181",
+    "errorBg": "rgba(252,129,129,0.10)",
+    "success": "#68D391",
+    "successBg": "rgba(104,211,145,0.10)",
+    "warning": "#F6AD55",
+    "warningBg": "rgba(246,173,85,0.10)",
+    "info": "#63B3ED",
     "minContrast": "4.5:1",
-    "standard":    "WCAG 2.1 AA"
+    "standard": "WCAG 2.1 AA"
   },
 
   "compliance": {
-    "hipaaColor":  "#00C9B1",
-    "hipaaBg":     "linear-gradient(135deg, rgba(0,201,177,0.08), rgba(0,119,182,0.08))",
+    "hipaaColor": "#00C9B1",
+    "hipaaBg": "linear-gradient(135deg, rgba(0,201,177,0.08), rgba(0,119,182,0.08))",
     "hipaaBorder": "rgba(0,201,177,0.20)"
   },
 
   "layout": {
-    "cardRadius":    "16px",
-    "inputRadius":   "8px",
-    "btnRadius":     "8px",
-    "badgeRadius":   "20px",
-    "cardPadding":   "24px",
-    "formGap":       "16px",
-    "maxCardWidth":  "480px"
+    "cardRadius": "16px",
+    "inputRadius": "8px",
+    "btnRadius": "8px",
+    "badgeRadius": "20px",
+    "cardPadding": "24px",
+    "formGap": "16px",
+    "maxCardWidth": "480px"
   },
 
   "slo": {
-    "uiConsistencyTarget":  "99%",
-    "p95RenderLatencyMs":   150,
-    "p99RenderLatencyMs":   200,
-    "changeFailureRate":    "0.5%",
-    "errorBudgetMonthly":   "0.1%",
+    "uiConsistencyTarget": "99%",
+    "p95RenderLatencyMs": 150,
+    "p99RenderLatencyMs": 200,
+    "changeFailureRate": "0.5%",
+    "errorBudgetMonthly": "0.1%",
     "wcagViolationsTarget": 0,
     "hardcodedColorsTarget": 0
   },
 
   "meta": {
     "cssVariablePrefix": "--sentra-",
-    "classnamePattern":  "^sentra-[a-z0-9-]+$",
-    "tokenVersion":      "1.0.0",
-    "lastUpdated":       "2026",
-    "cdnPath":           "s3://sentra-ui-assets/tokens/v1.0.0.json"
+    "classnamePattern": "^sentra-[a-z0-9-]+$",
+    "tokenVersion": "1.0.0",
+    "lastUpdated": "2026",
+    "cdnPath": "s3://sentra-ui-assets/tokens/v1.0.0.json"
   }
 }

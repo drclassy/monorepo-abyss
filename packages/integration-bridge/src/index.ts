@@ -115,7 +115,7 @@ export class AbyssIntegrationBridge {
       const issue = await this.linear.issue(ticketId)
       if (issue) {
         // This is a simplified example, actual status name might differ
-        // await issue.update({ stateId: '...' }) 
+        // await issue.update({ stateId: '...' })
         console.log(`✅ Linear ticket updated (simulated).`)
       }
     } catch (error: any) {

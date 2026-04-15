@@ -4,11 +4,11 @@ Shared ESLint configurations for the Abyss monorepo.
 
 ## Configs
 
-| File | Extends |
-|------|---------|
-| `base.js` | Base JS/TS rules — use in any package |
-| `node.js` | Node.js-specific rules (scripts, CLI tools) |
-| `react.js` | React + JSX rules for frontend apps |
+| File       | Extends                                     |
+| ---------- | ------------------------------------------- |
+| `base.js`  | Base JS/TS rules — use in any package       |
+| `node.js`  | Node.js-specific rules (scripts, CLI tools) |
+| `react.js` | React + JSX rules for frontend apps         |
 
 ## Usage
 

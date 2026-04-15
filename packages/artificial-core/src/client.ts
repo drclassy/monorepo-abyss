@@ -27,7 +27,10 @@ export class AiCoreClient {
     }
   }
 
-  private async mockGenerate(config: ModelConfig, prompt: string): Promise<Omit<ModelResponse, 'latency'>> {
+  private async mockGenerate(
+    config: ModelConfig,
+    prompt: string
+  ): Promise<Omit<ModelResponse, 'latency'>> {
     // TODO: Implement actual provider integrations
     // For now, return mock response
     return {

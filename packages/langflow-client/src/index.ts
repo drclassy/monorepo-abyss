@@ -76,7 +76,10 @@ export class AbyssFlowClient {
   /**
    * Run a Langflow and get the result
    */
-  async runFlow(flowId: string, input: FlowInput): Promise<{ output: FlowOutput; metadata: FlowMetadata }> {
+  async runFlow(
+    flowId: string,
+    input: FlowInput
+  ): Promise<{ output: FlowOutput; metadata: FlowMetadata }> {
     const startTime = Date.now()
     let lastError: Error | null = null
 

@@ -2,12 +2,7 @@ import { createHmac } from 'node:crypto'
 
 import { describe, it, expect, afterEach } from 'vitest'
 
-import {
-  verifyJwt,
-  validateApiKey,
-  loadApiKeysFromEnv,
-  type ApiKeyConfig,
-} from '../auth'
+import { verifyJwt, validateApiKey, loadApiKeysFromEnv, type ApiKeyConfig } from '../auth'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -18,10 +13,10 @@ const SECRET = 'test-secret-value-for-unit-tests-only'
 function makeJwt(
   payload: Record<string, unknown>,
   secret: string,
-  headerOverrides?: Record<string, unknown>,
+  headerOverrides?: Record<string, unknown>
 ): string {
   const header = Buffer.from(
-    JSON.stringify({ alg: 'HS256', typ: 'JWT', ...headerOverrides }),
+    JSON.stringify({ alg: 'HS256', typ: 'JWT', ...headerOverrides })
   ).toString('base64url')
   const body = Buffer.from(JSON.stringify(payload)).toString('base64url')
   const sig = createHmac('sha256', secret).update(`${header}.${body}`).digest('base64url')

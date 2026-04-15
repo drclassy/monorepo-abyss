@@ -704,3 +704,272 @@ tooling/sentratorium-check.mjs
 ```
 
 ---
+## 2026-04-15 13:21 — `07b5070` — HEAD
+
+- **Agent**: Unknown
+- **Commit**: fix(ci): remove apps from workspace scope, fix flows null glob, update README to polyrepo
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 13:28 — `c0f1574` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): update Roadmap → Product Ecosystem based on sentrahai.com/story
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 13:28 — `5ef9073` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: style(readme): expand all AI abbreviations to Artificial Intelligence
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 13:31 — `8be3ce8` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: feat(readme): add Claudesy character to Claudesy Workflow section
+- **Files changed**: 2 file(s)
+
+```
+.github/claudesy.png
+README.md
+```
+
+---
+## 2026-04-15 13:36 — `1328505` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): add Claudesy Genesis Framework v2.4 section
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 13:39 — `cb96183` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): move Genesis Framework below Overview, rename Dr. Ferdi → Dr. Claudesy
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 13:42 — `f6d97d7` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): move Genesis Framework below Overview section
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 13:45 — `4adaaa7` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): revamp Product Ecosystem with accurate descriptions in Indonesian
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 13:59 — `6398fac` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): add Mission, Multi-Agent Roster, Clinical Deployment sections + logos
+- **Files changed**: 10 file(s)
+
+```
+.github/logos/antigravity.svg
+.github/logos/claudecode.svg
+.github/logos/codex.svg
+.github/logos/cursor.svg
+.github/logos/gemini.svg
+.github/logos/kilocode.svg
+.github/logos/kimi.svg
+.github/logos/qwen.svg
+.github/logos/vertexai.svg
+README.md
+```
+
+---
+## 2026-04-15 14:05 — `678b24d` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): overhaul Architecture diagram + move Multi-Agent Roster
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 14:07 — `37547e5` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): translate Product Ecosystem to English, anonymize clinical site names
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 14:09 — `d297255` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): update AI model roster to current stack
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 14:11 — `d5220e6` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: fix(readme): align Architecture diagram outer borders to uniform 85-char width
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 14:16 — `9a10c60` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: fix(readme): restore truncated tables, align arch diagram, remove unvalidated 95% claim
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 14:18 — `3a385a9` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): add product ecosystem diagram to Product Ecosystem section
+- **Files changed**: 2 file(s)
+
+```
+.github/products.png
+README.md
+```
+
+---
+## 2026-04-15 14:21 — `b8df8eb` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: style(readme): left-align Multi-Agent Governance Roster logo grid
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 14:21 — `da0ac9f` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): update Gemini model to 3.1 Pro
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 14:34 — `4b79103` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: fix(ci): resolve 36 CI failures — HEAD^1 fallback, TruffleHog base SHA, stale paths
+- **Files changed**: 3 file(s)
+
+```
+.github/workflows/ci.yml
+.github/workflows/security-primary-healthcare.yml
+.github/workflows/security-scan.yml
+```
+
+---
+## 2026-04-15 14:41 — `da98ed9` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: fix(lint): resolve all ESLint violations across packages
+- **Files changed**: 5 file(s)
+
+```
+packages/artificial-core/src/client.ts
+packages/iskandar-gatekeeper/src/auth.ts
+packages/iskandar-gatekeeper/src/index.ts
+packages/langflow-client/src/index.ts
+packages/sentra-ui/src/components/ui/input.tsx
+```
+
+---
+## 2026-04-15 14:43 — `d9f3458` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: fix(sentra-ui): add missing tailwindcss-animate dependency
+- **Files changed**: 2 file(s)
+
+```
+packages/sentra-ui/package.json
+pnpm-lock.yaml
+```
+
+---
+## 2026-04-15 14:45 — `ab14016` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: fix(lint): apply ESLint auto-fix for import ordering across all packages
+- **Files changed**: 10 file(s)
+
+```
+packages/artificial-core/src/__tests__/artificial-core.test.ts
+packages/fhir-engine/src/__tests__/fhir-engine.test.ts
+packages/fhir-engine/src/validator.ts
+packages/iskandar-gatekeeper/src/__tests__/auth.test.ts
+packages/sentra-ui/src/components/ui/badge.tsx
+packages/sentra-ui/src/components/ui/button.tsx
+packages/sentra-ui/src/components/ui/card.tsx
+packages/sentra-ui/src/components/ui/label.tsx
+packages/vector-store/src/__tests__/vector-store.test.ts
+tooling/abyss-cli/src/index.ts
+```
+
+---
+## 2026-04-15 14:51 — `d7422dc` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: fix(config-eslint): convert .eslintrc.json from UTF-16LE to UTF-8
+- **Files changed**: 1 file(s)
+
+```
+packages/config-eslint/.eslintrc.json
+```
+
+---

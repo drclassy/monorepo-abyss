@@ -3,18 +3,11 @@
   "_version": "1.0.0",
   "_docs": "Violations in CI will block PRs. To request an allowlist exception, contact #sentra-ui-governance.",
 
-  "extends": [
-    "stylelint-config-standard",
-    "stylelint-config-recommended"
-  ],
+  "extends": ["stylelint-config-standard", "stylelint-config-recommended"],
 
-  "plugins": [
-    "stylelint-order",
-    "stylelint-declaration-strict-value"
-  ],
+  "plugins": ["stylelint-order", "stylelint-declaration-strict-value"],
 
   "rules": {
-
     "_section_colors": "──── COLOR ENFORCEMENT: No hardcoded values ────────────",
     "color-no-hex": true,
     "color-named": "never",
@@ -31,15 +24,7 @@
       ["/color/", "background-color", "border-color", "box-shadow", "text-shadow"],
       {
         "disableFix": true,
-        "ignoreValues": [
-          "/^var\\(--sentra-/",
-          "transparent",
-          "currentColor",
-          "inherit",
-          "initial",
-          "none",
-          "unset"
-        ],
+        "ignoreValues": ["/^var\\(--sentra-/", "transparent", "currentColor", "inherit", "initial", "none", "unset"],
         "message": "Use a Sentra design token: var(--sentra-*). Hardcoded values are not permitted in Sentra UI."
       }
     ],
