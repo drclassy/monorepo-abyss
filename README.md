@@ -304,7 +304,7 @@ All contributors — human or AI agent — must follow the same workflow.
 | Resource | Location |
 |----------|----------|
 | Global Agent Steering | [.agent/AGENTS.md](.agent/AGENTS.md) |
-| Session Logs | [docs/sentratorium/](docs/sentratorium/) |
+| Session Logs | [docs/sentratorium/](.agent\PROGRESS.md") |
 | Document Templates | [docs/templates/](docs/templates/) |
 | Architecture Decision Records | [docs/adr/](docs/adr/) |
 | CLI Documentation | [tooling/abyss-cli/](tooling/abyss-cli/) |
