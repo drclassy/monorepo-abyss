@@ -32,6 +32,86 @@ Beyond the products themselves, The Abyss enforces a disciplined development pro
 
 ---
 
+## Mission
+
+Indonesia's primary healthcare and national health insurance ecosystem face an extreme structural deficit that conventional software interventions cannot resolve. Amidst a critical doctor-to-patient ratio crisis and massive daily operational volume, the cognitive load on clinicians has exceeded sustainable thresholds. Software engineered with a profound comprehension of this clinical context and operational pressure is an absolute prerequisite to closing the gap.
+
+Project Abyss is architected to eliminate a singular, critical failure mode: the collapse of standard Artificial Intelligence systems — designed under the assumption of resource-rich medical environments — when deployed in district hospitals suffering from acute understaffing, asymmetric network connectivity, and the complexities of a multilingual patient demographic.
+
+Every architectural decision within this codebase — from the stringent FHIR R4 validation layer to the multi-model consensus engine — is executed for one absolute objective: to ensure Artificial Intelligence-assisted Clinical Decision Support is instantaneously accessible, fully auditable, and guarantees patient safety at the last mile of Indonesian healthcare. This is not a mere framework. It is an operating system custom-built for a critical clinical mission.
+
+---
+
+## Multi-Agent Governance Roster
+
+This codebase is operated by a structured multi-agent system — each agent has a defined role, scope, and audit obligation. No agent acts outside its designated function.
+
+<div align="center">
+<table>
+  <tr>
+    <td align="center" width="130">
+      <img src=".github/logos/claudecode.svg" width="56" height="56" alt="Claude Code"/><br/>
+      <sub><b>Claude Code</b></sub><br/>
+      <sub>Architect &amp; Execution</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/cursor.svg" width="56" height="56" alt="Cursor"/><br/>
+      <sub><b>Cursor</b></sub><br/>
+      <sub>Implementation</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/kilocode.svg" width="56" height="56" alt="Kilo Code"/><br/>
+      <sub><b>Kilo Code</b></sub><br/>
+      <sub>Implementation</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/codex.svg" width="56" height="56" alt="Codex"/><br/>
+      <sub><b>Codex</b></sub><br/>
+      <sub>Backend Fabrication</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/gemini.svg" width="56" height="56" alt="Gemini"/><br/>
+      <sub><b>Gemini</b></sub><br/>
+      <sub>Supervisor &amp; Audit</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="130">
+      <img src=".github/logos/antigravity.svg" width="56" height="56" alt="Antigravity"/><br/>
+      <sub><b>Antigravity</b></sub><br/>
+      <sub>Scaffold</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/vertexai.svg" width="56" height="56" alt="Vertex AI"/><br/>
+      <sub><b>Vertex Artificial Intelligence</b></sub><br/>
+      <sub>Orchestration</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/kimi.svg" width="56" height="56" alt="Kimi"/><br/>
+      <sub><b>Kimi</b></sub><br/>
+      <sub>Reasoning</sub>
+    </td>
+    <td align="center" width="130">
+      <img src=".github/logos/qwen.svg" width="56" height="56" alt="Qwen"/><br/>
+      <sub><b>Qwen</b></sub><br/>
+      <sub>Reasoning</sub>
+    </td>
+    <td align="center" width="130">&nbsp;</td>
+  </tr>
+</table>
+</div>
+
+| Agent | Role | Responsibility |
+|-------|------|----------------|
+| **Claude Code** | Architect & Execution | Primary decision-making agent. Owns system design, HANDOFF creation, GO-Gate validation, and end-to-end implementation oversight |
+| **Cursor / Kilo** | Implementation | In-editor development agent. Handles component-level coding and iterative refinement within defined task scopes |
+| **Codex** | Backend Fabrication | API scaffolding, schema generation, and high-throughput code generation tasks |
+| **Gemini** | Supervisor & Audit | Reviews outputs from all other agents, performs cross-validation, and flags inconsistencies before GO-Gate submission |
+
+All agent activity is traceable via commit trailers. No agent output ships without a human GO approval.
+
+---
+
 ## Claudesy Genesis Framework
 
 <table>
@@ -476,6 +556,26 @@ All contributors — human or Artificial Intelligence agent — must follow the 
 | Document Templates | [docs/templates/](docs/templates/) |
 | Architecture Decision Records | [docs/adr/](docs/adr/) |
 | CLI Documentation | [tooling/abyss-cli/](tooling/abyss-cli/) |
+
+---
+
+## Clinical Deployment
+
+The Abyss is not a prototype. It is actively running a comprehensive pilot test program validated at two clinical sites in East Java, Indonesia.
+
+| Site | Type | Active Products |
+|------|------|-----------------|
+| **RSIA Melinda DHAI** | Rumah Sakit Ibu & Anak (Maternal Hospital) | MELLY, Melinda Dashboard, Melinda Shield, Autonomous Admission, Smart Triage, Ambient Scribe, Critical Alert System, Predictive Bed Management, OR Orchestrator |
+| **Puskesmas Balowerti Kota Kediri** | Primary Healthcare | AADI, Audrey, Intelligence Dashboard, Sentra Assist, Telemedicine, ReferraLink |
+
+**Active validation objectives:**
+
+- Artificial Intelligence-assisted referral triage accuracy vs physician baseline
+- FHIR R4 record export to secondary care integration
+- Latency benchmarks under low-bandwidth conditions
+- Multi-model diagnostic consensus under resource constraints
+- Clinical simulator training outcomes for local health staff
+- Offline-capable workflow resilience testing
 
 ---
 
