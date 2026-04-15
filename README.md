@@ -288,7 +288,7 @@ Phase 4: GOVERNANCE & RELEASE
 
 This codebase is operated by a structured multi-agent system — each agent has a defined role, scope, and audit obligation. No agent acts outside its designated function.
 
-<div align="center">
+<div align="left">
 <table>
   <tr>
     <td align="center" width="130">
