@@ -634,6 +634,10 @@ The Abyss is not a prototype. It is actively running a comprehensive pilot test 
 
 ## Product Ecosystem
 
+<div align="center">
+  <img src=".github/products.png" alt="Sentra Artificial Intelligence Product Ecosystem" width="800" />
+</div>
+
 Pilot sites: **Maternal Hospital** · **Primary Healthcare Site**
 
 ### Under Testing — Active Pilots
