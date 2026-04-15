@@ -224,8 +224,8 @@ Phase 4: GOVERNANCE & RELEASE
 |  |      ai-core        |  |    fhir-engine      |  |    vector-store     |       |
 |  |  Multi-Model        |  |  FHIR R4 Validation |  |  RAGOps + Vector    |       |
 |  |  Consensus Engine   |  |  & Normalization    |  |  Search (pgvector)  |       |
-|  |  Claude  Gemini     |  |                     |  |  Embed  Retrieve    |       |
-|  |  GPT-4   MedGemma   |  |  Patient / Encounter|  |  Rerank  Index      |       |
+|  |  Opus 4.6 Sonnet 4.6|  |                     |  |  Embed  Retrieve    |       |
+|  |  Kimi 2.5  Gemini   |  |  Patient / Encounter|  |  Rerank  Index      |       |
 |  +---------------------+  |  / Condition / Obs  |  +---------------------+       |
 |                            +---------------------+                                |
 |  +---------------------+  +------------------------------------------+          |
@@ -343,12 +343,15 @@ This codebase is operated by a structured multi-agent system — each agent has 
 </table>
 </div>
 
-| Agent | Role | Responsibility |
-|-------|------|----------------|
-| **Claude Code** | Architect & Execution | Primary decision-making agent. Owns system design, HANDOFF creation, GO-Gate validation, and end-to-end implementation oversight |
-| **Cursor / Kilo** | Implementation | In-editor development agent. Handles component-level coding and iterative refinement within defined task scopes |
-| **Codex** | Backend Fabrication | API scaffolding, schema generation, and high-throughput code generation tasks |
-| **Gemini** | Supervisor & Audit | Reviews outputs from all other agents, performs cross-validation, and flags inconsistencies before GO-Gate submission |
+| Agent | Model | Role | Responsibility |
+|-------|-------|------|----------------|
+| **Claude Code** | Opus 4.6 High · Sonnet 4.6 High | Architect & Execution | Primary decision-making agent. Owns system design, HANDOFF creation, GO-Gate validation, and end-to-end implementation oversight |
+| **Cursor Composer** | Composer Agent | Implementation | In-editor agentic coding — long-context task execution, multi-file edits, and iterative refinement within defined task scopes |
+| **Kilo Code** | Best Available | Implementation | Parallel in-editor development agent for component-level coding, scaffolding, and task-scoped iterative work |
+| **Codex** | Codex 5.4 High | Backend Fabrication | API scaffolding, schema generation, and high-throughput code generation tasks |
+| **Kimi** | Kimi 2.5 Thinking | Deep Reasoning | Extended reasoning tasks — architecture analysis, complex debugging, and multi-step technical problem solving |
+| **Gemini** | Gemini 2.5 Pro | Supervisor & Audit | Reviews outputs from all agents, performs cross-validation, and flags inconsistencies before GO-Gate submission |
+| **Antigravity** | Agent | Scaffold | Project initialization, monorepo scaffolding, and contract-first structure generation |
 
 All agent activity is traceable via commit trailers. No agent output ships without a human GO approval.
 
