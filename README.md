@@ -481,44 +481,40 @@ All contributors — human or Artificial Intelligence agent — must follow the 
 
 ## Product Ecosystem
 
-### Under Testing (Active Pilots)
+Pilot sites: **RSIA Melinda DHAI** (Rumah Sakit Ibu & Anak) · **Puskesmas Balowerti Kota Kediri**
 
-| Product | Description |
-|---------|-------------|
-| **AADI** | Autonomous diagnostic inference engine — 45,030 validated records, ICD-10 mapping, 8-rule safety gates |
-| **Audrey** | Voice-first clinical intelligence — Google Gemini Live, 24kHz streaming, MedGemma grounding |
-| **Intelligence Dashboard** | Unified clinical ops — EMR auto-fill, ICD-X, LB1 reporting, telemedicine WebRTC |
-| **Sentra Assist** | Chrome Extension RPA — automates data transfer between dashboard and EMR systems |
-| **Telemedicine** | WebRTC peer-to-peer — HD 720p adaptive bitrate, e-prescription, auto SOAP notes |
-| **Med-Cognitive** | Neural memory architecture — semantic embedding-based memory retrieval across agents |
+### Sedang Diuji (Active Pilots)
 
-Pilot sites: **RSIA Melinda DHAI** (Mother & Child Hospital) · **Puskesmas Balowerti Kota Kediri**
+| Produk | Ringkasan |
+|--------|-----------|
+| **AADI** — Autonomous Artificial Diagnostic Intelligence | Mesin diagnostik otonom dengan reasoning berlapis; Iskandar Engine V4.3, 159 penyakit, 1.930 ICD-10, safety gate, cek interaksi obat (~95% akurasi) |
+| **Audrey** — Voice-First Clinical Intelligence | Asisten suara real-time (Gemini Live, 24 kHz), grounding medis, insight layanan primer; pelatihan SFT + alignment klinis |
+| **Intelligence Dashboard** — Unified Clinical Operations Platform | Command center satu layar: EMR/RPA, ICD-X, LB1, SenCall, telemedicine WebRTC, ACARS, admin KPI, Socket.IO |
+| **Sentra Assist** — Clinical Workflow Automation | Ekstensi Chrome (MV3) yang mengotomatisasi alur data antara Dashboard dan EMR nasional via RPA (anamnesis, diagnosis, resep) |
+| **Telemedicine** — Remote Clinical Consultation | Konsultasi WebRTC HD, virtual waiting room, e-resep, unggah lab, SOAP otomatis, terintegrasi jadwal |
+| **ReferraLink** — Awareness-Intelligence Protocol | Mesin reasoning untuk fluktuasi regulasi BPJS/asuransi; optimasi klaim dinamis dan rekomendasi untuk verifikator |
 
-### Under Development
+### Sudah Dibangun (Built)
 
-| Product | Focus Area |
-|---------|-----------|
-| **ReferraLink** | BPJS/insurance claim optimization via real-time regulatory analysis |
-| **MELLY** | Hyper-personalized patient agent (prenatal to age 18) |
-| **Melinda Dashboard** | Inter-departmental data interoperability |
-| **Melinda Shield** | Five-layer cybersecurity with AES-256 GCM encryption |
-| **Autonomous Admission** | Zero-queue digital admission with Vision Artificial Intelligence |
-| **Smart Triage** | Pediatric/maternal asynchronous assessment |
-| **Proactive Care Navigator** | Post-discharge preventive monitoring |
-| **Ambient Scribe** | Voice-to-EMR clinical documentation engine |
-| **Critical Alert System** | NICU/telemetry anomaly detection |
-| **Predictive Bed Management** | Autonomous discharge orchestration |
-| **Artificial Intelligence Coding Auditor** | ICD-10 coding validation against medical records |
-| **OR Orchestrator** | Operating room logistics and scheduling |
+| Produk | Ringkasan |
+|--------|-----------|
+| **Med-Cognitive** — Neural Memory Architecture for Clinical Artificial Intelligence | Lapisan memori persisten untuk agen Artificial Intelligence — embedding semantik, retrieval keputusan dan konteks pasien lintas sesi |
 
-### Planned Modules
+### Sedang Dibangun (Under Development)
 
-| Module | Description |
-|--------|-------------|
-| **POGS** | Pregnancy observation system (Obstetric focus) |
-| **CDOS** | Clinical Decision Orchestration System |
-| **TRIAGE** | Algorithmic emergency triage scoring |
-| **PREDICTION** | Machine learning prognostic modeling |
+| Produk | Ringkasan |
+|--------|-----------|
+| **MELLY** — Hyper-Personalized Augmented Virtual Agent | Agen per pasien (prakonsepsi → pediatrik), orkestrasi multi-agen Vertex, edukasi WHO, sintesis laporan ke EMR |
+| **Melinda Dashboard** — Zero-Friction Interoperability Platform | SPA interoperabilitas antar-departemen RSIA Melinda; KPI, jasa, RME; integrasi Lifestyle Artificial Intelligence / suara |
+| **Melinda Shield** — Cognitive Cybersecurity Infrastructure | Keamanan berlapis: enkripsi, ledger, perilaku Artificial Intelligence, geofencing akses EHR, containment cepat, threat intel, dashboard compliance |
+| **Autonomous Admission** — Admission & Journey Tracking | Kurangi antrean: ekstraksi dokumen rujukan (Vision Artificial Intelligence), cek jadwal SIMRS, bridging asuransi; pengingat USG/suplemen sepanjang kehamilan |
+| **Smart Triage** — Pediatric & Maternal Algorithmic Assessment | Triase async sebelum tatap muka; parameter pediatri/obstetri; draf SOAP; eskalasi darurat (mis. ketuban pecah dini) |
+| **Proactive Care Navigator** — Post-Partum & Preventive Monitoring | Tindak lanjut pasca-pulang: imunisasi, luka/laktasi, skrining depresi pascasalin dari data RME |
+| **Ambient Scribe** — Clinical Voice-to-EMR Engine | NLP memisahkan dialog klinis dari noise; vital ke EMR (BB janin, DJJ, dll.) |
+| **Critical Alert System** — Proactive NICU & Telemetry Intelligence | Alert dari lab & telemetri NICU ke perangkat dokter jika parameter kritis |
+| **Predictive Bed Management** — Autonomous Turnaround Orchestration | Saat discharge: rantai otomatis keuangan, farmasi pulang, housekeeping dengan SLA untuk meningkatkan BOR |
+| **Artificial Intelligence Coding Auditor** — Clinical Coding & Claim Defense | Cocokkan ICD-10/ICD-9-CM dengan dokumentasi klinis; kurangi sengketa klaim |
+| **OR Orchestrator** — Smart Operating Room Logistics | Logistik OK: prioritas sectio cito, tim on-call, kantong darah, utilisasi ruang operasi |
 
 ---
 
