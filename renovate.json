@@ -1,0 +1,40 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices", ":dependencyDashboard", "group:monorepos"],
+  "packageRules": [
+    {
+      "description": "Auto-merge patch updates — low risk, CI must pass",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Group all minor updates into one PR per week",
+      "matchUpdateTypes": ["minor"],
+      "groupName": "all minor dependencies",
+      "automerge": false
+    },
+    {
+      "description": "Major updates always need Boss review",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["major-update", "needs-review"]
+    },
+    {
+      "description": "Group all @the-abyss workspace packages together",
+      "matchPackagePrefixes": ["@the-abyss/"],
+      "groupName": "abyss workspace packages"
+    }
+  ],
+  "schedule": ["every monday"],
+  "prHourlyLimit": 3,
+  "prConcurrentLimit": 5,
+  "labels": ["dependencies", "renovate"],
+  "commitMessagePrefix": "chore(deps):",
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["every sunday"]
+  }
+}
