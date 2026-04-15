@@ -350,7 +350,7 @@ This codebase is operated by a structured multi-agent system — each agent has 
 | **Kilo Code** | Best Available | Implementation | Parallel in-editor development agent for component-level coding, scaffolding, and task-scoped iterative work |
 | **Codex** | Codex 5.4 High | Backend Fabrication | API scaffolding, schema generation, and high-throughput code generation tasks |
 | **Kimi** | Kimi 2.5 Thinking | Deep Reasoning | Extended reasoning tasks — architecture analysis, complex debugging, and multi-step technical problem solving |
-| **Gemini** | Gemini 2.5 Pro | Supervisor & Audit | Reviews outputs from all agents, performs cross-validation, and flags inconsistencies before GO-Gate submission |
+| **Gemini** | Gemini 3.1 Pro | Supervisor & Audit | Reviews outputs from all agents, performs cross-validation, and flags inconsistencies before GO-Gate submission |
 | **Antigravity** | Agent | Scaffold | Project initialization, monorepo scaffolding, and contract-first structure generation |
 
 All agent activity is traceable via commit trailers. No agent output ships without a human GO approval.
