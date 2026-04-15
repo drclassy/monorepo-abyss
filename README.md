@@ -266,6 +266,163 @@ Handoff: .agent/sessions/YYYY-MM-DD/HANDOFF.md
 
 ---
 
+## Claudesy Genesis Framework
+
+<table>
+<tr>
+<td valign="top" width="110">
+  <img src=".github/claudesy.png" alt="Claudesy" width="90" />
+</td>
+<td valign="top">
+
+**SENTRA GENESIS FRAMEWORK v2.4**  
+*"Contract-First" Architecture & Governance Lifecycle*
+
+A systematic multi-agent orchestration protocol for building production-grade systems — from vision to deployment, with integrity gates at every phase.
+
+</td>
+</tr>
+</table>
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        SENTRA GENESIS FRAMEWORK v2.4                        │
+│                "Contract-First" Architecture & Governance Lifecycle         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Phase 1: THE VISION (Oracle Chamber)
+┌──────────────────────┐
+│  Dr. Ferdi / CHIEF   │
+│    With CLAUDE       │
+└──────────┬───────────┘
+           │
+           ▼
+    [GATE 1: SCOPE] <--- "Does this align with clinical safety?"
+           │
+           ▼
+  ┌──────────────────┐
+  │ Project_Spec.md  │ (The Immutable Truth)
+  └──────────────────┘
+
+Phase 1.5: ATOMIZATION (The Decomposition Engine)
+┌─────────────────────────────────────────────────────────────────────────────┐
+│   TASKMASTER / TRYHAMSTER                                                   │
+│   INPUT:   Spec.md                                                          │
+│   PROCESS: Taskmaster Artificial Intelligence (The Planner)                 │
+│   OUTPUT:  .taskmaster/tasks.json (or tasks.md)                             │
+└──────────┬──────────────────────────────────────────────────────────────────┘
+           │
+           ▼
+   [GATE 2: INTEGRITY] <--- "Are tasks granular & safe?"
+
+Phase 2: INITIALIZATION (The Foundation)
+┌─────────────────────────────────────────────────────────────────────────────┐
+│   CLAUDE CODE                                                               │
+│   ACTION: Generate Root Structure & Rules                                   │
+│   OUTPUT STRUCTURE (Root Project):                                          │
+│   / (Root Project)                                                          │
+│   ├── .cursor/               <-- [THE BRAIN STEM]                           │
+│   │   ├── rules/             <-- Modular Rules (.mdc files)                 │
+│   │   │   ├── 00-identity.mdc  (Claudesy Persona & Genesis Protocol)        │
+│   │   │   ├── 01-stack.mdc     (Next.js 15, Supabase, Tailwind Rules)       │
+│   │   │   ├── 02-testing.mdc   (Vitest & Playwright Guidelines)             │
+│   │   │   ├── 03-security.mdc  (Auth, RLS, Row Level Security)              │
+│   │   │   ├── 04-governance.mdc (Commit Msg, PR Standards)                  │
+│   │   │   ├── 05-workflow.mdc  (Workflow Rules)                             │
+│   │   │   └── 06-identity.mdc  (Future Identity Rules)                      │
+│   │   └── mcp.json           (Config connect ke Local DB/Tools)             │
+│   ├── .github/               <-- [THE AUTOMATON]                            │
+│   │   ├── CODEOWNERS, ISSUE_TEMPLATE/, workflows/ (ci-quality.yml)          │
+│   ├── .husky/                <-- [THE GATEKEEPER] (pre-commit, pre-push)    │
+│   ├── documentation/         <-- [THE KNOWLEDGE BASE]                       │
+│   │   ├── genesis/ (spec.md, plan.md, tasks.md)                             │
+│   │   ├── adr/, api/, PROJECT_CONTEXT.md                                    │
+│   ├── infra/                 <-- [LOCAL OPS] (docker-compose, seed.sql)     │
+│   ├── mcps/                  <-- [CUSTOM TOOLS] (Artificial Intelligence    │
+│   │                               Hands)                                    │
+│   ├── src/                   <-- [THE CODE PAYLOAD]                         │
+│   │   ├── app/, components/, lib/, types/, env.mjs (Zod Runtime Check)      │
+│   └── .env.example, .env.local, eslint.config.mjs, tsconfig.json            │
+└──────────┬──────────────────────────────────────────────────────────────────┘
+           │
+           ▼
+   [GATE 3: ACCESS] <--- "Least Privilege Environment Established?"
+
+Phase 3a: THE SCAFFOLD (Contract-First Design)
+┌─────────────────────────────────────────────────────────────────────────────┐
+│   ACTION: ANTIGRAVITY / CURSOR runs `init-contract.sh` & Scaffolds Monorepo │
+│                                                                             │
+│   SCAFFOLD COMPONENTS (The Blueprint):                                      │
+│   ├─ 0)  REPO STANDARDS       (Monorepo-first, strict ESLint)               │
+│   ├─ 1)  MONOREPO LAYOUT      (apps/web, apps/api, packages/types)          │
+│   ├─ 2)  FRONTEND SCAFFOLD    (App Router, Query Provider, Theme)           │
+│   ├─ 3)  BACKEND/API SCAFFOLD (Hono Routes, Zod Validation Pipe)            │
+│   ├─ 4)  DATA LAYER SCAFFOLD  (Prisma Singleton, Seeding Engine)            │
+│   ├─ 5)  OBSERVABILITY        (OpenTelemetry, Health Checks)                │
+│   ├─ 6)  TESTING STRATEGY     (Vitest Workspace, Playwright E2E)            │
+│   ├─ 7)  CI/CD HOOKS          (Husky, GitHub Actions)                       │
+│   ├─ 8)  OPERATIONAL CONTROL  (Feature Flags, Rate Limiting)                │
+│   ├─ 9)  DOCUMENTATION        (Makefile / Justfile)                         │
+│   └─ 10) ACCEPTANCE CRITERIA  (pnpm build/test/lint pass)                   │
+│                                                                             │
+│   THE CONTRACT (Shared Truth):                                              │
+│   packages/types  -> UserSchema, ApiResponse                                │
+│   packages/config -> EnvSchema, FeatureFlags                                │
+└──────────┬──────────────────────────────────────────────────────────────────┘
+           │
+           ▼
+   CLAUDE CODE
+   [GATE 4: QUALITY] <--- "IS THE CONTRACT VALID?"
+   REAL CHECK (Command): `pnpm run check:contract`
+   1. `tsc --noEmit -p packages/types`  (Must be error-free)
+   2. `eslint packages/types`           (No 'any' allowed)
+   3. `zod-check packages/types`        (Schema validity)
+   (If this command fails, Phase 3b is BLOCKED)
+
+Phase 3b: PARALLEL FABRICATION (The Trinity Swarm)
+           │
+     ┌─────┼─────────────────────────────────────┐
+     ▼     ▼                                     ▼
+┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+│  FRONTEND AGENT  │ │  BACKEND AGENT   │ │  OPS AGENT       │
+│  (CLAUDE CODE)   │ │     (CODEX)      │ │    (CLINE)       │
+├──────────────────┤ ├──────────────────┤ ├──────────────────┤
+│ INPUT:           │ │ INPUT:           │ │ INPUT:           │
+│ Import { User }  │ │ Import { User }  │ │ Import { Env }   │
+│ from types/zod   │ │ from types/zod   │ │ from config/zod  │
+└──────────┬───────┘ └────────┬─────────┘ └────────┬─────────┘
+           │                  │                     │
+           └─────────┬────────┴─────────────────────┘
+                     │
+Phase 3c: CONVERGENCE (The Integration)
+                     ▼
+            ┌──────────────────┐
+            │   CLAUDE CODE    │
+            │   CI/CD MERGE    │
+            │ (Automated Test) │
+            └────────┬─────────┘
+
+Phase 4: GOVERNANCE & RELEASE
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            THE GREAT WALL                                   │
+└──────────┬──────────────────────────────────────────────────────────────────┘
+           │
+           ▼
+ [GATE 5: APPROVALS] <--- CHIEF Review of the Artifact
+           │
+           ▼
+ [GATE 6: AGENT EVAL] <--- CLAUDE CODE OPS 4.6+
+ "Score >= 8.5/10 on Security, Safety, & Logic"
+           │
+           ▼
+┌──────────────────────┐
+│    DEPLOY TO PROD    │ --> JULES
+│  (Immutable Record)  │ --> GITHUB COPILOT
+└──────────────────────┘
+```
+
+---
+
 ## Security & Compliance
 
 ### GO-Gate CI/CD Requirements
