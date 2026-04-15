@@ -138,6 +138,11 @@ temp/
 flows/.langflow/
 .github/instructions/codacy.instructions.md
 
+# ---- POLYREPO SPLIT — apps/ MIGRATED TO SEPARATE REPOS ----
+# apps/ is excluded from abyss-core. Each app lives in its own repo.
+# See .agent/ARCHITECTURE.md §8 for the polyrepo plan.
+apps/
+
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
 # Git evaluates .gitignore top-down; trailing negations override earlier rules.
