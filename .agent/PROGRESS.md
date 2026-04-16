@@ -973,3 +973,113 @@ packages/config-eslint/.eslintrc.json
 ```
 
 ---
+## 2026-04-15 14:54 — `5a15987` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: style: apply Prettier formatting across all source files + extend .prettierignore
+- **Files changed**: 43 file(s)
+
+```
+.agent/PROGRESS.md
+.agent/sessions/2026-04-15.md
+.github/PULL_REQUEST_TEMPLATE.md
+.prettierignore
+.vscode/extensions.json
+AGENTS.md
+CHANGELOG.md
+CLAUDE.md
+CONTRIBUTING.md
+ORCHESTRATOR.md
+README.md
+conductor/agent-execution.md
+packages/artificial-core/README.md
+packages/artificial-core/src/client.ts
+packages/config-eslint/.eslintrc.json
+packages/config-eslint/README.md
+packages/config-eslint/base.js
+packages/config-eslint/package.json
+packages/config-typescript/README.md
+packages/database/README.md
+```
+
+---
+## 2026-04-15 14:57 — `6a5e26a` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: fix(build): use ConsensusResult type in getConsensus + add prisma generate to database build
+- **Files changed**: 2 file(s)
+
+```
+packages/artificial-core/src/client.ts
+packages/database/package.json
+```
+
+---
+## 2026-04-15 15:03 — `3176793` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: feat(ci): enhance auto-fix workflow — main+develop, format+lint fix, PR creation
+- **Files changed**: 1 file(s)
+
+```
+.github/workflows/auto-fix.yml
+```
+
+---
+## 2026-04-15 15:17 — `acb9dfc` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: feat(devops): minimal automation stack — Renovate + Semgrep + auto-merge
+- **Files changed**: 3 file(s)
+
+```
+.github/workflows/auto-merge.yml
+.github/workflows/security-scan.yml
+renovate.json
+```
+
+---
+## 2026-04-15 15:22 — `1a1f6b1` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: fix(security-scan): remove pnpm version conflict — let action-setup@v4 read from packageManager
+- **Files changed**: 1 file(s)
+
+```
+.github/workflows/security-scan.yml
+```
+
+---
+## 2026-04-15 15:48 — `1236f6f` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: chore(legal): add Apache License 2.0 to monorepo root
+- **Files changed**: 1 file(s)
+
+```
+LICENSE
+```
+
+---
+## 2026-04-15 15:52 — `701d0a0` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): comprehensive monorepo README with license section
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---
+## 2026-04-15 16:03 — `87c2b4a` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: docs(readme): restore full 740-line README + update license to Apache 2.0
+- **Files changed**: 1 file(s)
+
+```
+README.md
+```
+
+---

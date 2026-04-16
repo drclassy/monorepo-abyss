@@ -205,5 +205,38 @@ Security scan must pass before any healthcare PR is merged. No exceptions.
 
 ---
 
+## §9 — Repository Compliance System
+
+Every agent MUST follow the Repository Compliance System before pushing any project.
+
+**Rules (grounded in real incidents):** [`repository/STANDARD.md`](repository/STANDARD.md)
+**Pre-push gate:** [`repository/CHECKLIST.md`](repository/CHECKLIST.md)
+**Fix guides:** [`repository/TROUBLESHOOTING.md`](repository/TROUBLESHOOTING.md)
+**Automated validator:** [`repository/validate.ps1`](repository/validate.ps1)
+**Bootstrap templates:** [`repository/templates/`](repository/templates/)
+
+### Mandatory checks before every `git push`:
+
+1. Run `repository/validate.ps1 -path <project-root>` — must exit 0
+2. Verify `pnpm-lock.yaml` overrides match `package.json` pnpm.overrides exactly
+3. Confirm `.gitattributes` exists with `* text=auto eol=lf`
+4. Confirm `docs/api/` and `dist/` are in `.gitignore`
+
+### Mandatory checks when bootstrapping a new project:
+
+1. Copy `repository/templates/.gitignore` to project root
+2. Copy `repository/templates/.gitattributes` to project root
+3. Copy `repository/templates/.editorconfig` to project root
+4. Run `git add --renormalize .` before first commit
+
+### Key rules (summary — read STANDARD.md for full context):
+
+- Lockfile regeneration must happen in `/tmp/` — never inside the monorepo root
+- Auto-generated directories (`dist/`, `.output/`, `docs/api/`) must be in `.gitignore`
+  before the first build is ever run
+- Agent coordination via `.agent/HANDOFF.md` — read before acting, write before starting
+
+---
+
 _If a local rule contradicts this document, this document wins._ _Append new
 decisions to `.agent/DECISIONS.md` and new lessons to `.agent/LESSONS.md`._

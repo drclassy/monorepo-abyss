@@ -1,0 +1,27 @@
+{
+  "name": "@abyss/notebooklm",
+  "version": "1.0.0",
+  "description": "Sentra AI Hybrid Brain - End-to-End NotebookLM Integration",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "abyss",
+    "notebooklm",
+    "vertexai",
+    "rag"
+  ],
+  "author": "Jen (Sentra Adjutant)",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@google-cloud/vertexai": "^1.0.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  }
+}

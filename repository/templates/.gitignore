@@ -1,0 +1,61 @@
+# ──────────────────────────────────────────────────────────────
+# Sentra Healthcare AI — Standard .gitignore Template
+# Copy this to new projects before the first build.
+# Rule: build artifacts must not be tracked. See STANDARD.md §2.
+# ──────────────────────────────────────────────────────────────
+
+# Local AI-agent tooling and prompt files
+.claude/
+.codex/
+.cursor/
+.continue/
+.lingma/
+.roo/
+.windsurf/
+
+# Agent prompt / assistant workspace notes
+CLAUDE.md
+QWEN.md
+GEMINI.md
+COPILOT.md
+CURSOR.md
+CURSOR-*.md
+
+# Local AI helper caches and scratch files
+.aider*
+
+# Build outputs
+.output/
+dist/
+build/
+
+# WXT extension framework
+.wxt/
+
+# Package manager
+node_modules/
+
+# Auto-generated docs (TypeDoc, Storybook, etc.)
+docs/api/
+docs/storybook/
+
+# Test, coverage, and smoke artifacts
+coverage/
+playwright-report/
+test-results/
+output/
+
+# Local environment overrides
+.env.local
+.env.*.local
+
+# Agent operational memory and session logs
+.agent/
+
+# IDE metadata
+.vscode/
+.idea/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
