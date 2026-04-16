@@ -86,7 +86,7 @@ and this project adheres to
 ---
 
 **Unreleased:**
-[Compare changes](https://github.com/Avvicenna/abyss-monorepo/compare/main...develop)
+[Compare changes](https://github.com/Avvcenna+/abyss-monorepo/compare/main...develop)
 
 ---
 

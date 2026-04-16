@@ -1,13 +1,13 @@
 # PROGRESS.md — The Abyss (Monorepo Root)
 
-## 2026-04-17 — Remote Migration to Avvicenna
+## 2026-04-17 — Remote Migration to Avvcenna+
 
 **Event:** Monorepo shell pushed to primary GitHub account.
 
-- **New remote:** `origin` → `https://github.com/Avvicenna/abyss-monorepo.git` (PRIVATE)
-- **Old remote:** preserved as `origin-avvcenna+` → `https://github.com/Avvicenna/abyss-monorepo.git`
+- **New remote:** `origin` → `https://github.com/Avvcenna+/abyss-monorepo.git` (PRIVATE)
+- **Old remote:** preserved as `origin-avvcenna+` → `https://github.com/Avvcenna+/abyss-monorepo.git`
 - **Branch pushed:** `abyss-core` (tracking `origin/abyss-core`)
-- **Migration commit:** `bbc0958` — `chore: sync working state before remote migration to Avvicenna` (17 files: notebooklm scaffold + repository governance templates + .agent/PROGRESS + AGENTS + package.json + pnpm-lock + tsdoc)
+- **Migration commit:** `bbc0958` — `chore: sync working state before remote migration to Avvcenna+` (17 files: notebooklm scaffold + repository governance templates + .agent/PROGRESS + AGENTS + package.json + pnpm-lock + tsdoc)
 - **Polyrepo integrity:** `apps/` remains gitignored — 0 tracked files, all divisions excluded from this shell as designed in `.agent/ARCHITECTURE.md §8`.
 - **Rollback:** `git remote rename origin-avvcenna+ origin` restores prior state.
 
@@ -1100,7 +1100,7 @@ README.md
 ## 2026-04-17 01:07 — `bbc0958` — abyss-core
 
 - **Agent**: Avvcenna+
-- **Commit**: chore: sync working state before remote migration to Avvicenna
+- **Commit**: chore: sync working state before remote migration to Avvcenna+
 - **Files changed**: 17 file(s)
 
 ```

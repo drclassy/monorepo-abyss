@@ -26,7 +26,7 @@ Thank you for your interest in contributing to The Abyss monorepo!
 ### 1. Fork and Clone
 
 ```bash
-git clone https://github.com/Avvicenna/abyss-monorepo.git
+git clone https://github.com/Avvcenna+/abyss-monorepo.git
 cd abyss-monorepo
 ```
 
