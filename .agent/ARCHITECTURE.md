@@ -6,13 +6,13 @@
 
 ## 1. Ringkasan Eksekutif
 
-**The Abyss** adalah AI-native Turborepo monorepo milik Dr. Ferdi Iskandar (Claudesy).
+**The Abyss** adalah AI-native Turborepo monorepo milik Dr. Ferdi Iskandar (Avvcenna+).
 Berisi seluruh ekosistem digital Sentra — dari platform AI healthcare, dashboard klinis,
 hingga sistem agent multi-AI.
 
 | Field | Value |
 |-------|-------|
-| Owner | Dr. Ferdi Iskandar (Chief / Claudesy) |
+| Owner | Dr. Ferdi Iskandar (Chief / Avvcenna+) |
 | Stack utama | TypeScript, Next.js 16, NestJS, React 19, Tailwind v4, Prisma, Neon DB |
 | Monorepo tool | Turborepo + pnpm workspaces |
 | Agent system | Multi-agent: Claude + Kilo + Cursor + Gemini |
@@ -76,8 +76,8 @@ abyss-monorepo/
 
 | App | Tujuan |
 |-----|--------|
-| `claudesy-transformer` | AI transformer untuk komunitas |
-| `claudesy-memory` | Memory management system (Python + Next.js) — di-rename dari `claudsy-memory` oleh Kilo Apr 2026 |
+| `avvcenna+-transformer` | AI transformer untuk komunitas |
+| `avvcenna+-memory` | Memory management system (Python + Next.js) — di-rename dari `avvcenna+-memory` oleh Kilo Apr 2026 |
 
 ### 3.5 Prototype Division
 
@@ -97,7 +97,7 @@ Semua package ada di `packages/` dan dipublish sebagai `@the-abyss/*`.
 | `config-eslint` | `@the-abyss/config-eslint` | Shared ESLint configs (base, node, react) |
 | `config-typescript` | `@the-abyss/config-typescript` | Shared tsconfig base (strict) |
 | `database` | `@the-abyss/database` | Prisma singleton + semua model types |
-| `design-token` | — | Design token system — Claudesy Dark Theme |
+| `design-token` | — | Design token system — Avvcenna+ Dark Theme |
 | `fhir-engine` | `@the-abyss/fhir-engine` | FHIR R4 validation + transformation layer |
 | `integration-bridge` | `@the-abyss/integration-bridge` | Notion + Linear integration client |
 | `iskandar-gatekeeper` | `@the-abyss/iskandar-gatekeeper` | Security layer: JWT (HS256-only) + API key auth + GO-Gate CI/CD validator |
@@ -179,7 +179,7 @@ Package `@the-abyss/iskandar-gatekeeper` adalah security layer terpusat:
 
 ### Commits Terakhir (belum dipush — menunggu GitHub baru)
 ```
-393754f  Kilo   — packages tests + claudesy-memory rename
+393754f  Kilo   — packages tests + avvcenna+-memory rename
 c007506  Cursor — orchestrator + sentra-portal + sentra-main
 1edc926  Claude — P2-10 package docs + .agent/ housekeeping
 7c6b834  Claude — B3-B iskandar-gatekeeper hardening
@@ -203,8 +203,8 @@ c007506  Cursor — orchestrator + sentra-portal + sentra-main
 | 5 | `academic-solutions` | apps/academic/academic-solutions |
 | 6 | `clinical-simulator` | apps/academic/clinical-simulator |
 | 7 | `evaluation-engine` | apps/academic/evaluation-engine |
-| 8 | `claudesy-transformer` | apps/community/claudesy-transformer |
-| 9 | `claudesy-memory` | apps/community/claudesy-memory |
+| 8 | `avvcenna+-transformer` | apps/community/avvcenna+-transformer |
+| 9 | `avvcenna+-memory` | apps/community/avvcenna+-memory |
 | 10 | `platform-orchestrator` | apps/platform/orchestrator |
 | 11 | `sentra-portal` | apps/platform/sentra-portal |
 | 12 | `agent-hermes` | apps/prototype/agent-hermes |

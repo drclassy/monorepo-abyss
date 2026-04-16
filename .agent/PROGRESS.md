@@ -5,11 +5,11 @@
 **Event:** Monorepo shell pushed to primary GitHub account.
 
 - **New remote:** `origin` → `https://github.com/Avvicenna/abyss-monorepo.git` (PRIVATE)
-- **Old remote:** preserved as `origin-docsynapse` → `https://github.com/Docsynapse/abyss-monorepo.git`
+- **Old remote:** preserved as `origin-avvcenna+` → `https://github.com/Avvicenna/abyss-monorepo.git`
 - **Branch pushed:** `abyss-core` (tracking `origin/abyss-core`)
 - **Migration commit:** `bbc0958` — `chore: sync working state before remote migration to Avvicenna` (17 files: notebooklm scaffold + repository governance templates + .agent/PROGRESS + AGENTS + package.json + pnpm-lock + tsdoc)
 - **Polyrepo integrity:** `apps/` remains gitignored — 0 tracked files, all divisions excluded from this shell as designed in `.agent/ARCHITECTURE.md §8`.
-- **Rollback:** `git remote rename origin-docsynapse origin` restores prior state.
+- **Rollback:** `git remote rename origin-avvcenna+ origin` restores prior state.
 
 ---
 
@@ -87,7 +87,7 @@ Complete — awaiting next Chief instruction
 
 ## 2026-04-13 15:39 — `24da75f` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: feat(agent-hermes): complete Phase 1 ops + Phase 2 skills/plugins
   mount
 - **Files changed**: 23 file(s)
@@ -119,7 +119,7 @@ apps/prototype/agent-hermes/scripts/up.ps1
 
 ## 2026-04-13 17:11 — `b9d5bad` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: feat(agent-hermes): complete base stack build verification + fix
   smoke tests
 - **Files changed**: 8 file(s)
@@ -171,7 +171,7 @@ apps/prototype/agent-hermes/tests/smoke/test_base_profile.py
 
 ## 2026-04-15 00:15 — `1c7c60c` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(monorepo): B4-A CQRS barrels + P1-11 lockfile sync
 - **Files changed**: 6 file(s)
 
@@ -210,7 +210,7 @@ pnpm-lock.yaml
 
 ## 2026-04-15 00:25 — `1abef09` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: feat(orchestrator): implement saga persistence, health checks, and
   api security
 - **Files changed**: 14 file(s)
@@ -236,7 +236,7 @@ packages/database/src/index.ts
 
 ## 2026-04-15 00:44 — `7234dd3` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: test(orchestrator): add comprehensive test suite for Phase 4
   validation
 - **Files changed**: 5 file(s)
@@ -270,7 +270,7 @@ apps/platform/orchestrator/src/sagas/saga.repository.spec.ts
 
 ## 2026-04-15 01:28 — `7c6b834` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(security): harden iskandar-gatekeeper auth layer [B3-B]
 - **Files changed**: 7 file(s)
 
@@ -288,7 +288,7 @@ packages/iskandar-gatekeeper/vitest.config.ts
 
 ## 2026-04-15 01:28 — `1edc926` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(packages): JSDoc + README for all 12 packages [P2-10] + agent
   housekeeping
 - **Files changed**: 31 file(s)
@@ -338,7 +338,7 @@ packages/fhir-engine/README.md
 ---
 ## 2026-04-15 01:31 — `3411015` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(monorepo): orchestrator tests, sentra-portal/main tooling, TASKS sweep
 - **Files changed**: 305 file(s)
 
@@ -368,7 +368,7 @@ apps/healthcare/sentra-main/CLAUDE.md
 ---
 ## 2026-04-15 01:31 — `1574085` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(monorepo): orchestrator tests, sentra-portal/main tooling, TASKS sweep
 - **Files changed**: 306 file(s)
 
@@ -398,7 +398,7 @@ apps/healthcare/sentra-main/CHANGELOG.md
 ---
 ## 2026-04-15 01:31 — `42a494b` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(monorepo): orchestrator tests, sentra-portal/main tooling, TASKS sweep
 - **Files changed**: 306 file(s)
 
@@ -428,7 +428,7 @@ apps/healthcare/sentra-main/CHANGELOG.md
 ---
 ## 2026-04-15 01:32 — `c007506` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(monorepo): orchestrator tests, sentra-portal/main tooling, TASKS sweep
 - **Files changed**: 306 file(s)
 
@@ -458,37 +458,37 @@ apps/healthcare/sentra-main/CHANGELOG.md
 ---
 ## 2026-04-15 01:33 — `393754f` — master
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: feat(packages): implement iskandar-gatekeeper auth + add vitest tests + fix brand naming
 - **Files changed**: 286 file(s)
 
 ```
 .kilo/plans/1776182977057-playful-engine.md
 apps/community/AGENTS.md
-apps/community/claudsy-memory/.github/ISSUE_TEMPLATE/bug_report.md
-apps/community/claudsy-memory/.github/PULL_REQUEST_TEMPLATE.md
-apps/community/claudsy-memory/.gitignore
-apps/community/claudsy-memory/.taskmaster/config.json
-apps/community/claudsy-memory/.taskmaster/specs/landing-page.md
-apps/community/claudsy-memory/.taskmaster/state.json
-apps/community/claudsy-memory/.taskmaster/tasks/task_001.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_002.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_003.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_004.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_005.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_006.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_007.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_008.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_009.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_010.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_011.md
-apps/community/claudsy-memory/.taskmaster/tasks/task_012.md
+apps/community/avvcenna+-memory/.github/ISSUE_TEMPLATE/bug_report.md
+apps/community/avvcenna+-memory/.github/PULL_REQUEST_TEMPLATE.md
+apps/community/avvcenna+-memory/.gitignore
+apps/community/avvcenna+-memory/.taskmaster/config.json
+apps/community/avvcenna+-memory/.taskmaster/specs/landing-page.md
+apps/community/avvcenna+-memory/.taskmaster/state.json
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_001.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_002.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_003.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_004.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_005.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_006.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_007.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_008.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_009.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_010.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_011.md
+apps/community/avvcenna+-memory/.taskmaster/tasks/task_012.md
 ```
 
 ---
 ## 2026-04-15 01:49 — `3f63c45` — feature/simplify-pass-2026-04-12
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(sentra-dashboard): establish core structure and data schema
 - **Files changed**: 59 file(s)
 
@@ -518,7 +518,7 @@ apps/healthcare/sentra-dashboard/database/backups/penyakit.pre-patch.2026-03-13T
 ---
 ## 2026-04-15 01:49 — `7e54125` — feature/simplify-pass-2026-04-12
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: perf(sentra-dashboard): implement core business logic and CDSS engines
 - **Files changed**: 235 file(s)
 
@@ -548,7 +548,7 @@ apps/healthcare/sentra-dashboard/src/app/api/auth/logout/route.ts
 ---
 ## 2026-04-15 01:49 — `7e05f59` — feature/simplify-pass-2026-04-12
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: refactor(sentra-dashboard): modular UI components and patient trajectory pages
 - **Files changed**: 143 file(s)
 
@@ -583,13 +583,13 @@ apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminRpaMonitoring.ts
 - 4 deliverables di `.agent/sessions/2026-04-15-audit-*` (scan, patches, clearance, remediation.sh).
 - Zero tracked secrets detected. `pnpm-lock.yaml`, `.agent/**`, `.cursor/rules/**` semua preserved.
 - Clearance: **SAFE TO PUSH** (verified via 8 automated tests + `remediation.sh`).
-- Follow-up non-blocking: rotate claudesy-memory API keys; audit 3 submodules (sentra-assist, academic-solutions, ferdiiskandar).
+- Follow-up non-blocking: rotate avvcenna+-memory API keys; audit 3 submodules (sentra-assist, academic-solutions, ferdiiskandar).
 - Handoff: `2026-04-15-audit`.
 
 ---
 ## 2026-04-15 02:20 — `d60d243` — feature/simplify-pass-2026-04-12
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(security): pre-push gitignore hardening + audit clearance
 - **Files changed**: 7 file(s)
 
@@ -606,7 +606,7 @@ apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminRpaMonitoring.ts
 ---
 ## 2026-04-15 02:29 — `3e597c9` — feature/simplify-pass-2026-04-12
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(claude): track .claude/settings.json (EXEMPTED)
 - **Files changed**: 1 file(s)
 
@@ -617,7 +617,7 @@ apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminRpaMonitoring.ts
 ---
 ## 2026-04-15 12:17 — `baa568c` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(restructure): exclude apps/ — The Abyss core only
 - **Files changed**: 1389 file(s)
 
@@ -633,21 +633,21 @@ apps/academic/evaluation-engine/CLAUDE.md
 apps/academic/evaluation-engine/package.json
 apps/community/AGENTS.md
 apps/community/CLAUDE.md
-apps/community/claudesy-transformer/.gitignore
-apps/community/claudesy-transformer/CLAUDE.md
-apps/community/claudesy-transformer/PROJECT_CONTEXT.md
-apps/community/claudesy-transformer/__tests__/api/auth-abuse-routes.test.ts
-apps/community/claudesy-transformer/__tests__/api/internal-billing-process-expirations.test.ts
-apps/community/claudesy-transformer/__tests__/api/internal-email-process.test.ts
-apps/community/claudesy-transformer/__tests__/api/prompts-idor.test.ts
-apps/community/claudesy-transformer/__tests__/api/prompts-list-create.test.ts
-apps/community/claudesy-transformer/__tests__/api/provider-key-resolution.test.ts
+apps/community/avvcenna+-transformer/.gitignore
+apps/community/avvcenna+-transformer/CLAUDE.md
+apps/community/avvcenna+-transformer/PROJECT_CONTEXT.md
+apps/community/avvcenna+-transformer/__tests__/api/auth-abuse-routes.test.ts
+apps/community/avvcenna+-transformer/__tests__/api/internal-billing-process-expirations.test.ts
+apps/community/avvcenna+-transformer/__tests__/api/internal-email-process.test.ts
+apps/community/avvcenna+-transformer/__tests__/api/prompts-idor.test.ts
+apps/community/avvcenna+-transformer/__tests__/api/prompts-list-create.test.ts
+apps/community/avvcenna+-transformer/__tests__/api/provider-key-resolution.test.ts
 ```
 
 ---
 ## 2026-04-15 12:33 — `233b25c` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(gitignore): Opsi B — exclude AI tool configs from remote
 - **Files changed**: 24 file(s)
 
@@ -677,7 +677,7 @@ apps/community/claudesy-transformer/__tests__/api/provider-key-resolution.test.t
 ---
 ## 2026-04-15 12:35 — `f7c35a7` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore: remove .agents/ — obsolete, replaced by .agent/ (no 's')
 - **Files changed**: 5 file(s)
 
@@ -692,13 +692,13 @@ apps/community/claudesy-transformer/__tests__/api/provider-key-resolution.test.t
 ---
 ## 2026-04-15 12:36 — `19d829f` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(cleanup): remove obsolete files — docs/sentratorium, .github artifacts, flows readme
 - **Files changed**: 18 file(s)
 
 ```
-.github/claudesy-pr-temp.psm1
-.github/claudesy-pr.psm1
+.github/avvcenna+-pr-temp.psm1
+.github/avvcenna+-pr.psm1
 .github/instructions/codacy.instructions.md
 docs/sentratorium/.obsidian/app.json
 docs/sentratorium/.obsidian/appearance.json
@@ -731,7 +731,7 @@ README.md
 ---
 ## 2026-04-15 13:28 — `c0f1574` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): update Roadmap → Product Ecosystem based on sentrahai.com/story
 - **Files changed**: 1 file(s)
 
@@ -742,7 +742,7 @@ README.md
 ---
 ## 2026-04-15 13:28 — `5ef9073` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: style(readme): expand all AI abbreviations to Artificial Intelligence
 - **Files changed**: 1 file(s)
 
@@ -753,20 +753,20 @@ README.md
 ---
 ## 2026-04-15 13:31 — `8be3ce8` — abyss-core
 
-- **Agent**: Claudesy
-- **Commit**: feat(readme): add Claudesy character to Claudesy Workflow section
+- **Agent**: Avvcenna+
+- **Commit**: feat(readme): add Avvcenna+ character to Avvcenna+ Workflow section
 - **Files changed**: 2 file(s)
 
 ```
-.github/claudesy.png
+.github/avvcenna+.png
 README.md
 ```
 
 ---
 ## 2026-04-15 13:36 — `1328505` — abyss-core
 
-- **Agent**: Claudesy
-- **Commit**: docs(readme): add Claudesy Genesis Framework v2.4 section
+- **Agent**: Avvcenna+
+- **Commit**: docs(readme): add Avvcenna+ Genesis Framework v2.4 section
 - **Files changed**: 1 file(s)
 
 ```
@@ -776,8 +776,8 @@ README.md
 ---
 ## 2026-04-15 13:39 — `cb96183` — abyss-core
 
-- **Agent**: Claudesy
-- **Commit**: docs(readme): move Genesis Framework below Overview, rename Dr. Ferdi → Dr. Claudesy
+- **Agent**: Avvcenna+
+- **Commit**: docs(readme): move Genesis Framework below Overview, rename Dr. Ferdi → Dr. Avvcenna+
 - **Files changed**: 1 file(s)
 
 ```
@@ -787,7 +787,7 @@ README.md
 ---
 ## 2026-04-15 13:42 — `f6d97d7` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): move Genesis Framework below Overview section
 - **Files changed**: 1 file(s)
 
@@ -798,7 +798,7 @@ README.md
 ---
 ## 2026-04-15 13:45 — `4adaaa7` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): revamp Product Ecosystem with accurate descriptions in Indonesian
 - **Files changed**: 1 file(s)
 
@@ -809,7 +809,7 @@ README.md
 ---
 ## 2026-04-15 13:59 — `6398fac` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): add Mission, Multi-Agent Roster, Clinical Deployment sections + logos
 - **Files changed**: 10 file(s)
 
@@ -829,7 +829,7 @@ README.md
 ---
 ## 2026-04-15 14:05 — `678b24d` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): overhaul Architecture diagram + move Multi-Agent Roster
 - **Files changed**: 1 file(s)
 
@@ -840,7 +840,7 @@ README.md
 ---
 ## 2026-04-15 14:07 — `37547e5` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): translate Product Ecosystem to English, anonymize clinical site names
 - **Files changed**: 1 file(s)
 
@@ -851,7 +851,7 @@ README.md
 ---
 ## 2026-04-15 14:09 — `d297255` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): update AI model roster to current stack
 - **Files changed**: 1 file(s)
 
@@ -862,7 +862,7 @@ README.md
 ---
 ## 2026-04-15 14:11 — `d5220e6` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(readme): align Architecture diagram outer borders to uniform 85-char width
 - **Files changed**: 1 file(s)
 
@@ -873,7 +873,7 @@ README.md
 ---
 ## 2026-04-15 14:16 — `9a10c60` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(readme): restore truncated tables, align arch diagram, remove unvalidated 95% claim
 - **Files changed**: 1 file(s)
 
@@ -884,7 +884,7 @@ README.md
 ---
 ## 2026-04-15 14:18 — `3a385a9` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): add product ecosystem diagram to Product Ecosystem section
 - **Files changed**: 2 file(s)
 
@@ -896,7 +896,7 @@ README.md
 ---
 ## 2026-04-15 14:21 — `b8df8eb` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: style(readme): left-align Multi-Agent Governance Roster logo grid
 - **Files changed**: 1 file(s)
 
@@ -907,7 +907,7 @@ README.md
 ---
 ## 2026-04-15 14:21 — `da0ac9f` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): update Gemini model to 3.1 Pro
 - **Files changed**: 1 file(s)
 
@@ -918,7 +918,7 @@ README.md
 ---
 ## 2026-04-15 14:34 — `4b79103` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(ci): resolve 36 CI failures — HEAD^1 fallback, TruffleHog base SHA, stale paths
 - **Files changed**: 3 file(s)
 
@@ -931,7 +931,7 @@ README.md
 ---
 ## 2026-04-15 14:41 — `da98ed9` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(lint): resolve all ESLint violations across packages
 - **Files changed**: 5 file(s)
 
@@ -946,7 +946,7 @@ packages/sentra-ui/src/components/ui/input.tsx
 ---
 ## 2026-04-15 14:43 — `d9f3458` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(sentra-ui): add missing tailwindcss-animate dependency
 - **Files changed**: 2 file(s)
 
@@ -958,7 +958,7 @@ pnpm-lock.yaml
 ---
 ## 2026-04-15 14:45 — `ab14016` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(lint): apply ESLint auto-fix for import ordering across all packages
 - **Files changed**: 10 file(s)
 
@@ -978,7 +978,7 @@ tooling/abyss-cli/src/index.ts
 ---
 ## 2026-04-15 14:51 — `d7422dc` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(config-eslint): convert .eslintrc.json from UTF-16LE to UTF-8
 - **Files changed**: 1 file(s)
 
@@ -989,7 +989,7 @@ packages/config-eslint/.eslintrc.json
 ---
 ## 2026-04-15 14:54 — `5a15987` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: style: apply Prettier formatting across all source files + extend .prettierignore
 - **Files changed**: 43 file(s)
 
@@ -1019,7 +1019,7 @@ packages/database/README.md
 ---
 ## 2026-04-15 14:57 — `6a5e26a` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(build): use ConsensusResult type in getConsensus + add prisma generate to database build
 - **Files changed**: 2 file(s)
 
@@ -1031,7 +1031,7 @@ packages/database/package.json
 ---
 ## 2026-04-15 15:03 — `3176793` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: feat(ci): enhance auto-fix workflow — main+develop, format+lint fix, PR creation
 - **Files changed**: 1 file(s)
 
@@ -1042,7 +1042,7 @@ packages/database/package.json
 ---
 ## 2026-04-15 15:17 — `acb9dfc` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: feat(devops): minimal automation stack — Renovate + Semgrep + auto-merge
 - **Files changed**: 3 file(s)
 
@@ -1055,7 +1055,7 @@ renovate.json
 ---
 ## 2026-04-15 15:22 — `1a1f6b1` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: fix(security-scan): remove pnpm version conflict — let action-setup@v4 read from packageManager
 - **Files changed**: 1 file(s)
 
@@ -1066,7 +1066,7 @@ renovate.json
 ---
 ## 2026-04-15 15:48 — `1236f6f` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore(legal): add Apache License 2.0 to monorepo root
 - **Files changed**: 1 file(s)
 
@@ -1077,7 +1077,7 @@ LICENSE
 ---
 ## 2026-04-15 15:52 — `701d0a0` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): comprehensive monorepo README with license section
 - **Files changed**: 1 file(s)
 
@@ -1088,7 +1088,7 @@ README.md
 ---
 ## 2026-04-15 16:03 — `87c2b4a` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: docs(readme): restore full 740-line README + update license to Apache 2.0
 - **Files changed**: 1 file(s)
 
@@ -1099,7 +1099,7 @@ README.md
 ---
 ## 2026-04-17 01:07 — `bbc0958` — abyss-core
 
-- **Agent**: Claudesy
+- **Agent**: Avvcenna+
 - **Commit**: chore: sync working state before remote migration to Avvicenna
 - **Files changed**: 17 file(s)
 

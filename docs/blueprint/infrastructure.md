@@ -4,7 +4,7 @@
 ├── ├── .agents/ # 🧠 STRATUM AGEN (Hierarchical Steering)
 ├── │ ├── skills/ # Skill modular (e.g., db-migration, fhir-validator)
 ├── │ ├── prompts/ # Library System Prompts untuk Swarm (Planner, Reviewer)
-├── │ ├── AGENTS.md # Global Router & Aturan Claudesy Workflow
+├── │ ├── AGENTS.md # Global Router & Aturan Avvcenna+ Workflow
 ├── │ └── MCP-CONFIG.json # Konfigurasi Model Context Protocol untuk Nx/Turbo
 ├── │
 ├── ├── .github/ # 🛡️ GOVERNANCE & AUTOMATION
@@ -79,7 +79,7 @@ The Abyss (Monorepo = Pabrik Digital)
 ```
 the-abyss/
 ├── .agents/ # AI Steering (Sesuai Blueprint PDF)
-│ ├── AGENTS.md # Global Router (Claudesy Workflow & GO-Gate)
+│ ├── AGENTS.md # Global Router (Avvcenna+ Workflow & GO-Gate)
 │ └── prompts/ # Koleksi System Prompts untuk Agent Swarm
 │
 ├── .github/ # CI/CD & Governance

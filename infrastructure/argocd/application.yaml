@@ -12,7 +12,7 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/Claudesy/abyss-monorepo.git
+    repoURL: https://github.com/Avvicenna/abyss-monorepo.git
     targetRevision: HEAD
     path: infrastructure/kubernetes/base
   
@@ -44,4 +44,4 @@ spec:
   
   info:
     - name: Documentation
-      value: https://github.com/Claudesy/abyss-monorepo/blob/main/README.md
+      value: https://github.com/Avvicenna/abyss-monorepo/blob/main/README.md

@@ -3,7 +3,7 @@
 **Mission:** Pre-Push Monorepo Safety Audit
 **Repo:** abyss-monorepo
 **Agent:** Claude Opus 4.6 (1M)
-**Chief:** Dr. Ferdi Iskandar (Claudesy)
+**Chief:** Dr. Ferdi Iskandar (Avvcenna+)
 **Classification:** JET Class C (git-tracking mutation)
 
 ---
@@ -33,7 +33,7 @@
 ### Untracked on disk (sensitive — NOT in git, but present)
 | Path | Notes |
 |------|-------|
-| `apps/community/claudesy-memory/.claude/settings.local.json` | ⚠️ Contains LIVE `MISTRAL_API_KEY` + `XAI_API_KEY` — already ignored by child `.gitignore:54` (`/.claude/`). **Action: rotate keys, not a git issue.** |
+| `apps/community/avvcenna+-memory/.claude/settings.local.json` | ⚠️ Contains LIVE `MISTRAL_API_KEY` + `XAI_API_KEY` — already ignored by child `.gitignore:54` (`/.claude/`). **Action: rotate keys, not a git issue.** |
 | `.claude/settings.local.json` | EXEMPTED by policy, verified no secrets, 154 bytes |
 | `.claude/settings.json` | EXEMPTED; exists on disk (1322 bytes); currently UNTRACKED — Chief can `git add` if desired |
 
@@ -98,7 +98,7 @@ All clean — 0 tracked `docker-compose.override.yml`, `terraform.tfstate*`, `*.
 
 **Real secret value scan** (patterns: `sk-ant-*`, `xai-*`, `AKIA*`, `-----BEGIN PRIVATE KEY-----`, `ghp_*`):
 - 11 matches in `apps/prototype/agent-hermes/vendor/` — all TEST FIXTURES / DOCS EXAMPLES (hindsight, hermes-core vendored modules)
-- 1 match in `apps/community/claudesy-transformer/website/public/slack-logo-icon.jpg` — JPEG binary bytes coincidentally match regex (false positive)
+- 1 match in `apps/community/avvcenna+-transformer/website/public/slack-logo-icon.jpg` — JPEG binary bytes coincidentally match regex (false positive)
 
 **No real secret values in non-vendor tracked files.**
 

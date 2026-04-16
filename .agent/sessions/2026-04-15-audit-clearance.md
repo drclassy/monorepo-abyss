@@ -67,7 +67,7 @@ Zero offending files found. Zero remediation required dari git index.
 ## Follow-Up Items for Chief (Not Blocking Push)
 
 ### 🟠 P1: Rotate Mistral + xAI API Keys
-**Source:** `apps/community/claudesy-memory/.claude/settings.local.json` (on disk, untracked)
+**Source:** `apps/community/avvcenna+-memory/.claude/settings.local.json` (on disk, untracked)
 **Exposed values:**
 - `MISTRAL_API_KEY=dy15YEIJqjqCRikn93sChhBOlHYZ2DgP`
 - `XAI_API_KEY=xai-l7SwJeoxMudHBT8mqDQ5bc7ZJLpXdIkgPHfxg4bUWJLAICWx2EScVLSBq77e79Q2hFXv6y4L3rswGyEp`

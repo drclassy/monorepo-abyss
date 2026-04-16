@@ -10,13 +10,13 @@
 | File | Status | Action |
 |------|--------|--------|
 | `.gitignore` (root) | NEEDS_UPDATE → **APPLIED** | Full rewrite 88→149 lines |
-| `apps/community/claudesy-memory/.gitignore` | ADEQUATE | No change — `/.claude/` rule at line 54 already covers secrets |
+| `apps/community/avvcenna+-memory/.gitignore` | ADEQUATE | No change — `/.claude/` rule at line 54 already covers secrets |
 | `apps/healthcare/sentra-assist/.gitignore` | OUT_OF_SCOPE | Submodule — audit separately |
 | `apps/platform/sentra-portal/.gitignore` | ADEQUATE | Inherits root |
 | `apps/healthcare/sentra-main/.gitignore` | ADEQUATE | Inherits root |
 | `apps/healthcare/sentra-dashboard/.gitignore` | ADEQUATE | Inherits root |
 | `apps/community/daf-website/.gitignore` | ADEQUATE | Prisma migrations negation correct |
-| `apps/community/claudesy-transformer/.gitignore` | ADEQUATE | — |
+| `apps/community/avvcenna+-transformer/.gitignore` | ADEQUATE | — |
 | `apps/prototype/agent-hermes/.gitignore` (+ 12 nested) | ADEQUATE | Python + multi-lang aware; vendor submodules own their gitignores |
 | Others (29 files) | ADEQUATE | Inherit root, no over-ignores detected |
 
@@ -80,7 +80,7 @@ LOAD-BEARING NEGATIONS (trailing):
 
 ## Child `.gitignore` Review Notes
 
-### `apps/community/claudesy-memory/.gitignore:54`
+### `apps/community/avvcenna+-memory/.gitignore:54`
 ```
 /.claude/
 ```

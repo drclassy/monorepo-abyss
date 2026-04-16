@@ -169,7 +169,7 @@ Sekarang Fase 1 sudah diulang dengan sangat detail. Karena Fase 2-7 sudah Anda a
 
 ### Instruksi Untuk Coder & Planner Agent: Fase 2 (Governance & Steering)
 
-**Tujuan:** Mengimplementasikan protokol **Claudesy Workflow**, sistem kemudi hirarkis (**AGENTS.md**), dan mekanisme gerbang otomatis (**Iskandar Gatekeeper**).
+**Tujuan:** Mengimplementasikan protokol **Avvcenna+ Workflow**, sistem kemudi hirarkis (**AGENTS.md**), dan mekanisme gerbang otomatis (**Iskandar Gatekeeper**).
 
 ####
 
@@ -178,7 +178,7 @@ Langkah 1: Membangun Global Agent Router
 Buat file `.agents/AGENTS.md` di root sebagai instruksi tertinggi bagi semua agen:
 
 ```markdown
-# 🌐 The Abyss: Global Agent Steering (Claudesy Workflow)
+# 🌐 The Abyss: Global Agent Steering (Avvcenna+ Workflow)
 
 Anda adalah bagian dari **Sentra AI Agent Swarm**. Semua tindakan Anda harus mematuhi protokol berikut:
 
@@ -269,7 +269,7 @@ Setelah Fase 1 selesai, berikan instruksi ini kepada Agen AI Anda. Anda bisa mem
 
 1. File `.agents/AGENTS.md` sudah ada dengan isi di atas.
 2. Ada template `HANDOFF.md` yang siap digunakan.
-3. Agen mulai berbicara dengan bahasa "Claudesy Workflow" (misal: "Saya akan mulai dengan membuat HANDOFF.md").
+3. Agen mulai berbicara dengan bahasa "Avvcenna+ Workflow" (misal: "Saya akan mulai dengan membuat HANDOFF.md").
 
 **Setelah Fase 2 ini selesai, infrastruktur Anda sudah memiliki "Moral & Aturan". Beri tahu saya jika sudah siap lanjut ke Fase 3: The Reusable Substrate (UI, Database, & AI Core)!** [DONE]
 
@@ -558,7 +558,7 @@ Fase ini bertujuan membangun **"perangkat pertukangan"** internal yang akan memb
 
 ### Instruksi Untuk Coder Agent: Fase 6 (Abyss CLI & Automation)
 
-**Tujuan:** Membangun CLI internal berbasis TypeScript untuk mengotomatisasi _Claudesy Workflow_, sinkronisasi Langflow, dan scaffolding proyek baru.
+**Tujuan:** Membangun CLI internal berbasis TypeScript untuk mengotomatisasi _Avvcenna+ Workflow_, sinkronisasi Langflow, dan scaffolding proyek baru.
 
 ####
 

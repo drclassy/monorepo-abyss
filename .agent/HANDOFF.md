@@ -156,8 +156,8 @@ abyss-monorepo  → CORE only (packages/ + .agent/ + configs, NO apps/)
 | academic-solutions | apps/academic/academic-solutions |
 | clinical-simulator | apps/academic/clinical-simulator |
 | evaluation-engine | apps/academic/evaluation-engine |
-| claudesy-transformer | apps/community/claudesy-transformer |
-| claudsy-memory | apps/community/claudsy-memory |
+| avvcenna+-transformer | apps/community/avvcenna+-transformer |
+| avvcenna+-memory | apps/community/avvcenna+-memory |
 | platform-orchestrator | apps/platform/orchestrator |
 | agent-hermes | apps/prototype/agent-hermes |
 

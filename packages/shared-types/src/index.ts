@@ -193,8 +193,8 @@ export interface HandoffApproval {
 }
 
 /** JET workflow configuration — governs GO-Gate, handoff, and session traceability behavior. */
-// Claudesy Workflow
-export interface ClaudesyWorkflowConfig {
+// Avvcenna+ Workflow
+export interface AvvcennaPlusWorkflowConfig {
   handoffRequired: boolean
   goGateEnabled: boolean
   traceabilityEnforced: boolean

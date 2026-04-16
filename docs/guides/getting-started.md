@@ -12,7 +12,7 @@ Panduan untuk engineer baru dari nol sampai build pertama.
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/Claudesy/abyss-monorepo.git
+git clone https://github.com/Avvicenna/abyss-monorepo.git
 cd abyss-monorepo
 
 # 2. Install semua dependencies
