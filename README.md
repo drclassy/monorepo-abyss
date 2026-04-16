@@ -74,7 +74,7 @@ It is an operating system custom-built for a critical clinical mission.
 <table>
 <tr>
 <td valign="top" width="110">
-  <img src=".github/Avvcenna+.png" alt="Avvcenna+" width="90" />
+  <img src="https://i.postimg.cc/RV0pQFCQ/Avvecenna4.png" alt="Avvcenna+" width="90" />
 </td>
 <td valign="top">
 
