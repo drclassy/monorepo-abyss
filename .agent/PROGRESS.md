@@ -1,5 +1,19 @@
 # PROGRESS.md — The Abyss (Monorepo Root)
 
+## 2026-04-17 — Remote Migration to Avvicenna
+
+**Event:** Monorepo shell pushed to primary GitHub account.
+
+- **New remote:** `origin` → `https://github.com/Avvicenna/abyss-monorepo.git` (PRIVATE)
+- **Old remote:** preserved as `origin-docsynapse` → `https://github.com/Docsynapse/abyss-monorepo.git`
+- **Branch pushed:** `abyss-core` (tracking `origin/abyss-core`)
+- **Migration commit:** `bbc0958` — `chore: sync working state before remote migration to Avvicenna` (17 files: notebooklm scaffold + repository governance templates + .agent/PROGRESS + AGENTS + package.json + pnpm-lock + tsdoc)
+- **Polyrepo integrity:** `apps/` remains gitignored — 0 tracked files, all divisions excluded from this shell as designed in `.agent/ARCHITECTURE.md §8`.
+- **Rollback:** `git remote rename origin-docsynapse origin` restores prior state.
+
+---
+
+
 <!-- Agent MUST update at every session end or completed JET phase. -->
 
 ## Current Status
@@ -1080,6 +1094,33 @@ README.md
 
 ```
 README.md
+```
+
+---
+## 2026-04-17 01:07 — `bbc0958` — abyss-core
+
+- **Agent**: Claudesy
+- **Commit**: chore: sync working state before remote migration to Avvicenna
+- **Files changed**: 17 file(s)
+
+```
+.agent/PROGRESS.md
+AGENTS.md
+package.json
+packages/notebooklm/.env.example
+packages/notebooklm/package.json
+packages/notebooklm/src/connector.ts
+packages/notebooklm/src/detective.ts
+packages/notebooklm/src/index.ts
+pnpm-lock.yaml
+repository/CHECKLIST.md
+repository/STANDARD.md
+repository/TROUBLESHOOTING.md
+repository/templates/.editorconfig
+repository/templates/.gitattributes
+repository/templates/.gitignore
+repository/validate.ps1
+tsdoc.json
 ```
 
 ---
