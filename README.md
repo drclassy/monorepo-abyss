@@ -3,7 +3,7 @@
 **Artificial Intelligence-Native Monorepo for the Sentra Artificial Intelligence
 Ecosystem**
 
-[![CI](https://img.shields.io/github/actions/workflow/status/Docsynapse/abyss-monorepo/ci.yml?branch=main)](https://github.com/Docsynapse/abyss-monorepo/actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/Avvicenna/abyss-monorepo/ci.yml?branch=main)](https://github.com/Avvicenna/abyss-monorepo/actions)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen)](https://nodejs.org)
 [![pnpm](https://img.shields.io/badge/pnpm-%3E%3D9.0.0-yellow)](https://pnpm.io)
@@ -34,7 +34,7 @@ orchestrated through an integrated Langflow gateway, with vector search and RAG
 pipelines built directly into the shared package layer.
 
 Beyond the products themselves, The Abyss enforces a disciplined development
-protocol called the Claudesy Workflow — no task starts without a declaration, no
+protocol called the Avvcenna+ Workflow — no task starts without a declaration, no
 deployment ships without a GO approval, and no commit lands without a full audit
 trail. This makes the codebase as navigable by Artificial Intelligence agents as
 it is by human engineers, by design.
@@ -69,12 +69,12 @@ It is an operating system custom-built for a critical clinical mission.
 
 ---
 
-## Claudesy Genesis Framework
+## Avvcenna+ Genesis Framework
 
 <table>
 <tr>
 <td valign="top" width="110">
-  <img src=".github/claudesy.png" alt="Claudesy" width="90" />
+  <img src=".github/Avvcenna+.png" alt="Avvcenna+" width="90" />
 </td>
 <td valign="top">
 
@@ -96,7 +96,7 @@ systems — from vision to deployment, with integrity gates at every phase.
 
 Phase 1: THE VISION (Oracle Chamber)
 ┌──────────────────────┐
-│  Dr. Claudesy / CHIEF   │
+│  Dr. Avvcenna+ / CHIEF   │
 │    With CLAUDE       │
 └──────────┬───────────┘
            │
@@ -127,7 +127,7 @@ Phase 2: INITIALIZATION (The Foundation)
 │   / (Root Project)                                                          │
 │   ├── .cursor/               <-- [THE BRAIN STEM]                           │
 │   │   ├── rules/             <-- Modular Rules (.mdc files)                 │
-│   │   │   ├── 00-identity.mdc  (Claudesy Persona & Genesis Protocol)        │
+│   │   │   ├── 00-identity.mdc  (Avvcenna+ Persona & Genesis Protocol)        │
 │   │   │   ├── 01-stack.mdc     (Next.js 15, Supabase, Tailwind Rules)       │
 │   │   │   ├── 02-testing.mdc   (Vitest & Playwright Guidelines)             │
 │   │   │   ├── 03-security.mdc  (Auth, RLS, Row Level Security)              │
@@ -300,9 +300,9 @@ Phase 4: GOVERNANCE & RELEASE
 +------------------------------ POLYREPO CONSUMER APPS -----------------------------+
 |                                                                                   |
 |  HEALTHCARE              PLATFORM              ACADEMIC          COMMUNITY        |
-|  sentra-dashboard        platform-orchestrator clinical-         claudesy-        |
+|  sentra-dashboard        platform-orchestrator clinical-         Avvcenna+-        |
 |  puskesmas               (NestJS + Kafka)      simulator         transformer      |
-|  sentra-assist           sentra-portal         academic-         claudesy-memory  |
+|  sentra-assist           sentra-portal         academic-         Avvcenna+-memory  |
 |  sentra-main                                   solutions         agent-hermes     |
 |                                                evaluation-engine                  |
 |                                                                                   |
@@ -402,7 +402,7 @@ without a human GO approval.
 
 ```bash
 # Clone the repository
-git clone https://github.com/Docsynapse/abyss-monorepo.git
+git clone https://github.com/Avvicenna/abyss-monorepo.git
 cd abyss-monorepo
 
 # Install all workspace dependencies
@@ -487,8 +487,8 @@ only** — shared packages & agent governance.
 | `academic-solutions`    | Academic   | Artificial Intelligence-based academic solutions                          |
 | `clinical-simulator`    | Academic   | Clinical training simulator                                               |
 | `evaluation-engine`     | Academic   | Clinical evaluation engine                                                |
-| `claudesy-transformer`  | Community  | Artificial Intelligence transformer for community                         |
-| `claudesy-memory`       | Community  | Memory management system                                                  |
+| `Avvcenna+-transformer`  | Community  | Artificial Intelligence transformer for community                         |
+| `Avvcenna+-memory`       | Community  | Memory management system                                                  |
 | `agent-hermes`          | Prototype  | Multi-service Artificial Intelligence agent stack                         |
 
 ### Shared Libraries
@@ -546,12 +546,12 @@ only** — shared packages & agent governance.
 
 ---
 
-## Claudesy Workflow
+## Avvcenna+ Workflow
 
-<img src=".github/claudesy.png" alt="Claudesy" width="80" align="right" />
+<img src=".github/Avvcenna+.png" alt="Avvcenna+" width="80" align="right" />
 
 All development in this monorepo — whether by human engineers or Artificial
-Intelligence agents — follows the three-phase Claudesy Workflow. There are no
+Intelligence agents — follows the three-phase Avvcenna+ Workflow. There are no
 exceptions.
 
 ### Phase 1 — HANDOFF First
@@ -720,7 +720,7 @@ Pilot sites: **Maternal Hospital** · **Primary Healthcare Site**
 
 | Role     | Name                              |
 | -------- | --------------------------------- |
-| CEO      | Dr. Claudesy                      |
+| CEO      | Dr. Avvcenna+                      |
 | Company  | Sentra Artificial Intelligence    |
 | Location | Surabaya, Indonesia (WIB / UTC+7) |
 
@@ -728,7 +728,7 @@ Pilot sites: **Maternal Hospital** · **Primary Healthcare Site**
 
 ## License
 
-Copyright 2026 **Claudesy** (Dr. Ferdi Iskandar)
+Copyright 2026 **Avvcenna+** (Dr. Ferdi Iskandar)
 
 Licensed under the **Apache License, Version 2.0** (the "License"); you may not
 use files in this repository except in compliance with the License.
@@ -765,4 +765,4 @@ file for the full text governing permissions and limitations.
 
 ---
 
-© 2026 Sentra Artificial Intelligence · Claudesy
+© 2026 Sentra Artificial Intelligence · Avvcenna+
