@@ -107,7 +107,7 @@ D:\Devop\abyss-monorepo\
 ├── turbo.json
 ├── .agent\                      ← agent memory (CONTEXT, PROGRESS, HANDOFF, LESSONS, DECISIONS, sessions/)
 ├── .claude\                     ← Claude Code config (agents/, commands/, skills/, settings.json)
-├── .cursor\rules\               ← IDE rules (_constitution.mdc + domain rules)
+├── .cursor\rules\               ← IDE rules (00-constitution.mdc + domain rules)
 ├── .mcp.json                    ← MCP server registry
 ├── apps\
 │   ├── platform\

@@ -1124,7 +1124,35 @@ tsdoc.json
 ```
 
 ---
-## 2026-04-17 20:15 — `bb2dd80` — HEAD
+## 2026-04-18 03:15 — Cursor 2026+ Best Practice Setup (local)
+
+- **Agent**: Claude
+- **Action**: Refactored `.cursor/rules/` from flat 8 files to modular numeric-prefix structure with subdirectories. Applied 2026+ best practices.
+- **Files changed**: 18 file(s) — 10 new rule files, 8 removed old files, 4 updated refs
+- **Key changes**:
+  - Consolidated `index.mdc` + `_constitution.mdc` duplicate JET content → `00-constitution.mdc`
+  - Renamed: `000-` → `01-guard-context-init.mdc`, `001-` → `02-notebooklm-intelligence.mdc`
+  - Subdirectories: `10-backend/`, `20-frontend/`, `30-quality/`
+  - Added `99-gold-standards.mdc` with `@file` references
+  - Updated refs: `AGENTS.md`, `.agent/DECISIONS.md`, `.cursor/README.md`
+- **Note**: `.cursor/` is gitignored (local setup only, per 2026-04-15 Opsi B)
+- **Status**: ✅ Local Cursor workspace aligned with 2026+ community best practices
+
+---
+## 2026-04-18 02:44 — `1aad458` — HEAD
+
+- **Agent**: Claude
+- **Commit**: docs(agent): log 2026-04-17 session + assist-gate clinical spec
+- **Files changed**: 3 file(s)
+
+```
+.agent/PROGRESS.md
+.agent/sessions/2026-04-17.md
+docs/specs/assist-gate 2-detect-trigger-action.md
+```
+
+---
+## 2026-04-17 20:15 — `bb2dd80`
 
 - **Agent**: Unknown
 - **Commit**: chore(ci): remove semgrep SAST — high noise, low value
@@ -1132,6 +1160,19 @@ tsdoc.json
 
 ```
 .github/workflows/security-scan.yml
+```
+
+---
+## 2026-04-18 02:45 — `1aad458` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(agent): log 2026-04-17 session + assist-gate clinical spec
+- **Files changed**: 3 file(s)
+
+```
+.agent/PROGRESS.md
+.agent/sessions/2026-04-17.md
+docs/specs/assist-gate 2-detect-trigger-action.md
 ```
 
 ---

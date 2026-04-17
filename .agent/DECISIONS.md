@@ -24,7 +24,7 @@
 
 ### [2026-04-13] Three-layer enforcement architecture
 **Context:** Single CLAUDE.md or single .cursor/rules file insufficient to enforce agent behavior across all tools.
-**Decision:** Three-layer system — Level 1: .cursor/rules/_constitution.mdc (IDE gate), Level 2: CLAUDE.md (CLI gate), Level 3: AGENTS.md (supreme authority).
+**Decision:** Three-layer system — Level 1: .cursor/rules/00-constitution.mdc (IDE gate), Level 2: CLAUDE.md (CLI gate), Level 3: AGENTS.md (supreme authority).
 **Rationale:** Each tool has a different entry point; all three must enforce identical JET Protocol and GUARD 1 to prevent any bypass path.
 **Consequences:** All three files must be kept in sync when JET Protocol or GUARD 1 is updated.
 
