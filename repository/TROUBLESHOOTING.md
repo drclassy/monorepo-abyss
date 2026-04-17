@@ -111,7 +111,7 @@ git commit -m "fix(lint): exclude auto-generated docs from ESLint and git"
 bash: \.git/hooks/pre-push.ps1: No such file or directory
 ```
 
-**When it occurs:** After installing claudesy-devkit hooks via `generate.ps1` on Windows.
+**When it occurs:** After installing avvcenna+-devkit hooks via `generate.ps1` on Windows.
 The bash wrapper uses a hardcoded literal backslash path that is invalid in bash.
 
 **Root cause:** Hook template wrote `"\.git/hooks/pre-push.ps1"` — bash interprets `\.git`
@@ -205,26 +205,26 @@ from an external agent without verifying:**
 
 ---
 
-## Error 6: claudesy-devkit Script Not Found
+## Error 6: avvcenna+-devkit Script Not Found
 
 **Full error:**
 ```
 pwsh : Cannot find path '...\bootstrap.ps1' because it does not exist.
 ```
 
-**Root cause:** claudesy-devkit README documents `bootstrap.ps1` but the actual entry
+**Root cause:** avvcenna+-devkit README documents `bootstrap.ps1` but the actual entry
 point script is `generate.ps1`.
 
 **Fix:**
 
 ```powershell
 # Correct command — use generate.ps1, not bootstrap.ps1
-pwsh -File D:\Devop\claudesy-devkit\generate.ps1 -target D:\Devop\path\to\project -stack NODE
+pwsh -File D:\Devop\avvcenna+-devkit\generate.ps1 -target D:\Devop\path\to\project -stack NODE
 ```
 
 **Stacks available:** `NODE`, `PYTHON`, `GO`, `DOTNET`
 
 ---
 
-*Maintained by Claudesy — dr. Ferdi Iskandar*
+*Maintained by Avvcenna+ — dr. Ferdi Iskandar*
 *Last updated: April 2026*

@@ -82,7 +82,7 @@ will fail format checks on files that git converted to CRLF. This causes
 Prettier blocking pre-push hooks even on files that are "clean", resulting
 in multiple redundant format commits.
 
-> **Incident:** sentra-assist Apr 2026. After activating claudesy-devkit hooks,
+> **Incident:** sentra-assist Apr 2026. After activating avvcenna+-devkit hooks,
 > `pnpm format` was run but pre-push hook kept failing Prettier check.
 > Required `--no-verify` to push + 26-file format commit to normalize endings.
 
@@ -138,15 +138,15 @@ The one that pushes last wins — but may have incomplete or incorrect output.
 
 ## What This System Does NOT Cover
 
-This standard is intentionally scoped. The following are handled by **claudesy-devkit**:
+This standard is intentionally scoped. The following are handled by **avvcenna+-devkit**:
 - CI/CD workflow injection (ci.yml, auto-fix.yml, auto-merge.yml)
 - Pre-push validation hooks (TypeScript, ESLint, Prettier)
 - Security scanning (security-scan.yml)
 - Dependency automation (Renovate)
 
-Do not duplicate claudesy-devkit configuration here.
+Do not duplicate avvcenna+-devkit configuration here.
 
 ---
 
-*Maintained by Claudesy — dr. Ferdi Iskandar*
+*Maintained by Avvcenna+ — dr. Ferdi Iskandar*
 *Last updated: April 2026*

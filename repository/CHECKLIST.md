@@ -82,5 +82,5 @@
 
 ---
 
-*Maintained by Claudesy — dr. Ferdi Iskandar*
+*Maintained by Avvcenna+ — dr. Ferdi Iskandar*
 *Last updated: April 2026*

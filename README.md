@@ -3,7 +3,7 @@
 **Artificial Intelligence-Native Monorepo for the Sentra Artificial Intelligence
 Ecosystem**
 
-[![CI](https://img.shields.io/github/actions/workflow/status/Avvicenna/abyss-monorepo/ci.yml?branch=main)](https://github.com/Avvicenna/abyss-monorepo/actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/Avvcenna+/abyss-monorepo/ci.yml?branch=main)](https://github.com/Avvcenna+/abyss-monorepo/actions)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen)](https://nodejs.org)
 [![pnpm](https://img.shields.io/badge/pnpm-%3E%3D9.0.0-yellow)](https://pnpm.io)
@@ -402,7 +402,7 @@ without a human GO approval.
 
 ```bash
 # Clone the repository
-git clone https://github.com/Avvicenna/abyss-monorepo.git
+git clone https://github.com/Avvcenna+/abyss-monorepo.git
 cd abyss-monorepo
 
 # Install all workspace dependencies

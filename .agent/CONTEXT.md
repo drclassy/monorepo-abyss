@@ -8,7 +8,7 @@
 |-------|-------|
 | Name | The Abyss |
 | Type | AI-native Turborepo monorepo |
-| Author | Dr. Ferdi Iskandar (Claudesy) |
+| Author | Dr. Ferdi Iskandar (Avvcenna+) |
 | Email | ferdi@sentra.ai |
 | License | UNLICENSED (private) |
 | Engine | Node ≥22, pnpm ≥9 |
@@ -22,7 +22,7 @@
 | platform | `apps/platform/` | Core infrastructure — orchestrator + portal | High |
 | healthcare | `apps/healthcare/` | Patient-facing clinical apps | **Highest — PHI/PII strict** |
 | academic | `apps/academic/` | Clinical education and evaluation | Medium |
-| community | `apps/community/` | Public tools and Claudesy brand | Standard |
+| community | `apps/community/` | Public tools and Avvcenna+ brand | Standard |
 | coorporate | `apps/coorporate/` | Sentra brand and DevOps portal | Standard |
 | prototype | `apps/prototype/` | Experimental sandbox — agent-hermes | Low |
 | packages | `packages/` | Shared libraries — widest blast radius | High |

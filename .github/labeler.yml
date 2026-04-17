@@ -6,13 +6,13 @@
 # Frontend changes
 frontend:
   - changed-files:
-      - any-glob-to-any-file: 'apps/**/*'
+      - any-glob-to-any-file: 'packages/*/*'
       - any-glob-to-any-file: 'packages/**/src/**/*.{tsx,ts,jsx,js}'
 
 # Backend changes
 backend:
   - changed-files:
-      - any-glob-to-any-file: 'apps/api/**/*'
+      - any-glob-to-any-file: 'packages/*/*'
       - any-glob-to-any-file: 'packages/**/server/**/*'
 
 # Documentation changes

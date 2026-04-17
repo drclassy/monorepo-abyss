@@ -30,6 +30,6 @@
     },
     "types": ["node"]
   },
-  "include": ["packages/**/src/**/*", "apps/**/src/**/*", "tooling/**/src/**/*"],
+  "include": ["packages/**/src/**/*", "tooling/**/src/**/*"],
   "exclude": ["node_modules", "dist", "build", ".next", "coverage"]
 }

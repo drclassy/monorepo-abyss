@@ -2,49 +2,44 @@
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Global Owners
-* @Claudesy
+* @Avvcenna+
 
 # AI Steering & Governance
-.agents/ @Claudesy
-.agents/AGENTS.md @Claudesy
-.agents/MCP-CONFIG.json @Claudesy
+.agents/ @Avvcenna+
+.agents/AGENTS.md @Avvcenna+
+.agents/MCP-CONFIG.json @Avvcenna+
 
 # CI/CD & Automation
-.github/ @Claudesy
-.github/workflows/ @Claudesy
-turbo.json @Claudesy
-pnpm-workspace.yaml @Claudesy
+.github/ @Avvcenna+
+.github/workflows/ @Avvcenna+
+turbo.json @Avvcenna+
+pnpm-workspace.yaml @Avvcenna+
 
 # Healthcare Domain (Strict Compliance)
-apps/healthcare/ @Claudesy
-packages/fhir-engine/ @Claudesy
-packages/database/ @Claudesy
+packages/fhir-engine/ @Avvcenna+
+packages/database/ @Avvcenna+
 
 # Academic Domain
-apps/academic/ @Claudesy
 
 # Internal Tools
-apps/internal/ @Claudesy
-tooling/ @Claudesy
+tooling/ @Avvcenna+
 
 # Incubator (R&D)
-apps/incubator/ @Claudesy
 
 # Orchestrator & AI Flows
-apps/orchestrator/ @Claudesy
-flows/ @Claudesy
-packages/langflow-client/ @Claudesy
-packages/ai-core/ @Claudesy
+flows/ @Avvcenna+
+packages/langflow-client/ @Avvcenna+
+packages/ai-core/ @Avvcenna+
 
 # Shared Packages
-packages/ui/ @Claudesy
-packages/shared-types/ @Claudesy
-packages/vector-store/ @Claudesy
-packages/iskandar-gatekeeper/ @Claudesy
+packages/ui/ @Avvcenna+
+packages/shared-types/ @Avvcenna+
+packages/vector-store/ @Avvcenna+
+packages/iskandar-gatekeeper/ @Avvcenna+
 
 # Infrastructure
-infrastructure/ @Claudesy
-docs/ @Claudesy
+infrastructure/ @Avvcenna+
+docs/ @Avvcenna+
 
 # Documentation
-*.md @Claudesy
+*.md @Avvcenna+

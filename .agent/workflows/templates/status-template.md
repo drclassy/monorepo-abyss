@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Agent**: Antigravity
-- **Chief**: Claudesy / dr Ferdi Iskandar
+- **Chief**: Avvcenna+ / dr Ferdi Iskandar
 - **Phase**: [FR-1 to FR-9]
 - **Health**: [Stable/Unstable/Critical]
 

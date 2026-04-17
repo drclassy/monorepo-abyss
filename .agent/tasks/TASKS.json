@@ -468,7 +468,7 @@
       "blocks": [],
       "status": "done",
       "completed_at": "2026-04-15",
-      "notes": "pnpm install --no-frozen-lockfile --ignore-scripts (claudesy-memory sync); pnpm dedupe --ignore-scripts; pnpm install --frozen-lockfile --ignore-scripts passes. Plain frozen install fails on Windows only: agent-hermes/vendor/hindsight prepare runs ./scripts/setup-hooks.sh (POSIX)."
+      "notes": "pnpm install --no-frozen-lockfile --ignore-scripts (avvcenna+-memory sync); pnpm dedupe --ignore-scripts; pnpm install --frozen-lockfile --ignore-scripts passes. Plain frozen install fails on Windows only: agent-hermes/vendor/hindsight prepare runs ./scripts/setup-hooks.sh (POSIX)."
     },
     {
       "id": "P1-12",
@@ -640,19 +640,19 @@
     },
     {
       "id": "P2-09",
-      "title": "Fix naming inconsistency: claudesy vs claudsy",
-      "description": "claudesy-transformer vs claudsy-memory — typo di salah satu. Pilih: 'claudesy' (dengan e) sebagai brand. Rename claudsy-memory → claudesy-memory. Update package.json, workspace config, semua internal references.",
+      "title": "Fix naming inconsistency: avvcenna+ vs avvcenna+",
+      "description": "avvcenna+-transformer vs avvcenna+-memory — typo di salah satu. Pilih: 'avvcenna+' (dengan e) sebagai brand. Rename avvcenna+-memory → avvcenna+-memory. Update package.json, workspace config, semua internal references.",
       "priority": "p2",
       "type": "refactor",
       "agent": "Kilocode",
       "project": "community",
-      "file_refs": ["apps/community/claudesy-memory/"],
+      "file_refs": ["apps/community/avvcenna+-memory/"],
       "line_refs": [],
       "blocked_by": [],
       "blocks": [],
       "status": "done",
       "completed_at": "2026-04-14",
-      "notes": "Renamed claudsy-memory → claudesy-memory. Updated: package.json name, AGENTS.md (all references), apps/community/AGENTS.md, .agent/ files (HANDOFF.md, PROGRESS.md, CONTEXT.md)."
+      "notes": "Renamed avvcenna+-memory → avvcenna+-memory. Updated: package.json name, AGENTS.md (all references), apps/community/AGENTS.md, .agent/ files (HANDOFF.md, PROGRESS.md, CONTEXT.md)."
     },
     {
       "id": "P2-10",

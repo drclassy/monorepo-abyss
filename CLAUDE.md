@@ -9,7 +9,7 @@
 ## Entry Point
 
 You are operating inside The Abyss — an AI-native Turborepo monorepo owned by
-Dr. Ferdi Iskandar (Claudesy). This file is your entry point. AGENTS.md is the
+Dr. Ferdi Iskandar (Avvcenna+). This file is your entry point. AGENTS.md is the
 supreme authority. When this file conflicts with AGENTS.md, AGENTS.md wins.
 
 ---

@@ -96,8 +96,6 @@ jobs:
         with:
           name: build-output
           path: |
-            apps/**/dist
-            apps/**/.next
             packages/**/dist
           retention-days: 7
 

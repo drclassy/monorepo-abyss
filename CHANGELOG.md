@@ -14,7 +14,7 @@ and this project adheres to
 
 - Initial monorepo structure with pnpm workspace
 - Turborepo configuration for build orchestration
-- Claudesy Workflow integration (HANDOFF.md, GO-Gate)
+- Avvcenna+ Workflow integration (HANDOFF.md, GO-Gate)
 - Core packages:
   - `@the-abyss/database` — Prisma schema with multi-tenancy
   - `@the-abyss/langflow-client` — Langflow SDK
@@ -86,7 +86,7 @@ and this project adheres to
 ---
 
 **Unreleased:**
-[Compare changes](https://github.com/Claudesy/abyss-monorepo/compare/main...develop)
+[Compare changes](https://github.com/Avvcenna+/abyss-monorepo/compare/main...develop)
 
 ---
 
