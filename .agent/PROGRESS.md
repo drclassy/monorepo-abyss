@@ -1124,3 +1124,14 @@ tsdoc.json
 ```
 
 ---
+## 2026-04-17 20:15 — `bb2dd80` — HEAD
+
+- **Agent**: Unknown
+- **Commit**: chore(ci): remove semgrep SAST — high noise, low value
+- **Files changed**: 1 file(s)
+
+```
+.github/workflows/security-scan.yml
+```
+
+---
