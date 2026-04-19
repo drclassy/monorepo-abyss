@@ -285,3 +285,18 @@ enum SagaExecutionStatus {
   FAILED
   COMPENSATED
 }
+
+// ============================================
+// KNOWLEDGE BASE (RAG & Vector Search)
+// ============================================
+
+model KnowledgeBase {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  embedding Unsupported("vector(768)")? 
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([id])
+}

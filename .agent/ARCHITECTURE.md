@@ -1,6 +1,6 @@
 # The Abyss Monorepo — Architecture & Project Briefing
 <!-- Dokumen ini adalah single source of truth untuk briefing thread baru. -->
-<!-- Last updated: 2026-04-15 · Author: Claude (Architect) -->
+<!-- Last updated: 2026-04-19 · Author: Claude (Architect) -->
 
 ---
 
@@ -16,7 +16,7 @@ hingga sistem agent multi-AI.
 | Stack utama | TypeScript, Next.js 16, NestJS, React 19, Tailwind v4, Prisma, Neon DB |
 | Monorepo tool | Turborepo + pnpm workspaces |
 | Agent system | Multi-agent: Claude + Kilo + Cursor + Gemini |
-| Status saat ini | **SENTRA AI HYBRID MASTER PLAN selesai — 39/41 tasks done** |
+| Status saat ini | **2026-04-19: Monorepo audit selesai — 7 issues fixed, terraform modular, flows populated** |
 
 ---
 
@@ -24,18 +24,29 @@ hingga sistem agent multi-AI.
 
 ```
 abyss-monorepo/
-├── apps/                    ← Semua aplikasi (akan dipecah jadi repo sendiri)
-│   ├── academic/            ← Divisi akademik
-│   ├── community/           ← Divisi komunitas
-│   ├── healthcare/          ← Divisi healthcare (core business)
-│   ├── platform/            ← Infrastruktur platform AI
-│   └── prototype/           ← Experimental / R&D
-├── packages/                ← Shared libraries (tetap di monorepo)
-├── .agent/                  ← Agent memory, governance, session logs
-├── flows/                   ← LangFlow flow definitions
-├── infrastructure/          ← Terraform, Docker, CI/CD configs
-├── tooling/                 ← Shared build tooling
-└── docs/                    ← Dokumentasi teknis
+├── apps/                    <- Semua aplikasi (akan dipecah jadi repo sendiri)
+│   ├── academic/            <- Divisi akademik
+│   ├── community/           <- Divisi komunitas
+│   ├── corporate/           <- Divisi korporat (renamed dari coorporate, 2026-04-19)
+│   ├── healthcare/          <- Divisi healthcare (core business)
+│   ├── platform/            <- Infrastruktur platform AI
+│   └── prototype/           <- Experimental / R&D
+├── packages/                <- Shared libraries (tetap di monorepo)
+├── .agent/                  <- Agent memory, governance, session logs
+├── flows/                   <- LangFlow flow definitions
+│   └── definitions/
+│       ├── healthcare/      <- referral-flow.json, assist-flow.json
+│       ├── platform/        <- saga-orchestration-flow.json
+│       └── academic/        <- clinical-simulation-flow.json
+├── infrastructure/          <- Terraform, Docker, CI/CD configs
+│   ├── terraform/
+│   │   ├── modules/         <- compute, database, networking, security
+│   │   └── environments/    <- dev, staging, prod
+│   └── docker/
+│       └── base/            <- nestjs.Dockerfile, healthcare.Dockerfile
+├── conductor/               <- agent-registry.yaml, handoff-schema.ts
+├── tooling/                 <- Shared build tooling
+└── docs/                    <- Dokumentasi teknis
 ```
 
 ---
@@ -79,7 +90,13 @@ abyss-monorepo/
 | `avvcenna+-transformer` | AI transformer untuk komunitas |
 | `avvcenna+-memory` | Memory management system (Python + Next.js) — di-rename dari `avvcenna+-memory` oleh Kilo Apr 2026 |
 
-### 3.5 Prototype Division
+### 3.5 Corporate Division *(renamed dari coorporate, 2026-04-19)*
+
+| App | Tujuan |
+|-----|--------|
+| `ferdiiskandar` | Sentra brand + personal/corporate website Dr. Ferdi Iskandar |
+
+### 3.6 Prototype Division
 
 | App | Stack | Tujuan |
 |-----|-------|--------|
@@ -91,9 +108,9 @@ abyss-monorepo/
 
 Semua package ada di `packages/` dan dipublish sebagai `@the-abyss/*`.
 
-| Package | Nama | Tujuan |
-|---------|------|--------|
-| `artificial-core` | `@the-abyss/ai-core` | Multi-model LLM orchestration + consensus engine |
+| Package dir | Package name | Tujuan |
+|-------------|-------------|--------|
+| `ai-core` *(renamed dari artificial-core, 2026-04-19)* | `@the-abyss/ai-core` | Multi-model LLM orchestration + consensus engine |
 | `config-eslint` | `@the-abyss/config-eslint` | Shared ESLint configs (base, node, react) |
 | `config-typescript` | `@the-abyss/config-typescript` | Shared tsconfig base (strict) |
 | `database` | `@the-abyss/database` | Prisma singleton + semua model types |
@@ -102,8 +119,10 @@ Semua package ada di `packages/` dan dipublish sebagai `@the-abyss/*`.
 | `integration-bridge` | `@the-abyss/integration-bridge` | Notion + Linear integration client |
 | `iskandar-gatekeeper` | `@the-abyss/iskandar-gatekeeper` | Security layer: JWT (HS256-only) + API key auth + GO-Gate CI/CD validator |
 | `langflow-client` | `@the-abyss/langflow-client` | HTTP client untuk Langflow AI orchestration server |
+| `notebooklm` | `@the-abyss/notebooklm` | NotebookLM connector |
 | `sentra-ui` | `@the-abyss/ui` | Shared React component library (Radix + Tailwind v4) |
 | `shared-types` | `@the-abyss/shared-types` | Central TypeScript type contracts untuk seluruh monorepo |
+| `symphony` | `@the-abyss/symphony` | Orchestration contracts + engine |
 | `vector-store` | `@the-abyss/vector-store` | RAGOps + vector search abstraction (pgvector) |
 
 ---
@@ -142,17 +161,19 @@ Setiap task non-trivial ikuti JET Protocol:
 
 ```
 .agent/
-├── CONTEXT.md      ← Arsitektur + stack (baca pertama)
-├── PROGRESS.md     ← Status pekerjaan saat ini
-├── HANDOFF.md      ← Plan + instruksi sesi ini (overwrite tiap sesi)
-├── LESSONS.md      ← Kesalahan yang harus dihindari
-├── DECISIONS.md    ← Keputusan arsitektur yang sudah dibuat
-├── ARCHITECTURE.md ← Dokumen ini
+├── CONTEXT.md        <- Arsitektur + stack (baca pertama)
+├── PROGRESS.md       <- Status pekerjaan saat ini
+├── HANDOFF.md        <- Plan + instruksi sesi ini (overwrite tiap sesi)
+├── LESSONS.md        <- Kesalahan yang harus dihindari
+├── DECISIONS.md      <- Keputusan arsitektur yang sudah dibuat
+├── ARCHITECTURE.md   <- Dokumen ini (briefing thread baru)
+├── SESSION_STATE.md  <- GO tracking per session
+├── PROTOCOL.md       <- Quick reference: task classification + JET flow
 ├── tasks/
-│   ├── TASKS.json  ← Task queue semua agent (machine-readable)
-│   └── SENTRA AI HYBRID MASTER PLAN.md ← Master plan dokumen
+│   ├── TASKS.json    <- Task queue semua agent (machine-readable)
+│   └── SENTRA AI HYBRID MASTER PLAN.md
 └── sessions/
-    └── YYYY-MM-DD.md ← Session logs audit trail
+    └── YYYY-MM-DD.md <- Session logs audit trail
 ```
 
 ---
@@ -169,13 +190,23 @@ Package `@the-abyss/iskandar-gatekeeper` adalah security layer terpusat:
 
 ---
 
-## 7. Status Saat Ini (2026-04-15)
+## 7. Status Saat Ini (2026-04-19)
 
-### Task Queue
-- **39/41 tasks DONE** — SENTRA AI HYBRID MASTER PLAN selesai
-- **2 tasks DEFERRED** (butuh Chief decision):
-  - `B5` — LangFlow strategy (populate flows/ atau defer)
-  - `S1` — GO untuk Orchestrator Phase A/B/C (DB migration, Class C)
+**Monorepo audit session selesai — semua 7 issues difix:**
+
+| Fix | Detail |
+|-----|--------|
+| pnpm-workspace.yaml | `apps/**` ditambahkan (critical — semua apps kini terdaftar) |
+| flows/definitions/ | 4 flow JSONs dibuat (healthcare x2, platform x1, academic x1) |
+| apps/coorporate | Renamed ke `apps/corporate` (typo fix) |
+| packages/artificial-core | Renamed ke `packages/ai-core` (alignment fix) |
+| infrastructure/terraform/ | Refactored ke modules/ + environments/ (4 modules, 3 envs) |
+| infrastructure/docker/base/ | nestjs.Dockerfile + healthcare.Dockerfile ditambahkan |
+| conductor/ | agent-registry.yaml + handoff-schema.ts ditambahkan |
+
+**CEO Strategic Playbook** (Bahasa Indonesia, non-teknis) dibuat: `sentra_ai_ceo_playbook_id.html`
+
+**39/41 tasks SENTRA AI HYBRID MASTER PLAN** selesai (carried from 2026-04-15)
 
 ### Commits Terakhir (belum dipush — menunggu GitHub baru)
 ```
@@ -184,12 +215,13 @@ c007506  Cursor — orchestrator + sentra-portal + sentra-main
 1edc926  Claude — P2-10 package docs + .agent/ housekeeping
 7c6b834  Claude — B3-B iskandar-gatekeeper hardening
 ```
+*Session 2026-04-19 belum di-commit (Chief perlu run `pnpm install` dulu untuk update lockfile)*
 
 ---
 
 ## 8. Next Phase — Repo Restructuring Plan
 
-**Keputusan Chief (2026-04-15):** Split monorepo → 13 repos terpisah.
+**Keputusan Chief (2026-04-15):** Split monorepo menjadi 13 repos terpisah.
 
 ### Target: 13 Repos
 
@@ -212,10 +244,10 @@ c007506  Cursor — orchestrator + sentra-portal + sentra-main
 ### Packages Strategy: GitHub Packages (npm private registry)
 
 ```
-abyss-monorepo/packages/* → publish → github.com/packages (@the-abyss/*)
-                                              ↓
-                              tiap project repo:
-                              pnpm add @the-abyss/fhir-engine
+abyss-monorepo/packages/* -> publish -> github.com/packages (@the-abyss/*)
+                                               |
+                               tiap project repo:
+                               pnpm add @the-abyss/fhir-engine
 ```
 
 ### Execution Steps (Phase 3 — setelah akun GitHub baru siap)
@@ -224,13 +256,11 @@ abyss-monorepo/packages/* → publish → github.com/packages (@the-abyss/*)
 2. Publish semua `packages/*` ke `https://npm.pkg.github.com`
 3. Buat 12 repo baru via `gh repo create` (batch)
 4. Extract tiap app ke repo-nya (fresh push, no history)
-5. Update `package.json` tiap app — ganti `workspace:*` → GitHub Packages version
+5. Update `package.json` tiap app — ganti `workspace:*` ke GitHub Packages version
 6. Hapus `apps/` dari `abyss-monorepo`
 7. Force-push clean state ke `abyss-monorepo`
 
-### Trigger
-
-**Chief konfirmasi akun GitHub baru siap + username → Claude eksekusi Phase 3**
+**Trigger:** Chief konfirmasi akun GitHub baru siap + username → Claude eksekusi Phase 3
 
 ---
 
@@ -239,9 +269,11 @@ abyss-monorepo/packages/* → publish → github.com/packages (@the-abyss/*)
 | # | Pertanyaan | Context |
 |---|-----------|---------|
 | 1 | **Staging DB strategy** untuk Orchestrator Phase A | New Neon branch vs shared staging DB |
-| 2 | **LangFlow strategy** (B5) | Populate `flows/` dengan flow definitions, atau defer integrasi |
-| 3 | **GitHub username baru** | Untuk setup 13 repos + GitHub Packages |
+| 2 | **LangFlow endpoint URL** untuk Phase B wiring | Staging vs prod — konfirmasi sebelum wiring `FlowsService` |
+| 3 | **CI glob update** `flows/definitions/*.json` ke `flows/definitions/**/*.json` | Class B, quick win — satu baris di `ci.yml` |
+| 4 | **GitHub username baru** | Untuk setup 13 repos + GitHub Packages (polyrepo Phase 1) |
+| 5 | **Terraform provider config** | Modules scaffold siap, butuh project_id + credentials sebelum `terraform init` |
 
 ---
 
-*Architecture doc by Claude · 2026-04-15 · Untuk briefing thread baru*
+*Architecture doc by Claude · 2026-04-19 · Untuk briefing thread baru*

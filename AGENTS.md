@@ -119,12 +119,12 @@ D:\Devop\abyss-monorepo\
 │   │   └── sentra-main\
 │   ├── academic\
 │   ├── community\
-│   ├── coorporate\
+│   ├── corporate\
 │   └── prototype\
 │       └── agent-hermes\        ← Hermes Maximus meta-agent
 ├── packages\
 │   ├── database\                ← Shared DB layer (all apps route through here)
-│   ├── ai-core\
+│   ├── ai-core\          ← renamed from artificial-core
 │   ├── design-token\
 │   └── shared-types\
 ├── infrastructure\              ← IaC — Chief-only execution

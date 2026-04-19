@@ -16,17 +16,22 @@ turbo.json @Avvcenna+
 pnpm-workspace.yaml @Avvcenna+
 
 # Healthcare Domain (Strict Compliance)
+apps/healthcare/ @Avvcenna+
 packages/fhir-engine/ @Avvcenna+
 packages/database/ @Avvcenna+
 
 # Academic Domain
+apps/academic/ @Avvcenna+
 
 # Internal Tools
+apps/internal/ @Avvcenna+
 tooling/ @Avvcenna+
 
 # Incubator (R&D)
+apps/incubator/ @Avvcenna+
 
 # Orchestrator & AI Flows
+apps/orchestrator/ @Avvcenna+
 flows/ @Avvcenna+
 packages/langflow-client/ @Avvcenna+
 packages/ai-core/ @Avvcenna+

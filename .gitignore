@@ -59,8 +59,12 @@ node_modules/
 
 # ---- BUILD ARTIFACTS ----
 dist/
+docs/api/
+docs/storybook/
 build/
 out/
+.output/
+.wxt/
 .next/
 .nuxt/
 .turbo/
@@ -126,6 +130,11 @@ chroma-data/
 pinecone-cache/
 embeddings-cache/
 
+# ---- LOCAL KNOWLEDGE BASES ----
+# Raw medical documents are processed locally by Vertex pipelines.
+# They must not be tracked in Git.
+repository/medical-raw/
+
 # ---- INFRASTRUCTURE & DOCKER ----
 docker-compose.override.yml
 .docker/secrets/
@@ -138,6 +147,7 @@ terraform.tfstate.backup
 # ---- TEMPORARY & MISC ----
 tmp/
 temp/
+sync-safe.ps1
 flows/.langflow/
 .github/instructions/codacy.instructions.md
 .mcp.json
@@ -154,3 +164,5 @@ apps/
 !.agent/
 !.agent/**
 !pnpm-lock.yaml
+
+gha-creds-*.json

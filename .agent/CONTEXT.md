@@ -1,6 +1,6 @@
 # CONTEXT.md — The Abyss (Monorepo Root)
 <!-- Static. Update only when stack or architecture changes. -->
-<!-- Last updated: 2026-04-13 -->
+<!-- Last updated: 2026-04-19 -->
 
 ## Project Identity
 
@@ -23,11 +23,11 @@
 | healthcare | `apps/healthcare/` | Patient-facing clinical apps | **Highest — PHI/PII strict** |
 | academic | `apps/academic/` | Clinical education and evaluation | Medium |
 | community | `apps/community/` | Public tools and Avvcenna+ brand | Standard |
-| coorporate | `apps/coorporate/` | Sentra brand and DevOps portal | Standard |
+| corporate  | `apps/corporate/`  | Sentra brand and DevOps portal | Standard |
 | prototype | `apps/prototype/` | Experimental sandbox — agent-hermes | Low |
 | packages | `packages/` | Shared libraries — widest blast radius | High |
 | infrastructure | `infrastructure/` | IaC — Chief-only execution | **Critical** |
-| flows | `flows/` | LangFlow AI workflow definitions | Medium |
+| flows | `flows/` | LangFlow AI workflow definitions — subdirs: healthcare/, platform/, academic/ | Medium |
 
 ## NestJS Applications
 
@@ -44,7 +44,7 @@
 | Package | Path | Purpose |
 |---------|------|---------|
 | database | `packages/database/` | Prisma ORM — all apps route through here |
-| ai-core | `packages/ai-core/` | Shared AI utilities |
+| ai-core | `packages/ai-core/` | Shared AI utilities (dir renamed from artificial-core, 2026-04-19) |
 | design-token | `packages/design-token/` | UI token system |
 | shared-types | `packages/shared-types/` | Cross-app TypeScript types |
 

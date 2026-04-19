@@ -225,8 +225,8 @@ jobs:
 
       - name: Validate Flow JSON Files
         run: |
-          shopt -s nullglob
-          files=(flows/definitions/*.json)
+          shopt -s nullglob globstar
+          files=(flows/definitions/**/*.json)
           if [ ${#files[@]} -eq 0 ]; then
             echo "No flow definitions found — skipping validation"
           else

@@ -1,0 +1,67 @@
+{
+  "id": "clinical-simulation-flow-v1",
+  "name": "Clinical Simulation Flow",
+  "description": "Interactive clinical case simulation for medical education — AI generates patient case, evaluates student responses, provides Socratic feedback",
+  "version": "1.0.0",
+  "domain": "academic",
+  "trigger": "api",
+  "nodes": [
+    {
+      "id": "case-request",
+      "type": "InputNode",
+      "label": "Simulation Case Request",
+      "schema": "SimulationRequest"
+    },
+    {
+      "id": "case-generator",
+      "type": "AINode",
+      "label": "Clinical Case Generator",
+      "model": "claude-sonnet-4-6",
+      "prompt_template": "clinical-case-gen-v2",
+      "output_schema": {
+        "case_id": "string",
+        "presenting_complaint": "string",
+        "vitals": "object",
+        "history": "string",
+        "differential": "string[]"
+      }
+    },
+    {
+      "id": "student-response-input",
+      "type": "InputNode",
+      "label": "Student Response Input",
+      "schema": "StudentResponse"
+    },
+    {
+      "id": "evaluator",
+      "type": "AINode",
+      "label": "Response Evaluator",
+      "model": "claude-sonnet-4-6",
+      "prompt_template": "clinical-evaluator-v1",
+      "output_schema": {
+        "score": "number",
+        "correct_elements": "string[]",
+        "missed_elements": "string[]",
+        "feedback": "string"
+      }
+    },
+    {
+      "id": "feedback-output",
+      "type": "OutputNode",
+      "label": "Socratic Feedback Output",
+      "action": "stream:feedback"
+    }
+  ],
+  "edges": [
+    { "source": "case-request", "target": "case-generator" },
+    { "source": "case-generator", "target": "student-response-input" },
+    { "source": "student-response-input", "target": "evaluator" },
+    { "source": "evaluator", "target": "feedback-output" }
+  ],
+  "metadata": {
+    "author": "Dr. Ferdi Iskandar (Avvcenna+)",
+    "created_at": "2026-04-19",
+    "last_updated": "2026-04-19",
+    "langflow_compatible": true
+  }
+}

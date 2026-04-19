@@ -43,6 +43,32 @@
 ---
 <!-- Agent: append new decisions below this line -->
 
+### [2026-04-19] pnpm-workspace.yaml must include apps/**
+**Context:** Audit session revealed `apps/**` was missing from `pnpm-workspace.yaml`. pnpm reads THIS file (not `package.json#workspaces`) to register workspace members. All apps were not registered via pnpm.
+**Decision:** `pnpm-workspace.yaml` must always declare `apps/**`, `packages/**`, and `tooling/*` as the three entries.
+**Consequences:** After any change to this file, `pnpm install` must be re-run to regenerate lockfile. Chief must run this manually per STANDARD.md.
+
+### [2026-04-19] apps/coorporate renamed to apps/corporate
+**Context:** Typo in directory name (double 'o') since project inception. Affected readability and potential path references.
+**Decision:** Directory renamed to `apps/corporate`. Package name `@the-abyss/ferdiiskandar` was unaffected.
+**Consequences:** All future references must use `apps/corporate`. AGENTS.md §4 and CONTEXT.md updated.
+
+### [2026-04-19] packages/artificial-core renamed to packages/ai-core
+**Context:** Directory name `artificial-core` conflicted with all documentation which referenced `ai-core`. Package `name` field was already `@the-abyss/ai-core`.
+**Decision:** Directory renamed to `packages/ai-core` to align with package name and all documentation.
+**Rejected alternatives:** Renaming package name to match directory — would break imports.
+**Consequences:** Zero import breaks (package name unchanged). CODEOWNERS was already correct.
+
+### [2026-04-19] Terraform must use modular structure for Healthcare platform
+**Context:** Single `main.tf` is insufficient for a multi-division Healthcare platform with PHI workloads and multiple environments.
+**Decision:** Terraform organized into `modules/` (compute, database, networking, security) and `environments/` (dev, staging, prod). Healthcare module enables PHI-hardening flags.
+**Consequences:** `terraform apply` remains Chief-only per AGENTS.md §3. Modules are scaffolds — provider config must be added by Chief before any apply.
+
+### [2026-04-19] flows/definitions/ organized into domain subdirectories
+**Context:** `flows/definitions/` was empty. Flat structure would become unmanageable as flows grow.
+**Decision:** Subdirectories per domain: `healthcare/`, `platform/`, `academic/`. Each domain owns its flow definitions.
+**Consequences:** CI validation glob in `ci.yml` must be updated from `flows/definitions/*.json` to `flows/definitions/**/*.json` to catch all flows. (Pending — tracked in HANDOFF.md Priority 2.)
+
 ### [2026-04-13] Progressive Risk-Based Governance
 **Context:** J5 "WAIT FOR GO" hard gate for all tasks created excessive friction. Agents were blocked on trivial tasks like typo fixes and file reads, overwhelming Chief with approval requests.
 **Decision:** Implement Task Classification (Class A/B/C) with differentiated gates: Class A auto-approves, Class B uses checkpoint self-logging, Class C retains hard J5 protection.

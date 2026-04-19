@@ -1,0 +1,73 @@
+{
+  "id": "saga-orchestration-v1",
+  "name": "Platform Saga Orchestration Flow",
+  "description": "Core Saga pattern for multi-step distributed transactions — compensates on failure, emits events to Kafka, persists state via packages/database",
+  "version": "1.0.0",
+  "domain": "platform",
+  "pattern": "SAGA_CHOREOGRAPHY",
+  "trigger": "event",
+  "nodes": [
+    {
+      "id": "saga-start",
+      "type": "EventInputNode",
+      "label": "Saga Trigger Event",
+      "event_schema": "SagaStartCommand"
+    },
+    {
+      "id": "validate-context",
+      "type": "ValidateNode",
+      "label": "Saga Context Validation",
+      "schema": "SagaContextSchema"
+    },
+    {
+      "id": "execute-step-1",
+      "type": "CommandNode",
+      "label": "Execute Step 1",
+      "command": "SagaStep1Command",
+      "compensate": "CompensateStep1Command"
+    },
+    {
+      "id": "execute-step-2",
+      "type": "CommandNode",
+      "label": "Execute Step 2",
+      "command": "SagaStep2Command",
+      "compensate": "CompensateStep2Command"
+    },
+    {
+      "id": "failure-check",
+      "type": "DecisionNode",
+      "label": "Failure Gate",
+      "rules": [
+        { "if": "any_step_failed", "then": "compensate-saga" },
+        { "default": "saga-complete" }
+      ]
+    },
+    {
+      "id": "compensate-saga",
+      "type": "CompensationNode",
+      "label": "Saga Compensation (Rollback)",
+      "strategy": "reverse_order"
+    },
+    {
+      "id": "saga-complete",
+      "type": "EventOutputNode",
+      "label": "Saga Complete Event",
+      "event": "SagaCompletedEvent"
+    }
+  ],
+  "edges": [
+    { "source": "saga-start", "target": "validate-context" },
+    { "source": "validate-context", "target": "execute-step-1" },
+    { "source": "execute-step-1", "target": "execute-step-2" },
+    { "source": "execute-step-2", "target": "failure-check" },
+    { "source": "failure-check", "target": "compensate-saga" },
+    { "source": "failure-check", "target": "saga-complete" }
+  ],
+  "metadata": {
+    "author": "Dr. Ferdi Iskandar (Avvcenna+)",
+    "created_at": "2026-04-19",
+    "last_updated": "2026-04-19",
+    "langflow_compatible": true,
+    "nestjs_cqrs_compatible": true
+  }
+}

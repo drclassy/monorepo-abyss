@@ -32,7 +32,15 @@ export const base = [
     },
   },
   {
-    ignores: ['**/dist/**', '**/node_modules/**', '**/.next/**', '**/.turbo/**', '**/coverage/**'],
+    ignores: [
+      '**/dist/**',
+      '**/docs/**',
+      '**/node_modules/**',
+      '**/.next/**',
+      '**/.output/**',
+      '**/.turbo/**',
+      '**/coverage/**',
+    ],
   },
 ]
 
