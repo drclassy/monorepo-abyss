@@ -1,4 +1,5 @@
 import type { SymphonyAlert, SymphonyVitalsInput } from '../contracts'
+
 import type { SymphonyNEWS2Result } from './news2'
 
 export interface SymphonyEarlyWarningInput {

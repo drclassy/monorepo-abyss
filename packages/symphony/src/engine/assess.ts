@@ -4,6 +4,8 @@ import {
   type SymphonyResult,
   type SymphonyVitalsInput,
 } from '../contracts'
+
+import { anaphylaxisToSymphonyAlerts, detectSymphonyAnaphylaxis } from './anaphylaxis'
 import {
   compositeDeteriorationToSymphonyAlerts,
   evaluateSymphonyCompositeDeterioration,
@@ -17,7 +19,6 @@ import {
   type SymphonyHybridDiagnosisCandidate,
 } from './hybrid-decisioning'
 import { calculateSymphonyNEWS2, news2ToSymphonyAlerts } from './news2'
-import { anaphylaxisToSymphonyAlerts, detectSymphonyAnaphylaxis } from './anaphylaxis'
 import { detectSymphonyPeSuspect, peSuspectToSymphonyAlerts } from './pe-suspect'
 import { evaluateSymphonyInstantScreeningGates } from './screening-gates'
 import {
