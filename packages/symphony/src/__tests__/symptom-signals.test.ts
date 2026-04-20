@@ -101,4 +101,16 @@ describe('SYMPHONY symptom signals', () => {
       detectSymphonySymptomSignals({ chiefComplaint: 'thunderclap pagi ini' }).signals
     ).toContain('headache')
   })
+
+  it('detects vomit from muntah variants', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'muntah 5 kali sejak pagi' }).signals
+    ).toContain('vomit')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'mual muntah terus-menerus' }).signals
+    ).toContain('vomit')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'muntah darah segar' }).signals
+    ).toContain('vomit')
+  })
 })

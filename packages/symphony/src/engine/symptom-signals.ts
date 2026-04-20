@@ -70,6 +70,10 @@ const MATCHERS: SignalMatcher[] = [
       'thunderclap',
     ],
   },
+  {
+    signal: 'vomit',
+    keywords: ['muntah darah', 'mual muntah', 'muntah'],
+  },
 ]
 
 function normalize(text: string): string {
