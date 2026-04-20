@@ -196,4 +196,16 @@ describe('SYMPHONY symptom signals', () => {
     expect(result.signals).toContain('headache')
     expect(result.signals).toContain('dizziness')
   })
+
+  it('detects syncope from pingsan and mau pingsan', () => {
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'pingsan 2 kali hari ini' }).signals).toContain(
+      'syncope'
+    )
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'merasa mau pingsan saat berdiri' }).signals
+    ).toContain('syncope')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'sinkop berulang' }).signals).toContain(
+      'syncope'
+    )
+  })
 })

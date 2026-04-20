@@ -118,6 +118,10 @@ const MATCHERS: SignalMatcher[] = [
     signal: 'dizziness',
     keywords: ['pusing berputar', 'vertigo', 'pusing'],
   },
+  {
+    signal: 'syncope',
+    keywords: ['mau pingsan', 'mau jatuh', 'pingsan', 'sinkop'],
+  },
 ]
 
 function normalize(text: string): string {
