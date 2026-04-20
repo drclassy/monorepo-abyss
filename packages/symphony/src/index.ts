@@ -95,6 +95,13 @@ export {
 export { evaluateSymphonyVitalAlerts } from './engine/vital-alerts'
 
 export {
+  detectSymphonySymptomSignals,
+  type SymphonySymptomSignal,
+  type SymphonySymptomSignalInput,
+  type SymphonySymptomSignalResult,
+} from './engine/symptom-signals'
+
+export {
   detectSymphonyPeSuspect,
   peSuspectToSymphonyAlerts,
   SYMPHONY_PE_SUSPECT_THRESHOLD,
