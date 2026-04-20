@@ -151,6 +151,11 @@ const MATCHERS: SignalMatcher[] = [
     signal: 'abdominal_pain',
     keywords: ['nyeri perut', 'sakit perut', 'perut sakit', 'kolik'],
   },
+  {
+    signal: 'kussmaul_breathing',
+    // `kussmaul` is lowercase here because `normalize()` folds case before matching.
+    keywords: ['napas dalam dan cepat', 'napas cepat dalam', 'kussmaul'],
+  },
 ]
 
 function normalize(text: string): string {

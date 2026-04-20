@@ -264,4 +264,16 @@ describe('SYMPHONY symptom signals', () => {
       'abdominal_pain'
     )
   })
+
+  it('detects kussmaul_breathing from multi-token and case-insensitive variants', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'Kussmaul breathing pada DKA' }).signals
+    ).toContain('kussmaul_breathing')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'napas dalam dan cepat' }).signals
+    ).toContain('kussmaul_breathing')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'napas cepat dalam' }).signals
+    ).toContain('kussmaul_breathing')
+  })
 })
