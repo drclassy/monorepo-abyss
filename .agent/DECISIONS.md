@@ -80,3 +80,31 @@
 **Keputusan:** Tidak menggunakan Orchestrator untuk tugas saat ini. Pekerjaan (termasuk referralink) langsung diserahkan ke Cursor, Codex, dan Claude.
 **Alasan:** Sesuai instruksi Chief, eksekusi difokuskan langsung ke agent spesifik tanpa overhead Orchestrator untuk fase ini.
 **Action:** Jen (Governor) membuat TASKS.json. Cursor, Codex, dan Claude diizinkan memulai eksekusi task P0 mereka.
+
+### [2026-04-19] Vector Index — KnowledgeBase HNSW Index
+**Tanggal:** 2026-04-19
+**Status:** PENDING — membutuhkan keputusan dan eksekusi Chief
+**Masalah:** `KnowledgeBase` hanya memiliki B-tree index pada `id`. Tidak ada vector index pada kolom `embedding`. Tanpa HNSW/IVFFlat index, setiap `VectorStore.query()` melakukan full sequential scan — O(n) terhadap seluruh tabel.
+**Dampak:** Untuk ingest 1.5GB PDF (estimasi 50k–200k chunks), query latency akan tidak akeptabel di production.
+**Keputusan yang diperlukan:** Pilih index type — HNSW (lebih cepat query, lebih lambat build) vs IVFFlat (lebih cepat build, sedikit lebih lambat query). Rekomendasi: HNSW untuk production healthcare RAG.
+**Migrasi yang perlu dijalankan Chief (Class C):**
+```sql
+CREATE INDEX kb_embedding_hnsw_idx
+ON "KnowledgeBase"
+USING hnsw (embedding vector_cosine_ops)
+WITH (m = 24, ef_construction = 256);
+```
+**Parameter rationale:** `m=24` (vs default 16) meningkatkan recall untuk data medis. `ef_construction=256` (vs minimum 64) meningkatkan recall index build ~98%+ dengan trade-off build time 2-3x lebih lambat — acceptable untuk one-time ingest. `ef_search=100` diset di query runtime (sudah diimplementasi di store.ts).
+
+### [2026-04-20] ChatGPT Memory digunakan khusus untuk sesi Codex, SSOT tetap `.agent/`
+**Context:** Chief mengizinkan penggunaan OpenAI ChatGPT Memory untuk membantu kontinuitas kerja, tetapi monorepo butuh sumber kebenaran yang audit-able dan lintas-agent.
+**Decision:** Gunakan ChatGPT Memory hanya untuk preferensi kerja yang stabil pada sesi Codex (mis. format output, preferensi verifikasi), bukan sebagai SSOT. SSOT tetap: `.agent/CONTEXT.md`, `.agent/PROGRESS.md`, `.agent/HANDOFF.md`, `.agent/LESSONS.md`, `.agent/DECISIONS.md`.
+**Guardrails:** Jangan pernah menyimpan secret/token, PHI/PII, atau detail sensitif sebagai memory. Untuk diskusi sensitif gunakan Temporary Chat (tidak membaca/menulis memory).
+**Consequences:** Setiap perubahan aturan kerja jangka panjang harus ditulis ke `.agent/DECISIONS.md`/`.agent/LESSONS.md`, bukan mengandalkan memory produk.
+
+### [2026-04-20] Symptom Signals NLP canonicalized into SYMPHONY (Phase 1 complete)
+**Context:** Coverage audit Gap #8 — Assist `symptom-signals.ts` was a clinical-intelligence evaluator living outside SYMPHONY. Dashboard needed canonical Indonesian symptom extraction from free-text anamnesis so downstream Phase 2 (Pattern Engine) and Phase 3 (Clinical Patterns Evaluator) can consume a single source of truth.
+**Decision:** Ported as `packages/symphony/src/engine/symptom-signals.ts` — pure TypeScript, zero runtime dependencies, 19 signal matchers (fever, dyspnea, chest_pain, headache, vomit, seizure, altered_consciousness, bleeding, pallor, weakness, dizziness, syncope, diaphoresis, rash_or_angioedema, allergen_exposure, abdominal_pain, kussmaul_breathing, polyuria, neurologic_focal_deficit), 3-token left-window negation with prefixes [`tidak ada`, `tidak`, `tanpa`, `bukan`, `belum`]. `tidak sadar` handled naturally without special flag because `isNegatedAt` only scans tokens strictly LEFT of matchIndex. `pusing` intentionally co-signals headache AND dizziness (no mutex).
+**Approach:** TDD, one matcher per commit, foundation of 57 pre-existing tests committed as a dedicated baseline (`9644530`) before any Phase 1 work. Lint debt inherited from foundation was resolved in two dedicated cleanup commits (`1afd058` auto-fix import order, `387d9b5` manual non-null/unused-var with explicit `throw` guards — no optional chaining, no silent failure paths).
+**Consequences:** Phase 2 (pattern-engine) and Phase 3 (clinical-patterns evaluator) can now consume canonical symptom signals without reaching into Assist source. Dashboard may optionally switch from local symptom extraction to SYMPHONY's — **not started in this phase**. No Dashboard production import replacement. Adapter parity harness continues unchanged. 84/84 tests GREEN, lint PASS, typecheck PASS. Gap #8 closed.
+**Reviewed by:** Chief (GO granted 2026-04-20 for Phase 1 only; Phase 2 requires fresh brainstorm + write-plan cycle before execution).
