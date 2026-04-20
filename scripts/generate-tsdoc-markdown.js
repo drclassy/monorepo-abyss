@@ -1,1 +1,243 @@
-const path = require('path');\nconst fs = require('fs');\nconst ts = require('typescript');\nconst { TSDocParser } = require('@microsoft/tsdoc');\n\nconst tsdocParser = new TSDocParser();\n\nconst projectRoot = path.resolve(__dirname, '..');\nconst docsTechnicalDir = path.join(projectRoot, 'docs', 'technical');\nconst packagesDir = path.join(projectRoot, 'packages');\nconst appsDir = path.join(projectRoot, 'apps');\nconst flowsDir = path.join(projectRoot, 'flows');\n\n/**\n * Memindai file TypeScript di direktori tertentu.\n * @param {string} dirPath - Jalur direktori yang akan dipindai.\n * @returns {string[]} - Array jalur file TypeScript.\n */\nfunction findTypeScriptFiles(dirPath) {\n  let tsFiles = [];\n  if (!fs.existsSync(dirPath)) {\n    return tsFiles;\n  }\n  const files = fs.readdirSync(dirPath);\n  for (const file of files) {\n    const filePath = path.join(dirPath, file);\n    const stat = fs.statSync(filePath);\n    if (stat.isDirectory()) {\n      tsFiles = tsFiles.concat(findTypeScriptFiles(filePath));\n    } else if (stat.isFile() && (file.endsWith('.ts') || file.endsWith('.tsx'))) {\n      tsFiles.push(filePath);\n    }\n  }\n  return tsFiles;\n}\n\n/**\n * Mengonversi struktur TSDoc menjadi format Markdown.\n * Ini adalah versi sederhana, dapat diperluas sesuai kebutuhan.\n * @param {import('@microsoft/tsdoc').DocNode} docNode - Node TSDoc.\n * @param {number} indentLevel - Tingkat indentasi untuk Markdown.\n * @returns {string} - String Markdown yang dihasilkan.\n */\nfunction renderDocNodeToMarkdown(docNode, indentLevel = 0) {\n  let markdown = '';\n  const indent = '  '.repeat(indentLevel);\n\n  switch (docNode.kind) {\n    case 'CodeSpan':\n      markdown += `\`${docNode.code}\`\n`;\n      break;\n    case 'PlainText':\n      markdown += docNode.text;\n      break;\n    case 'Paragraph':\n      markdown += `${indent}`;\n      for (const child of docNode.getChildNodes()) {\n        markdown += renderDocNodeToMarkdown(child, indentLevel);\n      }\n      markdown += '\\n\\n';\n      break;\n    case 'Section':\n      for (const child of docNode.getChildNodes()) {\n        markdown += renderDocNodeToMarkdown(child, indentLevel);\n      }\n      break;\n    case 'FencedCodeBlock':\n      markdown += `${indent}\`\`\`${docNode.language}\n${docNode.code}\n${indent}\`\`\`\n\n`;\n      break;\n    case 'SoftBreak':\n      markdown += '\\n';\n      break;\n    case 'ExcerptText':\n      markdown += docNode.text; // Untuk kasus di mana TSDoc memisahkan teks\n      break;\n    case 'DocBlock':\n      // Tangani DocBlock secara rekursif\n      for (const child of docNode.getChildNodes()) {\n        markdown += renderDocNodeToMarkdown(child, indentLevel);\n      }\n      break;\n    case 'BlockTag':\n        // Tangani block tag seperti @param, @returns, dll.\n        markdown += `${indent}**${docNode.tagName}**`;\n        if (docNode.content) {\n            markdown += ': ';\n            for (const child of docNode.content.getChildNodes()) {\n                markdown += renderDocNodeToMarkdown(child, indentLevel);\n            }\n        }\n        markdown += '\\n';\n        break;\n    case 'LinkTag':\n        markdown += `[${docNode.linkText || docNode.urlSource.text}](${docNode.urlDestination})`;\n        break;\n    // ... tambahkan jenis DocNode lainnya sesuai kebutuhan\n    default:\n      // Fallback untuk jenis node yang tidak dikenal atau tidak ditangani secara eksplisit\n      for (const child of docNode.getChildNodes()) {\n        markdown += renderDocNodeToMarkdown(child, indentLevel);\n      }\n      break;\n  }\n  return markdown;\n}\n\n\n/**\n * Menghasilkan dokumentasi Markdown untuk file TypeScript.\n * @param {string} filePath - Jalur ke file TypeScript.\n */\nfunction generateDocumentationForFile(filePath) {\n  const fileContent = fs.readFileSync(filePath, 'utf8');\n  const tsdocResult = tsdocParser.parseString(fileContent);\n\n  if (tsdocResult.docComment !== undefined) {\n    const markdownOutput = renderDocNodeToMarkdown(tsdocResult.docComment);\n\n    if (markdownOutput.trim().length > 0) {\n      const relativePath = path.relative(projectRoot, filePath);\n      const outputFileName = path.basename(filePath).replace(/\\.ts(x)?$/, \'.md\');\n      const outputFilePath = path.join(docsTechnicalDir, relativePath.replace(/\\.ts(x)?$/, \'.md\'));\n\n      // Pastikan direktori output ada\n      fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });\n      fs.writeFileSync(outputFilePath, `# Dokumentasi untuk ${relativePath}\\n\\n${markdownOutput}`, 'utf8');\n      console.log(`Generated documentation for ${filePath} -> ${outputFilePath}`);\n    }\n  }\n\n  for (const message of tsdocResult.logMessages) {\n    console.warn(`TSDoc Warning: ${message.text} (${filePath}:${message.textRange.pos})`);\n  }\n}\n\nasync function main() {\n  console.log('Generating TSDoc Markdown documentation...');\n\n  const tsFiles = [];\n  tsFiles.push(...findTypeScriptFiles(packagesDir));\n  tsFiles.push(...findTypeScriptFiles(appsDir));\n  tsFiles.push(...findTypeScriptFiles(flowsDir));\n\n  for (const file of tsFiles) {\n    generateDocumentationForFile(file);\n  }\n\n  console.log('TSDoc Markdown documentation generation complete.');\n}\n\nmain().catch(console.error);
+const path = require('path');
+const fs = require('fs');
+const ts = require('typescript');
+const { TSDocParser, TSDocTokenType, DocNodeKind, StandardTags } = require('@microsoft/tsdoc');
+
+const tsdocParser = new TSDocParser();
+
+const projectRoot = path.resolve(__dirname, '..');
+const docsTechnicalDir = path.join(projectRoot, 'docs', 'technical');
+const packagesDir = path.join(projectRoot, 'packages');
+const appsDir = path.join(projectRoot, 'apps');
+const flowsDir = path.join(projectRoot, 'flows');
+
+/**
+ * Memindai file TypeScript di direktori tertentu.
+ * @param {string} dirPath - Jalur direktori yang akan dipindai.
+ * @returns {string[]} - Array jalur file TypeScript.
+ */
+function findTypeScriptFiles(dirPath) {
+  let tsFiles = [];
+  if (!fs.existsSync(dirPath)) {
+    return tsFiles;
+  }
+  const files = fs.readdirSync(dirPath);
+  for (const file of files) {
+    const filePath = path.join(dirPath, file);
+    const stat = fs.statSync(filePath);
+    if (stat.isDirectory()) {
+      // Mengecualikan direktori node_modules
+      if (path.basename(filePath) === 'node_modules') {
+        continue;
+      }
+      tsFiles = tsFiles.concat(findTypeScriptFiles(filePath));
+    } else if (stat.isFile() && (file.endsWith('.ts') || file.endsWith('.tsx')) && !file.endsWith('.d.ts')) {
+      tsFiles.push(filePath);
+    }
+  }
+  return tsFiles;
+}
+
+/**
+ * Helper untuk merender DocNodes menjadi string Markdown.
+ * @param {import('@microsoft/tsdoc').DocNode | undefined} docNode - Node TSDoc.
+ * @param {number} indentLevel - Tingkat indentasi.
+ * @returns {string} - String Markdown.
+ */
+function renderDocNodes(docNode, indentLevel = 0) {
+  if (!docNode) return '';
+  let markdown = '';
+  const indent = '  '.repeat(indentLevel);
+
+  for (const child of docNode.getChildNodes()) {
+    switch (child.kind) {
+      case DocNodeKind.CodeSpan:
+        markdown += `\`${child.code}\``;
+        break;
+      case DocNodeKind.PlainText:
+        markdown += child.text;
+        break;
+      case DocNodeKind.Paragraph:
+        markdown += `${indent}`;
+        markdown += renderDocNodes(child, indentLevel);
+        markdown += '\n\n';
+        break;
+      case DocNodeKind.FencedCodeBlock:
+        markdown += `${indent}\`\`\`${child.language}\n${child.code}\n${indent}\`\`\`\n\n`;
+        break;
+      case DocNodeKind.SoftBreak:
+        markdown += '\n';
+        break;
+      case DocNodeKind.LinkTag:
+        markdown += `[${child.linkText || child.urlDestination}](${child.urlDestination})`;
+        break;
+      // Handle other inline elements or fall through to render children
+      default:
+        markdown += renderDocNodes(child, indentLevel);
+        break;
+    }
+  }
+  return markdown;
+}
+
+
+/**
+ * Menghasilkan dokumentasi Markdown untuk file TypeScript.
+ * @param {string} filePath - Jalur ke file TypeScript.\n */
+function generateDocumentationForFile(filePath) {
+  const fileContent = fs.readFileSync(filePath, 'utf8');
+  const tsdocResult = tsdocParser.parseString(fileContent);
+
+  if (tsdocResult.docComment !== undefined) {
+    let fileMarkdown = '';
+    const relativePath = path.relative(projectRoot, filePath);
+    const outputFileName = path.basename(filePath).replace(/\.ts(x)?$/, '.md');
+      const outputFilePath = path.join(docsTechnicalDir, relativePath.replace(/\.ts(x)?$/, '.md'));
+
+    fileMarkdown += `# Dokumentasi Teknis: ${relativePath}\n\n`;
+
+    // Ringkasan Utama
+    if (tsdocResult.docComment.summarySection) {
+      fileMarkdown += '## Ringkasan\n\n';
+      fileMarkdown += renderDocNodes(tsdocResult.docComment.summarySection);
+    }
+
+    // Parameter
+    const paramBlocks = tsdocResult.docComment.customBlocks.filter(
+      (block) => block.blockTag.tagName === StandardTags.param.tagName
+    );
+    if (paramBlocks.length > 0) {
+      fileMarkdown += '## Parameter\n\n';
+      fileMarkdown += '| Nama | Tipe | Deskripsi |\n';
+      fileMarkdown += '|---|---|---|\n';
+      for (const paramBlock of paramBlocks) {
+        // TSDocParser tidak secara otomatis mengekstrak tipe dari @param {type}
+        // Kita perlu mengekstraknya secara manual atau menggunakan TypeScript compiler API
+        // Untuk saat ini, kita hanya akan mengambil teks penuh
+        const paramContent = renderDocNodes(paramBlock.content).trim();
+        const paramMatch = paramContent.match(/^{(.*?)}\s*(\w+)\s*([\s\S]*)/);
+        let paramType = 'any';
+        let paramName = 'unknown';
+        let paramDescription = paramContent;
+
+        if (paramMatch) {
+          paramType = paramMatch[1].trim() || 'any';
+          paramName = paramMatch[2].trim() || 'unknown';
+          paramDescription = paramMatch[3].trim();
+        } else {
+          // Fallback jika regex tidak cocok, coba deteksi nama parameter dari teks
+          const simpleParamMatch = paramContent.match(/^(\w+)\s*([\s\S]*)/);
+          if (simpleParamMatch) {
+            paramName = simpleParamMatch[1].trim();
+            paramDescription = simpleParamMatch[2].trim();
+          }
+        }
+        fileMarkdown += `| \`${paramName}\` | \`${paramType}\` | ${paramDescription} |\n`;
+      }
+      fileMarkdown += '\n';
+    }
+
+    // Returns
+    const returnsBlock = tsdocResult.docComment.customBlocks.find(
+      (block) => block.blockTag.tagName === StandardTags.returns.tagName
+    );
+    if (returnsBlock) {
+      fileMarkdown += '## Mengembalikan (Returns)\n\n';
+      // TSDocParser tidak secara otomatis mengekstrak tipe dari @returns {type}
+      const returnsContent = renderDocNodes(returnsBlock.content).trim();
+      const returnsMatch = returnsContent.match(/^{(.*?)}\s*([\s\S]*)/);
+      let returnsType = 'any';
+      let returnsDescription = returnsContent;
+
+      if (returnsMatch) {
+        returnsType = returnsMatch[1].trim() || 'any';
+        returnsDescription = returnsMatch[2].trim();
+      } else {
+        // Fallback jika regex tidak cocok
+        returnsDescription = returnsContent;
+      }
+      fileMarkdown += `*   **Tipe**: \`${returnsType}\`\n`;
+      fileMarkdown += `*   **Deskripsi**: ${returnsDescription}\n\n`;
+    }
+
+    // Examples
+    const exampleBlocks = tsdocResult.docComment.customBlocks.filter(
+      (block) => block.blockTag.tagName === StandardTags.example.tagName
+    );
+    if (exampleBlocks.length > 0) {
+      fileMarkdown += '## Contoh Penggunaan (Examples)\n\n';
+      for (const exampleBlock of exampleBlocks) {
+        fileMarkdown += renderDocNodes(exampleBlock.content);
+        fileMarkdown += '\n';
+      }
+    }
+
+    // Remarks
+    if (tsdocResult.docComment.remarksBlock) {
+      fileMarkdown += '## Catatan (Remarks)\n\n';
+      fileMarkdown += renderDocNodes(tsdocResult.docComment.remarksBlock.content);
+    }
+
+    // Throws
+    const throwsBlocks = tsdocResult.docComment.customBlocks.filter(
+      (block) => block.blockTag.tagName === StandardTags.throws.tagName
+    );
+    if (throwsBlocks.length > 0) {
+      fileMarkdown += '## Lemparan (Throws)\n\n';
+      for (const throwsBlock of throwsBlocks) {
+        fileMarkdown += `*   ${renderDocNodes(throwsBlock.content).trim()}\n`;
+      }
+      fileMarkdown += '\n';
+    }
+
+    // Custom Tags (seperti @version, @alpha, @internal, dll.)
+    const customBlocks = tsdocResult.docComment.customBlocks.filter(
+        (block) =>
+            ![
+                StandardTags.param.tagName,
+                StandardTags.returns.tagName,
+                StandardTags.example.tagName,
+                StandardTags.throws.tagName
+            ].includes(block.blockTag.tagName)
+    );
+
+    if (customBlocks.length > 0) {
+        fileMarkdown += '## Informasi Tambahan\n\n';
+        for (const block of customBlocks) {
+            fileMarkdown += `*   **${block.blockTag.tagName}**: ${renderDocNodes(block.content).trim()}\n`;
+        }
+        fileMarkdown += '\n';
+    }
+
+
+    if (fileMarkdown.trim().length > 0) {
+      // Pastikan direktori output ada
+      fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
+      fs.writeFileSync(outputFilePath, fileMarkdown, 'utf8');
+      console.log(`Generated documentation for ${filePath} -> ${outputFilePath}`);
+    }
+  }
+
+  if (tsdocResult.logMessages && Array.isArray(tsdocResult.logMessages)) {
+    for (const message of tsdocResult.logMessages) {
+      console.warn(`TSDoc Warning: ${message.text} (${filePath}:${message.textRange.pos})`);
+    }
+  }
+}
+
+async function main() {
+  console.log('Generating TSDoc Markdown documentation...');
+
+  const tsFiles = [];
+  tsFiles.push(...findTypeScriptFiles(packagesDir));
+  tsFiles.push(...findTypeScriptFiles(appsDir));
+  tsFiles.push(...findTypeScriptFiles(flowsDir));
+
+  for (const file of tsFiles) {
+    generateDocumentationForFile(file);
+  }
+
+  console.log('TSDoc Markdown documentation generation complete.');
+}
+
+main().catch(console.error);
