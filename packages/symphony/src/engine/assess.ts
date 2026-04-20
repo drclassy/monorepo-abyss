@@ -12,8 +12,19 @@ import {
   detectSymphonyEarlyWarningPatterns,
   earlyWarningsToSymphonyAlerts,
 } from './early-warning'
+import {
+  applySymphonyHybridDecisioning,
+  type SymphonyHybridDiagnosisCandidate,
+} from './hybrid-decisioning'
 import { calculateSymphonyNEWS2, news2ToSymphonyAlerts } from './news2'
+import { anaphylaxisToSymphonyAlerts, detectSymphonyAnaphylaxis } from './anaphylaxis'
+import { detectSymphonyPeSuspect, peSuspectToSymphonyAlerts } from './pe-suspect'
 import { evaluateSymphonyInstantScreeningGates } from './screening-gates'
+import {
+  analyzeSymphonyTrajectory,
+  trajectoryDirectionFromAnalysis,
+  trajectoryMomentumFromAnalysis,
+} from './trajectory'
 import { evaluateSymphonyVitalAlerts } from './vital-alerts'
 
 export const SYMPHONY_ENGINE_PACKAGE_NAME = '@the-abyss/symphony' as const
@@ -36,6 +47,8 @@ export interface SymphonyAssessmentInput {
   chiefComplaint?: string
   additionalComplaint?: string
   medicalHistory?: string[]
+  allergies?: string[]
+  diagnosisCandidates?: SymphonyHybridDiagnosisCandidate[]
 }
 
 export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyResult {
@@ -58,6 +71,30 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     hasCOPD: input.hasCOPD,
   })
   const compositeAlerts = compositeDeteriorationToSymphonyAlerts(compositeDeterioration)
+  const peSuspect = detectSymphonyPeSuspect({
+    latestVitals,
+    chiefComplaint: input.chiefComplaint,
+    additionalComplaint: input.additionalComplaint,
+    medicalHistory: input.medicalHistory,
+    pregnancyStatus: input.patientContext.pregnancyStatus,
+  })
+  const peSuspectAlerts = peSuspectToSymphonyAlerts(
+    peSuspect,
+    latestVitals?.observedAt ?? input.metadata.requestedAt
+  )
+  const anaphylaxis = detectSymphonyAnaphylaxis({
+    latestVitals,
+    chiefComplaint: input.chiefComplaint,
+    additionalComplaint: input.additionalComplaint,
+    medicalHistory: input.medicalHistory,
+    allergies: input.allergies,
+    ageYears: input.patientContext.ageYears,
+  })
+  const anaphylaxisAlerts = anaphylaxisToSymphonyAlerts(
+    anaphylaxis,
+    latestVitals?.observedAt ?? input.metadata.requestedAt
+  )
+  const trajectoryAnalysis = analyzeSymphonyTrajectory(input.vitals)
   const news2Alerts = news2ToSymphonyAlerts(
     news2,
     latestVitals?.observedAt ?? input.metadata.requestedAt
@@ -76,6 +113,15 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     earlyWarnings,
     latestVitals?.observedAt ?? input.metadata.requestedAt
   )
+  const hybridDecisioning = applySymphonyHybridDecisioning({
+    candidates: input.diagnosisCandidates ?? [],
+    patientContext: input.patientContext,
+    latestVitals,
+    chiefComplaint: input.chiefComplaint,
+    additionalComplaint: input.additionalComplaint,
+    medicalHistory: input.medicalHistory,
+    allergies: input.allergies,
+  })
 
   return {
     metadata: {
@@ -91,19 +137,26 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     },
     patientContext: input.patientContext,
     latestVitals,
-    diagnosisSuggestions: [],
+    diagnosisSuggestions: hybridDecisioning.suggestions,
     alerts: [
       ...vitalAlerts,
       ...safetyGateAlerts,
+      ...peSuspectAlerts,
+      ...anaphylaxisAlerts,
       ...compositeAlerts,
       ...news2Alerts,
       ...patternAlerts,
     ],
     trajectory: {
-      direction: 'unknown',
-      momentum: 'insufficient_data',
-      summary: 'SYMPHONY trajectory computation is not implemented yet.',
-      evidenceRefs: [],
+      direction: trajectoryDirectionFromAnalysis(trajectoryAnalysis),
+      momentum: trajectoryMomentumFromAnalysis(trajectoryAnalysis),
+      summary: trajectoryAnalysis.summary,
+      evidenceRefs: [
+        `trajectory_state:${trajectoryAnalysis.globalDeterioration.state}`,
+        `trajectory_score:${trajectoryAnalysis.globalDeterioration.deteriorationScore}`,
+        `momentum_level:${trajectoryAnalysis.momentum.level}`,
+        `convergence_pattern:${trajectoryAnalysis.momentum.convergence.pattern}`,
+      ],
     },
     quality: {
       completenessScore: 0,
@@ -115,9 +168,16 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
         `news2_score:${news2.aggregateScore}`,
         `news2_risk:${news2.riskLevel}`,
         `safety_gate_count:${safetyGateAlerts.length}`,
+        `pe_suspect:${peSuspect.suspect ? 1 : 0}`,
+        `pe_criteria_count:${peSuspect.score}`,
+        `anaphylaxis_suspect:${anaphylaxis.suspect ? 1 : 0}`,
+        `anaphylaxis_trigger:${anaphylaxis.trigger ?? 'none'}`,
         `composite_alert_count:${compositeDeterioration.compositeAlerts.length}`,
         `composite_watcher_count:${compositeDeterioration.watchers.length}`,
         `early_warning_count:${earlyWarnings.length}`,
+        `trajectory_state:${trajectoryAnalysis.globalDeterioration.state}`,
+        `trajectory_momentum:${trajectoryAnalysis.momentum.level}`,
+        ...hybridDecisioning.auditHints,
       ],
     },
   }

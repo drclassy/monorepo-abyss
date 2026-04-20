@@ -1,4 +1,4 @@
-export const SYMPHONY_CONTRACT_VERSION = '0.1.2' as const
+export const SYMPHONY_CONTRACT_VERSION = '0.1.3' as const
 
 export type SymphonyContractVersion = typeof SYMPHONY_CONTRACT_VERSION
 
@@ -31,6 +31,8 @@ export type SymphonySafetyGate =
   | 'GATE_6_RESPIRATORY'
   | 'GATE_7_PEDIATRIC'
   | 'GATE_8_OBSTETRIC'
+  | 'GATE_9_PE'
+  | 'GATE_10_ANAPHYLAXIS'
 
 export type SymphonyConfidenceBand = 'high' | 'moderate' | 'low' | 'insufficient_data'
 

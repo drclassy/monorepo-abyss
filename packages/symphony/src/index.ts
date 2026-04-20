@@ -36,11 +36,30 @@ export {
 } from './engine/news2'
 
 export {
+  runSymphonyParityFixture,
+  runSymphonyParityFixtures,
+  SYMPHONY_PARITY_FIXTURE_CASES,
+  type SymphonyParityExpectation,
+  type SymphonyParityFixtureCase,
+  type SymphonyParityFixtureResult,
+  type SymphonyParitySnapshot,
+} from './engine/parity-fixtures'
+
+export {
   detectSymphonyEarlyWarningPatterns,
   earlyWarningsToSymphonyAlerts,
   type SymphonyEarlyWarningInput,
   type SymphonyEarlyWarningMatch,
 } from './engine/early-warning'
+
+export {
+  applySymphonyHybridDecisioning,
+  type SymphonyHybridDecisionCounts,
+  type SymphonyHybridDecisionInput,
+  type SymphonyHybridDecisionResult,
+  type SymphonyHybridDiagnosisCandidate,
+  type SymphonyHybridValidationFlag,
+} from './engine/hybrid-decisioning'
 
 export {
   evaluateSymphonyInstantScreeningGates,
@@ -49,7 +68,68 @@ export {
   type SymphonyScreeningVitals,
 } from './engine/screening-gates'
 
+export {
+  analyzeSymphonyTrajectory,
+  buildSymphonyPersonalBaseline,
+  trajectoryDirectionFromAnalysis,
+  trajectoryMomentumFromAnalysis,
+  type SymphonyAcuteAttackRisk24h,
+  type SymphonyClinicalSafeOutput,
+  type SymphonyConvergencePattern,
+  type SymphonyConvergenceResult,
+  type SymphonyEarlyWarningBurden,
+  type SymphonyGlobalDeteriorationState,
+  type SymphonyMomentumAnalysis,
+  type SymphonyMomentumLevel,
+  type SymphonyMomentumParam,
+  type SymphonyMortalityProxyRisk,
+  type SymphonyPersonalBaseline,
+  type SymphonyPersonalBaselineParam,
+  type SymphonyTimeToCriticalEstimate,
+  type SymphonyTrajectoryAnalysis,
+  type SymphonyTrajectoryRiskLevel,
+  type SymphonyTrajectoryVolatility,
+  type SymphonyVitalTrend,
+} from './engine/trajectory'
+
 export { evaluateSymphonyVitalAlerts } from './engine/vital-alerts'
+
+export {
+  detectSymphonyPeSuspect,
+  peSuspectToSymphonyAlerts,
+  SYMPHONY_PE_SUSPECT_THRESHOLD,
+  type SymphonyPeSuspectCriterion,
+  type SymphonyPeSuspectInput,
+  type SymphonyPeSuspectResult,
+} from './engine/pe-suspect'
+
+export {
+  anaphylaxisToSymphonyAlerts,
+  detectSymphonyAnaphylaxis,
+  type SymphonyAnaphylaxisInput,
+  type SymphonyAnaphylaxisOrganSystem,
+  type SymphonyAnaphylaxisResult,
+} from './engine/anaphylaxis'
+
+export {
+  adaptAssistPatternToSymphonyAlert,
+  assistPatternAlertId,
+  ASSIST_PATTERN_PARITY_DEFINITIONS,
+  ASSIST_PATTERN_PARITY_FIXTURE_CASES,
+  getAssistPatternParityDefinition,
+  runAssistPatternParityFixture,
+  runAssistPatternParityFixtures,
+  type AdaptAssistPatternToSymphonyAlertOptions,
+  type AssistPatternCriterionOp,
+  type AssistPatternParityCriterion,
+  type AssistPatternParityCriteria,
+  type AssistPatternParityDefinition,
+  type AssistPatternParityFixtureCase,
+  type AssistPatternParityFixtureResult,
+  type AssistPatternParityGate,
+  type AssistPatternParityId,
+  type AssistPatternParityTier,
+} from './adapters/assist-patterns-parity'
 
 export {
   SYMPHONY_CONTRACT_VERSION,

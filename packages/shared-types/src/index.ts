@@ -2,6 +2,9 @@
 // SHARED TYPES FOR THE ABYSS MONOREPO
 // ============================================
 
+export * from './symphony'
+export * from './platform-api'
+
 /** User identity, roles, and session types — used across all authentication flows. */
 // User & Authentication
 export interface User {
