@@ -93,6 +93,18 @@ const MATCHERS: SignalMatcher[] = [
       'bingung',
     ],
   },
+  {
+    signal: 'bleeding',
+    keywords: [
+      'bab hitam',
+      'perdarahan',
+      'berdarah',
+      'mimisan',
+      'hematemesis',
+      'hematochezia',
+      'melena',
+    ],
+  },
 ]
 
 function normalize(text: string): string {

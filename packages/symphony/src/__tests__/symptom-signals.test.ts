@@ -142,4 +142,22 @@ describe('SYMPHONY symptom signals', () => {
     expect(result.signals).toContain('altered_consciousness')
     expect(result.negatedSignals).not.toContain('altered_consciousness')
   })
+
+  it('detects bleeding from multiple Indonesian variants', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'perdarahan hebat dari hidung' }).signals
+    ).toContain('bleeding')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'gusi berdarah' }).signals
+    ).toContain('bleeding')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'mimisan' }).signals).toContain(
+      'bleeding'
+    )
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'BAB hitam sejak 3 hari' }).signals
+    ).toContain('bleeding')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'melena berulang' }).signals
+    ).toContain('bleeding')
+  })
 })
