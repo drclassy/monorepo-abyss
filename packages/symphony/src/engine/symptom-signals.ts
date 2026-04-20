@@ -42,8 +42,71 @@ export interface SymphonySymptomSignalResult {
   negatedSignals: SymphonySymptomSignal[]
 }
 
+const NEGATION_PREFIXES = ['tidak ada', 'tidak', 'tanpa', 'bukan', 'belum']
+const NEGATION_WINDOW_TOKENS = 3
+
+interface SignalMatcher {
+  signal: SymphonySymptomSignal
+  keywords: string[]
+}
+
+const MATCHERS: SignalMatcher[] = [
+  { signal: 'fever', keywords: ['demam', 'panas badan', 'panas', 'meriang', 'menggigil'] },
+]
+
+function normalize(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function isNegatedAt(tokens: string[], matchIndex: number): boolean {
+  const windowStart = Math.max(0, matchIndex - NEGATION_WINDOW_TOKENS)
+  const windowTokens = tokens.slice(windowStart, matchIndex)
+  const windowText = windowTokens.join(' ')
+  return NEGATION_PREFIXES.some((prefix) => windowText.includes(prefix))
+}
+
+function matchSignal(
+  tokens: string[],
+  matcher: SignalMatcher
+): { matched: boolean; negated: boolean } {
+  for (const keyword of matcher.keywords) {
+    const keywordTokens = keyword.split(' ')
+    for (let i = 0; i <= tokens.length - keywordTokens.length; i += 1) {
+      const slice = tokens.slice(i, i + keywordTokens.length).join(' ')
+      if (slice === keyword) {
+        return { matched: true, negated: isNegatedAt(tokens, i) }
+      }
+    }
+  }
+  return { matched: false, negated: false }
+}
+
 export function detectSymphonySymptomSignals(
-  _input: SymphonySymptomSignalInput
+  input: SymphonySymptomSignalInput
 ): SymphonySymptomSignalResult {
-  return { signals: [], negatedSignals: [] }
+  const joined = [input.chiefComplaint, input.additionalComplaint, input.medicalHistory]
+    .filter((s): s is string => typeof s === 'string' && s.length > 0)
+    .map(normalize)
+    .join(' ')
+
+  const tokens = joined.length > 0 ? joined.split(' ') : []
+
+  const signals: SymphonySymptomSignal[] = []
+  const negatedSignals: SymphonySymptomSignal[] = []
+
+  for (const matcher of MATCHERS) {
+    const { matched, negated } = matchSignal(tokens, matcher)
+    if (!matched) continue
+    if (negated) {
+      if (!negatedSignals.includes(matcher.signal)) negatedSignals.push(matcher.signal)
+    } else {
+      if (!signals.includes(matcher.signal)) signals.push(matcher.signal)
+    }
+  }
+
+  return { signals, negatedSignals }
 }

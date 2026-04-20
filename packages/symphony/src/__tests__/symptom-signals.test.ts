@@ -25,4 +25,31 @@ describe('SYMPHONY symptom signals', () => {
     expect(result.signals).toEqual([])
     expect(result.negatedSignals).toEqual([])
   })
+
+  it('detects fever from positive Indonesian terms', () => {
+    const result = detectSymphonySymptomSignals({ chiefComplaint: 'demam tinggi sejak kemarin' })
+    expect(result.signals).toContain('fever')
+    expect(result.negatedSignals).not.toContain('fever')
+  })
+
+  it('strips fever when negated with "tidak"', () => {
+    const result = detectSymphonySymptomSignals({ chiefComplaint: 'tidak demam, cuma lemas' })
+    expect(result.signals).not.toContain('fever')
+    expect(result.negatedSignals).toContain('fever')
+  })
+
+  it('strips fever when negated with "tanpa"', () => {
+    const result = detectSymphonySymptomSignals({ chiefComplaint: 'batuk tanpa demam' })
+    expect(result.signals).not.toContain('fever')
+    expect(result.negatedSignals).toContain('fever')
+  })
+
+  it('detects fever from panas and meriang synonyms', () => {
+    const resultPanas = detectSymphonySymptomSignals({ chiefComplaint: 'panas badan sejak 2 hari' })
+    const resultMeriang = detectSymphonySymptomSignals({
+      chiefComplaint: 'meriang sepanjang malam',
+    })
+    expect(resultPanas.signals).toContain('fever')
+    expect(resultMeriang.signals).toContain('fever')
+  })
 })
