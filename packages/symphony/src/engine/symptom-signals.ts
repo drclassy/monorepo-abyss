@@ -122,6 +122,10 @@ const MATCHERS: SignalMatcher[] = [
     signal: 'syncope',
     keywords: ['mau pingsan', 'mau jatuh', 'pingsan', 'sinkop'],
   },
+  {
+    signal: 'diaphoresis',
+    keywords: ['berkeringat dingin', 'keringat dingin'],
+  },
 ]
 
 function normalize(text: string): string {

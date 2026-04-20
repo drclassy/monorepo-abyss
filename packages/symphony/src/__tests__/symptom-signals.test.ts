@@ -208,4 +208,14 @@ describe('SYMPHONY symptom signals', () => {
       'syncope'
     )
   })
+
+  it('detects diaphoresis from keringat dingin variants', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'keringat dingin disertai nyeri dada' })
+        .signals
+    ).toContain('diaphoresis')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'berkeringat dingin tiba-tiba' }).signals
+    ).toContain('diaphoresis')
+  })
 })
