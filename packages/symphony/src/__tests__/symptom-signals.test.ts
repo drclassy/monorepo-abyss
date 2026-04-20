@@ -252,4 +252,16 @@ describe('SYMPHONY symptom signals', () => {
       'rash_or_angioedema'
     )
   })
+
+  it('detects abdominal_pain from nyeri perut variants', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'nyeri perut kanan atas' }).signals
+    ).toContain('abdominal_pain')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'sakit perut kram' }).signals
+    ).toContain('abdominal_pain')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'kolik bilier' }).signals).toContain(
+      'abdominal_pain'
+    )
+  })
 })

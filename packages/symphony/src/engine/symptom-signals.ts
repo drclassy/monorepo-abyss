@@ -147,6 +147,10 @@ const MATCHERS: SignalMatcher[] = [
       'tersengat',
     ],
   },
+  {
+    signal: 'abdominal_pain',
+    keywords: ['nyeri perut', 'sakit perut', 'perut sakit', 'kolik'],
+  },
 ]
 
 function normalize(text: string): string {
