@@ -56,6 +56,10 @@ const MATCHERS: SignalMatcher[] = [
     signal: 'dyspnea',
     keywords: ['sesak napas', 'sulit napas', 'susah napas', 'sesak'],
   },
+  {
+    signal: 'chest_pain',
+    keywords: ['nyeri dada pleuritik', 'nyeri dada', 'sakit dada', 'dada sakit'],
+  },
 ]
 
 function normalize(text: string): string {

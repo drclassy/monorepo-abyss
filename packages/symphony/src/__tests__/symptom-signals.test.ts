@@ -70,4 +70,23 @@ describe('SYMPHONY symptom signals', () => {
     expect(result.signals).not.toContain('dyspnea')
     expect(result.negatedSignals).toContain('dyspnea')
   })
+
+  it('detects chest_pain from multi-token variants', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'nyeri dada menjalar ke lengan kiri' })
+        .signals
+    ).toContain('chest_pain')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'sakit dada sejak 1 jam' }).signals
+    ).toContain('chest_pain')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'dada sakit saat tarik napas' }).signals
+    ).toContain('chest_pain')
+  })
+
+  it('strips chest_pain when negated', () => {
+    const result = detectSymphonySymptomSignals({ chiefComplaint: 'tidak nyeri dada sama sekali' })
+    expect(result.signals).not.toContain('chest_pain')
+    expect(result.negatedSignals).toContain('chest_pain')
+  })
 })
