@@ -89,4 +89,16 @@ describe('SYMPHONY symptom signals', () => {
     expect(result.signals).not.toContain('chest_pain')
     expect(result.negatedSignals).toContain('chest_pain')
   })
+
+  it('detects headache from sakit kepala and thunderclap variants', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'sakit kepala hebat mendadak' }).signals
+    ).toContain('headache')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'nyeri kepala sejak kemarin' }).signals
+    ).toContain('headache')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'thunderclap pagi ini' }).signals
+    ).toContain('headache')
+  })
 })

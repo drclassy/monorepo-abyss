@@ -60,6 +60,16 @@ const MATCHERS: SignalMatcher[] = [
     signal: 'chest_pain',
     keywords: ['nyeri dada pleuritik', 'nyeri dada', 'sakit dada', 'dada sakit'],
   },
+  {
+    signal: 'headache',
+    keywords: [
+      'sakit kepala hebat',
+      'sakit kepala',
+      'nyeri kepala',
+      'kepala sakit',
+      'thunderclap',
+    ],
+  },
 ]
 
 function normalize(text: string): string {
