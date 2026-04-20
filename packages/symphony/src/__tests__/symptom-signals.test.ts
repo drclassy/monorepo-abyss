@@ -113,4 +113,13 @@ describe('SYMPHONY symptom signals', () => {
       detectSymphonySymptomSignals({ chiefComplaint: 'muntah darah segar' }).signals
     ).toContain('vomit')
   })
+
+  it('detects seizure from kejang variants', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'kejang 10 menit' }).signals
+    ).toContain('seizure')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'kejang demam berulang' }).signals
+    ).toContain('seizure')
+  })
 })
