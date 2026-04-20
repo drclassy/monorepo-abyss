@@ -5,11 +5,11 @@
 **Event:** Monorepo shell pushed to primary GitHub account.
 
 - **New remote:** `origin` → `https://github.com/Avvicenna/abyss-monorepo.git` (PRIVATE)
-- **Old remote:** preserved as `origin-docsynapse` → `https://github.com/Docsynapse/abyss-monorepo.git`
+- **Old remote:** preserved as `origin-avvcenna` → `https://github.com/Avvcenna/abyss-monorepo.git`
 - **Branch pushed:** `abyss-core` (tracking `origin/abyss-core`)
 - **Migration commit:** `bbc0958` — `chore: sync working state before remote migration to Avvicenna` (17 files: notebooklm scaffold + repository governance templates + .agent/PROGRESS + AGENTS + package.json + pnpm-lock + tsdoc)
 - **Polyrepo integrity:** `apps/` remains gitignored — 0 tracked files, all divisions excluded from this shell as designed in `.agent/ARCHITECTURE.md §8`.
-- **Rollback:** `git remote rename origin-docsynapse origin` restores prior state.
+- **Rollback:** `git remote rename origin-avvcenna origin` restores prior state.
 
 ---
 
@@ -583,7 +583,7 @@ apps/healthcare/sentra-dashboard/src/app/admin/_components/AdminRpaMonitoring.ts
 - 4 deliverables di `.agent/sessions/2026-04-15-audit-*` (scan, patches, clearance, remediation.sh).
 - Zero tracked secrets detected. `pnpm-lock.yaml`, `.agent/**`, `.cursor/rules/**` semua preserved.
 - Clearance: **SAFE TO PUSH** (verified via 8 automated tests + `remediation.sh`).
-- Follow-up non-blocking: rotate claudesy-memory API keys; audit 3 submodules (sentra-assist, academic-solutions, ferdiiskandar).
+- Follow-up non-blocking: rotate avvcenna-memory API keys; audit 3 submodules (sentra-assist, academic-solutions, ferdiiskandar).
 - Handoff: `2026-04-15-audit`.
 
 ---
@@ -633,15 +633,15 @@ apps/academic/evaluation-engine/CLAUDE.md
 apps/academic/evaluation-engine/package.json
 apps/community/AGENTS.md
 apps/community/CLAUDE.md
-apps/community/claudesy-transformer/.gitignore
-apps/community/claudesy-transformer/CLAUDE.md
-apps/community/claudesy-transformer/PROJECT_CONTEXT.md
-apps/community/claudesy-transformer/__tests__/api/auth-abuse-routes.test.ts
-apps/community/claudesy-transformer/__tests__/api/internal-billing-process-expirations.test.ts
-apps/community/claudesy-transformer/__tests__/api/internal-email-process.test.ts
-apps/community/claudesy-transformer/__tests__/api/prompts-idor.test.ts
-apps/community/claudesy-transformer/__tests__/api/prompts-list-create.test.ts
-apps/community/claudesy-transformer/__tests__/api/provider-key-resolution.test.ts
+apps/community/avvcenna-transformer/.gitignore
+apps/community/avvcenna-transformer/CLAUDE.md
+apps/community/avvcenna-transformer/PROJECT_CONTEXT.md
+apps/community/avvcenna-transformer/__tests__/api/auth-abuse-routes.test.ts
+apps/community/avvcenna-transformer/__tests__/api/internal-billing-process-expirations.test.ts
+apps/community/avvcenna-transformer/__tests__/api/internal-email-process.test.ts
+apps/community/avvcenna-transformer/__tests__/api/prompts-idor.test.ts
+apps/community/avvcenna-transformer/__tests__/api/prompts-list-create.test.ts
+apps/community/avvcenna-transformer/__tests__/api/provider-key-resolution.test.ts
 ```
 
 ---
@@ -697,8 +697,8 @@ apps/community/claudesy-transformer/__tests__/api/provider-key-resolution.test.t
 - **Files changed**: 18 file(s)
 
 ```
-.github/claudesy-pr-temp.psm1
-.github/claudesy-pr.psm1
+.github/avvcenna-pr-temp.psm1
+.github/avvcenna-pr.psm1
 .github/instructions/codacy.instructions.md
 docs/sentratorium/.obsidian/app.json
 docs/sentratorium/.obsidian/appearance.json
@@ -758,7 +758,7 @@ README.md
 - **Files changed**: 2 file(s)
 
 ```
-.github/claudesy.png
+.github/avvcenna.png
 README.md
 ```
 

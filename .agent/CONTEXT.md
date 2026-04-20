@@ -1,13 +1,15 @@
 # CONTEXT.md — The Abyss (Monorepo Root)
 <!-- Static. Update only when stack or architecture changes. -->
-<!-- Last updated: 2026-04-19 -->
+<!-- Last updated: 2026-04-19 · Major revision: Full healthcare landscape audit -->
+
+---
 
 ## Project Identity
 
 | Field | Value |
 |-------|-------|
 | Name | The Abyss |
-| Type | AI-native Turborepo monorepo |
+| Type | AI-native Turborepo monorepo (polyrepo hybrid) |
 | Author | Dr. Ferdi Iskandar (Avvcenna+) |
 | Email | ferdi@sentra.ai |
 | License | UNLICENSED (private) |
@@ -15,53 +17,192 @@
 | Build | Turborepo v2 |
 | Root path | D:\Devop\abyss-monorepo\ |
 
-## Ecosystem Map
+---
 
-| Division | Path | Purpose | Compliance |
-|----------|------|---------|------------|
-| platform | `apps/platform/` | Core infrastructure — orchestrator + portal | High |
-| healthcare | `apps/healthcare/` | Patient-facing clinical apps | **Highest — PHI/PII strict** |
-| academic | `apps/academic/` | Clinical education and evaluation | Medium |
-| community | `apps/community/` | Public tools and Avvcenna+ brand | Standard |
-| corporate  | `apps/corporate/`  | Sentra brand and DevOps portal | Standard |
-| prototype | `apps/prototype/` | Experimental sandbox — agent-hermes | Low |
-| packages | `packages/` | Shared libraries — widest blast radius | High |
-| infrastructure | `infrastructure/` | IaC — Chief-only execution | **Critical** |
-| flows | `flows/` | LangFlow AI workflow definitions — subdirs: healthcare/, platform/, academic/ | Medium |
+## ⚠️ CRITICAL ARCHITECTURE NOTE — Read Before Acting
 
-## NestJS Applications
+This is a **polyrepo embedded in a monorepo shell**.
 
-| App | Path | Pattern | Notes |
-|-----|------|---------|-------|
-| orchestrator | `apps/platform/orchestrator/` | CQRS mandatory | Saga Engine |
-| sentra-portal | `apps/platform/sentra-portal/` | Standard REST | Clinical Dashboard |
-| referralink | `apps/healthcare/referralink/` | Standard REST | PHI compliance |
-| sentra-assist | `apps/healthcare/sentra-assist/` | Standard REST | PHI compliance |
-| sentra-main | `apps/healthcare/sentra-main/` | Standard REST | PHI compliance |
+Each healthcare app is an **independent repository** with its own:
+- `.git` directory
+- `package.json` + `pnpm-lock.yaml`
+- `node_modules`
+- Database schema + migrations (if applicable)
+- Deployment config (Railway or Vercel)
 
-## Shared Packages
+**The monorepo shell provides:** shared `packages/`, `flows/`, `infrastructure/`, `conductor/`, and Turborepo build orchestration.
 
-| Package | Path | Purpose |
-|---------|------|---------|
-| database | `packages/database/` | Prisma ORM — all apps route through here |
-| ai-core | `packages/ai-core/` | Shared AI utilities (dir renamed from artificial-core, 2026-04-19) |
-| design-token | `packages/design-token/` | UI token system |
-| shared-types | `packages/shared-types/` | Cross-app TypeScript types |
+**The monorepo shell does NOT provide:** a single shared database. Every app that has a database owns it exclusively.
 
-## Documentation Systems
+Any agent that assumes `packages/database` is the database for all apps is WRONG.
+Always check each app's own `prisma/` folder before touching any database concern.
 
-| System | Path | Purpose |
-|--------|------|---------|
-| Agent memory | `.agent/` (per project) | Per-session context, progress, lessons, decisions, sessions/ |
-| ADR | `docs/adr/` | Architectural decision records |
-| Cursor rules | `.cursor/rules/` | IDE-scoped coding rules |
-| Specs | `docs/specs/phase-4/` | Technical blueprints |
+---
+
+## Healthcare Apps — Complete Landscape
+
+### `intelligenceboard`
+| Field | Value |
+|-------|-------|
+| Path | `apps/healthcare/intelligenceboard/` |
+| Package name | `@avvcenna-plus/intelligenceboard` |
+| Type | Next.js 16 server app (custom Express server via server.ts) |
+| Deploy | Railway (`railway.toml`) |
+| Database | Own Neon PostgreSQL via Prisma — **12 migrations active as of 2026-04** |
+| Prisma path | `apps/healthcare/intelligenceboard/prisma/schema.prisma` |
+| AI providers | `@google/genai`, `@google/generative-ai` (Gemini — migration to Vertex AI planned) |
+| Purpose | Clinical Intelligence Dashboard: telemedicine, CDSS, consult logs, screening audit, vital records |
+| RAG status | `KnowledgeBase` model to be added here (Prisma migration pending — see DECISIONS.md) |
+| Status | **PRODUCTION ACTIVE** |
+
+### `sentra-assist`
+| Field | Value |
+|-------|-------|
+| Path | `apps/healthcare/sentra-assist/` |
+| Package name | `@the-abyss/sentra-assist` |
+| Type | **Browser Extension** (WXT framework — NOT a NestJS/REST app) |
+| Deploy | Chrome Web Store / Firefox Add-ons |
+| Database | None — browser extension cannot connect to databases |
+| AI providers | `@google-cloud/vertexai` (already using Vertex AI SDK) |
+| Purpose | Clinical decision support overlay inside ePuskesmas EMR |
+| RAG access | Via API call to intelligenceboard — never direct DB |
+| Status | Active development |
+
+### `referralink`
+| Field | Value |
+|-------|-------|
+| Path | `apps/healthcare/referralink/` |
+| Package name | `@the-abyss/referralink` |
+| Type | React SPA (Vite) |
+| Deploy | Vercel (`vercel.json`) |
+| Database | Own Neon via `@neondatabase/serverless` + `@vercel/postgres` |
+| Vector store | `@upstash/vector` — already has independent RAG (migration to shared package: future task) |
+| AI providers | OpenAI |
+| Purpose | Patient referral routing with semantic matching |
+| Status | Active on Vercel |
+
+### `sentra-main`
+| Field | Value |
+|-------|-------|
+| Path | `apps/healthcare/sentra-main/` |
+| Package name | `@the-abyss/sentra-main` |
+| Type | Next.js 16 (marketing website) |
+| Deploy | TBD |
+| Database | None |
+| Purpose | Marketing website — sentrahai.com |
+| Status | Active |
+
+### `primary-healthcare`
+| Field | Value |
+|-------|-------|
+| Path | `apps/healthcare/primary-healthcare/` |
+| Type | Static website + JSON data files |
+| Database | None (local JSON: ICD-10, penyakit puskesmas) |
+| Purpose | Primary healthcare reference data and website |
+| Status | Active |
+
+---
+
+## Platform Apps
+
+### `orchestrator`
+| Field | Value |
+|-------|-------|
+| Path | `apps/platform/orchestrator/` |
+| Type | NestJS (CQRS mandatory) |
+| Purpose | SAGA engine, multi-agent coordination |
+
+### `sentra-portal`
+| Field | Value |
+|-------|-------|
+| Path | `apps/platform/sentra-portal/` |
+| Type | Next.js |
+| Database | Own — has `.git` and own node_modules |
+| Purpose | Clinical dashboard |
+
+---
+
+## Shared Packages — Actual State
+
+| Package | Path | Purpose | Notes |
+|---------|------|---------|-------|
+| `database` | `packages/database/` | Prisma schema for platform apps | ⚠️ NOT used by healthcare apps — each has own schema |
+| `ai-core` | `packages/ai-core/` | Multi-model LLM orchestration | Renamed from `artificial-core` 2026-04-19 |
+| `vector-store` | `packages/vector-store/` | Vertex AI embeddings + pgvector RAG | Refactored to dependency injection — injectable Prisma client |
+| `design-token` | `packages/design-token/` | UI token system | |
+| `shared-types` | `packages/shared-types/` | Cross-app TypeScript types | |
+
+---
+
+## Shared Package Strategy — `vector-store`
+
+**Vision:** Every healthcare product uses `@the-abyss/vector-store` for RAG.
+
+**Architecture:** Dependency injection — `VectorStore` accepts any Prisma client from the caller.
+Each server-side app brings its own Prisma client.
+Browser extensions and SPAs access RAG via API (never direct DB).
+
+```
+@the-abyss/vector-store
+  ↓ used directly (server-side)
+intelligenceboard         → injects its own prismaClient
+                          → owns KnowledgeBase table
+
+  ↓ future migration
+referralink               → currently @upstash/vector → migrate to vector-store (future task)
+
+  ↓ via API only (no direct DB)
+sentra-assist             → calls intelligenceboard RAG endpoint
+sentra-main               → calls intelligenceboard RAG endpoint (if needed)
+```
+
+**KnowledgeBase table location:** `intelligenceboard` Prisma schema — single source of truth for medical RAG. Not in `packages/database`.
+
+---
+
+## AI Provider Map
+
+| App | Current Provider | Target Provider | Notes |
+|-----|-----------------|-----------------|-------|
+| intelligenceboard | Gemini REST API | Vertex AI SDK (GCP IAM) | Migration in progress |
+| sentra-assist | `@google-cloud/vertexai` | ✅ Already correct | No migration needed |
+| referralink | OpenAI | TBD | Out of scope for current sprint |
+| packages/vector-store | ✅ Vertex AI (GCP IAM) | — | Migrated 2026-04-19 |
+
+---
+
+## Database Map
+
+| App | Database | Prisma? | Migrations? | Location |
+|-----|----------|---------|-------------|----------|
+| intelligenceboard | Neon PostgreSQL | ✅ | ✅ 12 migrations | `apps/healthcare/intelligenceboard/prisma/` |
+| referralink | Neon (serverless) + Vercel Postgres | ❌ raw SQL | N/A | Direct queries in `database/` |
+| packages/database | Neon PostgreSQL | ✅ | ❌ never migrated | Platform-level only |
+| sentra-assist | None | ❌ | — | Browser extension |
+| sentra-main | None | ❌ | — | Marketing site |
+| primary-healthcare | None | ❌ | — | JSON files only |
+
+---
 
 ## CI/CD Pipeline
 
 GitHub Actions: `.github/workflows/ci.yml`
 Sequence: verify → build → test → lint → security → flows
 Security scan mandatory before any healthcare PR merge.
+
+---
+
+## Deployment Map
+
+| App | Platform | Config file |
+|-----|----------|-------------|
+| intelligenceboard | Railway | `railway.toml` |
+| referralink | Vercel | `vercel.json` |
+| sentra-assist | Browser Store | WXT build |
+| platform/orchestrator | TBD | — |
+| platform/sentra-portal | TBD | — |
+
+---
 
 ## Hard Constraints
 
@@ -70,4 +211,6 @@ Security scan mandatory before any healthcare PR merge.
 - Security scan — must pass before any healthcare PR
 - JET Protocol J5 — hard gate, no execution before explicit "GO"
 - Session logs — `.agent/sessions/` must be updated every session
-- All DB operations — must route through `packages/database`, no direct ORM in app code
+- Database operations — each app uses its OWN Prisma client. Never cross-inject.
+- `packages/database` — platform-level only, not for healthcare apps
+- KnowledgeBase (RAG) — lives in intelligenceboard schema, not packages/database

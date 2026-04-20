@@ -403,3 +403,27 @@ packages/symphony/src/engine/parity-fixtures.ts
 ```
 
 ---
+## 2026-04-20 17:25 — `a587b41` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(agent): Phase 1 symptom-signals NLP canonicalization complete
+- **Files changed**: 3 file(s)
+
+```
+.agent/DECISIONS.md
+.agent/PROGRESS.md
+.agent/sessions/2026-04-20.md
+```
+
+---
+## 2026-04-20 20:59 — `8150fd7` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(symphony): bump contract version to 0.1.4 post Phase 1 surface
+- **Files changed**: 1 file(s)
+
+```
+packages/shared-types/src/symphony.ts
+```
+
+---
