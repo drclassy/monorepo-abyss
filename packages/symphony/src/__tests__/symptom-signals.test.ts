@@ -52,4 +52,22 @@ describe('SYMPHONY symptom signals', () => {
     expect(resultPanas.signals).toContain('fever')
     expect(resultMeriang.signals).toContain('fever')
   })
+
+  it('detects dyspnea from sesak and sulit napas', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'sesak napas saat aktivitas' }).signals
+    ).toContain('dyspnea')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'sulit napas sejak pagi' }).signals
+    ).toContain('dyspnea')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'pasien susah napas' }).signals
+    ).toContain('dyspnea')
+  })
+
+  it('strips dyspnea when negated', () => {
+    const result = detectSymphonySymptomSignals({ chiefComplaint: 'batuk tanpa sesak' })
+    expect(result.signals).not.toContain('dyspnea')
+    expect(result.negatedSignals).toContain('dyspnea')
+  })
 })

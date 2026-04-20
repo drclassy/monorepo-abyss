@@ -52,6 +52,10 @@ interface SignalMatcher {
 
 const MATCHERS: SignalMatcher[] = [
   { signal: 'fever', keywords: ['demam', 'panas badan', 'panas', 'meriang', 'menggigil'] },
+  {
+    signal: 'dyspnea',
+    keywords: ['sesak napas', 'sulit napas', 'susah napas', 'sesak'],
+  },
 ]
 
 function normalize(text: string): string {
