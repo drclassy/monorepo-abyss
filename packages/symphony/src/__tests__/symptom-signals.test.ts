@@ -181,4 +181,19 @@ describe('SYMPHONY symptom signals', () => {
       'weakness'
     )
   })
+
+  it('detects dizziness from pusing berputar and vertigo', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'pusing berputar saat bangun' }).signals
+    ).toContain('dizziness')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'vertigo hebat' }).signals).toContain(
+      'dizziness'
+    )
+  })
+
+  it('allows pusing to co-signal both headache and dizziness (no mutex)', () => {
+    const result = detectSymphonySymptomSignals({ chiefComplaint: 'pusing sejak pagi' })
+    expect(result.signals).toContain('headache')
+    expect(result.signals).toContain('dizziness')
+  })
 })

@@ -68,6 +68,7 @@ const MATCHERS: SignalMatcher[] = [
       'nyeri kepala',
       'kepala sakit',
       'thunderclap',
+      'pusing',
     ],
   },
   {
@@ -112,6 +113,10 @@ const MATCHERS: SignalMatcher[] = [
   {
     signal: 'weakness',
     keywords: ['lemas', 'lemah', 'letih'],
+  },
+  {
+    signal: 'dizziness',
+    keywords: ['pusing berputar', 'vertigo', 'pusing'],
   },
 ]
 
