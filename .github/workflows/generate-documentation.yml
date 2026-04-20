@@ -1,0 +1,70 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate TSDoc markdown
+        run: node scripts/generate-tsdoc-markdown.js
+
+      - name: Generate functional feature docs
+        run: node scripts/generate-functional-docs.js
+
+      - name: Generate release notes
+        run: node scripts/generate-release-notes.js
+
+      - name: Open PR with generated documentation
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          BRANCH="docs-update-${{ github.run_id }}"
+
+          git add docs/technical docs/features CHANGELOG.md 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "No documentation changes to commit."
+            exit 0
+          fi
+
+          git checkout -b "$BRANCH"
+          git commit -m "docs: auto-generate documentation [skip ci]"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --base "${{ github.ref_name }}" \
+            --head "$BRANCH" \
+            --title "docs: auto-generated documentation update" \
+            --body "Automated documentation update triggered by ${{ github.sha }}. Please review before merging."
