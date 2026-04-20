@@ -5,7 +5,16 @@ import {
   SYMPHONY_PARITY_FIXTURE_CASES,
   runSymphonyParityFixture,
   runSymphonyParityFixtures,
+  type SymphonyParityFixtureCase,
 } from '../index'
+
+function requireParityFixture(id: string): SymphonyParityFixtureCase {
+  const found = SYMPHONY_PARITY_FIXTURE_CASES.find((fixture) => fixture.id === id)
+  if (!found) {
+    throw new Error(`parity fixture invariant: '${id}' must exist in SYMPHONY_PARITY_FIXTURE_CASES`)
+  }
+  return found
+}
 
 describe('SYMPHONY route parity fixtures', () => {
   it('publishes deterministic fixture cases for Dashboard and Assist parity checks', () => {
@@ -54,15 +63,11 @@ describe('SYMPHONY route parity fixtures', () => {
   })
 
   it('covers the Phase A PE Suspect and Anaphylaxis safety-gate alerts', () => {
-    const pe = runSymphonyParityFixture(
-      SYMPHONY_PARITY_FIXTURE_CASES.find(f => f.id === 'pe-suspect-route')!
-    )
+    const pe = runSymphonyParityFixture(requireParityFixture('pe-suspect-route'))
     expect(pe.passed).toBe(true)
     expect(pe.snapshot.alertIds).toContain('SYMPHONY_PE_SUSPECT')
 
-    const anaphylaxis = runSymphonyParityFixture(
-      SYMPHONY_PARITY_FIXTURE_CASES.find(f => f.id === 'anaphylaxis-route')!
-    )
+    const anaphylaxis = runSymphonyParityFixture(requireParityFixture('anaphylaxis-route'))
     expect(anaphylaxis.passed).toBe(true)
     expect(anaphylaxis.snapshot.alertIds).toContain('SYMPHONY_ANAPHYLAXIS')
   })

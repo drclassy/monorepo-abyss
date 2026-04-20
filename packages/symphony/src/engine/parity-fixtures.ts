@@ -235,7 +235,7 @@ function applyVitalCriterion(
 
 function buildAssistPatternRouteFixture(
   pattern: AssistPatternParityDefinition,
-  index: number
+  _index: number
 ): SymphonyParityFixtureCase {
   const allCriteria = [...pattern.criteria.required, ...pattern.criteria.scored]
   const vitals: SymphonyVitalsInput = {
@@ -562,14 +562,22 @@ export function runSymphonyParityFixture(
   fixture: SymphonyParityFixtureCase
 ): SymphonyParityFixtureResult {
   const result = assessSymphonyInput(fixture.input)
-  const additionalAlerts = fixture.assistPatternId
-    ? [
-        adaptAssistPatternToSymphonyAlert(
-          ASSIST_PATTERN_PARITY_DEFINITIONS.find(pattern => pattern.id === fixture.assistPatternId)!,
-          { triggeredAt: fixture.input.metadata.requestedAt }
-        ),
-      ]
-    : []
+  let additionalAlerts: SymphonyAlert[] = []
+  if (fixture.assistPatternId) {
+    const patternDefinition = ASSIST_PATTERN_PARITY_DEFINITIONS.find(
+      (pattern) => pattern.id === fixture.assistPatternId
+    )
+    if (!patternDefinition) {
+      throw new Error(
+        `parity fixture references unknown Assist pattern id: '${fixture.assistPatternId}'`
+      )
+    }
+    additionalAlerts = [
+      adaptAssistPatternToSymphonyAlert(patternDefinition, {
+        triggeredAt: fixture.input.metadata.requestedAt,
+      }),
+    ]
+  }
   const snapshot = snapshotResult(result, additionalAlerts)
   const mismatches = compareSnapshot(snapshot, fixture.expected)
 

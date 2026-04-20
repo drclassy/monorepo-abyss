@@ -56,8 +56,9 @@ describe('Assist clinical-pattern parity adapter', () => {
   it('adapts a matched Assist pattern into canonical SymphonyAlert shape without PHI fields', () => {
     const pattern = getAssistPatternParityDefinition('CP-024')
     expect(pattern).toBeDefined()
+    if (!pattern) throw new Error('unreachable: CP-024 parity definition must exist')
 
-    const alert = adaptAssistPatternToSymphonyAlert(pattern!, {
+    const alert = adaptAssistPatternToSymphonyAlert(pattern, {
       triggeredAt: '2026-04-19T16:00:00.000Z',
     })
 
