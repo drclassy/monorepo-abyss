@@ -32,9 +32,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate TSDoc markdown
-        run: node scripts/generate-tsdoc-markdown.js
-
       - name: Generate functional feature docs
         run: node scripts/generate-functional-docs.js
 
@@ -52,7 +49,7 @@ jobs:
 
           BRANCH="docs-update-${{ github.run_id }}"
 
-          git add docs/technical docs/features CHANGELOG.md 2>/dev/null || true
+          git add docs/features CHANGELOG.md 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "No documentation changes to commit."
