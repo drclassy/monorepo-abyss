@@ -12,10 +12,6 @@ and this project adheres to
 
 ### Added
 
-- **feat**: Menambahkan *workflow* GitHub Actions untuk otomatisasi dokumentasi (`.github/workflows/generate-documentation.yml`).
-- **feat**: Menambahkan skrip *placeholder* untuk menghasilkan dokumentasi teknis (`scripts/generate-tsdoc-markdown.js`).
-- **feat**: Menambahkan skrip *placeholder* untuk menghasilkan dokumentasi fungsional (`scripts/generate-functional-docs.js`).
-- **feat**: Menambahkan skrip *placeholder* untuk menghasilkan *release notes* (`scripts/generate-release-notes.js`).
 - Initial monorepo structure with pnpm workspace
 - Turborepo configuration for build orchestration
 - Avvcenna+ Workflow integration (HANDOFF.md, GO-Gate)
