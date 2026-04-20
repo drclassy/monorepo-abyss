@@ -137,6 +137,16 @@ const MATCHERS: SignalMatcher[] = [
       'gatal',
     ],
   },
+  {
+    signal: 'allergen_exposure',
+    keywords: [
+      'setelah makan seafood',
+      'setelah minum obat',
+      'paparan alergen',
+      'gigitan serangga',
+      'tersengat',
+    ],
+  },
 ]
 
 function normalize(text: string): string {

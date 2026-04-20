@@ -219,6 +219,22 @@ describe('SYMPHONY symptom signals', () => {
     ).toContain('diaphoresis')
   })
 
+  it('detects allergen_exposure from common exposure phrases', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'setelah makan seafood langsung gatal' })
+        .signals
+    ).toContain('allergen_exposure')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'setelah minum obat amoksilin' }).signals
+    ).toContain('allergen_exposure')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'paparan alergen di tempat kerja' }).signals
+    ).toContain('allergen_exposure')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'tersengat tawon pagi tadi' }).signals
+    ).toContain('allergen_exposure')
+  })
+
   it('detects rash_or_angioedema from ruam, urtikaria, angioedema', () => {
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'ruam kemerahan di seluruh tubuh' }).signals
