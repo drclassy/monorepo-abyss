@@ -160,4 +160,13 @@ describe('SYMPHONY symptom signals', () => {
       detectSymphonySymptomSignals({ chiefComplaint: 'melena berulang' }).signals
     ).toContain('bleeding')
   })
+
+  it('detects pallor from pucat and anemis', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'wajah pucat, konjungtiva pucat' }).signals
+    ).toContain('pallor')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'tampak anemis' }).signals
+    ).toContain('pallor')
+  })
 })
