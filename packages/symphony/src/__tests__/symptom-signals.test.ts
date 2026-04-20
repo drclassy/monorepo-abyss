@@ -218,4 +218,22 @@ describe('SYMPHONY symptom signals', () => {
       detectSymphonySymptomSignals({ chiefComplaint: 'berkeringat dingin tiba-tiba' }).signals
     ).toContain('diaphoresis')
   })
+
+  it('detects rash_or_angioedema from ruam, urtikaria, angioedema', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'ruam kemerahan di seluruh tubuh' }).signals
+    ).toContain('rash_or_angioedema')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'urtikaria akut' }).signals
+    ).toContain('rash_or_angioedema')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'bengkak muka dan bibir' }).signals
+    ).toContain('rash_or_angioedema')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'angioedema mendadak' }).signals
+    ).toContain('rash_or_angioedema')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'gatal seluruh tubuh' }).signals).toContain(
+      'rash_or_angioedema'
+    )
+  })
 })

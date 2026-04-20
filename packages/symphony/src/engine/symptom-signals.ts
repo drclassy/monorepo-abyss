@@ -126,6 +126,17 @@ const MATCHERS: SignalMatcher[] = [
     signal: 'diaphoresis',
     keywords: ['berkeringat dingin', 'keringat dingin'],
   },
+  {
+    signal: 'rash_or_angioedema',
+    keywords: [
+      'bengkak muka',
+      'kulit bentol',
+      'angioedema',
+      'urtikaria',
+      'ruam',
+      'gatal',
+    ],
+  },
 ]
 
 function normalize(text: string): string {
