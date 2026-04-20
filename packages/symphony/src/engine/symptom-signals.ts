@@ -156,6 +156,22 @@ const MATCHERS: SignalMatcher[] = [
     // `kussmaul` is lowercase here because `normalize()` folds case before matching.
     keywords: ['napas dalam dan cepat', 'napas cepat dalam', 'kussmaul'],
   },
+  {
+    signal: 'polyuria',
+    keywords: ['banyak kencing', 'sering kencing', 'poliuria'],
+  },
+  {
+    signal: 'neurologic_focal_deficit',
+    // `fast` lowercase because normalize() folds case (FAST mnemonic triggers match).
+    keywords: [
+      'defisit neurologis fokal',
+      'kelemahan tungkai',
+      'lemah sebelah',
+      'mulut mencong',
+      'bicara pelo',
+      'fast',
+    ],
+  },
 ]
 
 function normalize(text: string): string {

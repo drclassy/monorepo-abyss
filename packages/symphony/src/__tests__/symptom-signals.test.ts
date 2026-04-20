@@ -276,4 +276,31 @@ describe('SYMPHONY symptom signals', () => {
       detectSymphonySymptomSignals({ chiefComplaint: 'napas cepat dalam' }).signals
     ).toContain('kussmaul_breathing')
   })
+
+  it('detects polyuria from banyak kencing and poliuria', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'banyak kencing terus menerus' }).signals
+    ).toContain('polyuria')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'sering kencing malam hari' }).signals
+    ).toContain('polyuria')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'poliuria harian' }).signals).toContain(
+      'polyuria'
+    )
+  })
+
+  it('detects neurologic_focal_deficit from FAST and Indonesian variants', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'lemah sebelah kiri sejak pagi' }).signals
+    ).toContain('neurologic_focal_deficit')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'mulut mencong dan bicara pelo' }).signals
+    ).toContain('neurologic_focal_deficit')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'FAST positif' }).signals
+    ).toContain('neurologic_focal_deficit')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'defisit neurologis fokal' }).signals
+    ).toContain('neurologic_focal_deficit')
+  })
 })
