@@ -109,6 +109,10 @@ const MATCHERS: SignalMatcher[] = [
     signal: 'pallor',
     keywords: ['pucat', 'pallor', 'anemis'],
   },
+  {
+    signal: 'weakness',
+    keywords: ['lemas', 'lemah', 'letih'],
+  },
 ]
 
 function normalize(text: string): string {

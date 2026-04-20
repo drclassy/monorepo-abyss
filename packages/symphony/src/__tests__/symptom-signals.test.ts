@@ -169,4 +169,16 @@ describe('SYMPHONY symptom signals', () => {
       detectSymphonySymptomSignals({ chiefComplaint: 'tampak anemis' }).signals
     ).toContain('pallor')
   })
+
+  it('detects weakness from lemas, lemah, letih', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'badan lemas seharian' }).signals
+    ).toContain('weakness')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'lemah tidak bertenaga' }).signals
+    ).toContain('weakness')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'letih terus menerus' }).signals).toContain(
+      'weakness'
+    )
+  })
 })
