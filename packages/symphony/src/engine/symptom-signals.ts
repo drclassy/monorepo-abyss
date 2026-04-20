@@ -78,6 +78,21 @@ const MATCHERS: SignalMatcher[] = [
     signal: 'seizure',
     keywords: ['kejang demam', 'kejang'],
   },
+  {
+    signal: 'altered_consciousness',
+    // NOTE: `tidak sadar` starts with a negation prefix; because isNegatedAt
+    // scans tokens STRICTLY LEFT OF matchIndex, the intra-keyword `tidak` is
+    // not seen as negation. Keep the multi-token form to avoid a bare `sadar`
+    // keyword that would flip under "tidak sadar".
+    keywords: [
+      'penurunan kesadaran',
+      'tidak sadar',
+      'mengantuk berat',
+      'disorientasi',
+      'delirium',
+      'bingung',
+    ],
+  },
 ]
 
 function normalize(text: string): string {

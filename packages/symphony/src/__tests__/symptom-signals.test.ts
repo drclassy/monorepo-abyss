@@ -122,4 +122,24 @@ describe('SYMPHONY symptom signals', () => {
       detectSymphonySymptomSignals({ chiefComplaint: 'kejang demam berulang' }).signals
     ).toContain('seizure')
   })
+
+  it('detects altered_consciousness from penurunan kesadaran and delirium', () => {
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'penurunan kesadaran sejak 1 jam' }).signals
+    ).toContain('altered_consciousness')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'pasien bingung dan disorientasi' }).signals
+    ).toContain('altered_consciousness')
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'delirium akut' }).signals
+    ).toContain('altered_consciousness')
+  })
+
+  it('detects altered_consciousness from "tidak sadar" without negation stripping', () => {
+    const result = detectSymphonySymptomSignals({
+      chiefComplaint: 'pasien tidak sadar sejak tadi pagi',
+    })
+    expect(result.signals).toContain('altered_consciousness')
+    expect(result.negatedSignals).not.toContain('altered_consciousness')
+  })
 })
