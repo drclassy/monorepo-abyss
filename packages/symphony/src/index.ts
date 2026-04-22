@@ -143,6 +143,13 @@ export {
   type SymphonyPatternEvaluationOptions,
 } from './engine/pattern-engine'
 
+export {
+  clinicalPatternMatchToSymphonyAlert,
+  evaluateClinicalPatterns,
+  SYMPHONY_CLINICAL_PATTERNS,
+  type SymphonyLocalClinicalPattern,
+} from './engine/clinical-patterns'
+
 
 export {
   SYMPHONY_CONTRACT_VERSION,
