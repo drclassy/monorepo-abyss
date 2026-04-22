@@ -16,11 +16,15 @@
 
 import { describe, expect, it } from 'vitest'
 
-import type { SymphonyClinicalSnapshot, SymphonyAlert } from '../index'
+import {
+  SYMPHONY_ACTION_PROTOCOLS,
+  getSymphonyActionProtocol,
+} from '../engine/action-protocols'
 import {
   SYMPHONY_CLINICAL_PATTERNS,
   evaluateClinicalPatterns,
 } from '../engine/clinical-patterns'
+import type { SymphonyAlert, SymphonyClinicalSnapshot } from '../index'
 
 // ---------------------------------------------------------------------------
 // Snapshot factory helpers
@@ -80,6 +84,19 @@ function makeQsofa2Snapshot(extraSymptoms?: SymptomFlags): SymphonyClinicalSnaps
 // ---------------------------------------------------------------------------
 
 describe('SYMPHONY_CLINICAL_PATTERNS registry', () => {
+  it('resolves every referenced action protocol ID', () => {
+    const referenced = new Set(
+      SYMPHONY_CLINICAL_PATTERNS
+        .map(pattern => pattern.actionProtocolId)
+        .filter((value): value is NonNullable<typeof value> => value !== undefined)
+    )
+
+    expect(SYMPHONY_ACTION_PROTOCOLS).toHaveLength(9)
+    for (const protocolId of referenced) {
+      expect(getSymphonyActionProtocol(protocolId)?.id).toBe(protocolId)
+    }
+  })
+
   it('contains exactly 70 patterns', () => {
     expect(SYMPHONY_CLINICAL_PATTERNS).toHaveLength(70)
   })
@@ -142,6 +159,15 @@ describe('evaluateClinicalPatterns return type', () => {
       expect(typeof alert.triggeredAt).toBe('string')
     }
   })
+
+  it('attaches canonical action protocol payload when pattern defines one', () => {
+    const result = evaluateClinicalPatterns(makeQsofa2Snapshot())
+    const cp001 = result.find(alert => alert.id === 'assist-cp-001')
+
+    expect(cp001?.actionProtocolId).toBe('PROTO_SEPSIS')
+    expect(cp001?.actionProtocol?.id).toBe('PROTO_SEPSIS')
+    expect(cp001?.actionProtocol?.sections.some(section => section.key === 'C')).toBe(true)
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -165,8 +191,9 @@ describe('CP-001 qSOFA ≥2', () => {
     const alerts = evaluateClinicalPatterns(snapshot)
     const cp001 = alerts.find(a => a.id === 'assist-cp-001')
     expect(cp001).toBeDefined()
-    expect(cp001!.severity).toBe('high')
-    expect(cp001!.source).toBe('pattern')
+    if (!cp001) throw new Error('assist-cp-001 should exist')
+    expect(cp001.severity).toBe('high')
+    expect(cp001.source).toBe('pattern')
   })
 
   it('does not fire when only 1 qSOFA criterion is met (RR normal, SBP normal, AVPU altered)', () => {
@@ -191,7 +218,8 @@ describe('CP-002 qSOFA ≥2 + suspected infection', () => {
     const alerts = evaluateClinicalPatterns(snapshot)
     const cp002 = alerts.find(a => a.id === 'assist-cp-002')
     expect(cp002).toBeDefined()
-    expect(cp002!.severity).toBe('critical')
+    if (!cp002) throw new Error('assist-cp-002 should exist')
+    expect(cp002.severity).toBe('critical')
   })
 
   it('does not fire when infection flag is missing (even with qSOFA ≥2)', () => {

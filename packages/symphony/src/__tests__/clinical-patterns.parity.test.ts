@@ -13,8 +13,6 @@
 
 import { describe, expect, it } from 'vitest'
 
-import type { SymphonyClinicalSnapshot, SymphonySymptomContext, SymphonySymptomSignalResult } from '../index'
-import { evaluateClinicalPatterns } from '../engine/clinical-patterns'
 import {
   adaptAssistPatternToSymphonyAlert,
   ASSIST_PATTERN_PARITY_DEFINITIONS,
@@ -22,6 +20,8 @@ import {
   type AssistPatternParityDefinition,
   type AssistPatternParityCriterion,
 } from '../adapters/assist-patterns-parity'
+import { evaluateClinicalPatterns } from '../engine/clinical-patterns'
+import type { SymphonyClinicalSnapshot, SymphonySymptomContext, SymphonySymptomSignalResult } from '../index'
 
 // ---------------------------------------------------------------------------
 // Trigger snapshot builder
@@ -219,14 +219,16 @@ describe('clinical-patterns parity — representative CPs per gate', () => {
   it('CP-001 qSOFA ≥2 (GATE_5_SEPSIS, high, tier A)', () => {
     const { found, expected } = parityCheck('CP-001')
     expect(found).toBeDefined()
-    expect(found!.severity).toBe(expected.severity)
-    expect(found!.title).toBe(expected.title)
+    if (!found) throw new Error('CP-001 should produce an alert')
+    expect(found.severity).toBe(expected.severity)
+    expect(found.title).toBe(expected.title)
   })
 
   it('CP-002 qSOFA ≥2 + infeksi (GATE_5_SEPSIS, critical, tier B)', () => {
     const { found, expected } = parityCheck('CP-002')
     expect(found).toBeDefined()
-    expect(found!.severity).toBe(expected.severity)
+    if (!found) throw new Error('CP-002 should produce an alert')
+    expect(found.severity).toBe(expected.severity)
   })
 })
 
@@ -245,9 +247,10 @@ describe('clinical-patterns parity — all 70 CPs', () => {
 
       const found = alerts.find(a => a.id === adapterAlert.id)
       expect(found).toBeDefined()
+      if (!found) throw new Error(`Missing alert for ${def.id}`)
 
       // Deep-equal on stable shape fields — reasoning and triggeredAt differ by design
-      const { reasoning: _fr, triggeredAt: _ft, ...foundRest } = found!
+      const { reasoning: _fr, triggeredAt: _ft, ...foundRest } = found
       const { reasoning: _ar, triggeredAt: _at, ...adapterRest } = adapterAlert
       expect(foundRest).toEqual(adapterRest)
     })

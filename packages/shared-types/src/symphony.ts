@@ -1,4 +1,4 @@
-export const SYMPHONY_CONTRACT_VERSION = '0.2.0' as const
+export const SYMPHONY_CONTRACT_VERSION = '0.3.0' as const
 
 export type SymphonyContractVersion = typeof SYMPHONY_CONTRACT_VERSION
 
@@ -21,6 +21,41 @@ export type SymphonyAlertSource =
   | 'llm'
   | 'safety_gate'
   | 'fallback'
+
+export type SymphonyActionProtocolId =
+  | 'PROTO_RESP_FAILURE'
+  | 'PROTO_SHOCK'
+  | 'PROTO_SEPSIS'
+  | 'PROTO_ANAPHYLAXIS'
+  | 'PROTO_ACS'
+  | 'PROTO_STROKE'
+  | 'PROTO_DKA_HHS'
+  | 'PROTO_HYPOGLYCEMIA'
+  | 'PROTO_CARDIAC_ARREST'
+
+export type SymphonyActionProtocolSectionKey = 'A' | 'B' | 'C' | 'D' | 'E' | 'other'
+
+export type SymphonyReferralUrgency = 'immediate' | 'emergency' | 'urgent'
+
+export interface SymphonyActionProtocolSection {
+  key: SymphonyActionProtocolSectionKey
+  title: string
+  steps: string[]
+}
+
+export interface SymphonyActionProtocolReferral {
+  required: boolean
+  urgency: SymphonyReferralUrgency
+  criteria: string[]
+}
+
+export interface SymphonyActionProtocol {
+  id: SymphonyActionProtocolId
+  title: string
+  summary: string
+  sections: SymphonyActionProtocolSection[]
+  referral: SymphonyActionProtocolReferral
+}
 
 export type SymphonySafetyGate =
   | 'GATE_1_VITALS'
@@ -106,6 +141,8 @@ export interface SymphonyAlert {
   reasoning: string[]
   source: SymphonyAlertSource
   gate?: SymphonySafetyGate
+  actionProtocolId?: SymphonyActionProtocolId
+  actionProtocol?: SymphonyActionProtocol
   acknowledged: boolean
   triggeredAt: string
 }
@@ -320,7 +357,7 @@ export interface SymphonyClinicalPattern {
   scoredCriteria?: SymphonyCriterion[]
   minScore?: number
   recommendations: string[]
-  actionProtocolId?: string
+  actionProtocolId?: SymphonyActionProtocolId
   supersededBy?: string[]
   requiresVitals?: string[]
   source: string
@@ -337,5 +374,5 @@ export interface SymphonyPatternMatch<P extends SymphonyEvaluablePattern = Symph
   matchedCriteria: SymphonyCriterion[]
   score?: SymphonyScoreResult
   confidence: number
-  actionProtocolId?: string
+  actionProtocolId?: SymphonyActionProtocolId
 }

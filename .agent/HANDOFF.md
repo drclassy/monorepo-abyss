@@ -1,6 +1,6 @@
 # HANDOFF.md — The Abyss (Monorepo Root)
 <!-- Overwrite at the start of each new session. -->
-<!-- Last updated: 2026-04-22 16:54 · Agent: Claude · Session: symphony-phase-3-fixes -->
+<!-- Last updated: 2026-04-22 19:05 · Agent: Codex · Session: symphony-phase-4-action-protocols -->
 
 ---
 
@@ -12,10 +12,10 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Quick Orient (for new thread)
 
-**Branch:** `abyss-core` at `39db0cb` · **~45 commits ahead of `origin/abyss-core`** · **NOT PUSHED**
+**Branch:** `abyss-core` at `74defbb` + local Phase 4 changes · **NOT PUSHED**
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
 **Primary mission:** SYMPHONY Canonicalization Migration (7 phases, Chief-locked order)
-**Phases 1-3 done + quality-gated** · Phase 4 = next
+**Phases 1-4 implemented** · Phase 5 = next
 
 ---
 
@@ -29,7 +29,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 | 1 | Symptom Signals NLP (19 matchers, 3-token negation) | ✅ `a587b41` |
 | 2 | Pattern Engine generic evaluator | ✅ `0a471bb` (contract v0.2.0) |
 | 3 | Clinical Patterns Evaluator (70 CP native SYMPHONY) | ✅ `8fb9d1d` + `39db0cb` (208/208, quality-gated) |
-| 4 | Action Protocols (ABCDE) | ⬜ next |
+| 4 | Action Protocols (ABCDE) | ✅ local changes verified (contract v0.3.0, 210/210) |
 | 5 | Gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed) | ⬜ |
 | 6 | Prediction + classifier refinements | ⬜ |
 | 7 | Pharmacology decision surface (SYMPHONY vs @the-abyss/clinical-references) | ⬜ |
@@ -38,11 +38,13 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - `.agent/reports/2026-04-20-symphony-alignment.md` — Class A read-only verification
 - `.agent/reports/2026-04-20-symphony-coverage-audit.md` — coverage gap inventory
 
-**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.2.0'` at `packages/shared-types/src/symphony.ts` (bumped post-Phase-2, commit `0a471bb`).
+**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.3.0'` at `packages/shared-types/src/symphony.ts` (local, not committed).
 
-**Phase 4 entry point:** Action Protocols ABCDE — attach `PROTO_*` IDs to clinical pattern evaluator output. Await Chief GO.
+**Phase 4 result:** 9 canonical `PROTO_*` registries now exist in `packages/symphony/src/engine/action-protocols.ts`; evaluator/parity adapter attach `actionProtocolId` + canonical payload to `SymphonyAlert`.
 
 **Phase 3 quality gate closed:** `SymphonySymptomContext` (27 flags), `SymphonyEvaluablePattern` generic, unsafe gate-bypass cast removed (2 data-transform casts remain in `clinical-patterns-definitions.ts` — expected, Assist→SYMPHONY criterion conversion), deep-equal parity on 70 CPs.
+
+**Phase 4 verification:** `pnpm --filter @the-abyss/symphony test` → 210/210 PASS; `typecheck` PASS; `lint` PASS.
 
 ---
 
@@ -110,8 +112,8 @@ From prior Codex session:
 
 ## Next Action Options (Chief choose)
 
-1. **Phase 4 GO** — Action Protocols ABCDE, attach `PROTO_*` IDs to evaluator output
-2. **Push `abyss-core`** → `git push origin abyss-core` (~44 commits, feature branch, aman)
+1. **Commit Phase 4** — stage explicit SYMPHONY/shared-types/.agent files only
+2. **Phase 5 GO** — gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed)
 3. **Commit Avvcenna rebrand** (Chief's in-progress work) — separate thread/agent
 4. **Break / istirahat** — all state preserved locally
 

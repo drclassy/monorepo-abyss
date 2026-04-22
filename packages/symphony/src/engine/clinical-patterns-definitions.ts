@@ -12,6 +12,7 @@
  */
 
 import type { SymphonyClinicalPattern, SymphonyCriterion, SymphonySafetyGate } from '@the-abyss/shared-types'
+
 import {
   ASSIST_PATTERN_PARITY_DEFINITIONS,
   type AssistPatternParityDefinition,

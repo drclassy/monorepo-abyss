@@ -18,6 +18,20 @@
 
 ### [2026-04-10] .claude/ folder at monorepo root
 **Context:** Claude Code settings.json, subagents, commands, and skills need a home.
+**Decision:** Store all Claude Code configuration in a tracked `.claude/` directory at the root.
+**Rationale:** Ensures all team members (and future agent sessions) share the same prompt engineering and tool configuration.
+
+---
+<!-- Agent: append new decisions below this line -->
+
+### [2026-04-21] Vertex AI & Healthcare AI Infrastructure Standards
+**Context:** Establishing a robust, HIPAA-ready AI infrastructure for Sentra/Melinda Hospital within the Abyss monorepo.
+**Decision:** 
+1. **Library Standardization:** Use `@google-cloud/vertexai` (GenAI), `@google-cloud/vision` (OCR), and `google-auth-library` (IAM Auth).
+2. **Authentication:** Mandatory Service Account (ADC) via `google-auth-library` for all healthcare workloads; bare API keys are forbidden.
+3. **Architecture:** Shared AI logic in `packages/ai-core`, vector operations in `packages/vector-store`.
+**Rationale:** Ensures international compliance (HIPAA/GDPR), enterprise-grade security, and seamless multi-region scalability.
+**Consequences:** Requires IAM role management for Service Accounts; prevents credential leaks in code/env.
 **Decision:** .claude/ at monorepo root with agents/, commands/, skills/ subdirectories.
 **Rationale:** Claude Code reads .claude/ from project root; enables subagent delegation and custom commands.
 **Consequences:** settings.json needed; subagent definitions in agents/*.md; slash commands in commands/*.md.
@@ -108,3 +122,9 @@ WITH (m = 24, ef_construction = 256);
 **Approach:** TDD, one matcher per commit, foundation of 57 pre-existing tests committed as a dedicated baseline (`9644530`) before any Phase 1 work. Lint debt inherited from foundation was resolved in two dedicated cleanup commits (`1afd058` auto-fix import order, `387d9b5` manual non-null/unused-var with explicit `throw` guards — no optional chaining, no silent failure paths).
 **Consequences:** Phase 2 (pattern-engine) and Phase 3 (clinical-patterns evaluator) can now consume canonical symptom signals without reaching into Assist source. Dashboard may optionally switch from local symptom extraction to SYMPHONY's — **not started in this phase**. No Dashboard production import replacement. Adapter parity harness continues unchanged. 84/84 tests GREEN, lint PASS, typecheck PASS. Gap #8 closed.
 **Reviewed by:** Chief (GO granted 2026-04-20 for Phase 1 only; Phase 2 requires fresh brainstorm + write-plan cycle before execution).
+
+### [2026-04-22] Action Protocols canonicalized into SYMPHONY (Phase 4 local complete)
+**Context:** Coverage audit marked 9 ABCDE Action Protocols as high-priority clinical gaps. Phase 3 already carried `actionProtocolId` hints on patterns, but there was no canonical SYMPHONY registry or alert-level payload for consumers.
+**Decision:** Added `packages/symphony/src/engine/action-protocols.ts` as the canonical registry for 9 `PROTO_*` templates (`RESP_FAILURE`, `SHOCK`, `SEPSIS`, `ANAPHYLAXIS`, `ACS`, `STROKE`, `DKA_HHS`, `HYPOGLYCEMIA`, `CARDIAC_ARREST`). Public contract widened with `SymphonyActionProtocol*` types plus additive `SymphonyAlert.actionProtocolId` and `SymphonyAlert.actionProtocol`. Both `evaluateClinicalPatterns()` and `adaptAssistPatternToSymphonyAlert()` now hydrate canonical protocol payloads through the same registry.
+**Rationale:** Keeps SYMPHONY as the single clinical source of truth while preserving Phase 3 parity semantics. Consumers receive structured, typed action guidance without re-implementing protocol text or hard-coding `PROTO_*` lookups.
+**Consequences:** `SYMPHONY_CONTRACT_VERSION` bumped from `0.2.0` to `0.3.0`. Verification on 2026-04-22: `pnpm --filter @the-abyss/symphony test` PASS (210/210), `typecheck` PASS, `lint` PASS. Gate taxonomy remains deferred to Phase 5; local gates `GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED` are unchanged.

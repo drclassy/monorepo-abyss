@@ -1,4 +1,5 @@
-import type { SymphonyAlert, SymphonyAlertSeverity } from '../contracts'
+import type { SymphonyActionProtocolId, SymphonyAlert, SymphonyAlertSeverity } from '../contracts'
+import { attachSymphonyActionProtocol } from '../engine/action-protocols'
 
 export type AssistPatternParityId = `CP-${string}`
 
@@ -51,7 +52,7 @@ export interface AssistPatternParityDefinition {
   reasoning: string
   criteria: AssistPatternParityCriteria
   recommendations: readonly string[]
-  actionProtocolId?: string
+  actionProtocolId?: SymphonyActionProtocolId
   requiresVitals?: readonly string[]
   source: string
   differentials?: readonly string[]
@@ -3333,7 +3334,7 @@ export function adaptAssistPatternToSymphonyAlert(
   const protocol = pattern.actionProtocolId ?? 'no_protocol'
   const score = pattern.criteria.minScore === undefined ? 'all_required' : String(pattern.criteria.minScore)
 
-  return {
+  return attachSymphonyActionProtocol({
     id: assistPatternAlertId(pattern.id),
     severity: pattern.severity,
     title: pattern.title,
@@ -3345,9 +3346,10 @@ export function adaptAssistPatternToSymphonyAlert(
       `Source: ${pattern.source}.`,
     ],
     source: 'pattern',
+    actionProtocolId: pattern.actionProtocolId,
     acknowledged: options.acknowledged ?? false,
     triggeredAt,
-  }
+  })
 }
 
 export function runAssistPatternParityFixture(

@@ -96,9 +96,6 @@ export { evaluateSymphonyVitalAlerts } from './engine/vital-alerts'
 
 export {
   detectSymphonySymptomSignals,
-  type SymphonySymptomSignal,
-  type SymphonySymptomSignalInput,
-  type SymphonySymptomSignalResult,
 } from './engine/symptom-signals'
 
 export {
@@ -144,6 +141,12 @@ export {
 } from './engine/pattern-engine'
 
 export {
+  attachSymphonyActionProtocol,
+  getSymphonyActionProtocol,
+  SYMPHONY_ACTION_PROTOCOLS,
+} from './engine/action-protocols'
+
+export {
   clinicalPatternMatchToSymphonyAlert,
   evaluateClinicalPatterns,
   SYMPHONY_CLINICAL_PATTERNS,
@@ -152,6 +155,11 @@ export {
 
 export {
   SYMPHONY_CONTRACT_VERSION,
+  type SymphonyActionProtocol,
+  type SymphonyActionProtocolId,
+  type SymphonyActionProtocolReferral,
+  type SymphonyActionProtocolSection,
+  type SymphonyActionProtocolSectionKey,
   type SymphonyAlert,
   type SymphonyAlertSeverity,
   type SymphonyAlertSource,
@@ -181,6 +189,7 @@ export {
   type SymphonyPhysiologyBand,
   type SymphonyPregnancyStatus,
   type SymphonyQualitySummary,
+  type SymphonyReferralUrgency,
   type SymphonyResult,
   type SymphonySafetyGate,
   type SymphonyScoreResult,

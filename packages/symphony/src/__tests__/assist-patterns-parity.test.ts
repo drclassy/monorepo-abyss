@@ -62,10 +62,14 @@ describe('Assist clinical-pattern parity adapter', () => {
       triggeredAt: '2026-04-19T16:00:00.000Z',
     })
 
-    expect(alert).toEqual({
+    expect(alert).toMatchObject({
       id: 'assist-cp-024',
       severity: 'critical',
       title: 'Anafilaksis — EMERGENCY',
+      actionProtocolId: 'PROTO_ANAPHYLAXIS',
+      actionProtocol: {
+        id: 'PROTO_ANAPHYLAXIS',
+      },
       reasoning: expect.arrayContaining([
         expect.stringContaining('Assist pattern CP-024'),
         expect.stringContaining('GATE_ANAPHYLAXIS'),

@@ -14,10 +14,16 @@
  * local gate strings (GATE_11–13) are handled without any cast.
  */
 
-import type { SymphonyClinicalSnapshot, SymphonyEvaluablePattern, SymphonyAlert } from '@the-abyss/shared-types'
+import type {
+  SymphonyAlert,
+  SymphonyClinicalSnapshot,
+  SymphonyEvaluablePattern,
+  SymphonyPatternMatch,
+} from '@the-abyss/shared-types'
 
-import { evaluateSymphonyPatterns, type SymphonyPatternEvaluationOptions, type SymphonyPatternMatch } from './pattern-engine'
+import { attachSymphonyActionProtocol } from './action-protocols'
 import { SYMPHONY_CLINICAL_PATTERNS } from './clinical-patterns-definitions'
+import { evaluateSymphonyPatterns, type SymphonyPatternEvaluationOptions } from './pattern-engine'
 
 export { SYMPHONY_CLINICAL_PATTERNS }
 
@@ -30,15 +36,16 @@ export function clinicalPatternMatchToSymphonyAlert(
   triggeredAt?: string
 ): SymphonyAlert {
   const pat = match.pattern
-  return {
+  return attachSymphonyActionProtocol({
     id: `assist-${pat.id.toLowerCase()}`,
     severity: pat.severity,
     title: pat.title,
     reasoning: [pat.reasoning],
     source: 'pattern',
+    actionProtocolId: pat.actionProtocolId,
     acknowledged: false,
     triggeredAt: triggeredAt ?? new Date().toISOString(),
-  }
+  })
 }
 
 // ---------------------------------------------------------------------------
