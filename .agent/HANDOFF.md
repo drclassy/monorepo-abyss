@@ -1,6 +1,6 @@
 # HANDOFF.md — The Abyss (Monorepo Root)
 <!-- Overwrite at the start of each new session. -->
-<!-- Last updated: 2026-04-22 20:05 · Agent: Codex · Session: symphony-phase-7-pharmacology-decision -->
+<!-- Last updated: 2026-04-22 20:11 · Agent: Codex · Session: symphony-phase-7-pharmacology-decision -->
 
 ---
 
@@ -12,7 +12,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Quick Orient (for new thread)
 
-**Branch:** `abyss-core` at `3398ce7` + local Phase 7 docs sync · **NOT PUSHED**
+**Branch:** `abyss-core` · Phase 7 ADR landed in `3e97eeb` · **NOT PUSHED**
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
 **Primary mission:** SYMPHONY Canonicalization Migration (7 phases, Chief-locked order)
 **Phases 1-7 decided/implemented** · next = `@the-abyss/clinical-references` scaffold planning
