@@ -1,4 +1,4 @@
-export const SYMPHONY_CONTRACT_VERSION = '0.1.4' as const
+export const SYMPHONY_CONTRACT_VERSION = '0.2.0' as const
 
 export type SymphonyContractVersion = typeof SYMPHONY_CONTRACT_VERSION
 
