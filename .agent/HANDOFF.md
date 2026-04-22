@@ -1,6 +1,6 @@
 # HANDOFF.md — The Abyss (Monorepo Root)
 <!-- Overwrite at the start of each new session. -->
-<!-- Last updated: 2026-04-20 22:15 · Agent: Claude · Session: jalur-b-takeover-close -->
+<!-- Last updated: 2026-04-22 15:20 · Agent: Claude · Session: symphony-phase-3-complete -->
 
 ---
 
@@ -12,10 +12,10 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Quick Orient (for new thread)
 
-**Branch:** `abyss-core` at `d770d72` · **37 commits ahead of `origin/abyss-core`** · **NOT PUSHED**
+**Branch:** `abyss-core` at `8fb9d1d` · **~44 commits ahead of `origin/abyss-core`** · **NOT PUSHED**
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
 **Primary mission:** SYMPHONY Canonicalization Migration (7 phases, Chief-locked order)
-**Phase 1 done** (2026-04-20, `a587b41`) · Phase 2 = next
+**Phases 1-3 done** · Phase 4 = next
 
 ---
 
@@ -27,9 +27,9 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 | # | Scope | Status |
 |---|---|---|
 | 1 | Symptom Signals NLP (19 matchers, 3-token negation) | ✅ `a587b41` |
-| 2 | Pattern Engine generic evaluator | ⬜ next |
-| 3 | Clinical Patterns Evaluator (70 CP native SYMPHONY) | ⬜ |
-| 4 | Action Protocols (ABCDE) | ⬜ |
+| 2 | Pattern Engine generic evaluator | ✅ `0a471bb` (contract v0.2.0) |
+| 3 | Clinical Patterns Evaluator (70 CP native SYMPHONY) | ✅ `8fb9d1d` (208/208 tests) |
+| 4 | Action Protocols (ABCDE) | ⬜ next |
 | 5 | Gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed) | ⬜ |
 | 6 | Prediction + classifier refinements | ⬜ |
 | 7 | Pharmacology decision surface (SYMPHONY vs @the-abyss/clinical-references) | ⬜ |
@@ -38,43 +38,41 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - `.agent/reports/2026-04-20-symphony-alignment.md` — Class A read-only verification
 - `.agent/reports/2026-04-20-symphony-coverage-audit.md` — coverage gap inventory
 
-**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.1.4'` at `packages/shared-types/src/symphony.ts:1` (bumped post-Phase-1, commit `8150fd7`).
+**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.2.0'` at `packages/shared-types/src/symphony.ts` (bumped post-Phase-2, commit `0a471bb`).
 
-**Phase 2 entry point:** belum di-brainstorm. Saat Chief siap, gunakan `/avcn-brainstorm` dengan baseline reports di atas sebagai input.
+**Phase 4 entry point:** Action Protocols ABCDE — attach `PROTO_*` IDs to clinical pattern evaluator output. Await Chief GO.
 
 ---
 
-## This Session's Commits (2026-04-20, not pushed)
+## This Session's Commits (2026-04-22, not pushed)
 
-**Housekeeping (Phase 1 follow-ups):**
-- `8150fd7` chore(symphony): bump contract version to 0.1.4
-- `93e6f94` docs(agent): sync state + alignment reports
-- `6b21430` docs(agent): archive MASTER_CONTEXT_2026-04-19
+**Phase 2 — Pattern Engine (4 commits):**
+- `97ea8c2` feat(symphony): Phase 2 pattern engine — generic evaluator
+- `0a68614` feat(symphony): Phase 2 pattern engine — integration fixtures
+- `31e13ef` feat(shared-types): promote Phase 2 pattern engine types to public contract
+- `0a471bb` chore(symphony): bump SYMPHONY_CONTRACT_VERSION to 0.2.0
 
-**Cursor parallel work (reverted):**
-- `8431e3d`, `a7bd65c`, `2548e9b` — Cursor docs automation attempts (bugged)
-- `f471402`, `52704f4`, `e959d95` — revert commits
+**Phase 3 — Clinical Patterns Evaluator (1 commit):**
+- `8fb9d1d` feat(symphony): Phase 3 — native clinical patterns evaluator (70 CP rules)
+  - `clinical-patterns-definitions.ts` — DRY converter + SYMPHONY_CLINICAL_PATTERNS registry
+  - `clinical-patterns.ts` — evaluateClinicalPatterns() + clinicalPatternMatchToSymphonyAlert()
+  - 2 test files: 85 unit + 72 parity = 208/208 green
+  - Plan doc: `docs/superpowers/plans/2026-04-22-symphony-phase-3-clinical-patterns.md`
 
-**Jalur B takeover (Claude, 5 commits):**
-- `dc777da` feat(docs): TSDoc markdown generator *(removed in d770d72)*
-- `bdbbc21` feat(docs): functional feature docs generator
-- `f11e6c7` feat(docs): release notes generator placeholder
-- `2890972` feat(ci): docs automation workflow (PR-not-push)
-- `d770d72` chore(docs): drop TSDoc generator (deferred)
-
-**Final active scripts:** `scripts/generate-functional-docs.js`, `scripts/generate-release-notes.js`
-**Workflow:** `.github/workflows/generate-documentation.yml` (PR-not-push pattern, no TSDoc step)
+**Prior session scripts (still active):**
+- `scripts/generate-functional-docs.js`, `scripts/generate-release-notes.js`
+- `.github/workflows/generate-documentation.yml`
 
 ---
 
 ## Known Entanglements (DO NOT TOUCH in new thread)
 
-1. **Avvcenna rebrand in working tree** — Chief's in-progress work. Files include `pnpm-lock.yaml` (`claudesy-*` → `avvcenna-*` rename), `apps/community/avvcenna-memory/**`, dan misc package.json renames. Rebrand spec: `docs/superpowers/specs/2026-04-19-avvcenna-rebranding-design.md`. **Wait for Chief to commit rebrand before adding `@microsoft/tsdoc` formal devDep.**
+1. **Avvcenna rebrand in working tree** — Chief's in-progress work. Files include `pnpm-lock.yaml` (`Avvcenna+-*` → `avvcenna-*` rename), `apps/community/avvcenna-memory/**`, dan misc package.json renames. Rebrand spec: `docs/superpowers/specs/2026-04-19-avvcenna-rebranding-design.md`. **Wait for Chief to commit rebrand before adding `@microsoft/tsdoc` formal devDep.**
 
 2. **Orphan `@microsoft/tsdoc` in `pnpm-lock.yaml`** — 6 entries (0.14.2 + 0.16.0), leftover dari Cursor `pnpm add` yang tidak ikut di-revert. Tidak declared di package.json manapun. Left as-is per Opsi 2 decision (tsdoc deferred).
 
 3. **2 pre-existing stashes** (bukan Claude punya):
-   - `stash@{0}`: "On abyss-core: pre-rescue stale claudesy progress log"
+   - `stash@{0}`: "On abyss-core: pre-rescue stale Avvcenna+ progress log"
    - `stash@{1}`: "WIP on abyss-core: a70d601 docs(readme): update GitHub URLs to Avvicenna account"
    Chief's work. Do NOT `stash pop` these without explicit instruction.
 
@@ -105,9 +103,9 @@ From prior Codex session:
 
 ## Next Action Options (Chief choose)
 
-1. **Push `abyss-core`** → `git push origin abyss-core` (37 commits, feature branch, aman)
-2. **Commit Avvcenna rebrand** (Chief's in-progress work) — separate thread/agent
-3. **Phase 2 brainstorm** — Pattern Engine generic evaluator (use baseline reports as input)
+1. **Phase 4 GO** — Action Protocols ABCDE, attach `PROTO_*` IDs to evaluator output
+2. **Push `abyss-core`** → `git push origin abyss-core` (~44 commits, feature branch, aman)
+3. **Commit Avvcenna rebrand** (Chief's in-progress work) — separate thread/agent
 4. **Break / istirahat** — all state preserved locally
 
 ---
