@@ -113,6 +113,7 @@
 |Date|Agent|Summary|
 |------|-------|---------|
 | 2026-04-22 | Claude | SYMPHONY Phase 2: pattern engine generic evaluator (4 commits: `97ea8c2`, `0a68614`, `31e13ef`, `0a471bb`); contract bumped to 0.2.0 |
+| 2026-04-22 | Claude | SYMPHONY Phase 3 fixes — contract (SymphonySymptomContext), gate boundary (generic + no unsafe cast), parity gate (deep-equal 70 CPs) (`39db0cb`) |
 | 2026-04-22 | Claude | SYMPHONY Phase 3: native clinical patterns evaluator — 70 CP rules, TDD green 208/208, parity 100% (`8fb9d1d`) |
 | 2026-04-20 | Codex/Dexton | vector-store DI boundary + ingest utility hardening; lint/typecheck/test green; recovery corrected DB target back to IntelligenceBoard app-level schema |
 | 2026-04-19 | Claude | vector-store refactor: Gemini REST → Vertex AI IAM, VectorStoreConfig fixed, 2 bugs patched (LIMIT cast, index.ts exports), HNSW best-practice params documented |
@@ -693,6 +694,33 @@ packages/symphony/src/__tests__/clinical-patterns.parity.test.ts
 packages/symphony/src/__tests__/clinical-patterns.test.ts
 packages/symphony/src/engine/clinical-patterns-definitions.ts
 packages/symphony/src/engine/clinical-patterns.ts
+packages/symphony/src/index.ts
+```
+
+---
+## 2026-04-22 15:19 — `43c7e37` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(agent): update PROGRESS + HANDOFF post Phase 2 & Phase 3
+- **Files changed**: 2 file(s)
+
+```
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+```
+
+---
+## 2026-04-22 15:31 — `39db0cb` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: fix(symphony): Phase 3 completion — contract, gate boundary, parity gate
+- **Files changed**: 5 file(s)
+
+```
+packages/shared-types/src/symphony.ts
+packages/symphony/src/__tests__/clinical-patterns.parity.test.ts
+packages/symphony/src/engine/clinical-patterns.ts
+packages/symphony/src/engine/pattern-engine.ts
 packages/symphony/src/index.ts
 ```
 

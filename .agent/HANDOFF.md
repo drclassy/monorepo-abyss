@@ -1,6 +1,6 @@
 # HANDOFF.md — The Abyss (Monorepo Root)
 <!-- Overwrite at the start of each new session. -->
-<!-- Last updated: 2026-04-22 15:20 · Agent: Claude · Session: symphony-phase-3-complete -->
+<!-- Last updated: 2026-04-22 16:54 · Agent: Claude · Session: symphony-phase-3-fixes -->
 
 ---
 
@@ -12,10 +12,10 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Quick Orient (for new thread)
 
-**Branch:** `abyss-core` at `8fb9d1d` · **~44 commits ahead of `origin/abyss-core`** · **NOT PUSHED**
+**Branch:** `abyss-core` at `39db0cb` · **~45 commits ahead of `origin/abyss-core`** · **NOT PUSHED**
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
 **Primary mission:** SYMPHONY Canonicalization Migration (7 phases, Chief-locked order)
-**Phases 1-3 done** · Phase 4 = next
+**Phases 1-3 done + quality-gated** · Phase 4 = next
 
 ---
 
@@ -28,7 +28,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 |---|---|---|
 | 1 | Symptom Signals NLP (19 matchers, 3-token negation) | ✅ `a587b41` |
 | 2 | Pattern Engine generic evaluator | ✅ `0a471bb` (contract v0.2.0) |
-| 3 | Clinical Patterns Evaluator (70 CP native SYMPHONY) | ✅ `8fb9d1d` (208/208 tests) |
+| 3 | Clinical Patterns Evaluator (70 CP native SYMPHONY) | ✅ `8fb9d1d` + `39db0cb` (208/208, quality-gated) |
 | 4 | Action Protocols (ABCDE) | ⬜ next |
 | 5 | Gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed) | ⬜ |
 | 6 | Prediction + classifier refinements | ⬜ |
@@ -42,6 +42,8 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 **Phase 4 entry point:** Action Protocols ABCDE — attach `PROTO_*` IDs to clinical pattern evaluator output. Await Chief GO.
 
+**Phase 3 quality gate closed:** `SymphonySymptomContext` (27 flags), `SymphonyEvaluablePattern` generic, zero `as unknown as` casts, deep-equal parity on 70 CPs.
+
 ---
 
 ## This Session's Commits (2026-04-22, not pushed)
@@ -52,8 +54,13 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - `31e13ef` feat(shared-types): promote Phase 2 pattern engine types to public contract
 - `0a471bb` chore(symphony): bump SYMPHONY_CONTRACT_VERSION to 0.2.0
 
-**Phase 3 — Clinical Patterns Evaluator (1 commit):**
+**Phase 3 — Clinical Patterns Evaluator (2 commits):**
 - `8fb9d1d` feat(symphony): Phase 3 — native clinical patterns evaluator (70 CP rules)
+- `39db0cb` fix(symphony): Phase 3 completion — contract, gate boundary, parity gate
+  - `SymphonySymptomContext` (27 flags) — consumers no longer need wild casts
+  - `SymphonyEvaluablePattern` generic — `as unknown as` cast count = 0
+  - `SymphonyLocalClinicalPattern` removed from public index — gate boundary sealed
+  - Parity suite: deep-equal `{id, severity, title, source, acknowledged}` on all 70 CPs
   - `clinical-patterns-definitions.ts` — DRY converter + SYMPHONY_CLINICAL_PATTERNS registry
   - `clinical-patterns.ts` — evaluateClinicalPatterns() + clinicalPatternMatchToSymphonyAlert()
   - 2 test files: 85 unit + 72 parity = 208/208 green
