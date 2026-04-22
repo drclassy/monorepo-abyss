@@ -147,7 +147,6 @@ export {
   clinicalPatternMatchToSymphonyAlert,
   evaluateClinicalPatterns,
   SYMPHONY_CLINICAL_PATTERNS,
-  type SymphonyLocalClinicalPattern,
 } from './engine/clinical-patterns'
 
 
@@ -159,6 +158,7 @@ export {
   type SymphonyAvpuLevel,
   type SymphonyClinicalHistory,
   type SymphonyClinicalPattern,
+  type SymphonyEvaluablePattern,
   type SymphonyClinicalSnapshot,
   type SymphonyConfidenceBand,
   type SymphonyConsciousnessLevel,
@@ -186,6 +186,7 @@ export {
   type SymphonyScoreResult,
   type SymphonySexAtBirth,
   type SymphonySnapshotPatient,
+  type SymphonySymptomContext,
   type SymphonySymptomSignal,
   type SymphonySymptomSignalInput,
   type SymphonySymptomSignalResult,

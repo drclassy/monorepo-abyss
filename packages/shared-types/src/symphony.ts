@@ -175,6 +175,38 @@ export interface SymphonySymptomSignalResult {
   negatedSignals: SymphonySymptomSignal[]
 }
 
+/** Boolean symptom flags used by Tier B/C clinical patterns (CP-002 through CP-070).
+ *  Consumers populate these alongside signals/negatedSignals on the snapshot. */
+export interface SymphonySymptomContext {
+  accessoryMuscles?: boolean
+  allergenExposure?: boolean
+  alteredMentalStatus?: boolean
+  bleedingHistory?: boolean
+  chestPain?: boolean
+  chestPainDuration?: boolean
+  clinicalConcern?: boolean
+  diaphoresis?: boolean
+  difficultySpeaking?: boolean
+  dizziness?: boolean
+  dyspnea?: boolean
+  fatigue?: boolean
+  focalNeuroDeficit?: boolean
+  giSymptoms?: boolean
+  kussmaulBreathing?: boolean
+  nausea?: boolean
+  pallor?: boolean
+  polyuria?: boolean
+  seizure?: boolean
+  skinMucosalSymptoms?: boolean
+  suddenDyspnea?: boolean
+  suddenOnset?: boolean
+  suspectedInfection?: boolean
+  syncope?: boolean
+  thromboembolismRisk?: boolean
+  weakness?: boolean
+  wheezing?: boolean
+}
+
 // ---------------------------------------------------------------------------
 // ClinicalSnapshot sub-types
 // ---------------------------------------------------------------------------
@@ -246,7 +278,7 @@ export interface SymphonySnapshotPatient {
 export interface SymphonyClinicalSnapshot {
   vitals: SymphonyParsedVitals
   derived: SymphonyDerivedValues
-  symptoms: SymphonySymptomSignalResult
+  symptoms: SymphonySymptomSignalResult & SymphonySymptomContext
   history: SymphonyClinicalHistory
   patient: SymphonySnapshotPatient
   timestamp: number
@@ -296,8 +328,12 @@ export interface SymphonyClinicalPattern {
   confidenceWeight?: number
 }
 
-export interface SymphonyPatternMatch {
-  pattern: SymphonyClinicalPattern
+/** Relaxed pattern type that allows local/extended gate strings beyond SymphonySafetyGate.
+ *  Used by evaluateSymphonyPatterns generic to eliminate unsafe casts for local registries. */
+export type SymphonyEvaluablePattern = Omit<SymphonyClinicalPattern, 'gate'> & { gate: string }
+
+export interface SymphonyPatternMatch<P extends SymphonyEvaluablePattern = SymphonyClinicalPattern> {
+  pattern: P
   matchedCriteria: SymphonyCriterion[]
   score?: SymphonyScoreResult
   confidence: number

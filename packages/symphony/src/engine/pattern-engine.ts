@@ -24,6 +24,7 @@ import type {
   SymphonyClinicalPattern,
   SymphonyClinicalSnapshot,
   SymphonyCriterion,
+  SymphonyEvaluablePattern,
   SymphonyPatternMatch,
   SymphonyPatternSeverity,
   SymphonyPatternTier,
@@ -110,7 +111,7 @@ function evaluateCriterion(snapshot: SymphonyClinicalSnapshot, criterion: Sympho
 // Source citation: pattern-engine.ts:122-128
 // ---------------------------------------------------------------------------
 
-function hasRequiredVitals(snapshot: SymphonyClinicalSnapshot, pattern: SymphonyClinicalPattern): boolean {
+function hasRequiredVitals(snapshot: SymphonyClinicalSnapshot, pattern: SymphonyEvaluablePattern): boolean {
   if (!pattern.requiresVitals || pattern.requiresVitals.length === 0) return true
   return pattern.requiresVitals.every((field) => {
     const val = resolveField(snapshot, `vitals.${field}`)
@@ -124,7 +125,7 @@ function hasRequiredVitals(snapshot: SymphonyClinicalSnapshot, pattern: Symphony
 // Formula: base × weight × (0.8 + 0.2 × ratio), clamped [0.0, 1.0]
 // ---------------------------------------------------------------------------
 
-function calculateConfidence(pattern: SymphonyClinicalPattern, score?: SymphonyScoreResult): number {
+function calculateConfidence(pattern: SymphonyEvaluablePattern, score?: SymphonyScoreResult): number {
   const tierBase: Record<SymphonyPatternTier, number> = { A: 0.9, B: 0.7, C: 0.5 }
   let confidence = tierBase[pattern.tier]
 
@@ -152,13 +153,13 @@ function calculateConfidence(pattern: SymphonyClinicalPattern, score?: SymphonyS
  * @param options  - Optional tier filter
  * @returns Matched patterns sorted by severity (critical first), confidence descending
  */
-export function evaluateSymphonyPatterns(
+export function evaluateSymphonyPatterns<P extends SymphonyEvaluablePattern = SymphonyClinicalPattern>(
   snapshot: SymphonyClinicalSnapshot,
-  patterns: readonly SymphonyClinicalPattern[],
+  patterns: readonly P[],
   options?: SymphonyPatternEvaluationOptions
-): SymphonyPatternMatch[] {
+): SymphonyPatternMatch<P>[] {
   const tierFilter = options?.tierFilter
-  const matches: SymphonyPatternMatch[] = []
+  const matches: SymphonyPatternMatch<P>[] = []
 
   for (const pattern of patterns) {
     // 1. Tier filter

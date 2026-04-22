@@ -13,9 +13,10 @@
 
 import { describe, expect, it } from 'vitest'
 
-import type { SymphonyClinicalSnapshot, SymphonySymptomSignalResult } from '../index'
+import type { SymphonyClinicalSnapshot, SymphonySymptomContext, SymphonySymptomSignalResult } from '../index'
 import { evaluateClinicalPatterns } from '../engine/clinical-patterns'
 import {
+  adaptAssistPatternToSymphonyAlert,
   ASSIST_PATTERN_PARITY_DEFINITIONS,
   assistPatternAlertId,
   type AssistPatternParityDefinition,
@@ -61,7 +62,7 @@ function buildTriggerSnapshot(def: AssistPatternParityDefinition): SymphonyClini
     chronicDiseases: [],
   }
   // Start with empty signals; boolean symptom flags will be added dynamically
-  const symptoms: SymphonySymptomSignalResult & Record<string, unknown> = {
+  const symptoms: SymphonySymptomSignalResult & SymphonySymptomContext = {
     signals: [],
     negatedSignals: [],
   }
@@ -83,7 +84,7 @@ function buildTriggerSnapshot(def: AssistPatternParityDefinition): SymphonyClini
     const { field, op, value } = criterion
 
     if (field.startsWith('symptoms.')) {
-      const key = field.slice('symptoms.'.length)
+      const key = field.slice('symptoms.'.length) as keyof SymphonySymptomContext
       if (op === 'true') {
         symptoms[key] = true
       }
@@ -190,7 +191,7 @@ function buildTriggerSnapshot(def: AssistPatternParityDefinition): SymphonyClini
   return {
     vitals,
     derived,
-    symptoms: symptoms as SymphonySymptomSignalResult,
+    symptoms,
     history,
     patient,
     timestamp: Date.now(),
@@ -234,15 +235,21 @@ describe('clinical-patterns parity — representative CPs per gate', () => {
 // ---------------------------------------------------------------------------
 
 describe('clinical-patterns parity — all 70 CPs', () => {
+  const FIXED_TS = '2026-01-01T00:00:00.000Z'
+
   for (const def of ASSIST_PATTERN_PARITY_DEFINITIONS) {
-    it(`${def.id} → alert id=assist-${def.id.toLowerCase()}, severity=${def.severity}`, () => {
+    it(`${def.id} → deep-equal stable fields against adapter output`, () => {
       const snapshot = buildTriggerSnapshot(def)
-      const alerts = evaluateClinicalPatterns(snapshot)
-      const expectedId = assistPatternAlertId(def.id)
-      const found = alerts.find(a => a.id === expectedId)
+      const alerts = evaluateClinicalPatterns(snapshot, undefined, FIXED_TS)
+      const adapterAlert = adaptAssistPatternToSymphonyAlert(def, { triggeredAt: FIXED_TS })
+
+      const found = alerts.find(a => a.id === adapterAlert.id)
       expect(found).toBeDefined()
-      expect(found!.severity).toBe(def.severity)
-      expect(found!.title).toBe(def.title)
+
+      // Deep-equal on stable shape fields — reasoning and triggeredAt differ by design
+      const { reasoning: _fr, triggeredAt: _ft, ...foundRest } = found!
+      const { reasoning: _ar, triggeredAt: _at, ...adapterRest } = adapterAlert
+      expect(foundRest).toEqual(adapterRest)
     })
   }
 })

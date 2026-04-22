@@ -10,24 +10,23 @@
  * flags on the symptoms object (e.g. symptoms.suspectedInfection = true) for
  * Tier B/C patterns to fire. Tier A patterns (vitals only) work without flags.
  *
- * Cast note: SYMPHONY_CLINICAL_PATTERNS uses SymphonyLocalClinicalPattern
- * (gate type wider than SymphonySafetyGate). The cast to SymphonyClinicalPattern[]
- * is safe because evaluateSymphonyPatterns does not branch on pattern.gate.
+ * evaluateSymphonyPatterns is generic over SymphonyEvaluablePattern so the
+ * local gate strings (GATE_11–13) are handled without any cast.
  */
 
-import type { SymphonyClinicalSnapshot, SymphonyClinicalPattern, SymphonyAlert } from '@the-abyss/shared-types'
+import type { SymphonyClinicalSnapshot, SymphonyEvaluablePattern, SymphonyAlert } from '@the-abyss/shared-types'
 
 import { evaluateSymphonyPatterns, type SymphonyPatternEvaluationOptions, type SymphonyPatternMatch } from './pattern-engine'
-import { SYMPHONY_CLINICAL_PATTERNS, type SymphonyLocalClinicalPattern } from './clinical-patterns-definitions'
+import { SYMPHONY_CLINICAL_PATTERNS } from './clinical-patterns-definitions'
 
-export { SYMPHONY_CLINICAL_PATTERNS, type SymphonyLocalClinicalPattern }
+export { SYMPHONY_CLINICAL_PATTERNS }
 
 // ---------------------------------------------------------------------------
 // Alert converter
 // ---------------------------------------------------------------------------
 
 export function clinicalPatternMatchToSymphonyAlert(
-  match: SymphonyPatternMatch,
+  match: SymphonyPatternMatch<SymphonyEvaluablePattern>,
   triggeredAt?: string
 ): SymphonyAlert {
   const pat = match.pattern
@@ -35,10 +34,7 @@ export function clinicalPatternMatchToSymphonyAlert(
     id: `assist-${pat.id.toLowerCase()}`,
     severity: pat.severity,
     title: pat.title,
-    reasoning: [
-      pat.reasoning,
-      `Confidence: ${(match.confidence * 100).toFixed(0)}%`,
-    ],
+    reasoning: [pat.reasoning],
     source: 'pattern',
     acknowledged: false,
     triggeredAt: triggeredAt ?? new Date().toISOString(),
@@ -64,8 +60,7 @@ export function evaluateClinicalPatterns(
 ): SymphonyAlert[] {
   const matches = evaluateSymphonyPatterns(
     snapshot,
-    // Safe cast: evaluateSymphonyPatterns does not branch on pattern.gate
-    SYMPHONY_CLINICAL_PATTERNS as unknown as readonly SymphonyClinicalPattern[],
+    SYMPHONY_CLINICAL_PATTERNS,
     options
   )
   return matches.map(match => clinicalPatternMatchToSymphonyAlert(match, triggeredAt))
