@@ -69,6 +69,18 @@ export interface SymphonyTimeToCriticalEstimate {
   spo2HoursToCritical: number | null
 }
 
+export interface SymphonyTimeToCriticalProjection {
+  parameter: VitalKey
+  currentValue: number
+  criticalThreshold: number
+  hoursLinear: number | null
+  hoursAccelAdjusted: number | null
+  hoursBestEstimate: number | null
+  confidenceIntervalHours: number | null
+  isReliable: boolean
+  label: string
+}
+
 export interface SymphonyTrajectoryVolatility {
   volatilityIndex: number
   stabilityLabel: 'true_stable' | 'pseudo_stable' | 'unstable'
@@ -88,9 +100,27 @@ export interface SymphonyPersonalBaseline {
 
 export interface SymphonyMomentumParam {
   parameter: VitalKey
+  values: number[]
   velocityPerHour: number
   acceleration: number
   worsening: boolean
+}
+
+export type SymphonyTreatmentResponseInterpretation =
+  | 'effective'
+  | 'partially_effective'
+  | 'ineffective'
+  | 'worsening'
+  | 'unknown'
+
+export interface SymphonyTreatmentResponse {
+  detected: boolean
+  parameter: VitalKey | null
+  velocityBefore: number | null
+  velocityAfter: number | null
+  velocityChangePercent: number | null
+  interpretation: SymphonyTreatmentResponseInterpretation
+  narrative: string
 }
 
 export interface SymphonyConvergenceResult {
@@ -137,6 +167,8 @@ export interface SymphonyTrajectoryAnalysis {
   earlyWarningBurden: SymphonyEarlyWarningBurden
   trajectoryVolatility: SymphonyTrajectoryVolatility
   timeToCriticalEstimate: SymphonyTimeToCriticalEstimate
+  timeToCriticalDetail: Partial<Record<VitalKey, SymphonyTimeToCriticalProjection>>
+  treatmentResponse: SymphonyTreatmentResponse
   mortalityProxy: SymphonyMortalityProxyRisk
   clinicalSafeOutput: SymphonyClinicalSafeOutput
   personalBaseline: SymphonyPersonalBaseline
@@ -443,46 +475,6 @@ function buildAcuteRisk(latest: SymphonyVitalsInput | undefined): SymphonyAcuteA
   }
 }
 
-function estimateTimeToCritical(vitals: SymphonyVitalsInput[], key: VitalKey): number | null {
-  const points = vitals
-    .map(item => ({
-      value: getValue(item, key),
-      timestamp: new Date(item.observedAt).getTime(),
-    }))
-    .filter((item): item is { value: number; timestamp: number } => item.value !== undefined && Number.isFinite(item.timestamp))
-
-  if (points.length < 2) return null
-  const last = points[points.length - 1]
-  const previous = points[points.length - 2]
-  const thresholds = CRITICAL_THRESHOLDS[key]
-  if (thresholds.high !== undefined && last.value >= thresholds.high) return 0
-  if (thresholds.low !== undefined && last.value <= thresholds.low) return 0
-  const deltaHours = Math.max(1, (last.timestamp - previous.timestamp) / 3_600_000)
-  const slopePerHour = (last.value - previous.value) / deltaHours
-
-  let eta: number | null = null
-  if (slopePerHour > 0 && thresholds.high !== undefined && last.value < thresholds.high) {
-    eta = (thresholds.high - last.value) / slopePerHour
-  } else if (slopePerHour < 0 && thresholds.low !== undefined && last.value > thresholds.low) {
-    eta = (thresholds.low - last.value) / slopePerHour
-  }
-
-  if (eta === null || !Number.isFinite(eta) || eta < 0 || eta > 168) return null
-  return round(eta, 1)
-}
-
-function buildTimeToCritical(vitals: SymphonyVitalsInput[]): SymphonyTimeToCriticalEstimate {
-  return {
-    systolicBpHoursToCritical: estimateTimeToCritical(vitals, 'systolicBp'),
-    diastolicBpHoursToCritical: estimateTimeToCritical(vitals, 'diastolicBp'),
-    glucoseMgDlHoursToCritical: estimateTimeToCritical(vitals, 'glucoseMgDl'),
-    temperatureCHoursToCritical: estimateTimeToCritical(vitals, 'temperatureC'),
-    heartRateHoursToCritical: estimateTimeToCritical(vitals, 'heartRate'),
-    respiratoryRateHoursToCritical: estimateTimeToCritical(vitals, 'respiratoryRate'),
-    spo2HoursToCritical: estimateTimeToCritical(vitals, 'spo2'),
-  }
-}
-
 function velocityPerHour(vitals: SymphonyVitalsInput[], key: VitalKey): number {
   const points = vitals
     .map(item => ({ value: getValue(item, key), timestamp: new Date(item.observedAt).getTime() }))
@@ -502,6 +494,173 @@ function acceleration(vitals: SymphonyVitalsInput[], key: VitalKey): number {
   const prevDelta = points[points.length - 2].value - points[points.length - 3].value
   const lastDelta = points[points.length - 1].value - points[points.length - 2].value
   return round(lastDelta - prevDelta, 2)
+}
+
+function getSeries(vitals: SymphonyVitalsInput[], key: VitalKey): number[] {
+  return vitals.map(item => getValue(item, key)).filter((value): value is number => value !== undefined)
+}
+
+function buildMomentumParams(vitals: SymphonyVitalsInput[]): SymphonyMomentumParam[] {
+  return VITAL_KEYS.map(parameter => {
+    const values = getSeries(vitals, parameter)
+    const velocity = velocityPerHour(vitals, parameter)
+    return {
+      parameter,
+      values,
+      velocityPerHour: velocity,
+      acceleration: acceleration(vitals, parameter),
+      worsening: isWorseningDirection(parameter, velocity),
+    }
+  }).filter(param => param.values.length >= 2 && param.velocityPerHour !== 0)
+}
+
+function predictTimeToCritical(
+  param: SymphonyMomentumParam
+): SymphonyTimeToCriticalProjection | null {
+  const currentValue = param.values[param.values.length - 1]
+  if (currentValue === undefined || currentValue <= 0) return null
+
+  const velocity = param.velocityPerHour
+  if (Math.abs(velocity) < 0.001) return null
+
+  const thresholds = CRITICAL_THRESHOLDS[param.parameter]
+  let threshold: number | null = null
+  if (velocity > 0 && thresholds.high !== undefined && currentValue < thresholds.high) {
+    threshold = thresholds.high
+  } else if (velocity < 0 && thresholds.low !== undefined && currentValue > thresholds.low) {
+    threshold = thresholds.low
+  }
+
+  if (threshold === null) return null
+
+  const delta = threshold - currentValue
+  const hoursLinear = delta / velocity
+  if (hoursLinear <= 0 || hoursLinear > 168) return null
+
+  let hoursAccelAdjusted: number | null = null
+  if (Math.abs(param.acceleration) > 0.001) {
+    const a = 0.5 * param.acceleration
+    const b = velocity
+    const c = -delta
+    const discriminant = b * b - 4 * a * c
+    if (discriminant >= 0) {
+      const t1 = (-b + Math.sqrt(discriminant)) / (2 * a)
+      const t2 = (-b - Math.sqrt(discriminant)) / (2 * a)
+      const validRoots = [t1, t2].filter(root => root > 0 && root <= 168)
+      if (validRoots.length > 0) {
+        hoursAccelAdjusted = Math.min(...validRoots)
+      }
+    }
+  }
+
+  const hoursBestEstimate = hoursAccelAdjusted ?? hoursLinear
+  const baseCi = Math.max(2, hoursBestEstimate * 0.2)
+  const sparsityPenalty = param.values.length < 3 ? baseCi * 2 : 0
+  const accelPenalty = Math.abs(param.acceleration) > 0.1 ? hoursBestEstimate * 0.3 : 0
+  const confidenceIntervalHours = round(baseCi + sparsityPenalty + accelPenalty, 1)
+  const isReliable = param.values.length >= 3 && confidenceIntervalHours < hoursBestEstimate * 0.6
+  const roundedBest = round(hoursBestEstimate, 1)
+
+  return {
+    parameter: param.parameter,
+    currentValue: round(currentValue, 1),
+    criticalThreshold: threshold,
+    hoursLinear: round(hoursLinear, 1),
+    hoursAccelAdjusted: hoursAccelAdjusted !== null ? round(hoursAccelAdjusted, 1) : null,
+    hoursBestEstimate: roundedBest,
+    confidenceIntervalHours,
+    isReliable,
+    label: isReliable
+      ? `~${roundedBest} jam (±${confidenceIntervalHours} jam)`
+      : `~${roundedBest} jam (timeline tidak pasti)`,
+  }
+}
+
+function buildTimeToCriticalDetail(
+  params: SymphonyMomentumParam[]
+): Partial<Record<VitalKey, SymphonyTimeToCriticalProjection>> {
+  return params.reduce<Partial<Record<VitalKey, SymphonyTimeToCriticalProjection>>>((acc, param) => {
+    const prediction = predictTimeToCritical(param)
+    if (prediction) {
+      acc[param.parameter] = prediction
+    }
+    return acc
+  }, {})
+}
+
+export function detectSymphonyTreatmentResponse(
+  params: SymphonyMomentumParam[]
+): SymphonyTreatmentResponse {
+  const worseningParam = params
+    .filter(param => param.worsening && param.values.length >= 4)
+    .sort((left, right) => Math.abs(right.velocityPerHour) - Math.abs(left.velocityPerHour))[0]
+
+  if (!worseningParam) {
+    return {
+      detected: false,
+      parameter: null,
+      velocityBefore: null,
+      velocityAfter: null,
+      velocityChangePercent: null,
+      interpretation: 'unknown',
+      narrative: 'Data tidak cukup untuk mendeteksi respons terapi (butuh >=4 observasi).',
+    }
+  }
+
+  const midpoint = Math.floor(worseningParam.values.length / 2)
+  const firstHalf = worseningParam.values.slice(0, midpoint)
+  const secondHalf = worseningParam.values.slice(midpoint)
+  if (firstHalf.length < 2 || secondHalf.length < 2) {
+    return {
+      detected: false,
+      parameter: worseningParam.parameter,
+      velocityBefore: null,
+      velocityAfter: null,
+      velocityChangePercent: null,
+      interpretation: 'unknown',
+      narrative: 'Tidak cukup data untuk analisis respons terapi.',
+    }
+  }
+
+  const velocityBefore =
+    (firstHalf[firstHalf.length - 1] - firstHalf[0]) / Math.max(1, firstHalf.length - 1)
+  const velocityAfter =
+    (secondHalf[secondHalf.length - 1] - secondHalf[0]) / Math.max(1, secondHalf.length - 1)
+  const velocityChangePercent =
+    Math.abs(velocityBefore) > 0.01
+      ? round(
+          ((Math.abs(velocityBefore) - Math.abs(velocityAfter)) / Math.abs(velocityBefore)) * 100,
+          1
+        )
+      : null
+
+  let interpretation: SymphonyTreatmentResponseInterpretation = 'unknown'
+  let narrative = 'Tidak dapat menilai respons terapi.'
+  if (velocityChangePercent === null) {
+    narrative = 'Tidak dapat menilai respons terapi karena slope awal terlalu kecil.'
+  } else if (velocityChangePercent >= 50) {
+    interpretation = 'effective'
+    narrative = `Respons terapi efektif pada ${worseningParam.parameter}: kecepatan perburukan turun ${velocityChangePercent}%.`
+  } else if (velocityChangePercent >= 20) {
+    interpretation = 'partially_effective'
+    narrative = `Respons terapi parsial pada ${worseningParam.parameter}: kecepatan perburukan turun ${velocityChangePercent}%.`
+  } else if (velocityChangePercent >= -10) {
+    interpretation = 'ineffective'
+    narrative = `Terapi belum mengubah tren ${worseningParam.parameter} secara bermakna (${velocityChangePercent}%).`
+  } else {
+    interpretation = 'worsening'
+    narrative = `Perburukan tetap berakselerasi pada ${worseningParam.parameter}: slope memburuk ${Math.abs(velocityChangePercent)}%.`
+  }
+
+  return {
+    detected: Math.abs(velocityChangePercent ?? 0) > 10,
+    parameter: worseningParam.parameter,
+    velocityBefore: round(velocityBefore, 2),
+    velocityAfter: round(velocityAfter, 2),
+    velocityChangePercent,
+    interpretation,
+    narrative,
+  }
 }
 
 function detectConvergence(params: SymphonyMomentumParam[]): SymphonyConvergenceResult {
@@ -537,15 +696,7 @@ function buildMomentum(vitals: SymphonyVitalsInput[]): SymphonyMomentumAnalysis 
     }
   }
 
-  const params = VITAL_KEYS.map(parameter => {
-    const velocity = velocityPerHour(vitals, parameter)
-    return {
-      parameter,
-      velocityPerHour: velocity,
-      acceleration: acceleration(vitals, parameter),
-      worsening: isWorseningDirection(parameter, velocity),
-    }
-  }).filter(param => param.velocityPerHour !== 0)
+  const params = buildMomentumParams(vitals)
   const convergence = detectConvergence(params)
   const worseningCount = convergence.convergenceScore
   const acceleratingWorsening = params.filter(param => param.worsening && isWorseningDirection(param.parameter, param.acceleration)).length
@@ -651,6 +802,18 @@ export function analyzeSymphonyTrajectory(vitals: SymphonyVitalsInput[]): Sympho
   const volatility = buildTrajectoryVolatility(trends, burden, overallTrend)
   const latest = sorted.at(-1)
   const acuteRisk = buildAcuteRisk(latest)
+  const momentum = buildMomentum(sorted)
+  const timeToCriticalDetail = buildTimeToCriticalDetail(momentum.params)
+  const timeToCriticalEstimate = {
+    systolicBpHoursToCritical: timeToCriticalDetail.systolicBp?.hoursBestEstimate ?? null,
+    diastolicBpHoursToCritical: timeToCriticalDetail.diastolicBp?.hoursBestEstimate ?? null,
+    glucoseMgDlHoursToCritical: timeToCriticalDetail.glucoseMgDl?.hoursBestEstimate ?? null,
+    temperatureCHoursToCritical: timeToCriticalDetail.temperatureC?.hoursBestEstimate ?? null,
+    heartRateHoursToCritical: timeToCriticalDetail.heartRate?.hoursBestEstimate ?? null,
+    respiratoryRateHoursToCritical: timeToCriticalDetail.respiratoryRate?.hoursBestEstimate ?? null,
+    spo2HoursToCritical: timeToCriticalDetail.spo2?.hoursBestEstimate ?? null,
+  }
+  const treatmentResponse = detectSymphonyTreatmentResponse(momentum.params)
   const acutePeak = Math.max(...Object.values(acuteRisk))
   const avgVitalRisk =
     trends.reduce((sum, trend) => sum + riskScore(trend.risk), 0) / Math.max(1, trends.length)
@@ -705,7 +868,6 @@ export function analyzeSymphonyTrajectory(vitals: SymphonyVitalsInput[]): Sympho
     ...(overallRisk === 'critical' ? ['Minimal satu parameter vital berada pada zona kritis.'] : []),
   ]
 
-  const momentum = buildMomentum(sorted)
   const clinicalSafeOutput = buildClinicalSafeOutput(
     state,
     mortality,
@@ -726,12 +888,14 @@ export function analyzeSymphonyTrajectory(vitals: SymphonyVitalsInput[]): Sympho
     acuteAttackRisk24h: acuteRisk,
     earlyWarningBurden: burden,
     trajectoryVolatility: volatility,
-    timeToCriticalEstimate: buildTimeToCritical(sorted),
+    timeToCriticalEstimate,
+    timeToCriticalDetail,
+    treatmentResponse,
     mortalityProxy: mortality,
     clinicalSafeOutput,
     personalBaseline: buildSymphonyPersonalBaseline(sorted, latest?.observedAt),
     momentum,
-    summary: `${state} trajectory with deterioration score ${deteriorationScore}/100 and ${momentum.level} momentum.`,
+    summary: `${state} trajectory with deterioration score ${deteriorationScore}/100, ${momentum.level} momentum, treatment response ${treatmentResponse.interpretation}.`,
   }
 }
 

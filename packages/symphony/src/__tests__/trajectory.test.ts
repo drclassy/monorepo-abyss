@@ -4,6 +4,13 @@ import {
   analyzeSymphonyTrajectory,
   assessSymphonyInput,
   buildSymphonyPersonalBaseline,
+  classifySymphonyBloodGlucose,
+  classifySymphonyChronicDisease,
+  classifySymphonyHypertension,
+  detectSymphonyTreatmentResponse,
+  finalizeSymphonyBloodPressure,
+  getSymphonyBestGcsTotal,
+  symphonyGcsToAvpu,
   type SymphonyAssessmentInput,
 } from '../index'
 
@@ -75,6 +82,56 @@ describe('SYMPHONY trajectory, momentum, prediction, and baseline', () => {
     expect(analysis.timeToCriticalEstimate.systolicBpHoursToCritical).toBe(2)
   })
 
+  it('adds quadratic time-to-critical detail and best estimate', () => {
+    const analysis = analyzeSymphonyTrajectory([
+      {
+        observedAt: '2026-04-19T00:00:00.000Z',
+        systolicBp: 130,
+        heartRate: 80,
+        respiratoryRate: 18,
+        temperatureC: 36.8,
+        spo2: 98,
+      },
+      {
+        observedAt: '2026-04-19T06:00:00.000Z',
+        systolicBp: 115,
+        heartRate: 92,
+        respiratoryRate: 20,
+        temperatureC: 37.3,
+        spo2: 96,
+      },
+      {
+        observedAt: '2026-04-19T12:00:00.000Z',
+        systolicBp: 92,
+        heartRate: 108,
+        respiratoryRate: 24,
+        temperatureC: 37.9,
+        spo2: 94,
+      },
+    ])
+
+    expect(analysis.timeToCriticalDetail.systolicBp).toBeDefined()
+    expect(analysis.timeToCriticalDetail.systolicBp?.hoursLinear).not.toBeNull()
+    expect(analysis.timeToCriticalDetail.systolicBp?.hoursBestEstimate).toBe(
+      analysis.timeToCriticalEstimate.systolicBpHoursToCritical
+    )
+  })
+
+  it('detects treatment response from split-half slope reduction', () => {
+    const response = detectSymphonyTreatmentResponse([
+      {
+        parameter: 'systolicBp',
+        values: [130, 138, 146, 148, 150],
+        velocityPerHour: 1,
+        acceleration: -2,
+        worsening: true,
+      },
+    ])
+
+    expect(response.detected).toBe(true)
+    expect(response.interpretation).toMatch(/effective|partially_effective/)
+  })
+
   it('builds personal baseline with current z-score from historical vitals', () => {
     const baseline = buildSymphonyPersonalBaseline(
       [
@@ -142,5 +199,43 @@ describe('SYMPHONY trajectory, momentum, prediction, and baseline', () => {
     expect(result.trajectory.momentum).toBe('rapid')
     expect(result.trajectory.evidenceRefs).toContain('trajectory_state:critical')
     expect(result.quality.auditHints).toContain('trajectory_state:critical')
+  })
+
+  it('canonicalizes chronic disease, hypertension, glucose, and AVPU/GCS helpers', () => {
+    expect(classifySymphonyChronicDisease('i10')?.type).toBe('HT')
+
+    const hypertension = classifySymphonyHypertension(
+      finalizeSymphonyBloodPressure([
+        { sbp: 188, dbp: 124 },
+        { sbp: 186, dbp: 122 },
+        { sbp: 184, dbp: 120 },
+      ]),
+      {
+        chestPain: true,
+        pulmonaryEdema: false,
+        neurologicalDeficit: false,
+        visionChanges: false,
+        severeHeadache: false,
+        oliguria: false,
+        alteredMentalStatus: false,
+      }
+    )
+    expect(hypertension.type).toBe('HTN_EMERGENCY')
+
+    const glucose = classifySymphonyBloodGlucose(
+      {
+        gds: 640,
+        sampleType: 'capillary',
+        hasClassicSymptoms: true,
+      },
+      {
+        severeDehydration: true,
+        extremeHyperglycemia: true,
+      }
+    )
+    expect(glucose.category).toBe('HYPERGLYCEMIA_CRISIS')
+
+    expect(symphonyGcsToAvpu({ e: 4, v: 3, m: 6 })).toBe('V')
+    expect(getSymphonyBestGcsTotal('P')).toBe(8)
   })
 })

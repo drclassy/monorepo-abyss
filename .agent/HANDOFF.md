@@ -1,6 +1,6 @@
 # HANDOFF.md — The Abyss (Monorepo Root)
 <!-- Overwrite at the start of each new session. -->
-<!-- Last updated: 2026-04-22 19:40 · Agent: Codex · Session: symphony-phase-5-gate-taxonomy -->
+<!-- Last updated: 2026-04-22 19:52 · Agent: Codex · Session: symphony-phase-6-prediction-classifiers -->
 
 ---
 
@@ -12,10 +12,10 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Quick Orient (for new thread)
 
-**Branch:** `abyss-core` at `466ec4b` + local Phase 5 changes · **NOT PUSHED**
+**Branch:** `abyss-core` at `0df24cf` + local Phase 6 changes · **NOT PUSHED**
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
 **Primary mission:** SYMPHONY Canonicalization Migration (7 phases, Chief-locked order)
-**Phases 1-5 implemented** · Phase 6 = next
+**Phases 1-6 implemented** · Phase 7 = next
 
 ---
 
@@ -30,18 +30,19 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 | 2 | Pattern Engine generic evaluator | ✅ `0a471bb` (contract v0.2.0) |
 | 3 | Clinical Patterns Evaluator (70 CP native SYMPHONY) | ✅ `8fb9d1d` + `39db0cb` (208/208, quality-gated) |
 | 4 | Action Protocols (ABCDE) | ✅ `466ec4b` (contract v0.3.0) |
-| 5 | Gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed) | ✅ local changes verified (contract v0.4.0, route parity 76/76) |
-| 6 | Prediction + classifier refinements | ⬜ |
+| 5 | Gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed) | ✅ `0df24cf` (contract v0.4.0, route parity 76/76) |
+| 6 | Prediction + classifier refinements | ✅ local changes verified (contract v0.5.0, route parity 76/76) |
 | 7 | Pharmacology decision surface (SYMPHONY vs @the-abyss/clinical-references) | ⬜ |
 
 **Baseline reports** (commit `93e6f94`):
 - `.agent/reports/2026-04-20-symphony-alignment.md` — Class A read-only verification
 - `.agent/reports/2026-04-20-symphony-coverage-audit.md` — coverage gap inventory
 
-**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.4.0'` at `packages/shared-types/src/symphony.ts` (local, not committed).
+**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.5.0'` at `packages/shared-types/src/symphony.ts` (local, not committed).
 
 **Phase 4 result:** 9 canonical `PROTO_*` registries now exist in `packages/symphony/src/engine/action-protocols.ts`; evaluator/parity adapter attach `actionProtocolId` + canonical payload to `SymphonyAlert`.
 **Phase 5 result:** `SymphonySafetyGate` now includes `GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED`; local gate workaround removed from `clinical-patterns-definitions.ts`; evaluator and adapter parity both emit canonical `gate`.
+**Phase 6 result:** `trajectory.ts` now emits additive treatment-response analysis and quadratic TTC detail; new `classifiers.ts` canonicalizes Dashboard deterministic helpers for chronic disease, hypertension, glucose, and AVPU/GCS mapping; route parity remains partial/green and production import replacement remains forbidden.
 
 **Phase 3 quality gate closed:** `SymphonySymptomContext` (27 flags), `SymphonyEvaluablePattern` generic, unsafe gate-bypass cast removed (2 data-transform casts remain in `clinical-patterns-definitions.ts` — expected, Assist→SYMPHONY criterion conversion), deep-equal parity on 70 CPs.
 
@@ -113,8 +114,8 @@ From prior Codex session:
 
 ## Next Action Options (Chief choose)
 
-1. **Commit Phase 5** — stage explicit SYMPHONY/shared-types/.agent files only
-2. **Phase 6 GO** — prediction + classifier refinements
+1. **Commit Phase 6** — stage explicit SYMPHONY/shared-types/.agent files only
+2. **Phase 7 GO** — pharmacology decision surface brief (architecture only)
 3. **Commit Avvcenna rebrand** (Chief's in-progress work) — separate thread/agent
 4. **Break / istirahat** — all state preserved locally
 
