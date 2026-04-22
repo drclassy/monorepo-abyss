@@ -565,7 +565,7 @@ export function matchSymphonyPattern(definition: SymphonyPatternDefinition, inpu
 
 ---
 
-## Phase 7 — Pharmacology decision surface (DECISION BRIEF, not code)
+## Phase 7 — Pharmacology decision surface (IMPLEMENTED 2026-04-22, decision only)
 
 **Coverage audit reference:** Gaps #11, #12, #13, #14, #15 (consolidated after reviewer consolidation suggestion).
 
@@ -577,14 +577,19 @@ export function matchSymphonyPattern(definition: SymphonyPatternDefinition, inpu
 4. **Data-ownership:** Large reference data (DDI 173K) — ship as JSON in repo, hosted fetch, or separate data package?
 5. **License / attribution:** FKTP formulary + DDI dataset licensing review before committing data artifacts.
 
-**Deliverable:** `docs/adr/YYYY-MM-DD-pharmacology-locus-decision.md` with Chief's selection + rationale + migration roadmap.
+**Deliverable landed:** `docs/adr/0007-pharmacology-locus-decision.md`
 
-**Acceptance criteria:**
-- ADR written and merged.
-- If sibling package chosen: separate scaffolding plan (similar structure to this one) for `@the-abyss/clinical-references`.
-- If SYMPHONY chosen: append to this plan as Phase 7b with per-module task detail.
+**Decision landed:**
+- Choose sibling shared package `@the-abyss/clinical-references` for DDI checker, dosage database FKTP, epidemiology weights, and pharmacotherapy reasoner.
+- Keep `traffic-light` in `@the-abyss/symphony` as the canonical decision-safety gate.
+- Treat data provenance/licensing as a hard prerequisite before committing any large reference corpus.
 
-**No code execution in Phase 7.** This is a strategy decision with large architectural ripple (dataset size, license, dependency graph). Treat as its own brainstorm cycle when Chief is ready.
+**Acceptance criteria status:**
+- ADR written: `docs/adr/0007-pharmacology-locus-decision.md`
+- Migration roadmap included in ADR as Phase 7b / 7c
+- No code execution done under Phase 7, by design
+
+**No code execution in Phase 7.** This phase closes the architecture decision only.
 
 ---
 

@@ -12,7 +12,7 @@
 | **Last updated** | 2026-04-22 |
 | **Active branch** | `abyss-core` → `origin` (Avvicenna GitHub, PRIVATE) |
 | **Active JET phase** | GO granted — Chief authorized all classes (A/B/C) |
-| **Next major initiative** | SYMPHONY Canonicalization — Phase 7 (Pharmacology decision surface) |
+| **Next major initiative** | Post-Phase-7: scaffold `@the-abyss/clinical-references` |
 
 ---
 
@@ -112,6 +112,8 @@
 
 |Date|Agent|Summary|
 |------|-------|---------|
+| 2026-04-22 | Codex/Dexton | SYMPHONY Phase 7 decision: ADR `0007` locked split pharmacology locus — sibling `@the-abyss/clinical-references` for DDI/dosage/epidemiology/pharmacotherapy, `traffic-light` remains in SYMPHONY |
+| 2026-04-22 | Codex/Dexton | SYMPHONY Phase 6: prediction + classifier refinements committed (`3398ce7`); contract bumped to `0.5.0`; `@the-abyss/symphony` test/typecheck/lint PASS; Dashboard route parity PASS 76/76 |
 | 2026-04-22 | Codex/Dexton | SYMPHONY Phase 5: gate taxonomy reconciled into public contract (`GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED`); evaluator + adapter parity now emit canonical `gate`; contract bumped to `0.4.0`; `@the-abyss/symphony` test/typecheck/lint PASS; Dashboard route parity PASS 76/76 |
 | 2026-04-22 | Codex/Dexton | SYMPHONY Phase 4: canonical 9 ABCDE action protocols implemented locally; `SymphonyAlert` now carries `actionProtocolId` + canonical payload; contract bumped to `0.3.0`; `@the-abyss/symphony` test/typecheck/lint PASS |
 | 2026-04-22 | Claude | SYMPHONY Phase 2: pattern engine generic evaluator (4 commits: `97ea8c2`, `0a68614`, `31e13ef`, `0a471bb`); contract bumped to 0.2.0 |
@@ -133,12 +135,13 @@
 
 1. Execute GUARD 1 — read all five `.agent/` files
 2. Confirm SYMPHONY phases 1-3 status (all ✅)
-3. Phase 7 (pharmacology decision surface) — Chief decision: SYMPHONY proper vs `@the-abyss/clinical-references`
+3. Draft package plan for `@the-abyss/clinical-references` (DDI, dosage, epidemiology, pharmacotherapy)
 4. Do not run DB/Prisma/SQL; RAG DB work requires fresh Chief GO and app-level IntelligenceBoard migration plan
 
 - Phase 4 local implementation complete (2026-04-22): `packages/symphony/src/engine/action-protocols.ts` added with 9 canonical `PROTO_*` registries and referral criteria; `SymphonyAlert` widened with `actionProtocolId` + `actionProtocol`; Phase 3 evaluator and Assist parity adapter now attach canonical protocol payloads; `SYMPHONY_CONTRACT_VERSION` bumped to `0.3.0`; verification PASS: `pnpm --filter @the-abyss/symphony test`, `typecheck`, `lint`.
 - Phase 5 local implementation complete (2026-04-22): `SymphonySafetyGate` promoted to include `GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED`; Phase 3 clinical registry no longer relies on local gate union; evaluator and Assist parity adapter now emit canonical `gate`; `SYMPHONY_CONTRACT_VERSION` bumped to `0.4.0`; verification PASS: `pnpm --filter @the-abyss/symphony test`, `typecheck`, `lint`; Dashboard `pnpm run test:symphony:route-parity` PASS 76/76 with `routeParityStatus=partial`.
 - Phase 6 local implementation complete (2026-04-22): `packages/symphony/src/engine/trajectory.ts` now includes `detectSymphonyTreatmentResponse()` plus quadratic TTC detail (`timeToCriticalDetail`) while preserving `timeToCriticalEstimate` as best-estimate hours; new `packages/symphony/src/engine/classifiers.ts` canonicalizes chronic-disease, hypertension, glucose, and AVPU/GCS deterministic helpers; `SYMPHONY_CONTRACT_VERSION` bumped to `0.5.0`; verification PASS: `pnpm --filter @the-abyss/symphony test` (213/213), `typecheck`, `lint`; Dashboard `pnpm run test:symphony:route-parity` PASS 76/76 with `routeParityStatus=partial`.
+- Phase 7 decision complete (2026-04-22): ADR `docs/adr/0007-pharmacology-locus-decision.md` chooses split locus — sibling `@the-abyss/clinical-references` for pharmacology/reference assets, `traffic-light` remains in SYMPHONY. No code execution in Phase 7 by design.
 
 - SYMPHONY alignment Class A report created: .agent/reports/2026-04-20-symphony-alignment.md
 - SYMPHONY coverage gap audit created: .agent/reports/2026-04-20-symphony-coverage-audit.md
@@ -797,6 +800,26 @@ packages/symphony/src/__tests__/clinical-patterns.test.ts
 packages/symphony/src/adapters/assist-patterns-parity.ts
 packages/symphony/src/engine/clinical-patterns-definitions.ts
 packages/symphony/src/engine/clinical-patterns.ts
+```
+
+---
+## 2026-04-22 19:50 — `3398ce7` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): canonicalize prediction and classifiers
+- **Files changed**: 10 file(s)
+
+```
+.agent/DECISIONS.md
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+.agent/sessions/2026-04-22.md
+docs/superpowers/plans/2026-04-20-symphony-canonicalization.md
+packages/shared-types/src/symphony.ts
+packages/symphony/src/__tests__/trajectory.test.ts
+packages/symphony/src/engine/classifiers.ts
+packages/symphony/src/engine/trajectory.ts
+packages/symphony/src/index.ts
 ```
 
 ---
