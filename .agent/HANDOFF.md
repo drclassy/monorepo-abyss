@@ -42,7 +42,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 **Phase 4 entry point:** Action Protocols ABCDE — attach `PROTO_*` IDs to clinical pattern evaluator output. Await Chief GO.
 
-**Phase 3 quality gate closed:** `SymphonySymptomContext` (27 flags), `SymphonyEvaluablePattern` generic, zero `as unknown as` casts, deep-equal parity on 70 CPs.
+**Phase 3 quality gate closed:** `SymphonySymptomContext` (27 flags), `SymphonyEvaluablePattern` generic, unsafe gate-bypass cast removed (2 data-transform casts remain in `clinical-patterns-definitions.ts` — expected, Assist→SYMPHONY criterion conversion), deep-equal parity on 70 CPs.
 
 ---
 
@@ -58,7 +58,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - `8fb9d1d` feat(symphony): Phase 3 — native clinical patterns evaluator (70 CP rules)
 - `39db0cb` fix(symphony): Phase 3 completion — contract, gate boundary, parity gate
   - `SymphonySymptomContext` (27 flags) — consumers no longer need wild casts
-  - `SymphonyEvaluablePattern` generic — `as unknown as` cast count = 0
+  - `SymphonyEvaluablePattern` generic — unsafe gate-bypass cast removed (2 data-transform casts in definitions file remain — expected)
   - `SymphonyLocalClinicalPattern` removed from public index — gate boundary sealed
   - Parity suite: deep-equal `{id, severity, title, source, acknowledged}` on all 70 CPs
   - `clinical-patterns-definitions.ts` — DRY converter + SYMPHONY_CLINICAL_PATTERNS registry
