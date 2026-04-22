@@ -16,8 +16,8 @@
 
 import type {
   SymphonyAlert,
+  SymphonyClinicalPattern,
   SymphonyClinicalSnapshot,
-  SymphonyEvaluablePattern,
   SymphonyPatternMatch,
 } from '@the-abyss/shared-types'
 
@@ -32,7 +32,7 @@ export { SYMPHONY_CLINICAL_PATTERNS }
 // ---------------------------------------------------------------------------
 
 export function clinicalPatternMatchToSymphonyAlert(
-  match: SymphonyPatternMatch<SymphonyEvaluablePattern>,
+  match: SymphonyPatternMatch<SymphonyClinicalPattern>,
   triggeredAt?: string
 ): SymphonyAlert {
   const pat = match.pattern
@@ -42,6 +42,7 @@ export function clinicalPatternMatchToSymphonyAlert(
     title: pat.title,
     reasoning: [pat.reasoning],
     source: 'pattern',
+    gate: pat.gate,
     actionProtocolId: pat.actionProtocolId,
     acknowledged: false,
     triggeredAt: triggeredAt ?? new Date().toISOString(),

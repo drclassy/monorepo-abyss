@@ -1,4 +1,9 @@
-import type { SymphonyActionProtocolId, SymphonyAlert, SymphonyAlertSeverity } from '../contracts'
+import type {
+  SymphonyActionProtocolId,
+  SymphonyAlert,
+  SymphonyAlertSeverity,
+  SymphonySafetyGate,
+} from '../contracts'
 import { attachSymphonyActionProtocol } from '../engine/action-protocols'
 
 export type AssistPatternParityId = `CP-${string}`
@@ -59,6 +64,33 @@ export interface AssistPatternParityDefinition {
   supersededBy?: readonly string[]
   confidenceWeight?: number
   sourceFile: 'apps/healthcare/sentra-assist/lib/emergency-detector/clinical-patterns.ts'
+}
+
+export function mapAssistPatternParityGateToSymphonySafetyGate(
+  gate: AssistPatternParityGate
+): SymphonySafetyGate {
+  switch (gate) {
+    case 'GATE_SEPSIS_EARLY':
+    case 'GATE_SEPTIC_SHOCK_HIGH':
+      return 'GATE_5_SEPSIS'
+    case 'GATE_SHOCK_INDEX':
+      return 'GATE_4_OCCULT_SHOCK'
+    case 'GATE_RESP_FAILURE':
+    case 'GATE_RESP_ASTHMA_COPD':
+      return 'GATE_6_RESPIRATORY'
+    case 'GATE_PE_SUSPECT':
+      return 'GATE_9_PE'
+    case 'GATE_ANAPHYLAXIS':
+      return 'GATE_10_ANAPHYLAXIS'
+    case 'GATE_DKA_HHS':
+      return 'GATE_3_GLUCOSE'
+    case 'GATE_ACS':
+      return 'GATE_11_ACS'
+    case 'GATE_STROKE':
+      return 'GATE_12_STROKE'
+    case 'GATE_ANEMIA_BLEED_CHRONIC':
+      return 'GATE_13_ANEMIA_BLEED'
+  }
 }
 
 export interface AdaptAssistPatternToSymphonyAlertOptions {
@@ -3346,6 +3378,7 @@ export function adaptAssistPatternToSymphonyAlert(
       `Source: ${pattern.source}.`,
     ],
     source: 'pattern',
+    gate: mapAssistPatternParityGateToSymphonySafetyGate(pattern.gate),
     actionProtocolId: pattern.actionProtocolId,
     acknowledged: options.acknowledged ?? false,
     triggeredAt,

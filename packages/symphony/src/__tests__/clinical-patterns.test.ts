@@ -120,7 +120,6 @@ describe('SYMPHONY_CLINICAL_PATTERNS registry', () => {
       'GATE_1_VITALS', 'GATE_2_HTN', 'GATE_3_GLUCOSE', 'GATE_4_OCCULT_SHOCK',
       'GATE_5_SEPSIS', 'GATE_6_RESPIRATORY', 'GATE_7_PEDIATRIC', 'GATE_8_OBSTETRIC',
       'GATE_9_PE', 'GATE_10_ANAPHYLAXIS',
-      // Phase 3 local gates (not in SymphonySafetyGate yet)
       'GATE_11_ACS', 'GATE_12_STROKE', 'GATE_13_ANEMIA_BLEED',
     ])
     for (const pattern of SYMPHONY_CLINICAL_PATTERNS) {
@@ -194,6 +193,7 @@ describe('CP-001 qSOFA ≥2', () => {
     if (!cp001) throw new Error('assist-cp-001 should exist')
     expect(cp001.severity).toBe('high')
     expect(cp001.source).toBe('pattern')
+    expect(cp001.gate).toBe('GATE_5_SEPSIS')
   })
 
   it('does not fire when only 1 qSOFA criterion is met (RR normal, SBP normal, AVPU altered)', () => {

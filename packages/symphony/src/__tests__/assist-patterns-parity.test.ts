@@ -66,6 +66,7 @@ describe('Assist clinical-pattern parity adapter', () => {
       id: 'assist-cp-024',
       severity: 'critical',
       title: 'Anafilaksis — EMERGENCY',
+      gate: 'GATE_10_ANAPHYLAXIS',
       actionProtocolId: 'PROTO_ANAPHYLAXIS',
       actionProtocol: {
         id: 'PROTO_ANAPHYLAXIS',

@@ -12,7 +12,7 @@
 | **Last updated** | 2026-04-22 |
 | **Active branch** | `abyss-core` → `origin` (Avvicenna GitHub, PRIVATE) |
 | **Active JET phase** | GO granted — Chief authorized all classes (A/B/C) |
-| **Next major initiative** | SYMPHONY Canonicalization — Phase 5 (Gate taxonomy reconciliation) |
+| **Next major initiative** | SYMPHONY Canonicalization — Phase 6 (Prediction + classifier refinements) |
 
 ---
 
@@ -112,6 +112,7 @@
 
 |Date|Agent|Summary|
 |------|-------|---------|
+| 2026-04-22 | Codex/Dexton | SYMPHONY Phase 5: gate taxonomy reconciled into public contract (`GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED`); evaluator + adapter parity now emit canonical `gate`; contract bumped to `0.4.0`; `@the-abyss/symphony` test/typecheck/lint PASS; Dashboard route parity PASS 76/76 |
 | 2026-04-22 | Codex/Dexton | SYMPHONY Phase 4: canonical 9 ABCDE action protocols implemented locally; `SymphonyAlert` now carries `actionProtocolId` + canonical payload; contract bumped to `0.3.0`; `@the-abyss/symphony` test/typecheck/lint PASS |
 | 2026-04-22 | Claude | SYMPHONY Phase 2: pattern engine generic evaluator (4 commits: `97ea8c2`, `0a68614`, `31e13ef`, `0a471bb`); contract bumped to 0.2.0 |
 | 2026-04-22 | Claude | SYMPHONY Phase 3 fixes — contract (SymphonySymptomContext), gate boundary (generic + no unsafe cast), parity gate (deep-equal 70 CPs) (`39db0cb`) |
@@ -132,10 +133,11 @@
 
 1. Execute GUARD 1 — read all five `.agent/` files
 2. Confirm SYMPHONY phases 1-3 status (all ✅)
-3. Phase 5 (gate taxonomy reconciliation) — promote ACS/Stroke/Anemia-Bleed from local gate union into shared contract
+3. Phase 6 (prediction + classifier refinements) — treatment response, quadratic TTC, HTN/glucose/chronic-disease canonicalization
 4. Do not run DB/Prisma/SQL; RAG DB work requires fresh Chief GO and app-level IntelligenceBoard migration plan
 
 - Phase 4 local implementation complete (2026-04-22): `packages/symphony/src/engine/action-protocols.ts` added with 9 canonical `PROTO_*` registries and referral criteria; `SymphonyAlert` widened with `actionProtocolId` + `actionProtocol`; Phase 3 evaluator and Assist parity adapter now attach canonical protocol payloads; `SYMPHONY_CONTRACT_VERSION` bumped to `0.3.0`; verification PASS: `pnpm --filter @the-abyss/symphony test`, `typecheck`, `lint`.
+- Phase 5 local implementation complete (2026-04-22): `SymphonySafetyGate` promoted to include `GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED`; Phase 3 clinical registry no longer relies on local gate union; evaluator and Assist parity adapter now emit canonical `gate`; `SYMPHONY_CONTRACT_VERSION` bumped to `0.4.0`; verification PASS: `pnpm --filter @the-abyss/symphony test`, `typecheck`, `lint`; Dashboard `pnpm run test:symphony:route-parity` PASS 76/76 with `routeParityStatus=partial`.
 
 - SYMPHONY alignment Class A report created: .agent/reports/2026-04-20-symphony-alignment.md
 - SYMPHONY coverage gap audit created: .agent/reports/2026-04-20-symphony-coverage-audit.md
@@ -750,6 +752,30 @@ packages/symphony/src/index.ts
 .agent/HANDOFF.md
 .agent/sessions/2026-04-22.md
 docs/superpowers/plans/2026-04-22-symphony-phase-3-clinical-patterns.md
+```
+
+---
+## 2026-04-22 19:33 — `466ec4b` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): canonicalize ABCDE action protocols
+- **Files changed**: 14 file(s)
+
+```
+.agent/DECISIONS.md
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+.agent/sessions/2026-04-22.md
+packages/shared-types/src/symphony.ts
+packages/symphony/src/__tests__/assist-patterns-parity.test.ts
+packages/symphony/src/__tests__/clinical-patterns.parity.test.ts
+packages/symphony/src/__tests__/clinical-patterns.test.ts
+packages/symphony/src/adapters/assist-patterns-parity.ts
+packages/symphony/src/contracts/index.ts
+packages/symphony/src/engine/action-protocols.ts
+packages/symphony/src/engine/clinical-patterns-definitions.ts
+packages/symphony/src/engine/clinical-patterns.ts
+packages/symphony/src/index.ts
 ```
 
 ---

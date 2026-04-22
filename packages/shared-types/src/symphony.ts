@@ -1,4 +1,4 @@
-export const SYMPHONY_CONTRACT_VERSION = '0.3.0' as const
+export const SYMPHONY_CONTRACT_VERSION = '0.4.0' as const
 
 export type SymphonyContractVersion = typeof SYMPHONY_CONTRACT_VERSION
 
@@ -68,6 +68,9 @@ export type SymphonySafetyGate =
   | 'GATE_8_OBSTETRIC'
   | 'GATE_9_PE'
   | 'GATE_10_ANAPHYLAXIS'
+  | 'GATE_11_ACS'
+  | 'GATE_12_STROKE'
+  | 'GATE_13_ANEMIA_BLEED'
 
 export type SymphonyConfidenceBand = 'high' | 'moderate' | 'low' | 'insufficient_data'
 
@@ -365,8 +368,7 @@ export interface SymphonyClinicalPattern {
   confidenceWeight?: number
 }
 
-/** Relaxed pattern type that allows local/extended gate strings beyond SymphonySafetyGate.
- *  Used by evaluateSymphonyPatterns generic to eliminate unsafe casts for local registries. */
+/** Relaxed pattern type for internal or future extended registries beyond the canonical gate union. */
 export type SymphonyEvaluablePattern = Omit<SymphonyClinicalPattern, 'gate'> & { gate: string }
 
 export interface SymphonyPatternMatch<P extends SymphonyEvaluablePattern = SymphonyClinicalPattern> {

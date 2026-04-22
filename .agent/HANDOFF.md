@@ -1,6 +1,6 @@
 # HANDOFF.md — The Abyss (Monorepo Root)
 <!-- Overwrite at the start of each new session. -->
-<!-- Last updated: 2026-04-22 19:05 · Agent: Codex · Session: symphony-phase-4-action-protocols -->
+<!-- Last updated: 2026-04-22 19:40 · Agent: Codex · Session: symphony-phase-5-gate-taxonomy -->
 
 ---
 
@@ -12,10 +12,10 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Quick Orient (for new thread)
 
-**Branch:** `abyss-core` at `74defbb` + local Phase 4 changes · **NOT PUSHED**
+**Branch:** `abyss-core` at `466ec4b` + local Phase 5 changes · **NOT PUSHED**
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
 **Primary mission:** SYMPHONY Canonicalization Migration (7 phases, Chief-locked order)
-**Phases 1-4 implemented** · Phase 5 = next
+**Phases 1-5 implemented** · Phase 6 = next
 
 ---
 
@@ -29,8 +29,8 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 | 1 | Symptom Signals NLP (19 matchers, 3-token negation) | ✅ `a587b41` |
 | 2 | Pattern Engine generic evaluator | ✅ `0a471bb` (contract v0.2.0) |
 | 3 | Clinical Patterns Evaluator (70 CP native SYMPHONY) | ✅ `8fb9d1d` + `39db0cb` (208/208, quality-gated) |
-| 4 | Action Protocols (ABCDE) | ✅ local changes verified (contract v0.3.0, 210/210) |
-| 5 | Gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed) | ⬜ |
+| 4 | Action Protocols (ABCDE) | ✅ `466ec4b` (contract v0.3.0) |
+| 5 | Gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed) | ✅ local changes verified (contract v0.4.0, route parity 76/76) |
 | 6 | Prediction + classifier refinements | ⬜ |
 | 7 | Pharmacology decision surface (SYMPHONY vs @the-abyss/clinical-references) | ⬜ |
 
@@ -38,13 +38,14 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - `.agent/reports/2026-04-20-symphony-alignment.md` — Class A read-only verification
 - `.agent/reports/2026-04-20-symphony-coverage-audit.md` — coverage gap inventory
 
-**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.3.0'` at `packages/shared-types/src/symphony.ts` (local, not committed).
+**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.4.0'` at `packages/shared-types/src/symphony.ts` (local, not committed).
 
 **Phase 4 result:** 9 canonical `PROTO_*` registries now exist in `packages/symphony/src/engine/action-protocols.ts`; evaluator/parity adapter attach `actionProtocolId` + canonical payload to `SymphonyAlert`.
+**Phase 5 result:** `SymphonySafetyGate` now includes `GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED`; local gate workaround removed from `clinical-patterns-definitions.ts`; evaluator and adapter parity both emit canonical `gate`.
 
 **Phase 3 quality gate closed:** `SymphonySymptomContext` (27 flags), `SymphonyEvaluablePattern` generic, unsafe gate-bypass cast removed (2 data-transform casts remain in `clinical-patterns-definitions.ts` — expected, Assist→SYMPHONY criterion conversion), deep-equal parity on 70 CPs.
 
-**Phase 4 verification:** `pnpm --filter @the-abyss/symphony test` → 210/210 PASS; `typecheck` PASS; `lint` PASS.
+**Phase 4/5 verification:** `pnpm --filter @the-abyss/symphony test` → 210/210 PASS; `typecheck` PASS; `lint` PASS; `apps/healthcare/intelligenceboard` route parity PASS 76/76 (`routeParityStatus=partial`, `productionImportReplacementAllowed=false`).
 
 ---
 
@@ -112,8 +113,8 @@ From prior Codex session:
 
 ## Next Action Options (Chief choose)
 
-1. **Commit Phase 4** — stage explicit SYMPHONY/shared-types/.agent files only
-2. **Phase 5 GO** — gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed)
+1. **Commit Phase 5** — stage explicit SYMPHONY/shared-types/.agent files only
+2. **Phase 6 GO** — prediction + classifier refinements
 3. **Commit Avvcenna rebrand** (Chief's in-progress work) — separate thread/agent
 4. **Break / istirahat** — all state preserved locally
 
