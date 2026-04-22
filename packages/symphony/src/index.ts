@@ -139,6 +139,31 @@ export {
 } from './adapters/assist-patterns-parity'
 
 export {
+  evaluateSymphonyPatterns,
+  type SymphonyPatternEvaluationOptions,
+} from './engine/pattern-engine'
+
+export type {
+  SymphonyAvpuLevel,
+  SymphonyClinicalHistory,
+  SymphonyClinicalPattern,
+  SymphonyClinicalSnapshot,
+  SymphonyCriterion,
+  SymphonyCriterionOp,
+  SymphonyDerivedValues,
+  SymphonyGlucoseCategory,
+  SymphonyHistoricalBP,
+  SymphonyHtnSeverity,
+  SymphonyParsedVitals,
+  SymphonyPatternMatch,
+  SymphonyPatternSeverity,
+  SymphonyPatternTier,
+  SymphonyPhysiologyBand,
+  SymphonyScoreResult,
+  SymphonySnapshotPatient,
+} from './types/pattern-types'
+
+export {
   SYMPHONY_CONTRACT_VERSION,
   type SymphonyAlert,
   type SymphonyAlertSeverity,
