@@ -28,7 +28,7 @@ import type {
   SymphonyPatternSeverity,
   SymphonyPatternTier,
   SymphonyScoreResult,
-} from '../types/pattern-types'
+} from '@the-abyss/shared-types'
 
 // ---------------------------------------------------------------------------
 // Evaluation options

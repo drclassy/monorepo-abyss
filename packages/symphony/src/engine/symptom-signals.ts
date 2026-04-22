@@ -10,37 +10,13 @@
  * without duplicating domain logic. Negation-aware via a 3-token left window.
  */
 
-export type SymphonySymptomSignal =
-  | 'fever'
-  | 'dyspnea'
-  | 'chest_pain'
-  | 'headache'
-  | 'vomit'
-  | 'seizure'
-  | 'altered_consciousness'
-  | 'bleeding'
-  | 'pallor'
-  | 'weakness'
-  | 'dizziness'
-  | 'syncope'
-  | 'diaphoresis'
-  | 'rash_or_angioedema'
-  | 'allergen_exposure'
-  | 'abdominal_pain'
-  | 'kussmaul_breathing'
-  | 'polyuria'
-  | 'neurologic_focal_deficit'
+export type {
+  SymphonySymptomSignal,
+  SymphonySymptomSignalInput,
+  SymphonySymptomSignalResult,
+} from '@the-abyss/shared-types'
 
-export interface SymphonySymptomSignalInput {
-  chiefComplaint: string
-  additionalComplaint?: string
-  medicalHistory?: string
-}
-
-export interface SymphonySymptomSignalResult {
-  signals: SymphonySymptomSignal[]
-  negatedSignals: SymphonySymptomSignal[]
-}
+import type { SymphonySymptomSignal, SymphonySymptomSignalInput, SymphonySymptomSignalResult } from '@the-abyss/shared-types'
 
 const NEGATION_PREFIXES = ['tidak ada', 'tidak', 'tanpa', 'bukan', 'belum']
 const NEGATION_WINDOW_TOKENS = 3
