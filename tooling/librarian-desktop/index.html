@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Avvcenna+ Guardian Console v1.1.0</title>
+  <style>
+    :root {
+      --bg-card: #0f1012;
+      --bg-inset: #0a0a0c;
+      --accent: #10b981;
+      --accent-soft: rgba(16, 185, 129, 0.14);
+      --text-main: #ededed;
+      --text-muted: #737373;
+      --border-glow: rgba(255, 255, 255, 0.08);
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: transparent;
+      color: var(--text-main);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .widget-container {
+      width: 460px;
+      height: 620px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .seal-accent {
+      position: absolute;
+      top: 76px;
+      right: 24px;
+      font-size: 24px;
+      font-family: serif;
+      color: var(--accent);
+      opacity: 0.15;
+      pointer-events: none;
+      user-select: none;
+      writing-mode: vertical-rl;
+      letter-spacing: 0.2em;
+      filter: drop-shadow(0 0 5px var(--accent));
+      z-index: 0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .drag-handle {
+      -webkit-app-region: drag;
+      min-height: 56px;
+      width: 100%;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .title-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .subtitle {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(237, 237, 237, 0.55);
+    }
+
+    .model-chip {
+      font-size: 10px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(16, 185, 129, 0.08);
+      color: #9de6c7;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .close-btn {
+      -webkit-app-region: no-drag;
+      color: var(--text-muted);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .close-btn:hover { color: #ff5f56; }
+
+    .mode-bar {
+      padding: 14px 15px 0;
+      display: flex;
+      gap: 8px;
+      z-index: 1;
+    }
+
+    .mode-btn {
+      -webkit-app-region: no-drag;
+      flex: 1;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-muted);
+      border-radius: 12px;
+      padding: 11px 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn strong {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .mode-btn span {
+      display: block;
+      font-size: 11px;
+      color: rgba(237, 237, 237, 0.55);
+      line-height: 1.4;
+    }
+
+    .mode-btn.active {
+      border-color: rgba(16, 185, 129, 0.32);
+      background: var(--accent-soft);
+      color: #d8fff0;
+      box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.08);
+    }
+
+    .mode-btn.active span {
+      color: rgba(216, 255, 240, 0.72);
+    }
+
+    .mode-btn:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+      color: var(--text-main);
+    }
+
+    .status-panel {
+      margin: 12px 15px 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.02);
+      z-index: 1;
+    }
+
+    .status-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .status-panel-header strong {
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .status-label {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(237, 237, 237, 0.5);
+    }
+
+    .status-copy {
+      font-size: 12px;
+      line-height: 1.5;
+      color: rgba(237, 237, 237, 0.72);
+    }
+
+    .console-box {
+      flex: 1;
+      background: var(--bg-inset);
+      margin: 12px 15px 15px;
+      border-radius: 12px;
+      padding: 15px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-y: auto;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+      color: #9cdcfe;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+    }
+
+    .console-box::-webkit-scrollbar { width: 4px; }
+    .console-box::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.05); border-radius: 2px; }
+
+    .line {
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .type-sys,
+    .type-user {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      line-height: 1.55;
+      letter-spacing: 0.01em;
+    }
+
+    .type-agent {
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      line-height: 1.65;
+      letter-spacing: 0.005em;
+      color: #f2d7c3;
+    }
+
+    .type-sys { color: var(--text-muted); }
+    .type-user { color: var(--accent); }
+
+    .input-wrapper {
+      padding: 0 15px 15px;
+      display: flex;
+      gap: 10px;
+      z-index: 1;
+    }
+
+    .cmd-input {
+      flex: 1;
+      background: var(--bg-inset);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .cmd-input:focus { border-color: rgba(255, 255, 255, 0.2); }
+
+    .secondary-btn,
+    .action-btn {
+      -webkit-app-region: no-drag;
+      border-radius: 10px;
+      padding: 0 16px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .secondary-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .secondary-btn:hover {
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .action-btn {
+      background: #ededed;
+      color: #000;
+      border: none;
+    }
+
+    .action-btn:hover {
+      background: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    }
+
+    .action-btn:active { transform: translateY(0); }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .footer {
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 0 0 20px 20px;
+      font-size: 9px;
+      color: var(--text-muted);
+      text-align: center;
+      letter-spacing: 0.1em;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="seal-accent">代替</div>
+    <div class="drag-handle">
+      <div class="title-group">
+        <div class="status-dot"></div>
+        <div class="title-stack">
+          <span class="title">Avvcenna Guardian Console</span>
+          <span class="subtitle" id="modeSubtitle">Repo integrity shell</span>
+        </div>
+      </div>
+      <div class="title-group">
+        <span class="model-chip">gemma2:9b</span>
+        <div class="close-btn" onclick="window.close()">×</div>
+      </div>
+    </div>
+
+    <div class="mode-bar">
+      <button class="mode-btn" id="guardianModeBtn" data-mode="guardian">
+        <strong>Guardian Repo</strong>
+        <span>Integritas repo, boundary, housekeeping.</span>
+      </button>
+      <button class="mode-btn" id="sentinelModeBtn" data-mode="sentinel">
+        <strong>Sentinel Library</strong>
+        <span>Kualitas library dan kesiapan ingest RAG.</span>
+      </button>
+    </div>
+
+    <div class="status-panel">
+      <div class="status-panel-header">
+        <strong id="statusTitle">Guardian Repo</strong>
+        <span class="status-label" id="statusTag">Default Mode</span>
+      </div>
+      <div class="status-copy" id="statusCopy"></div>
+    </div>
+
+    <div class="console-box" id="display"></div>
+
+    <div class="input-wrapper">
+      <input type="text" id="cmdInput" class="cmd-input" placeholder="Masukkan perintah..." autofocus autocomplete="off">
+      <button class="secondary-btn" id="clearBtn">CLR</button>
+      <button class="action-btn" id="runBtn">EXEC</button>
+    </div>
+
+    <div class="footer">
+      SENTRA GOVERNANCE CONSOLE · GUARDIAN + SENTINEL · WINDOWS SHELL
+    </div>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    const display = document.getElementById('display');
+    const input = document.getElementById('cmdInput');
+    const runBtn = document.getElementById('runBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const modeSubtitle = document.getElementById('modeSubtitle');
+    const statusTitle = document.getElementById('statusTitle');
+    const statusTag = document.getElementById('statusTag');
+    const statusCopy = document.getElementById('statusCopy');
+    const modeButtons = Array.from(document.querySelectorAll('.mode-btn'));
+
+    const MODEL = 'gemma2:9b';
+    const STORAGE_KEY = 'avvcenna-guardian-console-state-v2';
+    const AUTH_KEY = 'Sentra#21052010';
+    const MAX_TURNS = 24;
+
+    const MODES = {
+      guardian: {
+        id: 'guardian',
+        label: 'Guardian',
+        title: 'Guardian Repo',
+        subtitle: 'Repo integrity shell',
+        statusTag: 'Default Mode',
+        statusCopy: 'Menjaga integritas monorepo, overlap ownership, drift boundary, dan housekeeping repo dengan fokus governance aktif.',
+        placeholder: 'Perintahkan Guardian Repo...',
+        bootLines: [
+          '[AUTH] Session locked. Authority required.',
+          '[INIT] UNIT: Repo Guardian active.',
+          '',
+          'Guardian: MASUKKAN KATA SANDI OTORISASI.'
+        ],
+        restoredLine: `Guardian: Session restored for ${MODEL}.`,
+        introLine: 'Guardian: AKSES DITERIMA. Repo integrity shell siap aktif.',
+        systemPrompt: [
+          'Identitas: Kamu adalah Guardian Repo di Avvcenna+ Guardian Console.',
+          'Tugas: Jaga integritas monorepo, boundary domain, repo hygiene, overlap ownership, dan housekeeping engineering.',
+          'Fokus: Jawab tegas, ringkas, dan operasional. Prioritaskan governance, konsistensi, dan keputusan yang bisa ditindaklanjuti.',
+          'Batasan: Jangan berpura-pura menjalankan aksi yang tidak benar-benar terjadi. Jika data kurang, nyatakan dengan jelas.'
+        ].join('\n'),
+      },
+      sentinel: {
+        id: 'sentinel',
+        label: 'Sentinel',
+        title: 'Sentinel Library',
+        subtitle: 'Library quality shell',
+        statusTag: 'RAG Input Gate',
+        statusCopy: 'Menjaga mutu bahan pustaka, validitas sumber, dan kesiapan ingest sebelum materi diproses oleh RAG engine.',
+        placeholder: 'Perintahkan Sentinel Library...',
+        bootLines: [
+          '[AUTH] Session locked. Authority required.',
+          '[INIT] UNIT: Medicine Library Sentinel active.',
+          '',
+          'Sentinel: MASUKKAN KATA SANDI OTORISASI.'
+        ],
+        restoredLine: `Sentinel: Session restored for ${MODEL}.`,
+        introLine: 'Sentinel: AKSES DITERIMA. Library quality shell siap aktif.',
+        systemPrompt: [
+          'Identitas: Kamu adalah Sentinel Library di Avvcenna+ Guardian Console.',
+          'Tugas: Jaga kualitas library medis, kesiapan ingest, dan validitas bahan referensi untuk RAG.',
+          'Gaya: Singkat, jelas, dan natural. Jika kualitas bahan diragukan, nyatakan tegas.',
+          'Batasan: Jangan mengarang provenance. Jika data tidak cukup, jelaskan ketidakpastian dengan jelas.'
+        ].join('\n'),
+      },
+    };
+
+    function defaultState() {
+      return {
+        activeMode: 'guardian',
+        sessions: {
+          guardian: { authenticated: false, conversation: [] },
+          sentinel: { authenticated: false, conversation: [] },
+        },
+      };
+    }
+
+    function sanitizeState(raw) {
+      const state = defaultState();
+
+      if (!raw || typeof raw !== 'object') {
+        return state;
+      }
+
+      if (raw.activeMode === 'sentinel' || raw.activeMode === 'guardian') {
+        state.activeMode = raw.activeMode;
+      }
+
+      for (const modeId of Object.keys(state.sessions)) {
+        const candidate = raw.sessions?.[modeId];
+        if (!candidate || typeof candidate !== 'object') {
+          continue;
+        }
+
+        state.sessions[modeId] = {
+          authenticated: Boolean(candidate.authenticated),
+          conversation: Array.isArray(candidate.conversation)
+            ? candidate.conversation
+                .filter((turn) => turn && (turn.role === 'user' || turn.role === 'assistant') && typeof turn.content === 'string')
+                .slice(-MAX_TURNS)
+            : [],
+        };
+      }
+
+      return state;
+    }
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        return defaultState();
+      }
+
+      try {
+        return sanitizeState(JSON.parse(raw));
+      } catch {
+        return defaultState();
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          activeMode,
+          sessions,
+        })
+      );
+    }
+
+    function currentConfig() {
+      return MODES[activeMode];
+    }
+
+    function currentSession() {
+      return sessions[activeMode];
+    }
+
+    function write(message, type = 'sys') {
+      const div = document.createElement('div');
+      div.className = `line type-${type}`;
+      div.textContent = message;
+      display.appendChild(div);
+      display.scrollTop = display.scrollHeight;
+    }
+
+    function renderHeader() {
+      const config = currentConfig();
+      modeSubtitle.textContent = config.subtitle;
+      statusTitle.textContent = config.title;
+      statusTag.textContent = config.statusTag;
+      statusCopy.textContent = config.statusCopy;
+      input.placeholder = config.placeholder;
+
+      for (const button of modeButtons) {
+        button.classList.toggle('active', button.dataset.mode === activeMode);
+      }
+    }
+
+    function renderBoot() {
+      const config = currentConfig();
+      const session = currentSession();
+
+      display.innerHTML = '';
+
+      for (const line of config.bootLines) {
+        write(line, line.startsWith(config.label) ? 'agent' : 'sys');
+      }
+
+      if (!session.authenticated) {
+        return;
+      }
+
+      write(config.restoredLine, 'agent');
+      for (const turn of session.conversation) {
+        if (turn.role === 'user') {
+          write(`> ${turn.content}`, 'user');
+        } else if (turn.role === 'assistant') {
+          write(`${config.label}: ${turn.content}`, 'agent');
+        }
+      }
+    }
+
+    async function callModel(userText) {
+      const config = currentConfig();
+      const session = currentSession();
+      const payload = {
+        model: MODEL,
+        messages: [
+          { role: 'system', content: config.systemPrompt },
+          ...session.conversation,
+          { role: 'user', content: userText },
+        ],
+        stream: false,
+      };
+
+      const data = await ipcRenderer.invoke('ollama:chat', payload);
+      return data?.message?.content?.trim?.() || data?.response?.trim?.() || '';
+    }
+
+    async function callWorkerHarvest(query) {
+      return ipcRenderer.invoke('worker:harvest', {
+        query,
+        openAccessOnly: true,
+        limit: 10,
+      });
+    }
+
+    function persistTurn(role, content) {
+      const session = currentSession();
+      session.conversation.push({ role, content });
+      session.conversation = session.conversation.slice(-MAX_TURNS);
+      saveState();
+    }
+
+    function resetConversation() {
+      sessions[activeMode] = { authenticated: false, conversation: [] };
+      saveState();
+      renderHeader();
+      renderBoot();
+      input.focus();
+    }
+
+    function switchMode(nextMode) {
+      if (!MODES[nextMode] || nextMode === activeMode) {
+        return;
+      }
+
+      activeMode = nextMode;
+      saveState();
+      renderHeader();
+      renderBoot();
+      input.focus();
+    }
+
+    async function execute() {
+      const query = input.value.trim();
+      if (!query) {
+        return;
+      }
+
+      const config = currentConfig();
+      const session = currentSession();
+
+      input.value = '';
+      write(`> ${query}`, 'user');
+
+      if (!session.authenticated) {
+        if (query === AUTH_KEY) {
+          session.authenticated = true;
+          session.conversation = [];
+          write(config.introLine, 'agent');
+          saveState();
+        } else {
+          write('[FATAL ERROR] AUTHENTICATION FAILED.', 'sys');
+        }
+        input.focus();
+        return;
+      }
+
+      if (activeMode === 'sentinel' && query.toLowerCase().startsWith('/harvest ')) {
+        runBtn.disabled = true;
+        clearBtn.disabled = true;
+
+        try {
+          const harvestQuery = query.slice('/harvest '.length).trim();
+          const result = await callWorkerHarvest(harvestQuery);
+          write(`Sentinel: Harvest complete for "${harvestQuery}".`, 'agent');
+          write(`Sentinel: downloaded=${result.counts.downloaded}, metadata-only=${result.counts.metadataOnly}, failed=${result.counts.failed}`, 'agent');
+          write(`Sentinel: manifest -> ${result.manifestPath}`, 'agent');
+        } catch (error) {
+          write(`[ERROR] ${error.message || 'Worker harvest failed.'}`, 'sys');
+        } finally {
+          runBtn.disabled = false;
+          clearBtn.disabled = false;
+          input.focus();
+        }
+
+        return;
+      }
+
+      persistTurn('user', query);
+      runBtn.disabled = true;
+      clearBtn.disabled = true;
+
+      try {
+        const reply = await callModel(query);
+        const content = reply || '[NO RESPONSE]';
+        persistTurn('assistant', content);
+        write(`${config.label}: ${content}`, 'agent');
+      } catch (error) {
+        write(`[ERROR] ${error.message || 'Connection failed. Is Ollama running?'}`, 'sys');
+      } finally {
+        runBtn.disabled = false;
+        clearBtn.disabled = false;
+        input.focus();
+      }
+    }
+
+    let { activeMode, sessions } = loadState();
+
+    for (const button of modeButtons) {
+      button.addEventListener('click', () => switchMode(button.dataset.mode));
+    }
+
+    runBtn.onclick = execute;
+    clearBtn.onclick = resetConversation;
+    input.onkeydown = (event) => {
+      if (event.key === 'Enter') {
+        execute();
+      }
+    };
+
+    renderHeader();
+    renderBoot();
+  </script>
+</body>
+</html>

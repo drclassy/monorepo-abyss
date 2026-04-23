@@ -15,6 +15,16 @@ this file wins.
 
 ---
 
+## Continual learning (plugin)
+
+- Agent transcripts for this workspace live under `C:\Users\claud\.cursor\projects\d-Devop-abyss-monorepo\agent-transcripts\` (session folders contain `*.jsonl`); newest files are the default Continual Learning mining surface.
+- Flow `/continual-learning` plus the `agents-memory-updater` subagent merges durable bullets into this `AGENTS.md` after transcript review.
+- Incremental transcript index expected at `.cursor/hooks/state/continual-learning-index.json` is not in the tree yet; add it when the plugin starts recording processed transcript mtimes (otherwise miners only use full directory scans).
+- Session transcripts show Chief-facing answers in Bahasa Indonesia with neutral wording and without second-person pronouns (audit crowded subagent lists via `%USERPROFILE%\.cursor\agents` and repo `.cursor\agents\`, matching prior session guidance).
+- Recent work in the repo clusters on `packages/symphony/`, `packages/vector-store/`, tracked `.cursor/` rules and hooks, and `mcp.json.example` versus local `.mcp.json`; before push, run `repository/validate.ps1 -path <project-root>` per the compliance section.
+
+---
+
 ## §1 — Mandatory Initialization (GUARD 1)
 
 Every agent MUST execute GUARD 1 at session start without exception.
@@ -107,8 +117,9 @@ D:\Devop\abyss-monorepo\
 ├── turbo.json
 ├── .agent\                      ← agent memory (CONTEXT, PROGRESS, HANDOFF, LESSONS, DECISIONS, sessions/)
 ├── .claude\                     ← Claude Code config (agents/, commands/, skills/, settings.json)
-├── .cursor\rules\               ← IDE rules (00-constitution.mdc + domain rules)
-├── .mcp.json                    ← MCP server registry
+├── .cursor\                     ← IDE rules, hooks, subagents (tracked — see root .gitignore negations)
+├── .mcp.json                    ← MCP server registry (local only; gitignored)
+├── mcp.json.example             ← Copy to .mcp.json; committed template (empty servers)
 ├── apps\
 │   ├── platform\
 │   │   ├── orchestrator\        ← NestJS Saga Engine (CQRS mandatory)
@@ -126,7 +137,10 @@ D:\Devop\abyss-monorepo\
 │   ├── database\                ← Shared DB layer (all apps route through here)
 │   ├── ai-core\          ← renamed from artificial-core
 │   ├── design-token\
+│   ├── literature-harvester\    ← open-access literature search/download
 │   └── shared-types\
+├── tooling\
+│   └── librarian-desktop\       ← Electron console + companion literature worker
 ├── infrastructure\              ← IaC — Chief-only execution
 ├── flows\                       ← LangFlow AI workflow definitions
 └── docs\
@@ -134,6 +148,16 @@ D:\Devop\abyss-monorepo\
     ├── agent-memory\            ← `.agent/` at root and per-app (context + audit)
     └── specs\phase-4\
 ```
+
+### §4.1 — Cursor subagents (explicit invoke)
+
+Specialized prompts under `.cursor/agents/` (tracked in Git). Invoke by name when the task matches (not auto-loaded like rules). MCP: use `mcp.json.example` → `.mcp.json` per `.cursor/README.md`.
+
+| Name | Role |
+| ---- | ---- |
+| `code-reviewer` | Review diffs and changed files for quality, security, reuse, and rule compliance. |
+| `test-writer` | Author high-value tests across unit/component/E2E/integration layers. |
+| `config-writer` | Decide whether behavior belongs in central config, a rule, a skill, or an agent; then create or update the artifact and cross-references. |
 
 ---
 

@@ -1,0 +1,14 @@
+{
+  "name": "avvcenna-librarian-console",
+  "version": "1.0.0",
+  "description": "Desktop Console for Avvcenna+ Guardian Repo and Sentinel Library",
+  "main": "main.js",
+  "scripts": {
+    "start": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"Remove-Item Env:ELECTRON_RUN_AS_NODE -ErrorAction SilentlyContinue; & '.\\\\node_modules\\\\electron\\\\dist\\\\electron.exe' '.'\""
+  },
+  "author": "Kate Voss",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "electron": "^30.0.0"
+  }
+}
