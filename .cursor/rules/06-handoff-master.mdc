@@ -1,0 +1,14 @@
+---
+description: Ensures AI always updates .agent/HANDOFF.md before the session ends or major tasks are completed.
+globs: **/*
+alwaysApply: true
+---
+# Handoff Master Protocol
+
+Every time a major task is completed, or when Chief gives a signal like "Wrap up" or "Done for today":
+1. AI MUST update `.agent/HANDOFF.md`.
+2. Handoff structure must include:
+   - **Current Status**: What was just completed.
+   - **Pending Work**: What is still incomplete.
+   - **Next Steps**: Specific instructions for the next session.
+   - **Technical Context**: Architectural changes or key decisions made.

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "node .cursor/hooks/after-edit.mjs"
+      }
+    ],
+    "stop": [
+      {
+        "command": "node .cursor/hooks/autofix-loop.mjs"
+      }
+    ]
+  }
+}

@@ -1,0 +1,79 @@
+---
+description: 'The Abyss Constitution: SSOT reminder, JET Protocol, and NestJS guard. Always loads first (00-).'
+globs: '**/*'
+alwaysApply: true
+---
+
+# THE AGENT GUARD (SSOT)
+
+**STOP: Every agent MUST pass this Security Guard before performing ANY task in this monorepo.**
+
+## GUARD 1: MANDATORY CONTEXT INITIALIZATION
+
+**CRITICAL:** Every agent MUST read the entire `.agent/` folder before performing any task. Assume the context window can be reset at any moment. All status, decisions, and plans live in `.agent/`.
+
+You MUST read in this EXACT order at session start:
+
+1. `.agent/CONTEXT.md` — Understand architecture and stack
+2. `.agent/PROGRESS.md` — Know the current state of work
+3. `.agent/HANDOFF.md` — Read the plan and instructions for this session
+4. `.agent/LESSONS.md` — Avoid previously made mistakes
+5. `.agent/DECISIONS.md` — Understand prior architectural decisions
+
+## GUARD 2: THE JET WORKFLOW PROTOCOL (Risk-Based)
+
+Every non-trivial task follows JET, but execution depth depends on Task Classification.
+
+### Step 1: Classify the Task
+
+| Class | Risk | Examples | JET Required | GO Gate |
+|-------|------|----------|--------------|---------|
+| **A** | Minimal | Read files, search, typo fixes | J1-J4 | Auto-approve |
+| **B** | Standard | Components, APIs, bug fixes | J1-J7 | Checkpoint |
+| **C** | High | DB migrations, terraform, PHI | J1-J9 Full | ⛔ Hard J5 |
+
+### Step 2: Execute by Class
+
+**Class A (Auto):**
+- Execute immediately after J4
+- Minimal logging (1 line in sessions/)
+
+**Class B (Checkpoint):**
+- Check `.agent/SESSION_STATE.md` for GO status
+- Plan in HANDOFF.md → Execute → Verify
+- Update `.agent/sessions/` after completion
+
+**Class C (Hard Gate):**
+- ⛔ HALT if no explicit Chief 'GO'
+- Full JET protocol (J1-J9)
+- Dual-write to both logging systems mandatory
+
+### JET Phases Reference
+
+| Phase | Action | Class A | Class B | Class C |
+|-------|--------|---------|---------|---------|
+| J1 | Context scan | ✅ | ✅ | ✅ |
+| J2 | Validate rules | ✅ | ✅ | ✅ |
+| J3 | Diagnose | ✅ | ✅ | ✅ |
+| J4 | Plan | ✅ | ✅ | ✅ |
+| J5 | Risk gate | Skip | Check state | ⛔ Hard stop |
+| J6 | Execute | Auto | Proceed | Post-GO |
+| J7 | Verify | Optional | Required | Required |
+| J8 | Docs | Minimal | Standard | Full |
+| J9 | Commit | Standard | Standard | With trailer |
+
+## GUARD 3: NESTJS-SPECIFIC RULES
+
+**Architecture enforcement for NestJS modules in this monorepo:**
+
+- Every new NestJS module MUST follow the structure: `module/`, `controller/`, `service/`, `dto/`, `entities/`
+- DTOs MUST use `class-validator` decorators — no plain interfaces for request validation
+- Services MUST be injectable — no business logic in controllers
+- All database operations MUST go through the `packages/database` shared library — never raw queries in app code
+- PHI/PII fields MUST be decorated with `@Exclude()` from `class-transformer` — no exceptions in healthcare apps
+- Every NestJS controller endpoint in `apps/healthcare/` MUST have a corresponding Swagger `@ApiOperation` decorator
+- CQRS pattern is mandatory for `apps/platform/orchestrator/` — Commands and Queries must be separated
+
+**If a local rule contradicts `AGENTS.md`, `AGENTS.md` ALWAYS WINS.**
+
+Confirm readiness by stating: '✅ AGENTS.md read. JET Guard Passed. Awaiting J5 GO.'

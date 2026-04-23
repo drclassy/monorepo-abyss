@@ -1,0 +1,25 @@
+---
+description: 'Strict TypeScript and Sentra Security (PHI/PII) enforcement.'
+globs: '**/*.ts'
+alwaysApply: false
+---
+# TYPESCRIPT & SENTRA SECURITY
+
+## 1. STYLE CONVENTIONS
+- Every value must be typed; avoid implicit `any`.
+- PascalCase for Types/Interfaces/Classes; camelCase for variables/functions.
+
+## 2. PATTERN EXAMPLES
+- **Type Safety:** Use `unknown` for uncertain types and perform type narrowing using `if (typeof ...)` or type guards.
+- **Generics:** Use meaningful constraint names (e.g., `<TData>` instead of `<T>`).
+- **Validation:** Mandatory Zod schemas for all runtime input parsing (API, JSON, Env).
+
+## 3. SECURITY (SENTRA STANDARD)
+- All healthcare-related PHI/PII fields MUST be decorated with `@Exclude()`.
+- Use `timingSafeEqual` for all security-sensitive comparisons.
+
+## 4. NEVER LIST
+- No `any` or `as any`.
+- No `@ts-ignore` or `@ts-nocheck` without a documented reason.
+- No non-null assertions (`!`) unless an invariant is proven and documented.
+

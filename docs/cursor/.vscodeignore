@@ -1,0 +1,10 @@
+.vscode/**
+src/**
+node_modules/**
+.gitignore
+tsconfig.json
+docs/**
+**/*.map
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

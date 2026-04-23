@@ -1,0 +1,27 @@
+# Dependencies & Build Outputs
+node_modules/
+dist/
+build/
+.next/
+out/
+.turbo/
+
+# Caches & Temp Files
+.cache/
+.npm/
+.pnpm-store/
+*.log
+.eslintcache
+.stylelintcache
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Large Assets
+*.mp4
+*.zip
+*.tar.gz
+
+# AI Memory & Sessions
+.agent/sessions/*.raw.log

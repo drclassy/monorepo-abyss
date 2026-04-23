@@ -1,0 +1,30 @@
+---
+description: 'Advanced CQRS and Saga pattern enforcement for NestJS services.'
+globs: 'apps/platform/orchestrator/**/*.ts,packages/database/**/*.ts'
+alwaysApply: false
+---
+# NESTJS CQRS & SAGA ARCHITECTURE
+
+## 1. STACK DECLARATION
+- NestJS (TypeScript), Prisma, Kafka, RxJS.
+
+## 2. ARCHITECTURE MAPPING
+- `controller/`: Thin layer, HTTP parsing, and DTO validation.
+- `service/`: Core business logic (framework-agnostic where possible).
+- `repository/`: All database-specific operations (using `packages/database`).
+- `dto/`: Request/Response schemas with `class-validator`.
+
+## 3. CQRS & SAGA PATTERNS
+- **Commands vs Queries:** Mutations must be Commands; Reads must be Queries.
+- **Sagas:** Implement `BaseSaga` for multi-step transactions with reverse compensation (rollbacks).
+- **Error Handling:** Use custom `DomainError` or `AppError` classes. Raise exceptions in services, handle in global filters.
+
+## 4. ENFORCEMENT
+- Use constructor injection; avoid property injection (`@Inject`).
+- All PHI/PII fields MUST be decorated with `@Exclude()`.
+
+## 5. NEVER LIST
+- No direct database access; use the Repository pattern.
+- No business logic in Controllers.
+- Never swallow errors; always use a logger before throwing/rethrowing.
+
