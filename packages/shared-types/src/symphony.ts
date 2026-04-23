@@ -1,4 +1,4 @@
-export const SYMPHONY_CONTRACT_VERSION = '0.5.0' as const
+export const SYMPHONY_CONTRACT_VERSION = '0.6.0' as const
 
 export type SymphonyContractVersion = typeof SYMPHONY_CONTRACT_VERSION
 
@@ -150,6 +150,21 @@ export interface SymphonyAlert {
   triggeredAt: string
 }
 
+export type SymphonyTrafficLightLevel = 'GREEN' | 'YELLOW' | 'RED'
+
+export interface SymphonyTrafficLightGateResult {
+  rule: string
+  triggered: boolean
+  detail: string
+}
+
+export interface SymphonyTrafficLightOutput {
+  level: SymphonyTrafficLightLevel
+  reason: string
+  gateResults: SymphonyTrafficLightGateResult[]
+  overrideApplied: boolean
+}
+
 export interface SymphonyTrajectorySummary {
   direction: SymphonyTrajectoryDirection
   momentum: SymphonyTrajectoryMomentum
@@ -170,6 +185,7 @@ export interface SymphonyResult {
   latestVitals?: SymphonyVitalsInput
   diagnosisSuggestions: SymphonyDiagnosisSuggestion[]
   alerts: SymphonyAlert[]
+  trafficLight?: SymphonyTrafficLightOutput
   trajectory: SymphonyTrajectorySummary
   quality: SymphonyQualitySummary
 }

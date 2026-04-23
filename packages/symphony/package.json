@@ -11,6 +11,7 @@
     "clean": "rm -rf .turbo node_modules dist"
   },
   "dependencies": {
+    "@the-abyss/clinical-references": "workspace:*",
     "@the-abyss/shared-types": "workspace:*"
   },
   "devDependencies": {

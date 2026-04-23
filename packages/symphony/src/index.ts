@@ -96,6 +96,12 @@ export {
   type SymphonyVitalTrend,
 } from './engine/trajectory'
 
+export {
+  classifySymphonyTrafficLight,
+  trafficLightToSymphonyAlert,
+  type SymphonyTrafficLightInput,
+} from './engine/traffic-light'
+
 export { evaluateSymphonyVitalAlerts } from './engine/vital-alerts'
 
 export {
@@ -252,5 +258,8 @@ export {
   type SymphonyTrajectoryDirection,
   type SymphonyTrajectoryMomentum,
   type SymphonyTrajectorySummary,
+  type SymphonyTrafficLightGateResult,
+  type SymphonyTrafficLightLevel,
+  type SymphonyTrafficLightOutput,
   type SymphonyVitalsInput,
 } from './contracts'

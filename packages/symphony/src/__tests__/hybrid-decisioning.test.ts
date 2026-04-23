@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   applySymphonyHybridDecisioning,
   assessSymphonyInput,
+  classifySymphonyTrafficLight,
   type SymphonyAssessmentInput,
   type SymphonyHybridDiagnosisCandidate,
 } from '../index'
@@ -155,5 +156,121 @@ describe('SYMPHONY hybrid CDSS decisioning', () => {
     expect(result.diagnosisSuggestions[0]?.decisionCategory).toBe('recommended')
     expect(result.quality.auditHints).toContain('diagnosis_recommended_count:1')
     expect(result.quality.auditHints).toContain('diagnosis_must_not_miss_count:1')
+  })
+
+  it('classifies RED traffic-light when acute-on-chronic and severe DDI coexist', () => {
+    const decisioning = applySymphonyHybridDecisioning({
+      chiefComplaint: 'Sesak napas dan nyeri dada memberat',
+      candidates: [
+        {
+          icd10Code: 'I10',
+          diagnosisName: 'Hipertensi esensial',
+          confidence: 0.62,
+          keywordScore: 0.63,
+          semanticScore: 0.61,
+          ragVerified: true,
+          keyReasons: ['Riwayat hipertensi lama'],
+          redFlags: [],
+          recommendedActions: ['Kontrol tekanan darah dan evaluasi ulang'],
+        },
+        {
+          icd10Code: 'I50.9',
+          diagnosisName: 'Heart failure, unspecified',
+          confidence: 0.58,
+          keywordScore: 0.6,
+          semanticScore: 0.57,
+          ragVerified: true,
+          keyReasons: ['Sesak memberat'],
+          redFlags: ['Perlu evaluasi gagal jantung akut'],
+          recommendedActions: ['Rujuk segera bila ada dekompensasi'],
+        },
+      ],
+      patientContext: {
+        encounterId: 'enc-hybrid-5',
+        patientRef: 'patient-hybrid-5',
+        ageYears: 74,
+        sexAtBirth: 'female',
+        pregnancyStatus: 'not_applicable',
+      },
+    })
+
+    const trafficLight = classifySymphonyTrafficLight({
+      alerts: [
+        {
+          id: 'alert-critical',
+          severity: 'high',
+          title: 'Dekompensasi akut',
+          reasoning: ['Sesak napas memberat'],
+          source: 'pattern',
+          acknowledged: false,
+          triggeredAt: '2026-04-23T12:00:00.000Z',
+        },
+      ],
+      diagnosisSuggestions: decisioning.suggestions,
+      patientAge: 74,
+      chronicDiseases: ['I10.0'],
+      ddiResult: {
+        status: 'configured',
+        checkedPairs: ['warfarin__clarithromycin'],
+        interactions: [
+          {
+            drugA: 'warfarin',
+            drugB: 'clarithromycin',
+            severity: 'major',
+            evidenceSummary: 'Synthetic interaction for traffic-light gate verification.',
+            referenceId: 'synthetic-ddi-1',
+          },
+        ],
+        warnings: [],
+        provenance: {
+          domain: 'ddi',
+          sourceName: 'synthetic-test',
+          version: 'v1',
+          licensedForRepoDistribution: false,
+        },
+      },
+    })
+
+    expect(trafficLight.level).toBe('RED')
+    expect(trafficLight.overrideApplied).toBe(true)
+    expect(trafficLight.gateResults.find(result => result.rule === 'Rule 6: DDI Severity')?.triggered).toBe(true)
+    expect(trafficLight.gateResults.find(result => result.rule === 'Rule 8: Acute-on-Chronic')?.triggered).toBe(true)
+  })
+
+  it('injects traffic-light output into assessment when diagnosis context is present', () => {
+    const input: SymphonyAssessmentInput = {
+      metadata: {
+        requestId: 'request-traffic-light-assess',
+        requestedAt: '2026-04-23T12:00:00.000Z',
+        caller: 'dashboard',
+      },
+      patientContext: {
+        encounterId: 'enc-hybrid-6',
+        patientRef: 'patient-hybrid-6',
+        ageYears: 76,
+        sexAtBirth: 'male',
+        pregnancyStatus: 'not_applicable',
+      },
+      vitals: [
+        {
+          observedAt: '2026-04-23T12:00:00.000Z',
+          heartRate: 112,
+          respiratoryRate: 24,
+          temperatureC: 38.1,
+          systolicBp: 108,
+          diastolicBp: 68,
+          spo2: 94,
+        },
+      ],
+      chiefComplaint: 'Sesak napas memberat sejak pagi',
+      diagnosisCandidates: baseCandidates,
+      chronicDiseases: ['E11.9', 'I10.0'],
+    }
+
+    const result = assessSymphonyInput(input)
+
+    expect(result.trafficLight?.level).toBe('RED')
+    expect(result.alerts.some(alert => alert.title.startsWith('Traffic Light'))).toBe(true)
+    expect(result.quality.auditHints).toContain('traffic_light:RED')
   })
 })

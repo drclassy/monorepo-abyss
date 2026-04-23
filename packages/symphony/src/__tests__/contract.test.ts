@@ -32,5 +32,6 @@ describe('@the-abyss/symphony scaffold', () => {
     expect(result.patientContext).toEqual(input.patientContext)
     expect(result.alerts).toHaveLength(0)
     expect(result.diagnosisSuggestions).toHaveLength(0)
+    expect(result.trafficLight).toBeUndefined()
   })
 })

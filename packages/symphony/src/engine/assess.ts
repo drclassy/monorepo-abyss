@@ -1,3 +1,5 @@
+import { checkDrugInteractions } from '@the-abyss/clinical-references'
+
 import {
   SYMPHONY_CONTRACT_VERSION,
   type SymphonyPatientContext,
@@ -21,6 +23,10 @@ import {
 import { calculateSymphonyNEWS2, news2ToSymphonyAlerts } from './news2'
 import { detectSymphonyPeSuspect, peSuspectToSymphonyAlerts } from './pe-suspect'
 import { evaluateSymphonyInstantScreeningGates } from './screening-gates'
+import {
+  classifySymphonyTrafficLight,
+  trafficLightToSymphonyAlert,
+} from './traffic-light'
 import {
   analyzeSymphonyTrajectory,
   trajectoryDirectionFromAnalysis,
@@ -49,6 +55,8 @@ export interface SymphonyAssessmentInput {
   additionalComplaint?: string
   medicalHistory?: string[]
   allergies?: string[]
+  activeMedications?: string[]
+  chronicDiseases?: string[]
   diagnosisCandidates?: SymphonyHybridDiagnosisCandidate[]
 }
 
@@ -123,6 +131,37 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     medicalHistory: input.medicalHistory,
     allergies: input.allergies,
   })
+  const alertsBeforeTrafficLight = [
+    ...vitalAlerts,
+    ...safetyGateAlerts,
+    ...peSuspectAlerts,
+    ...anaphylaxisAlerts,
+    ...compositeAlerts,
+    ...news2Alerts,
+    ...patternAlerts,
+  ]
+  const shouldEvaluateTrafficLight =
+    hybridDecisioning.suggestions.length > 0 ||
+    (input.activeMedications?.length ?? 0) > 1 ||
+    (input.chronicDiseases?.length ?? 0) > 0
+  const ddiResult =
+    shouldEvaluateTrafficLight && (input.activeMedications?.length ?? 0) > 1
+      ? checkDrugInteractions({
+          activeMedications: input.activeMedications ?? [],
+        })
+      : undefined
+  const trafficLight = shouldEvaluateTrafficLight
+    ? classifySymphonyTrafficLight({
+        alerts: alertsBeforeTrafficLight,
+        diagnosisSuggestions: hybridDecisioning.suggestions,
+        patientAge: input.patientContext.ageYears,
+        chronicDiseases: input.chronicDiseases,
+        ddiResult,
+      })
+    : undefined
+  const trafficLightAlert = trafficLight
+    ? trafficLightToSymphonyAlert(trafficLight, latestVitals?.observedAt ?? input.metadata.requestedAt)
+    : null
 
   return {
     metadata: {
@@ -139,15 +178,8 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     patientContext: input.patientContext,
     latestVitals,
     diagnosisSuggestions: hybridDecisioning.suggestions,
-    alerts: [
-      ...vitalAlerts,
-      ...safetyGateAlerts,
-      ...peSuspectAlerts,
-      ...anaphylaxisAlerts,
-      ...compositeAlerts,
-      ...news2Alerts,
-      ...patternAlerts,
-    ],
+    alerts: trafficLightAlert ? [...alertsBeforeTrafficLight, trafficLightAlert] : alertsBeforeTrafficLight,
+    trafficLight,
     trajectory: {
       direction: trajectoryDirectionFromAnalysis(trajectoryAnalysis),
       momentum: trajectoryMomentumFromAnalysis(trajectoryAnalysis),
@@ -176,6 +208,9 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
         `composite_alert_count:${compositeDeterioration.compositeAlerts.length}`,
         `composite_watcher_count:${compositeDeterioration.watchers.length}`,
         `early_warning_count:${earlyWarnings.length}`,
+        `traffic_light:${trafficLight?.level ?? 'not_evaluated'}`,
+        `traffic_light_override:${trafficLight?.overrideApplied === true ? 1 : 0}`,
+        `ddi_reference_status:${ddiResult?.status ?? 'not_evaluated'}`,
         `trajectory_state:${trajectoryAnalysis.globalDeterioration.state}`,
         `trajectory_momentum:${trajectoryAnalysis.momentum.level}`,
         ...hybridDecisioning.auditHints,

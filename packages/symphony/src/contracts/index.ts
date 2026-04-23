@@ -47,5 +47,8 @@ export {
   type SymphonyTrajectoryDirection,
   type SymphonyTrajectoryMomentum,
   type SymphonyTrajectorySummary,
+  type SymphonyTrafficLightGateResult,
+  type SymphonyTrafficLightLevel,
+  type SymphonyTrafficLightOutput,
   type SymphonyVitalsInput,
 } from '@the-abyss/shared-types'
