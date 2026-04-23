@@ -1,59 +1,149 @@
-﻿import fs from 'fs-extra';
-import path from 'path';
-import pdf from 'pdf-parse';
-import { VectorStore } from '../store';
+import path from 'node:path'
 
-const PDF_DIR = 'D:/Devop/abyss-monorepo/repository/medical-raw';
-const CHUNK_SIZE = 1000; // Karakter per potongan
-const CHUNK_OVERLAP = 200; // Tumpang tindih agar konteks tidak hilang
+import fs from 'fs-extra'
+import { PDFParse } from 'pdf-parse'
 
-async function processPdf(filePath: string) {
-  const dataBuffer = await fs.readFile(filePath);
-  const data = await pdf(dataBuffer);
-  return data.text;
+import type { VectorStore } from '../store'
+
+export interface MedicalPdfIngestOptions {
+  pdfDir: string
+  store: VectorStore
+  chunkSize?: number
+  chunkOverlap?: number
+  delayMs?: number
+  maxRetries?: number
+  log?: (message: string) => void
 }
 
-function chunkText(text: string, size: number, overlap: number): string[] {
-  const chunks: string[] = [];
-  for (let i = 0; i < text.length; i += size - overlap) {
-    chunks.push(text.substring(i, i + size));
+export interface MedicalPdfIngestResult {
+  filesProcessed: number
+  chunksUpserted: number
+  skippedFiles: string[]
+}
+
+const DEFAULT_CHUNK_SIZE = 3_000
+const DEFAULT_CHUNK_OVERLAP = 300
+const DEFAULT_DELAY_MS = 200
+const DEFAULT_MAX_RETRIES = 3
+
+export async function extractPdfText(filePath: string): Promise<string> {
+  const parser = new PDFParse({ data: await fs.readFile(filePath) })
+
+  try {
+    const result = await parser.getText()
+    return result.text
+  } finally {
+    await parser.destroy()
   }
-  return chunks;
 }
 
-async function startIngestion() {
-  const store = new VectorStore({ provider: 'memory' }); // Config placeholder
-  const files = await fs.readdir(PDF_DIR);
-  const pdfFiles = files.filter(f => f.endsWith('.pdf'));
+export function chunkText(
+  text: string,
+  chunkSize = DEFAULT_CHUNK_SIZE,
+  chunkOverlap = DEFAULT_CHUNK_OVERLAP,
+): string[] {
+  if (chunkSize <= 0) throw new Error('[ingest-medical-pdf] chunkSize must be positive')
+  if (chunkOverlap < 0) throw new Error('[ingest-medical-pdf] chunkOverlap cannot be negative')
+  if (chunkOverlap >= chunkSize) {
+    throw new Error('[ingest-medical-pdf] chunkOverlap must be smaller than chunkSize')
+  }
 
-  console.log(`Menemukan ${pdfFiles.length} file PDF medis...`);
+  const normalized = text.replace(/\s+/g, ' ').trim()
+  if (!normalized) return []
 
-  for (const file of pdfFiles) {
-    console.log(`🚀 Memproses: ${file}`);
-    const fullPath = path.join(PDF_DIR, file);
-    
+  const chunks: string[] = []
+  for (let start = 0; start < normalized.length; start += chunkSize - chunkOverlap) {
+    const chunk = normalized.slice(start, start + chunkSize).trim()
+    if (chunk) chunks.push(chunk)
+  }
+
+  return chunks
+}
+
+async function wait(ms: number): Promise<void> {
+  if (ms <= 0) return
+  await new Promise(resolve => setTimeout(resolve, ms))
+}
+
+async function withRetry<T>(
+  action: () => Promise<T>,
+  maxRetries: number,
+  retryLabel: string,
+): Promise<T> {
+  let lastError: unknown
+
+  for (let attempt = 1; attempt <= maxRetries; attempt += 1) {
     try {
-      const rawText = await processPdf(fullPath);
-      const chunks = chunkText(rawText, CHUNK_SIZE, CHUNK_OVERLAP);
-      
-      console.log(`   - Ekstraksi selesai. Dihasilkan ${chunks.length} potongan (chunks).`);
-
-      for (let i = 0; i < chunks.length; i++) {
-        process.stdout.write(`   - Ingesting chunk ${i+1}/${chunks.length}... \r`);
-        await store.upsert(chunks[i], {
-          source: file,
-          page: Math.floor(i / 5) + 1, // Estimasi halaman
-          category: 'Medical Knowledge'
-        });
-        
-        // Jeda 200ms agar API Vertex/Gemini tidak overload
-        await new Promise(r => setTimeout(r, 200));
-      }
-      console.log(`\n✅ Selesai memproses: ${file}\n`);
-    } catch (err) {
-      console.error(`❌ Gagal memproses ${file}:`, err);
+      return await action()
+    } catch (error) {
+      lastError = error
+      if (attempt === maxRetries) break
+      await wait(500 * attempt)
     }
   }
+
+  throw new Error(
+    `[ingest-medical-pdf] ${retryLabel} failed after ${maxRetries} attempts: ${String(lastError)}`,
+  )
 }
 
-startIngestion().catch(console.error);
+export async function ingestMedicalPdfDirectory(
+  options: MedicalPdfIngestOptions,
+): Promise<MedicalPdfIngestResult> {
+  const {
+    pdfDir,
+    store,
+    chunkSize = DEFAULT_CHUNK_SIZE,
+    chunkOverlap = DEFAULT_CHUNK_OVERLAP,
+    delayMs = DEFAULT_DELAY_MS,
+    maxRetries = DEFAULT_MAX_RETRIES,
+    log = () => undefined,
+  } = options
+
+  const entries = await fs.readdir(pdfDir)
+  const pdfFiles = entries.filter(file => file.toLowerCase().endsWith('.pdf')).sort()
+  const result: MedicalPdfIngestResult = {
+    filesProcessed: 0,
+    chunksUpserted: 0,
+    skippedFiles: [],
+  }
+
+  log(`[ingest-medical-pdf] found ${pdfFiles.length} PDF files in ${pdfDir}`)
+
+  for (const file of pdfFiles) {
+    const fullPath = path.join(pdfDir, file)
+    const startedAt = Date.now()
+    log(`[ingest-medical-pdf] processing ${file}`)
+
+    const rawText = await extractPdfText(fullPath)
+    const chunks = chunkText(rawText, chunkSize, chunkOverlap)
+
+    if (chunks.length === 0) {
+      result.skippedFiles.push(file)
+      log(`[ingest-medical-pdf] skipped ${file}; no extractable text`)
+      continue
+    }
+
+    for (let index = 0; index < chunks.length; index += 1) {
+      await withRetry(
+        () => store.upsert(chunks[index], {
+          source: file,
+          chunkIndex: index,
+          chunkCount: chunks.length,
+          category: 'medical_knowledge',
+        }),
+        maxRetries,
+        `${file} chunk ${index + 1}/${chunks.length}`,
+      )
+      result.chunksUpserted += 1
+      await wait(delayMs)
+    }
+
+    result.filesProcessed += 1
+    log(
+      `[ingest-medical-pdf] completed ${file}: ${chunks.length} chunks in ${Date.now() - startedAt}ms`,
+    )
+  }
+
+  return result
+}

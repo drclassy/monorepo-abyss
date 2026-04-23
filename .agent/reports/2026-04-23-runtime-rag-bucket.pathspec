@@ -1,0 +1,3 @@
+packages/sentra-rag/
+packages/vector-store/
+library/knowledge_index.json

@@ -1,0 +1,835 @@
+[
+  {
+    "original_name": "(Morning Report) Kate V. Meriwether, Joey England - Obstetrics & Gynecology Morning Report_ Beyond the Pearls-Elsevier (2018).pdf",
+    "clean_name": "obg--morning-report-kate-v-meriwether-joey-england-obstetrics-gynecology-morning-report_-beyond-the-pearls-elsevier-2018.pdf",
+    "category": "obg",
+    "path": "library/medical/obg/obg--morning-report-kate-v-meriwether-joey-england-obstetrics-gynecology-morning-report_-beyond-the-pearls-elsevier-2018.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "(Quintessentials of Dental Practice) Gloria P. Craig - Clinical Calculations Made Easy, 5th Edition  -Lippincott Williams & Wilkins (2011).pdf",
+    "clean_name": "gen--quintessentials-of-dental-practice-gloria-p-craig-clinical-calculations-made-easy-5th-edition-lippincott-williams-wilkins-2011.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--quintessentials-of-dental-practice-gloria-p-craig-clinical-calculations-made-easy-5th-edition-lippincott-williams-wilkins-2011.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1. Prometheus Atlas Anatomi Manusia.pdf",
+    "clean_name": "bas--1-prometheus-atlas-anatomi-manusia.pdf",
+    "category": "bas",
+    "path": "library/medical/bas/bas--1-prometheus-atlas-anatomi-manusia.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "11-Buku Pedoman Klinik-Fika Ekayanti.pdf",
+    "clean_name": "gen--11-buku-pedoman-klinik-fika-ekayanti.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--11-buku-pedoman-klinik-fika-ekayanti.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "132. Absorption_and_Drug_Development_-_Solubility_Permeability_and_Charge_State.pdf",
+    "clean_name": "pha--132-absorption_and_drug_development_-_solubility_permeability_and_charge_state.pdf",
+    "category": "pha",
+    "path": "library/medical/pha/pha--132-absorption_and_drug_development_-_solubility_permeability_and_charge_state.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "14. # ECG Success- Exercises in ECG Interpretation (1).pdf",
+    "clean_name": "bas--14-ecg-success-exercises-in-ecg-interpretation-1.pdf",
+    "category": "bas",
+    "path": "library/medical/bas/bas--14-ecg-success-exercises-in-ecg-interpretation-1.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "14. # ECG Success- Exercises in ECG Interpretation.pdf",
+    "clean_name": "bas--14-ecg-success-exercises-in-ecg-interpretation.pdf",
+    "category": "bas",
+    "path": "library/medical/bas/bas--14-ecg-success-exercises-in-ecg-interpretation.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "144 diagnosis.pdf",
+    "clean_name": "int--144-diagnosis.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--144-diagnosis.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "16998442346551908a1b6727.08205783.pdf",
+    "clean_name": "gen--16998442346551908a1b672708205783.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--16998442346551908a1b672708205783.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17000953076555654bd6a0b3.82475346.pdf",
+    "clean_name": "gen--17000953076555654bd6a0b382475346.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17000953076555654bd6a0b382475346.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "170009556165556649b5ce67.54377142.pdf",
+    "clean_name": "gen--170009556165556649b5ce6754377142.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--170009556165556649b5ce6754377142.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17000957756555671f5a24a4.07748915.pdf",
+    "clean_name": "gen--17000957756555671f5a24a407748915.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17000957756555671f5a24a407748915.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700095985655567f1a86002.43503003.pdf",
+    "clean_name": "gen--1700095985655567f1a8600243503003.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700095985655567f1a8600243503003.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17000960906555685a551199.77640603.pdf",
+    "clean_name": "gen--17000960906555685a55119977640603.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17000960906555685a55119977640603.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700096211655568d31f7cd8.56572518.pdf",
+    "clean_name": "gen--1700096211655568d31f7cd856572518.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700096211655568d31f7cd856572518.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700096393655569895343e2.43668052.pdf",
+    "clean_name": "gen--1700096393655569895343e243668052.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700096393655569895343e243668052.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700096508655569fcc26306.65169563.pdf",
+    "clean_name": "gen--1700096508655569fcc2630665169563.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700096508655569fcc2630665169563.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "170009660765556a5fd08ea8.07048432 (1).pdf",
+    "clean_name": "gen--170009660765556a5fd08ea807048432-1.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--170009660765556a5fd08ea807048432-1.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "170009660765556a5fd08ea8.07048432.pdf",
+    "clean_name": "gen--170009660765556a5fd08ea807048432.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--170009660765556a5fd08ea807048432.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700107231655593df097836.23587693.pdf",
+    "clean_name": "gen--1700107231655593df09783623587693.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700107231655593df09783623587693.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700107495655594e730cd43.10810073.pdf",
+    "clean_name": "gen--1700107495655594e730cd4310810073.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700107495655594e730cd4310810073.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17001079126555968882b0f3.75448770.pdf",
+    "clean_name": "gen--17001079126555968882b0f375448770.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17001079126555968882b0f375448770.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17001081256555975d83b923.83225016 (1).pdf",
+    "clean_name": "gen--17001081256555975d83b92383225016-1.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17001081256555975d83b92383225016-1.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17001081256555975d83b923.83225016.pdf",
+    "clean_name": "gen--17001081256555975d83b92383225016.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17001081256555975d83b92383225016.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700108344655598386cf3a0.91253003.pdf",
+    "clean_name": "gen--1700108344655598386cf3a091253003.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700108344655598386cf3a091253003.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700108499655598d3c61e16.60954826 (1).pdf",
+    "clean_name": "gen--1700108499655598d3c61e1660954826-1.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700108499655598d3c61e1660954826-1.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700108499655598d3c61e16.60954826.pdf",
+    "clean_name": "gen--1700108499655598d3c61e1660954826.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700108499655598d3c61e1660954826.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "170010863365559959eb1d15.13094848.pdf",
+    "clean_name": "gen--170010863365559959eb1d1513094848.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--170010863365559959eb1d1513094848.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17001182206555becc967274.44607200.pdf",
+    "clean_name": "gen--17001182206555becc96727444607200.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17001182206555becc96727444607200.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17001183546555bf5250af30.46055725.pdf",
+    "clean_name": "gen--17001183546555bf5250af3046055725.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17001183546555bf5250af3046055725.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17001184976555bfe128af70.17560722.pdf",
+    "clean_name": "gen--17001184976555bfe128af7017560722.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17001184976555bfe128af7017560722.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17001186106555c052e02399.40181075.pdf",
+    "clean_name": "gen--17001186106555c052e0239940181075.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17001186106555c052e0239940181075.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17001198466555c526e94590.43365075.pdf",
+    "clean_name": "gen--17001198466555c526e9459043365075.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17001198466555c526e9459043365075.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1700729594655f12fa11f943.39577800.pdf",
+    "clean_name": "gen--1700729594655f12fa11f94339577800.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1700729594655f12fa11f94339577800.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17012255346566a43ea12c82.16568012.pdf",
+    "clean_name": "gen--17012255346566a43ea12c8216568012.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17012255346566a43ea12c8216568012.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17012264876566a7f7eba7d8.13640298.pdf",
+    "clean_name": "gen--17012264876566a7f7eba7d813640298.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17012264876566a7f7eba7d813640298.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17012281586566ae7eec8862.58707574.pdf",
+    "clean_name": "gen--17012281586566ae7eec886258707574.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17012281586566ae7eec886258707574.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17012284626566afae5c5401.03284559.pdf",
+    "clean_name": "gen--17012284626566afae5c540103284559.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17012284626566afae5c540103284559.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17012286006566b038cbaaf7.32814762.pdf",
+    "clean_name": "gen--17012286006566b038cbaaf732814762.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17012286006566b038cbaaf732814762.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17012287246566b0b4923e55.23821494.pdf",
+    "clean_name": "gen--17012287246566b0b4923e5523821494.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17012287246566b0b4923e5523821494.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17012288836566b153c4dd70.61311279.pdf",
+    "clean_name": "gen--17012288836566b153c4dd7061311279.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17012288836566b153c4dd7061311279.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "17012291786566b27adad479.88983894.pdf",
+    "clean_name": "gen--17012291786566b27adad47988983894.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--17012291786566b27adad47988983894.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "170312395865839bf6748c38.45116959.pdf",
+    "clean_name": "gen--170312395865839bf6748c3845116959.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--170312395865839bf6748c3845116959.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "170312443765839dd5be6791.97275276.pdf",
+    "clean_name": "gen--170312443765839dd5be679197275276.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--170312443765839dd5be679197275276.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1735545580677252ecda9698.33237203.pdf",
+    "clean_name": "gen--1735545580677252ecda969833237203.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1735545580677252ecda969833237203.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1737347004678dcfbc66f892.86462222.pdf",
+    "clean_name": "gen--1737347004678dcfbc66f89286462222.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1737347004678dcfbc66f89286462222.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "1737348723678dd6738d8127.20848648.pdf",
+    "clean_name": "gen--1737348723678dd6738d812720848648.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--1737348723678dd6738d812720848648.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "2.-Buku-Panduan-Departemen-Ilmu-Kesehatan-Anak.pdf",
+    "clean_name": "ped--2-buku-panduan-departemen-ilmu-kesehatan-anak.pdf",
+    "category": "ped",
+    "path": "library/medical/ped/ped--2-buku-panduan-departemen-ilmu-kesehatan-anak.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "2010-adverse-drug-interactions-a-handbook-for-prescribers.pdf",
+    "clean_name": "pha--2010-adverse-drug-interactions-a-handbook-for-prescribers.pdf",
+    "category": "pha",
+    "path": "library/medical/pha/pha--2010-adverse-drug-interactions-a-handbook-for-prescribers.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "2010-kepmen-kes-no422-penatalaksanaan-gangguan-penggunaan-napza.pdf",
+    "clean_name": "gen--2010-kepmen-kes-no422-penatalaksanaan-gangguan-penggunaan-napza.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--2010-kepmen-kes-no422-penatalaksanaan-gangguan-penggunaan-napza.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "2016 Yale Textbook of Public Psychiatry.1E.pdf",
+    "clean_name": "gen--2016-yale-textbook-of-public-psychiatry1e.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--2016-yale-textbook-of-public-psychiatry1e.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "2024_guidelines__final_web.pdf",
+    "clean_name": "gen--2024_guidelines__final_web.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--2024_guidelines__final_web.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "21889-65287-2-PB.pdf",
+    "clean_name": "gen--21889-65287-2-pb.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--21889-65287-2-pb.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "3. Current Medical Dx & Tx 2017.pdf",
+    "clean_name": "gen--3-current-medical-dx-tx-2017.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--3-current-medical-dx-tx-2017.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "33. Neonatology__Cambridge_Pocket_.pdf",
+    "clean_name": "ped--33-neonatology__cambridge_pocket_.pdf",
+    "category": "ped",
+    "path": "library/medical/ped/ped--33-neonatology__cambridge_pocket_.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "36. ECG made easy, 6th ed.pdf",
+    "clean_name": "bas--36-ecg-made-easy-6th-ed.pdf",
+    "category": "bas",
+    "path": "library/medical/bas/bas--36-ecg-made-easy-6th-ed.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "37. Strange GR-Pediatric Emergency Medicine-McGraw-Hill 1999.pdf",
+    "clean_name": "int--37-strange-gr-pediatric-emergency-medicine-mcgraw-hill-1999.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--37-strange-gr-pediatric-emergency-medicine-mcgraw-hill-1999.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "398491-jnc-8-evidence-based-guideline-penangana-831d9d1d.pdf",
+    "clean_name": "gen--398491-jnc-8-evidence-based-guideline-penangana-831d9d1d.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--398491-jnc-8-evidence-based-guideline-penangana-831d9d1d.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "44. Kaplan_s Clinical Hypertension 9th edition.pdf",
+    "clean_name": "int--44-kaplan_s-clinical-hypertension-9th-edition.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--44-kaplan_s-clinical-hypertension-9th-edition.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "4bd28c6ea8f022040f6eb93cfcd6e723.pdf",
+    "clean_name": "gen--4bd28c6ea8f022040f6eb93cfcd6e723.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--4bd28c6ea8f022040f6eb93cfcd6e723.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "51. Appleton-and-Langes-Review-of-Pharmacy.pdf",
+    "clean_name": "pha--51-appleton-and-langes-review-of-pharmacy.pdf",
+    "category": "pha",
+    "path": "library/medical/pha/pha--51-appleton-and-langes-review-of-pharmacy.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "52. Steven D. Waldman - Atlas of Common Pain Syndromes-Elsevier (2018)-1.pdf",
+    "clean_name": "bas--52-steven-d-waldman-atlas-of-common-pain-syndromes-elsevier-2018-1.pdf",
+    "category": "bas",
+    "path": "library/medical/bas/bas--52-steven-d-waldman-atlas-of-common-pain-syndromes-elsevier-2018-1.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "53. Samer N. Narouze - Atlas of Ultrasound-Guided Procedures in Interventional Pain Management-Springer New York (2018).pdf",
+    "clean_name": "bas--53-samer-n-narouze-atlas-of-ultrasound-guided-procedures-in-interventional-pain-management-springer-new-york-2018.pdf",
+    "category": "bas",
+    "path": "library/medical/bas/bas--53-samer-n-narouze-atlas-of-ultrasound-guided-procedures-in-interventional-pain-management-springer-new-york-2018.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "53.Panduan Penatalaksanaan Kasus Obstetri.pdf",
+    "clean_name": "obg--53panduan-penatalaksanaan-kasus-obstetri.pdf",
+    "category": "obg",
+    "path": "library/medical/obg/obg--53panduan-penatalaksanaan-kasus-obstetri.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "57. Louise Southwood, Pamela A. Wilkins - Equine Emergency and Critical Care Medicine-CRC Press (2015).pdf",
+    "clean_name": "int--57-louise-southwood-pamela-a-wilkins-equine-emergency-and-critical-care-medicine-crc-press-2015.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--57-louise-southwood-pamela-a-wilkins-equine-emergency-and-critical-care-medicine-crc-press-2015.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "6. Fundamentals of Neurology an Illustrated Guide (1).pdf",
+    "clean_name": "gen--6-fundamentals-of-neurology-an-illustrated-guide-1.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--6-fundamentals-of-neurology-an-illustrated-guide-1.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "6. Fundamentals of Neurology an Illustrated Guide.pdf",
+    "clean_name": "gen--6-fundamentals-of-neurology-an-illustrated-guide.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--6-fundamentals-of-neurology-an-illustrated-guide.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Adendum-Konsensus-Nasional-Penalataksanaan-Dispepsia-dan-H.pylori-Tahun-2024.pdf",
+    "clean_name": "int--adendum-konsensus-nasional-penalataksanaan-dispepsia-dan-hpylori-tahun-2024.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--adendum-konsensus-nasional-penalataksanaan-dispepsia-dan-hpylori-tahun-2024.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Adendum-Konsensus-Nasional-Penatalaksanaan-GERD-di-Indonesia-2024.pdf",
+    "clean_name": "int--adendum-konsensus-nasional-penatalaksanaan-gerd-di-indonesia-2024.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--adendum-konsensus-nasional-penatalaksanaan-gerd-di-indonesia-2024.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Basic & Clinical Pharmacology 12th ed.pdf",
+    "clean_name": "pha--basic-clinical-pharmacology-12th-ed.pdf",
+    "category": "pha",
+    "path": "library/medical/pha/pha--basic-clinical-pharmacology-12th-ed.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Buku Panduan Penggunaan Terminologi LOINC v1.1.pdf",
+    "clean_name": "bas--buku-panduan-penggunaan-terminologi-loinc-v11.pdf",
+    "category": "bas",
+    "path": "library/medical/bas/bas--buku-panduan-penggunaan-terminologi-loinc-v11.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Buku Pedoman Hipertensi 2024.pdf",
+    "clean_name": "int--buku-pedoman-hipertensi-2024.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--buku-pedoman-hipertensi-2024.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Buku-Rekomendasi-Batuk-pd-Anak(1).pdf",
+    "clean_name": "ped--buku-rekomendasi-batuk-pd-anak1.pdf",
+    "category": "ped",
+    "path": "library/medical/ped/ped--buku-rekomendasi-batuk-pd-anak1.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "buku-saku-pelayanan-kesehatan-ibu.pdf",
+    "clean_name": "obg--buku-saku-pelayanan-kesehatan-ibu.pdf",
+    "category": "obg",
+    "path": "library/medical/obg/obg--buku-saku-pelayanan-kesehatan-ibu.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "califmed00121-0121b.pdf",
+    "clean_name": "gen--califmed00121-0121b.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--califmed00121-0121b.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Dermatology (1).pdf",
+    "clean_name": "gen--dermatology-1.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--dermatology-1.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Dermatology.pdf",
+    "clean_name": "gen--dermatology.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--dermatology.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "general-practitioners.pdf",
+    "clean_name": "gen--general-practitioners.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--general-practitioners.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "guideline-170-en.pdf",
+    "clean_name": "gen--guideline-170-en.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--guideline-170-en.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Home_DOEN_2008.pdf",
+    "clean_name": "pha--home_doen_2008.pdf",
+    "category": "pha",
+    "path": "library/medical/pha/pha--home_doen_2008.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "ILMU KANDUNGAN 2011 c.pdf",
+    "clean_name": "obg--ilmu-kandungan-2011-c.pdf",
+    "category": "obg",
+    "path": "library/medical/obg/obg--ilmu-kandungan-2011-c.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "KMK 1936.2022 ttg PPK.pdf",
+    "clean_name": "gen--kmk-19362022-ttg-ppk.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--kmk-19362022-ttg-ppk.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "KMK-No.-HK.01.07-MENKES-813-2019-ttg-Formularium-Nasional.pdf",
+    "clean_name": "pha--kmk-no-hk0107-menkes-813-2019-ttg-formularium-nasional.pdf",
+    "category": "pha",
+    "path": "library/medical/pha/pha--kmk-no-hk0107-menkes-813-2019-ttg-formularium-nasional.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Konsensus-Nasional-Penatalaksanaan-Dispepsia-dan-Infeksi-H.pylori-di-Indonesia-Revisi-2021.pdf",
+    "clean_name": "int--konsensus-nasional-penatalaksanaan-dispepsia-dan-infeksi-hpylori-di-indonesia-revisi-2021.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--konsensus-nasional-penatalaksanaan-dispepsia-dan-infeksi-hpylori-di-indonesia-revisi-2021.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Konsensus-Nasional-Peranan-Probiotik-Tahun-2022.pdf",
+    "clean_name": "gen--konsensus-nasional-peranan-probiotik-tahun-2022.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--konsensus-nasional-peranan-probiotik-tahun-2022.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Konsensus_Penatalaksanaan_Diare_pada_Dewasa_di_Indonesia_Tahun_2024.pdf",
+    "clean_name": "int--konsensus_penatalaksanaan_diare_pada_dewasa_di_indonesia_tahun_2024.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--konsensus_penatalaksanaan_diare_pada_dewasa_di_indonesia_tahun_2024.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Medical Diagnosis and Treatment Methods in Basic Medical Sciences.pdf",
+    "clean_name": "int--medical-diagnosis-and-treatment-methods-in-basic-medical-sciences.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--medical-diagnosis-and-treatment-methods-in-basic-medical-sciences.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Notulen TKMKB Ke-4 Thn 2024-KPD-Preeklamsi-Oligohidramnion.pdf",
+    "clean_name": "gen--notulen-tkmkb-ke-4-thn-2024-kpd-preeklamsi-oligohidramnion.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--notulen-tkmkb-ke-4-thn-2024-kpd-preeklamsi-oligohidramnion.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "OBSTETRI DAN GINEKOLOGI UNTUK KEBIDANAN.pdf",
+    "clean_name": "obg--obstetri-dan-ginekologi-untuk-kebidanan.pdf",
+    "category": "obg",
+    "path": "library/medical/obg/obg--obstetri-dan-ginekologi-untuk-kebidanan.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "pan10333_fm.pdf",
+    "clean_name": "gen--pan10333_fm.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--pan10333_fm.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "PANDUAN PELAYANAN KESEHATAN BERGERAK.pdf",
+    "clean_name": "gen--panduan-pelayanan-kesehatan-bergerak.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--panduan-pelayanan-kesehatan-bergerak.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Pediatric_Hematology_Methods_and_Protocols (Nicholas J. Goulden & Colin G. Steward).pdf",
+    "clean_name": "ped--pediatric_hematology_methods_and_protocols-nicholas-j-goulden-colin-g-steward.pdf",
+    "category": "ped",
+    "path": "library/medical/ped/ped--pediatric_hematology_methods_and_protocols-nicholas-j-goulden-colin-g-steward.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Pedoman Pelayanan Antenatal Persalinan Nifas dan Bayi Baru Lahir di Era Adaptasi Kebiasaan Baru.pdf",
+    "clean_name": "ped--pedoman-pelayanan-antenatal-persalinan-nifas-dan-bayi-baru-lahir-di-era-adaptasi-kebiasaan-baru.pdf",
+    "category": "ped",
+    "path": "library/medical/ped/ped--pedoman-pelayanan-antenatal-persalinan-nifas-dan-bayi-baru-lahir-di-era-adaptasi-kebiasaan-baru.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "pedoman_pengobatan_puskesmas.pdf",
+    "clean_name": "pha--pedoman_pengobatan_puskesmas.pdf",
+    "category": "pha",
+    "path": "library/medical/pha/pha--pedoman_pengobatan_puskesmas.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Pedoman_Tatalaksana_Gagal_Jantung_2015.pdf",
+    "clean_name": "int--pedoman_tatalaksana_gagal_jantung_2015.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--pedoman_tatalaksana_gagal_jantung_2015.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "penatalaksanaan kanker kolorektal.pdf",
+    "clean_name": "gen--penatalaksanaan-kanker-kolorektal.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--penatalaksanaan-kanker-kolorektal.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "penatalaksanaan kanker payudara.pdf",
+    "clean_name": "gen--penatalaksanaan-kanker-payudara.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--penatalaksanaan-kanker-payudara.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "penatalaksanaan kanker prostat.pdf",
+    "clean_name": "gen--penatalaksanaan-kanker-prostat.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--penatalaksanaan-kanker-prostat.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "penatalaksanaan kanker servix.pdf",
+    "clean_name": "gen--penatalaksanaan-kanker-servix.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--penatalaksanaan-kanker-servix.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "penatalaksanaan katarak.pdf",
+    "clean_name": "gen--penatalaksanaan-katarak.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--penatalaksanaan-katarak.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "penatalaksanaan otitis media.pdf",
+    "clean_name": "gen--penatalaksanaan-otitis-media.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--penatalaksanaan-otitis-media.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "penatalaksanaan resusitasi berat bayi lahir rendah.pdf",
+    "clean_name": "ped--penatalaksanaan-resusitasi-berat-bayi-lahir-rendah.pdf",
+    "category": "ped",
+    "path": "library/medical/ped/ped--penatalaksanaan-resusitasi-berat-bayi-lahir-rendah.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "penatalaksanaan thalasemia.pdf",
+    "clean_name": "gen--penatalaksanaan-thalasemia.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--penatalaksanaan-thalasemia.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "penatalaksanaan tonsilitis.pdf",
+    "clean_name": "gen--penatalaksanaan-tonsilitis.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--penatalaksanaan-tonsilitis.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Penatalaksanaan+Hipertensi+Emergensi.pdf",
+    "clean_name": "int--penatalaksanaanhipertensiemergensi.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--penatalaksanaanhipertensiemergensi.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "perdoski-1738633831.pdf",
+    "clean_name": "gen--perdoski-1738633831.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--perdoski-1738633831.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "PNPK KPD-POGI 2016.pdf",
+    "clean_name": "obg--pnpk-kpd-pogi-2016.pdf",
+    "category": "obg",
+    "path": "library/medical/obg/obg--pnpk-kpd-pogi-2016.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "PNPK PreEklampsia-POGI 2016.pdf",
+    "clean_name": "gen--pnpk-preeklampsia-pogi-2016.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--pnpk-preeklampsia-pogi-2016.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "PNPK Tata Laksana Hiperbilirubinemia.pdf",
+    "clean_name": "gen--pnpk-tata-laksana-hiperbilirubinemia.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--pnpk-tata-laksana-hiperbilirubinemia.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "PNPK-Dry-Eye-Final.pdf",
+    "clean_name": "gen--pnpk-dry-eye-final.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--pnpk-dry-eye-final.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "PPK PERHATI vol-2-Rev2020.pdf",
+    "clean_name": "gen--ppk-perhati-vol-2-rev2020.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--ppk-perhati-vol-2-rev2020.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "PPK-PERDOSKI-2021.pdf",
+    "clean_name": "gen--ppk-perdoski-2021.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--ppk-perdoski-2021.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "PPKPERDOSKI2017.pdf",
+    "clean_name": "gen--ppkperdoski2017.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--ppkperdoski2017.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Practical Pain Management 2022_0.pdf",
+    "clean_name": "gen--practical-pain-management-2022_0.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--practical-pain-management-2022_0.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "Profil-Kesehatan-Indonesia-2021.pdf",
+    "clean_name": "gen--profil-kesehatan-indonesia-2021.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--profil-kesehatan-indonesia-2021.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "s41597-022-01899-x.pdf",
+    "clean_name": "gen--s41597-022-01899-x.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--s41597-022-01899-x.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "slidesaver.app_earmpy.pdf",
+    "clean_name": "gen--slidesaverapp_earmpy.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--slidesaverapp_earmpy.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "standard-treatment-guidelines.pdf",
+    "clean_name": "int--standard-treatment-guidelines.pdf",
+    "category": "int",
+    "path": "library/medical/int/int--standard-treatment-guidelines.pdf",
+    "division": "medical"
+  },
+  {
+    "original_name": "WHO_CDS_EPR_2007.6_ind.pdf",
+    "clean_name": "gen--who_cds_epr_20076_ind.pdf",
+    "category": "gen",
+    "path": "library/medical/gen/gen--who_cds_epr_20076_ind.pdf",
+    "division": "medical"
+  }
+]

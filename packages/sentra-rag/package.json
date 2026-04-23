@@ -1,0 +1,34 @@
+{
+  "name": "@the-abyss/sentra-rag",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sentra RAG Engine — Local-first medical knowledge retrieval with pgvector + Ollama, Vertex RAG cloud fallback",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf .turbo node_modules dist",
+    "status": "npx tsx src/status.ts",
+    "ingest": "npx tsx src/ingestion/pipeline.ts",
+    "ingest:pha": "npx tsx src/ingestion/pipeline.ts --pha",
+    "ingest:gen": "npx tsx src/ingestion/pipeline.ts --gen",
+    "query": "npx tsx src/query.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "pdf-parse": "^1.1.1",
+    "pg": "^8.13.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@the-abyss/config-eslint": "workspace:*",
+    "@the-abyss/config-typescript": "workspace:*",
+    "@types/node": "^22.0.0",
+    "@types/pdf-parse": "^1.1.5",
+    "@types/pg": "^8.11.0",
+    "tsx": "^4.19.0",
+    "vitest": "^2.1.0"
+  }
+}

@@ -1,64 +1,121 @@
-﻿import { prisma } from '@the-abyss/database'
-import { getEmbedding } from './vertex-provider'
-import type { QueryResult, VectorStoreConfig } from './types'
+import type { QueryResult, VectorStoreConfig, VectorStoreDatabaseClient } from './types'
+import { getEmbedding, DEFAULT_EMBEDDING_MODEL } from './vertex-provider'
 
+// ─── VectorStore ──────────────────────────────────────────────────────────────
+
+/**
+ * pgvector-backed vector store using Vertex AI for embedding generation.
+ *
+ * Storage  : caller-owned KnowledgeBase table on PostgreSQL + pgvector
+ * Embedding: Vertex AI text-embedding-004 via GCP IAM auth
+ *
+ * Raw SQL is intentional — Prisma does not support `vector` column operations
+ * natively (declared as `Unsupported("vector(768)")` in schema.prisma).
+ */
 export class VectorStore {
-  private config: VectorStoreConfig
+  private readonly config: VectorStoreConfig
 
-  constructor(config: VectorStoreConfig) {
+  constructor(config: VectorStoreConfig = {}) {
     this.config = config
   }
 
+  private database(): VectorStoreDatabaseClient {
+    if (!this.config.database) {
+      throw new Error(
+        '[vector-store] database client is required. Inject the caller app Prisma client via VectorStoreConfig.database.',
+      )
+    }
+
+    return this.config.database
+  }
+
+  // ─── Upsert ─────────────────────────────────────────────────────────────────
+
   /**
-   * Mengonversi dokumen ke vektor dan menyimpannya di pgvector (Neon)
+   * Embeds `content` via Vertex AI and persists it to the KnowledgeBase table.
+   * @returns the new record's UUID
    */
-  async upsert(content: string, metadata: any = {}): Promise<string> {
-    console.log('Generating embedding via Vertex AI...')
-    const embedding = await getEmbedding(content)
-    
-    // Simpan ke database menggunakan raw SQL karena Prisma Unsupported types
+  async upsert(content: string, metadata: Record<string, unknown> = {}): Promise<string> {
+    const db = this.database()
+    const embedding = await getEmbedding(content, {
+      model: this.config.embeddingModel ?? DEFAULT_EMBEDDING_MODEL,
+      taskType: this.config.defaultTaskType ?? 'RETRIEVAL_DOCUMENT',
+      gcpProjectId: this.config.gcpProjectId,
+      gcpLocation: this.config.gcpLocation,
+    })
+
     const id = crypto.randomUUID()
-    const embeddingString = `[${embedding.join(',')}]`
-    
-    await (prisma as any).$executeRawUnsafe(
-      'INSERT INTO "KnowledgeBase" (id, content, embedding, metadata, "updatedAt") VALUES ($1, $2, $3::vector, $4, NOW())',
+    const embeddingLiteral = `[${embedding.join(',')}]`
+
+    await db.$executeRawUnsafe(
+      `INSERT INTO "KnowledgeBase" (id, content, embedding, metadata, "updatedAt")
+       VALUES ($1, $2, $3::vector, $4::jsonb, NOW())`,
       id,
       content,
-      embeddingString,
-      JSON.stringify(metadata)
+      embeddingLiteral,
+      JSON.stringify(metadata),
     )
-    
+
     return id
   }
 
-  /**
-   * Mencari dokumen yang paling relevan berdasarkan pertanyaan
-   */
-  async query(userQuery: string, limit: number = 5): Promise<QueryResult[]> {
-    console.log('Searching context for:', userQuery)
-    const queryEmbedding = await getEmbedding(userQuery)
-    const embeddingString = `[${queryEmbedding.join(',')}]`
+  // ─── Query ───────────────────────────────────────────────────────────────────
 
-    // Similarity search menggunakan Cosine Distance (<=>)
-    const results = await (prisma as any).$queryRawUnsafe(
-      'SELECT id, content, metadata, 1 - (embedding <=> $1::vector) as score FROM "KnowledgeBase" ORDER BY embedding <=> $1::vector LIMIT $2',
-      embeddingString,
-      limit
+  /**
+   * Embeds `userQuery` and returns the top-k most similar documents.
+   * Similarity metric: cosine similarity (1 - cosine distance).
+   *
+   * @param userQuery - Natural language question
+   * @param limit     - Max number of results (default: 5)
+   */
+  async query(userQuery: string, limit = 5): Promise<QueryResult[]> {
+    const db = this.database()
+    const queryEmbedding = await getEmbedding(userQuery, {
+      model: this.config.embeddingModel ?? DEFAULT_EMBEDDING_MODEL,
+      taskType: 'RETRIEVAL_QUERY',
+      gcpProjectId: this.config.gcpProjectId,
+      gcpLocation: this.config.gcpLocation,
+    })
+
+    const embeddingLiteral = `[${queryEmbedding.join(',')}]`
+
+    // Set ef_search before similarity query. Medical RAG favors recall over
+    // minimal latency; this must remain aligned with the HNSW index decision.
+    await db.$executeRawUnsafe(`SET hnsw.ef_search = 100`)
+
+    const rows = await db.$queryRawUnsafe<
+      Array<{ id: string; content: string; metadata: unknown; score: number }>
+    >(
+      `SELECT id, content, metadata,
+              1 - (embedding <=> $1::vector) AS score
+       FROM   "KnowledgeBase"
+       ORDER  BY embedding <=> $1::vector
+       LIMIT  $2::int`,
+      embeddingLiteral,
+      limit,
     )
 
-    return (results as any[]).map(r => ({
-      id: r.id,
-      content: r.content,
-      score: r.score,
-      metadata: r.metadata
+    return rows.map((row) => ({
+      id: row.id,
+      content: row.content,
+      score: Number(row.score),
+      metadata: (row.metadata as Record<string, unknown>) ?? {},
     }))
   }
 
+  // ─── Delete ──────────────────────────────────────────────────────────────────
+
+  /**
+   * Removes a single document by ID.
+   */
   async delete(id: string): Promise<void> {
-    await (prisma as any).$executeRawUnsafe('DELETE FROM "KnowledgeBase" WHERE id = $1', id)
+    const db = this.database()
+    await db.$executeRawUnsafe(`DELETE FROM "KnowledgeBase" WHERE id = $1`, id)
   }
 }
 
-export function createVectorStore(config: VectorStoreConfig): VectorStore {
+// ─── Factory ──────────────────────────────────────────────────────────────────
+
+export function createVectorStore(config: VectorStoreConfig = {}): VectorStore {
   return new VectorStore(config)
 }
