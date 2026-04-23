@@ -1,0 +1,19 @@
+{
+  "name": "@the-abyss/clinical-references",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit --strict --target ESNext --module ESNext --moduleResolution node --skipLibCheck src/index.ts",
+    "test": "vitest run",
+    "clean": "rm -rf .turbo node_modules dist"
+  },
+  "devDependencies": {
+    "@the-abyss/config-eslint": "workspace:*",
+    "@the-abyss/config-typescript": "workspace:*",
+    "@types/node": "^22.0.0",
+    "vitest": "^2.1.0"
+  }
+}
