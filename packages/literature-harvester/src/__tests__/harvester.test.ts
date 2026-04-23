@@ -1,4 +1,4 @@
-import { mkdtemp, readFile } from 'node:fs/promises'
+import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -130,5 +130,6 @@ describe('literature harvester', () => {
     const expectedRoot = path.resolve(testDir, '../../../../library/medical/literature-harvests')
 
     expect(result.outputDir.startsWith(expectedRoot)).toBe(true)
+    await rm(result.outputDir, { recursive: true, force: true })
   })
 })
