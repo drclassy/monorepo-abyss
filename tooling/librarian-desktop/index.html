@@ -9,6 +9,8 @@
       --bg-inset: #0a0a0c;
       --accent: #10b981;
       --accent-soft: rgba(16, 185, 129, 0.14);
+      --guardian-agent: #d7e6ff;
+      --sentinel-agent: #f2d7c3;
       --text-main: #ededed;
       --text-muted: #737373;
       --border-glow: rgba(255, 255, 255, 0.08);
@@ -258,9 +260,10 @@
       font-size: 13.5px;
       line-height: 1.65;
       letter-spacing: 0.005em;
-      color: #f2d7c3;
     }
 
+    .widget-container[data-mode="guardian"] .type-agent { color: var(--guardian-agent); }
+    .widget-container[data-mode="sentinel"] .type-agent { color: var(--sentinel-agent); }
     .type-sys { color: var(--text-muted); }
     .type-user { color: var(--accent); }
 
@@ -342,7 +345,7 @@
   </style>
 </head>
 <body>
-  <div class="widget-container">
+  <div class="widget-container" id="consoleShell">
     <div class="seal-accent">代替</div>
     <div class="drag-handle">
       <div class="title-group">
@@ -397,6 +400,7 @@
     const input = document.getElementById('cmdInput');
     const runBtn = document.getElementById('runBtn');
     const clearBtn = document.getElementById('clearBtn');
+    const consoleShell = document.getElementById('consoleShell');
     const modeSubtitle = document.getElementById('modeSubtitle');
     const statusTitle = document.getElementById('statusTitle');
     const statusTag = document.getElementById('statusTag');
@@ -538,6 +542,7 @@
 
     function renderHeader() {
       const config = currentConfig();
+      consoleShell.dataset.mode = activeMode;
       modeSubtitle.textContent = config.subtitle;
       statusTitle.textContent = config.title;
       statusTag.textContent = config.statusTag;
