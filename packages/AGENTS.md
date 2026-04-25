@@ -19,11 +19,11 @@ inventing new types.
 
 | Package / folder      | Role                                           |
 | --------------------- | ---------------------------------------------- |
-| `artificial-core/`    | `@the-abyss/ai-core`                           |
 | `config-eslint/`      | Shared ESLint config                           |
 | `config-typescript/`  | Shared TypeScript config                       |
 | `database/`           | `@the-abyss/database` (Prisma)                 |
 | `design-token/`       | Design tokens                                  |
+| `literature-harvester/` | `@the-abyss/literature-harvester`           |
 | `fhir-engine/`        | `@the-abyss/fhir-engine` (compliance-critical) |
 | `integration-bridge/` | `@the-abyss/integration-bridge`                |
 | `sentra-ui/`          | `@the-abyss/sentra-ui`                         |
@@ -31,8 +31,8 @@ inventing new types.
 | `vector-store/`       | `@the-abyss/vector-store`                      |
 
 Root [`AGENTS.md`](../AGENTS.md) §4 also names packages such as
-`langflow-client` and `iskandar-gatekeeper` — add them here when those folders
-exist in `packages/`.
+`langflow-client`, `iskandar-gatekeeper`, and `literature-harvester` — keep
+them listed here whenever those folders exist in `packages/`.
 
 ---
 

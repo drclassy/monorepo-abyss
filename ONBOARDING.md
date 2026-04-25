@@ -28,7 +28,6 @@ abyss-monorepo/
     healthcare/    # Clinical products (AADI, Sentra Assist)
     platform/      # Orchestrators and dashboards
   packages/
-    ai-core/       # Multi-model AI consensus engine
     database/      # Prisma ORM and schema
     fhir-engine/   # FHIR R4 validation
   infrastructure/  # Terraform and Docker Compose files
@@ -48,7 +47,7 @@ abyss-monorepo/
                 v
 +-------------------------------+
 |  AI Engine Layer (packages/)  |
-|  fhir-engine & ai-core        |
+|  fhir-engine & shared packages |
 +---------------+---------------+
                 |
                 v
@@ -143,7 +142,7 @@ pnpm typecheck
 
 - **Adding a new DB Model**: Update `packages/database/schema.prisma` and run `pnpm db:generate` followed by `pnpm db:migrate`.
 - **Creating a new API endpoint**: In a NestJS application under `apps/`, create the route in the `controller/` and place business logic strictly in the `service/`.
-- **Using AI Models**: Route all inference through `packages/ai-core` rather than calling OpenAI or Anthropic directly.
+- **Using AI Models**: Route inference through the active domain package or orchestrator integration surface rather than reviving removed legacy AI-core helpers.
 
 ### Key Files
 

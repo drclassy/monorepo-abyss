@@ -127,7 +127,6 @@ Always check each app's own `prisma/` folder before touching any database concer
 | Package | Path | Purpose | Notes |
 |---------|------|---------|-------|
 | `database` | `packages/database/` | Prisma schema for platform apps | ⚠️ NOT used by healthcare apps — each has own schema |
-| `ai-core` | `packages/ai-core/` | Multi-model LLM orchestration | Renamed from `artificial-core` 2026-04-19 |
 | `vector-store` | `packages/vector-store/` | Vertex AI embeddings + pgvector RAG | Refactored to dependency injection — injectable Prisma client |
 | `design-token` | `packages/design-token/` | UI token system | |
 | `shared-types` | `packages/shared-types/` | Cross-app TypeScript types | |

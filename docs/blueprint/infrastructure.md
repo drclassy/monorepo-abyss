@@ -36,7 +36,7 @@
 ├── │
 ├── ├── packages/ # 🏗️ THE REUSABLE SUBSTRATE (Shared Libraries)
 ├── │ ├── ui/ # Design System (Tailwind 4, Shadcn UI)
-├── │ ├── ai-core/ # Multi-model Consensus & LLM Orchestration logic
+├── │ ├── symphony/ # Canonical clinical engine & safety orchestration
 ├── │ ├── langflow-client/ # SDK Internal untuk integrasi apps -> Langflow
 ├── │ ├── database/ # Prisma/Drizzle schemas & Vector Store migrations
 ├── │ ├── fhir-engine/ # Logika validasi data medis HL7 FHIR
@@ -141,5 +141,4 @@ the-abyss/
 │ └── AGENTS.md # Aturan AI yang lebih santai untuk eksperimen
 
 ```
-
 

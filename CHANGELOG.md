@@ -19,7 +19,6 @@ and this project adheres to
   - `@the-abyss/database` — Prisma schema with multi-tenancy
   - `@the-abyss/langflow-client` — Langflow SDK
   - `@the-abyss/ui` — Shadcn UI components
-  - `@the-abyss/ai-core` — Multi-model consensus
   - `@the-abyss/fhir-engine` — FHIR R4 validation
   - `@the-abyss/vector-store` — Vector search (RAG)
   - `@the-abyss/iskandar-gatekeeper` — GO-Gate validator
@@ -61,7 +60,7 @@ and this project adheres to
 
 ### Removed
 
-- N/A
+- `@the-abyss/ai-core` — retired legacy chatbot/orchestration package; runtime ownership moved back to active domain packages and SYMPHONY-centered architecture
 
 ### Fixed
 

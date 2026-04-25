@@ -34,7 +34,6 @@ apps/incubator/ @Avvcenna+
 apps/orchestrator/ @Avvcenna+
 flows/ @Avvcenna+
 packages/langflow-client/ @Avvcenna+
-packages/ai-core/ @Avvcenna+
 
 # Shared Packages
 packages/ui/ @Avvcenna+

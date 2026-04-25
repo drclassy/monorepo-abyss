@@ -110,7 +110,6 @@ Semua package ada di `packages/` dan dipublish sebagai `@the-abyss/*`.
 
 | Package dir | Package name | Tujuan |
 |-------------|-------------|--------|
-| `ai-core` *(renamed dari artificial-core, 2026-04-19)* | `@the-abyss/ai-core` | Multi-model LLM orchestration + consensus engine |
 | `config-eslint` | `@the-abyss/config-eslint` | Shared ESLint configs (base, node, react) |
 | `config-typescript` | `@the-abyss/config-typescript` | Shared tsconfig base (strict) |
 | `database` | `@the-abyss/database` | Prisma singleton + semua model types |

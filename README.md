@@ -29,7 +29,7 @@ Artificial Intelligence product lines.
 It runs a medical referral system, a diagnostic orchestration service, a
 clinical education simulator, and an Artificial Intelligence evaluation engine —
 all sharing a single database schema, design system, FHIR validation engine, and
-multi-model consensus layer. Every Artificial Intelligence workflow is
+canonical package layer. Every Artificial Intelligence workflow is
 orchestrated through an integrated Langflow gateway, with vector search and RAG
 pipelines built directly into the shared package layer.
 
@@ -249,9 +249,9 @@ Phase 4: GOVERNANCE & RELEASE
 +--------------------------------- AI ENGINE LAYER ---------------------------------+
 |                                                                                   |
 |  +---------------------+  +---------------------+  +---------------------+       |
-|  |      ai-core        |  |    fhir-engine      |  |    vector-store     |       |
-|  |  Multi-Model        |  |  FHIR R4 Validation |  |  RAGOps + Vector    |       |
-|  |  Consensus Engine   |  |  & Normalization    |  |  Search (pgvector)  |       |
+|  |      symphony       |  |    fhir-engine      |  |    vector-store     |       |
+|  |  Clinical Engine    |  |  FHIR R4 Validation |  |  RAGOps + Vector    |       |
+|  |  & Safety Gates     |  |  & Normalization    |  |  Search (pgvector)  |       |
 |  |  Opus 4.6 Sonnet 4.6|  |                     |  |  Embed  Retrieve    |       |
 |  |  Kimi 2.5  Gemini   |  |  Patient / Encounter|  |  Rerank  Index      |       |
 |  +---------------------+  |  / Condition / Obs  |  +---------------------+       |
@@ -497,7 +497,6 @@ only** — shared packages & agent governance.
 | -------------------------------- | ---------------------------------------------------------------------------------------- |
 | `@the-abyss/ui`                  | Unified design system built on Shadcn UI. Consumed by all frontend applications.         |
 | `@the-abyss/database`            | Prisma ORM schema and generated client. Single source of truth for all database models.  |
-| `@the-abyss/ai-core`             | Multi-model consensus engine. Abstracts provider-specific APIs into a unified interface. |
 | `@the-abyss/langflow-client`     | TypeScript SDK for interacting with the Langflow API.                                    |
 | `@the-abyss/fhir-engine`         | FHIR R4 schema validation and resource normalization.                                    |
 | `@the-abyss/vector-store`        | RAGOps pipeline and vector search abstraction for retrieval-augmented generation.        |

@@ -31,7 +31,7 @@ Buat file `pnpm-workspace.yaml` di root. Ini adalah file paling krusial agar pnp
 ```yaml
 packages:
   - 'apps/**'      # Semua aplikasi deployable (Healthcare, Academic, dll)
-  - 'packages/**'  # Semua shared libraries (UI, Database, AI-Core)
+  - 'packages/**'  # Semua shared libraries (UI, Database, Clinical Engine, RAG)
   - 'flows/**'     # Semua definisi Langflow & AI Orchestration
   - 'tooling/**'   # Semua internal tools & CLI
 ```
@@ -114,7 +114,7 @@ mkdir -p apps/healthcare apps/academic apps/incubator apps/internal apps/orchest
 # 4. Flows (Langflow Orchestration)
 mkdir -p flows/definitions flows/components flows/tests
 # 5. Shared Packages (The Substrate)
-mkdir -p packages/ui packages/ai-core packages/langflow-client packages/database packages/fhir-engine packages/iskandar-gatekeeper packages/vector-store packages/shared-types
+mkdir -p packages/ui packages/symphony packages/clinical-references packages/langflow-client packages/database packages/fhir-engine packages/iskandar-gatekeeper packages/vector-store packages/shared-types
 # 6. Infrastructure & Tools
 mkdir -p infrastructure/terraform infrastructure/argocd infrastructure/docker
 mkdir -p tooling/abyss-cli tooling/generators
@@ -323,7 +323,7 @@ Membangun Design System menggunakan **Tailwind CSS v4** dan **Shadcn UI**:
 
 ####
 
-Langkah 4: AI Core & Multi-Model Consensus (`packages/ai-core`)
+Langkah 4: Clinical Engine & Shared Decision Surface (`packages/symphony`)
 
 Logika utama AI "The Abyss":
 
@@ -425,7 +425,7 @@ Agar kita bisa menguji flow baru tanpa merusak produksi:
 1. **Shadow Logic:** Di dalam `apps/orchestrator`, buat logika di mana satu permintaan bisa memicu _dua_ flow sekaligus:
     - **Primary Flow:** Hasilnya dikirim ke pengguna.
     - **Shadow Flow:** Hasilnya hanya dicatat di database untuk dibandingkan akurasinya.
-2. **Comparison Engine:** Gunakan `packages/ai-core` (Reviewer Agent) untuk membandingkan output Primary vs Shadow dan memberikan skor kualitas.
+2. **Comparison Engine:** Gunakan `packages/symphony` atau evaluator domain aktif untuk membandingkan output Primary vs Shadow dan memberikan skor kualitas.
 
 ####
 
@@ -501,7 +501,7 @@ Fokus pada **Clinical Simulator Web**:
 
 1. **Scaffold:** Inisialisasi aplikasi React/Next.js untuk simulasi medis.
 2. **AI Integration:** Gunakan `packages/langflow-client` untuk menjalankan skenario pasien dinamis dari Langflow.
-3. **Evaluation Engine:** Buat service di `apps/academic/evaluation-engine` yang mengonsumsi data simulasi untuk memberikan skor berdasarkan pedoman klinis (menggunakan `packages/ai-core`).
+3. **Evaluation Engine:** Buat service di `apps/academic/evaluation-engine` yang mengonsumsi data simulasi untuk memberikan skor berdasarkan pedoman klinis (menggunakan surface evaluasi domain aktif, bukan legacy `ai-core`).
 
 ####
 
