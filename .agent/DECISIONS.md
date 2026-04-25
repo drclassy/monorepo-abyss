@@ -225,3 +225,18 @@ Reuse Neon instance yang sama dengan intelligenceboard (koneksi string berbeda).
 **Decision:** Remove `packages/ai-core` completely instead of preserving a compatibility shell. Detach all active workspace correlations first (`platform/orchestrator` dependency, TS path alias, governance/doc pointers), then delete the package folder.
 **Rationale:** Keeping the legacy package alive would invite future drift and architectural confusion. Full retirement clarifies that `ai-core` is not the primary engine, not the repo guardian, and not part of the current Sentra clinical stack.
 **Consequences:** Any future multi-model or assistant-specific runtime must live in an explicit active package, not by reviving `ai-core`. Historical mentions in append-only logs may remain, but active docs and workspace graph must no longer depend on it.
+
+
+### [2026-04-25] Package boundary lock: SYMPHONY owns reasoning, RAG owns retrieval
+**Context:** A full review of `packages/` showed the main architectural risk has moved from the retired `ai-core` into boundary drift between the clinical stack and the retrieval stack. `@the-abyss/symphony`, `@the-abyss/shared-types`, and `@the-abyss/clinical-references` already form a clean clinical core, but the RAG side now spans `sentra-rag`, `vector-store`, `vertex-rag`, and `literature-harvester` with overlapping ingest/query responsibilities.
+**Decision:** Lock the package roles as follows:
+- `@the-abyss/symphony` = the only canonical clinical reasoning engine.
+- `@the-abyss/clinical-references` = deterministic clinical reference layer consumed by SYMPHONY.
+- `@the-abyss/shared-types` = shared contracts only.
+- `@the-abyss/sentra-rag` = local-first ingestion/query orchestration for medical retrieval.
+- `@the-abyss/vector-store` = vector storage abstraction and index-facing persistence helpers.
+- `@the-abyss/vertex-rag` = cloud connector and fallback retrieval surface only, not a parallel clinical engine.
+- `@the-abyss/literature-harvester` = acquisition/harvest only, never final reasoning.
+**Rejected alternatives:** (1) Let RAG packages continue to grow mixed clinical heuristics beside SYMPHONY. (2) Collapse all RAG packages into one package immediately without first locking responsibilities. (3) Move traffic-light or diagnosis authority out of SYMPHONY.
+**Rationale:** This keeps one clinical authority, one reference layer, and one retrieval lane. It also protects the upcoming Dashboard then ASSIST rewiring from package-role confusion.
+**Consequences:** Future diagnosis-engine work must land in SYMPHONY, not in RAG packages. Any RAG-side scoring must be framed as retrieval confidence or grounding support only. `vertex-rag` remains an outlier package until it is aligned with workspace governance, but it must not be treated as a peer clinical engine.

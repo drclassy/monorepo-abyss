@@ -332,3 +332,21 @@ packages/symphony/.agent/(misplaced hook session artifact)
   3. re-wire Dashboard,
   4. then re-wire ASSIST.
 - **Next recommended action**: write the diagnosis-engine design frame first; do not start Dashboard/ASSIST rewiring before that design is locked.
+## 2026-04-26 00:14 — `c7ed75a` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(repo): tighten vertex-rag boundary and prune orphan refs
+- **Files changed**: 8 file(s)
+
+```
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+docs/specs/phase-4/4.3-4.4-orchestrator-shadow-mode.md
+docs/superpowers/plans/2026-04-20-symphony-canonicalization.md
+packages/vertex-rag/package.json
+pnpm-lock.yaml
+tooling/scripts/rag/medical-search.ts
+tooling/scripts/rag/trigger-import.ts
+```
+
+---
