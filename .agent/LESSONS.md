@@ -46,8 +46,20 @@
 **New rule:** When creating subdirectory structures for validated assets (flows, schemas, fixtures), immediately update the corresponding CI glob pattern in the same PR.
 **Trigger:** Any restructuring of `flows/`, `repository/templates/`, or other CI-validated directories.
 
-### [2026-04-19] External audit folder deprecated — single audit trail in .agent/
-**Mistake:** Maintaining an external audit folder as a separate system created duplicate work, increased friction, and caused agents to miss logging requirements.
+### [2026-04-21] The Danger of Global Replacements in Monorepo
+**Mistake:** Performed global string replacement across monorepo root without directory filtering, leading to infrastructure name collisions.
+**New rule:** Never perform mass replacements at root. Always scope to specific packages or apps. Infrastructure names (Hermes/Hermen) must be protected from domain rebranding.
+**Trigger:** Any request for global string replacement or rebranding.
+
+### [2026-04-21] Vertex AI Authentication Standard
+**Mistake:** Attempted to use REST API with manual keys for enterprise embeddings.
+**New rule:** Use `google-auth-library` for automatic Service Account token resolution (ADC) in all Vertex AI integrations to ensure HIPAA compliance and scalability.
+**Trigger:** Any new integration with Vertex AI services.
+
+### [2026-04-21] Memory Location Resilience
+**Mistake:** Interpreted Git "deleted" status as loss of data.
+**New rule:** Git "deleted" status + new "untracked" folder often indicates a directory move. Verify physical file existence on disk before reacting with destructive recovery commands.
+**Trigger:** Any audit showing massive file deletions in .agent/ folders.
 **New rule:** Session logs live ONLY in `.agent/sessions/YYYY-MM-DD.md`. There is no external audit system. AGENTS.md and CLAUDE.md are the SSOT for all agent governance.
 **Trigger:** Any session that modifies code.
 
@@ -102,3 +114,24 @@
 **Mistake:** Codex framed migration as if Dashboard was the sole source of truth. Chief corrected the hierarchy: `SYMPHONY` is the parent canonical engine; Dashboard and Assist are child consumers/hosts.
 **New rule:** Before any SYMPHONY work, restate the hierarchy: `SYMPHONY -> Dashboard + Assist`. Audit local Dashboard/Assist logic only as candidate/evidence for canonicalization, never as a replacement for the parent model.
 **Trigger:** Any task involving SYMPHONY, Dashboard, Assist, CDSS, clinical patterns, emergency override, or route parity.
+
+### [2026-04-23] pdf-parse tidak bisa handle PDF modern — gunakan PyMuPDF
+**Mistake:** `pdf-parse` menggunakan PDF.js versi lama yang tidak bisa handle PDF 1.6+ dengan compressed streams. Seluruh kategori medical library (int/, gen/, bas/) gagal diekstrak.
+**New rule:** Untuk PDF extraction di Node.js, gunakan PyMuPDF via Python subprocess (`pdf_extract.py`) sebagai primary extractor. `pdf-parse` hanya reliable untuk PDF 1.2 format sederhana.
+**Trigger:** Setiap implementasi PDF ingestion pipeline baru.
+
+### [2026-04-23] PyMuPDF di Windows menulis error ke stdout (fd 1), bukan stderr
+**Mistake:** MuPDF C-level error messages tertulis ke stdout saat Python berjalan di Windows. `execFileAsync` capture stdout → error messages ikut ter-embed sebagai chunk content di database.
+**New rule:** Selalu tambahkan `fitz.TOOLS.mupdf_display_errors(False)` di awal setiap script PyMuPDF. Jangan assume MuPDF errors pergi ke stderr.
+**Trigger:** Setiap script Python yang menggunakan PyMuPDF/fitz.
+
+### [2026-04-23] PDF chunker wajib punya fallback untuk plain-text tanpa markdown headings
+**Mistake:** Chunker hanya split by `\n\n+` (double newline). PyMuPDF output pakai `\n` single, sehingga seluruh teks dokumen menjadi 1 chunk raksasa — Ollama embedding gagal karena token limit.
+**New rule:** Chunker harus cek apakah `\n\n+` split menghasilkan ≤1 paragraph. Jika ya, fallback ke line-grouping: group lines sampai `MAX_TOKENS` token, lalu buat chunk baru.
+**Trigger:** Setiap perubahan pada `chunker.ts` atau pipeline ingestion PDF.
+
+### [2026-04-23] Binary PDF yang ditransfer sebagai text file menjadi permanently corrupt
+**Mistake:** PDF di `int/`, `gen/`, `bas/` rusak karena ditransfer/download dalam mode text. Setiap byte non-ASCII (> 0x7F) di-replace dengan `\xef\xbf\xbd` (UTF-8 replacement character U+FFFD), merusak seluruh compressed stream content.
+**Diagnostic:** Cek 20 byte pertama file. Jika ada `\xef\xbf\xbd` di binary header, file corrupt — tidak bisa diperbaiki tanpa file asli.
+**New rule:** PDF dan binary file HARUS di-download/transfer dalam binary mode. Di Git, pastikan `.gitattributes` mendefinisikan `*.pdf binary`. Corruption ini tidak reversible.
+**Trigger:** Setiap kali PDF baru ditambahkan ke library, atau saat ada laporan PDF gagal diekstrak.

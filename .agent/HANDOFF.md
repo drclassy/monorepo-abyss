@@ -1,6 +1,6 @@
 # HANDOFF.md — The Abyss (Monorepo Root)
 <!-- Overwrite at the start of each new session. -->
-<!-- Last updated: 2026-04-22 20:11 · Agent: Codex · Session: symphony-phase-7-pharmacology-decision -->
+<!-- Last updated: 2026-04-23 · Agent: Claude (Sonnet 4.6) · Session: sentra-rag-ingest -->
 
 ---
 
@@ -12,126 +12,135 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Quick Orient (for new thread)
 
-**Branch:** `abyss-core` · Phase 7 ADR landed in `3e97eeb` · **NOT PUSHED**
+**Branch:** `abyss-core` · Sentra RAG Engine built + medical library ingested · **NOT PUSHED**
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
-**Primary mission:** SYMPHONY Canonicalization Migration (7 phases, Chief-locked order)
-**Phases 1-7 decided/implemented** · next = `@the-abyss/clinical-references` scaffold planning
+**Primary missions (dual-track):**
+1. **SYMPHONY track** — `@the-abyss/clinical-references` scaffold committed (`01a71d3`) + Phase 7c traffic-light committed (`8c820e6`)
+2. **Sentra RAG track** — wire `SentraRAGEngine` ke intelligenceboard CDSS / Kate agent
+3. **Legacy lock:** `packages/ai-core` has been retired locally on 2026-04-25; do not recreate or depend on it again
 
 ---
 
-## Primary Mission: SYMPHONY Canonicalization
+## Track A: SYMPHONY Canonicalization
 
-**Hierarchy (locked):** SYMPHONY = canonical parent · Dashboard + Assist = consumers/hosts
+**All 7 phases COMPLETE.** Post-Phase-7 work now landed: scaffold `@the-abyss/clinical-references` + Phase 7c traffic-light canonicalization. Next = controlled consumer adoption and later route-level follow-up if Chief directs.
 
-**Phase Plan:**
 | # | Scope | Status |
 |---|---|---|
-| 1 | Symptom Signals NLP (19 matchers, 3-token negation) | ✅ `a587b41` |
+| 1 | Symptom Signals NLP | ✅ `a587b41` |
 | 2 | Pattern Engine generic evaluator | ✅ `0a471bb` (contract v0.2.0) |
-| 3 | Clinical Patterns Evaluator (70 CP native SYMPHONY) | ✅ `8fb9d1d` + `39db0cb` (208/208, quality-gated) |
+| 3 | Clinical Patterns Evaluator (70 CP) | ✅ `8fb9d1d` + `39db0cb` |
 | 4 | Action Protocols (ABCDE) | ✅ `466ec4b` (contract v0.3.0) |
-| 5 | Gate taxonomy reconciliation (ACS/Stroke/Anemia-Bleed) | ✅ `0df24cf` (contract v0.4.0, route parity 76/76) |
-| 6 | Prediction + classifier refinements | ✅ `3398ce7` (contract v0.5.0, route parity 76/76) |
-| 7 | Pharmacology decision surface (SYMPHONY vs @the-abyss/clinical-references) | ✅ ADR `0007` |
+| 5 | Gate taxonomy reconciliation | ✅ `0df24cf` (contract v0.4.0) |
+| 6 | Prediction + classifier refinements | ✅ `3398ce7` (contract v0.5.0) |
+| 7 | Pharmacology decision (ADR `0007`) | ✅ `3e97eeb` |
 
-**Baseline reports** (commit `93e6f94`):
-- `.agent/reports/2026-04-20-symphony-alignment.md` — Class A read-only verification
-- `.agent/reports/2026-04-20-symphony-coverage-audit.md` — coverage gap inventory
-
-**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.5.0'` at `packages/shared-types/src/symphony.ts` (committed in `3398ce7`).
-
-**Phase 4 result:** 9 canonical `PROTO_*` registries now exist in `packages/symphony/src/engine/action-protocols.ts`; evaluator/parity adapter attach `actionProtocolId` + canonical payload to `SymphonyAlert`.
-**Phase 5 result:** `SymphonySafetyGate` now includes `GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED`; local gate workaround removed from `clinical-patterns-definitions.ts`; evaluator and adapter parity both emit canonical `gate`.
-**Phase 6 result:** `trajectory.ts` now emits additive treatment-response analysis and quadratic TTC detail; new `classifiers.ts` canonicalizes Dashboard deterministic helpers for chronic disease, hypertension, glucose, and AVPU/GCS mapping; route parity remains partial/green and production import replacement remains forbidden.
-**Phase 7 result:** ADR `docs/adr/0007-pharmacology-locus-decision.md` locks split locus: `@the-abyss/clinical-references` owns DDI/dosage/epidemiology/pharmacotherapy references, while `traffic-light` remains in SYMPHONY proper.
-
-**Phase 3 quality gate closed:** `SymphonySymptomContext` (27 flags), `SymphonyEvaluablePattern` generic, unsafe gate-bypass cast removed (2 data-transform casts remain in `clinical-patterns-definitions.ts` — expected, Assist→SYMPHONY criterion conversion), deep-equal parity on 70 CPs.
-
-**Phase 4/5 verification:** `pnpm --filter @the-abyss/symphony test` → 210/210 PASS; `typecheck` PASS; `lint` PASS; `apps/healthcare/intelligenceboard` route parity PASS 76/76 (`routeParityStatus=partial`, `productionImportReplacementAllowed=false`).
+**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.6.0'`
 
 ---
 
-## This Session's Commits (2026-04-22, not pushed)
+## Track B: Sentra RAG Engine
 
-**Phase 2 — Pattern Engine (4 commits):**
-- `97ea8c2` feat(symphony): Phase 2 pattern engine — generic evaluator
-- `0a68614` feat(symphony): Phase 2 pattern engine — integration fixtures
-- `31e13ef` feat(shared-types): promote Phase 2 pattern engine types to public contract
-- `0a471bb` chore(symphony): bump SYMPHONY_CONTRACT_VERSION to 0.2.0
+**Package:** `packages/sentra-rag/` — local-first medical RAG, self-contained.
 
-**Phase 3 — Clinical Patterns Evaluator (2 commits):**
-- `8fb9d1d` feat(symphony): Phase 3 — native clinical patterns evaluator (70 CP rules)
-- `39db0cb` fix(symphony): Phase 3 completion — contract, gate boundary, parity gate
-  - `SymphonySymptomContext` (27 flags) — consumers no longer need wild casts
-  - `SymphonyEvaluablePattern` generic — unsafe gate-bypass cast removed (2 data-transform casts in definitions file remain — expected)
-  - `SymphonyLocalClinicalPattern` removed from public index — gate boundary sealed
-  - Parity suite: deep-equal `{id, severity, title, source, acknowledged}` on all 70 CPs
-  - `clinical-patterns-definitions.ts` — DRY converter + SYMPHONY_CLINICAL_PATTERNS registry
-  - `clinical-patterns.ts` — evaluateClinicalPatterns() + clinicalPatternMatchToSymphonyAlert()
-  - 2 test files: 85 unit + 72 parity = 208/208 green
-  - Plan doc: `docs/superpowers/plans/2026-04-22-symphony-phase-3-clinical-patterns.md`
+**Stack:**
+- Embedding: Ollama `nomic-embed-text` (768-dim, lokal)
+- Generation: Ollama `gemma2:9b`
+- Vector store: Neon PostgreSQL + pgvector (tabel `medical_chunks`)
+- PDF extractor: PyMuPDF via `src/ingestion/pdf_extract.py` (suppress errors: `fitz.TOOLS.mupdf_display_errors(False)`)
+- PHI guard: GuardEngine (NIK, HP, email redaction)
 
-**Prior session scripts (still active):**
-- `scripts/generate-functional-docs.js`, `scripts/generate-release-notes.js`
-- `.github/workflows/generate-documentation.yml`
+**Library state** (`V:/avcn-sentra/abyss-monorepo/library/medical/`):
+| Kategori | Files | Chunks | Status |
+|---|---|---|---|
+| `pha/` Pharmacology | 7/7 | 2,010 | DONE |
+| `ped/` Pediatrics | 6/6 | 551 | DONE |
+| `obg/` Obstetrics | 4/4 | 745 | DONE |
+| `int/` Internal Med | 0/0 | 0 | EMPTY — corrupt PDF dihapus |
+| `gen/` General Med | 0/0 | 0 | EMPTY — corrupt PDF dihapus |
+| `bas/` Basic Sciences | 0/0 | 0 | EMPTY — image-based PDF dihapus |
+| **TOTAL** | **17/17** | **3,306** | 100% indexed |
 
----
+**DB:** Neon PostgreSQL — `medical_chunks`, 3,306 chunks, 768-dim pgvector.
+**Env:** `packages/sentra-rag/.env` (lokal, tidak di-commit).
 
-## Known Entanglements (DO NOT TOUCH in new thread)
+**Pending — Sentra RAG:**
+- [ ] Re-download PDF bersih untuk `int/`: hipertensi 2024, GERD 2024, dispepsia, gagal jantung (dari PAPDI/Kemenkes — binary download)
+- [ ] Wire `SentraRAGEngine` ke intelligenceboard CDSS endpoint
+- [ ] Wire `SentraRAGEngine` ke Kate agent query pipeline
 
-1. **Avvcenna rebrand in working tree** — Chief's in-progress work. Files include `pnpm-lock.yaml` (`Avvcenna+-*` → `avvcenna-*` rename), `apps/community/avvcenna-memory/**`, dan misc package.json renames. Rebrand spec: `docs/superpowers/specs/2026-04-19-avvcenna-rebranding-design.md`. **Wait for Chief to commit rebrand before adding `@microsoft/tsdoc` formal devDep.**
-
-2. **Orphan `@microsoft/tsdoc` in `pnpm-lock.yaml`** — 6 entries (0.14.2 + 0.16.0), leftover dari Cursor `pnpm add` yang tidak ikut di-revert. Tidak declared di package.json manapun. Left as-is per Opsi 2 decision (tsdoc deferred).
-
-3. **2 pre-existing stashes** (bukan Claude punya):
-   - `stash@{0}`: "On abyss-core: pre-rescue stale Avvcenna+ progress log"
-   - `stash@{1}`: "WIP on abyss-core: a70d601 docs(readme): update GitHub URLs to Avvicenna account"
-   Chief's work. Do NOT `stash pop` these without explicit instruction.
-
-4. **`packages/symphony/.agent/sessions/2026-04-20.md`** — hook bug artifact (wrong location). Chief: leave as-is, fix hook separately.
-
-5. **Many unrelated working tree drift** — `.env.example`, `.gitignore`, `AGENTS.md`, `packages/vector-store/**`, `infrastructure/terraform/**`, `tsconfig.json`, plus untracked `docs/superpowers/`, `docs/features/`, `docs/technical/` (generated artifacts), `.cursor/`, `.clinerules`, `.tdad/`, dll. Multiple parallel work streams. Do NOT blanket-commit.
+**Operational scripts:** `V:/avcn-sentra/abyss-monorepo/tooling/scripts/rag/`
+**Batch TUI:** `V:/avcn-sentra/abyss-monorepo/tooling/scripts/rag/ingest-menu.bat`
 
 ---
 
-## Decisions Reached This Session
+## Perubahan Hari Ini (2026-04-23, belum di-commit)
 
-- **Jalur A (SYMPHONY) vs Jalur B (Docs automation)** separated as parallel tracks on same branch. Post-Cursor failures, Claude took over Jalur B (Opsi B).
-- **Opsi 2 locked:** `@microsoft/tsdoc` formal dependency add **deferred** sampai Avvcenna rebrand committed. Tidak bisa clean tsdoc-only commit sementara rebrand drift masih di working tree (pnpm resolves everything together).
-- **TSDoc generator dropped entirely** (`d770d72`) — Chief decision setelah frustasi dengan dependency mess. Hanya functional-docs + release-notes generators tersisa.
-- **Push hold active** — abyss-core is 37 commits ahead of origin tapi Chief belum authorize push. Feature branch, jadi push aman saat siap.
+- `packages/sentra-rag/src/ingestion/chunker.ts` — line-grouping fallback untuk plain-text PDF
+- `packages/sentra-rag/src/ingestion/pdf_extract.py` — suppress MuPDF stdout errors
+- `packages/sentra-rag/src/ingestion/pipeline.ts` — switch extractor ke PyMuPDF
+- `library/medical/` — cleanup 101 PDF corrupt/gagal
+- `packages/clinical-references/` — scaffold package baru (contracts + deterministic stubs + tests)
+- `pnpm-lock.yaml` — importer/update workspace setelah `pnpm install`
+- `.agent/` — session log + dokumentasi
 
 ---
 
-## Incident Context (still active lock)
+## Known Entanglements (DO NOT TOUCH)
 
-From prior Codex session:
-- **Lock:** `packages/database` is NOT healthcare DB migration target. Platform-level only. Healthcare apps own independent databases.
+1. **Avvcenna rebrand in working tree** — Chief's in-progress. Do NOT commit rebrand files.
+2. **2 pre-existing stashes** — bukan Claude punya. Do NOT `stash pop`.
+3. **`packages/symphony/.agent/sessions/2026-04-20.md`** — hook bug artifact. Leave as-is.
+4. **Unrelated working tree drift** — `.env.example`, `.gitignore`, `AGENTS.md`, infra Terraform, dll. Do NOT `git add .` / `-A`.
+5. **Push hold active** — Chief belum authorize push ke origin.
+
+---
+
+## Incident Context (active lock)
+
+- **Lock:** `packages/database` bukan healthcare DB migration target.
 - **Hierarchy lock:** SYMPHONY parent; Dashboard + Assist = consumers.
-- **No DB destructive actions** occurred (no reset, drop, migration apply, HNSW index, ingest).
-- Full incident detail: `.agent/PROGRESS.archive.md`, prior HANDOFF.md versions di git history.
+- **sentra-rag DB:** bukan `packages/database` — Neon connection langsung di `.env` lokal.
+
+---
+
+## Medical Data Inventory (2026-04-23 audit)
+
+Data medis tersebar di 3 app, belum ada single source of truth:
+
+| Data | Lokasi | Records |
+|---|---|---|
+| Penyakit (172 + 144 SKDI) | intelligenceboard/public/data/ | ~316 penyakit |
+| ICD-10 BPJS | intelligenceboard/database/ | 18,543 kode |
+| Obat Fornas + stok | intelligenceboard/public/data/ | 222 + 277 item |
+| **DDI (173k interaksi)** | **sentra-assist/data/ddi-clinical.json** | **1,785 obat** |
+| Epidemiologi lokal | sentra-assist/public/data/ | 1,930 kode, 45k kasus |
+| Dosis per usia/berat | sentra-assist/lib/clinical/dosage-database.ts | per populasi |
+| Clinical chains + patches | intelligenceboard/database/ | 150+ penyakit |
+| Med database | referralink/public/data/ | ~100+ kondisi |
+
+Kandidat konsolidasi ke `@the-abyss/clinical-references` — detail di DECISIONS.md.
 
 ---
 
 ## Next Action Options (Chief choose)
 
-1. **Commit Phase 7 docs sync** — stage explicit `.agent` + ADR files only
-2. **GO new plan** — scaffold `@the-abyss/clinical-references` package
-3. **Commit Avvcenna rebrand** (Chief's in-progress work) — separate thread/agent
-4. **Break / istirahat** — all state preserved locally
+1. **Re-download int/ PDFs** — hipertensi 2024, GERD, dispepsia, gagal jantung dari PAPDI/Kemenkes
+2. **Wire Sentra RAG ke intelligenceboard** — tambah RAG query endpoint
+3. **Commit scaffold `@the-abyss/clinical-references`** — package sudah hijau lokal; stage explicit file list saja
+4. **Commit sentra-rag package** — stage explicit file list dari `packages/sentra-rag/`
 
 ---
 
 ## Do-Not-Touch Contract
 
 - ❌ Tidak commit Avvcenna rebrand working tree (Chief own)
-- ❌ Tidak pop stash@{0} atau stash@{1} (Chief's pre-existing)
+- ❌ Tidak pop stash@{0} atau stash@{1}
 - ❌ Tidak push ke remote tanpa Chief explicit GO
-- ❌ Tidak touch `packages/database` sebagai healthcare target (lock dari Codex incident)
-- ❌ Tidak `git add .` / `-A` — selalu explicit file
-- ❌ Tidak modify `.claude/settings.json` atau hook config
+- ❌ Tidak touch `packages/database` sebagai healthcare target
+- ❌ Tidak `git add .` / `-A`
 - ❌ Tidak skip GUARD-1 / JET-5 / JET-7
 
 ---
 
-**Fresh thread protocol:** Read CONTEXT → PROGRESS → this file → LESSONS → DECISIONS. Output CONTEXT LOADED confirmation. Wait for Chief instruction. Do not assume direction from this handoff alone.
+**Fresh thread protocol:** Read CONTEXT → PROGRESS → this file → LESSONS → DECISIONS. Output CONTEXT LOADED confirmation. Wait for Chief instruction.

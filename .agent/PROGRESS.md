@@ -138,3 +138,18 @@ tsconfig.json
 ```
 
 ---
+## 2026-04-25 15:08 — `240b1d1` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(agent): sync memory backlog
+- **Files changed**: 5 file(s)
+
+```
+.agent/DECISIONS.md
+.agent/PROGRESS.md
+.agent/sessions/2026-04-23.md
+.agent/sessions/2026-04-24.md
+.agent/sessions/2026-04-25.md
+```
+
+---

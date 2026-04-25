@@ -4,9 +4,10 @@
 # Owner: Dr. Ferdi Iskandar (Avvcenna+)
 # ========================================
 #
-# GOLDEN RULE: .agent/, .claude/settings.json, .cursor/rules/*.mdc,
-#              .cursor/README.md, .cursor/index.mdc, and pnpm-lock.yaml
-#              are TRACKED BY DESIGN. See load-bearing negations at the end.
+# GOLDEN RULE: .agent/, CLAUDE.md, pnpm-lock.yaml, shared .cursor/ project
+#              config (rules, agents, hooks entrypoints), .cursorignore, and
+#              mcp.json.example are TRACKED BY DESIGN. See load-bearing negations
+#              at the end. Local-only: .mcp.json (secrets), .claude/.
 # ========================================
 
 # ---- SECRETS & ENV (NEVER COMMIT) ----
@@ -28,18 +29,20 @@ service-account*.json
 *-service-account.json
 firebase-adminsdk*.json
 google-credentials*.json
+gcp-sa*.json
+gcp-*.json
 *.gpg
 *.asc
 
 # ---- AI TOOL CONFIG — NOT PUSHED (tool-specific, local) ----
 # (.agent/ and CLAUDE.md are TRACKED — see exemptions at bottom)
 .claude/
-.cursor/
+# Ignore all of .cursor/ then re-include shared paths at bottom (negations cannot
+# pierce a parent .cursor/ rule — use .cursor/** + explicit !.cursor/...).
+.cursor/**
 .kilo/
 .qwen/
 .gemini/
-.cursorignore
-.cursorindexingignore
 llm-config.local.*
 model-config.local.*
 prompts/private/
@@ -165,4 +168,21 @@ apps/
 !.agent/**
 !pnpm-lock.yaml
 
+# KEPT: Cursor project rules, subagents, hooks — team parity (cursor.com/docs)
+!.cursor/README.md
+!.cursor/index.mdc
+!.cursor/hooks.json
+!.cursor/sandbox.json
+!.cursor/rules/
+!.cursor/rules/**
+!.cursor/agents/
+!.cursor/agents/**
+!.cursor/hooks/
+!.cursor/hooks/after-edit.mjs
+!.cursor/hooks/autofix-loop.mjs
+.cursor/hooks/edit-log.txt
+
 gha-creds-*.json
+
+# Secrets Vault
+.secrets/

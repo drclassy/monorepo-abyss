@@ -94,6 +94,33 @@ agents:
       audit_log: true
       jet_protocol_required: true
 
+  # ---------------------------------------------------------------------------
+  # Melinda — Medical Receptionist (Sentra Healthcare Agent)
+  # ---------------------------------------------------------------------------
+  - id: melinda
+    name: Melinda
+    provider: sentra-healthcare
+    model: claude-sonnet-4-6
+    role: medical-receptionist
+    entry_point: apps/healthcare/sentra-main/MELINDA.md
+    protocol: JET-v2
+    capabilities:
+      - clinical-triage
+      - smart-scheduling
+      - patient-onboarding
+      - melinda-knowledge-base
+    permissions:
+      read: ["apps/healthcare/**"]
+      write: ["apps/healthcare/sentra-main/**"]
+      restricted: ["packages/database/**"]
+    triggers:
+      - patient-chat
+      - appointment-request
+    compliance:
+      phi_access: true
+      audit_log: true
+      jet_protocol_required: true
+
 # ---------------------------------------------------------------------------
 # Handoff Schema
 # Defines how agents pass context between sessions
