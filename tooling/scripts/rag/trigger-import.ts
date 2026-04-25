@@ -19,13 +19,12 @@ function findRepoRoot(): string {
 }
 
 function main(): void {
-  // Script ini sengaja sederhana: ia memanggil uploader resmi di packages/vertex-rag.
+  // Script ini sengaja sederhana: ia memanggil package vertex-rag melalui workspace graph.
   // Jalankan dari root:
   //   pnpm dlx tsx tooling/scripts/rag/trigger-import.ts
 
   const repoRoot = findRepoRoot()
-  const script = path.join(repoRoot, 'packages/vertex-rag/src/official-uploader.ts')
-  const args = ['--dir', repoRoot, 'dlx', 'tsx', script]
+  const args = ['--dir', repoRoot, '--filter', '@the-abyss/vertex-rag', 'exec', 'tsx', 'src/official-uploader.ts']
 
   console.log('--- Trigger Import (Vertex RAG) ---')
   console.log(`cmd: pnpm ${args.join(' ')}`)

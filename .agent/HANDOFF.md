@@ -1,6 +1,6 @@
 # HANDOFF.md — The Abyss (Monorepo Root)
 <!-- Overwrite at the start of each new session. -->
-<!-- Last updated: 2026-04-23 · Agent: Claude (Sonnet 4.6) · Session: sentra-rag-ingest -->
+<!-- Last updated: 2026-04-25 · Agent: Codex/Dexton · Session: architecture-alignment -->
 
 ---
 
@@ -12,18 +12,18 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Quick Orient (for new thread)
 
-**Branch:** `abyss-core` · Sentra RAG Engine built + medical library ingested · **NOT PUSHED**
+**Branch:** `abyss-core` · local-only cleanup + architecture lock in progress · **NOT PUSHED**
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
-**Primary missions (dual-track):**
-1. **SYMPHONY track** — `@the-abyss/clinical-references` scaffold committed (`01a71d3`) + Phase 7c traffic-light committed (`8c820e6`)
-2. **Sentra RAG track** — wire `SentraRAGEngine` ke intelligenceboard CDSS / Kate agent
-3. **Legacy lock:** `packages/ai-core` has been retired locally on 2026-04-25; do not recreate or depend on it again
+**Primary mission:**
+1. **SYMPHONY** — frame the new diagnosis engine inside `@the-abyss/symphony`, then verify readiness gates, then re-wire Dashboard, then ASSIST.
+2. **Retrieval lane is supporting only** — RAG packages may support grounding/retrieval, but must not become parallel clinical engines.
+3. **Legacy lock:** `packages/ai-core` has been retired locally on 2026-04-25; do not recreate or depend on it again.
 
 ---
 
 ## Track A: SYMPHONY Canonicalization
 
-**All 7 phases COMPLETE.** Post-Phase-7 work now landed: scaffold `@the-abyss/clinical-references` + Phase 7c traffic-light canonicalization. Next = controlled consumer adoption and later route-level follow-up if Chief directs.
+**All 7 phases COMPLETE.** Post-Phase-7 work already landed: scaffold `@the-abyss/clinical-references` + Phase 7c traffic-light canonicalization. Current priority is no longer feature backfill; it is diagnosis-engine framing, readiness review, and controlled consumer adoption.
 
 | # | Scope | Status |
 |---|---|---|
@@ -39,9 +39,10 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ---
 
-## Track B: Sentra RAG Engine
+## Supporting Retrieval Context (archive support only, not primary mission)
 
 **Package:** `packages/sentra-rag/` — local-first medical RAG, self-contained.
+**Status use:** Keep as supporting context only. Do not let this section override the SYMPHONY-first hierarchy above.
 
 **Stack:**
 - Embedding: Ollama `nomic-embed-text` (768-dim, lokal)
@@ -90,7 +91,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 1. **Avvcenna rebrand in working tree** — Chief's in-progress. Do NOT commit rebrand files.
 2. **2 pre-existing stashes** — bukan Claude punya. Do NOT `stash pop`.
-3. **`packages/symphony/.agent/sessions/2026-04-20.md`** — hook bug artifact. Leave as-is.
+3. **`packages/symphony/.agent/` misplaced hook session artifact** — historical bug residue. Leave as-is unless Chief explicitly orders archive/removal.
 4. **Unrelated working tree drift** — `.env.example`, `.gitignore`, `AGENTS.md`, infra Terraform, dll. Do NOT `git add .` / `-A`.
 5. **Push hold active** — Chief belum authorize push ke origin.
 
@@ -125,10 +126,10 @@ Kandidat konsolidasi ke `@the-abyss/clinical-references` — detail di DECISIONS
 
 ## Next Action Options (Chief choose)
 
-1. **Re-download int/ PDFs** — hipertensi 2024, GERD, dispepsia, gagal jantung dari PAPDI/Kemenkes
-2. **Wire Sentra RAG ke intelligenceboard** — tambah RAG query endpoint
-3. **Commit scaffold `@the-abyss/clinical-references`** — package sudah hijau lokal; stage explicit file list saja
-4. **Commit sentra-rag package** — stage explicit file list dari `packages/sentra-rag/`
+1. **Design the new SYMPHONY diagnosis engine** — primary product-critical work
+2. **Review remaining SYMPHONY readiness gates** — especially parity/import-replacement lock
+3. **Re-wire Dashboard to SYMPHONY** — only after diagnosis-engine direction is locked
+4. **Re-wire ASSIST** — only after Dashboard integration is stable
 
 ---
 
@@ -144,3 +145,29 @@ Kandidat konsolidasi ke `@the-abyss/clinical-references` — detail di DECISIONS
 ---
 
 **Fresh thread protocol:** Read CONTEXT → PROGRESS → this file → LESSONS → DECISIONS. Output CONTEXT LOADED confirmation. Wait for Chief instruction.
+
+
+---
+## 2026-04-25 Architecture Alignment Addendum
+
+**New clarity from package review:**
+
+- `@the-abyss/symphony` remains the only canonical clinical reasoning engine.
+- `@the-abyss/clinical-references` remains the sibling reference layer.
+- `@the-abyss/shared-types` remains the contract backbone.
+- `@the-abyss/sentra-rag`, `@the-abyss/vector-store`, `@the-abyss/vertex-rag`, and `@the-abyss/literature-harvester` are retrieval-side packages only. They must not evolve into parallel clinical engines.
+
+**Main risk now is not SYMPHONY itself.** Main risk is retrieval-boundary drift:
+
+1. `sentra-rag` already owns local-first ingest/query orchestration.
+2. `vector-store` should stay a storage/index abstraction, not another orchestrator.
+3. `vertex-rag` is still a governance outlier and must be treated as cloud connector/fallback only.
+4. `literature-harvester` stays acquisition-only and feeds corpus readiness, not diagnosis authority.
+
+**Operational consequence for next agent:**
+
+- Do **not** start Dashboard or ASSIST rewiring from any retrieval package.
+- The next strategic task is to frame the **new diagnosis engine inside SYMPHONY**.
+- Only after that engine is locked and verified should consumer rewiring begin:
+  1. Dashboard first
+  2. ASSIST second

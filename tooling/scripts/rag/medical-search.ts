@@ -1,4 +1,4 @@
-import { VertexSearchConnector } from '../../../packages/vertex-rag/src/search-connector'
+import { VertexSearchConnector } from '@the-abyss/vertex-rag'
 
 async function main(): Promise<void> {
   const query = process.argv.slice(2).join(' ').trim()

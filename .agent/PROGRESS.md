@@ -11,13 +11,13 @@
 | **Last updated** | 2026-04-25 |
 | **Active branch** | `abyss-core` → `origin` (Avvicenna GitHub, PRIVATE) |
 | **Active JET phase** | GO granted — Chief authorized all classes (A/B/C) |
-| **Next major initiative** | Filling niche specialties & Ingesting AML to RAG |
+| **Next major initiative** | Frame the new SYMPHONY diagnosis engine, then verify readiness and re-wire Dashboard followed by ASSIST |
 
 ---
 
 ## ✅ Done (cumulative)
 
-### Medical Library & RAG (2026-04-23)
+### Recent completed foundation work
 - [x] **Quality Expansion:** Added PABI (General Surgery), ESC 2024 (Cardiology Gold Standard), and SPP (Anatomical Pathology).
 - [x] **Avvcenna Medical Library (AML) Scaffold:** Created root directory `V:\avcn-sentra\avvcenna-med-lib\` with 36 specialty folders.
 - [x] **Kemenkes Ingestion (Massive Batch 1-7):** ~58 PNPK documents (2017-2026) downloaded and categorized.
@@ -35,16 +35,20 @@
 
 ## 🔄 In Progress (active sprint)
 
-### Filling The Last 10 Empty "Kamar"
-- [ ] **aer** (Aerospace), **apa** (Anatomi), **cpa** (Klinik), **for** (Forensic), **ger** (Geriatric), **mic** (Microbiology), **nuc** (Nuclear), **occ** (Occupational), **par** (Parasitology), **spo** (Sports).
-- [ ] Researching university modules (UI, UNAIR, UGM) for these niche fields.
+### SYMPHONY first
+- [ ] Frame the new diagnosis engine inside `@the-abyss/symphony`.
+- [ ] Reconfirm release gates before any production import replacement.
+- [ ] Re-wire Dashboard to SYMPHONY only after the diagnosis-engine direction is locked.
+- [ ] Re-wire ASSIST only after Dashboard integration is stable.
 
-### Consolidation
-- [ ] Moving `ddi-clinical.json` and `dosage-database.ts` from Assist to `@the-abyss/clinical-references`.
+### Supporting cleanup
+- [ ] Keep retrieval packages in a support-only role: acquisition, indexing, retrieval, grounding.
+- [ ] Continue consolidating deterministic references into `@the-abyss/clinical-references` without moving diagnosis authority out of SYMPHONY.
 
 ## 🚫 Blockers
 
-- RAG/KnowledgeBase remains blocked: must be added via app-level IntelligenceBoard schema/migration plan.
+- Production import replacement remains blocked until parity and readiness gates are explicitly cleared.
+- Retrieval packages still need boundary discipline so they do not drift into parallel reasoning.
 ## 2026-04-25 — `ai-core` retired from active workspace
 
 **Event:** Chief authorized full staged removal of legacy `packages/ai-core`, confirmed as baggage from a cancelled chatbot/AI experiment.
@@ -65,9 +69,7 @@
 ```
 AGENTS.md
 packages/literature-harvester/README.md
-packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/manifest.json
-packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/records/10-1000-example.json
-packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/records/10-1000-example.xml
+packages/literature-harvester/library/literature-harvests/(repo-anchor-check staging artifacts)
 packages/literature-harvester/package.json
 packages/literature-harvester/src/__tests__/harvester.test.ts
 packages/literature-harvester/src/cli.ts
@@ -93,9 +95,7 @@ tooling/librarian-desktop/literature-worker/src/__tests__/server.test.ts
 - **Files changed**: 4 file(s)
 
 ```
-packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/manifest.json
-packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/records/10-1000-example.json
-packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/records/10-1000-example.xml
+packages/literature-harvester/library/literature-harvests/(repo-anchor-check staging artifacts)
 packages/literature-harvester/src/__tests__/harvester.test.ts
 ```
 
@@ -301,3 +301,34 @@ pnpm-lock.yaml
 ```
 
 ---
+## 2026-04-25 15:15 — `a6f6b0a` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(agent): capture residual session logs
+- **Files changed**: 2 file(s)
+
+```
+.agent/PROGRESS.md
+packages/symphony/.agent/(misplaced hook session artifact)
+```
+
+---
+
+
+---
+## 2026-04-25 20:10 - architecture review (not yet committed)
+
+- **Scope**: reviewed `V:\avcn-sentra\abyss-monorepo\packages` against current monorepo best practice and the Chief-locked direction that SYMPHONY remains the canonical parent.
+- **Boundary map confirmed**:
+  - clinical core = `shared-types`, `symphony`, `clinical-references`, `fhir-engine`
+  - retrieval stack = `sentra-rag`, `vector-store`, `vertex-rag`, `literature-harvester`
+  - infra/integration = `database`, `integration-bridge`, `langflow-client`, `iskandar-gatekeeper`
+  - shared UI/config = `ui`, `design-token`, `config-eslint`, `config-typescript`
+- **Main risk found**: retrieval packages have overlapping ingest/query roles, while `vertex-rag` is still an outlier (`private` mismatch, `1.0.0`, thinner governance surface).
+- **Primary alignment locked**: SYMPHONY owns clinical reasoning; RAG owns acquisition, indexing, retrieval, and grounding only.
+- **Readiness conclusion**: the package graph is now clear enough to move focus back to the main mission:
+  1. define the new SYMPHONY diagnosis engine,
+  2. verify readiness,
+  3. re-wire Dashboard,
+  4. then re-wire ASSIST.
+- **Next recommended action**: write the diagnosis-engine design frame first; do not start Dashboard/ASSIST rewiring before that design is locked.

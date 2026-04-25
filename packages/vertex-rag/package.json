@@ -1,9 +1,10 @@
 {
   "name": "@the-abyss/vertex-rag",
   "version": "1.0.0",
+  "private": true,
   "description": "Sentra AI Hybrid Brain - End-to-End Vertex RAG Integration",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "build": "tsc",
     "test": "vitest run"

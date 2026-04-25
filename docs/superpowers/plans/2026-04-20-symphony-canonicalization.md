@@ -14,8 +14,8 @@
 
 1. `.agent/reports/2026-04-20-symphony-alignment.md` — contract alignment baseline (what IS in SYMPHONY, how Dashboard consumes it).
 2. `.agent/reports/2026-04-20-symphony-coverage-audit.md` — coverage gap audit (what is NOT yet in SYMPHONY + verdict per gap).
-3. `.agent/MASTER_CONTEXT_2026-04-19.md` — monorepo SSOT and architectural direction.
-4. `.agent/HANDOFF.md:17` — incident recovery lock and hierarchy reaffirmation.
+3. `AGENTS.md` — monorepo SSOT and current guardrails.
+4. `.agent/HANDOFF.md` — active hierarchy lock and current mission framing.
 
 ## Non-Negotiable Constraints (apply to every phase)
 
