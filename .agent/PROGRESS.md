@@ -289,3 +289,15 @@ library/medical/ent/PNPK_2018_-_Tata_Laksana_Tonsilitis.pdf
 ```
 
 ---
+## 2026-04-25 15:14 — `2b6cb2e` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(workspace): refresh root lockfile and progress
+- **Files changed**: 2 file(s)
+
+```
+.agent/PROGRESS.md
+pnpm-lock.yaml
+```
+
+---
