@@ -1,0 +1,35 @@
+{
+  "query": "repo anchor check",
+  "runId": "repo-anchor-check-2026-04-23T19-53-31-721Z-cbd6f071",
+  "outputDir": "V:\\avcn-sentra\\abyss-monorepo\\library\\medical\\literature-harvests\\repo-anchor-check-2026-04-23T19-53-31-721Z-cbd6f071",
+  "manifestPath": "V:\\avcn-sentra\\abyss-monorepo\\library\\medical\\literature-harvests\\repo-anchor-check-2026-04-23T19-53-31-721Z-cbd6f071\\manifest.json",
+  "records": [
+    {
+      "source": "europe-pmc",
+      "sourceId": "PMC12345",
+      "title": "Open access trial",
+      "abstract": "Clinical abstract",
+      "doi": "10.1000/example",
+      "pmcid": "PMC12345",
+      "publishedYear": 2024,
+      "authors": [
+        "Doe J",
+        "Roe R"
+      ],
+      "openAccess": true,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12345/",
+      "fullTextUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12345/fullTextXML",
+      "score": 12.5,
+      "status": "downloaded",
+      "metadataPath": "V:\\avcn-sentra\\abyss-monorepo\\library\\medical\\literature-harvests\\repo-anchor-check-2026-04-23T19-53-31-721Z-cbd6f071\\records\\10-1000-example.json",
+      "contentPath": "V:\\avcn-sentra\\abyss-monorepo\\library\\medical\\literature-harvests\\repo-anchor-check-2026-04-23T19-53-31-721Z-cbd6f071\\records\\10-1000-example.xml",
+      "retrievedAt": "2026-04-23T19:53:31.721Z"
+    }
+  ],
+  "counts": {
+    "searched": 1,
+    "downloaded": 1,
+    "metadataOnly": 0,
+    "failed": 0
+  }
+}

@@ -1,0 +1,9 @@
+<html>
+<head>
+<title>EPrints System Error</title>
+</head>
+<body>
+<h1>EPrints System Error</h1>
+<p><code>Error connecting to database: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (111)</code></p>
+</body>
+</html>
