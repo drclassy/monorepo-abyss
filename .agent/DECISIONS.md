@@ -146,3 +146,82 @@ WITH (m = 24, ef_construction = 256);
 **Decision:** Create sibling shared package `@the-abyss/clinical-references` for DDI checker, dosage database FKTP, epidemiology weights, and pharmacotherapy reasoner. Keep `traffic-light` in `@the-abyss/symphony` as the canonical decision-safety gate consuming normalized outputs from the sibling package.
 **Rationale:** Reference-heavy assets have faster update cadence, provenance/licensing burden, and larger data footprints. They fit better in a dedicated references package. Traffic-light remains clinical escalation logic, not mere reference lookup, so it belongs in SYMPHONY proper.
 **Consequences:** Phase 7 closes as architecture-only with ADR `docs/adr/0007-pharmacology-locus-decision.md`. Next implementation track is a dedicated scaffold plan for `@the-abyss/clinical-references`; no DB/SQL or pharmacology dataset ingestion is authorized by this decision alone.
+
+### [2026-04-23] Sentra RAG Engine — architecture decisions
+
+**Context:** Butuh local-first RAG engine untuk CDSS (Clinical Decision Support) di healthcare platform. Perlu ingest medical library PDF ke vector store yang bisa di-query oleh Kate/intelligenceboard agent.
+
+**Decision 1 — sentra-rag self-contained, tidak depend pada @the-abyss/vertex-rag:**
+`vertex-rag` punya TypeScript compilation errors dan butuh build step yang tidak clean. `sentra-rag` menginline GemmaEngine dan GuardEngine sendiri. Vertex RAG diimplementasi sebagai optional fallback via lazy dynamic import + `@ts-ignore`.
+
+**Decision 2 — PyMuPDF via Python subprocess sebagai PDF extractor:**
+`pdf-parse` (PDF.js lama) tidak bisa handle PDF 1.6+ dengan compressed streams. PyMuPDF (fitz) handle hampir semua format PDF dengan jauh lebih robust. Dipanggil via `child_process.execFile('python', ['pdf_extract.py', filePath])`.
+
+**Decision 3 — gemma2:9b sebagai generation model:**
+gemma3:12b (8.1GB) timeout 90s+ pada CPU. gemma2:9b (5.4GB) bekerja normal pada CPU untuk medical query. nomic-embed-text tetap sebagai embedding model (768-dim, kompatibel dengan Vertex AI text-embedding-004).
+
+**Decision 4 — Neon PostgreSQL + pgvector sebagai vector store:**
+Reuse Neon instance yang sama dengan intelligenceboard (koneksi string berbeda). Tabel `medical_chunks` terpisah dari intelligenceboard Prisma schema. `sentra-rag` punya `DATABASE_URL` sendiri di `.env` lokal. Ini bukan target `packages/database`.
+
+**Consequences:** `packages/sentra-rag/` berjalan standalone dengan 12 TypeScript source files. 3,306 chunks dari 17 PDF files tersimpan di Neon pgvector. Siap di-wire ke intelligenceboard CDSS.
+
+### [2026-04-23] Medical Data Inventory — Complete Audit
+
+**Context:** Audit menyeluruh seluruh monorepo untuk menemukan semua data medis yang tersebar.
+
+**Temuan — Data Terstruktur (JSON):**
+
+| File | Lokasi | Isi | Records |
+|---|---|---|---|
+| `penyakit.json` | intelligenceboard/public/data/ | Penyakit: gejala, pemfis, kriteria dx, komplikasi, tatalaksana | 172 |
+| `144_penyakit_puskesmas.json` | intelligenceboard/public/data/ | SKDI 4A: farmakoterapi, dosis, rute, durasi, kontraindikasi | 144 |
+| `icd10.json` | intelligenceboard/database/ | ICD-10 BPJS e-Klaim lengkap | 18,543 kode |
+| `obat_data.json` | intelligenceboard/public/data/ | Fornas 2023: sediaan, rute, kelas terapi | 222 obat |
+| `drug_mapping.json` | intelligenceboard/public/data/ | Generik → alias → stok, kontraindikasi | 200+ |
+| `stok_obat.json` | intelligenceboard/public/data/ | Inventori stok Puskesmas Balowerti | 277 item |
+| `clinical-chains.json` | intelligenceboard/public/data/ | Chain gejala → pola asesment | per gejala |
+| `clinical-patches.json` | intelligenceboard/database/ | Red flags, pemfis, refinement PPK IDI | 150+ |
+| `penyakit-vectors.json` | intelligenceboard/public/data/ | Embedding 768-dim Gemini per penyakit | 171 |
+| `icdx-extensions.json` | intelligenceboard/database/ | ICD-10-CM extensions + legacy mapping | 37 |
+| `ddi-clinical.json` | sentra-assist/data/ | DDI: DDInter 2.0, Major+Moderate interactions | 1,785 obat, 173,071 interaksi |
+| `epidemiology_weights_v2.json` | sentra-assist/public/data/ | ICD-10 + bobot epidemiologi 14 bulan Puskesmas Balowerti | 1,930 kode, 45,030 kasus |
+| `icd10-indonesia.json` | sentra-assist/public/data/ | ICD-10 bilingual EN+ID | 150+ |
+| `med_database.json` | referralink/public/data/ | Kondisi medis + protokol manajemen | ~100+ |
+
+**Temuan — Data di TypeScript (code-embedded):**
+- `dosage-database.ts` (sentra-assist) — dosis per usia+berat badan (IDAI, PAPDI, PIONAS, BNF)
+- `clinical-patterns.ts` (sentra-assist) — 70 pola klinis emergency
+- `medical-calculators.ts` (intelligenceboard) — BMI, eGFR, NEWS2, APGAR, 9 kategori
+- `instant-red-alerts.ts` (intelligenceboard) — threshold vital sign kritis per 8 gate
+- `htn-classifier.ts` + `glucose-classifier.ts` (intelligenceboard) — klasifikasi HTN + DKA/HHS
+- `symptom-aliases.ts` (intelligenceboard) — 150+ alias bahasa awam → klinis
+- `trajectory-analyzer.ts` + `finalization-therapy-engine.ts` (intelligenceboard) — algoritma terapi
+- `early-warning-patterns.ts` (intelligenceboard) — 25-30 pola sepsis, dengue shock, dll
+
+**Masalah:** Semua data ini tersebar di 3 app berbeda (intelligenceboard, sentra-assist, referralink). Banyak duplikasi. Tidak ada single source of truth.
+
+**Decision:** Data ini adalah kandidat utama untuk dikonsolidasi ke `@the-abyss/clinical-references` (ADR 0007). Prioritas konsolidasi:
+1. `ddi-clinical.json` — paling unik, 173k interaksi, hanya ada di sentra-assist
+2. `dosage-database.ts` — paling dibutuhkan CDSS, ada di sentra-assist saja
+3. `penyakit.json` + `144_penyakit_puskesmas.json` — master disease catalog
+4. `epidemiology_weights_v2.json` — bobot epidemiologi lokal Puskesmas Balowerti
+
+**Consequences:** Sebelum scaffold `@the-abyss/clinical-references`, data inventory ini menjadi blueprint schema. Jangan duplikasi data yang sudah ada — konsolidasi.
+
+### [2026-04-23] `@the-abyss/clinical-references` scaffold locked as contracts + deterministic stubs
+**Context:** ADR `0007` sudah memutuskan split locus farmakologi, dan Chief mengonfirmasi `clinical-references` tetap sibling package walau seluruh sistem tetap berpusat pada SYMPHONY.
+**Decision:** Scaffold awal `packages/clinical-references/` dibatasi ke public contracts, provenance placeholders, deterministic stub resolvers, README boundary, dan tiny synthetic fixture tests. Package ini tidak boleh bergantung pada `@the-abyss/symphony`, tidak boleh membawa dataset besar, dan tidak boleh melakukan DB/SQL/ingestion pada fase scaffold.
+**Rationale:** Menjaga SYMPHONY tetap canonical decision engine, sambil membuka boundary package yang bersih untuk DDI, dosage, epidemiology priors, dan pharmacotherapy reasoner yang nanti memiliki provenance/licensing burden lebih besar.
+**Consequences:** Package baru diverifikasi lokal pada 2026-04-23 dengan `pnpm --filter @the-abyss/clinical-references test`, `typecheck`, dan `lint` PASS. Next step bergeser dari scaffold ke explicit commit/package adoption dan kemudian Phase 7c traffic-light integration.
+
+### [2026-04-23] Phase 7c traffic-light canonicalized inside SYMPHONY on top of sibling references package
+**Context:** Setelah scaffold `@the-abyss/clinical-references` landed, ADR `0007` mengharuskan `traffic-light` tetap hidup di SYMPHONY, tetapi mulai mengonsumsi output ternormalisasi dari sibling package alih-alih tetap Assist-local.
+**Decision:** Tambahkan engine `packages/symphony/src/engine/traffic-light.ts` sebagai canonical 8-rule escalation-only safety gate. `assessSymphonyInput()` kini mengevaluasi traffic-light hanya ketika ada konteks diagnosis/references yang cukup, dan memakai `checkDrugInteractions()` dari `@the-abyss/clinical-references` untuk Rule 6 DDI. Hasilnya dipromosikan ke kontrak publik sebagai `SymphonyTrafficLightOutput` pada `SymphonyResult`.
+**Rationale:** Menjaga otoritas safety escalation tetap di SYMPHONY, sambil memindahkan input referensi farmakologi ke package sibling yang lebih tepat secara provenance/licensing.
+**Consequences:** `SYMPHONY_CONTRACT_VERSION` bumped ke `0.6.0`. Verifikasi lokal pada 2026-04-23: `pnpm --filter @the-abyss/symphony test` PASS (215/215), `typecheck` PASS, `lint` PASS. `pnpm-lock.yaml` sengaja tidak ikut commit Phase 7c karena masih bercampur dengan churn paralel lintasan lain.
+
+### [2026-04-25] `@the-abyss/ai-core` retired as failed legacy chatbot artifact
+**Context:** Chief confirmed `packages/ai-core` is leftover baggage from a cancelled chatbot/AI experiment and is no longer part of the strategic architecture. The monorepo now centers clinical reasoning in SYMPHONY, references in `@the-abyss/clinical-references`, and runtime orchestration in domain-specific consumers.
+**Decision:** Remove `packages/ai-core` completely instead of preserving a compatibility shell. Detach all active workspace correlations first (`platform/orchestrator` dependency, TS path alias, governance/doc pointers), then delete the package folder.
+**Rationale:** Keeping the legacy package alive would invite future drift and architectural confusion. Full retirement clarifies that `ai-core` is not the primary engine, not the repo guardian, and not part of the current Sentra clinical stack.
+**Consequences:** Any future multi-model or assistant-specific runtime must live in an explicit active package, not by reviving `ai-core`. Historical mentions in append-only logs may remain, but active docs and workspace graph must no longer depend on it.

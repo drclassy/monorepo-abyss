@@ -1,7 +1,6 @@
 # PROGRESS.md — The Abyss (Monorepo Root)
 <!-- Agent MUST update at every session end or completed JET phase. -->
-<!-- Full history: .agent/PROGRESS.archive.md -->
-<!-- Last updated: 2026-04-18 -->
+<!-- Last updated: 2026-04-25 -->
 
 ---
 
@@ -9,817 +8,133 @@
 
 |Field|Value|
 |-------|-------|
-| **Last updated** | 2026-04-22 |
+| **Last updated** | 2026-04-25 |
 | **Active branch** | `abyss-core` → `origin` (Avvicenna GitHub, PRIVATE) |
 | **Active JET phase** | GO granted — Chief authorized all classes (A/B/C) |
-| **Next major initiative** | Post-Phase-7: scaffold `@the-abyss/clinical-references` |
+| **Next major initiative** | Filling niche specialties & Ingesting AML to RAG |
 
 ---
 
-## 🚨 Incident Status — 2026-04-20
+## ✅ Done (cumulative)
 
-- Codex/Dexton direction drift contained: `packages/database` must not be used as healthcare DB migration target.
-- No destructive DB action confirmed: no reset, drop, successful migration, HNSW index, or ingest.
-- Correct hierarchy locked: `SYMPHONY` is canonical parent; Dashboard and Assist are consumers/hosts.
-- Next work must begin with PLAN -> CLAIM -> FILE -> TEST verification against `.agent/MASTER_CONTEXT_2026-04-19.md`.
-
-## ✅ Done (cumulative — detail in PROGRESS.archive.md)
-
-### Vector Store
-
-- [x] `packages/vector-store` database boundary hardened: `VectorStore` now requires caller-owned Prisma-compatible database injection instead of importing `@the-abyss/database` directly.
-- [x] `VectorStoreDatabaseClient` contract added to keep healthcare DB ownership independent.
-- [x] `ingest-medical-pdf.ts` converted from auto-running placeholder into an injectable utility with chunking, empty-text skip, retry/backoff, and progress logging. Operational execution remains blocked until an app-level IntelligenceBoard KnowledgeBase migration plan is approved.
-- [x] Vector-store tests rewritten around mocked embedding + mocked DB; package-local `tsconfig.json` added so typecheck no longer scans unrelated packages.
-- [x] Verification 2026-04-20: `pnpm --filter @the-abyss/vector-store lint` PASS; `pnpm --filter @the-abyss/vector-store typecheck` PASS; `pnpm --filter @the-abyss/vector-store test` PASS 5/5.
-
-### Governance & Infrastructure
-
-- [x] Root `AGENTS.md` — supreme authority, JET + NestJS §5
-- [x] Root `CLAUDE.md` — Claude Code CLI entry point
-- [x] `.cursor/rules/` — modular 2026+ format (index, constitution, guards, backend, frontend, quality)
-- [x] `.agent/` 5-file structure + `SESSION_STATE.md` + `PROTOCOL.md`
-- [x] `.claude/` folder structure (agents/, commands/, skills/)
-- [x] JET Workflow + Task Classification (A/B/C) across all enforcement layers
-- [x] Repository governance: `repository/STANDARD.md`, `CHECKLIST.md`, `validate.ps1`
-- [x] Remote migration: `origin` → Avvicenna GitHub (2026-04-17)
-
-### Platform
-
-- [x] Orchestrator CQRS scaffold — commands/, queries/ barrel exports (B4-A)
-- [x] Orchestrator Phase A — Saga persistence, SagaExecution model, SagaRepository
-
-### 2026-04-21: Sentra Integration into VERTEX Ecosystem
-- [DONE] **Infrastructure Rebranding:** Aligned security modules and Terraform configs with the "Avvcenna" branding.
-- [DONE] **Vector Store Refactor:** Upgraded `packages/vector-store` to use official Vertex AI SDK with IAM/ADC authentication (HIPAA compliant).
-- [DONE] **Melinda Agent Core:** Built the brain of the Melinda (Receptionist) Agent using Sentra AI intelligence.
-- [DONE] **Agent Registration:** Registered "Melinda" as the official Agent in `conductor/agent-registry.yaml` (Rebranded from Hermes).
-- [DONE] **API Implementation:** Deployed Sentra-powered Chat and OCR endpoints for the Melinda Agent.
-- [INFO] **Memory Consolidation:** Moved AI core memory to the `.agents/` directory.
-
-#### 🚀 Vertex AI Integration Detail Status
-- **Installed Stack:** `@google-cloud/vertexai`, `@google-cloud/vision`, `google-auth-library`.
-- **Model Config:** `text-embedding-004` (768d) & `gemini-1.5-flash`.
-- **Auth Mode:** **SECURE** (IAM Service Account / ADC).
-- **Active Features:** Melinda LLM Brain (Conversation), Melinda OCR (Identity Extraction), Hybrid Brain (Local Fallback).
-- [x] Orchestrator Phase C — Health check endpoint, ApiKeyGuard, Swagger
-- [x] Orchestrator test suite — 25 tests, 100% pass (6 files)
-
-### Packages
-
-- [x] `iskandar-gatekeeper` — auth hardening (B3-B): timing-safe, algorithm confusion prevention
-- [x] All 12 packages — JSDoc + README (P2-10)
-- [x] `packages/notebooklm` — scaffold added
-- [x] ESLint + Prettier pass across all packages
-
-### CI/CD
-
-- [x] Security scan workflow (TruffleHog, fixed base SHA)
-- [x] Auto-fix workflow (format + lint, PR creation)
-- [x] `.gitignore` hardened (149 lines, secret patterns)
-
-### Cursor/IDE
-
-- [x] `settings.json` optimized (107 keys, 2026 best practice)
-- [x] `.cursor/rules/` JET deduplication — `index.mdc` slimmed to pointer-only
-- [x] `01-guard-context-init.mdc` trimmed (removed non-actionable Part 4)
-- [x] `avicenna-plus-dark-1.3.1-patched.vsix` — status bar white, icons brighter, sidebar darker
+### Medical Library & RAG (2026-04-23)
+- [x] **Quality Expansion:** Added PABI (General Surgery), ESC 2024 (Cardiology Gold Standard), and SPP (Anatomical Pathology).
+- [x] **Avvcenna Medical Library (AML) Scaffold:** Created root directory `V:\avcn-sentra\avvcenna-med-lib\` with 36 specialty folders.
+- [x] **Kemenkes Ingestion (Massive Batch 1-7):** ~58 PNPK documents (2017-2026) downloaded and categorized.
+- [x] **Integrity Check:** Audited 51 files; fixed corruptions using User-Agent rotation.
+- [x] **Professional Org Scouting (Batch 1):** Filled niche categories:
+    *   `tcv/`: PPK HBTKVI (Thoracic & Cardiovascular).
+    *   `psu/`: Pedoman Bedah Anak (Unair) + PNPK Hirschprung.
+    *   `ven/`: PPK PERDOSKI (Venereology).
+    *   `eme/`: PNPK Trauma 2017 (Emergency).
+    *   `rad/`: Modul Pengantar Radiologi (Uhamka).
+    *   `kkp/`: PPK Fasyankes Primer IDI 2017 (Mega-reference).
+- [x] **Sentra RAG Engine:** Scaffolded `packages/sentra-rag/`, 3,306 chunks ingested.
 
 ---
 
 ## 🔄 In Progress (active sprint)
 
-- [ ] **Polyrepo restructuring** — Class C, GO active (Chief authorized 2026-04-18)
-  - 11 project repos to create from `apps/`
-  - `packages/*` to publish as npm private via GitHub Packages
-  - Reference: `HANDOFF.md §Polyrepo`
-- [ ] **Orchestrator Phase B** — LangFlow client wiring to sagas (GO active)
-- [ ] `.claude/agents/` — subagent definitions for Claude Code
-- [ ] `.claude/commands/` — custom slash commands
+### Filling The Last 10 Empty "Kamar"
+- [ ] **aer** (Aerospace), **apa** (Anatomi), **cpa** (Klinik), **for** (Forensic), **ger** (Geriatric), **mic** (Microbiology), **nuc** (Nuclear), **occ** (Occupational), **par** (Parasitology), **spo** (Sports).
+- [ ] Researching university modules (UI, UNAIR, UGM) for these niche fields.
 
-## ⏳ Awaiting Other Agents
-
-- [ ] **B4-B** — Saga production wiring diagnosis (Kilo)
-- [ ] **B4-C** — Referral saga production wiring (Kilo)
+### Consolidation
+- [ ] Moving `ddi-clinical.json` and `dosage-database.ts` from Assist to `@the-abyss/clinical-references`.
 
 ## 🚫 Blockers
 
-- RAG/KnowledgeBase remains blocked: must be added via app-level IntelligenceBoard schema/migration plan, not via `packages/database`; no DB writes without fresh Chief GO.
+- RAG/KnowledgeBase remains blocked: must be added via app-level IntelligenceBoard schema/migration plan.
+## 2026-04-25 — `ai-core` retired from active workspace
 
----
+**Event:** Chief authorized full staged removal of legacy `packages/ai-core`, confirmed as baggage from a cancelled chatbot/AI experiment.
 
-## Recent Sessions (last 2 weeks)
+- **Detached consumers:** removed workspace dependency/path-alias usage from `platform/orchestrator`, `apps/academic/evaluation-engine`, `apps/prototype/edge-ai-prototype`, and `apps/healthcare/aby-dashboard`.
+- **Runtime rehoming:** `apps/healthcare/aby-dashboard/src/app/api/aby/analyze/route.ts` now owns its local Aby/Ollama request logic; `apps/healthcare/sentra-main/app/api/melinda/chat/route.ts` now owns a local schedule responder instead of reading `packages/ai-core`.
+- **Docs/governance sync:** active references removed from root docs (`AGENTS.md`, `README.md`, `ONBOARDING.md`, `.agent/CONTEXT.md`, `.agent/ARCHITECTURE.md`), package/app docs, CODEOWNERS, and `conductor/agent-registry.yaml`.
+- **Purge:** `packages/ai-core/` deleted fully; lockfile refreshed with `pnpm install --lockfile-only --ignore-scripts`.
+- **Verification status:** route-level consumers detached cleanly; root install succeeded with `--ignore-scripts`. Targeted package checks exposed pre-existing workspace issues unrelated to `ai-core` (`orchestrator` Prisma/config drift, `evaluation-engine` transitive package errors, `aby-dashboard` missing `@assistant-ui/*` deps).
+- **Strategic lock:** `ai-core` is no longer part of the active architecture. Canonical clinical engine remains `@the-abyss/symphony`; next product-critical focus stays on SYMPHONY readiness and downstream rewiring.
 
-|Date|Agent|Summary|
-|------|-------|---------|
-| 2026-04-22 | Codex/Dexton | SYMPHONY Phase 7 decision: ADR `0007` locked split pharmacology locus — sibling `@the-abyss/clinical-references` for DDI/dosage/epidemiology/pharmacotherapy, `traffic-light` remains in SYMPHONY |
-| 2026-04-22 | Codex/Dexton | SYMPHONY Phase 6: prediction + classifier refinements committed (`3398ce7`); contract bumped to `0.5.0`; `@the-abyss/symphony` test/typecheck/lint PASS; Dashboard route parity PASS 76/76 |
-| 2026-04-22 | Codex/Dexton | SYMPHONY Phase 5: gate taxonomy reconciled into public contract (`GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED`); evaluator + adapter parity now emit canonical `gate`; contract bumped to `0.4.0`; `@the-abyss/symphony` test/typecheck/lint PASS; Dashboard route parity PASS 76/76 |
-| 2026-04-22 | Codex/Dexton | SYMPHONY Phase 4: canonical 9 ABCDE action protocols implemented locally; `SymphonyAlert` now carries `actionProtocolId` + canonical payload; contract bumped to `0.3.0`; `@the-abyss/symphony` test/typecheck/lint PASS |
-| 2026-04-22 | Claude | SYMPHONY Phase 2: pattern engine generic evaluator (4 commits: `97ea8c2`, `0a68614`, `31e13ef`, `0a471bb`); contract bumped to 0.2.0 |
-| 2026-04-22 | Claude | SYMPHONY Phase 3 fixes — contract (SymphonySymptomContext), gate boundary (generic + no unsafe cast), parity gate (deep-equal 70 CPs) (`39db0cb`) |
-| 2026-04-22 | Claude | SYMPHONY Phase 3: native clinical patterns evaluator — 70 CP rules, TDD green 208/208, parity 100% (`8fb9d1d`) |
-| 2026-04-20 | Codex/Dexton | vector-store DI boundary + ingest utility hardening; lint/typecheck/test green; recovery corrected DB target back to IntelligenceBoard app-level schema |
-| 2026-04-19 | Claude | vector-store refactor: Gemini REST → Vertex AI IAM, VectorStoreConfig fixed, 2 bugs patched (LIMIT cast, index.ts exports), HNSW best-practice params documented |
-| 2026-04-19 | Claude | Monorepo audit + efficiency pass — 7 issues fixed, 20 files changed, CEO playbook created |
-| 2026-04-18 | Claude | Cursor rules optimization, PROGRESS archive, HANDOFF refresh, GO granted |
-| 2026-04-18 | Avvcenna+ | `.cursor/rules/` refactor to 2026+ modular format |
-| 2026-04-17 | Avvcenna+ | Remote migration to Avvicenna GitHub |
-| 2026-04-15 | Multiple | Orchestrator tests, ESLint/Prettier pass, CI/CD workflows, pre-push audit |
-| 2026-04-14 | Gemini | Sentra Portal rebranding + AI Flows enhancement |
-| 2026-04-13 | Claude | 14-project evaluation sweep, auth hardening, package docs |
-
----
-
-## Next Steps for Next Session
-
-1. Execute GUARD 1 — read all five `.agent/` files
-2. Confirm SYMPHONY phases 1-3 status (all ✅)
-3. Draft package plan for `@the-abyss/clinical-references` (DDI, dosage, epidemiology, pharmacotherapy)
-4. Do not run DB/Prisma/SQL; RAG DB work requires fresh Chief GO and app-level IntelligenceBoard migration plan
-
-- Phase 4 local implementation complete (2026-04-22): `packages/symphony/src/engine/action-protocols.ts` added with 9 canonical `PROTO_*` registries and referral criteria; `SymphonyAlert` widened with `actionProtocolId` + `actionProtocol`; Phase 3 evaluator and Assist parity adapter now attach canonical protocol payloads; `SYMPHONY_CONTRACT_VERSION` bumped to `0.3.0`; verification PASS: `pnpm --filter @the-abyss/symphony test`, `typecheck`, `lint`.
-- Phase 5 local implementation complete (2026-04-22): `SymphonySafetyGate` promoted to include `GATE_11_ACS`, `GATE_12_STROKE`, `GATE_13_ANEMIA_BLEED`; Phase 3 clinical registry no longer relies on local gate union; evaluator and Assist parity adapter now emit canonical `gate`; `SYMPHONY_CONTRACT_VERSION` bumped to `0.4.0`; verification PASS: `pnpm --filter @the-abyss/symphony test`, `typecheck`, `lint`; Dashboard `pnpm run test:symphony:route-parity` PASS 76/76 with `routeParityStatus=partial`.
-- Phase 6 local implementation complete (2026-04-22): `packages/symphony/src/engine/trajectory.ts` now includes `detectSymphonyTreatmentResponse()` plus quadratic TTC detail (`timeToCriticalDetail`) while preserving `timeToCriticalEstimate` as best-estimate hours; new `packages/symphony/src/engine/classifiers.ts` canonicalizes chronic-disease, hypertension, glucose, and AVPU/GCS deterministic helpers; `SYMPHONY_CONTRACT_VERSION` bumped to `0.5.0`; verification PASS: `pnpm --filter @the-abyss/symphony test` (213/213), `typecheck`, `lint`; Dashboard `pnpm run test:symphony:route-parity` PASS 76/76 with `routeParityStatus=partial`.
-- Phase 7 decision complete (2026-04-22): ADR `docs/adr/0007-pharmacology-locus-decision.md` chooses split locus — sibling `@the-abyss/clinical-references` for pharmacology/reference assets, `traffic-light` remains in SYMPHONY. No code execution in Phase 7 by design.
-
-- SYMPHONY alignment Class A report created: .agent/reports/2026-04-20-symphony-alignment.md
-- SYMPHONY coverage gap audit created: .agent/reports/2026-04-20-symphony-coverage-audit.md
-- SYMPHONY canonicalization plan (7-phase, Phase 1 detailed): docs/superpowers/plans/2026-04-20-symphony-canonicalization.md
-- SYMPHONY canonicalization Phase 1 complete (2026-04-20): symptom-signals NLP with 19 signals + 3-token negation window, 27 symptom-signal tests + 84/84 full suite GREEN, lint PASS, typecheck PASS. Closes Gap #8 of 2026-04-20 coverage audit.## 2026-04-20 16:56 — `9644530` — abyss-core
+## 2026-04-24 02:53 — `57c3bad` — abyss-core
 
 - **Agent**: Avvcenna+
-- **Commit**: feat(symphony): capture canonical engine foundation
-- **Files changed**: 17 file(s)
+- **Commit**: feat(tooling): add guardian console and literature harvest stack
+- **Files changed**: 27 file(s)
 
 ```
-packages/shared-types/src/index.ts
-packages/shared-types/src/platform-api.ts
-packages/shared-types/src/symphony.ts
-packages/symphony/src/__tests__/anaphylaxis.test.ts
-packages/symphony/src/__tests__/assist-patterns-parity.test.ts
-packages/symphony/src/__tests__/hybrid-decisioning.test.ts
-packages/symphony/src/__tests__/parity-fixtures.test.ts
-packages/symphony/src/__tests__/pe-suspect.test.ts
-packages/symphony/src/__tests__/trajectory.test.ts
-packages/symphony/src/adapters/assist-patterns-parity.ts
-packages/symphony/src/engine/anaphylaxis.ts
-packages/symphony/src/engine/assess.ts
-packages/symphony/src/engine/hybrid-decisioning.ts
-packages/symphony/src/engine/parity-fixtures.ts
-packages/symphony/src/engine/pe-suspect.ts
-packages/symphony/src/engine/trajectory.ts
-packages/symphony/src/index.ts
+AGENTS.md
+packages/literature-harvester/README.md
+packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/manifest.json
+packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/records/10-1000-example.json
+packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/records/10-1000-example.xml
+packages/literature-harvester/package.json
+packages/literature-harvester/src/__tests__/harvester.test.ts
+packages/literature-harvester/src/cli.ts
+packages/literature-harvester/src/connectors.ts
+packages/literature-harvester/src/harvester.ts
+packages/literature-harvester/src/index.ts
+packages/literature-harvester/src/types.ts
+packages/literature-harvester/src/utils.ts
+packages/literature-harvester/tsconfig.json
+pnpm-lock.yaml
+tooling/librarian-desktop/START_AVVCENNA_CONSOLE.bat
+tooling/librarian-desktop/index.html
+tooling/librarian-desktop/literature-worker/README.md
+tooling/librarian-desktop/literature-worker/package.json
+tooling/librarian-desktop/literature-worker/src/__tests__/server.test.ts
 ```
 
 ---
-## 2026-04-20 16:57 — `6542652` — abyss-core
+## 2026-04-24 02:54 — `7e10c12` — abyss-core
 
 - **Agent**: Avvcenna+
-- **Commit**: feat(symphony): add Indonesian symptom signals parser
-- **Files changed**: 3 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-packages/symphony/src/index.ts
-```
-
----
-## 2026-04-20 16:59 — `00571c3` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): fever matcher + negation window for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:00 — `9327162` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): dyspnea matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:00 — `2091dbc` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): chest_pain matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:01 — `f6e304a` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): headache matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:01 — `9cd0d9f` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): vomit matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:02 — `3601d8c` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): seizure matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:03 — `47f12d0` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): altered_consciousness matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:04 — `da0e4d2` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): bleeding matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:04 — `a6796b4` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): pallor matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:05 — `7cea633` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): weakness matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:05 — `595d327` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): dizziness matcher + pusing co-signal with headache
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:06 — `c811dfb` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): syncope matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:06 — `9eb09bd` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): diaphoresis matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:07 — `3dcf08e` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): rash_or_angioedema matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:08 — `e363be8` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): allergen_exposure matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:08 — `4819ef0` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): abdominal_pain matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:09 — `42b4593` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): kussmaul_breathing matcher for symptom-signals
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:09 — `bb59883` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): polyuria + neurologic_focal_deficit matchers
-- **Files changed**: 2 file(s)
-
-```
-packages/symphony/src/__tests__/symptom-signals.test.ts
-packages/symphony/src/engine/symptom-signals.ts
-```
-
----
-## 2026-04-20 17:18 — `1afd058` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: chore(symphony): fix import order lint debt
-- **Files changed**: 3 file(s)
-
-```
-packages/symphony/src/engine/assess.ts
-packages/symphony/src/engine/early-warning.ts
-packages/symphony/src/engine/parity-fixtures.ts
-```
-
----
-## 2026-04-20 17:22 — `387d9b5` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: chore(symphony): remove unsafe lint debt in parity fixtures
-- **Files changed**: 3 file(s)
-
-```
-packages/symphony/src/__tests__/assist-patterns-parity.test.ts
-packages/symphony/src/__tests__/parity-fixtures.test.ts
-packages/symphony/src/engine/parity-fixtures.ts
-```
-
----
-## 2026-04-20 17:25 — `a587b41` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: docs(agent): Phase 1 symptom-signals NLP canonicalization complete
-- **Files changed**: 3 file(s)
-
-```
-.agent/DECISIONS.md
-.agent/PROGRESS.md
-.agent/sessions/2026-04-20.md
-```
-
----
-## 2026-04-20 20:59 — `8150fd7` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: chore(symphony): bump contract version to 0.1.4 post Phase 1 surface
-- **Files changed**: 1 file(s)
-
-```
-packages/shared-types/src/symphony.ts
-```
-
----
-## 2026-04-20 21:00 — `93e6f94` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: docs(agent): sync state + alignment reports after Phase 1
-- **Files changed**: 8 file(s)
-
-```
-.agent/CONTEXT.md
-.agent/HANDOFF.md
-.agent/LESSONS.md
-.agent/PROGRESS.archive.md
-.agent/PROGRESS.md
-.agent/reports/2026-04-20-symphony-alignment.md
-.agent/reports/2026-04-20-symphony-coverage-audit.md
-.agent/sessions/2026-04-20.md
-```
-
----
-## 2026-04-20 21:00 — `8431e3d` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(docs): Menambahkan otomatisasi dokumentasi awal dan skrip placeholder
-- **Files changed**: 6 file(s)
-
-```
-.github/workflows/generate-documentation.yml
-CHANGELOG.md
-package.json
-scripts/generate-functional-docs.js
-scripts/generate-release-notes.js
-scripts/generate-tsdoc-markdown.js
-```
-
----
-## 2026-04-20 21:08 — `a7bd65c` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: fix(docs): Memperbaiki script generate-tsdoc-markdown.js untuk mengabaikan node_modules dan file .d.ts
-- **Files changed**: 1 file(s)
-
-```
-scripts/generate-tsdoc-markdown.js
-```
-
----
-## 2026-04-20 21:10 — `6b21430` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: docs(agent): archive MASTER_CONTEXT_2026-04-19 as pre-Phase-1 snapshot
-- **Files changed**: 1 file(s)
-
-```
-.agent/MASTER_CONTEXT_2026-04-19.md
-```
-
----
-## 2026-04-20 21:10 — `2548e9b` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(docs): Meningkatkan script generate-functional-docs.js untuk parsing commit message
-- **Files changed**: 1 file(s)
-
-```
-scripts/generate-functional-docs.js
-```
-
----
-## 2026-04-20 21:14 — `f471402` — abyss-core
-
-- **Agent**: Unknown
-- **Commit**: Revert "feat(docs): Meningkatkan script generate-functional-docs.js untuk parsing commit message"
-- **Files changed**: 1 file(s)
-
-```
-scripts/generate-functional-docs.js
-```
-
----
-## 2026-04-20 21:14 — `52704f4` — abyss-core
-
-- **Agent**: Unknown
-- **Commit**: Revert "fix(docs): Memperbaiki script generate-tsdoc-markdown.js untuk mengabaikan node_modules dan file .d.ts"
-- **Files changed**: 1 file(s)
-
-```
-scripts/generate-tsdoc-markdown.js
-```
-
----
-## 2026-04-20 21:21 — `e959d95` — abyss-core
-
-- **Agent**: Unknown
-- **Commit**: Revert "feat(docs): Menambahkan otomatisasi dokumentasi awal dan skrip placeholder"
-- **Files changed**: 6 file(s)
-
-```
-.github/workflows/generate-documentation.yml
-CHANGELOG.md
-package.json
-scripts/generate-functional-docs.js
-scripts/generate-release-notes.js
-scripts/generate-tsdoc-markdown.js
-```
-
----
-## 2026-04-20 21:39 — `dc777da` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(docs): add TSDoc markdown generator script
-- **Files changed**: 2 file(s)
-
-```
-docs/technical/.gitkeep
-scripts/generate-tsdoc-markdown.js
-```
-
----
-## 2026-04-20 21:40 — `bdbbc21` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(docs): add functional feature docs generator script
-- **Files changed**: 2 file(s)
-
-```
-docs/features/.gitkeep
-scripts/generate-functional-docs.js
-```
-
----
-## 2026-04-20 21:40 — `f11e6c7` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(docs): add release notes generator placeholder
-- **Files changed**: 1 file(s)
-
-```
-scripts/generate-release-notes.js
-```
-
----
-## 2026-04-20 21:41 — `2890972` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(ci): add docs automation workflow (PR-not-push)
-- **Files changed**: 1 file(s)
-
-```
-.github/workflows/generate-documentation.yml
-```
-
----
-## 2026-04-20 21:55 — `d770d72` — feature/rebrand-Avvcenna+-Avvcenna+-to-avvcenna
-
-- **Agent**: Avvcenna+
-- **Commit**: chore(docs): drop TSDoc generator (deferred)
-- **Files changed**: 3 file(s)
-
-```
-.github/workflows/generate-documentation.yml
-docs/technical/.gitkeep
-scripts/generate-tsdoc-markdown.js
-```
-
----
-## 2026-04-20 22:02 — `dc107b7` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: docs(agent): handoff for fresh thread — Jalur B close + Phase 2 prep
-- **Files changed**: 2 file(s)
-
-```
-.agent/HANDOFF.md
-.agent/sessions/2026-04-20.md
-```
-
----
-## 2026-04-20 22:25 — `375f902` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: docs(symphony): Phase 2 Pattern Engine design spec
-- **Files changed**: 1 file(s)
-
-```
-docs/superpowers/specs/2026-04-20-symphony-phase-2-pattern-engine-design.md
-```
-
----
-## 2026-04-22 13:11 — `97ea8c2` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): Phase 2 pattern engine — generic evaluator
+- **Commit**: test(literature-harvester): avoid committing anchor fixtures
 - **Files changed**: 4 file(s)
 
 ```
-packages/symphony/src/__tests__/pattern-engine.test.ts
-packages/symphony/src/engine/pattern-engine.ts
-packages/symphony/src/index.ts
-packages/symphony/src/types/pattern-types.ts
+packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/manifest.json
+packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/records/10-1000-example.json
+packages/literature-harvester/library/literature-harvests/repo-anchor-check-2026-04-23T19-13-19-495Z-71e8fe01/records/10-1000-example.xml
+packages/literature-harvester/src/__tests__/harvester.test.ts
 ```
 
 ---
-## 2026-04-22 13:13 — `0a68614` — abyss-core
+## 2026-04-24 02:58 — `3826a79` — abyss-core
 
 - **Agent**: Avvcenna+
-- **Commit**: feat(symphony): Phase 2 pattern engine — integration fixtures
+- **Commit**: feat(console): differentiate guardian and sentinel reply colors
 - **Files changed**: 1 file(s)
 
 ```
-packages/symphony/src/__tests__/pattern-engine.integration.test.ts
+tooling/librarian-desktop/index.html
 ```
 
 ---
-## 2026-04-22 13:18 — `31e13ef` — abyss-core
+## 2026-04-25 15:07 — `085a6b6` — abyss-core
 
 - **Agent**: Avvcenna+
-- **Commit**: feat(shared-types): promote Phase 2 pattern engine types to public contract
-- **Files changed**: 6 file(s)
+- **Commit**: chore(repo): retire legacy ai-core package
+- **Files changed**: 17 file(s)
 
 ```
-packages/shared-types/src/symphony.ts
-packages/symphony/src/contracts/index.ts
-packages/symphony/src/engine/pattern-engine.ts
-packages/symphony/src/engine/symptom-signals.ts
-packages/symphony/src/index.ts
-packages/symphony/src/types/pattern-types.ts
-```
-
----
-## 2026-04-22 13:18 — `0a471bb` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: chore(symphony): bump SYMPHONY_CONTRACT_VERSION to 0.2.0
-- **Files changed**: 1 file(s)
-
-```
-packages/shared-types/src/symphony.ts
-```
-
----
-## 2026-04-22 15:12 — `8fb9d1d` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): Phase 3 — native clinical patterns evaluator (70 CP rules)
-- **Files changed**: 6 file(s)
-
-```
-docs/superpowers/plans/2026-04-22-symphony-phase-3-clinical-patterns.md
-packages/symphony/src/__tests__/clinical-patterns.parity.test.ts
-packages/symphony/src/__tests__/clinical-patterns.test.ts
-packages/symphony/src/engine/clinical-patterns-definitions.ts
-packages/symphony/src/engine/clinical-patterns.ts
-packages/symphony/src/index.ts
-```
-
----
-## 2026-04-22 15:19 — `43c7e37` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: docs(agent): update PROGRESS + HANDOFF post Phase 2 & Phase 3
-- **Files changed**: 2 file(s)
-
-```
-.agent/HANDOFF.md
-.agent/PROGRESS.md
-```
-
----
-## 2026-04-22 15:31 — `39db0cb` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: fix(symphony): Phase 3 completion — contract, gate boundary, parity gate
-- **Files changed**: 5 file(s)
-
-```
-packages/shared-types/src/symphony.ts
-packages/symphony/src/__tests__/clinical-patterns.parity.test.ts
-packages/symphony/src/engine/clinical-patterns.ts
-packages/symphony/src/engine/pattern-engine.ts
-packages/symphony/src/index.ts
-```
-
----
-## 2026-04-22 16:55 — `641dfd3` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: docs(agent): update PROGRESS + HANDOFF post Phase 3 quality-gate
-- **Files changed**: 2 file(s)
-
-```
-.agent/HANDOFF.md
-.agent/PROGRESS.md
-```
-
----
-## 2026-04-22 17:08 — `74defbb` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: docs(agent): sync Phase 3 docs with final code state
-- **Files changed**: 3 file(s)
-
-```
-.agent/HANDOFF.md
-.agent/sessions/2026-04-22.md
-docs/superpowers/plans/2026-04-22-symphony-phase-3-clinical-patterns.md
-```
-
----
-## 2026-04-22 19:33 — `466ec4b` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): canonicalize ABCDE action protocols
-- **Files changed**: 14 file(s)
-
-```
-.agent/DECISIONS.md
-.agent/HANDOFF.md
-.agent/PROGRESS.md
-.agent/sessions/2026-04-22.md
-packages/shared-types/src/symphony.ts
-packages/symphony/src/__tests__/assist-patterns-parity.test.ts
-packages/symphony/src/__tests__/clinical-patterns.parity.test.ts
-packages/symphony/src/__tests__/clinical-patterns.test.ts
-packages/symphony/src/adapters/assist-patterns-parity.ts
-packages/symphony/src/contracts/index.ts
-packages/symphony/src/engine/action-protocols.ts
-packages/symphony/src/engine/clinical-patterns-definitions.ts
-packages/symphony/src/engine/clinical-patterns.ts
-packages/symphony/src/index.ts
-```
-
----
-## 2026-04-22 19:37 — `0df24cf` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): reconcile gate taxonomy
-- **Files changed**: 10 file(s)
-
-```
-.agent/DECISIONS.md
-.agent/HANDOFF.md
-.agent/PROGRESS.md
-.agent/sessions/2026-04-22.md
-packages/shared-types/src/symphony.ts
-packages/symphony/src/__tests__/assist-patterns-parity.test.ts
-packages/symphony/src/__tests__/clinical-patterns.test.ts
-packages/symphony/src/adapters/assist-patterns-parity.ts
-packages/symphony/src/engine/clinical-patterns-definitions.ts
-packages/symphony/src/engine/clinical-patterns.ts
-```
-
----
-## 2026-04-22 19:50 — `3398ce7` — abyss-core
-
-- **Agent**: Avvcenna+
-- **Commit**: feat(symphony): canonicalize prediction and classifiers
-- **Files changed**: 10 file(s)
-
-```
-.agent/DECISIONS.md
-.agent/HANDOFF.md
-.agent/PROGRESS.md
-.agent/sessions/2026-04-22.md
-docs/superpowers/plans/2026-04-20-symphony-canonicalization.md
-packages/shared-types/src/symphony.ts
-packages/symphony/src/__tests__/trajectory.test.ts
-packages/symphony/src/engine/classifiers.ts
-packages/symphony/src/engine/trajectory.ts
-packages/symphony/src/index.ts
+.agent/ARCHITECTURE.md
+.agent/CONTEXT.md
+.github/CODEOWNERS
+CHANGELOG.md
+ONBOARDING.md
+README.md
+docs/blueprint/infrastructure.md
+docs/blueprint/instruction.md
+packages/AGENTS.md
+packages/ai-core/README.md
+packages/ai-core/package.json
+packages/ai-core/src/__tests__/artificial-core.test.ts
+packages/ai-core/src/client.ts
+packages/ai-core/src/index.ts
+packages/ai-core/src/prompt-manager.ts
+packages/ai-core/src/types.ts
+tsconfig.json
 ```
 
 ---
