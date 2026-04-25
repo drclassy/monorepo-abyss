@@ -153,3 +153,139 @@ tsconfig.json
 ```
 
 ---
+## 2026-04-25 15:12 — `a411856` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(repo): consolidate governance and retire legacy docs
+- **Files changed**: 38 file(s)
+
+```
+.agent/HANDOFF.md
+.agent/LESSONS.md
+.agent/PROGRESS.md
+.agent/sessions/2026-04-20.md
+.env.example
+.github/workflows/reusable-ai-agent.yml
+.gitignore
+AGENTS.md
+ORCHESTRATOR.md
+conductor/ORCHESTRATOR.md
+conductor/agent-registry.yaml
+docs/claude-handbook/index.html
+docs/cursor-qrh/.vscodeignore
+docs/cursor-qrh/cursor-handbook-1.0.0.vsix
+docs/cursor-qrh/docs/superpowers/plans/2026-04-11-cursor-handbook-vsix.md
+docs/cursor-qrh/docs/superpowers/specs/2026-04-11-cursor-handbook-design.md
+docs/cursor-qrh/media/handbook.html
+docs/cursor-qrh/media/icon.svg
+docs/cursor-qrh/package.json
+docs/cursor-qrh/pnpm-lock.yaml
+```
+
+---
+## 2026-04-25 15:12 — `9545f12` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(platform): add orchestrator and sentra portal workspaces
+- **Files changed**: 140 file(s)
+
+```
+platform/orchestrator/.agent/CONTEXT.md
+platform/orchestrator/.agent/DECISIONS.md
+platform/orchestrator/.agent/HANDOFF.md
+platform/orchestrator/.agent/LESSONS.md
+platform/orchestrator/.agent/PROGRESS.md
+platform/orchestrator/.agent/sessions/2026-04-15.md
+platform/orchestrator/AGENTS.md
+platform/orchestrator/Dockerfile
+platform/orchestrator/ORCHESTRATOR.md
+platform/orchestrator/package.json
+platform/orchestrator/src/app.module.ts
+platform/orchestrator/src/commands/index.ts
+platform/orchestrator/src/commands/run-flow.command.ts
+platform/orchestrator/src/common/dto/flow-execution.dto.ts
+platform/orchestrator/src/common/guards/api-key.guard.ts
+platform/orchestrator/src/common/interceptors/shadow-mode.interceptor.ts
+platform/orchestrator/src/flows/flows.controller.spec.ts
+platform/orchestrator/src/flows/flows.controller.ts
+platform/orchestrator/src/flows/flows.gateway.ts
+platform/orchestrator/src/flows/flows.module.ts
+```
+
+---
+## 2026-04-25 15:12 — `d9f65db` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(rag): add vertex rag package
+- **Files changed**: 24 file(s)
+
+```
+packages/vertex-rag/.env.example
+packages/vertex-rag/package.json
+packages/vertex-rag/src/auto-fix.ts
+packages/vertex-rag/src/bulk-upload.ts
+packages/vertex-rag/src/check-indexing.ts
+packages/vertex-rag/src/connector.ts
+packages/vertex-rag/src/create-corpus.ts
+packages/vertex-rag/src/detective.ts
+packages/vertex-rag/src/final-uploader.ts
+packages/vertex-rag/src/index.ts
+packages/vertex-rag/src/ingest-public-data.ts
+packages/vertex-rag/src/initialize-search.ts
+packages/vertex-rag/src/intelligence.ts
+packages/vertex-rag/src/internal/assessment/gemma.engine.ts
+packages/vertex-rag/src/internal/brain/vertex.engine.ts
+packages/vertex-rag/src/internal/compliance/guard.engine.ts
+packages/vertex-rag/src/internal/medical-knowledge-map.test.ts
+packages/vertex-rag/src/internal/medical-knowledge-map.ts
+packages/vertex-rag/src/investigate.ts
+packages/vertex-rag/src/official-uploader.ts
+```
+
+---
+## 2026-04-25 15:13 — `808d632` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(agent): add clinical curation dossiers
+- **Files changed**: 6 file(s)
+
+```
+.agent/01_PANDUAN_PENGUMPULAN_BAHAN_SENTRA_CDSS_v1.md
+.agent/CURATION_TASKS.md
+.agent/FEATURE.md
+.agent/MASTER_SITREP.md
+check-docs.ts
+platform/AGENTS.md
+```
+
+---
+## 2026-04-25 15:14 — `8a3fb47` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(library): add medical corpus snapshot
+- **Files changed**: 110 file(s)
+
+```
+library/medical/INVENTORY.md
+library/medical/LIBRARIAN_PROTOCOL.md
+library/medical/README.md
+library/medical/aer/FAA_Guide_Aviation_Medical_Examiners.pdf
+library/medical/aer/ICAO_Manual_Civil_Aviation_Medicine_2024.pdf
+library/medical/ane/PNPK_2022_-_Tata_Laksana_Anestesiologi_dan_Terapi_Intensif.pdf
+library/medical/apa/Buku_Pendidikan_Berkesinambungan_Patologi_Klinik_Anatomik_Unair.pdf
+library/medical/apa/Standar_Pelayanan_Patologi_Anatomik_Ref.pdf
+library/medical/car/ESC_Guideline_CCS_2024_Official.pdf
+library/medical/car/ESC_Guideline_CVD_in_Diabetes_2023.pdf
+library/medical/car/ESC_Guideline_Chronic_Coronary_Syndromes_2024.pdf
+library/medical/car/PNPK_2021_-_Tata_Laksana_Gagal_Jantung.pdf
+library/medical/car/PNPK_2023_-_Tata_Laksana_Angina_Pectoris_Stabil.pdf
+library/medical/cpa/Peran_Patologi_Klinik_Aryati_Unair.pdf
+library/medical/cpa/Standar_Pelayanan_Patologi_Klinik_KMK_2022.pdf
+library/medical/der/PNPK_2019_-_Tata_Laksana_Dermatitis_Seboroik.pdf
+library/medical/der/PPK_PERDOSKI_Full_2017.pdf
+library/medical/eme/PNPK_2017_-_Tata_Laksana_Trauma.pdf
+library/medical/ent/PNPK_2018_-_Tata_Laksana_Otitis_Media_Supuratif_Kronik.pdf
+library/medical/ent/PNPK_2018_-_Tata_Laksana_Tonsilitis.pdf
+```
+
+---
