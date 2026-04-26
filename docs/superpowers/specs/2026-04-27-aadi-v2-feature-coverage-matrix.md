@@ -331,6 +331,48 @@ Notes:
 - Output is deterministic: identical fact array yields identical match array
   (verified by test case "produces deterministic output").
 
+### Task 4 — `feat(symphony): add AADI V2 diagnosis packs and native differential` (this commit)
+
+Sprint 2 opener. Introduces canonical Phase 1 diagnosis packs and a
+deterministic native differential engine that consumes `SymphonyClinicalFact[]`
+and `SymphonySyndromeMatch[]` from Tasks 2–3 to produce
+`SymphonyDiagnosticHypothesis[]`. No replacement of `diagnosisSuggestions`
+output — additive only per Chief constraint.
+
+| Section A / B row | Concrete proof |
+|---|---|
+| Native differential engine (no external candidate dependency) | `code: native-differential.ts → buildSymphonyNativeDifferential()`; `test: native-differential.test.ts (8 cases)` |
+| Phase 1 diagnosis pack registry | `code: diagnosis-packs.ts → getSymphonyDiagnosisPacks()`; `test: native-differential.test.ts (canonical-set, no Indonesia packs)` |
+| Evidence shape (supports/weakens/missing/nextBestQuestions) | `code: native-differential.ts → buildSymphonyNativeDifferential()`; `test: native-differential.test.ts (full evidence shape case)` |
+| Must-not-miss support | `code: diagnosis-packs.ts (mustNotMiss flag)`, `native-differential.ts (categorize threshold 0.45)`; `test: native-differential.test.ts (sepsis must_not_miss, htn-crisis must_not_miss)` |
+
+Packs implemented (closed `pack-*` ID union):
+
+- `pack-pneumonia` → `J18.9` Pneumonia, family `acute_respiratory_syndrome`,
+  supportKeys `[symptom_fever, symptom_dyspnea, news2_risk]`, mustNotMiss=false.
+- `pack-sepsis` → `A41.9` Sepsis, family `acute_febrile_syndrome`,
+  supportKeys `[symptom_fever, screening_gate_count, trajectory_direction]`,
+  mustNotMiss=true.
+- `pack-htn-crisis` → `I10` Hypertensive crisis context, family
+  `acute_cardiometabolic_syndrome`, supportKeys
+  `[htn_severity, trajectory_direction]`, mustNotMiss=true.
+
+Confidence calibration (no high-confidence default):
+
+- `rawScore = 0.35 + supports * 0.16 - weakens * 0.08`
+- Capped to `[0, 0.95]` — single full-support pack maxes out at ~0.83.
+- Category derivation: `must_not_miss` if `pack.mustNotMiss && conf ≥ 0.45`,
+  else `working` ≥ 0.58, else `review` ≥ 0.33, else `deferred`.
+
+Notes:
+
+- No Indonesia-specific packs (no dengue / TB / preeclampsia) per constraint.
+- Syndrome taxonomy not expanded — packs filter by Task 3 closed union.
+- Output deterministic and additive: existing `diagnosisSuggestions` flow is
+  untouched; native hypotheses are produced as separate `SymphonyResult`
+  field for downstream arbiter (Task 5).
+- Empty `syndromes[]` produces empty `hypotheses[]` (no fallback inflation).
+
 ### Outstanding Sprint 1 mappings (carry to next task)
 
 - **Personal baseline / treatment response detection** —

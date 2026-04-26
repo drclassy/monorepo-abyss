@@ -219,6 +219,17 @@ export {
   type SymphonySyndromeMatch,
 } from './engine/syndrome-classifier'
 
+export {
+  getSymphonyDiagnosisPacks,
+  type SymphonyDiagnosisPack,
+} from './engine/diagnosis-packs'
+
+export {
+  buildSymphonyNativeDifferential,
+  type SymphonyNativeDifferentialInput,
+  type SymphonyNativeDifferentialResult,
+} from './engine/native-differential'
+
 
 export {
   SYMPHONY_CONTRACT_VERSION,
