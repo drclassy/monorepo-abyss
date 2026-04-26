@@ -208,6 +208,11 @@ export {
   SYMPHONY_CLINICAL_PATTERNS,
 } from './engine/clinical-patterns'
 
+export {
+  buildSymphonyClinicalFacts,
+  type SymphonyClinicalFactsResult,
+} from './engine/clinical-facts'
+
 
 export {
   SYMPHONY_CONTRACT_VERSION,
