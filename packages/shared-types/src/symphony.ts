@@ -1,4 +1,4 @@
-export const SYMPHONY_CONTRACT_VERSION = '0.6.0' as const
+export const SYMPHONY_CONTRACT_VERSION = '0.7.0' as const
 
 export type SymphonyContractVersion = typeof SYMPHONY_CONTRACT_VERSION
 
@@ -179,15 +179,65 @@ export interface SymphonyQualitySummary {
   auditHints: string[]
 }
 
+// =============================================================================
+// AADI V2: Native diagnostic reasoning contracts (added in v0.7.0)
+// Additive only — does not remove or rename existing fields.
+// =============================================================================
+
+export type SymphonyClinicalDisposition =
+  | 'ok'
+  | 'requires_review'
+  | 'insufficient_data'
+  | 'degraded'
+
+export interface SymphonyClinicalFact {
+  key: string
+  value: string | number | boolean
+  confidence?: number
+  sourceRefs: string[]
+}
+
+export interface SymphonyReasoningEvidence {
+  supports: string[]
+  weakens: string[]
+  missing: string[]
+  nextBestQuestions: string[]
+}
+
+export interface SymphonyDiagnosticHypothesis {
+  id: string
+  icd10Code: string
+  diagnosisName: string
+  rank: number
+  confidence: number
+  category: 'working' | 'review' | 'must_not_miss' | 'deferred'
+  evidence: SymphonyReasoningEvidence
+  evidenceRefs: string[]
+}
+
+export interface SymphonyShadowComparison {
+  oldPathAvailable: boolean
+  newPathAvailable: boolean
+  agreementLevel: 'high' | 'partial' | 'low' | 'not_comparable'
+  topDiagnosisChanged: boolean
+  escalationChanged: boolean
+  clinicalDispositionChanged: boolean
+  notes: string[]
+}
+
 export interface SymphonyResult {
   metadata: SymphonyMetadata
+  clinicalDisposition?: SymphonyClinicalDisposition
   patientContext: SymphonyPatientContext
   latestVitals?: SymphonyVitalsInput
   diagnosisSuggestions: SymphonyDiagnosisSuggestion[]
+  nativeHypotheses?: SymphonyDiagnosticHypothesis[]
+  clinicalFacts?: SymphonyClinicalFact[]
   alerts: SymphonyAlert[]
   trafficLight?: SymphonyTrafficLightOutput
   trajectory: SymphonyTrajectorySummary
   quality: SymphonyQualitySummary
+  shadowComparison?: SymphonyShadowComparison
 }
 
 // =============================================================================

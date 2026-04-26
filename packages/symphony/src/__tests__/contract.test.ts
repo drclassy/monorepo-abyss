@@ -4,7 +4,55 @@ import {
   SYMPHONY_ENGINE_PACKAGE_NAME,
   assessSymphonyInput,
   type SymphonyAssessmentInput,
+  type SymphonyClinicalDisposition,
+  type SymphonyClinicalFact,
+  type SymphonyDiagnosticHypothesis,
+  type SymphonyResult,
 } from '../index'
+
+describe('AADI V2 contract extensions', () => {
+  it('allows clinical disposition values', () => {
+    const values: SymphonyClinicalDisposition[] = [
+      'ok',
+      'requires_review',
+      'insufficient_data',
+      'degraded',
+    ]
+    expect(values).toHaveLength(4)
+  })
+
+  it('supports native hypothesis and fact arrays on result', () => {
+    const facts: SymphonyClinicalFact[] = [
+      { key: 'fever', value: true, sourceRefs: ['symptom:chief_complaint'] },
+    ]
+    const hypotheses: SymphonyDiagnosticHypothesis[] = [
+      {
+        id: 'native-j18-1',
+        icd10Code: 'J18.9',
+        diagnosisName: 'Pneumonia, unspecified',
+        rank: 1,
+        confidence: 0.72,
+        category: 'working',
+        evidence: {
+          supports: ['Demam', 'Batuk', 'Takipnea'],
+          weakens: [],
+          missing: ['Foto toraks'],
+          nextBestQuestions: ['Apakah ada sesak progresif?'],
+        },
+        evidenceRefs: ['pattern:respiratory', 'news2:medium'],
+      },
+    ]
+
+    const result = {} as SymphonyResult
+    result.clinicalDisposition = 'requires_review'
+    result.clinicalFacts = facts
+    result.nativeHypotheses = hypotheses
+
+    expect(result.clinicalDisposition).toBe('requires_review')
+    expect(result.clinicalFacts?.[0]?.key).toBe('fever')
+    expect(result.nativeHypotheses?.[0]?.category).toBe('working')
+  })
+})
 
 describe('@the-abyss/symphony scaffold', () => {
   it('exports the engine package identity', () => {
