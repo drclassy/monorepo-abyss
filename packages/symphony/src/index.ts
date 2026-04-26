@@ -213,6 +213,12 @@ export {
   type SymphonyClinicalFactsResult,
 } from './engine/clinical-facts'
 
+export {
+  classifySymphonySyndromes,
+  type SymphonySyndromeId,
+  type SymphonySyndromeMatch,
+} from './engine/syndrome-classifier'
+
 
 export {
   SYMPHONY_CONTRACT_VERSION,

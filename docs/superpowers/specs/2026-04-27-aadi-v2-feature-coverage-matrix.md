@@ -304,12 +304,38 @@ All reuse happens inside `packages/symphony/src/engine/clinical-facts.ts` via
 | Pattern engine evaluator (Assist-origin) | Reused via SYMPHONY pattern engine; `parity: runAssistPatternParityFixtures()` green |
 | 70 Clinical Patterns GATE v2 (Assist-origin) | Reused via SYMPHONY clinical-patterns; `parity: runAssistPatternParityFixtures()` green |
 
+### Task 3 — `feat(symphony): add AADI V2 syndrome classifier` (this commit)
+
+Sprint 1 finale. Adds deterministic `classifySymphonySyndromes()` in
+`packages/symphony/src/engine/syndrome-classifier.ts`, consuming
+`SymphonyClinicalFact[]` produced by Task 2. Initial taxonomy is restricted to
+canonical Phase 1 families per Chief constraint (no expansion to neurologic /
+allergy / maternal-fetal yet — those land with Sprint 2 packs and arbiter).
+
+| Section A / B row | Concrete proof |
+|---|---|
+| Syndrome taxonomy (Phase 1 canonical) | `code: syndrome-classifier.ts → classifySymphonySyndromes()`; `test: syndrome-classifier.test.ts` |
+| Clinical-fact → syndrome mapping (deterministic) | `code: syndrome-classifier.ts → hasFact() predicate gates`; `test: syndrome-classifier.test.ts (5 cases)` |
+
+Taxonomy emitted (closed union `SymphonySyndromeId`):
+
+- `acute_febrile_syndrome` — fact `symptom_fever === true`
+- `acute_respiratory_syndrome` — facts `symptom_fever === true && symptom_dyspnea === true`
+- `acute_cardiometabolic_syndrome` — fact `htn_severity ∈ {stage2, crisis}`
+
+Notes:
+- No Indonesia diagnosis pack wiring in this task — packs (`pack-pneumonia`,
+  `pack-sepsis`, `pack-htn-crisis`) land in Task 4 differential engine.
+- Local `toAvpu()` bridge in `clinical-facts.ts` remains explicitly temporary.
+  Canonical AVPU/GCS helper deepening still deferred to Task 5 arbiter.
+- Output is deterministic: identical fact array yields identical match array
+  (verified by test case "produces deterministic output").
+
 ### Outstanding Sprint 1 mappings (carry to next task)
 
-- **Personal baseline / treatment response detection** — Task 2 imports
-  `analyzeSymphonyTrajectory` which exposes baseline derivation, but
+- **Personal baseline / treatment response detection** —
   `buildSymphonyPersonalBaseline()` and `detectSymphonyTreatmentResponse()`
-  are not yet wired into `ClinicalFacts`. Mark as deferred to Task 3 / Task 5.
+  remain not wired into `ClinicalFacts`. Carry to Task 5 arbiter.
 - **AVPU/GCS helpers** — Task 2 uses a local `toAvpu()` for snapshot
   consciousness mapping. Canonical helpers (`symphonyAvpuToNews2Score`,
   `symphonyAvpuToGcsTotal`) remain available; deeper reuse expected when the
