@@ -2,13 +2,14 @@
  * Copyright 2026 Google LLC
  *
  * Sentra AI Hybrid Brain - Vertex AI Search (Discovery Engine) Connector
- * Project: sentra-healthcare-solution
+ * Project: tenacious-crane-494419-j5
  * Managed by Jen (Sentra Adjutant)
  */
 
 import { SearchServiceClient } from '@google-cloud/discoveryengine'
 import * as dotenv from 'dotenv'
 
+import { resolveProjectId } from './internal/gcp-project'
 import {
   mapMedicalKnowledgeResults,
   type MedicalKnowledgeSearchResponse,
@@ -33,9 +34,8 @@ export class VertexSearchConnector {
   private pageSize: number
 
   constructor(config?: Partial<SearchConfig>) {
-    // Taktik: Menggunakan Project Number seringkali lebih stabil daripada Project ID
-    this.projectId = '382444138233'
-    this.location = config?.location || process.env.GOOGLE_LOCATION || 'global'
+    this.projectId = resolveProjectId(config?.projectId)
+    this.location = config?.location || process.env.GCP_LOCATION || 'global'
     this.dataStoreId =
       config?.dataStoreId ||
       process.env.VERTEX_SEARCH_DATASTORE_ID ||

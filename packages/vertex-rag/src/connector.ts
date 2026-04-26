@@ -1,13 +1,15 @@
 /**
  * Copyright 2026 Google LLC
- * 
+ *
  * Sentra AI Hybrid Brain - Vertex RAG Connector
- * Project: sentra-healthcare-solution
+ * Project: tenacious-crane-494419-j5
  * Managed by Jen (Sentra Adjutant)
  */
 
 import { VertexAI, GenerativeModel, Tool } from '@google-cloud/vertexai';
 import * as dotenv from 'dotenv';
+
+import { resolveProjectId } from './internal/gcp-project';
 
 dotenv.config();
 
@@ -23,8 +25,8 @@ export class VertexRAGConnector {
   private model!: GenerativeModel;
 
   constructor(config?: Partial<VertexRAGConfig>) {
-    const projectId = config?.projectId || process.env.GOOGLE_PROJECT_ID || 'sentra-healthcare-solution';
-    const location = config?.location || process.env.GOOGLE_LOCATION || 'us-central1';
+    const projectId = resolveProjectId(config?.projectId);
+    const location = config?.location || process.env.GCP_LOCATION || 'us-central1';
     const corpusId = config?.corpusId || process.env.VERTEX_RAG_CORPUS_ID || process.env.NOTEBOOK_CORPUS_ID;
     const modelName = config?.modelName || process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 

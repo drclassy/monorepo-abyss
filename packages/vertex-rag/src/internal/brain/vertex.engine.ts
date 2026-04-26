@@ -1,15 +1,24 @@
 import { VertexAI, GenerativeModel, Tool } from '@google-cloud/vertexai';
 import * as dotenv from 'dotenv';
 
+import { resolveProjectId } from '../gcp-project';
+
 dotenv.config();
+
+export interface VertexSearchResult {
+  text: string
+  status: 'SUCCESS' | 'ERROR'
+  metadata?: unknown
+  error?: unknown
+}
 
 export class VertexEngine {
   private vertexAI!: VertexAI;
   private model!: GenerativeModel;
 
   constructor() {
-    const projectId = process.env.GOOGLE_PROJECT_ID || 'sentra-healthcare-solution';
-    const location = process.env.GOOGLE_LOCATION || 'us-central1';
+    const projectId = resolveProjectId();
+    const location = process.env.GCP_LOCATION || 'us-central1';
     const corpusId = process.env.VERTEX_RAG_CORPUS_ID || process.env.NOTEBOOK_CORPUS_ID;
     const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
@@ -36,8 +45,10 @@ export class VertexEngine {
     }
   }
 
-  async search(prompt: string) {
-    if (!this.model) return { answer: "Library not connected", status: "ERROR" };
+  async search(prompt: string): Promise<VertexSearchResult> {
+    if (!this.model) {
+      return { text: 'Library not connected', status: 'ERROR' };
+    }
 
     try {
       const result = await this.model.generateContent(prompt);
@@ -46,7 +57,7 @@ export class VertexEngine {
       try {
         const candidates = (response as any).candidates;
         text = candidates?.[0]?.content?.parts?.[0]?.text || "No response";
-      } catch (e) {
+      } catch {
         text = "Error parsing response";
       }
 

@@ -1,18 +1,19 @@
 /**
  * Copyright 2026 Google LLC
- * 
+ *
  * Sentra AI Hybrid Brain - Public Data Ingestion Script (OpenFDA & PubMed)
  * Managed by Jen (Sentra Adjutant)
  */
 
-import { DocumentServiceClient } from '@google-cloud/discoveryengine';
 import * as dotenv from 'dotenv';
 import axios from 'axios';
 
+import { resolveProjectId } from './internal/gcp-project';
+
 dotenv.config();
 
-const PROJECT_ID = process.env.GOOGLE_PROJECT_ID || 'sentra-healthcare-solution';
-const LOCATION = process.env.GOOGLE_LOCATION || 'global';
+const PROJECT_ID = resolveProjectId();
+const LOCATION = process.env.GCP_LOCATION || 'global';
 const DATA_STORE_ID = process.env.VERTEX_SEARCH_DATASTORE_ID || 'medical-knowledge-base';
 
 async function ingestOpenFDA(drugName: string = 'aspirin') {
@@ -38,11 +39,15 @@ async function ingestOpenFDA(drugName: string = 'aspirin') {
 
 async function startIngestionPipeline() {
     console.log('--- 🚀 Memulai Pipeline Ingesti Pengetahuan Medis ---');
+    console.log(`[Jen] Target GCP project: ${PROJECT_ID} | location: ${LOCATION} | data store: ${DATA_STORE_ID}`);
     
     const drug = process.argv[2] || 'Aspirin';
     
     // 1. Ingest sample dari OpenFDA
     const openFdaData = await ingestOpenFDA(drug);
+    if (openFdaData) {
+        console.log(`📄 Sample OpenFDA siap diproses untuk ${drug}.`);
+    }
     
     // 2. Petunjuk untuk PubMed (karena PubMed biasanya dalam format XML/Bulk)
     console.log('\n💡 TIPS: Untuk PubMed Central, disarankan menggunakan Dump GCS.');
