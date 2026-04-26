@@ -15,3 +15,26 @@ export type {
   IngestionResult,
   SentraRAGConfig,
 } from './types.js'
+
+export { runPdfDryRunIngestion } from './ingestion/pdf-batch-runner.js'
+export type {
+  DryRunDocumentStatus,
+  DryRunDocumentResult,
+  IngestionSummary,
+} from './ingestion/dry-run-types.js'
+
+export { updateKnowledgeRegistry } from './registry/knowledge-registry.js'
+export { readKnowledgeRegistry } from './registry/registry-reader.js'
+export { writeKnowledgeRegistry } from './registry/registry-writer.js'
+export { markSuperseded } from './registry/supersession.js'
+export { createEligibleForEmbeddingExport } from './registry/eligibility-exporter.js'
+export { buildRegistrySummary } from './registry/registry-summary.js'
+export { mapQualityToRegistryStatus } from './registry/registry-types.js'
+export type {
+  KnowledgeSourceStatus,
+  KnowledgeSourceRegistryEntry,
+  KnowledgeRegistry,
+  RegistrySummary,
+  QualityStatus,
+} from './registry/registry-types.js'
+

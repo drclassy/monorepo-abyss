@@ -14,9 +14,13 @@
     "ingest": "npx tsx src/ingestion/pipeline.ts",
     "ingest:pha": "npx tsx src/ingestion/pipeline.ts --pha",
     "ingest:gen": "npx tsx src/ingestion/pipeline.ts --gen",
+    "ingest:pdf": "npx tsx src/cli/ingest-pdf.ts",
+    "registry:update": "npx tsx src/cli/registry-update.ts",
+    "registry:list": "npx tsx src/cli/registry-update.ts list",
     "query": "npx tsx src/query.ts"
   },
   "dependencies": {
+    "@the-abyss/document-ingestion": "workspace:*",
     "dotenv": "^16.4.5",
     "pdf-parse": "^1.1.1",
     "pg": "^8.13.0",
