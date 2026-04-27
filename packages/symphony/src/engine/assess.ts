@@ -4,6 +4,8 @@ import {
   SYMPHONY_CONTRACT_VERSION,
   type SymphonyClinicalDisposition,
   type SymphonyClinicalFact,
+  type SymphonyDecisionCategory,
+  type SymphonyDiagnosisSuggestion,
   type SymphonyDiagnosticHypothesis,
   type SymphonyPatientContext,
   type SymphonyResult,
@@ -79,6 +81,39 @@ interface AadiV2State {
   arbitrationReasons: string[]
   explainabilityLines: string[]
   pipelineFailed: boolean
+  failureReason: string
+}
+
+const NATIVE_CATEGORY_TO_DECISION: Record<
+  SymphonyDiagnosticHypothesis['category'],
+  SymphonyDecisionCategory
+> = {
+  working: 'recommended',
+  review: 'review',
+  must_not_miss: 'must_not_miss',
+  deferred: 'deferred',
+}
+
+function nativeHypothesisToCompatibilitySuggestion(
+  hypothesis: SymphonyDiagnosticHypothesis,
+): SymphonyDiagnosisSuggestion {
+  return {
+    id: `native:${hypothesis.id}`,
+    icd10Code: hypothesis.icd10Code,
+    diagnosisName: hypothesis.diagnosisName,
+    confidence: hypothesis.confidence,
+    decisionCategory: NATIVE_CATEGORY_TO_DECISION[hypothesis.category],
+    reasoning: [...hypothesis.evidence.supports],
+    evidenceRefs: [...hypothesis.evidenceRefs],
+    mustNotMiss: hypothesis.category === 'must_not_miss',
+  }
+}
+
+function classifyAadiV2FailureReason(error: unknown): string {
+  if (error instanceof Error && typeof error.name === 'string' && error.name.length > 0) {
+    return error.name
+  }
+  return 'unknown'
 }
 
 export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyResult {
@@ -169,6 +204,7 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     arbitrationReasons: [],
     explainabilityLines: [],
     pipelineFailed: false,
+    failureReason: 'none',
   }
 
   try {
@@ -221,13 +257,21 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     aadiv2.clinicalDisposition = disposition
     aadiv2.arbitrationReasons = arbitration.arbitrationReasons
     aadiv2.explainabilityLines = explainabilityLines
-  } catch {
+  } catch (error) {
     aadiv2.clinicalDisposition = 'degraded'
     aadiv2.pipelineFailed = true
+    aadiv2.failureReason = classifyAadiV2FailureReason(error)
   }
 
+  const nativeCompatibilitySuggestions = aadiv2.nativeHypotheses.map(
+    nativeHypothesisToCompatibilitySuggestion,
+  )
+  const trafficLightSuggestions: SymphonyDiagnosisSuggestion[] = [
+    ...hybridDecisioning.suggestions,
+    ...nativeCompatibilitySuggestions,
+  ]
   const shouldEvaluateTrafficLight =
-    hybridDecisioning.suggestions.length > 0 ||
+    trafficLightSuggestions.length > 0 ||
     (input.activeMedications?.length ?? 0) > 1 ||
     (input.chronicDiseases?.length ?? 0) > 0
   const ddiResult =
@@ -239,7 +283,7 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
   const trafficLight = shouldEvaluateTrafficLight
     ? classifySymphonyTrafficLight({
         alerts: alertsBeforeTrafficLight,
-        diagnosisSuggestions: hybridDecisioning.suggestions,
+        diagnosisSuggestions: trafficLightSuggestions,
         patientAge: input.patientContext.ageYears,
         chronicDiseases: input.chronicDiseases,
         ddiResult,
@@ -288,7 +332,9 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
       missingFields: [],
       safetyFlags: [
         'symphony_engine_partial_migration',
-        ...(aadiv2.pipelineFailed ? ['aadiv2_pipeline_failure'] : []),
+        ...(aadiv2.pipelineFailed
+          ? [`aadiv2_pipeline_failure:${aadiv2.failureReason}`]
+          : []),
       ],
       auditHints: [
         input.metadata.requestId,
@@ -314,6 +360,8 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
         `clinical_disposition:${aadiv2.clinicalDisposition}`,
         `arbiter_requires_review:${aadiv2.arbitrationReasons.length > 0 ? 1 : 0}`,
         `aadiv2_pipeline_failed:${aadiv2.pipelineFailed ? 1 : 0}`,
+        `aadiv2_failure_reason:${aadiv2.failureReason}`,
+        `native_compat_suggestion_count:${nativeCompatibilitySuggestions.length}`,
       ],
     },
   }

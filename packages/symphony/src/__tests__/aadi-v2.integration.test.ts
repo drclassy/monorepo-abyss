@@ -204,6 +204,90 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
     expect(result.diagnosisSuggestions).toBeDefined()
   })
 
+  it('emits aadiv2_failure_reason audit hint with "none" on success path (Task 7 patch: failure observability)', () => {
+    const result = assessSymphonyInput(
+      baseInput({
+        chiefComplaint: 'demam dan sesak napas',
+      }),
+    )
+
+    const hintsJoined = result.quality.auditHints.join(' ')
+    expect(hintsJoined).toContain('aadiv2_failure_reason:none')
+    expect(result.quality.safetyFlags).not.toContain(expect.stringContaining('aadiv2_pipeline_failure'))
+  })
+
+  it('exposes native_compat_suggestion_count audit hint reflecting bridge cardinality (Task 7 patch: native→trafficLight bridge)', () => {
+    const result = assessSymphonyInput(
+      baseInput({
+        chiefComplaint: 'demam dan sesak napas',
+        vitals: [
+          {
+            observedAt: '2026-04-27T09:50:00.000Z',
+            heartRate: 120,
+            respiratoryRate: 26,
+            systolicBp: 110,
+            diastolicBp: 70,
+            temperatureC: 39.0,
+            spo2: 92,
+            consciousness: 'alert',
+          },
+        ],
+      }),
+    )
+
+    const hintsJoined = result.quality.auditHints.join(' ')
+    expect(hintsJoined).toMatch(/native_compat_suggestion_count:\d+/)
+    const compatMatch = hintsJoined.match(/native_compat_suggestion_count:(\d+)/)
+    const compatCount = compatMatch ? Number(compatMatch[1]) : -1
+    expect(compatCount).toBe(result.nativeHypotheses?.length ?? 0)
+  })
+
+  it('triggers traffic-light evaluation when native hypothesis present even without hybrid suggestions (Task 7 patch)', () => {
+    const result = assessSymphonyInput(
+      baseInput({
+        chiefComplaint: 'demam dan sesak napas berat',
+        vitals: [
+          {
+            observedAt: '2026-04-27T09:50:00.000Z',
+            heartRate: 130,
+            respiratoryRate: 28,
+            systolicBp: 105,
+            diastolicBp: 65,
+            temperatureC: 39.2,
+            spo2: 90,
+            consciousness: 'alert',
+          },
+        ],
+      }),
+    )
+
+    expect(result.diagnosisSuggestions).toHaveLength(0)
+    if ((result.nativeHypotheses?.length ?? 0) > 0) {
+      expect(result.trafficLight).toBeDefined()
+    }
+  })
+
+  it('keeps result.diagnosisSuggestions sourced only from hybrid (compatibility constraint preserved)', () => {
+    const result = assessSymphonyInput(
+      baseInput({
+        chiefComplaint: 'demam dan sesak napas',
+        diagnosisCandidates: [
+          {
+            id: 'cand-htn',
+            icd10Code: 'I10',
+            diagnosisName: 'Essential hypertension',
+            confidence: 0.6,
+            reasoning: ['BP elevated'],
+          },
+        ],
+      }),
+    )
+
+    result.diagnosisSuggestions.forEach(suggestion => {
+      expect(suggestion.id.startsWith('native:')).toBe(false)
+    })
+  })
+
   it('produces deterministic output for identical input', () => {
     const input = baseInput({
       chiefComplaint: 'demam dan sesak napas',
