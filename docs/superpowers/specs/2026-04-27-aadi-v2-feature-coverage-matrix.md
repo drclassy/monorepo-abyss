@@ -824,22 +824,53 @@ Until Chief explicitly GOes the lift, this patch keeps:
 so that no downstream consumer accidentally interprets Sprint 3 close
 as engine-ready before the readiness contract is satisfied.
 
-### Outstanding Sprint 4+ mappings
+### Outstanding Sprint 4+ mappings (formally deferred at Tahap A audit, 2026-04-27)
 
-- **`clinical-facts.ts → toAvpu()` local bridge retirement** — requires
-  a dedicated canonical AVPU mapper (beyond severity helper). Deferred
-  to a hardening task.
-- **Parity gate threshold ramp** — current gates A/B/C/D enforce
-  zero-tolerance for hard safety violations. Soft thresholds
-  (e.g., minimum `high+partial` ratio) deferred until field telemetry
-  informs reasonable bounds.
-- **Full `packages/fhir-engine` package** — promotion of stubs into a
-  dedicated FHIR engine with full R5 validation, terminology mapping
-  (SNOMED CT, LOINC, RxNorm), and CDS Hooks runtime service per AADI
-  V2 spec §P2.1.
-- **`metadata.status` lift from `'degraded'` to runtime-derived value**
-  — requires Sprint 4+ deferred items resolution + downstream consumer
-  audit + explicit Chief GO. Readiness rule documented above.
+Three items below are **formally deferred to Sprint 5+** and explicitly do NOT
+block the `metadata.status` lift readiness gate. Each carries a deterministic
+unblock criterion so the future controlled lift can proceed without re-opening
+this list:
+
+- **`clinical-facts.ts → toAvpu()` local bridge retirement** — `DEFERRED`.
+  Current bridge produces deterministic AVPU strings from severity heuristics
+  with explicit `'unknown' → 'A'` fallback. Output is internally consumed by
+  the syndrome classifier only; not exposed across canonical contract. **Unblock
+  criterion:** dedicated canonical AVPU mapper landed (e.g., from clinical
+  references package). **Status lift impact:** none — bridge does not affect
+  `metadata.status` or `degradedReason` semantics.
+- **Parity gate threshold ramp** — `DEFERRED`. Current gates A/B/C/D enforce
+  zero-tolerance for hard safety violations (no_low_agreement,
+  no_unsafe_escalation_downgrade, no_unsafe_disposition_downgrade,
+  no_pipeline_failure). Soft thresholds (e.g., minimum `high+partial` ratio)
+  deferred until field telemetry informs reasonable bounds. **Unblock criterion:**
+  3+ months of production-grade shadow comparison telemetry from real consumers.
+  **Status lift impact:** none — gates remain operational under zero-tolerance
+  semantics; threshold ramp is observability tightening, not safety relaxation.
+- **Full `packages/fhir-engine` package** — `DEFERRED`. Current interop stubs
+  in `packages/symphony/src/interop/` provide deterministic FHIR R5-shaped and
+  CDS Hooks-shaped output sufficient for Phase 1 consumer integration.
+  **Unblock criterion:** Phase 2 FHIR R5 validation requirement (SNOMED CT,
+  LOINC, RxNorm terminology mapping) becomes a binding consumer requirement.
+  **Status lift impact:** none — interop is Layer 11, decoupled from engine
+  status emission.
+
+### `metadata.status` lift readiness checklist (Tahap A → Tahap B)
+
+Lift preconditions revised after Tahap A audit:
+
+| # | Precondition | State (2026-04-27) | Blocker for lift? |
+|---|---|---|---|
+| 1 | Phase E parity gate green | ✅ 76/76 fixtures pass, 0 hard failures (`runtime/symphony-route-parity-status.json` 2026-04-27T15:04:49Z); `routeParityStatus='partial'` and `productionImportReplacementAllowed=false` are Chief-gated literals, not failure signals | No (functionally green) |
+| 2 | Sprint 4+ items resolved or formally deferred | ✅ All 3 items formally deferred above with explicit unblock criteria | No |
+| 3 | In-repo observability audit (no `metadata.status` value branching) | ✅ Zero runtime branches on `metadata.status`, `degradedReason`, `safetyFlags` value across `apps/`, `platform/`, `packages/`. Sentry + Langfuse Dashboard configs do not consume those fields. | No |
+| 4 | Out-of-repo observability audit (Sentry/Langfuse dashboards, alerting rules, external monitors) | ⚠️ **Cannot be audited from repo.** Out-of-band confirmation required from operations owner before lift. | Operational confirmation only — no in-repo blocker found |
+| 5 | Dashboard team `.agent/` operational guardrails update plan | ⚠️ Pending — `apps/healthcare/intelligenceboard/.agent/HANDOFF.md`, `PROGRESS.md`, `MASTER_CONTEXT_2026-04-19.md` reference `metadata.status === 'degraded'` as release-gate signal in 14+ locations; need synchronized update at Tahap B commit | Documentation sync only — not a runtime blocker |
+| 6 | Explicit Chief GO with accepted operational risk | ⏳ Pending Chief decision | Hard gate |
+
+**Tahap A conclusion:** technical preconditions met. Lift no longer blocked by
+Sprint 4+ items or unknown downstream consumers. Remaining gates are
+operational (out-of-band Sentry/Langfuse confirmation + Dashboard `.agent/`
+docs sync at commit time + Chief GO).
 
 ---
 
