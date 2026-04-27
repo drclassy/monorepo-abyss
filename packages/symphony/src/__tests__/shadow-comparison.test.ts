@@ -215,6 +215,36 @@ describe('compareSymphonyShadowPaths', () => {
     )
   })
 
+  it('treats old path as available when only an old traffic-light evaluation is present', () => {
+    const result = compareSymphonyShadowPaths({
+      hybridSuggestions: [],
+      nativeHypotheses: [native('J18.9')],
+      alerts: [],
+      oldTrafficLightLevel: 'YELLOW',
+      newTrafficLightLevel: 'YELLOW',
+      newClinicalDisposition: 'ok',
+      newPathFailed: false,
+    })
+    expect(result.oldPathAvailable).toBe(true)
+    expect(result.newPathAvailable).toBe(true)
+    expect(result.agreementLevel).not.toBe('not_comparable')
+    expect(result.escalationChanged).toBe(false)
+  })
+
+  it('keeps old path unavailable when no hybrid suggestions and no old traffic-light evaluation', () => {
+    const result = compareSymphonyShadowPaths({
+      hybridSuggestions: [],
+      nativeHypotheses: [native('J18.9')],
+      alerts: [],
+      oldTrafficLightLevel: undefined,
+      newTrafficLightLevel: 'YELLOW',
+      newClinicalDisposition: 'ok',
+      newPathFailed: false,
+    })
+    expect(result.oldPathAvailable).toBe(false)
+    expect(result.agreementLevel).toBe('not_comparable')
+  })
+
   it('does not confuse native compatibility suggestions with new-path source', () => {
     const nativeCompatPretendingToBeHybrid: SymphonyDiagnosisSuggestion = {
       id: 'native:native-J18.9',

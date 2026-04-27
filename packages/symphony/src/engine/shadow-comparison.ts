@@ -22,7 +22,9 @@ export interface SymphonyShadowComparisonInput {
 export function compareSymphonyShadowPaths(
   input: SymphonyShadowComparisonInput,
 ): SymphonyShadowComparison {
-  const oldPathAvailable = input.hybridSuggestions.length > 0
+  const oldPathAvailable =
+    input.hybridSuggestions.length > 0 ||
+    input.oldTrafficLightLevel !== undefined
   const newPathAvailable =
     !input.newPathFailed && input.nativeHypotheses.length > 0
 

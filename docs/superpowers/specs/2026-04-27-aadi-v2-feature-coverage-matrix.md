@@ -738,6 +738,92 @@ Notes:
   in `interop/` import only types from `../contracts`; no engine
   imports, no circular dependency.
 
+### Task 10 corrective patch — `fix(symphony): widen shadow old-path availability + document status transition rule`
+
+Two-part corrective follow-up to Task 10. Sprint 3 functionally complete;
+operationally `metadata.status` remains intentionally transitional pending
+controlled lift.
+
+| Section A / B row | Concrete proof |
+|---|---|
+| Shadow comparison old-path availability widened to canonical comparable signals | `code: engine/shadow-comparison.ts → oldPathAvailable = hybridSuggestions.length > 0 \|\| oldTrafficLightLevel !== undefined`; `test: shadow-comparison.test.ts ('treats old path as available when only an old traffic-light evaluation is present')`; `test: shadow-comparison.test.ts ('keeps old path unavailable when no hybrid suggestions and no old traffic-light evaluation')` |
+| PHI-safe AADI V2 fallback observability preserved | `code: engine/assess.ts → classifyAadiV2FailureReason() (error.name only)`; `audit-hint: aadiv2_failure_reason:<name> always emitted`; no regression vs Task 7 patch |
+| `metadata.status='degraded'` kept intentionally transitional | `code: engine/assess.ts → status: 'degraded'`, `degradedReason: 'symphony_engine_partial_migration'` unchanged; documented readiness rule below for controlled lift |
+
+#### Shadow availability rule change (exact)
+
+Before (Task 8):
+
+```ts
+const oldPathAvailable = input.hybridSuggestions.length > 0
+```
+
+After (Task 10 patch):
+
+```ts
+const oldPathAvailable =
+  input.hybridSuggestions.length > 0 ||
+  input.oldTrafficLightLevel !== undefined
+```
+
+Rationale: old path is "available" for shadow comparison whenever it
+produced any canonical comparable output. Hybrid suggestions and the
+old traffic-light evaluation are both canonical comparable signals
+emitted by the legacy hybrid path. Restricting availability to
+`hybridSuggestions.length > 0` understated the comparable surface and
+caused `agreementLevel='not_comparable'` to incorrectly fire when the
+old path had a real traffic-light verdict but no hypothesis output.
+
+The canonical `SymphonyShadowComparison` contract is unchanged. Only
+the deterministic availability detection rule widened. Existing tests
+remain green; two new tests pin the new rule.
+
+#### `metadata.status` transition decision
+
+Decision: **keep transitional (Option A)**.
+
+Sprint 3 is functionally complete (Tasks 1–10 plus this patch land the
+full AADI V2 native pipeline + interop stubs end-to-end), but
+operationally `metadata.status: 'degraded'` with `degradedReason:
+'symphony_engine_partial_migration'` is **not yet ready for unilateral
+lift**. The hardcoded value is a deliberate operational signal that
+SYMPHONY remains in a partial-migration posture until Sprint 4+ items
+land.
+
+Proposed readiness rule for the controlled lift (NOT applied in this
+patch — separate follow-up after Sprint 4):
+
+```ts
+const status: SymphonyEngineStatus =
+  aadiv2.pipelineFailed
+    ? 'degraded'
+    : aadiv2.clinicalDisposition === 'degraded'
+      ? 'degraded'
+      : 'ready'
+```
+
+Preconditions for applying that rule:
+
+1. Sprint 4+ deferred items resolved or formally deprioritized:
+   - `clinical-facts.ts → toAvpu()` local bridge retired (canonical AVPU
+     mapper landed)
+   - Parity gate threshold ramp informed by field telemetry
+   - `packages/fhir-engine` promotion (or explicit deferral statement)
+2. The `'symphony_engine_partial_migration'` `safetyFlag` and
+   `degradedReason` removed from `assess.ts`.
+3. Downstream consumers (Dashboard, Sentra-Assist, observability) audited
+   for `status === 'degraded'` branching that currently assumes the
+   transitional posture.
+
+Until Chief explicitly GOes the lift, this patch keeps:
+
+- `metadata.status: 'degraded'` (hardcoded)
+- `degradedReason: 'symphony_engine_partial_migration'`
+- `quality.safetyFlags` prefixed with `'symphony_engine_partial_migration'`
+
+so that no downstream consumer accidentally interprets Sprint 3 close
+as engine-ready before the readiness contract is satisfied.
+
 ### Outstanding Sprint 4+ mappings
 
 - **`clinical-facts.ts → toAvpu()` local bridge retirement** — requires
@@ -751,6 +837,9 @@ Notes:
   dedicated FHIR engine with full R5 validation, terminology mapping
   (SNOMED CT, LOINC, RxNorm), and CDS Hooks runtime service per AADI
   V2 spec §P2.1.
+- **`metadata.status` lift from `'degraded'` to runtime-derived value**
+  — requires Sprint 4+ deferred items resolution + downstream consumer
+  audit + explicit Chief GO. Readiness rule documented above.
 
 ---
 
