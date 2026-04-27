@@ -236,6 +236,16 @@ export {
   type SymphonyReasoningArbiterResult,
 } from './engine/reasoning-arbiter'
 
+export {
+  composeSymphonyExplainability,
+  type SymphonyExplainabilityInput,
+} from './engine/explainability'
+
+export {
+  determineSymphonyClinicalDisposition,
+  type SymphonyDispositionInput,
+} from './engine/confidence-engine'
+
 
 export {
   SYMPHONY_CONTRACT_VERSION,

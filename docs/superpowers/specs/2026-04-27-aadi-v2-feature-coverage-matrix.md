@@ -422,21 +422,70 @@ Notes:
 - 11 test cases verify rules in isolation, action protocol pass-through,
   rank preservation, severity preservation, empty-input safety, determinism.
 
+### Task 6 — `feat(symphony): add AADI V2 explainability and clinical disposition` (this commit)
+
+Sprint 2 explainability layer. Adds two pure deterministic engines:
+`composeSymphonyExplainability()` in
+`packages/symphony/src/engine/explainability.ts` (clinician-readable
+narrative lines) and `determineSymphonyClinicalDisposition()` in
+`packages/symphony/src/engine/confidence-engine.ts` (clinical
+disposition status). Both engines are **evidence-backed only** — no
+fabrication, no LLM call, no invented certainty per Chief constraint #1.
+
+| Section A / B row | Concrete proof |
+|---|---|
+| Per-diagnosis rationale (supports / weakens / missing / NBQ) | `code: explainability.ts → composeSymphonyExplainability()`; `test: confidence-engine.test.ts (10 explainability cases)` |
+| Arbiter narrative surfacing (constraint #2) | `code: explainability.ts (ARBITER_REASON_NARRATIVE map + describeReasons)`; `test: confidence-engine.test.ts (arbitration reasons honestly surfaced)` |
+| Clinical disposition (separate from engine status, constraint #3) | `code: confidence-engine.ts → determineSymphonyClinicalDisposition()`; `test: confidence-engine.test.ts (5 disposition rule cases)` |
+| Evidence-backed only / no fabrication | `code: explainability.ts (all lines derived from input fields, "tidak ada" fallback only)`; `test: confidence-engine.test.ts (no fabrication empty-input case)` |
+
+Explainability fields produced (deterministic order):
+
+1. `Diagnosis utama saat ini: ${topDiagnosisName}.`
+2. `Faktor pendukung: ${supportKeys.join(', ')}` or `tidak ada`
+3. `Faktor pelemah: ...` (optional — only if `weakenKeys` non-empty)
+4. `Data yang masih dibutuhkan: ${missingKeys.join(', ')}` or `tidak ada`
+5. `Pertanyaan klinis lanjutan: ...` (optional — only if `nextBestQuestions` non-empty)
+6. `Catatan arbiter: ...` (optional — only if `arbitrationReasons` non-empty;
+   each key translated via `ARBITER_REASON_NARRATIVE` map covering all 5
+   Task 5 narrative keys)
+
+Clinical disposition rules (precedence top-to-bottom):
+
+1. `usedFallback === true` → `'degraded'`
+2. `nativeHypothesisCount === 0` → `'insufficient_data'`
+3. `hasCriticalAlert === true` OR `arbiterRequiresReview === true` →
+   `'requires_review'`
+4. else → `'ok'`
+
+Notes:
+
+- `SymphonyClinicalDisposition` type stays distinct from
+  `SymphonyEngineStatus` per Chief constraint #3 (operational status vs
+  clinical posture remain decoupled).
+- No safety alert mutation — explainability returns `string[]` and
+  disposition returns string union; neither touches `SymphonyAlert[]`.
+- `diagnosisSuggestions` flow untouched per Chief constraint #6.
+- Output shape is plain `string[]` and `SymphonyClinicalDisposition` —
+  Task 7 can wire directly into `SymphonyResult.clinicalDisposition` and
+  `SymphonyDiagnosticHypothesis.evidence` slot without further adapters.
+- 17 test cases verify all 4 disposition rule branches, all 6 line
+  emission paths (including non-emission of optional lines), arbiter
+  narrative translation, determinism, and no-fabrication contract.
+
 ### Outstanding Sprint 2 mappings (carry to next task)
 
-- **Vital alerts** — Not reused in arbiter. Will be wired through
+- **Vital alerts** (`evaluateSymphonyVitalAlerts()`) — wired via
   `assess.ts` integration (Task 7).
-- **Action protocols / traffic-light** — Arbiter preserves protocol
-  references; full attachment + traffic-light gating wired at `assess.ts`
-  (Task 7).
-- **Hybrid decisioning** — Arbiter accepts `hybridSuggestions` input but
-  does not transform yet. Task 7 wires reconciliation.
-- **Explainability + clinical disposition** — Task 6 will consume
-  `arbitrationReasons[]` from this arbiter as upstream input.
+- **Action protocols / traffic-light attachment** — arbiter preserves
+  protocol references; full attachment + traffic-light gating wired at
+  `assess.ts` (Task 7).
+- **Hybrid decisioning** — arbiter accepts `hybridSuggestions` input but
+  does not transform; Task 7 wires reconciliation at `assess.ts`.
+- **Feature flag wiring** — `featureFlags.aadiv2` router and safe degraded
+  fallback live in Task 7 (`assess.ts`).
 - **`clinical-facts.ts → toAvpu()` local bridge** — full retirement when
-  Task 7 reroutes consciousness mapping at `assess.ts`. Arbiter already
-  uses canonical `assessSymphonyConsciousnessSeverity()` directly so
-  drift is bounded to Task 2 facts builder only.
+  Task 7 reroutes consciousness mapping at `assess.ts`.
 
 ---
 
