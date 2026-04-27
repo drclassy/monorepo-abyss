@@ -12,7 +12,7 @@ function baseResult(overrides: Partial<SymphonyResult> = {}): SymphonyResult {
   return {
     metadata: {
       engineVersion: 'test',
-      contractVersion: '0.7.0',
+      contractVersion: '0.8.0',
       generatedAt: '2026-04-27T10:00:00.000Z',
       status: 'degraded',
       confidenceBand: 'insufficient_data',

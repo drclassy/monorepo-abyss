@@ -108,7 +108,7 @@ describe('buildSymphonyAadiV2ParityObservation', () => {
     const observation = buildSymphonyAadiV2ParityObservation('synthetic', {
       metadata: {
         engineVersion: 'test',
-        contractVersion: '0.7.0',
+        contractVersion: '0.8.0',
         generatedAt: '2026-04-27T00:00:00.000Z',
         status: 'degraded',
         confidenceBand: 'insufficient_data',
@@ -145,7 +145,7 @@ describe('AADI V2 parity gate failure detection (synthetic)', () => {
     const observation = buildSymphonyAadiV2ParityObservation('synthetic-downgrade', {
       metadata: {
         engineVersion: 'test',
-        contractVersion: '0.7.0',
+        contractVersion: '0.8.0',
         generatedAt: '2026-04-27T00:00:00.000Z',
         status: 'degraded',
         confidenceBand: 'insufficient_data',

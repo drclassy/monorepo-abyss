@@ -7,6 +7,7 @@ import {
   type SymphonyDecisionCategory,
   type SymphonyDiagnosisSuggestion,
   type SymphonyDiagnosticHypothesis,
+  type SymphonyEngineStatus,
   type SymphonyPatientContext,
   type SymphonyResult,
   type SymphonyVitalsInput,
@@ -318,18 +319,26 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     newPathFailed: aadiv2.pipelineFailed,
   })
 
+  const engineStatus: SymphonyEngineStatus = aadiv2.pipelineFailed
+    ? 'degraded'
+    : aadiv2.clinicalDisposition === 'degraded'
+      ? 'degraded'
+      : 'ready'
+  const engineDegradedReason = aadiv2.pipelineFailed
+    ? `aadiv2_pipeline_failure:${aadiv2.failureReason}`
+    : aadiv2.clinicalDisposition === 'degraded'
+      ? 'aadiv2_clinical_degraded'
+      : undefined
+
   return {
     metadata: {
       engineVersion: SYMPHONY_ENGINE_VERSION,
       contractVersion: SYMPHONY_CONTRACT_VERSION,
       generatedAt: input.metadata.requestedAt,
-      status: 'degraded',
+      status: engineStatus,
       confidenceBand: 'insufficient_data',
-      rationale: [
-        'SYMPHONY deterministic NEWS2 and hard vital-alert slice is active; full diagnosis and trajectory engines are not migrated yet.',
-        ...aadiv2.explainabilityLines,
-      ],
-      degradedReason: 'symphony_engine_partial_migration',
+      rationale: aadiv2.explainabilityLines,
+      ...(engineDegradedReason !== undefined ? { degradedReason: engineDegradedReason } : {}),
     },
     clinicalDisposition: aadiv2.clinicalDisposition,
     patientContext: input.patientContext,
@@ -356,12 +365,9 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     quality: {
       completenessScore: 0,
       missingFields: [],
-      safetyFlags: [
-        'symphony_engine_partial_migration',
-        ...(aadiv2.pipelineFailed
-          ? [`aadiv2_pipeline_failure:${aadiv2.failureReason}`]
-          : []),
-      ],
+      safetyFlags: aadiv2.pipelineFailed
+        ? [`aadiv2_pipeline_failure:${aadiv2.failureReason}`]
+        : [],
       auditHints: [
         input.metadata.requestId,
         input.metadata.caller,

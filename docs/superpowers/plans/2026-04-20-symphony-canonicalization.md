@@ -630,7 +630,7 @@ Baseline (2026-04-20): `pnpm --filter @the-abyss/symphony test` = 11 files / 57 
 ### Absolute non-goals (do not drift into)
 
 - ❌ Dashboard production import replacement.
-- ❌ Flipping `metadata.status` out of `'degraded'`.
+- ⚠️ ~~Flipping `metadata.status` out of `'degraded'`.~~ **Superseded 2026-04-27** by AADI V2 status lift Tahap B (contract v0.8.0). `metadata.status` is now runtime-derived; the lift is applied. Production import replacement remains independently gated below.
 - ❌ Flipping `productionImportReplacementAllowed=true`.
 - ❌ Touching `packages/database`.
 - ❌ Running Prisma/SQL/migration of any form.

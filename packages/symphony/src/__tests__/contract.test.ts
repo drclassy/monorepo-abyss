@@ -59,7 +59,7 @@ describe('@the-abyss/symphony scaffold', () => {
     expect(SYMPHONY_ENGINE_PACKAGE_NAME).toBe('@the-abyss/symphony')
   })
 
-  it('returns a degraded partial-migration result without claiming canonical readiness', () => {
+  it('emits ready status with insufficient_data disposition for empty input (post-lift v0.8.0)', () => {
     const input: SymphonyAssessmentInput = {
       metadata: {
         requestId: 'request-smoke',
@@ -75,8 +75,10 @@ describe('@the-abyss/symphony scaffold', () => {
 
     const result = assessSymphonyInput(input)
 
-    expect(result.metadata.status).toBe('degraded')
-    expect(result.metadata.degradedReason).toBe('symphony_engine_partial_migration')
+    expect(result.metadata.status).toBe('ready')
+    expect(result.metadata.degradedReason).toBeUndefined()
+    expect(result.clinicalDisposition).toBe('insufficient_data')
+    expect(result.quality.safetyFlags).toEqual([])
     expect(result.patientContext).toEqual(input.patientContext)
     expect(result.alerts).toHaveLength(0)
     expect(result.diagnosisSuggestions).toHaveLength(0)

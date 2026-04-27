@@ -166,15 +166,16 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
     expect(hintsJoined).toContain('aadiv2_pipeline_failed:0')
   })
 
-  it('preserves operational status independently from clinicalDisposition (Task 6 constraint #3)', () => {
+  it('derives engine status from runtime AADI V2 state post-lift v0.8.0', () => {
     const result = assessSymphonyInput(
       baseInput({
         chiefComplaint: 'demam dan sesak napas',
       }),
     )
 
-    expect(result.metadata.status).toBe('degraded')
-    expect(result.metadata.degradedReason).toBe('symphony_engine_partial_migration')
+    expect(result.metadata.status).toBe('ready')
+    expect(result.metadata.degradedReason).toBeUndefined()
+    expect(result.quality.safetyFlags).not.toContain('symphony_engine_partial_migration')
     expect(result.clinicalDisposition).toBeDefined()
   })
 

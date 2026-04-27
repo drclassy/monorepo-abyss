@@ -740,15 +740,15 @@ Notes:
 
 ### Task 10 corrective patch — `fix(symphony): widen shadow old-path availability + document status transition rule`
 
-Two-part corrective follow-up to Task 10. Sprint 3 functionally complete;
-operationally `metadata.status` remains intentionally transitional pending
-controlled lift.
+Two-part corrective follow-up to Task 10. Sprint 3 functionally complete.
+**Status lift applied 2026-04-27 (Tahap B, contract v0.8.0)** — see "Status
+Lift Tahap B" block below for the post-lift state.
 
 | Section A / B row | Concrete proof |
 |---|---|
 | Shadow comparison old-path availability widened to canonical comparable signals | `code: engine/shadow-comparison.ts → oldPathAvailable = hybridSuggestions.length > 0 \|\| oldTrafficLightLevel !== undefined`; `test: shadow-comparison.test.ts ('treats old path as available when only an old traffic-light evaluation is present')`; `test: shadow-comparison.test.ts ('keeps old path unavailable when no hybrid suggestions and no old traffic-light evaluation')` |
 | PHI-safe AADI V2 fallback observability preserved | `code: engine/assess.ts → classifyAadiV2FailureReason() (error.name only)`; `audit-hint: aadiv2_failure_reason:<name> always emitted`; no regression vs Task 7 patch |
-| `metadata.status='degraded'` kept intentionally transitional | `code: engine/assess.ts → status: 'degraded'`, `degradedReason: 'symphony_engine_partial_migration'` unchanged; documented readiness rule below for controlled lift |
+| `metadata.status='degraded'` kept intentionally transitional (superseded by Tahap B 2026-04-27) | Historical — see "Status Lift Tahap B" block below for current runtime-derived rule |
 
 #### Shadow availability rule change (exact)
 
@@ -853,6 +853,46 @@ this list:
   LOINC, RxNorm terminology mapping) becomes a binding consumer requirement.
   **Status lift impact:** none — interop is Layer 11, decoupled from engine
   status emission.
+
+### Status Lift Tahap B applied — `feat(symphony): lift metadata.status to runtime-derived contract v0.8.0` (2026-04-27)
+
+Tahap B atomic lift completed after Tahap A audit confirmed zero in-repo
+runtime branches on `metadata.status` value and Phase E parity gate green.
+
+| Section A / B row | Concrete proof |
+|---|---|
+| Engine status now runtime-derived from AADI V2 pipeline state | `code: engine/assess.ts → engineStatus const ('ready' / 'degraded' from pipelineFailed + clinicalDisposition)`; `test: contract.test.ts ('emits ready status with insufficient_data disposition for empty input (post-lift v0.8.0)')`; `test: aadi-v2.integration.test.ts ('derives engine status from runtime AADI V2 state post-lift v0.8.0')` |
+| `degradedReason` runtime-derived (no longer hardcoded) | `code: engine/assess.ts → engineDegradedReason ('aadiv2_pipeline_failure:<name>' on pipeline failure, 'aadiv2_clinical_degraded' on degraded disposition, undefined otherwise)`; field now optional in metadata block |
+| `safetyFlags` no longer carries `'symphony_engine_partial_migration'` marker | `code: engine/assess.ts → safetyFlags = pipelineFailed ? ['aadiv2_pipeline_failure:<name>'] : []`; `test: aadi-v2.integration.test.ts ('does not contain symphony_engine_partial_migration')` |
+| Contract version bumped 0.7.0 → 0.8.0 | `code: packages/shared-types/src/symphony.ts:1 SYMPHONY_CONTRACT_VERSION = '0.8.0'`; 6 test fixture literals synchronized |
+| Dashboard parity script header guardrail revised | `code: apps/healthcare/intelligenceboard/scripts/test-symphony-route-parity.ts:8-15 (DO NOT flip status guardrail retired; production import replacement remains independently gated)` |
+
+#### Runtime status emission rule (current)
+
+```ts
+const engineStatus: SymphonyEngineStatus = aadiv2.pipelineFailed
+  ? 'degraded'
+  : aadiv2.clinicalDisposition === 'degraded'
+    ? 'degraded'
+    : 'ready'
+const engineDegradedReason = aadiv2.pipelineFailed
+  ? `aadiv2_pipeline_failure:${aadiv2.failureReason}`
+  : aadiv2.clinicalDisposition === 'degraded'
+    ? 'aadiv2_clinical_degraded'
+    : undefined
+```
+
+Behavioral semantics:
+
+- **Healthy path** (no pipeline failure, no degraded disposition): `status='ready'`, no `degradedReason`, empty `safetyFlags`
+- **Pipeline failure** (caught exception in AADI V2 try/catch): `status='degraded'`, `degradedReason='aadiv2_pipeline_failure:<error.name>'` (PHI-safe), `safetyFlags=['aadiv2_pipeline_failure:<error.name>']`
+- **Clinical degraded** (`clinicalDisposition='degraded'` from `usedFallback` path): `status='degraded'`, `degradedReason='aadiv2_clinical_degraded'`
+- **Insufficient data** (`clinicalDisposition='insufficient_data'`): `status='ready'` — engine is operational, just not enough input to produce hypotheses; downstream consumers should branch on `clinicalDisposition`, not `status`
+
+#### Out-of-band confirmations needed (post-commit)
+
+- External Sentry/Langfuse dashboards and alerting rules: confirm no rule keys off `metadata.status === 'degraded'` literal value with the legacy semantic (assumes transitional posture). Operations owner sign-off required.
+- Dashboard team `.agent/` operational guardrails (HANDOFF.md, PROGRESS.md, MASTER_CONTEXT_2026-04-19.md): historical entries reference `metadata.status === 'degraded'` as release-gate signal in 14+ locations. These are append-only audit records; updates land via append notes ("Status lift applied 2026-04-27") rather than rewriting history.
 
 ### `metadata.status` lift readiness checklist (Tahap A → Tahap B)
 

@@ -12,7 +12,7 @@ function baseResult(overrides: Partial<SymphonyResult> = {}): SymphonyResult {
   return {
     metadata: {
       engineVersion: 'test',
-      contractVersion: '0.7.0',
+      contractVersion: '0.8.0',
       generatedAt: '2026-04-27T10:00:00.000Z',
       status: 'degraded',
       confidenceBand: 'insufficient_data',
@@ -77,7 +77,7 @@ describe('mapSymphonyResultToFhirBundle', () => {
     expect(bundle.resourceType).toBe('Bundle')
     expect(bundle.type).toBe('collection')
     expect(bundle.entry).toHaveLength(0)
-    expect(bundle.meta.contractVersion).toBe('0.7.0')
+    expect(bundle.meta.contractVersion).toBe('0.8.0')
     expect(bundle.meta.generatedAt).toBe('2026-04-27T10:00:00.000Z')
   })
 
@@ -144,7 +144,7 @@ describe('mapSymphonyResultToFhirBundle', () => {
       baseResult({
         metadata: {
           engineVersion: 'test',
-          contractVersion: '0.7.0',
+          contractVersion: '0.8.0',
           generatedAt: '2026-04-27T10:00:00.000Z',
           status: 'degraded',
           confidenceBand: 'insufficient_data',
@@ -199,7 +199,7 @@ describe('mapSymphonyResultToFhirBundle', () => {
       trafficLight: trafficLight('YELLOW'),
       metadata: {
         engineVersion: 'test',
-        contractVersion: '0.7.0',
+        contractVersion: '0.8.0',
         generatedAt: '2026-04-27T10:00:00.000Z',
         status: 'degraded',
         confidenceBand: 'insufficient_data',
