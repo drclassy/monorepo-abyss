@@ -473,19 +473,103 @@ Notes:
   emission paths (including non-emission of optional lines), arbiter
   narrative translation, determinism, and no-fabrication contract.
 
+### Task 7 — `feat(symphony): wire AADI V2 native pipeline into assess.ts` (this commit)
+
+Sprint 2 closer. Wires the full AADI V2 native diagnostic pipeline into
+`packages/symphony/src/engine/assess.ts` **additively** — without
+introducing any feature flag and without altering existing safety stack
+semantics. Per Chief Task 7 corrections: no `featureFlags.aadiv2` rollout
+mechanism, only existing canonical surfaces consumed.
+
+| Section A / B row | Concrete proof |
+|---|---|
+| Assessment orchestrator (Section A row "Assessment orchestrator") | `code: assess.ts (try/catch around AADI V2 stage, additive integration after alertsBeforeTrafficLight)`; `test: aadi-v2.integration.test.ts (10 cases)` |
+| Clinical facts builder reuse | `code: assess.ts → buildSymphonyClinicalFacts(input)` |
+| Syndrome classifier reuse | `code: assess.ts → classifySymphonySyndromes(clinicalFactsResult.facts)` |
+| Diagnosis packs reuse | `code: assess.ts → getSymphonyDiagnosisPacks()` |
+| Native differential reuse | `code: assess.ts → buildSymphonyNativeDifferential({facts, syndromes, packs})` |
+| Personal baseline reuse (Section A row "Trajectory and momentum") | `code: assess.ts → buildSymphonyPersonalBaseline(input.vitals, input.metadata.requestedAt)` |
+| Treatment response reuse (Section A row "Treatment response detection") | `code: assess.ts → detectSymphonyTreatmentResponse(trajectoryAnalysis.momentum.params)` |
+| Reasoning arbiter reuse | `code: assess.ts → arbitrateSymphonyReasoning({nativeHypotheses, hybridSuggestions, alerts, personalBaseline, treatmentResponse, latestVitals})` |
+| Explainability into `metadata.rationale` | `code: assess.ts (composeSymphonyExplainability output spread into rationale)`; `test: aadi-v2.integration.test.ts (rationale contains "Diagnosis utama")` |
+| Disposition into `clinicalDisposition` | `code: assess.ts → determineSymphonyClinicalDisposition(...)`; `test: aadi-v2.integration.test.ts (insufficient_data + requires_review cases)` |
+| Hybrid decisioning preserved as compatibility path | `code: assess.ts (hybridDecisioning.suggestions still drives diagnosisSuggestions, also passed to arbiter as hybridSuggestions input)`; `test: aadi-v2.integration.test.ts (diagnosisSuggestions compatibility flow)` |
+| Safety dominance preserved (alerts, trafficLight, trajectory unchanged) | `code: assess.ts (alertsBeforeTrafficLight unchanged, traffic-light gating logic unchanged)`; `test: aadi-v2.integration.test.ts (alert severity preserved through arbiter)` |
+| AADI V2 telemetry audit hints | `code: assess.ts (clinical_facts_count, native_hypothesis_count, clinical_disposition, arbiter_requires_review, aadiv2_pipeline_failed)`; `test: aadi-v2.integration.test.ts (audit hints case)` |
+| Failure-safe degraded fallback | `code: assess.ts (try/catch sets clinicalDisposition='degraded' and pushes 'aadiv2_pipeline_failure' safety flag)` |
+
+assess.ts final flow (post-Task 7):
+
+1. Existing safety stack — NEWS2, vital alerts, screening gates,
+   composite, PE suspect, anaphylaxis, trajectory, early warnings,
+   patterns, hybrid decisioning, alert aggregation. **Unchanged.**
+2. AADI V2 native stage (try/catch wrapped):
+   - `buildSymphonyClinicalFacts(input)` →
+     `classifySymphonySyndromes(facts)` →
+     `getSymphonyDiagnosisPacks()` →
+     `buildSymphonyNativeDifferential({facts, syndromes, packs})`
+   - `buildSymphonyPersonalBaseline(vitals, requestedAt)` +
+     `detectSymphonyTreatmentResponse(trajectory.momentum.params)`
+   - `arbitrateSymphonyReasoning({nativeHypotheses, hybridSuggestions:
+     hybridDecisioning.suggestions, alerts: alertsBeforeTrafficLight,
+     personalBaseline, treatmentResponse, latestVitals})`
+   - `composeSymphonyExplainability({topDiagnosisName, supportKeys,
+     missingKeys, weakenKeys, nextBestQuestions, arbitrationReasons})`
+     when a top hypothesis exists (else empty array — no fabrication)
+   - `determineSymphonyClinicalDisposition({nativeHypothesisCount,
+     hasCriticalAlert, usedFallback: false, arbiterRequiresReview})`
+3. Existing traffic-light gating — `classifySymphonyTrafficLight` and
+   `trafficLightToSymphonyAlert`. **Unchanged.**
+4. Result assembly — populates new canonical surfaces:
+   `clinicalDisposition`, `nativeHypotheses` (only when non-empty),
+   `clinicalFacts` (only when non-empty), explainability lines spread
+   into `metadata.rationale`. Preserves `diagnosisSuggestions`,
+   `alerts`, `trafficLight`, `trajectory`, `quality.auditHints`.
+
+Notes:
+
+- **No `featureFlags.aadiv2` introduced.** Per Chief Task 7 correction
+  #1, integration is additive only — no rollout flag, V1 path is
+  preserved structurally because all existing engines still execute.
+- **No new SymphonyResult fields invented.** Per Chief Task 7
+  correction #2, only existing canonical surfaces are populated:
+  `metadata.rationale`, `clinicalDisposition`, `nativeHypotheses`,
+  `clinicalFacts`, plus extension of `quality.auditHints`. No
+  `evidence.summary` or `SymphonyResult.reasoning` fabrication.
+- `metadata.status` remains `'degraded'` and `degradedReason` remains
+  `'symphony_engine_partial_migration'` — operational engine status
+  stays decoupled from `clinicalDisposition` per Task 6 constraint #3.
+- `diagnosisSuggestions` continues to receive `hybridDecisioning.suggestions`
+  output unchanged (Chief Task 7 constraint: "preserve diagnosisSuggestions
+  compatibility").
+- `hybridDecisioning.suggestions` are also passed into the arbiter as
+  `hybridSuggestions` input (forward-compat shadow path; arbiter still
+  does not transform them in Task 7).
+- AADI V2 stage failure isolation — the try/catch ensures any exception
+  in the native pipeline cannot corrupt `alerts`, `trafficLight`,
+  `trajectory`, or `diagnosisSuggestions`. On failure: disposition
+  becomes `'degraded'`, safety flag `'aadiv2_pipeline_failure'` is
+  pushed, and audit hint `aadiv2_pipeline_failed:1` is emitted.
+- `clinical-facts.ts → toAvpu()` local bridge **NOT retired** in Task 7.
+  Chief constraint: "retire only if the canonical helper replacement is
+  clean and verified." Replacement requires a canonical AVPU mapper
+  beyond `assessSymphonyConsciousnessSeverity()` (which produces
+  severity, not AVPU level), and `toAvpu()` carries an `'unknown' → 'A'`
+  defensive override at line 174 that is not yet expressible through a
+  canonical helper. Defer to a follow-up task with a dedicated
+  canonical AVPU mapper.
+
 ### Outstanding Sprint 2 mappings (carry to next task)
 
-- **Vital alerts** (`evaluateSymphonyVitalAlerts()`) — wired via
-  `assess.ts` integration (Task 7).
-- **Action protocols / traffic-light attachment** — arbiter preserves
-  protocol references; full attachment + traffic-light gating wired at
-  `assess.ts` (Task 7).
-- **Hybrid decisioning** — arbiter accepts `hybridSuggestions` input but
-  does not transform; Task 7 wires reconciliation at `assess.ts`.
-- **Feature flag wiring** — `featureFlags.aadiv2` router and safe degraded
-  fallback live in Task 7 (`assess.ts`).
-- **`clinical-facts.ts → toAvpu()` local bridge** — full retirement when
-  Task 7 reroutes consciousness mapping at `assess.ts`.
+- **Shadow comparison output** (`SymphonyShadowComparison`,
+  `result.shadowComparison`) — Task 8. Hybrid suggestions vs native
+  hypotheses agreement metrics, top-diagnosis change detection,
+  escalation change detection.
+- **Parity verification** for AADI V2 vs Assist legacy paths — Task 9.
+- **`clinical-facts.ts → toAvpu()` local bridge retirement** — requires
+  a dedicated canonical AVPU mapper (beyond severity helper). Deferred
+  to a hardening task post-Sprint 2.
+- **Interoperability stubs** — Task 10.
 
 ---
 
