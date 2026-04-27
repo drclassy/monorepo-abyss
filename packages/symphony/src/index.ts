@@ -230,6 +230,12 @@ export {
   type SymphonyNativeDifferentialResult,
 } from './engine/native-differential'
 
+export {
+  arbitrateSymphonyReasoning,
+  type SymphonyReasoningArbiterInput,
+  type SymphonyReasoningArbiterResult,
+} from './engine/reasoning-arbiter'
+
 
 export {
   SYMPHONY_CONTRACT_VERSION,

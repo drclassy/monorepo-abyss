@@ -373,19 +373,70 @@ Notes:
   field for downstream arbiter (Task 5).
 - Empty `syndromes[]` produces empty `hypotheses[]` (no fallback inflation).
 
-### Outstanding Sprint 1 mappings (carry to next task)
+### Task 5 — `feat(symphony): add AADI V2 reasoning arbiter with safety dominance` (this commit)
 
-- **Personal baseline / treatment response detection** —
-  `buildSymphonyPersonalBaseline()` and `detectSymphonyTreatmentResponse()`
-  remain not wired into `ClinicalFacts`. Carry to Task 5 arbiter.
-- **AVPU/GCS helpers** — Task 2 uses a local `toAvpu()` for snapshot
-  consciousness mapping. Canonical helpers (`symphonyAvpuToNews2Score`,
-  `symphonyAvpuToGcsTotal`) remain available; deeper reuse expected when the
-  reasoning arbiter (Task 5) needs structured consciousness reasoning.
-- **Vital alerts** — Not reused in Task 2 (used in `assess.ts` instead).
-  Will be wired through arbiter / assess integration (Task 5 / Task 7).
-- **Action protocols, traffic-light, hybrid decisioning** — Sprint 2 targets,
-  unchanged.
+Sprint 2 mid-task. Adds deterministic `arbitrateSymphonyReasoning()` in
+`packages/symphony/src/engine/reasoning-arbiter.ts` reconciling
+`SymphonyDiagnosticHypothesis[]` (Task 4) with existing safety alerts and
+protocols. Arbiter is **additive only** per Chief constraint #6 — never
+recomputes traffic-light, never downgrades severity, never strips action
+protocol references.
+
+| Section A / B row | Concrete proof |
+|---|---|
+| Safety dominance over native reasoning | `code: reasoning-arbiter.ts → arbitrateSymphonyReasoning()`; `test: reasoning-arbiter.test.ts (canonical case + rule A + severity preservation)` |
+| Action protocol semantic preservation | `code: reasoning-arbiter.ts (alerts deep-copy preserves actionProtocolId)`; `test: reasoning-arbiter.test.ts (action protocol pass-through across multiple alerts)` |
+| Native must-not-miss visibility | `code: reasoning-arbiter.ts (rule B + rank preservation)`; `test: reasoning-arbiter.test.ts (rule B isolation + rank preservation)` |
+| Personal baseline consumption | `code: reasoning-arbiter.ts (rule E)`; `test: reasoning-arbiter.test.ts (rule E thin baseline)` — reuses `SymphonyPersonalBaseline` from `engine/trajectory.ts` |
+| Treatment response consumption | `code: reasoning-arbiter.ts (rule D)`; `test: reasoning-arbiter.test.ts (rule D worsening)` — reuses `SymphonyTreatmentResponse` from `engine/trajectory.ts` |
+| Canonical AVPU/GCS helper reuse | `code: reasoning-arbiter.ts (rule C → assessSymphonyConsciousnessSeverity)`; `test: reasoning-arbiter.test.ts (rule C consciousness=pain)` |
+
+Five deterministic arbitration rules (OR-combined into `requiresReview`):
+
+- **A** `safety_critical_alert_present` — any `alert.severity === 'critical'`
+- **B** `native_must_not_miss_visible` — any hypothesis with
+  `category === 'must_not_miss'`
+- **C** `consciousness_compromised` — `latestVitals.consciousness` mapped
+  to AVPU and resolved via `assessSymphonyConsciousnessSeverity()` to
+  `'severe'` or `'unresponsive'`
+- **D** `treatment_response_worsening` —
+  `treatmentResponse.interpretation === 'worsening'`
+- **E** `baseline_thin_with_working_hypothesis` —
+  `personalBaseline.visitCount < 2` AND any `working` hypothesis present
+
+Safety dominance enforcement:
+
+- Critical alerts copied through unchanged (severity, `actionProtocolId`,
+  `actionProtocol`, `triggeredAt`, `reasoning[]` all preserved).
+- Native hypothesis rank order from Task 4 differential preserved.
+- Empty input → `requiresReview = false` and empty arrays — no
+  high-confidence default behavior.
+- Output shape: `{ nativeHypotheses, alerts, requiresReview, arbitrationReasons }`.
+
+Notes:
+
+- Traffic-light authority remains in `engine/traffic-light.ts` per Chief
+  constraint #5; arbiter does NOT call `classifySymphonyTrafficLight()`.
+- `hybridSuggestions` accepted in input but not transformed in this task;
+  Task 7 will wire reconciliation at `assess.ts` level.
+- 11 test cases verify rules in isolation, action protocol pass-through,
+  rank preservation, severity preservation, empty-input safety, determinism.
+
+### Outstanding Sprint 2 mappings (carry to next task)
+
+- **Vital alerts** — Not reused in arbiter. Will be wired through
+  `assess.ts` integration (Task 7).
+- **Action protocols / traffic-light** — Arbiter preserves protocol
+  references; full attachment + traffic-light gating wired at `assess.ts`
+  (Task 7).
+- **Hybrid decisioning** — Arbiter accepts `hybridSuggestions` input but
+  does not transform yet. Task 7 wires reconciliation.
+- **Explainability + clinical disposition** — Task 6 will consume
+  `arbitrationReasons[]` from this arbiter as upstream input.
+- **`clinical-facts.ts → toAvpu()` local bridge** — full retirement when
+  Task 7 reroutes consciousness mapping at `assess.ts`. Arbiter already
+  uses canonical `assessSymphonyConsciousnessSeverity()` directly so
+  drift is bounded to Task 2 facts builder only.
 
 ---
 
