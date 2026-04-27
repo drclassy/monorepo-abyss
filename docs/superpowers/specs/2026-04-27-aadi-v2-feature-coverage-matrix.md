@@ -690,18 +690,67 @@ Notes:
   safe-default fallback when shadowComparison missing, downgrade
   detection synthetic case.
 
-### Outstanding Sprint 3 mappings (carry to next task)
+### Task 10 — `feat(symphony): add AADI V2 interoperability stubs` (this commit)
+
+Sprint 3 close. Adds thin, deterministic, additive adapter layer in
+`packages/symphony/src/interop/` that maps `SymphonyResult` into:
+
+1. FHIR R5-shaped Bundle via `mapSymphonyResultToFhirBundle()`
+2. CDS Hooks-style response via `mapSymphonyResultToCdsHooksResponse()`
+
+Both adapters are pure functions with no external dependency, no
+input mutation, no `SymphonyResult` contract drift, and **PHI-safe
+by design** — only structured codes (ICD-10), levels (traffic-light),
+action-protocol IDs, and disposition values cross the seam.
+
+| Section A / B row | Concrete proof |
+|---|---|
+| FHIR bundle adapter (Layer 11 stub) | `code: interop/symphony-to-fhir.ts → mapSymphonyResultToFhirBundle()`; `test: symphony-to-fhir.test.ts (10 cases)` |
+| Native hypothesis → FHIR Condition mapping (ICD-10 coding) | `code: interop/symphony-to-fhir.ts → hypothesisToCondition()`; `test: symphony-to-fhir.test.ts (single + multi + must_not_miss cases)` |
+| Traffic-light → FHIR RiskAssessment | `code: interop/symphony-to-fhir.ts → trafficLightToRiskAssessment()`; `test: symphony-to-fhir.test.ts (RED → qualitativeRisk RED case)` |
+| Rationale → FHIR DiagnosticReport | `code: interop/symphony-to-fhir.ts → rationaleToDiagnosticReport()`; `test: symphony-to-fhir.test.ts (rationale conclusion case)` |
+| Critical/high alerts → FHIR Observation | `code: interop/symphony-to-fhir.ts → alertToObservation()`; `test: symphony-to-fhir.test.ts (critical alerts → Observations)` |
+| CDS Hooks card adapter (Layer 11 stub) | `code: interop/symphony-to-cds-hooks.ts → mapSymphonyResultToCdsHooksResponse()`; `test: symphony-to-cds-hooks.test.ts (10 cases)` |
+| Card emission canonical order | `code: interop/symphony-to-cds-hooks.ts (critical → must_not_miss → top → disposition → shadow)`; `test: symphony-to-cds-hooks.test.ts (canonical order case)` |
+| PHI-safe by design (chiefComplaint, additionalComplaint, patientRef, encounterId never escape) | `test: symphony-to-fhir.test.ts (does NOT leak chiefComplaint/patientRef cases)`; `test: symphony-to-cds-hooks.test.ts (does NOT leak chiefComplaint/patientRef cases)` |
+| Determinism | `test: symphony-to-fhir.test.ts (deterministic bundle case)`; `test: symphony-to-cds-hooks.test.ts (deterministic cards case)` |
+| Pure / additive — no SymphonyResult contract drift | `code: interop/* (read-only consumers of SymphonyResult; no field added to contracts.ts/shared-types)` |
+
+Notes:
+
+- **Stubs only — not full FHIR engine.** Output uses minimal canonical
+  FHIR R5 shapes (Bundle/Condition/RiskAssessment/DiagnosticReport/
+  Observation) hand-written as plain TS interfaces. No `fhir` package
+  dependency, no terminology validation (SNOMED/LOINC/RxNorm), no
+  HTTP service runtime. Promotion to a dedicated `packages/fhir-engine`
+  per AADI V2 spec §P2.1 deferred to Phase 2.
+- **PHI-safe perimeter.** `chiefComplaint`, `additionalComplaint`,
+  `patientRef`, `encounterId`, individual vital values are NOT mapped
+  into output. Only structured codes (ICD-10, traffic-light level,
+  alert IDs, severity strings) and the rationale array (which is
+  composed inside SYMPHONY from explainability templates and never
+  embeds free-text patient narrative) cross the seam.
+- **No reasoning authority migration.** Adapters only translate shape;
+  never re-classify, re-score, re-evaluate alerts, or recompute
+  traffic-light. All reasoning still owned by the engine modules
+  (Tasks 4–8) and disposition by Task 6.
+- **Layer 11 (interop) decoupled from Layer 0–10 (engines).** Adapters
+  in `interop/` import only types from `../contracts`; no engine
+  imports, no circular dependency.
+
+### Outstanding Sprint 4+ mappings
 
 - **`clinical-facts.ts → toAvpu()` local bridge retirement** — requires
   a dedicated canonical AVPU mapper (beyond severity helper). Deferred
-  to a hardening task post-Sprint 3.
-- **Interoperability stubs** — Task 10. External-system integration
-  hooks (FHIR/HL7/local registry) layered atop the canonical
-  `SymphonyResult` surface.
+  to a hardening task.
 - **Parity gate threshold ramp** — current gates A/B/C/D enforce
   zero-tolerance for hard safety violations. Soft thresholds
   (e.g., minimum `high+partial` ratio) deferred until field telemetry
   informs reasonable bounds.
+- **Full `packages/fhir-engine` package** — promotion of stubs into a
+  dedicated FHIR engine with full R5 validation, terminology mapping
+  (SNOMED CT, LOINC, RxNorm), and CDS Hooks runtime service per AADI
+  V2 spec §P2.1.
 
 ---
 

@@ -262,6 +262,23 @@ export {
   type SymphonyAadiV2ParityReport,
 } from './engine/parity-verification'
 
+export {
+  mapSymphonyResultToCdsHooksResponse,
+  mapSymphonyResultToFhirBundle,
+  type SymphonyCdsHookCard,
+  type SymphonyCdsHookCardIndicator,
+  type SymphonyCdsHookCardLink,
+  type SymphonyCdsHookResponse,
+  type SymphonyFhirBundle,
+  type SymphonyFhirCodeableConcept,
+  type SymphonyFhirCoding,
+  type SymphonyFhirCondition,
+  type SymphonyFhirDiagnosticReport,
+  type SymphonyFhirObservation,
+  type SymphonyFhirResource,
+  type SymphonyFhirRiskAssessment,
+} from './interop'
+
 
 export {
   SYMPHONY_CONTRACT_VERSION,
