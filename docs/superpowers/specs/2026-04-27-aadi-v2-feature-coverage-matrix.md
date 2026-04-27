@@ -559,16 +559,91 @@ Notes:
   canonical helper. Defer to a follow-up task with a dedicated
   canonical AVPU mapper.
 
-### Outstanding Sprint 2 mappings (carry to next task)
+### Task 8 — `feat(symphony): add AADI V2 shadow comparison engine` (this commit)
 
-- **Shadow comparison output** (`SymphonyShadowComparison`,
-  `result.shadowComparison`) — Task 8. Hybrid suggestions vs native
-  hypotheses agreement metrics, top-diagnosis change detection,
-  escalation change detection.
+Sprint 3 opener. Adds deterministic `compareSymphonyShadowPaths()` in
+`packages/symphony/src/engine/shadow-comparison.ts` that compares the
+real legacy hybrid path vs the real new AADI V2 native path and emits
+the canonical `SymphonyShadowComparison` shape (no second taxonomy).
+
+| Section A / B row | Concrete proof |
+|---|---|
+| Shadow comparison engine (canonical contract) | `code: shadow-comparison.ts → compareSymphonyShadowPaths()`; `test: shadow-comparison.test.ts (12 cases)` |
+| Old path = real hybrid output (Chief constraint #1, #2) | `code: shadow-comparison.ts (hybridSuggestions input is the new-path source; nativeHypotheses is the new-path source — never the native-compat traffic-light bridge)`; `test: shadow-comparison.test.ts (does not confuse native compatibility suggestions with new-path source)` |
+| Old escalation = re-evaluated traffic-light with hybrid-only suggestions | `code: assess.ts → oldPathTrafficLight via classifySymphonyTrafficLight({diagnosisSuggestions: hybridDecisioning.suggestions, ...})` |
+| New escalation = current trafficLight (merged hybrid + native compat input) | `code: assess.ts → trafficLight (existing)` |
+| Old disposition = `determineSymphonyClinicalDisposition()` re-applied to hybrid signals | `code: shadow-comparison.ts (uses confidence-engine.ts authority — no second disposition taxonomy)` |
+| Canonical agreementLevel union (`high \| partial \| low \| not_comparable`) | `code: shadow-comparison.ts (counts matches across topDiagnosisChanged, escalationChanged, clinicalDispositionChanged)`; `test: shadow-comparison.test.ts (high/partial/low/not_comparable cases)` |
+| `oldPathAvailable` / `newPathAvailable` semantics | `oldPathAvailable = hybridSuggestions.length > 0`; `newPathAvailable = !newPathFailed && nativeHypotheses.length > 0`; `test: shadow-comparison.test.ts (only-old, only-new, both-empty, new-failed cases)` |
+| Side-by-side audit notes (deterministic) | `code: shadow-comparison.ts (notes array: old_path_top, new_path_top, old_escalation, new_escalation, old_disposition, new_disposition, new_path_failed)`; `test: shadow-comparison.test.ts (deterministic notes case)` |
+| Wired into `SymphonyResult.shadowComparison` (canonical contract surface) | `code: assess.ts (return { ..., shadowComparison })`; `test: aadi-v2.integration.test.ts (attaches shadowComparison through canonical contract)` |
+| Telemetry audit hints | `code: assess.ts (shadow_agreement, shadow_top_changed, shadow_escalation_changed, shadow_disposition_changed)`; `test: aadi-v2.integration.test.ts (shadow audit hints case)` |
+| Determinism | `test: shadow-comparison.test.ts (deterministic output for identical input)` |
+
+Comparison inputs (exactly):
+
+- `hybridSuggestions` ← `hybridDecisioning.suggestions` (legacy hybrid
+  path output — **NOT** the native compatibility suggestions used by the
+  traffic-light bridge from Task 7 patch)
+- `nativeHypotheses` ← `aadiv2.nativeHypotheses` (post-arbitration native
+  diagnostic output)
+- `alerts` ← `alertsBeforeTrafficLight` (used only to derive
+  `hasCriticalAlert` for old-path disposition reconstruction)
+- `oldTrafficLightLevel` ← `oldPathTrafficLight?.level` where
+  `oldPathTrafficLight` is `classifySymphonyTrafficLight()` re-evaluated
+  with hybrid-only suggestions
+- `newTrafficLightLevel` ← `trafficLight?.level` (the existing final
+  traffic-light using merged hybrid + native compat input)
+- `newClinicalDisposition` ← `aadiv2.clinicalDisposition`
+- `newPathFailed` ← `aadiv2.pipelineFailed`
+
+Old path vs new path definitions:
+
+| Dimension | Old path | New path |
+|---|---|---|
+| Top diagnosis | `hybridSuggestions[0].icd10Code` | `nativeHypotheses[0].icd10Code` |
+| Escalation | `classifySymphonyTrafficLight()` with hybrid-only suggestions | Existing `trafficLight` (merged input) |
+| Clinical disposition | `determineSymphonyClinicalDisposition()` re-applied with `nativeHypothesisCount = hybridSuggestions.length`, `arbiterRequiresReview = hybridSuggestions.some(mustNotMiss)` | `aadiv2.clinicalDisposition` (from Task 6 engine) |
+
+agreementLevel rules (deterministic):
+
+1. If either `oldPathAvailable === false` OR `newPathAvailable === false`
+   → `'not_comparable'`
+2. Else count matches across (topDiagnosisChanged, escalationChanged,
+   clinicalDispositionChanged):
+   - 3 matches → `'high'`
+   - 1–2 matches → `'partial'`
+   - 0 matches → `'low'`
+
+Notes:
+
+- **No second shadow taxonomy** (Chief constraint #5). All disposition
+  derivation reuses `determineSymphonyClinicalDisposition()` from
+  Task 6; agreementLevel uses the canonical
+  `SymphonyShadowComparison['agreementLevel']` union from Task 1.
+- **Native compatibility suggestions never enter as the new-path
+  source** (Chief constraint #2). Bridge from Task 7 patch remains
+  scoped to traffic-light input only. A dedicated regression test
+  verifies that even if a `'native:'`-prefixed suggestion is passed as
+  `hybridSuggestions`, the shadow comparison treats it as old path
+  input (it does not "leak back" into the new-path source).
+- **No safety alert mutation** — `compareSymphonyShadowPaths()` reads
+  alerts but never returns or transforms them.
+- **No contract drift** — only existing
+  `SymphonyResult.shadowComparison` field populated, no new fields
+  added to any contract type.
+- **Additive only** — pipeline failure already isolates new-path source
+  via `aadiv2.pipelineFailed`; shadow comparison correctly handles by
+  setting `newPathAvailable = false` and `agreementLevel = 'not_comparable'`.
+
+### Outstanding Sprint 3 mappings (carry to next task)
+
 - **Parity verification** for AADI V2 vs Assist legacy paths — Task 9.
+  Shadow comparison provides the agreement signal; Task 9 will codify
+  the parity gates and acceptance thresholds.
 - **`clinical-facts.ts → toAvpu()` local bridge retirement** — requires
   a dedicated canonical AVPU mapper (beyond severity helper). Deferred
-  to a hardening task post-Sprint 2.
+  to a hardening task post-Sprint 3.
 - **Interoperability stubs** — Task 10.
 
 ---

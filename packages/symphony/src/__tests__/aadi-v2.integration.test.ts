@@ -288,6 +288,55 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
     })
   })
 
+  it('attaches shadowComparison to result through canonical contract (Task 8)', () => {
+    const result = assessSymphonyInput(
+      baseInput({
+        chiefComplaint: 'demam dan sesak napas',
+        vitals: [
+          {
+            observedAt: '2026-04-27T09:50:00.000Z',
+            heartRate: 110,
+            respiratoryRate: 24,
+            systolicBp: 120,
+            diastolicBp: 80,
+            temperatureC: 38.5,
+            spo2: 95,
+            consciousness: 'alert',
+          },
+        ],
+      }),
+    )
+
+    expect(result.shadowComparison).toBeDefined()
+    expect(result.shadowComparison?.agreementLevel).toMatch(
+      /^(high|partial|low|not_comparable)$/,
+    )
+    expect(typeof result.shadowComparison?.topDiagnosisChanged).toBe('boolean')
+    expect(typeof result.shadowComparison?.escalationChanged).toBe('boolean')
+    expect(typeof result.shadowComparison?.clinicalDispositionChanged).toBe('boolean')
+    expect(Array.isArray(result.shadowComparison?.notes)).toBe(true)
+  })
+
+  it('shadow agreement is not_comparable when both paths produce nothing (Task 8)', () => {
+    const result = assessSymphonyInput(baseInput())
+    expect(result.shadowComparison?.agreementLevel).toBe('not_comparable')
+    expect(result.shadowComparison?.oldPathAvailable).toBe(false)
+    expect(result.shadowComparison?.newPathAvailable).toBe(false)
+  })
+
+  it('emits shadow agreement audit hints for telemetry (Task 8)', () => {
+    const result = assessSymphonyInput(
+      baseInput({
+        chiefComplaint: 'demam dan sesak napas',
+      }),
+    )
+    const hintsJoined = result.quality.auditHints.join(' ')
+    expect(hintsJoined).toMatch(/shadow_agreement:(high|partial|low|not_comparable)/)
+    expect(hintsJoined).toMatch(/shadow_top_changed:[01]/)
+    expect(hintsJoined).toMatch(/shadow_escalation_changed:[01]/)
+    expect(hintsJoined).toMatch(/shadow_disposition_changed:[01]/)
+  })
+
   it('produces deterministic output for identical input', () => {
     const input = baseInput({
       chiefComplaint: 'demam dan sesak napas',

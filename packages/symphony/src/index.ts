@@ -246,6 +246,11 @@ export {
   type SymphonyDispositionInput,
 } from './engine/confidence-engine'
 
+export {
+  compareSymphonyShadowPaths,
+  type SymphonyShadowComparisonInput,
+} from './engine/shadow-comparison'
+
 
 export {
   SYMPHONY_CONTRACT_VERSION,

@@ -34,6 +34,7 @@ import { calculateSymphonyNEWS2, news2ToSymphonyAlerts } from './news2'
 import { detectSymphonyPeSuspect, peSuspectToSymphonyAlerts } from './pe-suspect'
 import { arbitrateSymphonyReasoning } from './reasoning-arbiter'
 import { evaluateSymphonyInstantScreeningGates } from './screening-gates'
+import { compareSymphonyShadowPaths } from './shadow-comparison'
 import { classifySymphonySyndromes } from './syndrome-classifier'
 import {
   classifySymphonyTrafficLight,
@@ -293,6 +294,30 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     ? trafficLightToSymphonyAlert(trafficLight, latestVitals?.observedAt ?? input.metadata.requestedAt)
     : null
 
+  const shouldEvaluateOldTrafficLight =
+    hybridDecisioning.suggestions.length > 0 ||
+    (input.activeMedications?.length ?? 0) > 1 ||
+    (input.chronicDiseases?.length ?? 0) > 0
+  const oldPathTrafficLight = shouldEvaluateOldTrafficLight
+    ? classifySymphonyTrafficLight({
+        alerts: alertsBeforeTrafficLight,
+        diagnosisSuggestions: hybridDecisioning.suggestions,
+        patientAge: input.patientContext.ageYears,
+        chronicDiseases: input.chronicDiseases,
+        ddiResult,
+      })
+    : undefined
+
+  const shadowComparison = compareSymphonyShadowPaths({
+    hybridSuggestions: hybridDecisioning.suggestions,
+    nativeHypotheses: aadiv2.nativeHypotheses,
+    alerts: alertsBeforeTrafficLight,
+    oldTrafficLightLevel: oldPathTrafficLight?.level,
+    newTrafficLightLevel: trafficLight?.level,
+    newClinicalDisposition: aadiv2.clinicalDisposition,
+    newPathFailed: aadiv2.pipelineFailed,
+  })
+
   return {
     metadata: {
       engineVersion: SYMPHONY_ENGINE_VERSION,
@@ -316,6 +341,7 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
       aadiv2.clinicalFacts.length > 0 ? aadiv2.clinicalFacts : undefined,
     alerts: trafficLightAlert ? [...alertsBeforeTrafficLight, trafficLightAlert] : alertsBeforeTrafficLight,
     trafficLight,
+    shadowComparison,
     trajectory: {
       direction: trajectoryDirectionFromAnalysis(trajectoryAnalysis),
       momentum: trajectoryMomentumFromAnalysis(trajectoryAnalysis),
@@ -362,6 +388,10 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
         `aadiv2_pipeline_failed:${aadiv2.pipelineFailed ? 1 : 0}`,
         `aadiv2_failure_reason:${aadiv2.failureReason}`,
         `native_compat_suggestion_count:${nativeCompatibilitySuggestions.length}`,
+        `shadow_agreement:${shadowComparison.agreementLevel}`,
+        `shadow_top_changed:${shadowComparison.topDiagnosisChanged ? 1 : 0}`,
+        `shadow_escalation_changed:${shadowComparison.escalationChanged ? 1 : 0}`,
+        `shadow_disposition_changed:${shadowComparison.clinicalDispositionChanged ? 1 : 0}`,
       ],
     },
   }
