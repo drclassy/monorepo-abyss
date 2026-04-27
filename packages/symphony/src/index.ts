@@ -251,6 +251,17 @@ export {
   type SymphonyShadowComparisonInput,
 } from './engine/shadow-comparison'
 
+export {
+  buildSymphonyAadiV2ParityObservation,
+  runSymphonyAadiV2ParityFixtures,
+  SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES,
+  verifySymphonyAadiV2Parity,
+  type SymphonyAadiV2ParityFixtureCase,
+  type SymphonyAadiV2ParityGate,
+  type SymphonyAadiV2ParityObservation,
+  type SymphonyAadiV2ParityReport,
+} from './engine/parity-verification'
+
 
 export {
   SYMPHONY_CONTRACT_VERSION,

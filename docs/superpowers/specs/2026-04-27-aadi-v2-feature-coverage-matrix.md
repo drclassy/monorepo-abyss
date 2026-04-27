@@ -636,15 +636,72 @@ Notes:
   via `aadiv2.pipelineFailed`; shadow comparison correctly handles by
   setting `newPathAvailable = false` and `agreementLevel = 'not_comparable'`.
 
+### Task 9 — `feat(symphony): add AADI V2 parity verification engine` (this commit)
+
+Sprint 3 mid-task. Codifies parity gates atop the shadow comparison
+signal from Task 8. Adds standalone audit tool
+`verifySymphonyAadiV2Parity()` plus canonical AADI V2 parity fixtures
+(`SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES`, 4 cases) in
+`packages/symphony/src/engine/parity-verification.ts`. Engine is
+**not** wired into `assess.ts` runtime — it is a CI/test-time audit
+tool that runs each fixture through `assessSymphonyInput()` and
+emits a `SymphonyAadiV2ParityReport` with deterministic gates.
+
+| Section A / B row | Concrete proof |
+|---|---|
+| AADI V2 parity verification engine | `code: parity-verification.ts → verifySymphonyAadiV2Parity()`; `test: parity-verification.test.ts (9 cases)` |
+| Canonical AADI V2 parity fixtures | `code: parity-verification.ts → SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES (baseline-empty-input, febrile-dyspnea-presentation, hypertensive-presentation, sepsis-presentation-with-hybrid-candidate)` |
+| Observation builder (parses old/new traffic-light + disposition from shadowComparison.notes) | `code: parity-verification.ts → buildSymphonyAadiV2ParityObservation()`; `test: parity-verification.test.ts (parses old/new escalation and disposition from notes)` |
+| Gate A — no `agreementLevel="low"` among comparable | `code: parity-verification.ts (AADIV2_PARITY_GATE_A_NO_LOW_AGREEMENT)` |
+| Gate B — no unsafe escalation downgrade (new < old in TRAFFIC_LIGHT_RANK) | `code: parity-verification.ts (AADIV2_PARITY_GATE_B_NO_UNSAFE_ESCALATION_DOWNGRADE, isUnsafeEscalationDowngrade())` |
+| Gate C — no unsafe disposition downgrade (`requires_review` → `ok`) | `code: parity-verification.ts (AADIV2_PARITY_GATE_C_NO_UNSAFE_DISPOSITION_DOWNGRADE, isUnsafeDispositionDowngrade())` |
+| Gate D — no AADI V2 pipeline failure across canonical fixtures | `code: parity-verification.ts (AADIV2_PARITY_GATE_D_NO_PIPELINE_FAILURE)` |
+| Verdict aggregation | `code: parity-verification.ts (verdict = gates.every(passed) ? 'pass' : 'fail')`; `test: parity-verification.test.ts (canonical fixtures pass)` |
+| Determinism | `test: parity-verification.test.ts (deterministic report for identical fixtures)` |
+| Empty fixtures handled safely | `test: parity-verification.test.ts (all-empty fixtures pass with not_comparable everywhere)` |
+
+Parity gates (canonical, deterministic):
+
+| Gate ID | Description | Failure semantics |
+|---|---|---|
+| AADIV2_PARITY_GATE_A_NO_LOW_AGREEMENT | No comparable fixture may produce `agreementLevel="low"`. | `agreementHistogram.low > 0` |
+| AADIV2_PARITY_GATE_B_NO_UNSAFE_ESCALATION_DOWNGRADE | New path traffic-light level must never rank lower than old path level. | `unsafeEscalationDowngrades > 0` (new RANK < old RANK; GREEN=0/YELLOW=1/RED=2) |
+| AADIV2_PARITY_GATE_C_NO_UNSAFE_DISPOSITION_DOWNGRADE | New path clinical disposition must not silently downgrade `requires_review` → `ok`. | `unsafeDispositionDowngrades > 0` |
+| AADIV2_PARITY_GATE_D_NO_PIPELINE_FAILURE | AADI V2 native pipeline must not fail across canonical fixtures. | `pipelineFailureCount > 0` |
+
+Notes:
+
+- **Audit tool only — not a runtime gate.** Engine is invoked by tests
+  / CI; assess.ts is unchanged in Task 9. Runtime safety dominance
+  remains owned by traffic-light + arbiter.
+- **No second taxonomy.** Reuses `SymphonyShadowComparison` directly
+  (Task 1 contract) and parses notes for old-path observation fields
+  (no new contract drift in Task 8 shape).
+- **Reuses existing engines.** No reimplementation of disposition
+  derivation, no reimplementation of traffic-light level — observation
+  fields are derived from `result.shadowComparison.notes` deterministically.
+- **Forward-compat with future fixtures.** Public API
+  `verifySymphonyAadiV2Parity(fixtures)` accepts arbitrary fixture
+  arrays; canonical fixtures are exported but not hardcoded into the
+  verification path.
+- **Test coverage:** 9 cases including canonical-pass verdict, agreement
+  histogram conservation, all 4 gate IDs deterministic, all-empty pass,
+  pipeline failure counter, determinism, observation parse correctness,
+  safe-default fallback when shadowComparison missing, downgrade
+  detection synthetic case.
+
 ### Outstanding Sprint 3 mappings (carry to next task)
 
-- **Parity verification** for AADI V2 vs Assist legacy paths — Task 9.
-  Shadow comparison provides the agreement signal; Task 9 will codify
-  the parity gates and acceptance thresholds.
 - **`clinical-facts.ts → toAvpu()` local bridge retirement** — requires
   a dedicated canonical AVPU mapper (beyond severity helper). Deferred
   to a hardening task post-Sprint 3.
-- **Interoperability stubs** — Task 10.
+- **Interoperability stubs** — Task 10. External-system integration
+  hooks (FHIR/HL7/local registry) layered atop the canonical
+  `SymphonyResult` surface.
+- **Parity gate threshold ramp** — current gates A/B/C/D enforce
+  zero-tolerance for hard safety violations. Soft thresholds
+  (e.g., minimum `high+partial` ratio) deferred until field telemetry
+  informs reasonable bounds.
 
 ---
 
