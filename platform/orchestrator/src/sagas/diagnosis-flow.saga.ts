@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { assessSymphonyInput, type SymphonyResult } from '@the-abyss/symphony';
 import { BaseSaga } from './base.saga';
 import { KafkaService } from '../kafka/kafka.service';
+import {
+  mapDiagnosisInputToSymphonyInput,
+  mapSymphonyResultToCdssResult,
+  type DiagnosisCdssResult,
+} from './symphony-bridge';
 
 export interface DiagnosisInput {
   patientId: string;
@@ -17,6 +23,7 @@ export interface DiagnosisOutput {
   cdssRecommendations: string[];
   aiProcessingId: string;
   completedAt: string;
+  symphony: SymphonyResult;
 }
 
 const MAX_RETRIES = 3;
@@ -62,7 +69,8 @@ export class DiagnosisFlowSaga extends BaseSaga<DiagnosisInput, DiagnosisOutput>
       },
     });
 
-    // Step 2: CDSS_QUERY — query Clinical Decision Support System
+    // Step 2: CDSS_QUERY — query SYMPHONY clinical reasoning engine.
+    // SYMPHONY is the only reasoning authority; orchestrator is a thin caller.
     this.addStep({
       name: 'CDSS_QUERY',
       invoke: async (input: DiagnosisInput) => {
@@ -74,16 +82,9 @@ export class DiagnosisFlowSaga extends BaseSaga<DiagnosisInput, DiagnosisOutput>
           timestamp: new Date().toISOString(),
         });
 
-        // CDSS query with retry logic
-        const cdssResult = await withRetry(async () => {
-          // TODO: replace with real @the-abyss/symphony diagnosis call when orchestration wiring is active
-          return {
-            primaryDiagnosis: [`${input.symptoms[0] ?? 'unknown'}-related condition`],
-            differentials: [],
-            recommendations: ['Monitor vital signs', 'Follow-up in 24h'],
-            confidence: 0.82,
-          };
-        });
+        const symphonyInput = mapDiagnosisInputToSymphonyInput(input);
+        const symphonyResult = assessSymphonyInput(symphonyInput);
+        const cdssResult: DiagnosisCdssResult = mapSymphonyResultToCdssResult(symphonyResult);
 
         return { ...input, cdssResult };
       },
@@ -121,10 +122,12 @@ export class DiagnosisFlowSaga extends BaseSaga<DiagnosisInput, DiagnosisOutput>
       },
     });
 
-    // Step 4: RESPONSE_EMIT — emit final result to Kafka
+    // Step 4: RESPONSE_EMIT — emit final result to Kafka.
+    // Preserves legacy flattened fields and passes SymphonyResult through unchanged.
     this.addStep({
       name: 'RESPONSE_EMIT',
       invoke: async (input: any): Promise<DiagnosisOutput> => {
+        const symphonyResult: SymphonyResult = input.cdssResult.symphony;
         const output: DiagnosisOutput = {
           requestId: input.requestId,
           diagnosis: input.aiResult?.enhancedDiagnosis ?? [],
@@ -132,6 +135,7 @@ export class DiagnosisFlowSaga extends BaseSaga<DiagnosisInput, DiagnosisOutput>
           cdssRecommendations: input.aiResult?.aiRecommendations ?? [],
           aiProcessingId: input.aiResult?.aiProcessingId ?? '',
           completedAt: new Date().toISOString(),
+          symphony: symphonyResult,
         };
 
         await this.kafka.emit('diagnosis-events', {

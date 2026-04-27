@@ -26,6 +26,7 @@
     "@the-abyss/database": "workspace:*",
     "@the-abyss/langflow-client": "workspace:*",
     "@the-abyss/shared-types": "workspace:*",
+    "@the-abyss/symphony": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "kafkajs": "^2.2.4",
