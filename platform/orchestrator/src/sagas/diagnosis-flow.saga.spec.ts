@@ -86,7 +86,7 @@ describe('DiagnosisFlowSaga (orchestrator → SYMPHONY handoff)', () => {
     expect(result.symphony.shadowComparison).toBeDefined()
   })
 
-  it('completes deterministically for identical input', async () => {
+  it('symphony passthrough is deterministic for identical input (CDSS_QUERY scope)', async () => {
     const a = await saga.execute(
       baseInput({
         requestId: 'req-determ',
@@ -104,5 +104,44 @@ describe('DiagnosisFlowSaga (orchestrator → SYMPHONY handoff)', () => {
     expect(a.symphony.metadata.contractVersion).toBe(b.symphony.metadata.contractVersion)
     expect(a.symphony.clinicalDisposition).toBe(b.symphony.clinicalDisposition)
     expect(a.symphony.alerts.length).toBe(b.symphony.alerts.length)
+  })
+
+  it('emitDlq publishes a PHI-safe envelope (no raw input, no error.message, no clinical payload)', async () => {
+    const failingKafka: KafkaService = {
+      emit: vi.fn().mockImplementation(async (topic: string, payload: { event?: string }) => {
+        if (topic === 'diagnosis-events' && payload?.event === 'CDSS_QUERY') {
+          throw new Error('SECRET-PATIENT-NARRATIVE: demam tinggi sesak napas')
+        }
+      }),
+    } as unknown as KafkaService
+    const failingSaga = new DiagnosisFlowSaga(failingKafka)
+
+    await expect(
+      failingSaga.execute(
+        baseInput({
+          patientId: 'patient-PHI-001',
+          organizationId: 'org-secret-xyz',
+          symptoms: ['SECRET-PATIENT-NARRATIVE: demam tinggi sesak napas'],
+          vitalSigns: { heartRate: 118 },
+          requestId: 'req-dlq-test',
+        }),
+      ),
+    ).rejects.toThrow()
+
+    const calls = (failingKafka.emit as ReturnType<typeof vi.fn>).mock.calls
+    const dlqCall = calls.find(call => call[0] === 'diagnosis-dlq')
+    expect(dlqCall).toBeDefined()
+    const dlqPayload = dlqCall![1] as Record<string, unknown>
+    expect(Object.keys(dlqPayload).sort()).toEqual(
+      ['errorName', 'errorType', 'requestId', 'step', 'timestamp'].sort(),
+    )
+    expect(dlqPayload.requestId).toBe('req-dlq-test')
+
+    const serialized = JSON.stringify(dlqPayload)
+    expect(serialized).not.toContain('SECRET-PATIENT-NARRATIVE')
+    expect(serialized).not.toContain('patient-PHI-001')
+    expect(serialized).not.toContain('org-secret-xyz')
+    expect(serialized).not.toContain('vitalSigns')
+    expect(serialized).not.toContain('symphony')
   })
 })

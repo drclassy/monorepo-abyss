@@ -162,16 +162,38 @@ interface DiagnosisOutput {
 
 ## Determinism
 
+Determinism guarantees apply **only to the CDSS_QUERY bridge/handoff scope**,
+not to the full saga:
+
 - `mapDiagnosisInputToSymphonyInput` is a pure function; same input plus
   injected `now` returns identical Symphony input.
 - `mapSymphonyResultToCdssResult` is a pure function; same Symphony result
   returns identical CDSS result.
 - `assessSymphonyInput` is deterministic (per AADI V2 contract).
-- Therefore the entire CDSS_QUERY step is deterministic given a fixed
+- Therefore the CDSS_QUERY step's SYMPHONY passthrough fields
+  (`symphony.metadata.contractVersion`, `symphony.clinicalDisposition`,
+  `symphony.alerts`, etc.) are reproducible bit-for-bit given a fixed
   request timestamp.
 
-The saga test `completes deterministically for identical input` pins this
-guarantee at integration level.
+### Non-deterministic surfaces (transport-only, by design)
+
+The following saga-level fields are intentionally non-deterministic and
+are not covered by the determinism guarantee:
+
+- `kafka.emit('diagnosis-events', { timestamp })` — wall-clock at emit time
+- `aiProcessingId = ai-${requestId}-${Date.now()}` — wall-clock-derived ID
+- `output.completedAt` — wall-clock at saga completion
+- `RESPONSE_EMIT.timestamp` — wall-clock at emit time
+
+These are transport metadata; making them deterministic requires injecting
+a clock/id factory through `BaseSaga`, which is out of scope for B.10. If
+end-to-end saga determinism is needed for a future test surface, the
+accepted path is to widen `BaseSaga` with a clock/id-factory dependency
+and thread it through every step.
+
+The saga test `symphony passthrough is deterministic for identical input
+(CDSS_QUERY scope)` pins the narrow guarantee above; it does NOT assert
+saga-level transport timestamp equality.
 
 ## Failure semantics
 
@@ -186,7 +208,34 @@ own try/catch (Task 7 patch) and surfaces failure via:
 The saga does NOT add its own retry around `assessSymphonyInput` — Symphony
 is deterministic, so retry won't change outcome. If Symphony itself throws
 (uncaught), the saga's `BaseSaga.execute()` triggers compensation
-(`emitDlq('CDSS_QUERY', ...)`) and the error propagates.
+(`emitDlq('CDSS_QUERY', requestId, error)`) and the error propagates.
+
+### DLQ payload — PHI-safe envelope
+
+`emitDlq` publishes a strictly minimal envelope to `diagnosis-dlq`:
+
+```ts
+{
+  step: 'CDSS_QUERY' | 'AI_PROCESSING' | 'RESPONSE_EMIT' | 'DIAGNOSIS_REQUESTED'
+  requestId: string                  // synthetic correlation ID, no PHI
+  errorType: string                  // error.constructor.name
+  errorName: string                  // error.name
+  timestamp: string                  // ISO8601 wall-clock
+}
+```
+
+Explicitly NOT published:
+
+- raw `DiagnosisInput` (no `patientId`, no `symptoms`, no `vitalSigns`,
+  no `organizationId`)
+- `error.message` (may contain payload-derived text)
+- `SymphonyResult` or any clinical payload
+- Any free-text narrative fields
+
+Verified by saga test `emitDlq publishes a PHI-safe envelope (no raw input,
+no error.message, no clinical payload)`, which forces a kafka emit failure
+with a payload-derived error message and asserts the DLQ envelope contains
+none of the originating PHI/PII strings.
 
 ## Downstream contract friction
 
