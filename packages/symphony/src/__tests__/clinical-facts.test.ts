@@ -58,4 +58,39 @@ describe('buildSymphonyClinicalFacts', () => {
     expect(result.snapshot.patient.age).toBe(54)
     expect(result.patternAlerts).toBeDefined()
   })
+
+  describe('snapshot consciousness fidelity (avpuManual)', () => {
+    function makeInput(consciousness: string | undefined): SymphonyAssessmentInput {
+      return {
+        metadata: { requestId: 'avpu-test', requestedAt: '2026-04-28T00:00:00.000Z', caller: 'system' },
+        patientContext: { encounterId: 'enc-x', patientRef: 'pat-x', ageYears: 40, sexAtBirth: 'male', pregnancyStatus: 'not_applicable' },
+        vitals: [{ observedAt: '2026-04-28T00:00:00.000Z', systolicBp: 120, diastolicBp: 80, heartRate: 72, consciousness: consciousness as never }],
+      }
+    }
+
+    it("consciousness 'unknown' → avpuManual 'unknown' (preserved, no collapse)", () => {
+      const { snapshot } = buildSymphonyClinicalFacts(makeInput('unknown'))
+      expect(snapshot.patient.avpuManual).toBe('unknown')
+    })
+
+    it("consciousness undefined → avpuManual 'A' (safe algorithmic default)", () => {
+      const { snapshot } = buildSymphonyClinicalFacts(makeInput(undefined))
+      expect(snapshot.patient.avpuManual).toBe('A')
+    })
+
+    it("consciousness 'alert' → avpuManual 'A'", () => {
+      const { snapshot } = buildSymphonyClinicalFacts(makeInput('alert'))
+      expect(snapshot.patient.avpuManual).toBe('A')
+    })
+
+    it("consciousness 'pain' → avpuManual 'P'", () => {
+      const { snapshot } = buildSymphonyClinicalFacts(makeInput('pain'))
+      expect(snapshot.patient.avpuManual).toBe('P')
+    })
+
+    it("avpuLevel stays 'A' even when consciousness is 'unknown' (algorithmic field unaffected)", () => {
+      const { snapshot } = buildSymphonyClinicalFacts(makeInput('unknown'))
+      expect(snapshot.derived.avpuLevel).toBe('A')
+    })
+  })
 })

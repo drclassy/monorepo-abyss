@@ -159,7 +159,9 @@ function buildSnapshot(input: SymphonyAssessmentInput): SymphonyClinicalSnapshot
           : (input.patientContext.ageYears ?? 0) >= 18
             ? 'adult'
             : 'child',
-      avpuManual: normalizeSymphonyConsciousnessToAvpu(latest?.consciousness) ?? 'A',
+      avpuManual: latest?.consciousness === 'unknown'
+        ? 'unknown'
+        : normalizeSymphonyConsciousnessToAvpu(latest?.consciousness) ?? 'A',
       supplementalO2: latest?.oxygenSupplement ?? false,
       painScore: 0,
     },

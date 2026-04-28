@@ -375,8 +375,8 @@ export interface SymphonyClinicalHistory {
 export interface SymphonySnapshotPatient {
   age: number
   physiology: SymphonyPhysiologyBand
-  /** Raw AVPU from form; 'C' (Confused) maps to 'V' for clinical evaluation */
-  avpuManual: 'A' | 'C' | 'V' | 'P' | 'U'
+  /** Raw AVPU from form; 'C' (Confused) maps to 'V' for clinical evaluation; 'unknown' = form field present but value not recorded */
+  avpuManual: 'A' | 'C' | 'V' | 'P' | 'U' | 'unknown'
   supplementalO2: boolean
   painScore: number
 }
