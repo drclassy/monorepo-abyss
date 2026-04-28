@@ -38,3 +38,9 @@ export {
   type FhirVersionStrategy,
   type VersionStrategyPhase,
 } from './version-strategy'
+
+/**
+ * Validation hook seam for future promotion. Thin dispatcher only — does NOT
+ * build resources, expand terminology, or reinterpret clinical meaning.
+ */
+export { canValidateResourceType, validateSupportedResource } from './validation-hooks'
