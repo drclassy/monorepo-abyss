@@ -28,3 +28,13 @@ export type {
 
 /** Declared resource support matrix. Adding to either list requires a docs + test update. */
 export { DEFERRED_RESOURCE_TYPES, SUPPORTED_RESOURCE_TYPES } from './types'
+
+/** Honest FHIR version posture (R5-target modernization, current shape is R4 transition slice). */
+export {
+  FHIR_CURRENT_SHAPE,
+  FHIR_TARGET_VERSION,
+  FHIR_VERSION_STRATEGY,
+  VERSION_STRATEGY_PHASE,
+  type FhirVersionStrategy,
+  type VersionStrategyPhase,
+} from './version-strategy'
