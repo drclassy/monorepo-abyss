@@ -1,6 +1,5 @@
 import type {
   SymphonyAlert,
-  SymphonyAvpuLevel,
   SymphonyClinicalFact,
   SymphonyClinicalSnapshot,
   SymphonyGlucoseCategory,
@@ -16,6 +15,7 @@ import {
   classifySymphonyHypertension,
   finalizeSymphonyBloodPressure,
   getSymphonyHypertensionSeverity,
+  normalizeSymphonyConsciousnessToAvpu,
 } from './classifiers'
 import { evaluateClinicalPatterns } from './clinical-patterns'
 import { evaluateSymphonyCompositeDeterioration } from './composite-deterioration'
@@ -57,18 +57,6 @@ function latestVitals(vitals: SymphonyVitalsInput[]): SymphonyVitalsInput | unde
   return vitals.at(-1)
 }
 
-function toAvpu(consciousness: SymphonyVitalsInput['consciousness']): SymphonyAvpuLevel {
-  switch (consciousness) {
-    case 'alert':
-      return 'A'
-    case 'voice':
-      return 'V'
-    case 'pain':
-      return 'P'
-    default:
-      return 'U'
-  }
-}
 
 function toSnapshotGlucoseCategory(glucoseMgDl: number | undefined): SymphonyGlucoseCategory | undefined {
   if (glucoseMgDl === undefined) return undefined
@@ -119,7 +107,7 @@ function buildSnapshot(input: SymphonyAssessmentInput): SymphonyClinicalSnapshot
         latest.systolicBp > 0
           ? Number((latest.heartRate / latest.systolicBp).toFixed(2))
           : undefined,
-      avpuLevel: toAvpu(latest?.consciousness),
+      avpuLevel: normalizeSymphonyConsciousnessToAvpu(latest?.consciousness) ?? 'A',
       htnSeverity: toSnapshotHtnSeverity(latest),
       glucoseCategory: toSnapshotGlucoseCategory(latest?.glucoseMgDl),
       hasHypotension: (latest?.systolicBp ?? 999) < 90,
@@ -171,7 +159,7 @@ function buildSnapshot(input: SymphonyAssessmentInput): SymphonyClinicalSnapshot
           : (input.patientContext.ageYears ?? 0) >= 18
             ? 'adult'
             : 'child',
-      avpuManual: toAvpu(latest?.consciousness) === 'U' && latest?.consciousness === 'unknown' ? 'A' : toAvpu(latest?.consciousness),
+      avpuManual: normalizeSymphonyConsciousnessToAvpu(latest?.consciousness) ?? 'A',
       supplementalO2: latest?.oxygenSupplement ?? false,
       painScore: 0,
     },

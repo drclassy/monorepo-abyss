@@ -1,13 +1,11 @@
 import type {
   SymphonyAlert,
-  SymphonyAvpuLevel,
-  SymphonyConsciousnessLevel,
   SymphonyDiagnosisSuggestion,
   SymphonyDiagnosticHypothesis,
   SymphonyVitalsInput,
 } from '../contracts'
 
-import { assessSymphonyConsciousnessSeverity } from './classifiers'
+import { assessSymphonyConsciousnessSeverity, normalizeSymphonyConsciousnessToAvpu } from './classifiers'
 import type {
   SymphonyPersonalBaseline,
   SymphonyTreatmentResponse,
@@ -29,22 +27,6 @@ export interface SymphonyReasoningArbiterResult {
   arbitrationReasons: string[]
 }
 
-function consciousnessToAvpu(
-  level: SymphonyConsciousnessLevel | undefined,
-): SymphonyAvpuLevel | null {
-  switch (level) {
-    case 'alert':
-      return 'A'
-    case 'voice':
-      return 'V'
-    case 'pain':
-      return 'P'
-    case 'unresponsive':
-      return 'U'
-    default:
-      return null
-  }
-}
 
 export function arbitrateSymphonyReasoning(
   input: SymphonyReasoningArbiterInput,
@@ -59,8 +41,8 @@ export function arbitrateSymphonyReasoning(
   )
   if (hasMustNotMiss) reasons.push('native_must_not_miss_visible')
 
-  const avpu = consciousnessToAvpu(input.latestVitals?.consciousness)
-  if (avpu !== null) {
+  const avpu = normalizeSymphonyConsciousnessToAvpu(input.latestVitals?.consciousness)
+  if (avpu !== undefined) {
     const severity = assessSymphonyConsciousnessSeverity(avpu)
     if (severity === 'severe' || severity === 'unresponsive') {
       reasons.push('consciousness_compromised')

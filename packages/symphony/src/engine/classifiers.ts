@@ -1,4 +1,4 @@
-import type { SymphonyAvpuLevel } from '../contracts'
+import type { SymphonyAvpuLevel, SymphonyConsciousnessLevel } from '../contracts'
 
 export interface SymphonyBpReading {
   sbp: number
@@ -696,4 +696,21 @@ export function getSymphonyBestGcsTotal(
 ): number {
   if (gcs) return gcs.e + gcs.v + gcs.m
   return symphonyAvpuToGcsTotal(avpu)
+}
+
+/**
+ * Canonical consciousness→AVPU bridge. Returns undefined for 'unknown' and
+ * absent values — no silent coercion. Call sites must supply an explicit
+ * fallback (e.g. ?? 'A') wherever a non-optional SymphonyAvpuLevel is needed.
+ */
+export function normalizeSymphonyConsciousnessToAvpu(
+  consciousness: SymphonyConsciousnessLevel | undefined,
+): SymphonyAvpuLevel | undefined {
+  switch (consciousness) {
+    case 'alert': return 'A'
+    case 'voice': return 'V'
+    case 'pain': return 'P'
+    case 'unresponsive': return 'U'
+    default: return undefined
+  }
 }

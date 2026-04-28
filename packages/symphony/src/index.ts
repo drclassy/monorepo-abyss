@@ -176,6 +176,7 @@ export {
   getSymphonyHypertensionSeverity,
   getSymphonySupportedDiseaseTypes,
   isSymphonyChronicDisease,
+  normalizeSymphonyConsciousnessToAvpu,
   symphonyAvpuToEstimatedGcs,
   symphonyAvpuToGcsTotal,
   symphonyAvpuToNews2Score,
