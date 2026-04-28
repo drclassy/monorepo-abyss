@@ -95,4 +95,28 @@ describe('SYMPHONY NEWS2 parity slice', () => {
     expect(result.alerts.some(alert => alert.id === 'symphony-vitals-severe-hypoxemia')).toBe(true)
     expect(result.quality.auditHints).toContain('news2_score:6')
   })
+
+  it("consciousness 'unknown' scores 3 — conservative safety default, not zero", () => {
+    const result = calculateSymphonyNEWS2({
+      vitals: {
+        observedAt: '2026-04-28T00:00:00.000Z',
+        consciousness: 'unknown',
+      },
+    })
+    const param = result.parameterScores.find(p => p.parameter === 'consciousness')
+    expect(param?.score).toBe(3)
+  })
+
+  it("consciousness undefined is excluded from parameterScores and adds 0 to aggregate (no penalty)", () => {
+    const withUndefined = calculateSymphonyNEWS2({
+      vitals: { observedAt: '2026-04-28T00:00:00.000Z' },
+    })
+    const withUnknown = calculateSymphonyNEWS2({
+      vitals: { observedAt: '2026-04-28T00:00:00.000Z', consciousness: 'unknown' },
+    })
+    // undefined is filtered from parameterScores (value === undefined exclusion)
+    expect(withUndefined.parameterScores.find(p => p.parameter === 'consciousness')).toBeUndefined()
+    // 'unknown' adds 3 to aggregate; undefined adds 0 — difference documents the no-penalty behavior
+    expect(withUnknown.aggregateScore - withUndefined.aggregateScore).toBe(3)
+  })
 })
