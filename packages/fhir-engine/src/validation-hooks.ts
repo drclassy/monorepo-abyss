@@ -13,13 +13,16 @@
  *   - re-score the patient
  *
  * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
- * Plan Task 6: docs/superpowers/plans/2026-04-29-fhir-engine-modernization-implementation.md
+ * Plan: docs/superpowers/plans/2026-04-29-fhir-engine-resource-validation-implementation.md (Task 5)
  */
 import {
   SUPPORTED_RESOURCE_TYPES,
+  type FhirCondition,
+  type FhirDiagnosticReport,
   type FhirObservation,
   type FhirPatient,
   type FhirResource,
+  type FhirRiskAssessment,
   type ValidationResult,
 } from './types'
 import { FhirValidator } from './validator'
@@ -42,5 +45,12 @@ export function canValidateResourceType(resourceType: string): boolean {
  * site. The validator continues to fail honestly on unsupported types.
  */
 export function validateSupportedResource(resource: FhirResource): ValidationResult {
-  return new FhirValidator().validate(resource as FhirPatient | FhirObservation)
+  return new FhirValidator().validate(
+    resource as
+      | FhirPatient
+      | FhirObservation
+      | FhirCondition
+      | FhirRiskAssessment
+      | FhirDiagnosticReport
+  )
 }

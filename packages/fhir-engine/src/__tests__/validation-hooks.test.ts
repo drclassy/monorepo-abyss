@@ -5,15 +5,18 @@
  * symphony interop) cannot accidentally widen this surface into reasoning.
  *
  * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
- * Plan Task 6: docs/superpowers/plans/2026-04-29-fhir-engine-modernization-implementation.md
+ * Plan: docs/superpowers/plans/2026-04-29-fhir-engine-resource-validation-implementation.md (Task 5)
  */
 import { describe, expect, it } from 'vitest'
 
 import {
   canValidateResourceType,
   validateSupportedResource,
+  type FhirCondition,
+  type FhirDiagnosticReport,
   type FhirObservation,
   type FhirPatient,
+  type FhirRiskAssessment,
 } from '../index'
 
 describe('canValidateResourceType', () => {
@@ -55,6 +58,50 @@ describe('validateSupportedResource', () => {
     }
     const result = validateSupportedResource(observation)
     expect(result.valid).toBe(true)
+  })
+
+  it('passes a valid Condition through to the bounded validator', () => {
+    const condition: FhirCondition = {
+      resourceType: 'Condition',
+      clinicalStatus: { coding: [{ system: 'sys', code: 'active' }] },
+      code: { coding: [{ system: 'sys', code: 'X' }] },
+      subject: { reference: 'Patient/p-1' },
+    }
+    const result = validateSupportedResource(condition)
+    expect(result.valid).toBe(true)
+    expect(result.resourceType).toBe('Condition')
+  })
+
+  it('passes a valid RiskAssessment through to the bounded validator', () => {
+    const assessment: FhirRiskAssessment = {
+      resourceType: 'RiskAssessment',
+      status: 'final',
+      subject: { reference: 'Patient/p-1' },
+    }
+    const result = validateSupportedResource(assessment)
+    expect(result.valid).toBe(true)
+    expect(result.resourceType).toBe('RiskAssessment')
+  })
+
+  it('passes a valid DiagnosticReport through to the bounded validator', () => {
+    const report: FhirDiagnosticReport = {
+      resourceType: 'DiagnosticReport',
+      status: 'final',
+      code: { coding: [{ system: 'sys', code: 'X' }] },
+    }
+    const result = validateSupportedResource(report)
+    expect(result.valid).toBe(true)
+    expect(result.resourceType).toBe('DiagnosticReport')
+  })
+
+  it('still surfaces structural failures honestly for supported types (e.g. Condition missing subject)', () => {
+    const result = validateSupportedResource({
+      resourceType: 'Condition',
+      clinicalStatus: { coding: [{ system: 'sys', code: 'active' }] },
+      code: { coding: [{ system: 'sys', code: 'X' }] },
+    })
+    expect(result.valid).toBe(false)
+    expect(result.errors.join(' ')).toMatch(/subject/i)
   })
 
   it('rejects unknown resources honestly via the validator (no deferred types remain)', () => {
