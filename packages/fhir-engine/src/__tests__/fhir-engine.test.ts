@@ -27,7 +27,7 @@ describe('FhirValidator', () => {
       const invalidPatient = {
         resourceType: 'Patient',
         gender: 'invalid-gender', // Invalid enum value
-      } as FhirPatient
+      } as unknown as FhirPatient
 
       const result = validator.validate(invalidPatient)
 
