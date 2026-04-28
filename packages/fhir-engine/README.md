@@ -1,8 +1,50 @@
 # @the-abyss/fhir-engine
 
-FHIR R4 validation and transformation layer for the Abyss healthcare stack. Used
-by `sentra-dashboard` and `sentra-assist` to validate and normalize clinical
-data before storage or CDSS processing.
+> **Status:** Modernization in progress (R5-target). Bounded validation/normalization candidate for AADI V2 Phase 2.
+
+This package is a **bounded structural validator and normalization seam** for HL7 FHIR
+resources. It is **not** a clinical reasoning engine, **not** a terminology server, and
+**not** the home of AADI V2 interop mapping.
+
+Reasoning authority — diagnosis, traffic-light, disposition, alerts, action protocols —
+lives in [`@the-abyss/symphony`](../symphony/README.md). The mapping helpers
+`mapSymphonyResultToFhirBundle()` and `mapSymphonyResultToCdsHooksResponse()` stay there.
+
+---
+
+## What This Package Owns Today
+
+- structural validation of a small, explicit set of FHIR resources
+- a thin normalization seam (currently passthrough; honest stub, not fake transform)
+- a public surface clearly scoped to its actual capabilities
+
+## What This Package Does Not Own
+
+- clinical reasoning, scoring, or diagnosis reconstruction
+- terminology expansion (no internal CodeSystem/ValueSet expansion service)
+- mapping from `SymphonyResult` to FHIR bundles
+- multi-version FHIR conversion machinery
+- profile registry or full constraint resolution
+
+## Resource Support Matrix
+
+| Resource          | Status                         |
+| ----------------- | ------------------------------ |
+| `Patient`         | Supported (structural)         |
+| `Observation`     | Supported (structural)         |
+| `Condition`       | Not supported (rejected)       |
+| `RiskAssessment`  | Not supported (rejected)       |
+| `DiagnosticReport`| Not supported (rejected)       |
+
+Unsupported resources fail validation with an explicit
+`Unsupported resource type: <X>` error. They do not silently pass.
+
+## Version Posture
+
+The package is moving toward **HL7 FHIR R5** as the modernization target.
+Current Zod schemas reflect a bounded R4-shape transition slice; they are
+not a settled R4 utility and they do not yet cover R5-specific elements.
+See the modernization spec for the full version-strategy rationale.
 
 ## Install
 
@@ -13,25 +55,39 @@ pnpm add @the-abyss/fhir-engine
 ## Usage
 
 ```typescript
-import { validatePatient, FhirTransformer } from '@the-abyss/fhir-engine'
+import { FhirValidator, validatePatient } from '@the-abyss/fhir-engine'
 
 const result = validatePatient(rawPatient)
 if (!result.valid) {
   console.error(result.errors)
 }
-
-const internal = FhirTransformer.toInternal(rawFhirPatient)
 ```
+
+The `FhirTransformer` class exists as a **modernization placeholder** only.
+Its methods are deliberately not used in production paths until the
+honesty pass replaces their TODO bodies with explicit semantics. Do not
+treat its `toInternal()` / `toFhir()` / `normalize()` as real conversions.
 
 ## Exports
 
-| Export                | Type     | Description                                             |
-| --------------------- | -------- | ------------------------------------------------------- |
-| `FhirValidator`       | class    | FHIR R4 resource validator                              |
-| `validatePatient`     | function | Validate a FHIR Patient resource                        |
-| `validateObservation` | function | Validate a FHIR Observation resource                    |
-| `FhirTransformer`     | class    | Transform FHIR resources to/from internal domain models |
-| `FhirResource`        | type     | Base FHIR resource contract                             |
-| `FhirPatient`         | type     | FHIR R4 Patient type                                    |
-| `FhirObservation`     | type     | FHIR R4 Observation type                                |
-| `ValidationResult`    | type     | Validation result shape with errors array               |
+| Export                | Type     | Description                                                                |
+| --------------------- | -------- | -------------------------------------------------------------------------- |
+| `FhirValidator`       | class    | Bounded structural validator for the supported resource matrix             |
+| `validatePatient`     | function | Validate a FHIR `Patient` resource (structural only)                       |
+| `validateObservation` | function | Validate a FHIR `Observation` resource (structural only)                   |
+| `FhirTransformer`     | class    | Modernization placeholder — methods are bounded passthrough, not transforms |
+| `FhirResource`        | type     | Union of supported resource shapes plus a generic structural escape hatch  |
+| `FhirPatient`         | type     | Inferred from `FhirPatientSchema` (R4-shape transition slice)              |
+| `FhirObservation`     | type     | Inferred from `FhirObservationSchema` (R4-shape transition slice)          |
+| `ValidationResult`    | type     | Validation result shape with `errors` and `warnings`                       |
+
+## Modernization Roadmap
+
+Tracked in:
+
+- `docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md`
+- `docs/superpowers/plans/2026-04-29-fhir-engine-modernization-implementation.md`
+
+Until that roadmap closes, treat this package as transitional. Promotion
+of validation responsibilities from `@the-abyss/symphony/src/interop/`
+will not happen inside this package without an explicit follow-up plan.
