@@ -92,9 +92,47 @@ export const FhirObservationSchema = z.object({
     .optional(),
 })
 
+/**
+ * Shared building blocks for the deferred-resource expansion family.
+ * Kept file-local (not exported) so they cannot be misused as a public profile
+ * registry — they exist only to keep the new schemas consistent.
+ */
+const CodeableConceptSchema = z.object({
+  coding: z
+    .array(
+      z.object({
+        system: z.string(),
+        code: z.string(),
+        display: z.string().optional(),
+      })
+    )
+    .optional(),
+  text: z.string().optional(),
+})
+
+const ReferenceSchema = z.object({
+  reference: z.string(),
+})
+
+export const FhirConditionSchema = z.object({
+  resourceType: z.literal('Condition'),
+  id: z.string().optional(),
+  clinicalStatus: CodeableConceptSchema,
+  verificationStatus: CodeableConceptSchema.optional(),
+  category: z.array(CodeableConceptSchema).optional(),
+  code: CodeableConceptSchema,
+  subject: ReferenceSchema,
+  encounter: ReferenceSchema.optional(),
+})
+
 export type FhirPatient = z.infer<typeof FhirPatientSchema>
 export type FhirObservation = z.infer<typeof FhirObservationSchema>
-export type FhirResource = FhirPatient | FhirObservation | Record<string, unknown>
+export type FhirCondition = z.infer<typeof FhirConditionSchema>
+export type FhirResource =
+  | FhirPatient
+  | FhirObservation
+  | FhirCondition
+  | Record<string, unknown>
 
 export interface ValidationResult {
   valid: boolean
@@ -112,7 +150,7 @@ export interface ValidationResult {
  *   3. a test in validator.test.ts
  *   4. a README support-matrix update
  */
-export const SUPPORTED_RESOURCE_TYPES = ['Patient', 'Observation'] as const
+export const SUPPORTED_RESOURCE_TYPES = ['Patient', 'Observation', 'Condition'] as const
 export type SupportedResourceType = (typeof SUPPORTED_RESOURCE_TYPES)[number]
 
 /**
@@ -120,9 +158,5 @@ export type SupportedResourceType = (typeof SUPPORTED_RESOURCE_TYPES)[number]
  * baseline. AADI V2 interop adapters in `@the-abyss/symphony` may construct
  * these resources, but THIS package does not validate them yet.
  */
-export const DEFERRED_RESOURCE_TYPES = [
-  'Condition',
-  'RiskAssessment',
-  'DiagnosticReport',
-] as const
+export const DEFERRED_RESOURCE_TYPES = ['RiskAssessment', 'DiagnosticReport'] as const
 export type DeferredResourceType = (typeof DEFERRED_RESOURCE_TYPES)[number]

@@ -20,10 +20,10 @@ describe('canValidateResourceType', () => {
   it('returns true for declared supported types', () => {
     expect(canValidateResourceType('Patient')).toBe(true)
     expect(canValidateResourceType('Observation')).toBe(true)
+    expect(canValidateResourceType('Condition')).toBe(true)
   })
 
   it('returns false for declared deferred types', () => {
-    expect(canValidateResourceType('Condition')).toBe(false)
     expect(canValidateResourceType('RiskAssessment')).toBe(false)
     expect(canValidateResourceType('DiagnosticReport')).toBe(false)
   })
@@ -60,13 +60,13 @@ describe('validateSupportedResource', () => {
     expect(result.valid).toBe(true)
   })
 
-  it('rejects deferred resources honestly via the validator', () => {
+  it('rejects still-deferred resources honestly via the validator', () => {
     const result = validateSupportedResource({
-      resourceType: 'Condition',
-      id: 'cond-hooks-1',
+      resourceType: 'RiskAssessment',
+      id: 'risk-hooks-1',
     })
     expect(result.valid).toBe(false)
-    expect(result.errors[0]).toContain('Unsupported resource type: Condition')
+    expect(result.errors[0]).toContain('Unsupported resource type: RiskAssessment')
   })
 
   it('does not reinterpret severity, disposition, or clinical meaning', () => {

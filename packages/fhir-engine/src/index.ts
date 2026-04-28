@@ -6,8 +6,13 @@
 //
 // See README.md for the full support matrix and modernization roadmap.
 
-/** Bounded structural validator for the supported FHIR resource matrix (Patient, Observation). */
-export { FhirValidator, validatePatient, validateObservation } from './validator'
+/** Bounded structural validator for the supported FHIR resource matrix (Patient, Observation, Condition). */
+export {
+  FhirValidator,
+  validateCondition,
+  validateObservation,
+  validatePatient,
+} from './validator'
 
 /**
  * Modernization placeholder — methods are deliberately bounded passthrough.
@@ -19,6 +24,7 @@ export { FhirTransformer } from './transformer'
 /** Bounded FHIR type contracts — current schemas are an R4-shape transition slice on the way to R5. */
 export type {
   DeferredResourceType,
+  FhirCondition,
   FhirObservation,
   FhirPatient,
   FhirResource,

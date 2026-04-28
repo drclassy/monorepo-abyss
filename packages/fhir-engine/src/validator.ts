@@ -2,10 +2,12 @@ import { z } from 'zod'
 
 import {
   DEFERRED_RESOURCE_TYPES,
+  FhirConditionSchema,
   FhirObservationSchema,
   FhirPatientSchema,
   SUPPORTED_RESOURCE_TYPES,
   type DeferredResourceType,
+  type FhirCondition,
   type FhirObservation,
   type FhirPatient,
   type ValidationResult,
@@ -16,7 +18,9 @@ function isDeferred(resourceType: string): resourceType is DeferredResourceType 
 }
 
 export class FhirValidator {
-  validate<T extends FhirPatient | FhirObservation>(resource: T): ValidationResult {
+  validate<T extends FhirPatient | FhirObservation | FhirCondition>(
+    resource: T
+  ): ValidationResult {
     const resourceType = resource.resourceType
 
     try {
@@ -24,6 +28,8 @@ export class FhirValidator {
         FhirPatientSchema.parse(resource)
       } else if (resourceType === 'Observation') {
         FhirObservationSchema.parse(resource)
+      } else if (resourceType === 'Condition') {
+        FhirConditionSchema.parse(resource)
       } else if (isDeferred(resourceType)) {
         return {
           valid: false,
@@ -74,4 +80,8 @@ export function validatePatient(patient: FhirPatient): ValidationResult {
 
 export function validateObservation(observation: FhirObservation): ValidationResult {
   return new FhirValidator().validate(observation)
+}
+
+export function validateCondition(condition: FhirCondition): ValidationResult {
+  return new FhirValidator().validate(condition)
 }

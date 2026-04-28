@@ -32,7 +32,7 @@ lives in [`@the-abyss/symphony`](../symphony/README.md). The mapping helpers
 | ----------------- | ------------------------------ |
 | `Patient`         | Supported (structural)         |
 | `Observation`     | Supported (structural)         |
-| `Condition`       | Not supported (rejected)       |
+| `Condition`       | Supported (structural)         |
 | `RiskAssessment`  | Not supported (rejected)       |
 | `DiagnosticReport`| Not supported (rejected)       |
 
@@ -75,10 +75,12 @@ treat its `toInternal()` / `toFhir()` / `normalize()` as real conversions.
 | `FhirValidator`       | class    | Bounded structural validator for the supported resource matrix             |
 | `validatePatient`     | function | Validate a FHIR `Patient` resource (structural only)                       |
 | `validateObservation` | function | Validate a FHIR `Observation` resource (structural only)                   |
+| `validateCondition`   | function | Validate a FHIR `Condition` resource (structural only, bounded R5 slice)   |
 | `FhirTransformer`     | class    | Modernization placeholder — methods are bounded passthrough, not transforms |
 | `FhirResource`        | type     | Union of supported resource shapes plus a generic structural escape hatch  |
 | `FhirPatient`         | type     | Inferred from `FhirPatientSchema` (R4-shape transition slice)              |
 | `FhirObservation`     | type     | Inferred from `FhirObservationSchema` (R4-shape transition slice)          |
+| `FhirCondition`       | type     | Inferred from `FhirConditionSchema` (R5-bounded structural slice)          |
 | `ValidationResult`    | type     | Validation result shape with `errors` and `warnings`                       |
 
 ## Modernization Roadmap
