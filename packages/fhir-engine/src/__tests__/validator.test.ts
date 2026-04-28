@@ -3,8 +3,8 @@
  *
  * These tests pin the declared support matrix in code (not just docs):
  *
- *   Supported : Patient, Observation, Condition
- *   Deferred  : RiskAssessment, DiagnosticReport
+ *   Supported : Patient, Observation, Condition, RiskAssessment
+ *   Deferred  : DiagnosticReport
  *
  * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
  * Plan Task 4: docs/superpowers/plans/2026-04-29-fhir-engine-modernization-implementation.md
@@ -16,9 +16,11 @@ import {
   FhirValidator,
   SUPPORTED_RESOURCE_TYPES,
   validateCondition,
+  validateRiskAssessment,
   type FhirCondition,
   type FhirObservation,
   type FhirPatient,
+  type FhirRiskAssessment,
 } from '../index'
 
 describe('FhirValidator support matrix', () => {
@@ -127,19 +129,89 @@ describe('FhirValidator support matrix', () => {
       }
       expect(validateCondition(condition).valid).toBe(true)
     })
+
+    it('RiskAssessment passes with the bounded required slots (status, subject)', () => {
+      const assessment: FhirRiskAssessment = {
+        resourceType: 'RiskAssessment',
+        id: 'risk-supported-1',
+        status: 'final',
+        subject: { reference: 'Patient/pat-1' },
+      }
+      const result = new FhirValidator().validate(assessment)
+      expect(result.valid).toBe(true)
+      expect(result.errors).toHaveLength(0)
+      expect(result.resourceType).toBe('RiskAssessment')
+    })
+
+    it('RiskAssessment passes with optional prediction[] populated', () => {
+      const assessment: FhirRiskAssessment = {
+        resourceType: 'RiskAssessment',
+        status: 'final',
+        subject: { reference: 'Patient/p-1' },
+        occurrenceDateTime: '2026-04-29T00:00:00.000Z',
+        prediction: [
+          {
+            outcome: { coding: [{ system: 'sys', code: 'sepsis' }] },
+            probabilityDecimal: 0.42,
+            qualitativeRisk: { coding: [{ system: 'sys', code: 'high' }] },
+            rationale: 'NEWS2 trajectory rising',
+          },
+        ],
+      }
+      const result = new FhirValidator().validate(assessment)
+      expect(result.valid).toBe(true)
+    })
+
+    it('RiskAssessment fails when status is missing', () => {
+      const result = new FhirValidator().validate({
+        resourceType: 'RiskAssessment',
+        subject: { reference: 'Patient/p-1' },
+      } as unknown as FhirRiskAssessment)
+      expect(result.valid).toBe(false)
+      expect(result.errors.join(' ')).toMatch(/status/i)
+    })
+
+    it('RiskAssessment fails when subject.reference is missing', () => {
+      const result = new FhirValidator().validate({
+        resourceType: 'RiskAssessment',
+        status: 'final',
+      } as unknown as FhirRiskAssessment)
+      expect(result.valid).toBe(false)
+      expect(result.errors.join(' ')).toMatch(/subject/i)
+    })
+
+    it('RiskAssessment fails when status is not in the FHIR R5 enum', () => {
+      const result = new FhirValidator().validate({
+        resourceType: 'RiskAssessment',
+        status: 'definitely-not-a-status',
+        subject: { reference: 'Patient/p-1' },
+      } as unknown as FhirRiskAssessment)
+      expect(result.valid).toBe(false)
+      expect(result.errors.join(' ')).toMatch(/status/i)
+    })
+
+    it('RiskAssessment fails when prediction[] entries are malformed (non-object)', () => {
+      const result = new FhirValidator().validate({
+        resourceType: 'RiskAssessment',
+        status: 'final',
+        subject: { reference: 'Patient/p-1' },
+        prediction: ['not-an-object'],
+      } as unknown as FhirRiskAssessment)
+      expect(result.valid).toBe(false)
+      expect(result.errors.join(' ')).toMatch(/prediction/i)
+    })
+
+    it('validateRiskAssessment() helper produces the same result as FhirValidator', () => {
+      const assessment: FhirRiskAssessment = {
+        resourceType: 'RiskAssessment',
+        status: 'final',
+        subject: { reference: 'Patient/p-1' },
+      }
+      expect(validateRiskAssessment(assessment).valid).toBe(true)
+    })
   })
 
   describe('deferred resources fail honestly with explicit error', () => {
-    it('RiskAssessment is rejected with explicit deferred messaging', () => {
-      const result = new FhirValidator().validate({
-        resourceType: 'RiskAssessment',
-        id: 'risk-1',
-      } as never)
-      expect(result.valid).toBe(false)
-      expect(result.errors[0]).toContain('Unsupported resource type: RiskAssessment')
-      expect(result.errors[0]).toContain('@the-abyss/symphony')
-    })
-
     it('DiagnosticReport is rejected with explicit deferred messaging', () => {
       const result = new FhirValidator().validate({
         resourceType: 'DiagnosticReport',
@@ -165,12 +237,17 @@ describe('FhirValidator support matrix', () => {
   })
 
   describe('declared support matrix consts stay aligned', () => {
-    it('SUPPORTED_RESOURCE_TYPES contains exactly Patient, Observation, and Condition', () => {
-      expect([...SUPPORTED_RESOURCE_TYPES]).toEqual(['Patient', 'Observation', 'Condition'])
+    it('SUPPORTED_RESOURCE_TYPES contains Patient, Observation, Condition, RiskAssessment', () => {
+      expect([...SUPPORTED_RESOURCE_TYPES]).toEqual([
+        'Patient',
+        'Observation',
+        'Condition',
+        'RiskAssessment',
+      ])
     })
 
-    it('DEFERRED_RESOURCE_TYPES contains exactly RiskAssessment and DiagnosticReport', () => {
-      expect([...DEFERRED_RESOURCE_TYPES]).toEqual(['RiskAssessment', 'DiagnosticReport'])
+    it('DEFERRED_RESOURCE_TYPES contains exactly DiagnosticReport', () => {
+      expect([...DEFERRED_RESOURCE_TYPES]).toEqual(['DiagnosticReport'])
     })
 
     it('supported and deferred sets do not overlap', () => {

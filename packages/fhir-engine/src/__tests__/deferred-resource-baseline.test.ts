@@ -15,22 +15,8 @@ import { describe, expect, it } from 'vitest'
 import { DEFERRED_RESOURCE_TYPES, FhirValidator } from '../index'
 
 describe('deferred resource baseline (pre-promotion)', () => {
-  it('RiskAssessment is currently in DEFERRED_RESOURCE_TYPES', () => {
-    expect((DEFERRED_RESOURCE_TYPES as readonly string[])).toContain('RiskAssessment')
-  })
-
   it('DiagnosticReport is currently in DEFERRED_RESOURCE_TYPES', () => {
     expect((DEFERRED_RESOURCE_TYPES as readonly string[])).toContain('DiagnosticReport')
-  })
-
-  it('RiskAssessment is rejected with deferred-pointer error', () => {
-    const result = new FhirValidator().validate({
-      resourceType: 'RiskAssessment',
-      id: 'risk-deferred-1',
-    } as never)
-    expect(result.valid).toBe(false)
-    expect(result.errors[0]).toContain('Unsupported resource type: RiskAssessment')
-    expect(result.errors[0]).toContain('@the-abyss/symphony')
   })
 
   it('DiagnosticReport is rejected with deferred-pointer error', () => {

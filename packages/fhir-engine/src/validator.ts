@@ -5,11 +5,13 @@ import {
   FhirConditionSchema,
   FhirObservationSchema,
   FhirPatientSchema,
+  FhirRiskAssessmentSchema,
   SUPPORTED_RESOURCE_TYPES,
   type DeferredResourceType,
   type FhirCondition,
   type FhirObservation,
   type FhirPatient,
+  type FhirRiskAssessment,
   type ValidationResult,
 } from './types'
 
@@ -18,7 +20,7 @@ function isDeferred(resourceType: string): resourceType is DeferredResourceType 
 }
 
 export class FhirValidator {
-  validate<T extends FhirPatient | FhirObservation | FhirCondition>(
+  validate<T extends FhirPatient | FhirObservation | FhirCondition | FhirRiskAssessment>(
     resource: T
   ): ValidationResult {
     const resourceType = resource.resourceType
@@ -30,6 +32,8 @@ export class FhirValidator {
         FhirObservationSchema.parse(resource)
       } else if (resourceType === 'Condition') {
         FhirConditionSchema.parse(resource)
+      } else if (resourceType === 'RiskAssessment') {
+        FhirRiskAssessmentSchema.parse(resource)
       } else if (isDeferred(resourceType)) {
         return {
           valid: false,
@@ -84,4 +88,8 @@ export function validateObservation(observation: FhirObservation): ValidationRes
 
 export function validateCondition(condition: FhirCondition): ValidationResult {
   return new FhirValidator().validate(condition)
+}
+
+export function validateRiskAssessment(assessment: FhirRiskAssessment): ValidationResult {
+  return new FhirValidator().validate(assessment)
 }

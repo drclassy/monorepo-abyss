@@ -50,16 +50,9 @@ describe('fhir-engine modernization baseline', () => {
     // now lives in validator.test.ts; deferred-state coverage was removed
     // from the deferred-resource-baseline test file at the same time.
 
-    it('RiskAssessment is rejected with explicit "Unsupported resource type" error', () => {
-      const validator = new FhirValidator()
-      const result = validator.validate({
-        resourceType: 'RiskAssessment',
-        id: 'risk-baseline-1',
-      } as never)
-      expect(result.valid).toBe(false)
-      expect(result.errors[0]).toContain('Unsupported resource type')
-      expect(result.resourceType).toBe('RiskAssessment')
-    })
+    // RiskAssessment was promoted from deferred to supported in the
+    // resource-validation expansion plan (Task 3). Positive validator coverage
+    // now lives in validator.test.ts.
 
     it('DiagnosticReport is rejected with explicit "Unsupported resource type" error', () => {
       const validator = new FhirValidator()

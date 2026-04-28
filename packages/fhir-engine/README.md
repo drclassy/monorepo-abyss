@@ -33,7 +33,7 @@ lives in [`@the-abyss/symphony`](../symphony/README.md). The mapping helpers
 | `Patient`         | Supported (structural)         |
 | `Observation`     | Supported (structural)         |
 | `Condition`       | Supported (structural)         |
-| `RiskAssessment`  | Not supported (rejected)       |
+| `RiskAssessment`  | Supported (structural)         |
 | `DiagnosticReport`| Not supported (rejected)       |
 
 Unsupported resources fail validation with an explicit
@@ -76,11 +76,13 @@ treat its `toInternal()` / `toFhir()` / `normalize()` as real conversions.
 | `validatePatient`     | function | Validate a FHIR `Patient` resource (structural only)                       |
 | `validateObservation` | function | Validate a FHIR `Observation` resource (structural only)                   |
 | `validateCondition`   | function | Validate a FHIR `Condition` resource (structural only, bounded R5 slice)   |
+| `validateRiskAssessment` | function | Validate a FHIR `RiskAssessment` resource (structural only, no traffic-light) |
 | `FhirTransformer`     | class    | Modernization placeholder — methods are bounded passthrough, not transforms |
 | `FhirResource`        | type     | Union of supported resource shapes plus a generic structural escape hatch  |
 | `FhirPatient`         | type     | Inferred from `FhirPatientSchema` (R4-shape transition slice)              |
 | `FhirObservation`     | type     | Inferred from `FhirObservationSchema` (R4-shape transition slice)          |
 | `FhirCondition`       | type     | Inferred from `FhirConditionSchema` (R5-bounded structural slice)          |
+| `FhirRiskAssessment`  | type     | Inferred from `FhirRiskAssessmentSchema` (R5-bounded structural slice)     |
 | `ValidationResult`    | type     | Validation result shape with `errors` and `warnings`                       |
 
 ## Modernization Roadmap

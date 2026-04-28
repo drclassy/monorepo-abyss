@@ -125,13 +125,40 @@ export const FhirConditionSchema = z.object({
   encounter: ReferenceSchema.optional(),
 })
 
+const RiskAssessmentPredictionSchema = z.object({
+  outcome: CodeableConceptSchema.optional(),
+  probabilityDecimal: z.number().optional(),
+  qualitativeRisk: CodeableConceptSchema.optional(),
+  rationale: z.string().optional(),
+})
+
+export const FhirRiskAssessmentSchema = z.object({
+  resourceType: z.literal('RiskAssessment'),
+  id: z.string().optional(),
+  status: z.enum([
+    'registered',
+    'preliminary',
+    'final',
+    'amended',
+    'corrected',
+    'cancelled',
+    'entered-in-error',
+  ]),
+  subject: ReferenceSchema,
+  occurrenceDateTime: z.string().optional(),
+  encounter: ReferenceSchema.optional(),
+  prediction: z.array(RiskAssessmentPredictionSchema).optional(),
+})
+
 export type FhirPatient = z.infer<typeof FhirPatientSchema>
 export type FhirObservation = z.infer<typeof FhirObservationSchema>
 export type FhirCondition = z.infer<typeof FhirConditionSchema>
+export type FhirRiskAssessment = z.infer<typeof FhirRiskAssessmentSchema>
 export type FhirResource =
   | FhirPatient
   | FhirObservation
   | FhirCondition
+  | FhirRiskAssessment
   | Record<string, unknown>
 
 export interface ValidationResult {
@@ -150,7 +177,12 @@ export interface ValidationResult {
  *   3. a test in validator.test.ts
  *   4. a README support-matrix update
  */
-export const SUPPORTED_RESOURCE_TYPES = ['Patient', 'Observation', 'Condition'] as const
+export const SUPPORTED_RESOURCE_TYPES = [
+  'Patient',
+  'Observation',
+  'Condition',
+  'RiskAssessment',
+] as const
 export type SupportedResourceType = (typeof SUPPORTED_RESOURCE_TYPES)[number]
 
 /**
@@ -158,5 +190,5 @@ export type SupportedResourceType = (typeof SUPPORTED_RESOURCE_TYPES)[number]
  * baseline. AADI V2 interop adapters in `@the-abyss/symphony` may construct
  * these resources, but THIS package does not validate them yet.
  */
-export const DEFERRED_RESOURCE_TYPES = ['RiskAssessment', 'DiagnosticReport'] as const
+export const DEFERRED_RESOURCE_TYPES = ['DiagnosticReport'] as const
 export type DeferredResourceType = (typeof DEFERRED_RESOURCE_TYPES)[number]

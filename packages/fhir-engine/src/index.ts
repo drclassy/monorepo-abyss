@@ -6,12 +6,13 @@
 //
 // See README.md for the full support matrix and modernization roadmap.
 
-/** Bounded structural validator for the supported FHIR resource matrix (Patient, Observation, Condition). */
+/** Bounded structural validator for the supported FHIR resource matrix (Patient, Observation, Condition, RiskAssessment). */
 export {
   FhirValidator,
   validateCondition,
   validateObservation,
   validatePatient,
+  validateRiskAssessment,
 } from './validator'
 
 /**
@@ -28,6 +29,7 @@ export type {
   FhirObservation,
   FhirPatient,
   FhirResource,
+  FhirRiskAssessment,
   SupportedResourceType,
   ValidationResult,
 } from './types'
