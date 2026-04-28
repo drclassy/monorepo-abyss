@@ -102,3 +102,27 @@ export interface ValidationResult {
   warnings: string[]
   resourceType: string
 }
+
+/**
+ * Resource types this package currently validates.
+ *
+ * Adding to this list requires:
+ *   1. a Zod schema for the resource
+ *   2. validator branch coverage
+ *   3. a test in validator.test.ts
+ *   4. a README support-matrix update
+ */
+export const SUPPORTED_RESOURCE_TYPES = ['Patient', 'Observation'] as const
+export type SupportedResourceType = (typeof SUPPORTED_RESOURCE_TYPES)[number]
+
+/**
+ * Resource types explicitly declared out of scope for the current modernization
+ * baseline. AADI V2 interop adapters in `@the-abyss/symphony` may construct
+ * these resources, but THIS package does not validate them yet.
+ */
+export const DEFERRED_RESOURCE_TYPES = [
+  'Condition',
+  'RiskAssessment',
+  'DiagnosticReport',
+] as const
+export type DeferredResourceType = (typeof DEFERRED_RESOURCE_TYPES)[number]

@@ -1,7 +1,19 @@
 import { z } from 'zod'
 
-import type { FhirPatient, FhirObservation, ValidationResult } from './types'
-import { FhirPatientSchema, FhirObservationSchema } from './types'
+import {
+  DEFERRED_RESOURCE_TYPES,
+  FhirObservationSchema,
+  FhirPatientSchema,
+  SUPPORTED_RESOURCE_TYPES,
+  type DeferredResourceType,
+  type FhirObservation,
+  type FhirPatient,
+  type ValidationResult,
+} from './types'
+
+function isDeferred(resourceType: string): resourceType is DeferredResourceType {
+  return (DEFERRED_RESOURCE_TYPES as readonly string[]).includes(resourceType)
+}
 
 export class FhirValidator {
   validate<T extends FhirPatient | FhirObservation>(resource: T): ValidationResult {
@@ -12,10 +24,25 @@ export class FhirValidator {
         FhirPatientSchema.parse(resource)
       } else if (resourceType === 'Observation') {
         FhirObservationSchema.parse(resource)
+      } else if (isDeferred(resourceType)) {
+        return {
+          valid: false,
+          errors: [
+            `Unsupported resource type: ${resourceType}. Declared deferred for the ` +
+              `current fhir-engine modernization baseline; supported types are ` +
+              `[${SUPPORTED_RESOURCE_TYPES.join(', ')}]. AADI V2 interop construction ` +
+              `for ${resourceType} lives in @the-abyss/symphony.`,
+          ],
+          warnings: [],
+          resourceType,
+        }
       } else {
         return {
           valid: false,
-          errors: [`Unsupported resource type: ${resourceType}`],
+          errors: [
+            `Unsupported resource type: ${resourceType}. Supported types are ` +
+              `[${SUPPORTED_RESOURCE_TYPES.join(', ')}].`,
+          ],
           warnings: [],
           resourceType,
         }

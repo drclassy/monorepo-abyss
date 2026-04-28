@@ -17,4 +17,14 @@ export { FhirValidator, validatePatient, validateObservation } from './validator
 export { FhirTransformer } from './transformer'
 
 /** Bounded FHIR type contracts — current schemas are an R4-shape transition slice on the way to R5. */
-export type { FhirResource, FhirPatient, FhirObservation, ValidationResult } from './types'
+export type {
+  DeferredResourceType,
+  FhirObservation,
+  FhirPatient,
+  FhirResource,
+  SupportedResourceType,
+  ValidationResult,
+} from './types'
+
+/** Declared resource support matrix. Adding to either list requires a docs + test update. */
+export { DEFERRED_RESOURCE_TYPES, SUPPORTED_RESOURCE_TYPES } from './types'
