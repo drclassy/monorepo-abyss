@@ -3,12 +3,14 @@ import { z } from 'zod'
 import {
   DEFERRED_RESOURCE_TYPES,
   FhirConditionSchema,
+  FhirDiagnosticReportSchema,
   FhirObservationSchema,
   FhirPatientSchema,
   FhirRiskAssessmentSchema,
   SUPPORTED_RESOURCE_TYPES,
   type DeferredResourceType,
   type FhirCondition,
+  type FhirDiagnosticReport,
   type FhirObservation,
   type FhirPatient,
   type FhirRiskAssessment,
@@ -20,9 +22,14 @@ function isDeferred(resourceType: string): resourceType is DeferredResourceType 
 }
 
 export class FhirValidator {
-  validate<T extends FhirPatient | FhirObservation | FhirCondition | FhirRiskAssessment>(
-    resource: T
-  ): ValidationResult {
+  validate<
+    T extends
+      | FhirPatient
+      | FhirObservation
+      | FhirCondition
+      | FhirRiskAssessment
+      | FhirDiagnosticReport,
+  >(resource: T): ValidationResult {
     const resourceType = resource.resourceType
 
     try {
@@ -34,6 +41,8 @@ export class FhirValidator {
         FhirConditionSchema.parse(resource)
       } else if (resourceType === 'RiskAssessment') {
         FhirRiskAssessmentSchema.parse(resource)
+      } else if (resourceType === 'DiagnosticReport') {
+        FhirDiagnosticReportSchema.parse(resource)
       } else if (isDeferred(resourceType)) {
         return {
           valid: false,
@@ -92,4 +101,8 @@ export function validateCondition(condition: FhirCondition): ValidationResult {
 
 export function validateRiskAssessment(assessment: FhirRiskAssessment): ValidationResult {
   return new FhirValidator().validate(assessment)
+}
+
+export function validateDiagnosticReport(report: FhirDiagnosticReport): ValidationResult {
+  return new FhirValidator().validate(report)
 }

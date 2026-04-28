@@ -3,8 +3,8 @@
  *
  * These tests pin the declared support matrix in code (not just docs):
  *
- *   Supported : Patient, Observation, Condition, RiskAssessment
- *   Deferred  : DiagnosticReport
+ *   Supported : Patient, Observation, Condition, RiskAssessment, DiagnosticReport
+ *   Deferred  : (none — all three deferred families promoted in Tasks 2–4)
  *
  * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
  * Plan Task 4: docs/superpowers/plans/2026-04-29-fhir-engine-modernization-implementation.md
@@ -16,8 +16,10 @@ import {
   FhirValidator,
   SUPPORTED_RESOURCE_TYPES,
   validateCondition,
+  validateDiagnosticReport,
   validateRiskAssessment,
   type FhirCondition,
+  type FhirDiagnosticReport,
   type FhirObservation,
   type FhirPatient,
   type FhirRiskAssessment,
@@ -209,17 +211,85 @@ describe('FhirValidator support matrix', () => {
       }
       expect(validateRiskAssessment(assessment).valid).toBe(true)
     })
-  })
 
-  describe('deferred resources fail honestly with explicit error', () => {
-    it('DiagnosticReport is rejected with explicit deferred messaging', () => {
+    it('DiagnosticReport passes with the bounded required slots (status, code)', () => {
+      const report: FhirDiagnosticReport = {
+        resourceType: 'DiagnosticReport',
+        id: 'dr-supported-1',
+        status: 'final',
+        code: {
+          coding: [{ system: 'http://loinc.org', code: '24323-8', display: 'Comprehensive metabolic 2000 panel' }],
+        },
+      }
+      const result = new FhirValidator().validate(report)
+      expect(result.valid).toBe(true)
+      expect(result.errors).toHaveLength(0)
+      expect(result.resourceType).toBe('DiagnosticReport')
+    })
+
+    it('DiagnosticReport passes with optional subject, result[], conclusion populated', () => {
+      const report: FhirDiagnosticReport = {
+        resourceType: 'DiagnosticReport',
+        status: 'final',
+        code: { coding: [{ system: 'sys', code: 'X' }] },
+        subject: { reference: 'Patient/p-1' },
+        effectiveDateTime: '2026-04-29T00:00:00.000Z',
+        result: [
+          { reference: 'Observation/obs-1' },
+          { reference: 'Observation/obs-2' },
+        ],
+        conclusion: 'Within reference range.',
+      }
+      const result = new FhirValidator().validate(report)
+      expect(result.valid).toBe(true)
+    })
+
+    it('DiagnosticReport fails when status is missing', () => {
       const result = new FhirValidator().validate({
         resourceType: 'DiagnosticReport',
-        id: 'dr-1',
-      } as never)
+        code: { coding: [{ system: 'sys', code: 'X' }] },
+      } as unknown as FhirDiagnosticReport)
       expect(result.valid).toBe(false)
-      expect(result.errors[0]).toContain('Unsupported resource type: DiagnosticReport')
-      expect(result.errors[0]).toContain('@the-abyss/symphony')
+      expect(result.errors.join(' ')).toMatch(/status/i)
+    })
+
+    it('DiagnosticReport fails when code is missing', () => {
+      const result = new FhirValidator().validate({
+        resourceType: 'DiagnosticReport',
+        status: 'final',
+      } as unknown as FhirDiagnosticReport)
+      expect(result.valid).toBe(false)
+      expect(result.errors.join(' ')).toMatch(/code/i)
+    })
+
+    it('DiagnosticReport fails when status is not in the FHIR R5 enum', () => {
+      const result = new FhirValidator().validate({
+        resourceType: 'DiagnosticReport',
+        status: 'definitely-not-a-status',
+        code: { coding: [{ system: 'sys', code: 'X' }] },
+      } as unknown as FhirDiagnosticReport)
+      expect(result.valid).toBe(false)
+      expect(result.errors.join(' ')).toMatch(/status/i)
+    })
+
+    it('DiagnosticReport fails when result[] entry is malformed (missing reference)', () => {
+      const result = new FhirValidator().validate({
+        resourceType: 'DiagnosticReport',
+        status: 'final',
+        code: { coding: [{ system: 'sys', code: 'X' }] },
+        result: [{}],
+      } as unknown as FhirDiagnosticReport)
+      expect(result.valid).toBe(false)
+      expect(result.errors.join(' ')).toMatch(/result|reference/i)
+    })
+
+    it('validateDiagnosticReport() helper produces the same result as FhirValidator', () => {
+      const report: FhirDiagnosticReport = {
+        resourceType: 'DiagnosticReport',
+        status: 'final',
+        code: { coding: [{ system: 'sys', code: 'X' }] },
+      }
+      expect(validateDiagnosticReport(report).valid).toBe(true)
     })
   })
 
@@ -237,17 +307,18 @@ describe('FhirValidator support matrix', () => {
   })
 
   describe('declared support matrix consts stay aligned', () => {
-    it('SUPPORTED_RESOURCE_TYPES contains Patient, Observation, Condition, RiskAssessment', () => {
+    it('SUPPORTED_RESOURCE_TYPES contains all 5 promoted resources', () => {
       expect([...SUPPORTED_RESOURCE_TYPES]).toEqual([
         'Patient',
         'Observation',
         'Condition',
         'RiskAssessment',
+        'DiagnosticReport',
       ])
     })
 
-    it('DEFERRED_RESOURCE_TYPES contains exactly DiagnosticReport', () => {
-      expect([...DEFERRED_RESOURCE_TYPES]).toEqual(['DiagnosticReport'])
+    it('DEFERRED_RESOURCE_TYPES is empty after Tasks 2–4 promotions', () => {
+      expect([...DEFERRED_RESOURCE_TYPES]).toEqual([])
     })
 
     it('supported and deferred sets do not overlap', () => {

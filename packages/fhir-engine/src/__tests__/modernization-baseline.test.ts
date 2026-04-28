@@ -54,15 +54,19 @@ describe('fhir-engine modernization baseline', () => {
     // resource-validation expansion plan (Task 3). Positive validator coverage
     // now lives in validator.test.ts.
 
-    it('DiagnosticReport is rejected with explicit "Unsupported resource type" error', () => {
+    // DiagnosticReport was promoted from deferred to supported in the
+    // resource-validation expansion plan (Task 4). Positive validator coverage
+    // now lives in validator.test.ts.
+
+    it('Medication (never declared, never supported) is still rejected with explicit error', () => {
       const validator = new FhirValidator()
       const result = validator.validate({
-        resourceType: 'DiagnosticReport',
-        id: 'dr-baseline-1',
+        resourceType: 'Medication',
+        id: 'med-baseline-1',
       } as never)
       expect(result.valid).toBe(false)
       expect(result.errors[0]).toContain('Unsupported resource type')
-      expect(result.resourceType).toBe('DiagnosticReport')
+      expect(result.resourceType).toBe('Medication')
     })
   })
 

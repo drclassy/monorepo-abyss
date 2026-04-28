@@ -22,10 +22,7 @@ describe('canValidateResourceType', () => {
     expect(canValidateResourceType('Observation')).toBe(true)
     expect(canValidateResourceType('Condition')).toBe(true)
     expect(canValidateResourceType('RiskAssessment')).toBe(true)
-  })
-
-  it('returns false for declared deferred types', () => {
-    expect(canValidateResourceType('DiagnosticReport')).toBe(false)
+    expect(canValidateResourceType('DiagnosticReport')).toBe(true)
   })
 
   it('returns false for unknown / arbitrary resource types', () => {
@@ -60,13 +57,13 @@ describe('validateSupportedResource', () => {
     expect(result.valid).toBe(true)
   })
 
-  it('rejects still-deferred resources honestly via the validator', () => {
+  it('rejects unknown resources honestly via the validator (no deferred types remain)', () => {
     const result = validateSupportedResource({
-      resourceType: 'DiagnosticReport',
-      id: 'dr-hooks-1',
+      resourceType: 'Medication',
+      id: 'med-hooks-1',
     })
     expect(result.valid).toBe(false)
-    expect(result.errors[0]).toContain('Unsupported resource type: DiagnosticReport')
+    expect(result.errors[0]).toContain('Unsupported resource type: Medication')
   })
 
   it('does not reinterpret severity, disposition, or clinical meaning', () => {
