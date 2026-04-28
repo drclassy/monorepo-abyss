@@ -79,46 +79,27 @@ describe('fhir-engine modernization baseline', () => {
     })
   })
 
-  describe('transformer current behavior (cast-only — to be made honest in Task 3)', () => {
-    it('normalize() is currently a passthrough — no version normalization implemented', () => {
+  describe('transformer surface (honesty-pass locked behavior)', () => {
+    it('normalize() throws — version normalization is not implemented', () => {
       const transformer = new FhirTransformer()
       const observation: FhirObservation = {
         resourceType: 'Observation',
         status: 'final',
-        code: {
-          coding: [{ system: 'urn:test', code: 'abc', display: 'abc' }],
-        },
+        code: { coding: [{ system: 'urn:test', code: 'abc', display: 'abc' }] },
       }
-      const normalized = transformer.normalize(observation)
-      // Locks current behavior: returns input unchanged (TODO in transformer.ts:25).
-      // Task 3 will replace this with an explicit honesty decision.
-      expect(normalized).toEqual(observation)
+      expect(() => transformer.normalize(observation)).toThrow(/not implemented/i)
     })
 
-    it('toInternal() currently performs no transformation — it casts the input through', () => {
+    it('toInternal() throws — FHIR-to-internal mapping is not part of this package', () => {
       const transformer = new FhirTransformer()
-      const patient: FhirPatient = {
-        resourceType: 'Patient',
-        id: 'pat-baseline-2',
-        name: [{ family: 'Doe', given: ['John'] }],
-      }
-      const internal = transformer.toInternal<FhirPatient>(patient)
-      // Locks current behavior: cast-only (TODO in transformer.ts:9).
-      // Task 3 will replace with explicit unsupported/throw or removal.
-      expect(internal).toEqual(patient)
+      const patient: FhirPatient = { resourceType: 'Patient', id: 'pat-baseline-2' }
+      expect(() => transformer.toInternal<FhirPatient>(patient)).toThrow(/not implemented/i)
     })
 
-    it('toFhir() currently performs no transformation — it casts the input through', () => {
+    it('toFhir() throws — internal-to-FHIR construction belongs to @the-abyss/symphony', () => {
       const transformer = new FhirTransformer()
-      const data = {
-        resourceType: 'Patient',
-        id: 'pat-baseline-3',
-      }
-      const fhir = transformer.toFhir<FhirPatient>(data)
-      // Locks current behavior: cast-only (TODO in transformer.ts:17).
-      // Task 3 will replace with explicit unsupported/throw or removal.
-      expect(fhir.resourceType).toBe('Patient')
-      expect(fhir.id).toBe('pat-baseline-3')
+      const data = { resourceType: 'Patient', id: 'pat-baseline-3' }
+      expect(() => transformer.toFhir<FhirPatient>(data)).toThrow(/not implemented/i)
     })
   })
 })

@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 
-import { FhirTransformer } from '../transformer'
 import type { FhirPatient, FhirObservation } from '../types'
 import { FhirValidator, validatePatient, validateObservation } from '../validator'
 
@@ -171,50 +170,6 @@ describe('validateObservation helper', () => {
   })
 })
 
-describe('FhirTransformer', () => {
-  const transformer = new FhirTransformer()
-
-  describe('toInternal', () => {
-    it('should transform FHIR resource to internal format', () => {
-      const patient: FhirPatient = {
-        resourceType: 'Patient',
-        id: 'patient-001',
-        name: [{ family: 'Doe', given: ['John'] }],
-      }
-
-      const result = transformer.toInternal(patient)
-
-      expect(result).toBeDefined()
-      expect(result.resourceType).toBe('Patient')
-    })
-  })
-
-  describe('toFhir', () => {
-    it('should transform internal data to FHIR resource', () => {
-      const internalData = {
-        resourceType: 'Patient',
-        id: 'patient-002',
-        name: [{ family: 'Smith', given: ['Alice'] }],
-      }
-
-      const result = transformer.toFhir<FhirPatient>(internalData)
-
-      expect(result.resourceType).toBe('Patient')
-      expect(result.id).toBe('patient-002')
-    })
-  })
-
-  describe('normalize', () => {
-    it('should normalize FHIR resource', () => {
-      const patient: FhirPatient = {
-        resourceType: 'Patient',
-        id: 'patient-003',
-      }
-
-      const result = transformer.normalize(patient)
-
-      expect(result).toBeDefined()
-      expect(result.resourceType).toBe('Patient')
-    })
-  })
-})
+// FhirTransformer tests moved to transformer.test.ts after the Task 3 honesty
+// pass. The methods now throw explicit "not implemented" errors instead of
+// returning cast-only no-ops.
