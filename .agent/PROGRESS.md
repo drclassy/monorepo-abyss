@@ -952,3 +952,20 @@ docs/guides/aadiv2.md
 ```
 
 ---
+## 2026-04-29 12:20 — `882775a` — master
+
+- **Agent**: Avvcenna+
+- **Commit**: fix(orchestrator): harden saga DLQ and persistence typing
+- **Files changed**: 7 file(s)
+
+```
+.agent/sessions/2026-04-29.md
+packages/vertex-rag/src/auto-fix.test.ts
+packages/vertex-rag/src/auto-fix.ts
+platform/orchestrator/src/sagas/referral-flow.saga.spec.ts
+platform/orchestrator/src/sagas/referral-flow.saga.ts
+platform/orchestrator/src/sagas/saga.repository.spec.ts
+platform/orchestrator/src/sagas/saga.repository.ts
+```
+
+---
