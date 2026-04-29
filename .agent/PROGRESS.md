@@ -922,3 +922,33 @@ packages/fhir-engine/src/validation-hooks.ts
 ```
 
 ---
+## 2026-04-29 12:01 — `8cf17a5` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(repo): sync completed AADI V2 and RAG workstreams
+- **Files changed**: 134 file(s)
+
+```
+.agent/01_PANDUAN_PENGUMPULAN_BAHAN_SENTRA_CDSS_v1.md
+.agent/ARCHITECTURE.md
+.agent/DECISIONS.md
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+.agent/sessions/2026-04-27.md
+.agent/sessions/2026-04-28.md
+.agent/sessions/2026-04-29.md
+.clinerules
+.cursor/rules/04-state-machine-discipline.mdc
+.env.example
+.obsidian/app.json
+.obsidian/appearance.json
+.obsidian/core-plugins.json
+.obsidian/workspace.json
+GEMINI.md
+check-docs.ts
+conductor/agent-registry.yaml
+docs/GEMINI.md
+docs/guides/aadiv2.md
+```
+
+---
