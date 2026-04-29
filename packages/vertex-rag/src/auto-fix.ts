@@ -3,15 +3,15 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { resolveProjectId } from './internal/gcp-project';
+
 dotenv.config();
 
 async function autoFix() {
   console.log('--- 🛠️ Memulai Perbaikan Otomatis (Auto-Heal) ---');
   try {
-    const projectId = process.env.GCP_PROJECT_ID || process.env.GOOGLE_PROJECT_ID;
+    const projectId = resolveProjectId();
     const location = process.env.GCP_LOCATION || 'us-central1';
-    
-    if (!projectId) throw new Error("GCP_PROJECT_ID belum diatur.");
 
     const auth = new GoogleAuth({ scopes: ['https://www.googleapis.com/auth/cloud-platform'] });
     const client = await auth.getClient();

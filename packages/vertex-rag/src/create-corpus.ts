@@ -1,15 +1,15 @@
 import { GoogleAuth } from 'google-auth-library';
 import * as dotenv from 'dotenv';
 
+import { resolveProjectId } from './internal/gcp-project';
+
 dotenv.config();
 
 async function createCorpus() {
   console.log('--- Menciptakan Jejak Otak Vertex RAG Baru ---');
   try {
-    const projectId = process.env.GCP_PROJECT_ID || process.env.GOOGLE_PROJECT_ID;
+    const projectId = resolveProjectId();
     const location = process.env.GCP_LOCATION || 'us-central1';
-    
-    if (!projectId) throw new Error("GCP_PROJECT_ID belum diatur di file .env");
 
     console.log(`Membangun Corpus di Project: ${projectId} (${location})...`);
     

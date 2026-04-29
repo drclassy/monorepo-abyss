@@ -1,20 +1,21 @@
 
-import { VertexAI } from '@google-cloud/vertexai';
 import { GoogleAuth } from 'google-auth-library';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
+
+import { resolveProjectId } from './internal/gcp-project';
 
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 async function finalOfficialUpload() {
   console.log('--- 🚀 Vertex AI Official RAG Ingestion ---');
   
-  const projectId = process.env.GCP_PROJECT_ID || process.env.GOOGLE_PROJECT_ID;
+  const projectId = resolveProjectId();
   const location = process.env.GCP_LOCATION || 'us-central1';
   const corpusId = process.env.VERTEX_RAG_CORPUS_ID;
 
-  if (!projectId || !corpusId) return;
+  if (!corpusId) return;
 
   const auth = new GoogleAuth({ scopes: ['https://www.googleapis.com/auth/cloud-platform'] });
   const client = await auth.getClient();

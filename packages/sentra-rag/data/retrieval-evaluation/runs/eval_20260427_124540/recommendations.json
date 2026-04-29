@@ -1,0 +1,12 @@
+[
+  {
+    "type": "ACTION",
+    "message": "Knowledge base is NOT ready for AADI. Unapproved evidence present (approval_rate=0.00). All retrieved evidence must come from approved_for_embedding sources.",
+    "action": "Resolve all blocking issues before proceeding to AADI integration."
+  },
+  {
+    "type": "WARNING",
+    "message": "1 query/queries failed during evaluation.",
+    "action": "Check failed-queries.json for error details. Verify DATABASE_URL and GCP credentials."
+  }
+]

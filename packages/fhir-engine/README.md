@@ -16,6 +16,7 @@ lives in [`@the-abyss/symphony`](../symphony/README.md). The mapping helpers
 
 - structural validation of a small, explicit set of FHIR resources
 - a thin normalization seam (currently passthrough; honest stub, not fake transform)
+- bounded AADI V2 FHIR bundle assembly from already-projected resource inputs
 - a public surface clearly scoped to its actual capabilities
 
 ## What This Package Does Not Own
@@ -23,6 +24,7 @@ lives in [`@the-abyss/symphony`](../symphony/README.md). The mapping helpers
 - clinical reasoning, scoring, or diagnosis reconstruction
 - terminology expansion (no internal CodeSystem/ValueSet expansion service)
 - mapping from `SymphonyResult` to FHIR bundles
+- direct mapping from `SymphonyResult` to FHIR bundles
 - multi-version FHIR conversion machinery
 - profile registry or full constraint resolution
 
@@ -68,6 +70,10 @@ Its methods are deliberately not used in production paths until the
 honesty pass replaces their TODO bodies with explicit semantics. Do not
 treat its `toInternal()` / `toFhir()` / `normalize()` as real conversions.
 
+For AADI V2, this package may assemble a FHIR `Bundle` only after another
+package has already projected reasoning-owned data into supported FHIR-facing
+resource inputs. It does not read `SymphonyResult` directly.
+
 ## Exports
 
 | Export                | Type     | Description                                                                |
@@ -86,6 +92,7 @@ treat its `toInternal()` / `toFhir()` / `normalize()` as real conversions.
 | `FhirRiskAssessment`  | type     | Inferred from `FhirRiskAssessmentSchema` (R5-bounded structural slice)     |
 | `FhirDiagnosticReport`| type     | Inferred from `FhirDiagnosticReportSchema` (R5-bounded structural slice)   |
 | `ValidationResult`    | type     | Validation result shape with `errors` and `warnings`                       |
+| `mapValidatedAadiV2Bundle` | function | Assemble a deterministic FHIR Bundle from pre-projected supported resources |
 
 ## Modernization Roadmap
 

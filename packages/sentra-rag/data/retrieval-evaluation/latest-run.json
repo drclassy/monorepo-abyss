@@ -1,0 +1,10 @@
+{
+  "retrieval_eval_run_id": "eval_20260427_124603",
+  "run_dir": "runs\\eval_20260427_124603",
+  "completed_at": "2026-04-27T12:46:03.419Z",
+  "status": "completed",
+  "write_mode": "dry_run",
+  "total_queries": 3,
+  "passed_queries": 0,
+  "aadi_readiness": "not_ready"
+}

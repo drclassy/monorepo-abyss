@@ -39,6 +39,20 @@ export type {
 /** Declared resource support matrix. Adding to either list requires a docs + test update. */
 export { DEFERRED_RESOURCE_TYPES, SUPPORTED_RESOURCE_TYPES } from './types'
 
+/** AADI V2 FHIR bundle assembly from already-projected inputs. No SymphonyResult mapping lives here. */
+export {
+  mapValidatedAadiV2Bundle,
+  type AadiV2FhirBundle,
+  type AadiV2FhirBundleProjection,
+  type AadiV2FhirBundleResource,
+  type AadiV2FhirCodeableConcept,
+  type AadiV2FhirCoding,
+  type AadiV2FhirCondition,
+  type AadiV2FhirDiagnosticReport,
+  type AadiV2FhirObservation,
+  type AadiV2FhirRiskAssessment,
+} from './aadi-v2-fhir-bundle'
+
 /** Honest FHIR version posture (R5-target modernization, current shape is R4 transition slice). */
 export {
   FHIR_CURRENT_SHAPE,

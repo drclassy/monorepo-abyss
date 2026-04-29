@@ -1,0 +1,156 @@
+{
+  "findings": [
+    {
+      "file_path": ".env",
+      "line_number": 30,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Local runtime env used stale fallback project `sentra-healthcare-solution` instead of the active project. Remediated in-place.",
+      "severity": "critical",
+      "suggested_fix": "Keep `GCP_PROJECT_ID` set to `abyss-monorepo` in the local `.env` and re-check any local shells or process managers that may cache old values.",
+      "file_type": ".env"
+    },
+    {
+      "file_path": ".env.example",
+      "line_number": 28,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Example env left `GCP_PROJECT_ID` blank, which made new setups prone to drift or fallback to outdated project values. Remediated in repo.",
+      "severity": "medium",
+      "suggested_fix": "Keep the example pinned to `abyss-monorepo` unless the team intentionally changes the canonical active project.",
+      "file_type": ".env"
+    },
+    {
+      "file_path": "packages/sentra-rag/.env.example",
+      "line_number": 14,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Package example env hardcoded `GOOGLE_PROJECT_ID=sentra-healthcare-solution`, which would route Vertex fallback traffic to the wrong project. Remediated in repo.",
+      "severity": "high",
+      "suggested_fix": "Keep `GOOGLE_PROJECT_ID=abyss-monorepo` in this package example and align onboarding docs to the same value.",
+      "file_type": ".env"
+    },
+    {
+      "file_path": "packages/vertex-rag/.env.example",
+      "line_number": 4,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Package example env used generic placeholder `your-project-id`, which was not migration-safe for this monorepo's canonical GCP project. Remediated in repo.",
+      "severity": "medium",
+      "suggested_fix": "Keep the example pinned to `abyss-monorepo` for consistent local setup and smoke testing.",
+      "file_type": ".env"
+    },
+    {
+      "file_path": "packages/vertex-rag/src/connector.ts",
+      "line_number": 28,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Runtime connector fell back to `sentra-healthcare-solution` when env was missing, creating a silent wrong-project risk for Vertex RAG calls. Remediated to resolve project ID from env only.",
+      "severity": "critical",
+      "suggested_fix": "Keep `resolveProjectId()` and avoid reintroducing hardcoded project fallbacks in runtime connectors.",
+      "file_type": "other"
+    },
+    {
+      "file_path": "packages/vertex-rag/src/internal/brain/vertex.engine.ts",
+      "line_number": 13,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Internal Vertex engine fell back to `sentra-healthcare-solution`, which could misroute generation and retrieval requests. Remediated to require configured env-based project resolution.",
+      "severity": "critical",
+      "suggested_fix": "Keep project resolution centralized and fail fast when no valid project env is present.",
+      "file_type": "other"
+    },
+    {
+      "file_path": "packages/vertex-rag/src/initialize-search.ts",
+      "line_number": 15,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Discovery Engine initialization script hardcoded fallback `sentra-healthcare-solution`, which could create resources in the wrong project. Remediated in repo.",
+      "severity": "critical",
+      "suggested_fix": "Run this script only with `GCP_PROJECT_ID`, `GOOGLE_PROJECT_ID`, or `GOOGLE_CLOUD_PROJECT` explicitly set to `abyss-monorepo`.",
+      "file_type": "other"
+    },
+    {
+      "file_path": "packages/vertex-rag/src/ingest-public-data.ts",
+      "line_number": 16,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Public data ingestion script hardcoded fallback `sentra-healthcare-solution`, which could send ingestion-side setup steps to the wrong project. Remediated in repo.",
+      "severity": "high",
+      "suggested_fix": "Keep env-driven project resolution and validate shell env before running ingestion workflows.",
+      "file_type": "other"
+    },
+    {
+      "file_path": "packages/vertex-rag/src/search-connector.ts",
+      "line_number": 37,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Discovery Engine connector hardcoded project number `382444138233` instead of the active canonical project ID, creating a hidden routing mismatch. Remediated in repo.",
+      "severity": "critical",
+      "suggested_fix": "Keep the connector on env-driven project resolution and avoid project-number literals unless they are derived from deployment config.",
+      "file_type": "other"
+    },
+    {
+      "file_path": ".github/workflows/gemini-review.yml",
+      "line_number": 56,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Workflow reads `vars.GOOGLE_CLOUD_PROJECT`; the YAML is fine, but effective runtime project depends on an external GitHub repository variable not stored in this repo.",
+      "severity": "high",
+      "suggested_fix": "Verify the repository or organization variable `GOOGLE_CLOUD_PROJECT` is set to `abyss-monorepo` and that `SERVICE_ACCOUNT_EMAIL` / `GCP_WIF_PROVIDER` point to the same project lineage.",
+      "file_type": "other"
+    },
+    {
+      "file_path": ".github/workflows/gemini-invoke.yml",
+      "line_number": 57,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Workflow reads `vars.GOOGLE_CLOUD_PROJECT`; the YAML is fine, but effective runtime project depends on an external GitHub repository variable not stored in this repo.",
+      "severity": "high",
+      "suggested_fix": "Verify the repository or organization variable `GOOGLE_CLOUD_PROJECT` is set to `abyss-monorepo` and that `SERVICE_ACCOUNT_EMAIL` / `GCP_WIF_PROVIDER` point to the same project lineage.",
+      "file_type": "other"
+    },
+    {
+      "file_path": ".github/workflows/gemini-plan-execute.yml",
+      "line_number": 59,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Workflow reads `vars.GOOGLE_CLOUD_PROJECT`; the YAML is fine, but effective runtime project depends on an external GitHub repository variable not stored in this repo.",
+      "severity": "high",
+      "suggested_fix": "Verify the repository or organization variable `GOOGLE_CLOUD_PROJECT` is set to `abyss-monorepo` and that `SERVICE_ACCOUNT_EMAIL` / `GCP_WIF_PROVIDER` point to the same project lineage.",
+      "file_type": "other"
+    },
+    {
+      "file_path": ".github/workflows/gemini-triage.yml",
+      "line_number": 70,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Workflow reads `vars.GOOGLE_CLOUD_PROJECT`; the YAML is fine, but effective runtime project depends on an external GitHub repository variable not stored in this repo.",
+      "severity": "high",
+      "suggested_fix": "Verify the repository or organization variable `GOOGLE_CLOUD_PROJECT` is set to `abyss-monorepo` and that `SERVICE_ACCOUNT_EMAIL` / `GCP_WIF_PROVIDER` point to the same project lineage.",
+      "file_type": "other"
+    },
+    {
+      "file_path": ".github/workflows/gemini-scheduled-triage.yml",
+      "line_number": 100,
+      "oldprojectid": "named-indexer-494305-c8",
+      "context": "Workflow reads `vars.GOOGLE_CLOUD_PROJECT`; the YAML is fine, but effective runtime project depends on an external GitHub repository variable not stored in this repo.",
+      "severity": "high",
+      "suggested_fix": "Verify the repository or organization variable `GOOGLE_CLOUD_PROJECT` is set to `abyss-monorepo` and that `SERVICE_ACCOUNT_EMAIL` / `GCP_WIF_PROVIDER` point to the same project lineage.",
+      "file_type": "other"
+    }
+  ],
+  "summary": {
+    "total_mismatches": 14,
+    "by_severity": {
+      "critical": 5,
+      "high": 7,
+      "medium": 2,
+      "low": 0
+    },
+    "byfiletype": {
+      ".env": 4,
+      "other": 10
+    },
+    "notes": {
+      "exact_old_project_id_matches_after_sweep": 0,
+      "stale_alias_or_hidden_hardcode_matches_after_sweep": 0,
+      "manual_external_verification_required": 5
+    }
+  },
+  "migration_checklist": [
+    "Confirm there are zero remaining repo matches for `named-indexer-494305-c8`, `sentra-healthcare-solution`, `382444138233`, and `your-project-id` on active monorepo surfaces.",
+    "Keep `.env`, `.env.example`, `packages/sentra-rag/.env.example`, and `packages/vertex-rag/.env.example` aligned to `abyss-monorepo`.",
+    "Require runtime scripts and connectors to resolve project ID from env (`GCP_PROJECT_ID`, `GOOGLE_PROJECT_ID`, or `GOOGLE_CLOUD_PROJECT`) and fail fast when unset.",
+    "Verify GitHub repository or organization variables `GOOGLE_CLOUD_PROJECT`, `SERVICE_ACCOUNT_EMAIL`, and `GCP_WIF_PROVIDER` all belong to `abyss-monorepo`.",
+    "Verify any service account emails, WIF providers, Secret Manager references, Artifact Registry paths, and deployment commands outside the repo no longer reference deleted project lineage.",
+    "Run targeted smoke checks for Vertex RAG / Discovery Engine flows with the new project in effect before the next deployment."
+  ]
+}

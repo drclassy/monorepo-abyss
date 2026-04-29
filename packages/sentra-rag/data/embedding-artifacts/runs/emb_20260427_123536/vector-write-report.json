@@ -1,0 +1,8 @@
+{
+  "attempted_writes": 0,
+  "successful_writes": 0,
+  "failed_writes": 0,
+  "upserted_vector_ids": [],
+  "failed_vector_ids": [],
+  "idempotency_key": "emb_20260427_123536"
+}

@@ -4,16 +4,18 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { resolveProjectId } from './internal/gcp-project';
+
 dotenv.config();
 
 async function bulkUpload() {
   console.log('--- 🚀 Memulai Bulk Upload Pengetahuan Medis (ULTRA-ROBUST 2026) ---');
   try {
-    const projectId = process.env.GCP_PROJECT_ID || process.env.GOOGLE_PROJECT_ID;
+    const projectId = resolveProjectId();
     const location = process.env.GCP_LOCATION || 'us-central1';
     const corpusId = process.env.VERTEX_RAG_CORPUS_ID;
 
-    if (!projectId || !corpusId) throw new Error("Config missing in .env");
+    if (!corpusId) throw new Error("Config missing in .env");
 
     const auth = new GoogleAuth({ scopes: ['https://www.googleapis.com/auth/cloud-platform'] });
     

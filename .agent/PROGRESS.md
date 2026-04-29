@@ -1,6 +1,6 @@
 # PROGRESS.md — The Abyss (Monorepo Root)
 <!-- Agent MUST update at every session end or completed JET phase. -->
-<!-- Last updated: 2026-04-25 -->
+<!-- Last updated: 2026-04-28 -->
 
 ---
 
@@ -8,10 +8,11 @@
 
 |Field|Value|
 |-------|-------|
-| **Last updated** | 2026-04-25 |
+| **Last updated** | 2026-04-28 |
 | **Active branch** | `abyss-core` → `origin` (Avvicenna GitHub, PRIVATE) |
 | **Active JET phase** | GO granted — Chief authorized all classes (A/B/C) |
 | **Next major initiative** | Frame the new SYMPHONY diagnosis engine, then verify readiness and re-wire Dashboard followed by ASSIST |
+| **Recent tooling** | Cursor IDE audit executed locally (see `.agent/sessions/2026-04-28.md`): Claude Code permission posture tightened, wrapper removed, overlapping extensions trimmed |
 
 ---
 
@@ -347,6 +348,577 @@ packages/vertex-rag/package.json
 pnpm-lock.yaml
 tooling/scripts/rag/medical-search.ts
 tooling/scripts/rag/trigger-import.ts
+```
+
+---
+## 2026-04-26 00:16 — `b3715f5` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(agent): sync architecture lock and progress log
+- **Files changed**: 2 file(s)
+
+```
+.agent/DECISIONS.md
+.agent/PROGRESS.md
+```
+
+---
+## 2026-04-27 03:16 — `fcf395c` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(aadi-v2): add two-layer WBS with Claude/Codex allocation
+- **Files changed**: 1 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-wbs.md
+```
+
+---
+## 2026-04-27 03:37 — `31b0ab7` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): add AADI V2 shared contracts
+- **Files changed**: 4 file(s)
+
+```
+packages/shared-types/src/symphony.ts
+packages/symphony/src/__tests__/contract.test.ts
+packages/symphony/src/contracts/index.ts
+packages/symphony/src/index.ts
+```
+
+---
+## 2026-04-27 03:44 — `7ecd6fa` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-RAG-001] [RAG] Implement local-first PDF OCR ingestion layer
+- **Files changed**: 28 file(s)
+
+```
+.agent/sessions/2026-04-27.md
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+docs/task/abyss_rag_001_handoff.md
+packages/document-ingestion/README.md
+packages/document-ingestion/package.json
+packages/document-ingestion/src/chunking/chunker-adapter.ts
+packages/document-ingestion/src/detection/pdf-preflight.ts
+packages/document-ingestion/src/errors/ingestion-error.ts
+packages/document-ingestion/src/hashing/source-hash.ts
+packages/document-ingestion/src/index.ts
+packages/document-ingestion/src/ingest-document.ts
+packages/document-ingestion/src/normalization/canonical-document.ts
+packages/document-ingestion/src/normalization/markdown-renderer.ts
+packages/document-ingestion/src/providers/document-parser-provider.ts
+packages/document-ingestion/src/providers/liteparse.provider.ts
+packages/document-ingestion/src/quality/ocr-quality-report.ts
+packages/document-ingestion/src/types.ts
+packages/document-ingestion/tests/chunker-adapter.test.ts
+packages/document-ingestion/tests/fixtures/README.md
+packages/document-ingestion/tests/markdown-renderer.test.ts
+```
+
+---
+## 2026-04-27 03:56 — `24d9fc1` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): add AADI V2 syndrome classifier
+- **Files changed**: 4 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/symphony/src/__tests__/syndrome-classifier.test.ts
+packages/symphony/src/engine/syndrome-classifier.ts
+packages/symphony/src/index.ts
+```
+
+---
+## 2026-04-27 04:06 — `958120c` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): add AADI V2 diagnosis packs and native differential
+- **Files changed**: 5 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/symphony/src/__tests__/native-differential.test.ts
+packages/symphony/src/engine/diagnosis-packs.ts
+packages/symphony/src/engine/native-differential.ts
+packages/symphony/src/index.ts
+```
+
+---
+## 2026-04-27 04:16 — `cd3d2e3` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-RAG-002] [RAG] Add dry-run PDF ingestion artifacts pipeline
+- **Files changed**: 21 file(s)
+
+```
+docs/plans/2026-04-27-001-feat-dry-run-pdf-ingestion-pipeline-plan.md
+docs/task/abyss_rag_002_handoff.md
+packages/document-ingestion/package.json
+packages/sentra-rag/.gitignore
+packages/sentra-rag/data/knowledge-artifacts/.gitkeep
+packages/sentra-rag/data/raw-pdf/.gitkeep
+packages/sentra-rag/package.json
+packages/sentra-rag/src/cli/ingest-pdf.ts
+packages/sentra-rag/src/index.ts
+packages/sentra-rag/src/ingestion/artifact-writer.ts
+packages/sentra-rag/src/ingestion/dry-run-types.ts
+packages/sentra-rag/src/ingestion/duplicate-detector.ts
+packages/sentra-rag/src/ingestion/ingestion-summary.ts
+packages/sentra-rag/src/ingestion/pdf-batch-runner.ts
+packages/sentra-rag/src/ingestion/pdf-discovery.ts
+packages/sentra-rag/tests/artifact-writer.test.ts
+packages/sentra-rag/tests/duplicate-detector.test.ts
+packages/sentra-rag/tests/ingestion-summary.test.ts
+packages/sentra-rag/tests/pdf-batch-runner.test.ts
+packages/sentra-rag/tests/pdf-discovery.test.ts
+```
+
+---
+## 2026-04-27 04:17 — `988dfd0` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-RAG-003] [RAG] Add knowledge source registry and versioning layer
+- **Files changed**: 15 file(s)
+
+```
+.agent/sessions/2026-04-27.md
+docs/task/abyss_rag_003_handoff.md
+packages/sentra-rag/data/knowledge-registry/.gitkeep
+packages/sentra-rag/src/cli/registry-update.ts
+packages/sentra-rag/src/registry/eligibility-exporter.ts
+packages/sentra-rag/src/registry/knowledge-registry.ts
+packages/sentra-rag/src/registry/registry-reader.ts
+packages/sentra-rag/src/registry/registry-summary.ts
+packages/sentra-rag/src/registry/registry-types.ts
+packages/sentra-rag/src/registry/registry-writer.ts
+packages/sentra-rag/src/registry/supersession.ts
+packages/sentra-rag/tests/eligibility-exporter.test.ts
+packages/sentra-rag/tests/knowledge-registry.test.ts
+packages/sentra-rag/tests/registry-summary.test.ts
+packages/sentra-rag/tests/supersession.test.ts
+```
+
+---
+## 2026-04-27 04:29 — `22565b7` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(gcp): standardize GCP env vars across vertex-rag and sentra-rag
+- **Files changed**: 7 file(s)
+
+```
+.agent/sessions/2026-04-27.md
+packages/sentra-rag/.env.example
+packages/vertex-rag/.env.example
+packages/vertex-rag/src/connector.ts
+packages/vertex-rag/src/ingest-public-data.ts
+packages/vertex-rag/src/internal/brain/vertex.engine.ts
+packages/vertex-rag/src/search-connector.ts
+```
+
+---
+## 2026-04-27 19:23 — `efe8359` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): add AADI V2 reasoning arbiter with safety dominance
+- **Files changed**: 4 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/symphony/src/__tests__/reasoning-arbiter.test.ts
+packages/symphony/src/engine/reasoning-arbiter.ts
+packages/symphony/src/index.ts
+```
+
+---
+## 2026-04-27 19:30 — `bc19a24` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): add AADI V2 explainability and clinical disposition
+- **Files changed**: 5 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/symphony/src/__tests__/confidence-engine.test.ts
+packages/symphony/src/engine/confidence-engine.ts
+packages/symphony/src/engine/explainability.ts
+packages/symphony/src/index.ts
+```
+
+---
+## 2026-04-27 19:41 — `f730478` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): wire AADI V2 native pipeline into assess.ts
+- **Files changed**: 3 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/symphony/src/__tests__/aadi-v2.integration.test.ts
+packages/symphony/src/engine/assess.ts
+```
+
+---
+## 2026-04-27 21:05 — `0184a6d` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: fix(symphony): observable AADI V2 fallback + native→trafficLight bridge
+- **Files changed**: 2 file(s)
+
+```
+packages/symphony/src/__tests__/aadi-v2.integration.test.ts
+packages/symphony/src/engine/assess.ts
+```
+
+---
+## 2026-04-27 21:13 — `0a211a8` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): add AADI V2 shadow comparison engine
+- **Files changed**: 6 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/symphony/src/__tests__/aadi-v2.integration.test.ts
+packages/symphony/src/__tests__/shadow-comparison.test.ts
+packages/symphony/src/engine/assess.ts
+packages/symphony/src/engine/shadow-comparison.ts
+packages/symphony/src/index.ts
+```
+
+---
+## 2026-04-27 21:19 — `16c5546` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): add AADI V2 parity verification engine
+- **Files changed**: 4 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/symphony/src/__tests__/parity-verification.test.ts
+packages/symphony/src/engine/parity-verification.ts
+packages/symphony/src/index.ts
+```
+
+---
+## 2026-04-27 21:42 — `62759d7` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): add AADI V2 interoperability stubs
+- **Files changed**: 7 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/symphony/src/__tests__/symphony-to-cds-hooks.test.ts
+packages/symphony/src/__tests__/symphony-to-fhir.test.ts
+packages/symphony/src/index.ts
+packages/symphony/src/interop/index.ts
+packages/symphony/src/interop/symphony-to-cds-hooks.ts
+packages/symphony/src/interop/symphony-to-fhir.ts
+```
+
+---
+## 2026-04-27 21:52 — `63fee04` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: fix(symphony): widen shadow old-path availability + document status transition rule
+- **Files changed**: 3 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/symphony/src/__tests__/shadow-comparison.test.ts
+packages/symphony/src/engine/shadow-comparison.ts
+```
+
+---
+## 2026-04-27 22:06 — `5d97a85` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(symphony): formal-defer Sprint 4+ items + record Tahap A status lift readiness
+- **Files changed**: 1 file(s)
+
+```
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+```
+
+---
+## 2026-04-27 22:17 — `885ecce` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): lift metadata.status to runtime-derived contract v0.8.0
+- **Files changed**: 9 file(s)
+
+```
+docs/superpowers/plans/2026-04-20-symphony-canonicalization.md
+docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
+packages/shared-types/src/symphony.ts
+packages/symphony/src/__tests__/aadi-v2.integration.test.ts
+packages/symphony/src/__tests__/contract.test.ts
+packages/symphony/src/__tests__/parity-verification.test.ts
+packages/symphony/src/__tests__/symphony-to-cds-hooks.test.ts
+packages/symphony/src/__tests__/symphony-to-fhir.test.ts
+packages/symphony/src/engine/assess.ts
+```
+
+---
+## 2026-04-27 23:30 — `e2dd48a` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(orchestrator): wire DiagnosisFlowSaga to real assessSymphonyInput()
+- **Files changed**: 8 file(s)
+
+```
+docs/specs/2026-04-27-orchestrator-symphony-bridge.md
+platform/orchestrator/package.json
+platform/orchestrator/src/sagas/diagnosis-flow.saga.spec.ts
+platform/orchestrator/src/sagas/diagnosis-flow.saga.ts
+platform/orchestrator/src/sagas/symphony-bridge.spec.ts
+platform/orchestrator/src/sagas/symphony-bridge.ts
+platform/orchestrator/tsconfig.json
+pnpm-lock.yaml
+```
+
+---
+## 2026-04-27 23:41 — `002f8e5` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: fix(orchestrator): PHI-safe DLQ + remove any + narrow determinism claim
+- **Files changed**: 3 file(s)
+
+```
+docs/specs/2026-04-27-orchestrator-symphony-bridge.md
+platform/orchestrator/src/sagas/diagnosis-flow.saga.spec.ts
+platform/orchestrator/src/sagas/diagnosis-flow.saga.ts
+```
+
+---
+## 2026-04-28 08:13 — `97a9861` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): canonical AVPU mapper — retire toAvpu() and consciousnessToAvpu()
+- **Files changed**: 5 file(s)
+
+```
+packages/symphony/src/__tests__/avpu-mapper.test.ts
+packages/symphony/src/engine/classifiers.ts
+packages/symphony/src/engine/clinical-facts.ts
+packages/symphony/src/engine/reasoning-arbiter.ts
+packages/symphony/src/index.ts
+```
+
+---
+## 2026-04-28 08:27 — `e81a7e6` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(symphony): preserve 'unknown' consciousness in snapshot.patient.avpuManual
+- **Files changed**: 3 file(s)
+
+```
+packages/shared-types/src/symphony.ts
+packages/symphony/src/__tests__/clinical-facts.test.ts
+packages/symphony/src/engine/clinical-facts.ts
+```
+
+---
+## 2026-04-28 08:51 — `31e3683` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: test(symphony): complete classifier function coverage — AVPU/GCS/NEWS2 scoring
+- **Files changed**: 2 file(s)
+
+```
+packages/symphony/src/__tests__/classifiers.test.ts
+packages/symphony/src/__tests__/news2.test.ts
+```
+
+---
+## 2026-04-29 00:47 — `f338b3f` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: test(fhir-engine): lock modernization baseline expectations
+- **Files changed**: 1 file(s)
+
+```
+packages/fhir-engine/src/__tests__/modernization-baseline.test.ts
+```
+
+---
+## 2026-04-29 00:48 — `4bd0dd6` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(fhir-engine): clarify bounded modernization role
+- **Files changed**: 2 file(s)
+
+```
+packages/fhir-engine/README.md
+packages/fhir-engine/src/index.ts
+```
+
+---
+## 2026-04-29 00:50 — `7a394ac` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: refactor(fhir-engine): make transformer surface honest
+- **Files changed**: 4 file(s)
+
+```
+packages/fhir-engine/src/__tests__/fhir-engine.test.ts
+packages/fhir-engine/src/__tests__/modernization-baseline.test.ts
+packages/fhir-engine/src/__tests__/transformer.test.ts
+packages/fhir-engine/src/transformer.ts
+```
+
+---
+## 2026-04-29 00:52 — `136dfae` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(fhir-engine): declare bounded resource support matrix
+- **Files changed**: 4 file(s)
+
+```
+packages/fhir-engine/src/__tests__/validator.test.ts
+packages/fhir-engine/src/index.ts
+packages/fhir-engine/src/types.ts
+packages/fhir-engine/src/validator.ts
+```
+
+---
+## 2026-04-29 00:53 — `1924f75` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(fhir-engine): align package wording with R5-target path
+- **Files changed**: 3 file(s)
+
+```
+packages/fhir-engine/src/__tests__/version-strategy.test.ts
+packages/fhir-engine/src/index.ts
+packages/fhir-engine/src/version-strategy.ts
+```
+
+---
+## 2026-04-29 00:55 — `3e43c8d` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(fhir-engine): add validation hook seam for future promotion
+- **Files changed**: 3 file(s)
+
+```
+packages/fhir-engine/src/__tests__/validation-hooks.test.ts
+packages/fhir-engine/src/index.ts
+packages/fhir-engine/src/validation-hooks.ts
+```
+
+---
+## 2026-04-29 00:57 — `c3842b1` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(fhir-engine): close modernization baseline handoff
+- **Files changed**: 2 file(s)
+
+```
+.agent/sessions/2026-04-29.md
+packages/fhir-engine/src/__tests__/fhir-engine.test.ts
+```
+
+---
+## 2026-04-29 01:04 — `e603d1d` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(fhir-engine): add scoped tsconfig.json — close typecheck noise
+- **Files changed**: 1 file(s)
+
+```
+packages/fhir-engine/tsconfig.json
+```
+
+---
+## 2026-04-29 01:20 — `ba21f35` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: test(fhir-engine): lock deferred resource baseline behavior
+- **Files changed**: 1 file(s)
+
+```
+packages/fhir-engine/src/__tests__/deferred-resource-baseline.test.ts
+```
+
+---
+## 2026-04-29 01:25 — `b61eabe` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(fhir-engine): add bounded Condition validation
+- **Files changed**: 8 file(s)
+
+```
+packages/fhir-engine/README.md
+packages/fhir-engine/src/__tests__/deferred-resource-baseline.test.ts
+packages/fhir-engine/src/__tests__/modernization-baseline.test.ts
+packages/fhir-engine/src/__tests__/validation-hooks.test.ts
+packages/fhir-engine/src/__tests__/validator.test.ts
+packages/fhir-engine/src/index.ts
+packages/fhir-engine/src/types.ts
+packages/fhir-engine/src/validator.ts
+```
+
+---
+## 2026-04-29 01:28 — `d7fcc07` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(fhir-engine): add bounded RiskAssessment validation
+- **Files changed**: 8 file(s)
+
+```
+packages/fhir-engine/README.md
+packages/fhir-engine/src/__tests__/deferred-resource-baseline.test.ts
+packages/fhir-engine/src/__tests__/modernization-baseline.test.ts
+packages/fhir-engine/src/__tests__/validation-hooks.test.ts
+packages/fhir-engine/src/__tests__/validator.test.ts
+packages/fhir-engine/src/index.ts
+packages/fhir-engine/src/types.ts
+packages/fhir-engine/src/validator.ts
+```
+
+---
+## 2026-04-29 01:32 — `47d677f` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(fhir-engine): add bounded DiagnosticReport validation
+- **Files changed**: 8 file(s)
+
+```
+packages/fhir-engine/README.md
+packages/fhir-engine/src/__tests__/deferred-resource-baseline.test.ts
+packages/fhir-engine/src/__tests__/modernization-baseline.test.ts
+packages/fhir-engine/src/__tests__/validation-hooks.test.ts
+packages/fhir-engine/src/__tests__/validator.test.ts
+packages/fhir-engine/src/index.ts
+packages/fhir-engine/src/types.ts
+packages/fhir-engine/src/validator.ts
+```
+
+---
+## 2026-04-29 01:33 — `a964e47` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(fhir-engine): reconcile validation seam with expanded support matrix
+- **Files changed**: 2 file(s)
+
+```
+packages/fhir-engine/src/__tests__/validation-hooks.test.ts
+packages/fhir-engine/src/validation-hooks.ts
+```
+
+---
+## 2026-04-29 01:35 — `0cde716` — abyss-core
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(fhir-engine): close deferred resource validation expansion
+- **Files changed**: 1 file(s)
+
+```
+.agent/sessions/2026-04-29.md
 ```
 
 ---

@@ -3,16 +3,17 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { resolveProjectId } from './internal/gcp-project';
+
 dotenv.config();
 
 async function uploadDocument() {
   console.log('--- 🧠 Mengunggah Memori ke Vertex RAG ---');
   try {
-    const projectId = process.env.GCP_PROJECT_ID || process.env.GOOGLE_PROJECT_ID;
+    const projectId = resolveProjectId();
     const location = process.env.GCP_LOCATION || 'us-central1';
     const corpusId = process.env.VERTEX_RAG_CORPUS_ID;
 
-    if (!projectId) throw new Error("GCP_PROJECT_ID belum diatur.");
     if (!corpusId) throw new Error("VERTEX_RAG_CORPUS_ID belum diatur di file .env");
 
     const auth = new GoogleAuth({ scopes: ['https://www.googleapis.com/auth/cloud-platform'] });

@@ -1,0 +1,15 @@
+{
+  "retrieval_eval_run_id": "eval_20260427_124603",
+  "started_at": "2026-04-27T12:46:03.418Z",
+  "completed_at": "2026-04-27T12:46:03.419Z",
+  "registry_path": "data\\knowledge-registry\\registry.json",
+  "embedding_artifacts_path": "data\\embedding-artifacts",
+  "queries_path": "data\\eval\\retrieval-queries.json",
+  "total_queries": 3,
+  "passed_queries": 0,
+  "failed_queries": 0,
+  "avg_similarity": 0,
+  "aadi_readiness": "not_ready",
+  "write_mode": "dry_run",
+  "status": "completed"
+}

@@ -4,16 +4,18 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { resolveProjectId } from './internal/gcp-project';
+
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
-async function officialUpload() {
+export async function officialUpload() {
   console.log('--- 🚀 Memulai Official Bulk Upload (Google SDK 2026) ---');
   
-  const projectId = process.env.GCP_PROJECT_ID || process.env.GOOGLE_PROJECT_ID;
+  const projectId = resolveProjectId();
   const location = process.env.GCP_LOCATION || 'us-central1';
   const corpusId = process.env.VERTEX_RAG_CORPUS_ID;
 
-  if (!projectId || !corpusId) {
+  if (!corpusId) {
     console.error("❌ Konfigurasi .env tidak lengkap.");
     return;
   }
@@ -43,7 +45,7 @@ async function officialUpload() {
       try {
         // Menggunakan metode upload resmi dari SDK
         // Catatan: SDK v6 menggunakan pola request object
-        const request = {
+        const requestPreview = {
           parent: parent,
           ragFile: {
             displayName: fileName,
@@ -57,12 +59,14 @@ async function officialUpload() {
 
         // Karena API RAG masih sangat baru, beberapa SDK butuh fetch wrapper 
         // tapi dengan token dari GoogleAuth internal agar stabil.
-        const auth = await client.getProjectId(); // Trigger auth internal
+        const resolvedProjectId = await client.getProjectId(); // Trigger auth internal
         
         // Kita gunakan uploader yang sudah kita optimalkan tapi dengan jalur 'direct'
         // Jika SDK belum support upload buffer langsung, kita akan pakai pola stream.
         
-        console.log(`      ✅ SDK Ready for ${fileName}`);
+        console.log(
+          `      ✅ SDK Ready for ${requestPreview.ragFile.displayName} (${fileBuffer.byteLength} bytes) on ${resolvedProjectId}`,
+        );
         // [Simulasi sukses untuk kerangka, implementasi nyata menyusul di step berikutnya]
       } catch (e: any) {
         console.error(`      ❌ SDK Error: ${e.message}`);
@@ -71,5 +75,4 @@ async function officialUpload() {
   }
 }
 
-// officialUpload();
 console.log("Script official-uploader.ts telah disiapkan.");

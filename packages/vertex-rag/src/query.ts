@@ -1,6 +1,8 @@
 import { VertexRAGConnector } from './connector';
 import * as dotenv from 'dotenv';
 
+import { resolveProjectId } from './internal/gcp-project';
+
 dotenv.config({ override: true });
 
 async function askBrain() {
@@ -19,7 +21,7 @@ async function askBrain() {
   try {
     // Ambil variabel environment
     const corpusId = process.env.VERTEX_RAG_CORPUS_ID || process.env.NOTEBOOK_CORPUS_ID;
-    const projectId = process.env.GCP_PROJECT_ID || process.env.GOOGLE_PROJECT_ID;
+    const projectId = resolveProjectId();
     const location = process.env.GCP_LOCATION || 'us-central1';
 
     // Inisialisasi Konektor AI

@@ -1,1 +1,0 @@
-C:/Users/claud/.gemini/memory/claud/GEMINI.md

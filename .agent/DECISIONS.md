@@ -32,9 +32,6 @@
 3. **Architecture:** Shared AI logic in `packages/ai-core`, vector operations in `packages/vector-store`.
 **Rationale:** Ensures international compliance (HIPAA/GDPR), enterprise-grade security, and seamless multi-region scalability.
 **Consequences:** Requires IAM role management for Service Accounts; prevents credential leaks in code/env.
-**Decision:** .claude/ at monorepo root with agents/, commands/, skills/ subdirectories.
-**Rationale:** Claude Code reads .claude/ from project root; enables subagent delegation and custom commands.
-**Consequences:** settings.json needed; subagent definitions in agents/*.md; slash commands in commands/*.md.
 
 ### [2026-04-13] Three-layer enforcement architecture
 **Context:** Single CLAUDE.md or single .cursor/rules file insufficient to enforce agent behavior across all tools.
@@ -240,3 +237,46 @@ Reuse Neon instance yang sama dengan intelligenceboard (koneksi string berbeda).
 **Rejected alternatives:** (1) Let RAG packages continue to grow mixed clinical heuristics beside SYMPHONY. (2) Collapse all RAG packages into one package immediately without first locking responsibilities. (3) Move traffic-light or diagnosis authority out of SYMPHONY.
 **Rationale:** This keeps one clinical authority, one reference layer, and one retrieval lane. It also protects the upcoming Dashboard then ASSIST rewiring from package-role confusion.
 **Consequences:** Future diagnosis-engine work must land in SYMPHONY, not in RAG packages. Any RAG-side scoring must be framed as retrieval confidence or grounding support only. `vertex-rag` remains an outlier package until it is aligned with workspace governance, but it must not be treated as a peer clinical engine.
+
+### [2026-04-27] CORRECTION — packages/database scope clarified (supersedes 2026-04-13 entry)
+**Context:** The 2026-04-13 decision "packages/database as exclusive DB access layer" used overly broad language that contradicts the actual polyrepo-in-monorepo architecture documented in CONTEXT.md (lines 35-38, 129, 213-215).
+**Correction:** `packages/database` is scoped to **platform apps only** (`apps/platform/orchestrator/`, `apps/platform/sentra-portal/`). It is NOT the database access layer for healthcare apps.
+**Healthcare apps rule:** Each healthcare app owns its database exclusively:
+- `intelligenceboard` → own Neon PostgreSQL via `apps/healthcare/intelligenceboard/prisma/`
+- `referralink` → own Neon via `@neondatabase/serverless` + `@vercel/postgres`
+- `sentra-assist` → no database (browser extension, API-only)
+- `sentra-main`, `primary-healthcare`, `sentra-rag` → own schemas or no DB
+**Repository interface pattern (from 2026-04-13):** Applies to platform apps only. Healthcare apps use their own Prisma clients — never cross-inject.
+**Rationale:** This is a polyrepo-in-monorepo architecture. Healthcare apps are independent deployable units with independent schemas. A shared Prisma singleton would create dangerous cross-app PHI isolation violations.
+**How to read the 2026-04-13 entry:** Its intent was correct for the platform layer. Its language was incorrectly universal. This entry is the authoritative scope correction.
+
+
+### [2026-04-27] CORRECTION — [2026-04-21] entry has two errors (data corruption + stale reference)
+
+**Error 1 — Stale i-core reference (line 32, point 3):**
+The [2026-04-21] entry point 3 states: *"Shared AI logic in packages/ai-core"*.
+This is superseded and void. Decision [2026-04-25] formally retired packages/ai-core as a failed legacy chatbot artifact. The package no longer exists and must not be revived.
+**Correct architecture:** Shared AI logic for healthcare now lives in domain-specific consumers (intelligenceboard, sentra-assist), with clinical reasoning in @the-abyss/symphony and vector ops in @the-abyss/vector-store.
+
+**Error 2 — Copy-paste corruption (lines 35-37):**
+The [2026-04-21] entry contains three stray lines:
+- `**Decision:** .claude/ at monorepo root with agents/, commands/, skills/ subdirectories.`
+- `**Rationale:** Claude Code reads .claude/ from project root; enables subagent delegation and custom commands.`
+- `**Consequences:** settings.json needed; subagent definitions in agents/*.md; slash commands in commands/*.md.`
+These lines are verbatim duplicates from the [2026-04-10] `.claude/ folder at monorepo root` entry. They were accidentally pasted into the wrong entry and are not part of the [2026-04-21] Vertex AI decision. Disregard them entirely.
+
+**What [2026-04-21] actually decided (corrected reading):**
+1. Library standardization: `@google-cloud/vertexai`, `@google-cloud/vision`, `google-auth-library`.
+2. Authentication: Mandatory Service Account (ADC) for all healthcare workloads; bare API keys forbidden.
+3. ~~Shared AI logic in packages/ai-core~~ → void, see [2026-04-25].
+
+
+### [2026-04-27] ERRATA — correction to previous [2026-04-27] ai-core entry
+**Errata target:** The [2026-04-27] entry titled "CORRECTION — [2026-04-21] entry has two errors" contains a typo in Error 1 heading: written as "Stale i-core reference" but should read "Stale `ai-core` reference" (the leading `a` was dropped by a PowerShell escaping artifact).
+
+**Error 1 corrected heading:** Stale `ai-core` reference (line 32, point 3) — the `packages/ai-core` reference in [2026-04-21] point 3 is void, superseded by [2026-04-25] retirement decision.
+
+**Correct architecture (properly formatted):** Clinical reasoning → `@the-abyss/symphony` · Vector ops → `@the-abyss/vector-store` · Domain-specific AI logic stays in each consumer app (intelligenceboard, sentra-assist). `packages/ai-core` must not be created, referenced, or revived.
+
+**Lines 35-37 corruption — authoritative statement:**
+The three lines in [2026-04-21] beginning with `**Decision:** .claude/ at monorepo root...` are confirmed erroneous copy-paste from [2026-04-10]. They carry zero decision authority within the [2026-04-21] entry. Any agent reading [2026-04-21] MUST stop at line 34 (after `**Consequences:** Requires IAM role management...`) and treat lines 35-37 as void.

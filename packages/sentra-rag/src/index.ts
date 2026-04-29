@@ -38,3 +38,37 @@ export type {
   QualityStatus,
 } from './registry/registry-types.js'
 
+export { runRetrievalEvalPipeline } from './evaluation/eval-pipeline.js'
+export { loadEvalQueries, createSampleQueriesFile } from './evaluation/query-loader.js'
+export { validateEvidence, buildRegistryMap } from './evaluation/evidence-validator.js'
+export { scoreEvidenceQuality } from './evaluation/quality-scorer.js'
+export { generateRecommendations } from './evaluation/recommendations.js'
+export type {
+  EvalQuery,
+  EvalWriteMode,
+  EvalRunStatus,
+  AadiReadiness,
+  EvidenceRecord,
+  QueryEvalResult,
+  EvidenceQualityReport,
+  RetrievalEvalSummary,
+  FailedQuery,
+  Recommendation,
+  RetrievalEvalPipelineParams,
+} from './evaluation/types.js'
+
+export { runApprovedEmbeddingPipeline } from './embedding/approved-embedding.pipeline.js'
+export { loadApprovedCandidates } from './embedding/registry-gate.js'
+export { buildVectorId, buildChunkId, buildContentHash } from './embedding/vector-id.js'
+export { PgPoolVectorAdapter } from './embedding/pg-adapter.js'
+export type {
+  EmbeddingWriteMode,
+  EmbeddingRunStatus,
+  EmbeddingRunSummary,
+  EmbeddedChunkRecord,
+  VectorWriteReport,
+  SkippedRecord,
+  FailureRecord,
+  ApprovedEmbeddingPipelineParams,
+} from './embedding/types.js'
+

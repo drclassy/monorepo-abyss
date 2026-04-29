@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@the-abyss/clinical-references": "workspace:*",
+    "@the-abyss/fhir-engine": "workspace:*",
     "@the-abyss/shared-types": "workspace:*"
   },
   "devDependencies": {

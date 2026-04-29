@@ -14,6 +14,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 **Branch:** `abyss-core` · local-only cleanup + architecture lock in progress · **NOT PUSHED**
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
+**Cursor IDE (2026-04-28):** User-level + profile `Avvcenna+` sudah di-hardten per audit plan — Claude Code bypass permission dimatikan, wrapper dihapus, overlap extension dikurangi; detail di `.agent/sessions/2026-04-28.md`.
 **Primary mission:**
 1. **SYMPHONY** — frame the new diagnosis engine inside `@the-abyss/symphony`, then verify readiness gates, then re-wire Dashboard, then ASSIST.
 2. **Retrieval lane is supporting only** — RAG packages may support grounding/retrieval, but must not become parallel clinical engines.

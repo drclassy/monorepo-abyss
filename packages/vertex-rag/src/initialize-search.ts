@@ -1,6 +1,6 @@
 /**
  * Copyright 2026 Google LLC
- * 
+ *
  * Sentra AI Hybrid Brain - Vertex AI Search Infrastructure Initializer
  * Managed by Jen (Sentra Adjutant)
  */
@@ -8,9 +8,11 @@
 import { DataStoreServiceClient } from '@google-cloud/discoveryengine';
 import * as dotenv from 'dotenv';
 
+import { resolveProjectId } from './internal/gcp-project';
+
 dotenv.config();
 
-const PROJECT_ID = process.env.GOOGLE_PROJECT_ID || 'sentra-healthcare-solution';
+const PROJECT_ID = resolveProjectId();
 const LOCATION = 'global'; // Discovery Engine default
 const COLLECTION_ID = 'default_collection';
 const DATA_STORE_ID = process.env.VERTEX_SEARCH_DATASTORE_ID || 'medical-knowledge-base';

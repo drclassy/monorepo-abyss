@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -139,6 +141,33 @@ describe('mapSymphonyResultToCdsHooksResponse', () => {
     const indicators = response.cards.map(card => card.indicator)
     expect(indicators[0]).toBe('critical')
     expect(indicators).toContain('warning')
+  })
+
+  it('keeps the canonical source label and empty links on every emitted card', () => {
+    const response = mapSymphonyResultToCdsHooksResponse(
+      baseResult({
+        alerts: [criticalAlert('alert-1')],
+        nativeHypotheses: [hypothesis(1, 'A41.9', 'must_not_miss')],
+        clinicalDisposition: 'requires_review',
+        shadowComparison: shadow('low'),
+      }),
+    )
+
+    expect(response.cards.length).toBeGreaterThan(0)
+    for (const card of response.cards) {
+      expect(card.source).toEqual({ label: 'AADI V2 Symphony' })
+      expect(card.links).toEqual([])
+    }
+  })
+
+  it('keeps the public cds-hooks facade shape unchanged and independent from fhir-engine', () => {
+    const response = mapSymphonyResultToCdsHooksResponse(baseResult())
+    expect(typeof mapSymphonyResultToCdsHooksResponse).toBe('function')
+    expect(Object.keys(response)).toEqual(['cards'])
+    expect(Array.isArray(response.cards)).toBe(true)
+
+    const source = readFileSync(new URL('../interop/symphony-to-cds-hooks.ts', import.meta.url), 'utf8')
+    expect(source).not.toContain('fhir-engine')
   })
 
   it('does NOT leak chiefComplaint into card summary or detail', () => {

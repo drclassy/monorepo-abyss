@@ -32,6 +32,41 @@ export class VectorStore {
   // ─── Upsert ─────────────────────────────────────────────────────────────────
 
   /**
+   * Embeds `content` via Vertex AI and upserts the record using the caller-supplied
+   * stable ID. Idempotent: repeated calls with the same `id` update the record
+   * rather than insert a duplicate.
+   *
+   * @param id       - Stable, caller-owned vector ID (e.g. kb:hash:v1:p001:c0001)
+   * @param content  - Text to embed
+   * @param metadata - Arbitrary JSON metadata stored alongside the vector
+   */
+  async upsertById(id: string, content: string, metadata: Record<string, unknown> = {}): Promise<void> {
+    const db = this.database()
+    const embedding = await getEmbedding(content, {
+      model: this.config.embeddingModel ?? DEFAULT_EMBEDDING_MODEL,
+      taskType: this.config.defaultTaskType ?? 'RETRIEVAL_DOCUMENT',
+      gcpProjectId: this.config.gcpProjectId,
+      gcpLocation: this.config.gcpLocation,
+    })
+
+    const embeddingLiteral = `[${embedding.join(',')}]`
+
+    await db.$executeRawUnsafe(
+      `INSERT INTO "KnowledgeBase" (id, content, embedding, metadata, "updatedAt")
+       VALUES ($1, $2, $3::vector, $4::jsonb, NOW())
+       ON CONFLICT (id) DO UPDATE SET
+         content    = EXCLUDED.content,
+         embedding  = EXCLUDED.embedding,
+         metadata   = EXCLUDED.metadata,
+         "updatedAt" = NOW()`,
+      id,
+      content,
+      embeddingLiteral,
+      JSON.stringify(metadata),
+    )
+  }
+
+  /**
    * Embeds `content` via Vertex AI and persists it to the KnowledgeBase table.
    * @returns the new record's UUID
    */

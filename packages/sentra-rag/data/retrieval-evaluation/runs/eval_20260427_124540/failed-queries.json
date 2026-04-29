@@ -1,0 +1,7 @@
+[
+  {
+    "query_id": "__load__",
+    "error_code": "QUERY_LOAD_FAILED",
+    "message": "Queries file not found: V:\\avcn-sentra\\abyss-monorepo\\packages\\sentra-rag\\data\\eval\\retrieval-queries.json"
+  }
+]

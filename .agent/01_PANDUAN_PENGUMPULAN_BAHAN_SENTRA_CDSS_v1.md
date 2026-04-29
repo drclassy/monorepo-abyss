@@ -191,13 +191,13 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 - Cek apakah ada **PPK FKTP edisi 2024/2025** yang mungkin sudah keluar — verifikasi di website PB IDI
 
 **Action steps**:
-1. ✅ Download PDF dari sumber resmi
-2. ✅ Screenshot halaman download sebagai bukti (simpan di `verification/`)
-3. ✅ Generate SHA-256 hash, log ke `verification/hashes.csv`
-4. ✅ Cek metadata PDF: `pdfinfo file.pdf` → pastikan author = IDI atau Kemenkes
-5. ✅ Rename sesuai konvensi: `T1_S01_PPK_FKTP_v2017_acc2026-04-XX.pdf`
-6. ✅ Tulis `notes.md` dengan: URL, tanggal akses, downloader, ukuran file, jumlah halaman, versi
-7. ✅ **Kontak resmi PB IDI** untuk request written permission (template surat: lihat Lampiran A)
+1. ⬜ Download PDF dari sumber resmi
+2. ⬜ Screenshot halaman download sebagai bukti (simpan di `verification/`)
+3. ⬜ Generate SHA-256 hash, log ke `verification/hashes.csv`
+4. ⬜ Cek metadata PDF: `pdfinfo file.pdf` → pastikan author = IDI atau Kemenkes
+5. ⬜ Rename sesuai konvensi: `T1_S01_PPK_FKTP_v2017_acc2026-04-XX.pdf`
+6. ⬜ Tulis `notes.md` dengan: URL, tanggal akses, downloader, ukuran file, jumlah halaman, versi
+7. ⬜ **Kontak resmi PB IDI** untuk request written permission (template surat: lihat Lampiran A)
 
 **Output yang diharapkan**:
 - File PDF lengkap (~500-800 halaman, ~30-50 MB)
@@ -228,15 +228,15 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 - Format biasanya: `.xlsx` dengan sheet untuk Diagnosis Primer, Diagnosis Sekunder, dan Procedure Codes
 
 **Action steps**:
-1. ✅ Download file Excel dari portal BPJS
-2. ✅ Screenshot bukti download
-3. ✅ Generate hash + log
-4. ✅ Buka file dan **catat metadata penting**:
+1. ⬜ Download file Excel dari portal BPJS
+2. ⬜ Screenshot bukti download
+3. ⬜ Generate hash + log
+4. ⬜ Buka file dan **catat metadata penting**:
    - Jumlah baris (total kode)
    - Tanggal terakhir update (biasanya tertulis di sheet "Info" atau "Cover")
    - Sheet yang relevan untuk SKDI 4A
-5. ✅ Rename: `T1_S02_ICD10_FKTP_v{tanggal_update}_acc2026-04-XX.xlsx`
-6. ✅ Tulis `notes.md` dengan struktur kolom Excel (untuk persiapan ekstraksi nanti)
+5. ⬜ Rename: `T1_S02_ICD10_FKTP_v{tanggal_update}_acc2026-04-XX.xlsx`
+6. ⬜ Tulis `notes.md` dengan struktur kolom Excel (untuk persiapan ekstraksi nanti)
 
 **Output yang diharapkan**:
 - File Excel (~5-15 MB)
@@ -265,13 +265,13 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 - Kemungkinan: PNPK Diabetes Melitus, PNPK Hipertensi, PNPK TB, PNPK COVID-19, atau lainnya
 - **Action**: Identifikasi dulu 4 PNPK mana yang dimaksud, sesuaikan dengan 144 SKDI 4A yang menjadi scope v1
 
-**Action steps untuk setiap PNPK**:
-1. ✅ Identifikasi nomor KMK (misal: KMK No. HK.01.07/MENKES/XXX/2023)
-2. ✅ Download PDF
-3. ✅ Verifikasi tanda tangan/cap KMK di halaman pertama (untuk autentikasi)
-4. ✅ Hash + log
-5. ✅ Rename: `T1_S03_PNPK_{NamaPenyakit}_KMK_{nomor}_acc2026-04-XX.pdf`
-6. ✅ Tulis `notes.md` dengan: nomor KMK, tanggal terbit, penyakit yang dibahas
+**Action steps untuk setiap PNPK** _(belum dapat dieksekusi — menunggu konfirmasi Chief di atas)_:
+1. ⬜ Identifikasi nomor KMK (misal: KMK No. HK.01.07/MENKES/XXX/2023)
+2. ⬜ Download PDF
+3. ⬜ Verifikasi tanda tangan/cap KMK di halaman pertama (untuk autentikasi)
+4. ⬜ Hash + log
+5. ⬜ Rename: `T1_S03_PNPK_{NamaPenyakit}_KMK_{nomor}_acc2026-04-XX.pdf`
+6. ⬜ Tulis `notes.md` dengan: nomor KMK, tanggal terbit, penyakit yang dibahas
 
 **Output yang diharapkan**:
 - 4 file PDF terpisah (atau bundle jika ada)
@@ -295,12 +295,12 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 2. **Alternatif**: Kontak Sekretariat PAPDI untuk request copy untuk research/educational use
 3. **Konsekuensi**: Karena status berbayar dan terbatas, ini cocok di Tier 3 (defer ke v2 atau setelah Tier 1 selesai)
 
-**Action steps**:
-1. ✅ Cek status ketersediaan publik vs berbayar di website PAPDI
-2. ✅ Jika berbayar → submit purchase request via tim procurement Sentra
-3. ✅ Jika gratis untuk anggota → koordinasi dengan dokter spesialis advisor (dr. Dibya Arfianda atau dr. Boyong Baskoro per Phase 0 doc) untuk akses
-4. ✅ Setelah dapat: hash + log + rename
-5. ✅ **Catat batas EULA**: untuk internal reference saja, tidak boleh di-redistribute via NPM package
+**Action steps** _(jalur 2 dan 3 mutually exclusive — tunggu hasil langkah 1 sebelum melanjutkan)_:
+1. ⬜ Cek status ketersediaan publik vs berbayar di website PAPDI
+2. ⬜ Jika berbayar → submit purchase request via tim procurement Sentra
+3. ⬜ Jika gratis untuk anggota → koordinasi dengan dokter spesialis advisor (dr. Dibya Arfianda atau dr. Boyong Baskoro per Phase 0 doc) untuk akses
+4. ⬜ Setelah dapat: hash + log + rename
+5. ⬜ **Catat batas EULA**: untuk internal reference saja, tidak boleh di-redistribute via NPM package
 
 **Output yang diharapkan**:
 - File PDF (jika dapat)
@@ -327,11 +327,11 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 ⚠️ **PENTING**: Brief Dr. Ferdi menyebutkan FORNAS 2023, tapi **per akhir 2024 Kemenkes telah merilis FORNAS 2024** (KMK No. HK.01.07/MENKES/4505/2024 atau sejenisnya). **Verifikasi versi terbaru** sebelum download.
 
 **Action steps**:
-1. ✅ Cek versi terbaru di farmalkes.kemkes.go.id
-2. ✅ Download PDF (biasanya 2 file: dokumen utama + lampiran)
-3. ✅ Hash + log + rename
-4. ✅ Tulis `notes.md`: jumlah obat, struktur kategorisasi, fitting dengan 222 obat existing yang sudah ada
-5. ✅ **Cek changelog** dari FORNAS lama ke baru — obat apa yang ditambah/dihapus/direvisi
+1. ⬜ Cek versi terbaru di farmalkes.kemkes.go.id
+2. ⬜ Download PDF (biasanya 2 file: dokumen utama + lampiran)
+3. ⬜ Hash + log + rename
+4. ⬜ Tulis `notes.md`: jumlah obat, struktur kategorisasi, fitting dengan 222 obat existing yang sudah ada
+5. ⬜ **Cek changelog** dari FORNAS lama ke baru — obat apa yang ditambah/dihapus/direvisi
 
 **Output yang diharapkan**:
 - File FORNAS PDF terbaru
@@ -364,12 +364,12 @@ Setiap file yang didapat harus di-rename mengikuti pola:
    - Apakah boleh menyimpan ekstrak data di internal database?
    - Apakah API tersedia, dan dengan SLA apa?
 
-**Action steps**:
-1. ✅ Submit RFP/inquiry ke MIMS Indonesia (template: Lampiran B)
-2. ✅ Diskusi terms & pricing — siapkan budget alokasi
-3. ✅ Negosiasi kontrak — wajib ada klausul untuk CDSS use case
-4. ✅ Setelah kontrak signed → setup akses (akun online atau delivery buku)
-5. ✅ Dokumentasikan **batasan lisensi** dalam `LICENSES/06_mims_indonesia_terms.md`
+**Action steps** _(langkah 4–5 diblokir sampai kontrak ditandatangani — estimasi 2–4 minggu negosiasi)_:
+1. ⬜ Submit RFP/inquiry ke MIMS Indonesia (template: Lampiran B)
+2. ⬜ Diskusi terms & pricing — siapkan budget alokasi
+3. ⬜ Negosiasi kontrak — wajib ada klausul untuk CDSS use case
+4. ⬜ Setelah kontrak signed → setup akses (akun online atau delivery buku)
+5. ⬜ Dokumentasikan **batasan lisensi** dalam `LICENSES/06_mims_indonesia_terms.md`
 
 **⚠️ Risiko**:
 - MIMS bisa menolak lisensi untuk CDSS jika dianggap kompetitif dengan produk mereka
@@ -400,10 +400,10 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 3. Cocok di Tier 3 — defer setelah Tier 1 & 2 selesai
 
 **Action steps**:
-1. ✅ Beli edisi terbaru via tim procurement
-2. ✅ Setelah dapat → scan/digitalize halaman yang relevan (perhatikan copyright!)
-3. ✅ Catat: edisi tahun, jumlah obat tercantum, struktur informasi
-4. ✅ Untuk v1, **opsional** — bisa di-skip jika MIMS sudah cover nama dagang
+1. ⬜ Beli edisi terbaru via tim procurement
+2. ⬜ Setelah dapat → scan/digitalize halaman yang relevan (perhatikan copyright!)
+3. ⬜ Catat: edisi tahun, jumlah obat tercantum, struktur informasi
+4. ⬜ Untuk v1, **opsional** — bisa di-skip jika MIMS sudah cover nama dagang
 
 **Output yang diharapkan**:
 - Buku fisik atau scan halaman relevan (untuk internal reference saja)
@@ -426,11 +426,11 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 4. **Alternatif lokal**: Sub-spesialis Maternal-Fetal Medicine Indonesia mungkin punya kompilasi
 
 **Action steps**:
-1. ✅ Download dokumen rujukan FDA/ADEC
-2. ✅ Cari **mapping table** yang konversi obat → kategori
-3. ✅ Cross-reference dengan 222 obat FORNAS yang sudah ada
-4. ✅ Catat: 1 obat bisa punya multiple sources (FDA = C, ADEC = B3, dst) — perlu strategi konsolidasi
-5. ✅ Hash + log + rename
+1. ⬜ Download dokumen rujukan FDA/ADEC
+2. ⬜ Cari **mapping table** yang konversi obat → kategori
+3. ⬜ Cross-reference dengan 222 obat FORNAS yang sudah ada
+4. ⬜ Catat: 1 obat bisa punya multiple sources (FDA = C, ADEC = B3, dst) — perlu strategi konsolidasi
+5. ⬜ Hash + log + rename
 
 **Output yang diharapkan**:
 - Reference document dari FDA/TGA
@@ -453,13 +453,13 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 3. **Tantangan**: data ini biasanya **tidak terstruktur** — harus dilakukan **manual web scraping atau manual entry** per obat
 4. Estimasi: 222 obat × ~5 menit/obat = 18 jam manual entry
 
-**Action steps**:
-1. ✅ Confirm akses tersedia di lisensi MIMS
-2. ✅ Buat **template ekstraksi** (Excel atau Google Sheets) dengan kolom:
+**Action steps** _(seluruh langkah diblokir sampai kontrak SUMBER #6 MIMS ditandatangani)_:
+1. ⬜ Confirm akses tersedia di lisensi MIMS
+2. ⬜ Buat **template ekstraksi** (Excel atau Google Sheets) dengan kolom:
    - Nama obat | CrCl >50 | CrCl 30-50 | CrCl 10-30 | CrCl <10 | Hepatic mild | Hepatic mod | Hepatic severe
-3. ✅ Prioritas: 30-50 obat paling sering digunakan di FKTP (paretto)
-4. ✅ Sisanya: defer ke v1.5
-5. ✅ Cek apakah MIMS Online menyediakan **bulk export** atau API — jika ya, ini akan accelerate banyak
+3. ⬜ Prioritas: 30-50 obat paling sering digunakan di FKTP (paretto)
+4. ⬜ Sisanya: defer ke v1.5
+5. ⬜ Cek apakah MIMS Online menyediakan **bulk export** atau API — jika ya, ini akan accelerate banyak
 
 **Output yang diharapkan**:
 - Spreadsheet penyesuaian dosis untuk top-50 obat FKTP
@@ -487,13 +487,13 @@ Setiap file yang didapat harus di-rename mengikuti pola:
    - **Dataset mentah** (jika tersedia, format SPSS atau Excel)
 
 **Action steps**:
-1. ✅ Download Laporan Nasional Riskesdas 2023 (versi terbaru)
-2. ✅ Download laporan per provinsi yang relevan dengan target deployment Sentra (mulai dari Jawa Timur untuk Puskesmas Balowerti, lalu expand)
-3. ✅ Hash + log untuk semua file
-4. ✅ Identifikasi tabel/grafik yang relevan untuk 144 SKDI 4A:
+1. ⬜ Download Laporan Nasional Riskesdas 2023 (versi terbaru)
+2. ⬜ Download laporan per provinsi yang relevan dengan target deployment Sentra (mulai dari Jawa Timur untuk Puskesmas Balowerti, lalu expand)
+3. ⬜ Hash + log untuk semua file
+4. ⬜ Identifikasi tabel/grafik yang relevan untuk 144 SKDI 4A:
    - Prevalensi diabetes, hipertensi, TB, ISPA, dll
    - Faktor risiko per kelompok usia
-5. ✅ Tulis `notes.md` dengan **page mapping** untuk akselerasi ekstraksi
+5. ⬜ Tulis `notes.md` dengan **page mapping** untuk akselerasi ekstraksi
 
 **Output yang diharapkan**:
 - Laporan Nasional Riskesdas 2023
@@ -521,12 +521,12 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 3. Setelah approved → download database file (XML/CSV format)
 4. Untuk **commercial use** (CDSS production): contact DrugBank business team untuk commercial license
 
-**Action steps**:
-1. ✅ Submit academic license dulu (untuk development/research phase)
-2. ✅ Setelah approved (1-2 minggu) → download dataset
-3. ✅ **PARALEL**: inisiasi commercial license discussion untuk production
-4. ✅ Hash + log
-5. ✅ Cross-reference dengan DDInter 2.0 yang sudah ada (173,071 interaksi) — DrugBank bisa enrich dengan mechanism detail
+**Action steps** _(langkah 2, 4, 5 diblokir sampai academic license disetujui — estimasi 1–2 minggu)_:
+1. ⬜ Submit academic license dulu (untuk development/research phase)
+2. ⬜ Setelah approved (1-2 minggu) → download dataset
+3. ⬜ **PARALEL**: inisiasi commercial license discussion untuk production
+4. ⬜ Hash + log
+5. ⬜ Cross-reference dengan DDInter 2.0 yang sudah ada (173,071 interaksi) — DrugBank bisa enrich dengan mechanism detail
 
 **Output yang diharapkan**:
 - DrugBank academic dataset (XML/CSV)
@@ -551,11 +551,11 @@ Setiap file yang didapat harus di-rename mengikuti pola:
 3. Format: SQL dump (bisa langsung di-import ke MySQL/PostgreSQL) atau API JSON
 
 **Action steps**:
-1. ✅ Daftar akun OCL
-2. ✅ Download CIEL dictionary terbaru (snapshot)
-3. ✅ Hash + log
-4. ✅ Inspect file: jumlah concept, mapping coverage untuk Indonesia (mungkin perlu translate beberapa)
-5. ✅ Plan: untuk v1 fokus pada concept yang punya mapping ICD-10 → CIEL Concept ID
+1. ⬜ Daftar akun OCL
+2. ⬜ Download CIEL dictionary terbaru (snapshot)
+3. ⬜ Hash + log
+4. ⬜ Inspect file: jumlah concept, mapping coverage untuk Indonesia (mungkin perlu translate beberapa)
+5. ⬜ Plan: untuk v1 fokus pada concept yang punya mapping ICD-10 → CIEL Concept ID
 
 **Output yang diharapkan**:
 - CIEL dictionary file (SQL/JSON)
@@ -681,7 +681,7 @@ status: GO_PENDING_APPROVAL
 # Summary
 Fase pengumpulan bahan untuk Sentra CDSS v1 telah selesai dengan rincian:
 - Total sumber yang berhasil diakuisisi: X / 12
-- Sumber Tier 1 (wajib v1): 4/4 ✅
+- Sumber Tier 1 (wajib v1): 4/4 ⬜
 - Sumber Tier 2 (v1.5): X/4
 - Sumber Tier 3 (v2): X/3
 - Sumber Tier 4 (integration): 1/1

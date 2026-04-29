@@ -112,7 +112,7 @@ Semua package ada di `packages/` dan dipublish sebagai `@the-abyss/*`.
 |-------------|-------------|--------|
 | `config-eslint` | `@the-abyss/config-eslint` | Shared ESLint configs (base, node, react) |
 | `config-typescript` | `@the-abyss/config-typescript` | Shared tsconfig base (strict) |
-| `database` | `@the-abyss/database` | Prisma singleton + semua model types |
+| `database` | `@the-abyss/database` | Prisma client untuk **platform apps only** (`orchestrator`, `sentra-portal`) — ⚠️ TIDAK digunakan healthcare apps; tiap healthcare app punya Prisma schema sendiri |
 | `design-token` | — | Design token system — Avvcenna+ Dark Theme |
 | `fhir-engine` | `@the-abyss/fhir-engine` | FHIR R4 validation + transformation layer |
 | `integration-bridge` | `@the-abyss/integration-bridge` | Notion + Linear integration client |

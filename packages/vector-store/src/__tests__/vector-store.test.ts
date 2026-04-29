@@ -85,6 +85,33 @@ describe('VectorStore', () => {
 
     expect(executeRaw).toHaveBeenCalledWith('DELETE FROM "KnowledgeBase" WHERE id = $1', 'kb-1')
   })
+
+  it('upsertById uses caller-supplied stable ID with ON CONFLICT upsert', async () => {
+    const stableId = 'kb:abc123:v1:p001:c0001'
+    await store.upsertById(stableId, 'clinical protocol text', { source: 'protocol.pdf' })
+
+    expect(getEmbeddingMock).toHaveBeenCalledWith('clinical protocol text', {
+      model: 'text-embedding-004',
+      taskType: 'RETRIEVAL_DOCUMENT',
+      gcpProjectId: undefined,
+      gcpLocation: undefined,
+    })
+    expect(executeRaw).toHaveBeenCalledWith(
+      expect.stringContaining('ON CONFLICT (id) DO UPDATE SET'),
+      stableId,
+      'clinical protocol text',
+      '[0.1,0.2,0.3]',
+      JSON.stringify({ source: 'protocol.pdf' }),
+    )
+  })
+
+  it('upsertById requires caller-owned database injection', async () => {
+    const storeWithoutDatabase = new VectorStore()
+
+    await expect(
+      storeWithoutDatabase.upsertById('kb:x:v1:p001:c0001', 'text'),
+    ).rejects.toThrow('database client is required')
+  })
 })
 
 describe('createVectorStore', () => {

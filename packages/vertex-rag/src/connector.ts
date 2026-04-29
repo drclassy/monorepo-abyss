@@ -2,7 +2,7 @@
  * Copyright 2026 Google LLC
  *
  * Sentra AI Hybrid Brain - Vertex RAG Connector
- * Project: tenacious-crane-494419-j5
+ * Project: abyss-monorepo
  * Managed by Jen (Sentra Adjutant)
  */
 

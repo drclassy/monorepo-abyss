@@ -1,21 +1,17 @@
 
 import { GoogleAuth } from 'google-auth-library';
 import * as dotenv from 'dotenv';
-import * as path from 'path';
+
+import { resolveProjectId } from './internal/gcp-project';
 
 dotenv.config();
 
 async function investigate() {
   console.log('=== Vertex RAG Deep Investigation ===');
   
-  const projectId = process.env.GCP_PROJECT_ID;
+  const projectId = resolveProjectId();
   const location = process.env.GCP_LOCATION || 'us-central1';
   const opId = '8141089386918838272'; // ID resi terakhir
-
-  if (!projectId) {
-    console.error('❌ Error: GCP_PROJECT_ID tidak ditemukan di .env');
-    return;
-  }
 
   const auth = new GoogleAuth({
     scopes: ['https://www.googleapis.com/auth/cloud-platform']

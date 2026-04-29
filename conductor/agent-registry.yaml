@@ -43,7 +43,7 @@ agents:
     provider: google
     model: gemini-2.5-pro
     role: review-triage-agent
-    entry_point: GEMINI.md
+    entry_point: docs/GEMINI.md
     protocol: standard
     capabilities:
       - pr-review
