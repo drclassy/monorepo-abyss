@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { BaseSaga } from './base.saga';
-import { KafkaService } from '../kafka/kafka.service';
+import { Injectable } from '@nestjs/common'
+
+import type { KafkaService } from '../kafka/kafka.service'
+
+import { BaseSaga } from './base.saga'
 
 export interface ReferralInput {
   patientId: string;
@@ -13,37 +15,62 @@ export interface ReferralInput {
 }
 
 export interface ReferralOutput {
-  referralId: string;
-  status: 'confirmed' | 'failed';
-  confirmationCode?: string;
-  destinationContact?: string;
-  estimatedResponseHours: number;
-  completedAt: string;
+  referralId: string
+  status: 'confirmed' | 'failed'
+  confirmationCode?: string
+  destinationContact?: string
+  estimatedResponseHours: number
+  completedAt: string
 }
 
-const REFERRAL_TIMEOUT_MS = 30_000; // 30 seconds per step
-const URGENT_TIMEOUT_MS = 10_000;
+interface ReferralPatientState extends ReferralInput {
+  patientMrn: string
+}
+
+interface DestinationValidation {
+  contact: string
+  estimatedResponseHours: number
+}
+
+interface ReferralDestinationState extends ReferralPatientState {
+  destValidation: DestinationValidation
+}
+
+interface ReferralNotificationState extends ReferralDestinationState {
+  confirmationCode: string
+}
+
+const REFERRAL_TIMEOUT_MS = 30_000
+const URGENT_TIMEOUT_MS = 10_000
+
+function normalizeError(error: unknown): Error {
+  if (error instanceof Error) {
+    return error
+  }
+
+  return new Error(typeof error === 'string' ? error : 'Unknown referral saga error')
+}
 
 function getTimeoutMs(urgency: ReferralInput['urgency']): number {
   return urgency === 'emergency' || urgency === 'urgent'
     ? URGENT_TIMEOUT_MS
-    : REFERRAL_TIMEOUT_MS;
+    : REFERRAL_TIMEOUT_MS
 }
 
 async function withTimeout<T>(fn: () => Promise<T>, timeoutMs: number): Promise<T> {
   return Promise.race([
     fn(),
     new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error(`Step timed out after ${timeoutMs}ms`)), timeoutMs),
+      setTimeout(() => reject(new Error(`Step timed out after ${timeoutMs}ms`)), timeoutMs)
     ),
-  ]);
+  ])
 }
 
 @Injectable()
 export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
   constructor(private readonly kafka: KafkaService) {
-    super();
-    this.buildSteps();
+    super()
+    this.buildSteps()
   }
 
   private buildSteps(): void {
@@ -58,14 +85,14 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
           destinationOrg: input.destinationOrganizationId,
           urgency: input.urgency,
           timestamp: new Date().toISOString(),
-        });
-        return input;
+        })
+        return input
       },
       compensate: async (input: ReferralInput, error: Error) => {
-        await this.emitDlq('REFERRAL_INITIATED', input, error);
+        await this.emitDlq('REFERRAL_INITIATED', input.referralId, error)
         // No compensation needed — initiation hasn't committed anything
       },
-    });
+    })
 
     // Step 2: VALIDATE_PATIENT — verify patient eligibility for referral
     this.addStep({
@@ -75,11 +102,11 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
 
         const validation = await withTimeout(async () => {
           // TODO: replace with real patient validation via @the-abyss/database
-          return { valid: true, mrn: `PKM-${input.patientId}` };
-        }, timeout);
+          return { valid: true, mrn: `PKM-${input.patientId}` }
+        }, timeout)
 
         if (!validation.valid) {
-          throw new Error(`Patient ${input.patientId} not eligible for referral`);
+          throw new Error(`Patient ${input.patientId} not eligible for referral`)
         }
 
         await this.kafka.emit('referral-events', {
@@ -87,19 +114,19 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
           referralId: input.referralId,
           patientMrn: validation.mrn,
           timestamp: new Date().toISOString(),
-        });
+        })
 
-        return { ...input, patientMrn: validation.mrn };
+        return { ...input, patientMrn: validation.mrn }
       },
-      compensate: async (input: ReferralInput, error: Error) => {
-        await this.emitDlq('VALIDATE_PATIENT', input, error);
+      compensate: async (input: ReferralInput | ReferralPatientState, error: Error) => {
+        await this.emitDlq('VALIDATE_PATIENT', input.referralId, error)
       },
-    });
+    })
 
     // Step 3: VALIDATE_DESTINATION — verify receiving facility can accept
     this.addStep({
       name: 'VALIDATE_DESTINATION',
-      invoke: async (input: any) => {
+      invoke: async (input: ReferralPatientState): Promise<ReferralDestinationState> => {
         const timeout = getTimeoutMs(input.urgency);
 
         const destValidation = await withTimeout(async () => {
@@ -108,11 +135,11 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
             available: true,
             contact: `admin@${input.destinationOrganizationId}.sentra.id`,
             estimatedResponseHours: input.urgency === 'emergency' ? 1 : 24,
-          };
-        }, timeout);
+          }
+        }, timeout)
 
         if (!destValidation.available) {
-          throw new Error(`Destination ${input.destinationOrganizationId} is not available`);
+          throw new Error(`Destination ${input.destinationOrganizationId} is not available`)
         }
 
         await this.kafka.emit('referral-events', {
@@ -120,27 +147,27 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
           referralId: input.referralId,
           destinationContact: destValidation.contact,
           timestamp: new Date().toISOString(),
-        });
+        })
 
-        return { ...input, destValidation };
+        return {
+          ...input,
+          destValidation: {
+            contact: destValidation.contact,
+            estimatedResponseHours: destValidation.estimatedResponseHours,
+          },
+        }
       },
-      compensate: async (input: any, error: Error) => {
-        // Compensating transaction: notify source org that destination unavailable
-        await this.kafka.emit('referral-events', {
-          event: 'DESTINATION_UNAVAILABLE',
-          referralId: input.referralId,
-          reason: error.message,
-          timestamp: new Date().toISOString(),
-        }).catch(() => {});
-        await this.emitDlq('VALIDATE_DESTINATION', input, error);
+      compensate: async (input: ReferralPatientState, error: Error) => {
+        await this.emitDlq('VALIDATE_DESTINATION', input.referralId, error)
+        await this.emitCompensationEvent('DESTINATION_UNAVAILABLE', input.referralId, error)
       },
-    });
+    })
 
     // Step 4: NOTIFY_DESTINATION — send referral packet to receiving facility
     this.addStep({
       name: 'NOTIFY_DESTINATION',
-      invoke: async (input: any) => {
-        const confirmationCode = `REF-${input.referralId}-${Date.now()}`;
+      invoke: async (input: ReferralDestinationState): Promise<ReferralNotificationState> => {
+        const confirmationCode = `REF-${input.referralId}-${Date.now()}`
 
         await this.kafka.emit('referral-events', {
           event: 'NOTIFY_DESTINATION',
@@ -152,26 +179,20 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
           diagnosisCode: input.diagnosisCode,
           urgency: input.urgency,
           timestamp: new Date().toISOString(),
-        });
+        })
 
-        return { ...input, confirmationCode };
+        return { ...input, confirmationCode }
       },
-      compensate: async (input: any, error: Error) => {
-        // Compensating transaction: cancel notification if already sent
-        await this.kafka.emit('referral-events', {
-          event: 'NOTIFY_CANCELLED',
-          referralId: input.referralId,
-          reason: error.message,
-          timestamp: new Date().toISOString(),
-        }).catch(() => {});
-        await this.emitDlq('NOTIFY_DESTINATION', input, error);
+      compensate: async (input: ReferralDestinationState | ReferralNotificationState, error: Error) => {
+        await this.emitDlq('NOTIFY_DESTINATION', input.referralId, error)
+        await this.emitCompensationEvent('NOTIFY_CANCELLED', input.referralId, error)
       },
-    });
+    })
 
     // Step 5: CONFIRM_RECEIPT — finalize and emit confirmation to source
     this.addStep({
       name: 'CONFIRM_RECEIPT',
-      invoke: async (input: any): Promise<ReferralOutput> => {
+      invoke: async (input: ReferralNotificationState): Promise<ReferralOutput> => {
         const output: ReferralOutput = {
           referralId: input.referralId,
           status: 'confirmed',
@@ -179,42 +200,59 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
           destinationContact: input.destValidation?.contact,
           estimatedResponseHours: input.destValidation?.estimatedResponseHours ?? 24,
           completedAt: new Date().toISOString(),
-        };
+        }
 
         await this.kafka.emit('referral-events', {
           event: 'CONFIRM_RECEIPT',
           referralId: input.referralId,
           result: output,
           timestamp: output.completedAt,
-        });
+        })
 
-        return output;
+        return output
       },
-      compensate: async (input: any, error: Error) => {
-        // Emit failed referral event so source org is notified
-        await this.kafka.emit('referral-events', {
-          event: 'REFERRAL_FAILED',
-          referralId: input.referralId,
-          reason: error.message,
-          timestamp: new Date().toISOString(),
-        }).catch(() => {});
-        await this.emitDlq('CONFIRM_RECEIPT', input, error);
+      compensate: async (input: ReferralNotificationState, error: Error) => {
+        await this.emitDlq('CONFIRM_RECEIPT', input.referralId, error)
+        await this.emitCompensationEvent('REFERRAL_FAILED', input.referralId, error)
       },
-    });
+    })
+  }
+
+  private async emitCompensationEvent(
+    event:
+      | 'DESTINATION_UNAVAILABLE'
+      | 'NOTIFY_CANCELLED'
+      | 'REFERRAL_FAILED',
+    referralId: string,
+    error: Error
+  ): Promise<void> {
+    try {
+      await this.kafka.emit('referral-events', {
+        event,
+        referralId,
+        reason: error.name,
+        timestamp: new Date().toISOString(),
+      })
+    } catch (emitError) {
+      const normalizedError = normalizeError(emitError)
+      await this.emitDlq(`${event}_EMIT`, referralId, normalizedError)
+      throw normalizedError
+    }
   }
 
   private async emitDlq(
     step: string,
-    input: unknown,
-    error: Error,
+    referralId: string,
+    error: Error
   ): Promise<void> {
     await this.kafka.emit('referral-dlq', {
       step,
-      input,
-      error: error.message,
+      referralId,
+      errorType: error.constructor.name,
+      errorName: error.name,
       timestamp: new Date().toISOString(),
     }).catch((dlqErr) => {
-      console.error('[ReferralFlowSaga] DLQ emit failed:', dlqErr);
-    });
+      console.error('[ReferralFlowSaga] DLQ emit failed:', normalizeError(dlqErr).name)
+    })
   }
 }

@@ -1,6 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { SagaRepository } from './saga.repository'
 import { prisma } from '@the-abyss/database'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import type { SagaJson } from './saga.repository'
+import { SagaRepository } from './saga.repository'
 
 // Mock the database
 vi.mock('@the-abyss/database', () => ({
@@ -15,6 +17,10 @@ vi.mock('@the-abyss/database', () => ({
 
 describe('SagaRepository', () => {
   let repository: SagaRepository
+
+  function toJson(value: SagaJson) {
+    return value
+  }
 
   beforeEach(() => {
     repository = new SagaRepository()
@@ -33,7 +39,7 @@ describe('SagaRepository', () => {
         organizationId: 'org-1',
       }
 
-      vi.mocked(prisma.sagaExecution.create).mockResolvedValue(mockExecution as any)
+      vi.mocked(prisma.sagaExecution.create).mockResolvedValue(mockExecution as never)
 
       const result = await repository.createExecution(
         'test-flow',
@@ -66,7 +72,7 @@ describe('SagaRepository', () => {
         organizationId: null,
       }
 
-      vi.mocked(prisma.sagaExecution.create).mockResolvedValue(mockExecution as any)
+      vi.mocked(prisma.sagaExecution.create).mockResolvedValue(mockExecution as never)
 
       await repository.createExecution('test-flow', 'test-saga', {})
 
@@ -90,8 +96,8 @@ describe('SagaRepository', () => {
         steps: [],
       }
 
-      vi.mocked(prisma.sagaExecution.findUnique).mockResolvedValue(mockExecution as any)
-      vi.mocked(prisma.sagaExecution.update).mockResolvedValue({} as any)
+      vi.mocked(prisma.sagaExecution.findUnique).mockResolvedValue(mockExecution as never)
+      vi.mocked(prisma.sagaExecution.update).mockResolvedValue({} as never)
 
       await repository.updateStep('exec-1', 0, {
         name: 'test-step',
@@ -119,9 +125,9 @@ describe('SagaRepository', () => {
 
   describe('completeExecution', () => {
     it('should mark execution as COMPLETED with output', async () => {
-      vi.mocked(prisma.sagaExecution.update).mockResolvedValue({} as any)
+      vi.mocked(prisma.sagaExecution.update).mockResolvedValue({} as never)
 
-      await repository.completeExecution('exec-1', { result: 'success' })
+      await repository.completeExecution('exec-1', toJson({ result: 'success' }))
 
       expect(prisma.sagaExecution.update).toHaveBeenCalledWith({
         where: { id: 'exec-1' },
@@ -136,7 +142,7 @@ describe('SagaRepository', () => {
 
   describe('failExecution', () => {
     it('should mark execution as FAILED with error message', async () => {
-      vi.mocked(prisma.sagaExecution.update).mockResolvedValue({} as any)
+      vi.mocked(prisma.sagaExecution.update).mockResolvedValue({} as never)
 
       await repository.failExecution('exec-1', 'Something went wrong')
 
@@ -153,7 +159,7 @@ describe('SagaRepository', () => {
 
   describe('compensateExecution', () => {
     it('should mark execution as COMPENSATED', async () => {
-      vi.mocked(prisma.sagaExecution.update).mockResolvedValue({} as any)
+      vi.mocked(prisma.sagaExecution.update).mockResolvedValue({} as never)
 
       await repository.compensateExecution('exec-1')
 
@@ -175,7 +181,7 @@ describe('SagaRepository', () => {
         status: 'COMPLETED',
       }
 
-      vi.mocked(prisma.sagaExecution.findUnique).mockResolvedValue(mockExecution as any)
+      vi.mocked(prisma.sagaExecution.findUnique).mockResolvedValue(mockExecution as never)
 
       const result = await repository.getExecution('exec-1')
 
