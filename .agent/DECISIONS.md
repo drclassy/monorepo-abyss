@@ -280,3 +280,24 @@ These lines are verbatim duplicates from the [2026-04-10] `.claude/ folder at mo
 
 **Lines 35-37 corruption — authoritative statement:**
 The three lines in [2026-04-21] beginning with `**Decision:** .claude/ at monorepo root...` are confirmed erroneous copy-paste from [2026-04-10]. They carry zero decision authority within the [2026-04-21] entry. Any agent reading [2026-04-21] MUST stop at line 34 (after `**Consequences:** Requires IAM role management...`) and treat lines 35-37 as void.
+
+
+### [2026-04-29] SYMPHONY core clinical reasoning engine declared complete
+**Context:** Per the SYMPHONY Final Status Memo (29 April 2026), `@the-abyss/symphony` has closed every fondasi item planned for the AADI V2 native clinical reasoning engine: clinical facts, syndrome classification, diagnosis packs, native differential, reasoning arbiter, explainability, clinical disposition, `assess.ts` integration, shadow comparison, parity verification, FHIR bundle interop, and CDS Hooks formalization. Verification on `master` at commit `255c50f` (hardening patch `882775a`) shows symphony 373/373, orchestrator 46/46 + typecheck, fhir-engine 64/64, vertex-rag 5/5 — all green.
+**Decision:** Declare SYMPHONY core engine work **complete**. Future workstreams in this lane are no longer fondasi work; they are:
+1. Consumer rollout — adoption of `assessSymphonyInput()` by remaining legacy-path consumers.
+2. Telemetry-guided adoption — production observability for traffic-light/alert semantics.
+3. Interoperability expansion — additional FHIR Bundle assembly or CDS Hooks surfaces only when a new clinical requirement justifies them.
+**Boundary lock (reaffirmed):**
+- `@the-abyss/symphony` remains the sole reasoning authority for diagnosis, traffic-light, alert semantics, and clinical posture.
+- `@the-abyss/fhir-engine` is the bounded structural validation home and now also owns the FHIR Bundle assembly promotion lane, but explicitly does **not** take over reasoning semantics.
+- CDS Hooks remains formalized inside `packages/symphony` because it is workflow-semantics-bound, not structural-validation-bound.
+- Orchestrator integration is now a thin client over `assessSymphonyInput()` — no mock reasoning paths remain in the platform path.
+**Rejected alternatives:** (1) Continue treating SYMPHONY as in-flight fondasi and keep deferring rollout. (2) Migrate CDS Hooks into `@the-abyss/fhir-engine` to consolidate "FHIR-shaped surfaces". (3) Reintroduce a parallel reasoning surface (e.g. via `vertex-rag` or a revived `ai-core`) as a coexisting clinical engine.
+**Rationale:** The reasoning, interop, observability, and platform-integration surfaces that defined "core engine" are all green and bounded. Extending fondasi scope further would be feature creep; the next legitimate gains come from getting the engine in front of real consumers, not from internal expansion. CDS Hooks is intentionally kept out of `fhir-engine` to preserve the structural/semantic boundary established in earlier ADRs.
+**Consequences:**
+- Any new "diagnosis engine" feature request must land inside `@the-abyss/symphony`.
+- Any new FHIR resource validation or Bundle assembly work belongs to `@the-abyss/fhir-engine`, not symphony.
+- `vertex-rag` and other retrieval lanes must not be re-framed as parallel reasoning engines.
+- Consumer rollout, telemetry instrumentation, and interop expansion are now first-class lanes and need their own JET plans + Chief GO before execution; they do not inherit approval from this memo.
+- Source of truth for this declaration: session log entry "Claude — SYMPHONY Final Status Memo close-out (2026-04-29 12:32 GMT+7)" in `.agent/sessions/2026-04-29.md`, mirrored from approved plan `~/.claude/plans/status-memo-symphony-final-velvet-allen.md`.
