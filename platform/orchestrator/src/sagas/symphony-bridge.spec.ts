@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { assessSymphonyInput } from '@the-abyss/symphony'
+import { assessSymphonyInput } from '@sentra/nada'
 
 import {
   mapDiagnosisInputToSymphonyInput,

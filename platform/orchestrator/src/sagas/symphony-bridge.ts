@@ -1,8 +1,9 @@
 import {
   type SymphonyAssessmentInput,
+  type SymphonyDiagnosticHypothesis,
   type SymphonyResult,
   type SymphonyVitalsInput,
-} from '@the-abyss/symphony'
+} from '@sentra/nada'
 
 export interface DiagnosisSagaInput {
   patientId: string
@@ -64,8 +65,8 @@ export function mapSymphonyResultToCdssResult(
   const primary = top ? [top.diagnosisName] : []
   const differentials = hypotheses
     .slice(1)
-    .filter(h => h.category !== 'deferred')
-    .map(h => h.diagnosisName)
+    .filter((h: SymphonyDiagnosticHypothesis) => h.category !== 'deferred')
+    .map((h: SymphonyDiagnosticHypothesis) => h.diagnosisName)
   const confidence = top?.confidence ?? 0
 
   return {

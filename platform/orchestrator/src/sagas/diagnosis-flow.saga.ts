@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assessSymphonyInput, type SymphonyResult } from '@the-abyss/symphony';
+import { assessSymphonyInput, type SymphonyResult } from '@sentra/nada';
 import { BaseSaga } from './base.saga';
 import { KafkaService } from '../kafka/kafka.service';
 import {
