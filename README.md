@@ -50,7 +50,7 @@ brochure, and it does not hide prototype, legacy, or under-retirement surfaces.
 | `AGENTS.md`         | `AGENTS.md`          | Supreme repo instruction set and architectural authority.           |
 | `CLAUDE.md`         | `CLAUDE.md`          | Claude Code CLI entry surface.                                      |
 | `.agent`            | `.agent/`            | Tracked governance memory and active handoff surfaces.              |
-| `.claude`           | `.claude/`           | Claude Code local configuration and skills support.                 |
+| `.claude`           | `.claude/`           | Local-only Claude Code configuration and skills support.            |
 | `.cursor`           | `.cursor/`           | Shared Cursor rules, tracked subagents, and IDE behavior surfaces.  |
 | `.mcp.json`         | `.mcp.json`          | Local-only MCP registry when present on disk.                       |
 | `mcp.json.example`  | `mcp.json.example`   | Committed MCP template for local setup.                             |
@@ -88,11 +88,11 @@ brochure, and it does not hide prototype, legacy, or under-retirement surfaces.
 
 #### Community
 
-| Workspace                         | Path                                  | Role                                                  |
-| --------------------------------- | ------------------------------------- | ----------------------------------------------------- |
-| `@the-abyss/classy-memory`      | `apps/community/classy-memory`      | Memory-oriented community application surface.        |
-| `@the-abyss/classy-transformer` | `apps/community/classy-transformer` | Multi-LLM platform and community transformer surface. |
-| `@the-abyss/daf-website`          | `apps/community/daf-website`          | Foundation or outreach website surface.               |
+| Workspace                       | Path                                | Role                                                                                     |
+| ------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------- |
+| `@the-abyss/classy-memory`      | `apps/community/classy-memory`      | Memory-oriented community application surface with Python and TypeScript memory engines. |
+| `@the-abyss/classy-transformer` | `apps/community/classy-transformer` | Multi-LLM platform with provider routing, embeddings, and recommendation APIs.           |
+| `@the-abyss/daf-website`        | `apps/community/daf-website`        | Foundation or outreach website surface.                                                  |
 
 #### Corporate
 
@@ -102,14 +102,14 @@ brochure, and it does not hide prototype, legacy, or under-retirement surfaces.
 
 #### Healthcare
 
-| Workspace                          | Path                                         | Role                                                                     |
-| ---------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------ |
-| `aby-dashboard`                    | `apps/healthcare/aby-dashboard`              | Healthcare dashboard application surface.                                |
-| `@classy/intelligenceboard` | `apps/healthcare/intelligenceboard`          | Clinical AI dashboard and operational command surface.                   |
-| `@the-abyss/puskesmas-website`     | `apps/healthcare/primary-healthcare/website` | Public-facing primary healthcare website surface.                        |
-| `@the-abyss/referralink`           | `apps/healthcare/referralink`                | Referral and routing surface for healthcare operations.                  |
-| `@the-abyss/sentra-assist`         | `apps/healthcare/sentra-assist`              | Browser extension for clinical decision support and workflow automation. |
-| `@the-abyss/sentra-main`           | `apps/healthcare/sentra-main`                | Sentra marketing and public main site.                                   |
+| Workspace                      | Path                                         | Role                                                                                                    |
+| ------------------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `aby-dashboard`                | `apps/healthcare/aby-dashboard`              | Healthcare dashboard application surface.                                                               |
+| `@classy/intelligenceboard`    | `apps/healthcare/intelligenceboard`          | Clinical AI dashboard with CDSS, telemedicine, trajectory intelligence, EMR bridge, and voice surfaces. |
+| `@the-abyss/puskesmas-website` | `apps/healthcare/primary-healthcare/website` | Public-facing primary healthcare website surface.                                                       |
+| `@the-abyss/referralink`       | `apps/healthcare/referralink`                | Referral and routing surface with diagnosis API, semantic cache, and memory-service helpers.            |
+| `@the-abyss/sentra-assist`     | `apps/healthcare/sentra-assist`              | Browser extension for CDSS, Iskandar diagnosis, emergency detection, and workflow automation.           |
+| `@the-abyss/sentra-main`       | `apps/healthcare/sentra-main`                | Sentra marketing and public main site.                                                                  |
 
 Additional healthcare sub-surface:
 
@@ -135,24 +135,24 @@ Additional healthcare sub-surface:
 
 ## Shared engines and packages
 
-| Package                           | Path                            | Role                                                                                    |
-| --------------------------------- | ------------------------------- | --------------------------------------------------------------------------------------- |
-| `@the-abyss/clinical-references`  | `packages/clinical-references`  | Shared clinical reference types and structured clinical data surfaces.                  |
-| `@the-abyss/config-eslint`        | `packages/config-eslint`        | Shared ESLint flat-config presets and repo lint boundaries.                             |
-| `@the-abyss/config-typescript`    | `packages/config-typescript`    | Shared TypeScript configuration presets across workspaces.                              |
-| `@the-abyss/database`             | `packages/database`             | Prisma client, schema, and shared database access layer.                                |
-| `@the-abyss/design-token`         | `packages/design-token`         | Sentra design tokens for color, borders, typography, and spacing.                       |
-| `@the-abyss/document-ingestion`   | `packages/document-ingestion`   | Document ingestion surface for parsing and processing source material.                  |
-| `@the-abyss/fhir-engine`          | `packages/fhir-engine`          | FHIR validation, normalization, and interoperability engine.                            |
-| `@the-abyss/integration-bridge`   | `packages/integration-bridge`   | Bridge layer for external integrations such as Notion and Linear.                       |
-| `@the-abyss/iskandar-gatekeeper`  | `packages/iskandar-gatekeeper`  | GO-gate and access-control enforcement surface.                                         |
-| `@the-abyss/langflow-client`      | `packages/langflow-client`      | TypeScript client for LangFlow API integration and flow execution.                      |
-| `@the-abyss/literature-harvester` | `packages/literature-harvester` | Open-access literature harvesting and collection tooling.                               |
-| `@the-abyss/sentra-rag`           | `packages/sentra-rag`           | Sentra RAG engine for local-first medical knowledge retrieval with pgvector and Ollama. |
-| `@the-abyss/ui`                   | `packages/sentra-ui`            | Shared Sentra UI component layer.                                                       |
-| `@the-abyss/shared-types`         | `packages/shared-types`         | Cross-workspace TypeScript contracts and shared domain types.                           |
-| `@the-abyss/symphony`             | `packages/symphony`             | Orchestration and clinical engine layer used across AI workflows.                       |
-| `@the-abyss/vector-store`         | `packages/vector-store`         | PDF parsing, embedding helpers, and vector-store support utilities.                     |
+| Package                           | Path                            | Role                                                                                                                       |
+| --------------------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `@the-abyss/clinical-references`  | `packages/clinical-references`  | Shared clinical reference types and structured clinical data surfaces.                                                     |
+| `@the-abyss/config-eslint`        | `packages/config-eslint`        | Shared ESLint flat-config presets and repo lint boundaries.                                                                |
+| `@the-abyss/config-typescript`    | `packages/config-typescript`    | Shared TypeScript configuration presets across workspaces.                                                                 |
+| `@the-abyss/database`             | `packages/database`             | Prisma client, schema, and shared database access layer.                                                                   |
+| `@the-abyss/design-token`         | `packages/design-token`         | Sentra design tokens for color, borders, typography, and spacing.                                                          |
+| `@the-abyss/document-ingestion`   | `packages/document-ingestion`   | Canonical document ingestion surface with parsing, OCR-quality reporting, normalization, and source hashing.               |
+| `@the-abyss/fhir-engine`          | `packages/fhir-engine`          | FHIR validation, normalization, bundle projection, and interoperability engine.                                            |
+| `@the-abyss/integration-bridge`   | `packages/integration-bridge`   | Bridge layer for external integrations such as Notion and Linear.                                                          |
+| `@the-abyss/iskandar-gatekeeper`  | `packages/iskandar-gatekeeper`  | GO-gate and access-control enforcement surface.                                                                            |
+| `@the-abyss/langflow-client`      | `packages/langflow-client`      | TypeScript client for LangFlow API integration and flow execution.                                                         |
+| `@the-abyss/literature-harvester` | `packages/literature-harvester` | Open-access literature harvesting and collection tooling.                                                                  |
+| `@the-abyss/sentra-rag`           | `packages/sentra-rag`           | Sentra RAG engine for local-first medical knowledge retrieval, ingestion, evaluation, and pgvector-backed evidence lookup. |
+| `@the-abyss/ui`                   | `packages/sentra-ui`            | Shared Sentra UI component layer.                                                                                          |
+| `@the-abyss/shared-types`         | `packages/shared-types`         | Cross-workspace TypeScript contracts and shared domain types.                                                              |
+| `@the-abyss/symphony`             | `packages/symphony`             | Clinical reasoning and orchestration layer with FHIR and CDS Hooks interoperability.                                       |
+| `@the-abyss/vector-store`         | `packages/vector-store`         | Embedding-provider, ingest, and vector-store support utilities for retrieval workflows.                                    |
 
 ### Engine focus
 
@@ -166,17 +166,49 @@ These are the engine surfaces most central to current AI behavior in the repo:
 - `@the-abyss/iskandar-gatekeeper`
 - `@the-abyss/database`
 
+### AI capability map
+
+#### Core engines
+
+| Surface                         | Current capability                                                                                                                                                            |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@the-abyss/sentra-rag`         | Canonical local-first RAG runtime for PDF ingest, chunking, embedding, pgvector writes, retrieval, registry tracking, supersession, and retrieval evaluation artifacts.       |
+| `@the-abyss/symphony`           | Clinical reasoning engine for assessment, clinical-pattern processing, confidence scoring, trajectory logic, safety gates, and interoperability export to FHIR and CDS Hooks. |
+| `@the-abyss/vector-store`       | Retrieval-side embedding and vector helper surface used to support local semantic search and document ingest helpers.                                                         |
+| `@the-abyss/document-ingestion` | Canonical document front door with parser providers, OCR quality checks, markdown normalization, canonical document rendering, and source hashing.                            |
+| `@the-abyss/langflow-client`    | Programmatic LangFlow API client for orchestrated flow execution from TypeScript runtimes.                                                                                    |
+| `@the-abyss/fhir-engine`        | Clinical interoperability layer for FHIR bundle generation, transformation, validation hooks, and version strategy.                                                           |
+
+#### Healthcare AI applications
+
+| Surface                     | Current capability                                                                                                                                                          |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@classy/intelligenceboard` | CDSS routes, consult APIs, telemedicine workflows, Audrey voice surfaces, trajectory analytics, EMR bridge, clinical reports, and safety/observability hooks.               |
+| `@the-abyss/sentra-assist`  | Iskandar diagnosis engine, emergency detector, ICD and RAG support, bridge/platform API clients, sidepanel CDSS widgets, and workflow automation for browser-assisted care. |
+| `@the-abyss/referralink`    | Referral routing plus diagnosis endpoint, embedding-driven semantic cache, and memory-service helpers for contextual operations.                                            |
+
+#### Community and prototype AI surfaces
+
+| Surface                            | Current capability                                                                                                                  |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `@the-abyss/classy-transformer`    | Multi-provider LLM workspace with provider registry, embeddings, transform engine, and recommendation API surfaces.                 |
+| `@the-abyss/classy-memory`         | Community memory runtime with TypeScript and Python engine surfaces for extraction, consolidation, scheduling, and session logging. |
+| `apps/academic/clinical-simulator` | Academic simulation surface for AI-assisted clinical-case training.                                                                 |
+| `apps/academic/evaluation-engine`  | Evaluation backend for competency and assessment workflows.                                                                         |
+| `apps/prototype/edge-ai-prototype` | Edge-AI experiment surface.                                                                                                         |
+| `apps/prototype/ghost-protocols`   | Prototype and specification surface for experimental AI protocol work.                                                              |
+
 ---
 
 ## Tooling and operational facilities
 
-| Surface                      | Path                        | Role                                                                              |
-| ---------------------------- | --------------------------- | --------------------------------------------------------------------------------- |
-| `@the-abyss/cli`             | `tooling/abyss-cli`         | Monorepo CLI for task init, GO flow, status, scaffolding, and flow sync.          |
-| `governance`                 | `tooling/governance`        | Compliance standards, checklists, troubleshooting, templates, and `validate.ps1`. |
-| `kilo`                       | `tooling/kilo`              | Supporting tooling surface currently kept inside the monorepo.                    |
+| Surface                    | Path                        | Role                                                                              |
+| -------------------------- | --------------------------- | --------------------------------------------------------------------------------- |
+| `@the-abyss/cli`           | `tooling/abyss-cli`         | Monorepo CLI for task init, GO flow, status, scaffolding, and flow sync.          |
+| `governance`               | `tooling/governance`        | Compliance standards, checklists, troubleshooting, templates, and `validate.ps1`. |
+| `kilo`                     | `tooling/kilo`              | Supporting tooling surface currently kept inside the monorepo.                    |
 | `classy-librarian-console` | `tooling/librarian-desktop` | Electron desktop console and literature worker surface.                           |
-| `scripts`                    | `tooling/scripts`           | Supporting scripts for governance checks, RAG tasks, and maintenance work.        |
+| `scripts`                  | `tooling/scripts`           | Supporting scripts for governance checks, RAG tasks, and maintenance work.        |
 
 ### Governance surfaces
 
@@ -212,6 +244,9 @@ The current infrastructure folder explicitly supports these local facilities:
 - PostgreSQL
 - Redis
 - LangFlow
+- Kafka
+- Zookeeper
+- Orchestrator
 - Docker-based service bring-up for development and integration work
 
 ---
@@ -228,14 +263,15 @@ The current infrastructure folder explicitly supports these local facilities:
 
 ## Documentation surfaces
 
-| Surface     | Path             | Role                                                                   |
-| ----------- | ---------------- | ---------------------------------------------------------------------- |
-| `adr`       | `docs/adr`       | Architectural decision records.                                        |
-| `archive`   | `docs/archive`   | Historical docs that remain preserved but are not primary active docs. |
-| `blueprint` | `docs/blueprint` | Blueprint and structure guidance.                                      |
-| `guides`    | `docs/guides`    | Active guides and onboarding references.                               |
-| `specs`     | `docs/specs`     | Current specifications and system-level contracts.                     |
-| `templates` | `docs/templates` | Reusable documentation templates.                                      |
+| Surface       | Path               | Role                                                                         |
+| ------------- | ------------------ | ---------------------------------------------------------------------------- |
+| `adr`         | `docs/adr`         | Architectural decision records.                                              |
+| `archive`     | `docs/archive`     | Historical docs that remain preserved but are not primary active docs.       |
+| `blueprint`   | `docs/blueprint`   | Blueprint and structure guidance.                                            |
+| `guides`      | `docs/guides`      | Active guides and onboarding references.                                     |
+| `specs`       | `docs/specs`       | Current specifications and system-level contracts.                           |
+| `superpowers` | `docs/superpowers` | Supplemental execution artifacts and planning surfaces retained in the repo. |
+| `templates`   | `docs/templates`   | Reusable documentation templates.                                            |
 
 Primary docs entrypoint:
 
@@ -311,6 +347,8 @@ docker-compose up -d
 - The authoritative workspace membership comes from
   [`pnpm-workspace.yaml`](pnpm-workspace.yaml), not from historical wording in
   older docs.
+- `.claude/` is a local-only configuration surface and is listed here only so
+  contributors understand its role when it exists on disk.
 - Some package names and folder names differ slightly, such as
   `platform/sentra-portal` currently carrying a legacy package name in its
   `package.json`. This README uses the folder surface as the primary inventory
