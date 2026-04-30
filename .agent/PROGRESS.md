@@ -16,6 +16,14 @@
 
 ---
 
+## 2026-04-30 19:06 — AGENTS.md correction
+
+- **Agent:** automated (session)  
+- **What:** Corrected `AGENTS.md` to clarify that `packages/database` is scoped to platform apps only and that healthcare apps own their databases (see `.agent/DECISIONS.md` 2026-04-27).  
+- **Files changed:** `AGENTS.md`, `.agent/HANDOFF.md`, `.agent/PROGRESS.md`, `.agent/sessions/2026-04-30.md`
+
+---
+
 ## ✅ Done (cumulative)
 
 ### SYMPHONY core engine closed
@@ -1116,6 +1124,47 @@ docs/archive/handbook/fonts/geistmono/GeistMono-Bold.woff2
 platform/sentra-portal/components/kokonutui/profile-01.tsx
 platform/sentra-portal/components/kokonutui/top-nav.tsx
 platform/sentra-portal/public/avatars/abyss-doctor.png
+```
+
+---
+## 2026-04-30 19:03 — `8fd1956` — master
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(rebrand): rename Avvcenna to Classy
+- **Files changed**: 59 file(s)
+
+```
+.agent/ARCHITECTURE.md
+.agent/CONTEXT.md
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+.github/Avvcenna+.png
+.github/CODEOWNERS
+.github/Classy.png
+.github/PULL_REQUEST_TEMPLATE.md
+.github/workflows/auto-fix.yml
+.github/workflows/doc-guard.yml
+AGENTS.md
+CHANGELOG.md
+CLAUDE.md
+CONTRIBUTING.md
+LICENSE
+ONBOARDING.md
+README.md
+conductor/ORCHESTRATOR.md
+docs/adr/README.md
+docs/blueprint/infrastructure.md
+```
+
+---
+## 2026-04-30 19:29 — `056229a` — master
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(readme): expand AI inventory and capability map
+- **Files changed**: 1 file(s)
+
+```
+README.md
 ```
 
 ---

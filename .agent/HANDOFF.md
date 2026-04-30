@@ -30,6 +30,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 **Session addendum (2026-04-30):**
 - Cursor rules now include an always-on Chief directive bridge at `.cursor/rules/05-chief-directive-mode.mdc`.
 - Future Cursor sessions should front-load latest official notes when relevant, respond in Bahasa Indonesia to Chief, and stop for explicit `GO` before implementation.
+- AGENTS.md corrected (2026-04-30 19:06) to clarify `packages/database` scope: it is platform-level only; healthcare apps own their databases (see `.agent/DECISIONS.md` 2026-04-27).
 
 ---
 
