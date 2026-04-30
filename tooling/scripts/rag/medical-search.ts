@@ -1,4 +1,4 @@
-import { VertexSearchConnector } from '@the-abyss/vertex-rag'
+import { SentraRAGEngine } from '@the-abyss/sentra-rag'
 
 async function main(): Promise<void> {
   const query = process.argv.slice(2).join(' ').trim()
@@ -8,11 +8,12 @@ async function main(): Promise<void> {
     process.exit(1)
   }
 
-  const connector = new VertexSearchConnector()
-  const result = await connector.search(query)
+  const engine = new SentraRAGEngine()
+  await engine.initialize()
+  const result = await engine.ask(query)
 
   console.log('--- Medical Knowledge Search ---')
-  console.log(`query: ${result.query}`)
+  console.log(`query: ${query}`)
   console.log(`status: ${result.status}`)
   console.log(`timestamp: ${result.timestamp}`)
   console.log('')
@@ -25,17 +26,20 @@ async function main(): Promise<void> {
   console.log(`answer: ${result.answer}`)
   console.log('')
 
-  if (!result.hits.length) {
+  if (!result.chunks.length) {
     console.log('(no hits)')
+    await engine.close()
     return
   }
 
-  for (const [i, h] of result.hits.entries()) {
-    console.log(`#${i + 1} ${h.title}`)
-    console.log(`uri: ${h.uri}`)
-    console.log(h.snippet)
+  for (const [i, h] of result.chunks.entries()) {
+    console.log(`#${i + 1} ${h.sourceFile}`)
+    console.log(`category: ${h.category}`)
+    console.log(h.content.slice(0, 200))
     console.log('')
   }
+
+  await engine.close()
 }
 
 main().catch((e) => {

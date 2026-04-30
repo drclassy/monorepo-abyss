@@ -43,7 +43,7 @@ const DIVISIONS: DivisionItem[] = [
   {
     id: "4",
     title: "Infrastructure",
-    description: "NeonDB, Vertex AI, Ollama Hub",
+    description: "NeonDB, Local RAG, Ollama Hub",
     status: "Stable",
     type: "platform",
   },
@@ -140,10 +140,10 @@ export default function EcosystemList({ totalNodes = "12 Intelligence Nodes", di
               "hover:bg-zinc-800 dark:hover:bg-zinc-200",
               "shadow-sm transition-all duration-200",
             )}
-            onClick={() => window.open('https://cloud.google.com/vertex-ai', '_blank')}
+            onClick={() => window.alert('Membuka ringkasan stack local-first dan status layanan internal...')}
           >
             <Terminal className="w-3.5 h-3.5" />
-            <span>Vertex Console</span>
+            <span>Stack Console</span>
           </button>
         </div>
       </div>

@@ -21,7 +21,7 @@ const DEFAULT_MIN_SIMILARITY = 0.5
  *
  * Dry-run mode:
  *   - Validates registry, queries file, and embedding artifacts.
- *   - Zero vector store queries. Zero GCP calls.
+ *   - Zero vector store queries. Zero provider runtime calls.
  *   - Generates evaluation artifacts with empty/placeholder results.
  *
  * Eval mode (default):
@@ -41,8 +41,6 @@ export async function runRetrievalEvalPipeline(
     writeMode,
     topK = DEFAULT_TOP_K,
     minSimilarity = DEFAULT_MIN_SIMILARITY,
-    gcpProjectId,
-    gcpLocation,
     embeddingModel = DEFAULT_EMBEDDING_MODEL,
     databaseClient,
   } = params
@@ -74,8 +72,6 @@ export async function runRetrievalEvalPipeline(
     const vectorStore = createVectorStore({
       database: databaseClient,
       embeddingModel,
-      gcpProjectId,
-      gcpLocation,
     })
 
     for (const query of queries) {

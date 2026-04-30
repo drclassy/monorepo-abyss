@@ -276,7 +276,6 @@ Yang canonical untuk AADI V2 saat ini:
 Yang tidak boleh menjadi canonical clinical engine:
 
 - `packages/sentra-rag`
-- `packages/vertex-rag`
 - Dashboard local logic
 - Assist local logic
 

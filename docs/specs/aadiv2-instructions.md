@@ -1,31 +1,39 @@
-# MASTER INSTRUCTION — SENTRA AADI / SYMPHONY DIAGNOSIS ENGINE V2
+---
+id: aadi-v2-master-instruction
+type: specification
+status: active
+owner: sentra-engineering
+tags: [aadi, symphony, implementation]
+---
 
-**Dokumen:** Instruksi lengkap implementasi task-by-task untuk Codex / Claude Code
-**Target:** Transformasi Symphony / AADI dari safety-triage engine menjadi native diagnosis reasoning engine
-**Mode eksekusi:** Sequential, governance-first, safety-preserving
-**Bahasa kerja:** TypeScript / pnpm / monorepo The Abyss
+# AADI / Symphony diagnosis engine v2 master instruction
+
+**Document:** Complete task-by-task implementation instructions for Codex / Claude Code
+**Target:** Transform Symphony / AADI from safety-triage engine to native diagnosis reasoning engine
+**Execution mode:** Sequential, governance-first, safety-preserving
+**Working language:** TypeScript / pnpm / monorepo The Abyss
 **Status:** Implementation Instruction Draft v1.0
 
 ---
 
-## 0. Tujuan Dokumen
+## Document purpose
 
-Dokumen ini adalah **instruksi operasional tunggal** untuk coding agent seperti Codex / Claude Code agar dapat mengimplementasikan **Diagnosis Engine v2** secara bertahap, aman, dan tidak merusak safety layer yang sudah ada.
+This is the **single operational instruction** for coding agents such as Codex / Claude Code to implement **Diagnosis Engine v2** incrementally, safely, and without breaking the existing safety layer.
 
-Dokumen ini **bukan proposal konseptual**. Ini adalah instruksi kerja.
+This document is **not a conceptual proposal**. It is a working instruction.
 
-Agent harus membaca dokumen ini dari awal sampai akhir sebelum melakukan perubahan kode.
+Agents must read this document from start to finish before making any code changes.
 
 ---
 
-## 1. Konteks Produk
+## Product context
 
-Sentra Healthcare AI menggunakan prinsip **Human-AI Collaboration**.
+Sentra Healthcare AI operates on the **Human-AI Collaboration** principle.
 
-Diagnosis Engine tidak boleh menggantikan dokter. Engine hanya berfungsi sebagai **clinical decision-support copilot** yang membantu:
+The Diagnosis Engine must not replace the clinician. It functions solely as a **clinical decision-support copilot** that assists with:
 
-1. Deteksi risiko klinis.
-2. Differential diagnosis awal.
+1. Clinical risk detection.
+2. Initial differential diagnosis.
 3. Must-not-miss detection.
 4. Medication safety.
 5. Triage urgency.
@@ -33,21 +41,21 @@ Diagnosis Engine tidak boleh menggantikan dokter. Engine hanya berfungsi sebagai
 7. Explainable clinical reasoning.
 8. Audit trail.
 
-Final decision tetap berada pada dokter / klinisi berlisensi.
+Final decision authority remains with the licensed clinician.
 
 ---
 
-## 2. Konteks Teknis
+## Technical context
 
-Target sistem adalah **AADI / Symphony Diagnosis Engine v2**.
+The target system is **AADI / Symphony Diagnosis Engine v2**.
 
-Current engine diasumsikan berada di sekitar:
+The current engine is assumed to reside at:
 
 ```txt
 packages/symphony/src/engine/assess.ts
 ```
 
-Current engine sudah memiliki deterministic clinical safety layer, termasuk:
+The current engine already has a deterministic clinical safety layer, including:
 
 - NEWS2 scoring
 - vital alerts
@@ -61,20 +69,20 @@ Current engine sudah memiliki deterministic clinical safety layer, termasuk:
 - traffic-light escalation
 - hybrid diagnosis candidate handling
 
-Masalah utama current engine:
+Current engine limitations:
 
-- diagnosis masih bergantung pada `diagnosisCandidates` eksternal
-- `assessSymphonyInput()` terlalu monolithic
-- `metadata.status` masih dapat berada pada `degraded`
-- `confidenceBand` sering berada pada `insufficient_data`
-- belum ada native differential diagnosis core
-- belum ada modular diagnosis pack registry
-- belum ada FHIR-ready output contract
-- belum ada golden regression suite yang cukup kuat untuk refactor besar
+- diagnosis still depends on external `diagnosisCandidates`
+- `assessSymphonyInput()` is too monolithic
+- `metadata.status` can still be `degraded`
+- `confidenceBand` is often `insufficient_data`
+- no native differential diagnosis core
+- no modular diagnosis pack registry
+- no FHIR-ready output contract
+- no golden regression suite strong enough for a major refactor
 
 ---
 
-## 3. Non-Negotiable Clinical Safety Rules
+## Non-negotiable clinical safety rules
 
 Agent wajib mengikuti aturan berikut.
 
@@ -93,11 +101,11 @@ Agent wajib mengikuti aturan berikut.
 
 ---
 
-## 4. Governance Rules for Agent
+## Governance rules for agents
 
 Before coding, agent must comply with The Abyss governance flow.
 
-### 4.1 Required Execution Protocol
+### Required execution protocol
 
 For each task:
 
@@ -111,7 +119,7 @@ For each task:
 8. Return changed files and proof-of-verification.
 9. Do not continue to the next task automatically unless explicitly instructed.
 
-### 4.2 Forbidden Agent Behavior
+### Forbidden agent behavior
 
 Agent must not:
 
@@ -129,7 +137,7 @@ Agent must not:
 
 ---
 
-## 5. Global Definition of Done
+## Global definition of done
 
 Every task is complete only when:
 
@@ -148,7 +156,7 @@ Every task is complete only when:
 
 ---
 
-## 6. Target Architecture
+## Target architecture
 
 Final Phase 1 architecture:
 
@@ -237,7 +245,7 @@ packages/symphony/src/
 
 ---
 
-## 7. High-Level Runtime Flow
+## High-level runtime flow
 
 Target V2 runtime:
 
@@ -1183,7 +1191,7 @@ export type DiagnosisPack = {
 
 ### Required Packs
 
-#### 1. Dengue Suspect
+#### Dengue suspect
 
 Must consider:
 
@@ -1204,7 +1212,7 @@ emit high confidence by default
 claim confirmed dengue without lab
 ```
 
-#### 2. TB Suspect
+#### TB suspect
 
 Must consider:
 
@@ -1225,7 +1233,7 @@ Must not:
 claim confirmed TB without confirmatory test
 ```
 
-#### 3. Preeclampsia
+#### Preeclampsia
 
 Must consider:
 

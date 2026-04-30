@@ -37,6 +37,9 @@ Each healthcare app is an **independent repository** with its own:
 Any agent that assumes `packages/database` is the database for all apps is WRONG.
 Always check each app's own `prisma/` folder before touching any database concern.
 
+Current session direction: Google Cloud, Vertex AI, and Gemini are being exited from
+the monorepo. Do not treat "migration to Vertex AI" as the active target.
+
 ---
 
 ## Healthcare Apps — Complete Landscape
@@ -50,7 +53,7 @@ Always check each app's own `prisma/` folder before touching any database concer
 | Deploy | Railway (`railway.toml`) |
 | Database | Own Neon PostgreSQL via Prisma — **12 migrations active as of 2026-04** |
 | Prisma path | `apps/healthcare/intelligenceboard/prisma/schema.prisma` |
-| AI providers | `@google/genai`, `@google/generative-ai` (Gemini — migration to Vertex AI planned) |
+| AI providers | `@google/genai`, `@google/generative-ai` (legacy; removal in progress) |
 | Purpose | Clinical Intelligence Dashboard: telemedicine, CDSS, consult logs, screening audit, vital records |
 | RAG status | `KnowledgeBase` model to be added here (Prisma migration pending — see DECISIONS.md) |
 | Status | **PRODUCTION ACTIVE** |
@@ -63,7 +66,7 @@ Always check each app's own `prisma/` folder before touching any database concer
 | Type | **Browser Extension** (WXT framework — NOT a NestJS/REST app) |
 | Deploy | Chrome Web Store / Firefox Add-ons |
 | Database | None — browser extension cannot connect to databases |
-| AI providers | `@google-cloud/vertexai` (already using Vertex AI SDK) |
+| AI providers | `@google-cloud/vertexai` (legacy; removal in progress) |
 | Purpose | Clinical decision support overlay inside ePuskesmas EMR |
 | RAG access | Via API call to intelligenceboard — never direct DB |
 | Status | Active development |
@@ -127,7 +130,7 @@ Always check each app's own `prisma/` folder before touching any database concer
 | Package | Path | Purpose | Notes |
 |---------|------|---------|-------|
 | `database` | `packages/database/` | Prisma schema for platform apps | ⚠️ NOT used by healthcare apps — each has own schema |
-| `vector-store` | `packages/vector-store/` | Vertex AI embeddings + pgvector RAG | Refactored to dependency injection — injectable Prisma client |
+| `vector-store` | `packages/vector-store/` | pgvector RAG with pluggable embedding provider | Refactored to dependency injection — injectable Prisma client |
 | `design-token` | `packages/design-token/` | UI token system | |
 | `shared-types` | `packages/shared-types/` | Cross-app TypeScript types | |
 
@@ -163,10 +166,10 @@ sentra-main               → calls intelligenceboard RAG endpoint (if needed)
 
 | App | Current Provider | Target Provider | Notes |
 |-----|-----------------|-----------------|-------|
-| intelligenceboard | Gemini REST API | Vertex AI SDK (GCP IAM) | Migration in progress |
-| sentra-assist | `@google-cloud/vertexai` | ✅ Already correct | No migration needed |
+| intelligenceboard | Gemini REST API | Local-first runtime / provider-neutral fallback | Google exit in progress |
+| sentra-assist | `@google-cloud/vertexai` | Local-first runtime / provider-neutral fallback | Google exit in progress |
 | referralink | OpenAI | TBD | Out of scope for current sprint |
-| packages/vector-store | ✅ Vertex AI (GCP IAM) | — | Migrated 2026-04-19 |
+| packages/vector-store | Provider-neutral abstraction | — | Vertex provider scheduled for removal |
 
 ---
 

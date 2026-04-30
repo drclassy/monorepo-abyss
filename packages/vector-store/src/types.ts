@@ -1,5 +1,3 @@
-import type { EmbeddingTaskType } from './vertex-provider'
-
 // ─── Storage layer ────────────────────────────────────────────────────────────
 
 /**
@@ -46,8 +44,7 @@ export interface VectorStoreDatabaseClient {
 /**
  * Configuration for VectorStore.
  *
- * Implementation: caller-owned pgvector store + Vertex AI embeddings.
- * Auth for embeddings is resolved via GOOGLE_APPLICATION_CREDENTIALS — not API keys.
+ * Implementation: caller-owned pgvector store + local Ollama embeddings.
  */
 export interface VectorStoreConfig {
   /**
@@ -56,8 +53,8 @@ export interface VectorStoreConfig {
   database?: VectorStoreDatabaseClient
 
   /**
-   * Vertex AI embedding model to use.
-   * @default 'text-embedding-004'
+   * Embedding model to use via Ollama.
+   * @default 'nomic-embed-text'
    */
   embeddingModel?: string
 
@@ -69,20 +66,8 @@ export interface VectorStoreConfig {
   embeddingDimensions?: number
 
   /**
-   * GCP Project ID. Overrides the GCP_PROJECT_ID environment variable.
+   * Ollama base URL.
+   * @default 'http://localhost:11434'
    */
-  gcpProjectId?: string
-
-  /**
-   * GCP region for Vertex AI endpoint.
-   * @default 'us-central1'
-   */
-  gcpLocation?: string
-
-  /**
-   * Semantic task hint sent to the embedding model.
-   * Use RETRIEVAL_DOCUMENT when ingesting, RETRIEVAL_QUERY when searching.
-   * @default 'RETRIEVAL_DOCUMENT'
-   */
-  defaultTaskType?: EmbeddingTaskType
+  ollamaBaseUrl?: string
 }

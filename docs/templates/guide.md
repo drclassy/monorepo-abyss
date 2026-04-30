@@ -6,22 +6,22 @@ owner: [name]
 tags: [onboarding, tutorial]
 ---
 
-# 📖 GUIDE: [Judul Panduan]
+# Guide: [guide title]
 
-## 🎯 1. Objective
-[Tujuan utama dari panduan ini dan audiens targetnya.]
+## Objective
+[Describe the goal of this guide and the target audience.]
 
-## 🚀 2. Getting Started
-[Langkah-langkah awal untuk memulai.]
+## Getting started
+[List the first steps needed to begin.]
 
-## 📝 3. Detailed Instructions
-[Langkah-langkah detail, contoh kode, dan tips.]
+## Detailed instructions
+[Write the main procedure, examples, and operating notes.]
 
-## ❓ 4. Troubleshooting
-[Masalah umum yang mungkin terjadi dan cara mengatasinya.]
+## Troubleshooting
+[List common problems and how to resolve them.]
 
-## 🔗 5. Further Reading
-[Link ke dokumen lain yang relevan di /docs.]
+## Further reading
+[Link to related documents in `docs/`.]
 
 ---
 © 2026 Sentra Artificial Intelligence

@@ -118,6 +118,16 @@ WITH (m = 24, ef_construction = 256);
 **Decision:** Ported as `packages/symphony/src/engine/symptom-signals.ts` — pure TypeScript, zero runtime dependencies, 19 signal matchers (fever, dyspnea, chest_pain, headache, vomit, seizure, altered_consciousness, bleeding, pallor, weakness, dizziness, syncope, diaphoresis, rash_or_angioedema, allergen_exposure, abdominal_pain, kussmaul_breathing, polyuria, neurologic_focal_deficit), 3-token left-window negation with prefixes [`tidak ada`, `tidak`, `tanpa`, `bukan`, `belum`]. `tidak sadar` handled naturally without special flag because `isNegatedAt` only scans tokens strictly LEFT of matchIndex. `pusing` intentionally co-signals headache AND dizziness (no mutex).
 **Approach:** TDD, one matcher per commit, foundation of 57 pre-existing tests committed as a dedicated baseline (`9644530`) before any Phase 1 work. Lint debt inherited from foundation was resolved in two dedicated cleanup commits (`1afd058` auto-fix import order, `387d9b5` manual non-null/unused-var with explicit `throw` guards — no optional chaining, no silent failure paths).
 **Consequences:** Phase 2 (pattern-engine) and Phase 3 (clinical-patterns evaluator) can now consume canonical symptom signals without reaching into Assist source. Dashboard may optionally switch from local symptom extraction to SYMPHONY's — **not started in this phase**. No Dashboard production import replacement. Adapter parity harness continues unchanged. 84/84 tests GREEN, lint PASS, typecheck PASS. Gap #8 closed.
+
+### [2026-04-29] GCP / Vertex / Gemini exit and local-first AI architecture
+**Context:** Chief decided to stop using Google Cloud, Vertex AI, and Gemini for the Abyss monorepo. The previous [2026-04-21] standardization entry now conflicts with the current direction and must no longer be treated as the active target.
+**Decision:** 
+1. **Google exit:** Treat all Google Cloud, Vertex AI, Gemini, and Google-authenticated AI paths as legacy surfaces scheduled for removal from the monorepo.
+2. **Local-first default:** Use local inference and retrieval stacks as the default operating mode for pilot and production-adjacent work.
+3. **Cloud replacement:** Do not force a new cloud provider decision into the exit phase; any future cloud choice is a separate architecture decision, not part of the Google shutdown itself.
+4. **Governance cleanup:** Treat the [2026-04-21] Vertex AI standard as superseded for future work. Any remaining docs or context that still claim "migration to Vertex" are stale and must be corrected.
+**Rationale:** The current business direction is vendor exit, not vendor swap. Mixing the two creates false scope, wrong sequencing, and unnecessary infrastructure churn.
+**Consequences:** Migration planning must separate "remove Google dependencies" from "choose a replacement cloud/provider." Runtime cleanup can proceed in the repo, but cloud re-platforming stays out of scope until Chief explicitly reopens it.
 **Reviewed by:** Chief (GO granted 2026-04-20 for Phase 1 only; Phase 2 requires fresh brainstorm + write-plan cycle before execution).
 
 ### [2026-04-22] Action Protocols canonicalized into SYMPHONY (Phase 4 local complete)
@@ -301,3 +311,24 @@ The three lines in [2026-04-21] beginning with `**Decision:** .claude/ at monore
 - `vertex-rag` and other retrieval lanes must not be re-framed as parallel reasoning engines.
 - Consumer rollout, telemetry instrumentation, and interop expansion are now first-class lanes and need their own JET plans + Chief GO before execution; they do not inherit approval from this memo.
 - Source of truth for this declaration: session log entry "Claude — SYMPHONY Final Status Memo close-out (2026-04-29 12:32 GMT+7)" in `.agent/sessions/2026-04-29.md`, mirrored from approved plan `~/.claude/plans/status-memo-symphony-final-velvet-allen.md`.
+
+### [2026-04-29] Operational phase lock after SYMPHONY core completion
+**Context:** After the core-engine close-out was declared, the remaining work naturally shifted toward downstream adoption questions. There is a real risk that future sessions reopen foundation-build language ("frame the engine", "finish core reasoning", "revisit canonical engine scope") even though the validated close-out already happened on `master`.
+**Decision:** Lock the next phase as **operational**, not foundational. The active lanes after SYMPHONY core completion are:
+1. Consumer readiness (`Dashboard` first, `ASSIST` second).
+2. Shadow telemetry and rollout observability.
+3. Limited trial planning and gating.
+4. Additional interoperability only when justified by a concrete consumer requirement.
+**Rejected alternatives:** (1) Reopen engine-foundation framing by default in later handoffs. (2) Treat every new consumer question as a reason to extend SYMPHONY internals first. (3) Expand interop surfaces speculatively before a rollout need exists.
+**Rationale:** The highest-value uncertainty is no longer whether the engine exists; it is whether real consumers can adopt it safely and observably. Treating the next phase as operational preserves focus, protects the closed architectural boundary, and avoids endless internal build loops after the core scope is already green.
+**Consequences:** Future handoffs, progress updates, and planning documents should describe SYMPHONY as **core-complete** unless Chief explicitly reopens architecture scope. New work in this lane should default to rollout readiness, telemetry, trial design, and consumer adoption sequencing.
+
+### [2026-04-29] `packages/vertex-rag` retired from the repository tree
+**Context:** The monorepo direction is full exit from Google Cloud, Vertex AI, and Gemini. `packages/vertex-rag` had already been removed from active workspace membership, but the directory still remained on disk and kept leaking stale path references into active docs and tooling.
+**Decision:**
+1. Delete `packages/vertex-rag/` fully from the repository tree.
+2. Treat `@the-abyss/sentra-rag`, `@the-abyss/vector-store`, and `@the-abyss/literature-harvester` as the remaining retrieval-side packages in active architecture.
+3. Keep historical mentions of `vertex-rag` only in append-only audit surfaces such as `.agent/sessions/`, `.agent/reports/`, and prior decision/history records.
+4. Remove or neutralize active doc/tooling references that imply `vertex-rag`, Gemini, or Vertex remain valid implementation targets.
+**Rationale:** Leaving a dead Google-specific package on disk after workspace retirement created unnecessary ambiguity, dead paths, and stale governance signals. Full tree removal better matches the repo's exit strategy than partial archival inside the main source tree.
+**Consequences:** Future retrieval or grounding work must target `sentra-rag`, `vector-store`, or other explicitly active packages. `vertex-rag` must not be recreated unless Chief opens a new architecture decision that explicitly reverses this retirement.

@@ -92,7 +92,6 @@ jangan berimprovisasi diam-diam. Cocokkan dulu dengan hierarchy di atas.
 1. `SYMPHONY` adalah satu-satunya canonical clinical reasoning engine.
 2. Jangan pindahkan diagnosis authority ke:
    - `sentra-rag`
-   - `vertex-rag`
    - Dashboard local logic
    - Assist local logic
 3. Jangan skip feature klinis existing yang relevan.

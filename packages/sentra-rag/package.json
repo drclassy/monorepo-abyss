@@ -2,7 +2,7 @@
   "name": "@the-abyss/sentra-rag",
   "version": "0.1.0",
   "private": true,
-  "description": "Sentra RAG Engine — Local-first medical knowledge retrieval with pgvector + Ollama, Vertex RAG cloud fallback",
+  "description": "Sentra RAG Engine — Local-first medical knowledge retrieval with pgvector + Ollama",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {

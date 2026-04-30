@@ -45,7 +45,7 @@ async function main(): Promise<void> {
   console.log(`[embed-approved] Artifacts  : ${artifactsDir}`)
   console.log(`[embed-approved] Output     : ${outputDir}`)
 
-  // Write mode requires DATABASE_URL and GOOGLE_APPLICATION_CREDENTIALS
+  // Write mode requires DATABASE_URL
   let databaseClient: import('@the-abyss/vector-store').VectorStoreDatabaseClient | undefined
 
   if (writeMode === 'write') {
@@ -64,8 +64,6 @@ async function main(): Promise<void> {
     artifactsDir,
     outputDir,
     writeMode,
-    gcpProjectId: process.env.GCP_PROJECT_ID,
-    gcpLocation: process.env.GCP_LOCATION,
     databaseClient,
   })
 

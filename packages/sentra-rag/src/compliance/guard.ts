@@ -1,7 +1,7 @@
 /**
  * [C] Compliance & Guard Engine
  * PHI/PII sanitization sebelum data diproses AI.
- * Ported dari vertex-rag GuardEngine, extended untuk konteks medis Indonesia.
+ * Local-first GuardEngine, extended untuk konteks medis Indonesia.
  */
 export class GuardEngine {
   sanitize(text: string): string {

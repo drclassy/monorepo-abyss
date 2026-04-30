@@ -253,7 +253,7 @@ Phase 4: GOVERNANCE & RELEASE
 |  |  Clinical Engine    |  |  FHIR R4 Validation |  |  RAGOps + Vector    |       |
 |  |  & Safety Gates     |  |  & Normalization    |  |  Search (pgvector)  |       |
 |  |  Opus 4.6 Sonnet 4.6|  |                     |  |  Embed  Retrieve    |       |
-|  |  Kimi 2.5  Gemini   |  |  Patient / Encounter|  |  Rerank  Index      |       |
+|  |  Kimi 2.5  Qwen     |  |  Patient / Encounter|  |  Rerank  Index      |       |
 |  +---------------------+  |  / Condition / Obs  |  +---------------------+       |
 |                            +---------------------+                                |
 |  +---------------------+  +------------------------------------------+          |
@@ -341,8 +341,8 @@ function.
       <sub>Backend Fabrication</sub>
     </td>
     <td align="center" width="130">
-      <img src=".github/logos/gemini.svg" width="56" height="56" alt="Gemini"/><br/>
-      <sub><b>Gemini</b></sub><br/>
+      <img src=".github/logos/claudecode.svg" width="56" height="56" alt="Claude"/><br/>
+      <sub><b>Claude</b></sub><br/>
       <sub>Supervisor &amp; Audit</sub>
     </td>
   </tr>
@@ -353,8 +353,8 @@ function.
       <sub>Scaffold</sub>
     </td>
     <td align="center" width="130">
-      <img src=".github/logos/vertexai.svg" width="56" height="56" alt="Vertex AI"/><br/>
-      <sub><b>Vertex Artificial Intelligence</b></sub><br/>
+      <img src=".github/logos/qwen.svg" width="56" height="56" alt="Qwen"/><br/>
+      <sub><b>Qwen</b></sub><br/>
       <sub>Orchestration</sub>
     </td>
     <td align="center" width="130">
@@ -379,7 +379,7 @@ function.
 | **Kilo Code**       | Best Available                  | Implementation        | Parallel in-editor development agent for component-level coding, scaffolding, and task-scoped iterative work                     |
 | **Codex**           | Codex 5.4 High                  | Backend Fabrication   | API scaffolding, schema generation, and high-throughput code generation tasks                                                    |
 | **Kimi**            | Kimi 2.5 Thinking               | Deep Reasoning        | Extended reasoning tasks — architecture analysis, complex debugging, and multi-step technical problem solving                    |
-| **Gemini**          | Gemini 3.1 Pro                  | Supervisor & Audit    | Reviews outputs from all agents, performs cross-validation, and flags inconsistencies before GO-Gate submission                  |
+| **Claude**          | Claude Sonnet / Opus            | Supervisor & Audit    | Reviews outputs from all agents, performs cross-validation, and flags inconsistencies before GO-Gate submission                  |
 | **Antigravity**     | Agent                           | Scaffold              | Project initialization, monorepo scaffolding, and contract-first structure generation                                            |
 
 All agent activity is traceable via commit trailers. No agent output ships
@@ -642,7 +642,8 @@ workflow.
 
 | Resource                      | Location                                 |
 | ----------------------------- | ---------------------------------------- |
-| Global Agent Steering         | [.agent/AGENTS.md](.agent/AGENTS.md)     |
+| Documentation index           | [docs/README.md](docs/README.md)         |
+| Global agent steering         | [AGENTS.md](AGENTS.md)                   |
 | Session Logs                  | [.agent/sessions/](.agent/sessions/)     |
 | Document Templates            | [docs/templates/](docs/templates/)       |
 | Architecture Decision Records | [docs/adr/](docs/adr/)                   |
@@ -685,7 +686,7 @@ Pilot sites: **Maternal Hospital** · **Primary Healthcare Site**
 | Product                                                           | Description                                                                                                                                                                                        |
 | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **AADI** — Autonomous Artificial Diagnostic Intelligence          | Autonomous diagnostic inference engine with multi-layer reasoning; Iskandar Engine V4.3, 159 diseases, 1,930 ICD-10 codes, safety gates, drug interaction detection (multi-safety-gate validation) |
-| **Audrey** — Voice-First Clinical Intelligence                    | Real-time voice assistant (Gemini Live, 24 kHz), medical grounding, primary care clinical insights; SFT training + clinical alignment                                                              |
+| **Audrey** — Voice-First Clinical Intelligence                    | Voice-first clinical copilot lane; runtime currently disabled during Google exit while local-first and provider-neutral voice architecture is re-baselined                                           |
 | **Intelligence Dashboard** — Unified Clinical Operations Platform | Unified command center — EMR/RPA automation, ICD-X unification, LB1 national reporting, SenCall calculator, telemedicine WebRTC, ACARS, KPI monitoring via Socket.IO                               |
 | **Sentra Assist** — Clinical Workflow Automation                  | Chrome Extension (MV3) automating data transfer between Dashboard and national EMR systems via RPA — anamnesis, diagnosis, and prescription workflows                                              |
 | **Telemedicine** — Remote Clinical Consultation                   | HD WebRTC consultation with virtual waiting room, e-prescription, lab upload, automated SOAP note generation, and schedule integration                                                             |

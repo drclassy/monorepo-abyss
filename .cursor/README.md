@@ -10,6 +10,7 @@
 | `.cursor/rules/02-notebooklm-intelligence.mdc` | NotebookLM integration protocol (globs-based). |
 | `.cursor/rules/03-agent-attitude.mdc` | Tone, rigor, and collaboration norms for agent output. |
 | `.cursor/rules/04-state-machine-discipline.mdc` | State-machine discipline for workflows and handoffs. |
+| `.cursor/rules/05-chief-directive-mode.mdc` | Chief-facing directive mode: Bahasa Indonesia, latest official notes first, concise plan, wait for `GO` before execution. |
 | `.cursor/rules/06-handoff-master.mdc` | `.agent/` handoff and session-close discipline. |
 | `.cursor/rules/07-monorepo-guard.mdc` | Turborepo / pnpm boundaries and package hygiene. |
 | `.cursor/rules/08-session-summarizer.mdc` | Session summary and PROGRESS logging expectations. |
@@ -29,6 +30,7 @@
 00-  → Core governance (always-on)
 01-  → Guard enforcement (always-on)
 02-  → Intelligence protocol (globs-based)
+05-  → Chief directive mode (always-on)
 10-  → Backend rules
 20-  → Frontend rules
 30-  → Quality / conventions

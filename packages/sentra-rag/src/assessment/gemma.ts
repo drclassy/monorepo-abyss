@@ -1,6 +1,6 @@
 /**
  * [A] Assessment Engine — Ollama local LLM
- * Ported dari vertex-rag GemmaEngine, default upgraded to gemma3:12b.
+ * Local-first GemmaEngine, default upgraded to gemma3:12b.
  */
 export class GemmaEngine {
   private baseUrl: string

@@ -67,7 +67,7 @@ abyss-monorepo/
 | PostgreSQL 16 | Primary data store | `DATABASE_URL` |
 | Redis 7 | Cache and pub/sub | `REDIS_URL` |
 | Langflow | AI flow orchestration | `LANGFLOW_API_URL` |
-| Vertex AI | Orchestration and embeddings | `GOOGLE_APPLICATION_CREDENTIALS` |
+| Local-first / provider-neutral AI | Inference, retrieval, and fallback orchestration | `OLLAMA_BASE_URL` and provider-specific API keys |
 
 ---
 

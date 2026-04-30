@@ -6,22 +6,22 @@ owner: [name]
 tags: [tag1, tag2]
 ---
 
-# 📋 SPEC: [Judul Spesifikasi]
+# Specification: [spec title]
 
-## 🔍 1. Overview
-[Deskripsi singkat mengenai tujuan spesifikasi ini.]
+## Overview
+[Summarize the goal and scope of this specification.]
 
-## 🏗️ 2. Architecture & Design
-[Detail arsitektur, diagram mermaid, dan desain sistem.]
+## Architecture and design
+[Describe the architecture, key flows, and relevant diagrams.]
 
-## 📊 3. Data Schema
-[Definisi schema database, API, atau kontrak data.]
+## Data contracts
+[Define the schema, API contract, or shared types involved.]
 
-## 🛡️ 4. Security & Compliance
-[Pertimbangan keamanan dan kepatuhan (HIPAA/FHIR jika terkait).]
+## Security and compliance
+[Document the relevant safety, privacy, and compliance constraints.]
 
-## 🧪 5. Verification Plan
-[Bagaimana cara memverifikasi bahwa spesifikasi ini telah diimplementasikan dengan benar.]
+## Verification plan
+[Explain how implementation against this spec will be verified.]
 
 ---
 © 2026 Sentra Artificial Intelligence

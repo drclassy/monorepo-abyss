@@ -148,7 +148,7 @@ That creates five product problems:
 
 ## Non-Goals
 
-1. Do not move reasoning authority into `sentra-rag`, `vertex-rag`, or any
+1. Do not move reasoning authority into `sentra-rag` or any
    retrieval package.
 2. Do not rewrite the existing safety engines unless a change is required for
    modular integration or regression protection.

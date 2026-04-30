@@ -58,7 +58,7 @@ export default function Content() {
           </h2>
           <div className="grid grid-cols-1 gap-4">
              {[
-               { api: "Vertex RAG API", latency: "142ms", throughput: "High" },
+               { api: "Knowledge Vault API", latency: "142ms", throughput: "High" },
                { api: "FHIR Engine Gateway", latency: "28ms", throughput: "Stable" },
                { api: "Neon DB Connection", latency: "5ms", throughput: "Active" },
                { api: "Composio MCP", latency: "89ms", throughput: "Medium" }
@@ -121,8 +121,8 @@ export default function Content() {
                {[
                  { node: "Aby (Gemma 2)", task: "Clinical Knowledge Governance", duration: "1.2s", status: "GOVERNING" },
                  { node: "Jen Governor", task: "Root Monorepo Cleanup & Integrity Scan", duration: "15m", status: "DONE" },
-                 { node: "Vertex RAG", task: "Vectorizing Medical Guidelines", duration: "32m", status: "SYNCING" }
-               ].map((log, i) => (
+                 { node: "Sentra RAG", task: "Syncing Medical Guidelines", duration: "32m", status: "SYNCING" }
+              ].map((log, i) => (
                  <tr key={i} className="group transition-all">
                     <td className={cn(ITEM_TITLE, "py-4")}>{log.node}</td>
                     <td className={cn(ITEM_SUBTITLE, "py-4")}>{log.task}</td>

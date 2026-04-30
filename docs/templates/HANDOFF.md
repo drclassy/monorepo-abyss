@@ -1,79 +1,79 @@
-# 📝 HANDOFF: [Judul Tugas]
+# Handoff: [task title]
 
-**Status:** 🛑 PENDING / ✅ GO  
-**Agent:** [Nama Agent]  
-**Date:** [ISO Date]  
-**Phase:** [Fase Number]
+**Status:** Pending / GO  
+**Agent:** [agent name]  
+**Date:** [ISO date]  
+**Phase:** [phase number]
 
 ---
 
-## 🔍 1. Diagnosis & Root Cause
+## Diagnosis and root cause
 
-[Analisis teknis mendalam tentang masalah atau fitur yang diminta]
+[Deep technical analysis of the problem or requested feature]
 
 ### Context
-- **Problem Statement:** [Jelaskan masalah]
-- **Impact:** [Dampak jika tidak diperbaiki]
-- **Current Behavior:** [Apa yang terjadi sekarang]
-- **Expected Behavior:** [Apa yang seharusnya terjadi]
+- **Problem statement:** [Explain the problem]
+- **Impact:** [Explain the consequence if left as-is]
+- **Current behavior:** [Describe what happens today]
+- **Expected behavior:** [Describe the intended behavior]
 
-### Related Issues
+### Related issues
 - Closes: #[issue-number]
 - Related to: #[issue-number]
 - Blocks: #[issue-number]
 
 ---
 
-## 🏗️ 2. Proposed Architecture
+## Proposed architecture
 
-### Files to Modify
+### Files to modify
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `apps/...` | Create/Modify/Delete | [Apa yang diubah] |
-| `packages/...` | Create/Modify/Delete | [Apa yang diubah] |
+| `apps/...` | Create/Modify/Delete | [What changes] |
+| `packages/...` | Create/Modify/Delete | [What changes] |
 
-### New Packages/Components
-- [ ] `packages/new-package/` - [Deskripsi]
-- [ ] `apps/new-app/` - [Deskripsi]
+### New packages or components
+- [ ] `packages/new-package/` - [Description]
+- [ ] `apps/new-app/` - [Description]
 
-### Database Changes
+### Database changes
 - [ ] New table: `[table_name]`
 - [ ] Modified table: `[table_name]`
 - [ ] Migration required: `packages/database/prisma/migrations/`
 
-### API Changes
+### API changes
 | Endpoint | Method | Status |
 |----------|--------|--------|
 | `/api/...` | POST/GET/PUT/DELETE | New/Modified |
 
-### External Dependencies
+### External dependencies
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `package-name` | `^x.x.x` | [Kegunaan] |
+| `package-name` | `^x.x.x` | [Purpose] |
 
 ---
 
-## 🛡️ 3. Proof-of-Verification Plan
+## Verification plan
 
-### Unit Tests
-- [ ] Test: `[test-name]` - [Apa yang ditest]
-- [ ] Test: `[test-name]` - [Apa yang ditest]
+### Unit tests
+- [ ] Test: `[test-name]` - [What is tested]
+- [ ] Test: `[test-name]` - [What is tested]
 
-### Integration Tests
-- [ ] Flow: `[flow-name]` - [Alur yang diuji]
+### Integration tests
+- [ ] Flow: `[flow-name]` - [Flow being tested]
 
-### Security Scan
+### Security scan
 - [ ] OWASP Top 10 check
 - [ ] Dependency audit
 - [ ] Secret detection
 
-### Performance Benchmarks
+### Performance benchmarks
 - [ ] Load time: `< X ms`
 - [ ] Memory usage: `< X MB`
 
 ---
 
-## 📋 4. Implementation Checklist
+## Implementation checklist
 
 - [ ] Create HANDOFF.md (this file)
 - [ ] Write code changes
@@ -87,15 +87,15 @@
 
 ---
 
-## 🔑 5. Chief Approval (GO-Gate)
+## Chief approval
 
-### Approval String
-> **Approval:** ✅ GO / 🛑 REJECTED  
-> **Approved By:** [Chief Name]  
-> **Approved At:** [ISO Timestamp]  
-> **Comments:** [Any notes or conditions]
+### Approval string
+> **Approval:** GO / REJECTED  
+> **Approved by:** [chief name]  
+> **Approved at:** [ISO timestamp]  
+> **Comments:** [notes or conditions]
 
-### CI/CD Gate Status
+### CI/CD gate status
 - [ ] HANDOFF.md exists
 - [ ] GO approval string present
 - [ ] All tests passed
@@ -103,7 +103,7 @@
 
 ---
 
-## 📊 6. Session Log
+## Session log
 
 ### Timeline
 | Time | Action | Status |
@@ -114,20 +114,20 @@
 | [ISO Time] | Tests completed | ⏳ |
 | [ISO Time] | PR created | ⏳ |
 
-### Commit Trail
+### Commit trail
 ```
 <commit-hash> - <commit-message> (Agent: <name>, Phase: <number>)
 ```
 
 ---
 
-## 📝 7. Retrospective
+## Retrospective
 
-### What Went Well
+### What went well
 - [Item 1]
 - [Item 2]
 
-### What Could Be Improved
+### What could be improved
 - [Item 1]
 - [Item 2]
 
@@ -137,9 +137,9 @@
 
 ---
 
-**Handoff Created:** [ISO Timestamp]
-**Last Updated:** [ISO Timestamp]
-**Session Path:** `.agent/sessions/SESSION-[DATE]-[SLUG]/`
+**Handoff created:** [ISO timestamp]  
+**Last updated:** [ISO timestamp]  
+**Session path:** `.agent/sessions/SESSION-[DATE]-[SLUG]/`
 
 ---
 

@@ -1,23 +1,31 @@
-# Code Quality Standards — The Abyss
+---
+id: code-quality
+type: guide
+status: active
+owner: sentra-engineering
+tags: [quality, typescript, linting]
+---
 
-Standar kualitas kode yang ditegakkan di seluruh monorepo.
+# Code quality standards in The Abyss
 
-## TypeScript Strict Mode
+Code quality standards enforced across the monorepo.
 
-Root `tsconfig.json` mengaktifkan strict mode penuh:
+## TypeScript strict mode
 
-- `strict: true` — semua strict checks aktif
-- `noUnusedLocals: true` — variabel tidak terpakai = error
-- `noUnusedParameters: true` — parameter tidak terpakai = error
-- `noFallthroughCasesInSwitch: true` — switch tanpa break = error
+The root `tsconfig.json` enables full strict mode:
 
-**Aturan:** Tidak ada `any` type. Gunakan `unknown` lalu type-narrow.
+- `strict: true` — all strict checks enabled
+- `noUnusedLocals: true` — unused variables are errors
+- `noUnusedParameters: true` — unused parameters are errors
+- `noFallthroughCasesInSwitch: true` — switch fallthrough is an error
+
+**Rule:** No `any` type. Use `unknown` and type-narrow instead.
 
 ```typescript
-// SALAH
+// Wrong
 function process(data: any) { ... }
 
-// BENAR
+// Correct
 function process(data: unknown) {
   if (typeof data === 'string') { ... }
 }
@@ -25,35 +33,35 @@ function process(data: unknown) {
 
 ## ESLint
 
-Config dari `@the-abyss/config-eslint` dengan 3 preset:
+Config from `@the-abyss/config-eslint` with three presets:
 
-| Preset | Untuk | Import |
-|--------|-------|--------|
-| `base` | Semua TypeScript | `@the-abyss/config-eslint/base` |
+| Preset | For | Import |
+|--------|-----|--------|
+| `base` | All TypeScript | `@the-abyss/config-eslint/base` |
 | `react` | React/Next.js apps | `@the-abyss/config-eslint/react` |
 | `node` | Node.js services | `@the-abyss/config-eslint/node` |
 
-Rules utama:
+Key rules:
 - `no-explicit-any` — error
 - `consistent-type-imports` — enforce `import type`
 - `import-x/order` — auto-sort imports
-- Domain boundary rules — cegah cross-domain imports
+- Domain boundary rules — prevents cross-domain imports
 
 ```bash
-pnpm lint           # Lint semua workspace
+pnpm lint           # Lint all workspaces
 ```
 
 ## Prettier
 
-Config di root `.prettierrc`:
+Config in the root `.prettierrc`:
 - 2 spaces, no semicolons, single quotes
-- 100 char print width (120 untuk JSON, 80 untuk MD)
+- 100 char print width (120 for JSON, 80 for MD)
 - Trailing comma: es5
 - End of line: LF
 
 ```bash
-pnpm format         # Auto-format semua files
-pnpm format:check   # Check tanpa modifikasi
+pnpm format         # Auto-format all files
+pnpm format:check   # Check without modification
 ```
 
 ## lint-staged
@@ -62,19 +70,19 @@ Pre-commit hooks via lint-staged:
 - `*.{ts,tsx}` → eslint --fix + prettier --write
 - `*.{json,md,yml}` → prettier --write
 
-## Domain Boundaries
+## Domain boundaries
 
-Cross-domain imports dilarang:
+Cross-domain imports are forbidden:
 
 ```typescript
-// Di apps/academic/...
+// In apps/academic/...
 import { patient } from '../../apps/healthcare/...'  // ESLint ERROR
 
-// Gunakan shared packages sebagai gantinya:
+// Use shared packages instead:
 import type { Patient } from '@the-abyss/shared-types'  // OK
 ```
 
-## Commit Convention
+## Commit convention
 
 Format: `type(scope): description`
 

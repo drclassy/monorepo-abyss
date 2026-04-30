@@ -12,9 +12,9 @@ dotenv.config()
 /**
  * Sentra RAG Engine
  *
- * Architecture A-B-C (mirrored from vertex-rag, local-first):
+ * Architecture A-B-C (local-first):
  *  [A] Assessment  — GemmaEngine  (Ollama: gemma3:12b)
- *  [B] Brain       — HybridBrain  (pgvector local → Vertex RAG optional fallback)
+ *  [B] Brain       — HybridBrain  (pgvector local only)
  *  [C] Compliance  — GuardEngine  (PHI/PII sanitization)
  */
 export class SentraRAGEngine {
@@ -42,7 +42,7 @@ export class SentraRAGEngine {
     this.guard.audit(`Query: ${cleanQuestion.substring(0, 50)}...`)
 
     let context = ''
-    let source: 'local' | 'vertex' | 'hybrid' = 'local'
+    let source: 'local' = 'local'
     const chunks: RAGQueryResult['chunks'] = []
 
     try {
@@ -51,9 +51,7 @@ export class SentraRAGEngine {
 
       const local: LocalBrainEngine = (this.brain as any).local
       const localCtx = local.formatContext(brainResult.chunks)
-      context = brainResult.vertexContext
-        ? `${localCtx}\n\n[Cloud Reference]\n${brainResult.vertexContext}`
-        : localCtx
+      context = localCtx
 
       chunks.push(...brainResult.chunks)
     } catch (err) {

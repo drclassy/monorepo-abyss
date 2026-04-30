@@ -39,6 +39,7 @@ alwaysApply: true
 | `00-constitution.mdc` | JET Protocol, GUARD 1+2+3, NestJS rules — **read this for all workflow details** |
 | `01-guard-context-init.mdc` | Context init enforcement + session logging |
 | `02-notebooklm-intelligence.mdc` | NotebookLM query protocol |
+| `05-chief-directive-mode.mdc` | Chief-facing Bahasa Indonesia, official-source-first notes, plan, then explicit GO |
 | `10-backend/` | API routes, DB, validation |
 | `20-frontend/` | React, Tailwind, UI components |
 | `30-quality/` | Tests, lint, general conventions |

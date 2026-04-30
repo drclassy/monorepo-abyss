@@ -123,8 +123,6 @@ export interface RetrievalEvalPipelineParams {
   writeMode: EvalWriteMode
   topK?: number
   minSimilarity?: number
-  gcpProjectId?: string
-  gcpLocation?: string
   embeddingModel?: string
   /** Injected database adapter. Required for eval mode; ignored in dry-run. */
   databaseClient?: import('@the-abyss/vector-store').VectorStoreDatabaseClient

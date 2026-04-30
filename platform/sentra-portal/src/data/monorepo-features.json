@@ -30,7 +30,7 @@
         "id": "packages",
         "name": "The Weaponry (Packages)",
         "items": [
-          { "id": "vertex-rag", "name": "Vertex RAG", "capability": "Knowledge", "description": "Medical Library Connector (119 Books)." },
+          { "id": "sentra-rag", "name": "Sentra RAG", "capability": "Knowledge", "description": "Medical Library Connector (119 Books)." },
           { "id": "symphony", "name": "SYMPHONY", "capability": "Clinical Reasoning", "description": "Canonical clinical engine and safety gate stack." }
         ]
       }

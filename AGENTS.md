@@ -38,13 +38,13 @@ corporate, and platform domains.
 
 - **Frontend:** Next.js 15/16 + React 19 + Tailwind CSS v3/v4
 - **Backend:** NestJS 11 (orchestrator) + Next.js API routes (healthcare apps)
-- **Database:** PostgreSQL (Cloud SQL / Neon) accessed exclusively via `packages/database` (Prisma)
-- **AI Orchestration:** LangFlow (REST API) + Google Vertex AI + OpenAI + Anthropic
+- **Database:** PostgreSQL (legacy Cloud SQL / current Neon surfaces) accessed exclusively via `packages/database` (Prisma)
+- **AI Orchestration:** LangFlow (REST API) + local-first inference + OpenAI + Anthropic + DeepSeek
 - **Message Broker:** Kafka + Zookeeper (for saga orchestration)
 - **Cache:** Redis
-- **Vector Store:** pgvector + Vertex AI embeddings (`text-embedding-004`, 768 dimensions)
+- **Vector Store:** pgvector + local embeddings (`nomic-embed-text`, 768 dimensions)
 - **Containerization:** Docker + Docker Compose (multi-stage builds, PHI-hardened images)
-- **IaC:** Terraform on GCP (Chief-only execution)
+- **IaC:** Terraform (legacy GCP modules under retirement; Chief-only execution)
 - **GitOps:** ArgoCD
 
 ---
@@ -105,8 +105,7 @@ v:\avcn-sentra\abyss-monorepo\
 │   ├── sentra-ui/                    ← @the-abyss/ui (React component library, Radix + Tailwind)
 │   ├── shared-types/                 ← @the-abyss/shared-types (cross-app TypeScript contracts)
 │   ├── symphony/                     ← @the-abyss/symphony (orchestration layer)
-│   ├── vector-store/                 ← @the-abyss/vector-store (PDF parsing, Google auth)
-│   └── vertex-rag/                   ← @the-abyss/vertex-rag (Google Vertex RAG integration)
+│   └── vector-store/                 ← @the-abyss/vector-store (PDF parsing, local embedding helpers)
 ├── tooling/
 │   ├── abyss-cli/                    ← @the-abyss/cli (monorepo CLI)
 │   ├── governance/                   ← Compliance: STANDARD.md, CHECKLIST.md, TROUBLESHOOTING.md, validate.ps1
@@ -116,7 +115,7 @@ v:\avcn-sentra\abyss-monorepo\
 │   ├── argocd/                       ← ArgoCD application manifest
 │   ├── docker/                       ← Base Dockerfiles (nestjs, healthcare, generic Next.js)
 │   │   └── docker-compose.yml        ← Core platform stack (Postgres, Kafka, LangFlow, Redis)
-│   └── terraform/                    ← GCP IaC (networking, database, compute, security modules)
+│   └── terraform/                    ← legacy GCP IaC modules under retirement
 ├── flows/
 │   └── definitions/                  ← LangFlow JSON workflow definitions
 │       ├── platform/
@@ -242,7 +241,7 @@ The following are forbidden under any circumstance:
 | API docs          | Swagger / OpenAPI (NestJS apps)                      |
 | AI orchestration  | LangFlow (`flows/definitions/`)                      |
 | CI/CD             | GitHub Actions                                       |
-| IaC               | Terraform on GCP (Chief-only)                        |
+| IaC               | Terraform (legacy GCP modules under retirement; Chief-only) |
 | Container         | Docker + Docker Compose                              |
 | Message broker    | Kafka + Zookeeper                                    |
 | Vector DB         | pgvector + Upstash Vector                            |
@@ -462,8 +461,7 @@ pnpm --filter <package> quality       # typecheck + lint + test
 | `auto-merge.yml` | Auto-merges Renovate patch PRs via squash. |
 | `auto-fix.yml` | Self-healing CI: runs `prettier --write` + `eslint --fix`; creates PR if changes found. |
 | `generate-documentation.yml` | Runs doc generators on `main` push; opens PR with updates. |
-| `reusable-ai-agent.yml` | Reusable workflow for dispatching AI agents (Claude / Gemini). |
-| `gemini-*.yml` | Gemini-specific bot workflows (dispatch, invoke, review, triage, plan-execute, scheduled). |
+| `reusable-ai-agent.yml` | Reusable workflow for dispatching AI agents. |
 
 ### CI Environment
 
@@ -546,9 +544,9 @@ pnpm --filter <healthcare-app> security:semgrep
 ### Infrastructure
 
 - Terraform security module is **Chief-only**.
-- GCP Cloud SQL: encryption at rest, backup retention >= 7 days (enforced by validation).
+- Legacy GCP Cloud SQL configs require encryption at rest and backup retention >= 7 days (enforced by validation).
 - Healthcare subnet is PHI-isolated (`infrastructure/terraform/modules/networking`).
-- Secrets managed via GCP Secret Manager (`database-url`, `anthropic-api-key`, `langflow-api-url`, `avvcenna-api-key`).
+- Secrets managed via provider-native secret storage or local secure stores (`database-url`, `anthropic-api-key`, `langflow-api-url`, `avvcenna-api-key`).
 
 ---
 
@@ -570,7 +568,7 @@ Key env domains (from `.env.example`):
 |--------|-----------|
 | **Database** | `DATABASE_URL` |
 | **AI Providers** | `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GROQ_API_KEY`, `OLLAMA_BASE_URL` |
-| **GCP / Vertex AI** | `GOOGLE_APPLICATION_CREDENTIALS`, `GCP_PROJECT_ID`, `GCP_LOCATION` |
+| **Legacy GCP / Vertex AI** | `GOOGLE_APPLICATION_CREDENTIALS`, `GCP_PROJECT_ID`, `GCP_LOCATION` |
 | **LangFlow** | `LANGFLOW_API_URL`, `LANGFLOW_API_KEY` |
 | **Redis** | `REDIS_URL` |
 | **Auth** | `NEXTAUTH_URL`, `NEXTAUTH_SECRET` |

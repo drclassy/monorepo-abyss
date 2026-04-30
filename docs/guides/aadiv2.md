@@ -1,130 +1,142 @@
-# 1. Perbandingan Saat Ini Vs AADI V2
+---
+id: aadi-v2-guide
+type: guide
+status: active
+owner: sentra-engineering
+tags: [aadi, symphony, clinical]
+---
 
-|Area|Current Symphony|AADI V2 Setelah Selesai|Estimasi Peningkatan|
+# Current Symphony vs AADI V2
+
+| Area | Current Symphony | AADI V2 After Completion | Estimated Improvement |
 |---|---|---|---|
-|**Safety & triage**|Sudah kuat: NEWS2, vital alerts, screening gates, PE suspect, anaphylaxis, DDI, traffic-light|Tetap dipertahankan, tetapi dimodularisasi dan ditambah golden regression test|**+15–25%**|
-|**Native diagnosis reasoning**|Masih bergantung pada `diagnosisCandidates` eksternal|Bisa menghasilkan differential diagnosis sendiri dari clinical facts|**+70–100%**|
-|**Confidence logic**|Masih sering `insufficient_data`|Confidence menjadi low / moderate / high sesuai kualitas data|**+50–80%**|
-|**Status engine**|Masih eksplisit `degraded` karena partial migration|Status menjadi `ok`, `requires_review`, `insufficient_data`, atau `degraded` secara bermakna|**+60–90%**|
-|**Explainability**|Ada alert, tetapi reasoning diagnosis belum lengkap|Ada alasan per diagnosis, missing data, must-not-miss, dan next step|**+60–80%**|
-|**Medication safety**|DDI sudah ada jika obat >1|DDI + allergy + pregnancy caution + structured medication issue|**+30–50%**|
-|**Indonesia localization**|Belum native|Dengue, TB suspect, preeclampsia, sepsis, NCD, maternal-fetal packs|**+60–90%**|
-|**FHIR / interoperability**|Belum menjadi core output|Siap mapping ke FHIR, SATUSEHAT, EMR, ReferraLink|**+50–80%**|
-|**Auditability**|Ada arah governance, tetapi belum full clinical inference audit|Setiap inference punya version, ruleset, timestamp, override, shadow comparison|**+50–75%**|
-|**Production validation**|Belum ada shadow mode penuh|V1 vs V2 bisa dibandingkan sebelum production|**+70–90%**|
+| **Safety & triage** | Already strong: NEWS2, vital alerts, screening gates, PE suspect, anaphylaxis, DDI, traffic-light | Preserved but modularized and augmented with golden regression tests | **+15–25%** |
+| **Native diagnosis reasoning** | Still depends on external `diagnosisCandidates` | Can generate differential diagnosis independently from clinical facts | **+70–100%** |
+| **Confidence logic** | Often `insufficient_data` | Confidence becomes low / moderate / high based on data quality | **+50–80%** |
+| **Status engine** | Still explicitly `degraded` due to partial migration | Status becomes `ok`, `requires_review`, `insufficient_data`, or `degraded` meaningfully | **+60–90%** |
+| **Explainability** | Has alerts, but diagnosis reasoning is incomplete | Has rationale per diagnosis, missing data, must-not-miss, and next steps | **+60–80%** |
+| **Medication safety** | DDI present if medication count >1 | DDI + allergy + pregnancy caution + structured medication issue | **+30–50%** |
+| **Indonesia localization** | Not native | Dengue, TB suspect, preeclampsia, sepsis, NCD, maternal-fetal packs | **+60–90%** |
+| **FHIR / interoperability** | Not yet a core output | Ready for mapping to FHIR, SATUSEHAT, EMR, ReferraLink | **+50–80%** |
+| **Auditability** | Has governance direction, but no full clinical inference audit | Every inference has version, ruleset, timestamp, override, shadow comparison | **+50–75%** |
+| **Production validation** | No full shadow mode yet | V1 vs V2 can be compared before production | **+70–90%** |
 
-Current Symphony sudah kuat sebagai **safety-first deterministic assessment and escalation engine**, tetapi belum menjadi **native diagnosis-from-scratch engine** karena diagnosis masih hybrid di atas kandidat eksternal, metadata masih `degraded`, dan confidence global masih `insufficient_data`.
+Current Symphony is already strong as a **safety-first deterministic assessment and escalation engine**, but is not yet a **native diagnosis-from-scratch engine** because diagnosis is still hybrid over external candidates, metadata is still `degraded`, and global confidence is still `insufficient_data`.
 
 ---
 
-# 2. Skor Maturity Per Fase
+## Maturity score by phase
 
-Saya akan pakai skala internal **0–100**, bukan klaim klinis resmi.
+Using an internal scale of **0–100**, not an official clinical claim.
 
-|Tahap|Maturity Score|Artinya|
+| Phase | Maturity Score | Meaning |
 |---|---|---|
-|**Current Symphony**|**45–55 / 100**|Safety kuat, diagnosis belum native|
-|**AADI V2 Phase 1 selesai**|**70–75 / 100**|Native diagnostic core mulai berjalan|
-|**AADI V2 Phase 2 selesai**|**80–88 / 100**|FHIR, evidence layer, shadow mode, evaluation harness|
-|**AADI V2 Phase 3 selesai**|**88–92 / 100**|Pilot-ready, offline mode, localization, observability|
+| **Current Symphony** | **45–55 / 100** | Safety is strong; diagnosis is not yet native |
+| **AADI V2 Phase 1 complete** | **70–75 / 100** | Native diagnostic core beginning to operate |
+| **AADI V2 Phase 2 complete** | **80–88 / 100** | FHIR, evidence layer, shadow mode, evaluation harness |
+| **AADI V2 Phase 3 complete** | **88–92 / 100** | Pilot-ready, offline mode, localization, observability |
 
-Jadi peningkatan dari current ke final Phase 3:
+Improvement from current to final Phase 3:
 
-Current: sekitar 50/100
-Final: sekitar 90/100
+Current: approximately 50/100
+Final: approximately 90/100
 
-Peningkatan absolut: +40 poin
-Peningkatan relatif: sekitar +80%
+Absolute improvement: +40 points
+Relative improvement: approximately +80%
 
-Namun untuk clinical performance, jangan pakai angka 80%. Itu angka **maturity sistem**, bukan akurasi diagnosis.
+For clinical performance, the 80% figure should not be used. It reflects **system maturity**, not diagnostic accuracy.
 
 ---
 
-# 3. Estimasi Peningkatan Klinis Yang Lebih Realistis
+## More realistic estimate of clinical improvement
 
-## 3.1 Diagnostic Support Quality
+### Diagnostic support quality
 
-|Kondisi|Estimasi|
+| Condition | Estimate |
 |---|---|
-|Current Symphony|baseline belum stabil karena diagnosis tergantung kandidat eksternal|
-|AADI V2 Phase 1|**+15–25%**|
-|AADI V2 Phase 2|**+20–35%**|
-|AADI V2 Phase 3|**+25–40%**, jika pilot feedback bagus|
+| Current Symphony | Baseline is unstable because diagnosis depends on external candidates |
+| AADI V2 Phase 1 | **+15–25%** |
+| AADI V2 Phase 2 | **+20–35%** |
+| AADI V2 Phase 3 | **+25–40%**, with good pilot feedback |
 
-Target paling realistis untuk klaim eksternal:
+Most realistic target for external claims:
 
-> **AADI V2 menargetkan peningkatan kualitas clinical decision support sebesar 20–35% dibanding current engine setelah validasi shadow mode dan expert review.**
+> **AADI V2 targets a 20–35% improvement in clinical decision support quality over the current engine, validated through shadow mode and expert review.**
 
-Dokumen Sentra sebelumnya memang menyebut peningkatan diagnostic accuracy sekitar 30% melalui risk scoring dan pengurangan diagnostic errors sekitar 35% melalui early warnings, tetapi angka ini harus dibuktikan ulang spesifik untuk AADI V2.
+Earlier Sentra documents cited approximately 30% improvement in diagnostic accuracy through risk scoring, and approximately 35% reduction in diagnostic errors through early warnings — but these figures must be re-validated specifically for AADI V2.
 
 ---
 
-# 4. Bagian Yang Naik Paling Besar
+## Areas with the largest gains
 
-## A. Native Diagnosis Reasoning
+### Native diagnosis reasoning
 
-Ini peningkatan terbesar.
+This is the largest improvement.
 
 Current:
 
-Input klinis
+```
+Clinical input
 → deterministic alerting
-→ diagnosisCandidates dari luar
+→ diagnosisCandidates from external source
 → ranking / traffic-light
+```
 
 AADI V2:
 
-Input klinis
+```
+Clinical input
 → ClinicalFacts
 → syndrome classification
 → diagnosis pack matching
 → differential diagnosis
 → must-not-miss
 → clinical arbiter
+```
 
-Peningkatan: **sekitar +70–100%** dalam autonomy diagnosis reasoning.
+Improvement: **approximately +70–100%** in diagnosis reasoning autonomy.
 
-Bukan berarti diagnosis pasti benar 100%, tetapi engine tidak lagi pasif menunggu kandidat dari luar.
-
----
-
-## B. Explainability
-
-Current output memberi alert dan traffic-light, tetapi belum sepenuhnya menjawab:
-
-- kenapa diagnosis ini muncul
-- data apa yang mendukung
-- data apa yang melemahkan
-- data apa yang kurang
-- apa diagnosis yang tidak boleh terlewat
-
-AADI V2 menjawab semuanya.
-
-Peningkatan: **sekitar +60–80%**.
+This does not mean diagnosis is 100% correct — it means the engine no longer passively waits for candidates from an external source.
 
 ---
 
-## C. Clinical Safety Governance
+### Explainability
 
-Current sudah punya safety slices kuat. AADI V2 tidak mengganti safety layer, tetapi membuatnya:
+Current output provides alerts and a traffic-light, but does not fully answer:
+
+- why this diagnosis appeared
+- what evidence supports it
+- what evidence weakens it
+- what data is missing
+- what diagnoses must not be missed
+
+AADI V2 answers all of these.
+
+Improvement: **approximately +60–80%**.
+
+---
+
+### Clinical safety governance
+
+Current already has strong safety slices. AADI V2 does not replace the safety layer — it makes it:
 
 - modular
 - testable
 - auditable
 - protected by golden safety tests
-- compatible dengan shadow mode
+- compatible with shadow mode
 
-Peningkatan: **sekitar +15–25%**, karena fondasinya memang sudah kuat.
+Improvement: **approximately +15–25%**, because the foundation is already strong.
 
 ---
 
-# 5. Bagian Yang Tidak Akan Naik Drastis
+## Areas with smaller gains
 
-## Safety Alerting
+### Safety alerting
 
-Karena current Symphony sudah kuat di sini.
+Current Symphony is already strong here.
 
-Current sudah punya:
+Current already has:
 
 - NEWS2
 - vital alerts
@@ -134,51 +146,51 @@ Current sudah punya:
 - DDI
 - traffic-light safety gate
 
-Maka AADI V2 tidak membuat safety dari 0. Yang meningkat adalah **reliability, modularity, dan testability**, bukan kemampuan dasar safety detection. Current flow memang sudah menempatkan traffic-light sebagai safety gate final di atas alert dan diagnosis suggestion.
+AADI V2 does not build safety from zero. What improves is **reliability, modularity, and testability**, not the baseline safety detection capability. Current flow already positions the traffic-light as a final safety gate above alerts and diagnosis suggestions.
 
-Estimasi peningkatan safety layer: **+15–25%**, bukan +80%.
+Estimated safety layer improvement: **+15–25%**, not +80%.
 
 ---
 
-# 6. Ringkasan Persentase Paling Aman
+## Safe summary percentages
 
-|Kategori|Estimasi Peningkatan|
+| Category | Estimated Improvement |
 |---|---|
-|**Overall system maturity**|**+50–80%**|
-|**Clinical diagnostic support quality**|**+20–35%**|
-|**Native diagnosis reasoning capability**|**+70–100%**|
-|**Explainability**|**+60–80%**|
-|**FHIR/interoperability readiness**|**+50–80%**|
-|**Safety detection**|**+15–25%**|
-|**Medication safety**|**+30–50%**|
-|**Indonesia-market fit**|**+60–90%**|
-|**Auditability/governance**|**+50–75%**|
+| **Overall system maturity** | **+50–80%** |
+| **Clinical diagnostic support quality** | **+20–35%** |
+| **Native diagnosis reasoning capability** | **+70–100%** |
+| **Explainability** | **+60–80%** |
+| **FHIR/interoperability readiness** | **+50–80%** |
+| **Safety detection** | **+15–25%** |
+| **Medication safety** | **+30–50%** |
+| **Indonesia-market fit** | **+60–90%** |
+| **Auditability/governance** | **+50–75%** |
 
 ---
 
-# 7. Angka Final Yang Saya Rekomendasikan Untuk Dipakai
+## Recommended final figures
 
-Untuk internal engineering:
+For internal engineering:
 
-> **AADI V2 = ±80% peningkatan system maturity dibanding current Symphony.**
+> **AADI V2 = approximately +80% system maturity improvement over current Symphony.**
 
-Untuk clinical/product claim yang aman:
+For safe clinical/product claims:
 
-> **AADI V2 menargetkan 20–35% peningkatan kualitas clinical decision support dibanding current engine, dengan validasi melalui golden cases, shadow mode, dan expert review.**
+> **AADI V2 targets a 20–35% improvement in clinical decision support quality over the current engine, validated through golden cases, shadow mode, and expert review.**
 
-Untuk pitch eksternal:
+For external pitch:
 
-> **AADI V2 meningkatkan engine dari safety-triage assistant menjadi full diagnostic reasoning copilot yang tetap human-in-the-loop, explainable, FHIR-ready, dan Indonesia-first.**
+> **AADI V2 elevates the engine from a safety-triage assistant to a full diagnostic reasoning copilot that remains human-in-the-loop, explainable, FHIR-ready, and Indonesia-first.**
 
 ---
 
-## Kesimpulan
+## Conclusion
 
-**Current Symphony sudah 50% matang sebagai safety engine.**
-**AADI V2 akan membawa sistem ke sekitar 85–90% maturity sebagai diagnostic copilot.**
+**Current Symphony is already 50% mature as a safety engine.**
+**AADI V2 will bring the system to approximately 85–90% maturity as a diagnostic copilot.**
 
-Jadi jawaban paling jujur:
+The most honest answer:
 
-> **Peningkatan teknis total: sekitar 50–80%.**
-> **Peningkatan clinical diagnostic support yang realistis: sekitar 20–35%.**
-> **Peningkatan terbesar bukan di safety, tetapi di native diagnosis reasoning, explainability, interoperability, dan auditability.**
+> **Total technical improvement: approximately 50–80%.**
+> **Realistic improvement in clinical diagnostic support: approximately 20–35%.**
+> **The largest gains are not in safety, but in native diagnosis reasoning, explainability, interoperability, and auditability.**

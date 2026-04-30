@@ -2,10 +2,10 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 import { VectorStore, createVectorStore } from '../store'
 import type { VectorStoreDatabaseClient } from '../types'
-import { getEmbedding } from '../vertex-provider'
+import { getEmbedding } from '../embedding-provider'
 
-vi.mock('../vertex-provider', () => ({
-  DEFAULT_EMBEDDING_MODEL: 'text-embedding-004',
+vi.mock('../embedding-provider', () => ({
+  DEFAULT_EMBEDDING_MODEL: 'nomic-embed-text',
   getEmbedding: vi.fn(),
 }))
 
@@ -42,10 +42,8 @@ describe('VectorStore', () => {
 
     expect(id).toMatch(/[0-9a-f-]{36}/)
     expect(getEmbeddingMock).toHaveBeenCalledWith('adult fever guideline', {
-      model: 'text-embedding-004',
-      taskType: 'RETRIEVAL_DOCUMENT',
-      gcpProjectId: undefined,
-      gcpLocation: undefined,
+      model: 'nomic-embed-text',
+      ollamaBaseUrl: undefined,
     })
     expect(executeRaw).toHaveBeenCalledWith(
       expect.stringContaining('INSERT INTO "KnowledgeBase"'),
@@ -64,10 +62,8 @@ describe('VectorStore', () => {
     const results = await store.query('hypoxemia triage', 3)
 
     expect(getEmbeddingMock).toHaveBeenCalledWith('hypoxemia triage', {
-      model: 'text-embedding-004',
-      taskType: 'RETRIEVAL_QUERY',
-      gcpProjectId: undefined,
-      gcpLocation: undefined,
+      model: 'nomic-embed-text',
+      ollamaBaseUrl: undefined,
     })
     expect(executeRaw).toHaveBeenCalledWith('SET hnsw.ef_search = 100')
     expect(queryRaw).toHaveBeenCalledWith(
@@ -91,10 +87,8 @@ describe('VectorStore', () => {
     await store.upsertById(stableId, 'clinical protocol text', { source: 'protocol.pdf' })
 
     expect(getEmbeddingMock).toHaveBeenCalledWith('clinical protocol text', {
-      model: 'text-embedding-004',
-      taskType: 'RETRIEVAL_DOCUMENT',
-      gcpProjectId: undefined,
-      gcpLocation: undefined,
+      model: 'nomic-embed-text',
+      ollamaBaseUrl: undefined,
     })
     expect(executeRaw).toHaveBeenCalledWith(
       expect.stringContaining('ON CONFLICT (id) DO UPDATE SET'),

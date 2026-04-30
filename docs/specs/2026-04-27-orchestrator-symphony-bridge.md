@@ -1,4 +1,12 @@
-# Orchestrator ↔ SYMPHONY Bridge — Request/Response Boundary
+---
+id: orchestrator-symphony-bridge
+type: specification
+status: active
+owner: sentra-engineering
+tags: [orchestrator, symphony, integration]
+---
+
+# Orchestrator to SYMPHONY bridge request and response boundary
 
 **Sprint 4 / B.10 — `feat(orchestrator): wire DiagnosisFlowSaga to real assessSymphonyInput()`**
 

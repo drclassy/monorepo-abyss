@@ -1,6 +1,6 @@
 # HANDOFF.md — The Abyss (Monorepo Root)
 <!-- Overwrite at the start of each new session. -->
-<!-- Last updated: 2026-04-25 · Agent: Codex/Dexton · Session: architecture-alignment -->
+<!-- Last updated: 2026-04-29 · Agent: GPT-5.4 · Session: consumer-trial-readiness-reset -->
 
 ---
 
@@ -12,79 +12,81 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Quick Orient (for new thread)
 
-**Branch:** `abyss-core` · local-only cleanup + architecture lock in progress · **NOT PUSHED**
+**Branch:** `master` · repo topology sudah kembali tunggal, bersih, dan aktif di jalur `master`; engine close-out anchored on `255c50f`
 **Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
 **Cursor IDE (2026-04-28):** User-level + profile `Avvcenna+` sudah di-hardten per audit plan — Claude Code bypass permission dimatikan, wrapper dihapus, overlap extension dikurangi; detail di `.agent/sessions/2026-04-28.md`.
 **Primary mission:**
-1. **SYMPHONY** — frame the new diagnosis engine inside `@the-abyss/symphony`, then verify readiness gates, then re-wire Dashboard, then ASSIST.
-2. **Retrieval lane is supporting only** — RAG packages may support grounding/retrieval, but must not become parallel clinical engines.
-3. **Legacy lock:** `packages/ai-core` has been retired locally on 2026-04-25; do not recreate or depend on it again.
+1. **Consumer Trial Readiness** — move from core-engine completion into operational rollout preparation.
+2. **Dashboard / ASSIST readiness** — prepare consumer adoption in the correct order: Dashboard first, ASSIST second.
+3. **Shadow telemetry + limited trial** — lock observability and controlled rollout criteria before broader adoption.
+4. **Retrieval lane is supporting only** — RAG packages may support grounding/retrieval, but must not become parallel clinical engines.
+5. **Legacy lock:** `packages/ai-core` has been retired locally on 2026-04-25; do not recreate or depend on it again.
+
+**Session addendum (2026-04-29):**
+- Current working thread is the Google / Vertex / Gemini exit cleanup.
+- Keep that effort separated from broader consumer trial readiness work.
+- Do not start runtime removal or package rewrites until Chief gives explicit `GO` for the technical cutover.
+
+**Session addendum (2026-04-30):**
+- Cursor rules now include an always-on Chief directive bridge at `.cursor/rules/05-chief-directive-mode.mdc`.
+- Future Cursor sessions should front-load latest official notes when relevant, respond in Bahasa Indonesia to Chief, and stop for explicit `GO` before implementation.
 
 ---
 
-## Track A: SYMPHONY Canonicalization
+## Active Task
 
-**All 7 phases COMPLETE.** Post-Phase-7 work already landed: scaffold `@the-abyss/clinical-references` + Phase 7c traffic-light canonicalization. Current priority is no longer feature backfill; it is diagnosis-engine framing, readiness review, and controlled consumer adoption.
+**Consumer Trial Readiness**
 
-| # | Scope | Status |
-|---|---|---|
-| 1 | Symptom Signals NLP | ✅ `a587b41` |
-| 2 | Pattern Engine generic evaluator | ✅ `0a471bb` (contract v0.2.0) |
-| 3 | Clinical Patterns Evaluator (70 CP) | ✅ `8fb9d1d` + `39db0cb` |
-| 4 | Action Protocols (ABCDE) | ✅ `466ec4b` (contract v0.3.0) |
-| 5 | Gate taxonomy reconciliation | ✅ `0df24cf` (contract v0.4.0) |
-| 6 | Prediction + classifier refinements | ✅ `3398ce7` (contract v0.5.0) |
-| 7 | Pharmacology decision (ADR `0007`) | ✅ `3e97eeb` |
+`@the-abyss/symphony` is now considered complete for the planned AADI V2 core reasoning scope. The next lane is operational: prepare consumers, validate telemetry posture, and define a controlled limited-trial envelope. Do not reopen foundation-build framing unless Chief explicitly changes scope.
 
-**Contract version:** `SYMPHONY_CONTRACT_VERSION = '0.6.0'`
+### Closed core deliverables
+- Clinical facts, syndrome classification, diagnosis packs, native differential, reasoning arbiter, explainability, and clinical disposition are all closed in `@the-abyss/symphony`.
+- `assess.ts` integration, shadow comparison, and parity verification are closed.
+- Orchestrator now uses `assessSymphonyInput()` as the platform thin-client path.
+- FHIR Bundle interop promotion lane is formalized with `@the-abyss/fhir-engine` as bounded structural validation home.
+- CDS Hooks is formalized and intentionally remains in `packages/symphony`.
+- Hardening patch `882775a` closed PHI-safe DLQ, removed silent `vertex-rag` fallback behavior, and tightened saga persistence typing.
 
----
+### Verification baseline
+- `@the-abyss/symphony` test → 373/373 PASS
+- `@the-abyss/orchestrator` test → 46/46 PASS
+- `@the-abyss/orchestrator` typecheck → PASS
+- `@the-abyss/fhir-engine` test → 64/64 PASS
+- `@the-abyss/vertex-rag` test → 5/5 PASS before retirement
 
-## Supporting Retrieval Context (archive support only, not primary mission)
-
-**Package:** `packages/sentra-rag/` — local-first medical RAG, self-contained.
-**Status use:** Keep as supporting context only. Do not let this section override the SYMPHONY-first hierarchy above.
-
-**Stack:**
-- Embedding: Ollama `nomic-embed-text` (768-dim, lokal)
-- Generation: Ollama `gemma2:9b`
-- Vector store: Neon PostgreSQL + pgvector (tabel `medical_chunks`)
-- PDF extractor: PyMuPDF via `src/ingestion/pdf_extract.py` (suppress errors: `fitz.TOOLS.mupdf_display_errors(False)`)
-- PHI guard: GuardEngine (NIK, HP, email redaction)
-
-**Library state** (`V:/avcn-sentra/abyss-monorepo/library/medical/`):
-| Kategori | Files | Chunks | Status |
-|---|---|---|---|
-| `pha/` Pharmacology | 7/7 | 2,010 | DONE |
-| `ped/` Pediatrics | 6/6 | 551 | DONE |
-| `obg/` Obstetrics | 4/4 | 745 | DONE |
-| `int/` Internal Med | 0/0 | 0 | EMPTY — corrupt PDF dihapus |
-| `gen/` General Med | 0/0 | 0 | EMPTY — corrupt PDF dihapus |
-| `bas/` Basic Sciences | 0/0 | 0 | EMPTY — image-based PDF dihapus |
-| **TOTAL** | **17/17** | **3,306** | 100% indexed |
-
-**DB:** Neon PostgreSQL — `medical_chunks`, 3,306 chunks, 768-dim pgvector.
-**Env:** `packages/sentra-rag/.env` (lokal, tidak di-commit).
-
-**Pending — Sentra RAG:**
-- [ ] Re-download PDF bersih untuk `int/`: hipertensi 2024, GERD 2024, dispepsia, gagal jantung (dari PAPDI/Kemenkes — binary download)
-- [ ] Wire `SentraRAGEngine` ke intelligenceboard CDSS endpoint
-- [ ] Wire `SentraRAGEngine` ke Kate agent query pipeline
-
-**Operational scripts:** `V:/avcn-sentra/abyss-monorepo/tooling/scripts/rag/`
-**Batch TUI:** `V:/avcn-sentra/abyss-monorepo/tooling/scripts/rag/ingest-menu.bat`
+### Priority lanes
+1. **Dashboard readiness**
+   - define adoption seam over current SYMPHONY outputs
+   - confirm no legacy mock reasoning remains in the Dashboard path
+   - prepare rollout checklist before turning on broader consumption
+2. **ASSIST readiness**
+   - start only after Dashboard readiness is explicit
+   - treat ASSIST as the second consumer, not the proving ground
+3. **Shadow telemetry**
+   - define metrics/logs needed to observe parity, traffic-light behavior, alert semantics, and disposition drift
+   - require operational visibility before broader rollout claims
+4. **Limited trial**
+   - define entry criteria, observation window, rollback posture, and success/failure thresholds
+   - keep trial narrow and controlled; this is not general availability
 
 ---
 
-## Perubahan Hari Ini (2026-04-23, belum di-commit)
+## Boundary Lock
 
-- `packages/sentra-rag/src/ingestion/chunker.ts` — line-grouping fallback untuk plain-text PDF
-- `packages/sentra-rag/src/ingestion/pdf_extract.py` — suppress MuPDF stdout errors
-- `packages/sentra-rag/src/ingestion/pipeline.ts` — switch extractor ke PyMuPDF
-- `library/medical/` — cleanup 101 PDF corrupt/gagal
-- `packages/clinical-references/` — scaffold package baru (contracts + deterministic stubs + tests)
-- `pnpm-lock.yaml` — importer/update workspace setelah `pnpm install`
-- `.agent/` — session log + dokumentasi
+- `@the-abyss/symphony` remains the only canonical clinical reasoning engine.
+- `@the-abyss/fhir-engine` remains the bounded structural validation home and FHIR Bundle assembly lane, not a reasoning package.
+- CDS Hooks remains in `packages/symphony` because it is workflow-semantics-bound.
+- `@the-abyss/sentra-rag`, `@the-abyss/vector-store`, and `@the-abyss/literature-harvester` stay retrieval-side only.
+- Do not reframe rollout work as a reason to rebuild the engine foundation.
+
+---
+
+## Immediate Next Steps
+
+1. Write or refresh the operational checklist for **Dashboard readiness**.
+2. Define the **shadow telemetry** set required for consumer rollout confidence.
+3. Prepare the **limited trial** envelope and rollback expectations.
+4. Only after the first three are explicit, frame **ASSIST readiness** as the next consumer lane.
 
 ---
 
@@ -102,35 +104,17 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 - **Lock:** `packages/database` bukan healthcare DB migration target.
 - **Hierarchy lock:** SYMPHONY parent; Dashboard + Assist = consumers.
+- **Operational phase lock:** current lane = consumer trial readiness, not foundation rebuild.
 - **sentra-rag DB:** bukan `packages/database` — Neon connection langsung di `.env` lokal.
-
----
-
-## Medical Data Inventory (2026-04-23 audit)
-
-Data medis tersebar di 3 app, belum ada single source of truth:
-
-| Data | Lokasi | Records |
-|---|---|---|
-| Penyakit (172 + 144 SKDI) | intelligenceboard/public/data/ | ~316 penyakit |
-| ICD-10 BPJS | intelligenceboard/database/ | 18,543 kode |
-| Obat Fornas + stok | intelligenceboard/public/data/ | 222 + 277 item |
-| **DDI (173k interaksi)** | **sentra-assist/data/ddi-clinical.json** | **1,785 obat** |
-| Epidemiologi lokal | sentra-assist/public/data/ | 1,930 kode, 45k kasus |
-| Dosis per usia/berat | sentra-assist/lib/clinical/dosage-database.ts | per populasi |
-| Clinical chains + patches | intelligenceboard/database/ | 150+ penyakit |
-| Med database | referralink/public/data/ | ~100+ kondisi |
-
-Kandidat konsolidasi ke `@the-abyss/clinical-references` — detail di DECISIONS.md.
 
 ---
 
 ## Next Action Options (Chief choose)
 
-1. **Design the new SYMPHONY diagnosis engine** — primary product-critical work
-2. **Review remaining SYMPHONY readiness gates** — especially parity/import-replacement lock
-3. **Re-wire Dashboard to SYMPHONY** — only after diagnosis-engine direction is locked
-4. **Re-wire ASSIST** — only after Dashboard integration is stable
+1. **Dashboard readiness** — make the first consumer rollout-ready.
+2. **Shadow telemetry definition** — lock the observability surface before rollout claims.
+3. **Limited trial gating** — define the narrow operational trial envelope.
+4. **ASSIST readiness** — prepare second-consumer adoption only after Dashboard and telemetry are stable.
 
 ---
 
@@ -156,19 +140,18 @@ Kandidat konsolidasi ke `@the-abyss/clinical-references` — detail di DECISIONS
 - `@the-abyss/symphony` remains the only canonical clinical reasoning engine.
 - `@the-abyss/clinical-references` remains the sibling reference layer.
 - `@the-abyss/shared-types` remains the contract backbone.
-- `@the-abyss/sentra-rag`, `@the-abyss/vector-store`, `@the-abyss/vertex-rag`, and `@the-abyss/literature-harvester` are retrieval-side packages only. They must not evolve into parallel clinical engines.
+- `@the-abyss/sentra-rag`, `@the-abyss/vector-store`, and `@the-abyss/literature-harvester` are retrieval-side packages only. They must not evolve into parallel clinical engines.
 
 **Main risk now is not SYMPHONY itself.** Main risk is retrieval-boundary drift:
 
 1. `sentra-rag` already owns local-first ingest/query orchestration.
 2. `vector-store` should stay a storage/index abstraction, not another orchestrator.
-3. `vertex-rag` is still a governance outlier and must be treated as cloud connector/fallback only.
-4. `literature-harvester` stays acquisition-only and feeds corpus readiness, not diagnosis authority.
+3. `literature-harvester` stays acquisition-only and feeds corpus readiness, not diagnosis authority.
 
 **Operational consequence for next agent:**
 
 - Do **not** start Dashboard or ASSIST rewiring from any retrieval package.
-- The next strategic task is to frame the **new diagnosis engine inside SYMPHONY**.
-- Only after that engine is locked and verified should consumer rewiring begin:
+- The next strategic task is no longer diagnosis-engine framing; it is **consumer trial readiness** on top of the now-closed engine.
+- Only after readiness and telemetry are locked should consumer rewiring begin:
   1. Dashboard first
   2. ASSIST second

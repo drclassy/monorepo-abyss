@@ -1,34 +1,42 @@
-# Getting Started — The Abyss
+---
+id: getting-started
+type: guide
+status: active
+owner: sentra-engineering
+tags: [onboarding, workspace]
+---
 
-Panduan untuk engineer baru dari nol sampai build pertama.
+# Getting started with The Abyss
+
+Quick guide for new engineers from zero to first build.
 
 ## Prerequisites
 
 - **Node.js** >= 22.0.0
 - **pnpm** >= 9.0.0 (`npm install -g pnpm`)
-- **Git** dengan akses ke repository
+- **Git** with repository access
 
-## Quick Start
+## Quick start
 
 ```bash
-# 1. Clone repository
+# 1. Clone the repository
 git clone https://github.com/Avvcenna+/abyss-monorepo.git
 cd abyss-monorepo
 
-# 2. Install semua dependencies
+# 2. Install all dependencies
 pnpm install
 
-# 3. Build seluruh workspace
+# 3. Build the entire workspace
 pnpm build
 
-# 4. Jalankan dev server
+# 4. Start the dev server
 pnpm dev
 ```
 
-## Verifikasi Setup
+## Setup verification
 
 ```bash
-# Cek semua workspace members terdeteksi
+# Check all workspace members are detected
 pnpm ls --depth 0
 
 # TypeScript strict check
@@ -41,7 +49,7 @@ pnpm lint
 pnpm format:check
 ```
 
-## Struktur Project
+## Project structure
 
 ```
 abyss-monorepo/
@@ -51,11 +59,11 @@ abyss-monorepo/
 ├── flows/          → Langflow workflow definitions
 ├── docs/           → Documentation, ADRs, guides
 ├── infrastructure/ → Docker, Terraform, ArgoCD
-└── .agents/        → AI agent governance (AGENTS.md, HANDOFF.md)
+└── .agent/         → Agent memory, sessions, and handoff state
 ```
 
-## Langkah Selanjutnya
+## Next steps
 
-- Baca [workspace-setup.md](./workspace-setup.md) untuk memahami workspace commands
-- Baca [code-quality.md](./code-quality.md) untuk standar kualitas kode
-- Baca [CONTRIBUTING.md](../../CONTRIBUTING.md) untuk workflow kontribusi
+- Read [workspace-setup.md](./workspace-setup.md) to understand workspace commands
+- Read [code-quality.md](./code-quality.md) for code quality standards
+- Read [CONTRIBUTING.md](../../CONTRIBUTING.md) for the contribution workflow

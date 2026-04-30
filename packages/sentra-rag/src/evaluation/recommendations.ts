@@ -64,7 +64,7 @@ export function generateRecommendations(
     recommendations.push({
       type: 'WARNING',
       message: `${qualityReport.failed_queries} query/queries failed during evaluation.`,
-      action: 'Check failed-queries.json for error details. Verify DATABASE_URL and GCP credentials.',
+      action: 'Check failed-queries.json for error details. Verify DATABASE_URL and the currently configured embedding/runtime dependencies.',
     })
   }
 

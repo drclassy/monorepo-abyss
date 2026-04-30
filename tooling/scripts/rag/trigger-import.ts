@@ -1,4 +1,3 @@
-import { spawnSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import * as path from 'node:path'
 
@@ -19,22 +18,14 @@ function findRepoRoot(): string {
 }
 
 function main(): void {
-  // Script ini sengaja sederhana: ia memanggil package vertex-rag melalui workspace graph.
+  // Script ini sengaja sederhana: ia kini hanya menjadi penanda bahwa jalur RAG lama
+  // sudah diputus dan workflow import harus lewat stack lokal.
   // Jalankan dari root:
   //   pnpm dlx tsx tooling/scripts/rag/trigger-import.ts
-
-  const repoRoot = findRepoRoot()
-  const args = ['--dir', repoRoot, '--filter', '@the-abyss/vertex-rag', 'exec', 'tsx', 'src/official-uploader.ts']
-
-  console.log('--- Trigger Import (Vertex RAG) ---')
-  console.log(`cmd: pnpm ${args.join(' ')}`)
-
-  const result = spawnSync('pnpm', args, {
-    stdio: 'inherit',
-    shell: false,
-  })
-
-  process.exit(result.status ?? 1)
+  void findRepoRoot()
+  console.log('--- Trigger Import (Local RAG) ---')
+  console.log('Jalur RAG lama sudah dinonaktifkan. Gunakan packages/sentra-rag untuk ingest/query lokal.')
+  process.exit(0)
 }
 
 main()

@@ -94,8 +94,6 @@ export interface ApprovedEmbeddingPipelineParams {
   writeMode: EmbeddingWriteMode
   embeddingModel?: string
   embeddingDimensions?: number
-  gcpProjectId?: string
-  gcpLocation?: string
   /** Injected database adapter. Required for write mode; ignored in dry-run. */
   databaseClient?: import('@the-abyss/vector-store').VectorStoreDatabaseClient
 }

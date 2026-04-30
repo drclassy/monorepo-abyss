@@ -67,7 +67,7 @@ async function main(): Promise<void> {
   console.log(`[eval-retrieval] Top-K               : ${topK}`)
   console.log(`[eval-retrieval] Min similarity      : ${minSimilarity}`)
 
-  // Eval mode requires DATABASE_URL and GCP credentials
+  // Eval mode requires DATABASE_URL
   let databaseClient: import('@the-abyss/vector-store').VectorStoreDatabaseClient | undefined
 
   if (writeMode === 'eval') {
@@ -90,8 +90,6 @@ async function main(): Promise<void> {
     writeMode,
     topK,
     minSimilarity,
-    gcpProjectId: process.env.GCP_PROJECT_ID,
-    gcpLocation: process.env.GCP_LOCATION,
     databaseClient,
   })
 

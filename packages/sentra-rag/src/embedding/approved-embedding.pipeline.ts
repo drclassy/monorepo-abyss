@@ -69,11 +69,11 @@ function loadChunks(
  *
  * Dry-run mode (default):
  *   - Reads registry + chunks, generates all artifacts.
- *   - Zero Vertex AI calls. Zero DB writes.
+ *   - Zero Google calls. Zero DB writes.
  *
  * Write mode (--write):
  *   - Reads registry + chunks.
- *   - Calls Vertex AI to generate embeddings for approved chunks.
+ *   - Uses local Ollama embeddings for approved chunks.
  *   - Writes vectors via packages/vector-store (upsertById).
  *   - Generates all artifacts.
  */
@@ -87,8 +87,6 @@ export async function runApprovedEmbeddingPipeline(
     writeMode,
     embeddingModel = DEFAULT_EMBEDDING_MODEL,
     embeddingDimensions = DEFAULT_EMBEDDING_DIMENSIONS,
-    gcpProjectId,
-    gcpLocation,
     databaseClient,
   } = params
 
@@ -119,8 +117,6 @@ export async function runApprovedEmbeddingPipeline(
       ? createVectorStore({
           database: databaseClient,
           embeddingModel,
-          gcpProjectId,
-          gcpLocation,
         })
       : null
 

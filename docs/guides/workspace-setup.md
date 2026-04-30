@@ -1,51 +1,59 @@
-# Workspace Setup — The Abyss
+---
+id: workspace-setup
+type: guide
+status: active
+owner: sentra-engineering
+tags: [workspace, pnpm, turborepo]
+---
 
-Panduan workspace commands dan cara kerja monorepo.
+# Workspace setup in The Abyss
 
-## Workspace Members
+Workspace commands and how the monorepo works.
 
-Monorepo ini punya 4 workspace group:
+## Workspace members
 
-| Group | Path | Isi |
-|-------|------|-----|
+The monorepo has four workspace groups:
+
+| Group | Path | Contents |
+|-------|------|----------|
 | **apps/** | `apps/**` | 7 deployable applications |
 | **packages/** | `packages/**` | 12 shared libraries |
 | **tooling/** | `tooling/**` | 2 developer tools |
 | **flows/** | `flows/**` | Langflow workflow definitions |
 
-## Commands Utama
+## Core commands
 
-### Build & Dev
+### Build and dev
 
 ```bash
-pnpm build          # Build semua packages (Turborepo cached)
-pnpm dev            # Start semua dev servers
-pnpm typecheck      # TypeScript strict check dari root
+pnpm build          # Build all packages (Turborepo cached)
+pnpm dev            # Start all dev servers
+pnpm typecheck      # TypeScript strict check from root
 ```
 
-### Targeting Specific Package
+### Target a specific package
 
 ```bash
-# Build satu package saja
+# Build a single package
 pnpm turbo run build --filter=@the-abyss/ui
 
-# Dev server untuk satu app
-pnpm turbo run dev --filter=@the-abyss/referralink-api
+# Dev server for a single app
+pnpm turbo run dev --filter=@the-abyss/referralink
 
-# Build yang terpengaruh perubahan terbaru
+# Build packages affected by recent changes
 pnpm turbo run build --filter=[HEAD^1]
 ```
 
-### Dependency Management
+### Dependency management
 
 ```bash
-# Tambah dependency ke workspace root
+# Add dependency to workspace root
 pnpm -w add <package>
 
-# Tambah ke specific package
+# Add to a specific package
 pnpm add <package> --filter @the-abyss/ui
 
-# Tambah dev dependency
+# Add dev dependency
 pnpm add -D <package> --filter @the-abyss/database
 ```
 
@@ -53,26 +61,26 @@ pnpm add -D <package> --filter @the-abyss/database
 
 ```bash
 pnpm db:generate    # Generate Prisma client
-pnpm db:push        # Push schema ke database
+pnpm db:push        # Push schema to database
 pnpm db:migrate     # Run migrations
 pnpm db:studio      # Open Prisma Studio
 ```
 
-## Turborepo Cache
+## Turborepo cache
 
-Turborepo meng-cache build artifacts. Jika package tidak berubah, build di-skip.
+Turborepo caches build artifacts. Unchanged packages are skipped automatically.
 
 ```bash
-# Lihat dependency graph
+# View dependency graph
 pnpm graph
 
-# Bersihkan semua cache
+# Clear all cache
 pnpm clean
 ```
 
-## Path Aliases
+## Path aliases
 
-Import dari shared packages menggunakan `@the-abyss/*`:
+Shared packages are imported using `@the-abyss/*`:
 
 ```typescript
 import { Button } from '@the-abyss/ui'

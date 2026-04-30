@@ -22,7 +22,7 @@
 
 - **No feature skip:** every clinically relevant existing SYMPHONY capability must be reused, wrapped, or explicitly replaced with parity proof.
 - **Hierarchy lock:** `SYMPHONY` is the parent authority; Dashboard and Assist are consumers.
-- **No parallel engine:** do not move reasoning authority into `sentra-rag`, `vertex-rag`, or consumer apps.
+- **No parallel engine:** do not move reasoning authority into `sentra-rag`, any legacy retrieval package, or consumer apps.
 - **No safety regression:** `alerts`, `trafficLight`, `trajectory`, `quality.auditHints`, and action protocols remain available throughout migration.
 - **No contract confusion:** operational engine status stays separate from new clinical disposition status.
 - **No DB / Prisma work in this plan.**

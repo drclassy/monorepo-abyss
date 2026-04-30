@@ -1,13 +1,13 @@
 import type { QueryResult, VectorStoreConfig, VectorStoreDatabaseClient } from './types'
-import { getEmbedding, DEFAULT_EMBEDDING_MODEL } from './vertex-provider'
+import { getEmbedding, DEFAULT_EMBEDDING_MODEL } from './embedding-provider'
 
 // ─── VectorStore ──────────────────────────────────────────────────────────────
 
 /**
- * pgvector-backed vector store using Vertex AI for embedding generation.
+ * pgvector-backed vector store using local Ollama for embedding generation.
  *
  * Storage  : caller-owned KnowledgeBase table on PostgreSQL + pgvector
- * Embedding: Vertex AI text-embedding-004 via GCP IAM auth
+ * Embedding: Ollama `nomic-embed-text` via local HTTP API
  *
  * Raw SQL is intentional — Prisma does not support `vector` column operations
  * natively (declared as `Unsupported("vector(768)")` in schema.prisma).
@@ -32,7 +32,7 @@ export class VectorStore {
   // ─── Upsert ─────────────────────────────────────────────────────────────────
 
   /**
-   * Embeds `content` via Vertex AI and upserts the record using the caller-supplied
+   * Embeds `content` via Ollama and upserts the record using the caller-supplied
    * stable ID. Idempotent: repeated calls with the same `id` update the record
    * rather than insert a duplicate.
    *
@@ -44,9 +44,7 @@ export class VectorStore {
     const db = this.database()
     const embedding = await getEmbedding(content, {
       model: this.config.embeddingModel ?? DEFAULT_EMBEDDING_MODEL,
-      taskType: this.config.defaultTaskType ?? 'RETRIEVAL_DOCUMENT',
-      gcpProjectId: this.config.gcpProjectId,
-      gcpLocation: this.config.gcpLocation,
+      ollamaBaseUrl: this.config.ollamaBaseUrl,
     })
 
     const embeddingLiteral = `[${embedding.join(',')}]`
@@ -67,16 +65,14 @@ export class VectorStore {
   }
 
   /**
-   * Embeds `content` via Vertex AI and persists it to the KnowledgeBase table.
+   * Embeds `content` via Ollama and persists it to the KnowledgeBase table.
    * @returns the new record's UUID
    */
   async upsert(content: string, metadata: Record<string, unknown> = {}): Promise<string> {
     const db = this.database()
     const embedding = await getEmbedding(content, {
       model: this.config.embeddingModel ?? DEFAULT_EMBEDDING_MODEL,
-      taskType: this.config.defaultTaskType ?? 'RETRIEVAL_DOCUMENT',
-      gcpProjectId: this.config.gcpProjectId,
-      gcpLocation: this.config.gcpLocation,
+      ollamaBaseUrl: this.config.ollamaBaseUrl,
     })
 
     const id = crypto.randomUUID()
@@ -107,9 +103,7 @@ export class VectorStore {
     const db = this.database()
     const queryEmbedding = await getEmbedding(userQuery, {
       model: this.config.embeddingModel ?? DEFAULT_EMBEDDING_MODEL,
-      taskType: 'RETRIEVAL_QUERY',
-      gcpProjectId: this.config.gcpProjectId,
-      gcpLocation: this.config.gcpLocation,
+      ollamaBaseUrl: this.config.ollamaBaseUrl,
     })
 
     const embeddingLiteral = `[${queryEmbedding.join(',')}]`

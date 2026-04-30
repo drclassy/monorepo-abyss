@@ -1,6 +1,6 @@
 # PROGRESS.md — The Abyss (Monorepo Root)
 <!-- Agent MUST update at every session end or completed JET phase. -->
-<!-- Last updated: 2026-04-28 -->
+<!-- Last updated: 2026-04-30 -->
 
 ---
 
@@ -8,48 +8,44 @@
 
 |Field|Value|
 |-------|-------|
-| **Last updated** | 2026-04-28 |
-| **Active branch** | `abyss-core` → `origin` (Avvicenna GitHub, PRIVATE) |
+| **Last updated** | 2026-04-30 |
+| **Active branch** | `master` |
 | **Active JET phase** | GO granted — Chief authorized all classes (A/B/C) |
-| **Next major initiative** | Frame the new SYMPHONY diagnosis engine, then verify readiness and re-wire Dashboard followed by ASSIST |
-| **Recent tooling** | Cursor IDE audit executed locally (see `.agent/sessions/2026-04-28.md`): Claude Code permission posture tightened, wrapper removed, overlapping extensions trimmed |
+| **Next major initiative** | Consumer Trial Readiness: Dashboard/ASSIST readiness, shadow telemetry, and limited trial gating |
+| **Recent tooling** | Cursor IDE audit executed locally (see `.agent/sessions/2026-04-28.md`): Claude Code permission posture tightened, wrapper removed, overlapping extensions trimmed; 2026-04-30 added always-on Chief directive bridge for Cursor rule flow and reclassified the root `docs/` surface into active vs archive buckets |
 
 ---
 
 ## ✅ Done (cumulative)
 
-### Recent completed foundation work
-- [x] **Quality Expansion:** Added PABI (General Surgery), ESC 2024 (Cardiology Gold Standard), and SPP (Anatomical Pathology).
-- [x] **Avvcenna Medical Library (AML) Scaffold:** Created root directory `V:\avcn-sentra\avvcenna-med-lib\` with 36 specialty folders.
-- [x] **Kemenkes Ingestion (Massive Batch 1-7):** ~58 PNPK documents (2017-2026) downloaded and categorized.
-- [x] **Integrity Check:** Audited 51 files; fixed corruptions using User-Agent rotation.
-- [x] **Professional Org Scouting (Batch 1):** Filled niche categories:
-    *   `tcv/`: PPK HBTKVI (Thoracic & Cardiovascular).
-    *   `psu/`: Pedoman Bedah Anak (Unair) + PNPK Hirschprung.
-    *   `ven/`: PPK PERDOSKI (Venereology).
-    *   `eme/`: PNPK Trauma 2017 (Emergency).
-    *   `rad/`: Modul Pengantar Radiologi (Uhamka).
-    *   `kkp/`: PPK Fasyankes Primer IDI 2017 (Mega-reference).
-- [x] **Sentra RAG Engine:** Scaffolded `packages/sentra-rag/`, 3,306 chunks ingested.
+### SYMPHONY core engine closed
+- [x] **Clinical reasoning foundation complete:** clinical facts, syndrome classification, diagnosis packs, native differential, reasoning arbiter, explainability, and clinical disposition are now closed inside `@the-abyss/symphony`.
+- [x] **Native runtime integration complete:** `assess.ts` now runs the AADI V2 native path, including shadow comparison and parity verification.
+- [x] **Interop boundary complete for current scope:** FHIR Bundle interop lane is formalized with `@the-abyss/fhir-engine` as bounded structural validation home, while CDS Hooks remains formalized in `@the-abyss/symphony`.
+- [x] **Platform adoption baseline complete:** orchestrator now calls `assessSymphonyInput()` as a thin-client route instead of mock reasoning.
+- [x] **Hardening patch complete:** PHI-safe referral DLQ, removal of silent `vertex-rag` fallback behavior, and tighter saga persistence typing landed in `882775a`.
+- [x] **Verification green on current close-out:** `@the-abyss/symphony` 373/373 PASS, `@the-abyss/orchestrator` 46/46 PASS + typecheck PASS, `@the-abyss/fhir-engine` 64/64 PASS, `@the-abyss/vertex-rag` 5/5 PASS.
+- [x] **Repository posture restored:** temporary worktree released, local `abyss-core` branch removed, and the repo returned to a single active `master` line; the engine close-out was anchored on `255c50f` and hardening on `882775a`.
 
 ---
 
 ## 🔄 In Progress (active sprint)
 
-### SYMPHONY first
-- [ ] Frame the new diagnosis engine inside `@the-abyss/symphony`.
-- [ ] Reconfirm release gates before any production import replacement.
-- [ ] Re-wire Dashboard to SYMPHONY only after the diagnosis-engine direction is locked.
-- [ ] Re-wire ASSIST only after Dashboard integration is stable.
+### Consumer Trial Readiness
+- [ ] Prepare **Dashboard readiness** against the now-closed SYMPHONY core surface.
+- [ ] Prepare **ASSIST readiness** after Dashboard readiness criteria are explicit and stable.
+- [ ] Define and wire **shadow telemetry** needed for rollout confidence, parity monitoring, and alert/disposition observation.
+- [ ] Shape a **limited trial** gate with explicit entry criteria, observability expectations, and rollback posture.
 
-### Supporting cleanup
-- [ ] Keep retrieval packages in a support-only role: acquisition, indexing, retrieval, grounding.
-- [ ] Continue consolidating deterministic references into `@the-abyss/clinical-references` without moving diagnosis authority out of SYMPHONY.
+### Boundary discipline
+- [ ] Keep retrieval packages in a support-only role: acquisition, indexing, retrieval, and grounding only.
+- [ ] Treat interoperability expansion as demand-driven follow-up, not as an excuse to reopen foundation work in SYMPHONY.
 
 ## 🚫 Blockers
 
-- Production import replacement remains blocked until parity and readiness gates are explicitly cleared.
-- Retrieval packages still need boundary discipline so they do not drift into parallel reasoning.
+- Broad consumer rollout remains blocked until Dashboard/ASSIST readiness and shadow telemetry gates are explicitly defined.
+- Limited trial should not start until operational monitoring, fallback handling, and rollback expectations are locked.
+- Retrieval packages still need boundary discipline so they do not drift into parallel reasoning or shadow-clinical authority.
 ## 2026-04-25 — `ai-core` retired from active workspace
 
 **Event:** Chief authorized full staged removal of legacy `packages/ai-core`, confirmed as baggage from a cancelled chatbot/AI experiment.
@@ -969,3 +965,53 @@ platform/orchestrator/src/sagas/saga.repository.ts
 ```
 
 ---
+## 2026-04-29 12:35 — `9270e83` — master
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(agent): record SYMPHONY core completion state
+- **Files changed**: 2 file(s)
+
+```
+.agent/DECISIONS.md
+.agent/sessions/2026-04-29.md
+```
+
+---
+
+## 2026-04-29 — Google exit historical cleanup + `vertex-rag` retirement
+
+**Event:** Active historical references to Google / Vertex / Gemini were cleaned
+from requested repo surfaces, and `packages/vertex-rag/` was removed fully from
+the repository tree.
+
+- **Prototype/spec cleanup:** `apps/prototype/ghost-protocols/` now uses
+  provider-neutral or local-first wording for hosting, LLM provider, storage,
+  and monitoring assumptions.
+- **Meta-doc cleanup:** stale Google / Vertex / Gemini wording removed from
+  active `README.md`, `AGENTS.md`, and `CHANGELOG.md` surfaces including
+  `apps/healthcare/sentra-assist/`, `apps/academic/clinical-simulator/`, root
+  `AGENTS.md`, and active AADI V2 specs/plans.
+- **Archive purge:** `packages/vertex-rag/` deleted fully from disk. Workspace
+  config and active docs/tooling were updated first so no live source path still
+  points to the package.
+- **Guide cleanup:** obsolete Google-specific repo guides
+  `docs/guides/github-actions-gcp-wif-checklist-2026-04-26.md`,
+  `docs/guides/project-id-audit-2026-04-26.json`, and legacy
+  `tooling/scripts/check-docs.ts` were removed.
+- **Verification status:** targeted grep confirms no active `vertex-rag` path
+  remains outside historical `.agent/` logs, `Test-Path packages/vertex-rag`
+  returns `False`, and `pnpm --filter @the-abyss/sentra-assist typecheck`
+  passes.
+- **Second-pass repo cleanup:** active product/docs surfaces were further
+  neutralized across `sentra-main`, `intelligenceboard`, `sentra-assist`,
+  `referralink`, `avvcenna-transformer`, root `README.md`, and
+  `ONBOARDING.md`, so the remaining hits are now limited to ADR/history,
+  spelling dictionaries, generic templates, or evaluation artifacts.
+- **Second-pass verification:** `pnpm --filter @the-abyss/sentra-assist
+  typecheck` passed, `pnpm --filter @the-abyss/sentra-main build` passed, and
+  targeted grep over active non-audit surfaces now only returns a generic GCP
+  example in a template, one cspell dictionary token, and one historical ADR
+  note.
+- **Final residue cleanup:** the remaining non-runtime residue was cleared from
+  the generic template example, the `cspell` dictionary, and the historical ADR
+  phrasing, leaving the targeted active scope grep-clean.
