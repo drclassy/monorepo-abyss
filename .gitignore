@@ -4,10 +4,14 @@
 # Owner: Dr. Ferdi Iskandar (Avvcenna+)
 # ========================================
 #
-# GOLDEN RULE: .agent/, CLAUDE.md, pnpm-lock.yaml, shared .cursor/ project
-#              config (rules, agents, hooks entrypoints), .cursorignore, and
-#              mcp.json.example are TRACKED BY DESIGN. See load-bearing negations
-#              at the end. Local-only: .mcp.json (secrets), .claude/.
+# GOLDEN RULE: core `.agent/` governance docs, `CLAUDE.md`, `pnpm-lock.yaml`,
+#              shared `.cursor/` project config (rules, agents, hooks
+#              entrypoints), `.cursorignore`, and `mcp.json.example` are
+#              TRACKED BY DESIGN. Operational agent logs, reports, workflow
+#              libraries, and local planning artifacts stay LOCAL ONLY. See the
+#              load-bearing negations at the end. Local-only: `.mcp.json`
+#              (secrets), `.claude/`, `.agent/sessions/`, `.agent/reports/`,
+#              `.agent/workflows/`, and `docs/superpowers/`.
 # ========================================
 
 # ---- SECRETS & ENV (NEVER COMMIT) ----
@@ -154,6 +158,18 @@ sync-safe.ps1
 flows/.langflow/
 .github/instructions/codacy.instructions.md
 .mcp.json
+docs/superpowers/
+
+# ---- LOCAL AGENT OPERATIONS (KEEP ON DISK, DO NOT PUSH) ----
+.agent/**
+.agent/sessions/
+.agent/reports/
+.agent/workflows/
+.agent/01_PANDUAN_PENGUMPULAN_BAHAN_SENTRA_CDSS_v1.md
+.agent/CURATION_TASKS.md
+.agent/MASTER_CONTEXT_2026-04-19.md
+.agent/MASTER_SITREP.md
+.agent/PROGRESS.archive.md
 
 # ---- POLYREPO SPLIT — apps/ MIGRATED TO SEPARATE REPOS ----
 # apps/ is excluded from abyss-core. Each app lives in its own repo.
@@ -163,9 +179,17 @@ apps/
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
 # Git evaluates .gitignore top-down; trailing negations override earlier rules.
-# KEPT: .agent/ (multi-agent coordination memory) + CLAUDE.md (Claude Code project instructions)
+# KEPT: core `.agent/` governance memory + `CLAUDE.md` (Claude Code project instructions)
 !.agent/
-!.agent/**
+!.agent/ARCHITECTURE.md
+!.agent/CONTEXT.md
+!.agent/DECISIONS.md
+!.agent/FEATURE.md
+!.agent/HANDOFF.md
+!.agent/LESSONS.md
+!.agent/PROGRESS.md
+!.agent/PROTOCOL.md
+!.agent/SESSION_STATE.md
 !pnpm-lock.yaml
 
 # KEPT: Cursor project rules, subagents, hooks — team parity (cursor.com/docs)

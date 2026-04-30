@@ -454,7 +454,7 @@ pnpm db:studio      # Open Prisma Studio
 # Initialize a new task session with HANDOFF.md
 pnpm abyss init-task "Implement FHIR validation pipeline"
 
-# Grant GO approval for a session
+# Grant GO approval for a local session record
 pnpm abyss go .agent/sessions/YYYY-MM-DD --by "Chief"
 
 # Sync a Langflow flow definition to the repository
@@ -566,7 +566,8 @@ pnpm abyss init-task "Implement FHIR validation pipeline"
 
 Execution only proceeds after a `GO` approval is recorded by an authorized
 principal. The `iskandar-gatekeeper` package enforces this requirement
-programmatically in CI.
+programmatically in CI. Session records under `.agent/sessions/` are local
+working notes and are not part of the pushed repo surface.
 
 ```bash
 pnpm abyss go .agent/sessions/YYYY-MM-DD --by "Chief"
@@ -587,7 +588,7 @@ feat: implement FHIR R4 resource validation
 
 Agent: coder-agent
 Phase: 3
-Handoff: .agent/sessions/YYYY-MM-DD/HANDOFF.md
+Handoff: .agent/HANDOFF.md
 ```
 
 ---
@@ -623,7 +624,7 @@ workflow.
 
 ### For Artificial Intelligence Agents
 
-1. Read [.agent/AGENTS.md](.agent/AGENTS.md) — understand behavioral constraints
+1. Read [AGENTS.md](AGENTS.md) — understand behavioral constraints
 2. Create a task session via `pnpm abyss init-task`
 3. Wait for GO approval before writing any code
 4. Implement with full commit traceability
@@ -644,7 +645,7 @@ workflow.
 | ----------------------------- | ---------------------------------------- |
 | Documentation index           | [docs/README.md](docs/README.md)         |
 | Global agent steering         | [AGENTS.md](AGENTS.md)                   |
-| Session Logs                  | [.agent/sessions/](.agent/sessions/)     |
+| Local session notes           | `.agent/sessions/` (local-only, not versioned) |
 | Document Templates            | [docs/templates/](docs/templates/)       |
 | Architecture Decision Records | [docs/adr/](docs/adr/)                   |
 | CLI Documentation             | [tooling/abyss-cli/](tooling/abyss-cli/) |

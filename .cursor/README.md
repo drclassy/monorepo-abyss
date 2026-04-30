@@ -6,14 +6,14 @@
 |----------|------|
 | `.cursor/index.mdc` | Compact **always-on** layer: Sentra identity, precedence vs [`AGENTS.md`](../AGENTS.md), pointer table to scoped rules. |
 | `.cursor/rules/00-constitution.mdc` | **Always-on** SSOT reminder: JET Protocol, GUARD 1–3, NestJS enforcement. |
-| `.cursor/rules/01-guard-context-init.mdc` | **Always-on** enforcement for the two most skipped steps: read `.agent/` before act, log session after act. |
+| `.cursor/rules/01-guard-context-init.mdc` | **Always-on** enforcement for the two most skipped steps: read `.agent/` before act, log local session notes after act. |
 | `.cursor/rules/02-notebooklm-intelligence.mdc` | NotebookLM integration protocol (globs-based). |
 | `.cursor/rules/03-agent-attitude.mdc` | Tone, rigor, and collaboration norms for agent output. |
 | `.cursor/rules/04-state-machine-discipline.mdc` | State-machine discipline for workflows and handoffs. |
 | `.cursor/rules/05-chief-directive-mode.mdc` | Chief-facing directive mode: Bahasa Indonesia, latest official notes first, concise plan, wait for `GO` before execution. |
 | `.cursor/rules/06-handoff-master.mdc` | `.agent/` handoff and session-close discipline. |
 | `.cursor/rules/07-monorepo-guard.mdc` | Turborepo / pnpm boundaries and package hygiene. |
-| `.cursor/rules/08-session-summarizer.mdc` | Session summary and PROGRESS logging expectations. |
+| `.cursor/rules/08-session-summarizer.mdc` | Local session summary and PROGRESS logging expectations. |
 | `.cursor/rules/10-backend/10-api-routes.mdc` | API / `route.ts` handlers: contract-first, validation, errors, no PHI. |
 | `.cursor/rules/10-backend/20-database.mdc` | Prisma / `packages/database`, migrations, generate/migrate commands. |
 | `.cursor/rules/10-backend/30-nestjs-cqrs-advanced.mdc` | NestJS CQRS and advanced backend patterns. |

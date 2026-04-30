@@ -1,8 +1,0 @@
-library/
-packages/ai-core/src/hybrid-brain.ts
-packages/ai-core/src/knowledge/
-packages/ai-core/src/ocr/
-packages/sentra-rag/
-packages/vector-store/
-packages/vertex-rag/
-tooling/scripts/rag/

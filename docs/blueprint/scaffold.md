@@ -73,7 +73,7 @@ packages:
 # 🌐 The Abyss: Global Agent Steering
 
 Semua Agen AI wajib mematuhi **Avvcenna+ Workflow**:
-1. **HANDOFF FIRST:** Dilarang coding tanpa `HANDOFF.md` di folder sesi.
+1. **HANDOFF FIRST:** Dilarang coding tanpa `HANDOFF.md` untuk sesi kerja aktif.
 2. **GO-GATE:** Eksekusi hanya setelah ada string `✅ GO` dari Chief.
 3. **TRACEABILITY:** Commit wajib menggunakan trailer `Agent:`, `Phase:`, `Handoff:`.
 4. **MODULAR MONOLITH:** Patuhi batas domain; gunakan `@the-abyss/ui` untuk semua frontend.
@@ -109,7 +109,7 @@ Semua Agen AI wajib mematuhi **Avvcenna+ Workflow**:
 import fs from 'fs';
 import path from 'path';
 
-// Script untuk mengecek file HANDOFF terbaru di .agent/sessions
+// Script untuk mengecek catatan sesi lokal terbaru di .agent/sessions
 const sessionsPath = path.join(__dirname, '../../.agent/sessions');
 const files = fs.readdirSync(sessionsPath).filter(f => f.endsWith('.md'));
 

@@ -55,7 +55,7 @@
 ├── │
 ├── ├── docs/ # 📚 KNOWLEDGE BASE & AUDIT TRAIL
 ├── │ ├── adr/ # Architecture Decision Records
-├── │ └── .agent/ # Session Logs: Riwayat interaksi Agen AI & Manusia
+├── │ └── .agent/ # Governance state and optional local agent session notes
 ├── │
 ├── ├── turbo.json # Konfigurasi Pipelines & Remote Caching
 ├── ├── pnpm-workspace.yaml # Definisi Workspace pnpm
@@ -141,4 +141,3 @@ the-abyss/
 │ └── AGENTS.md # Aturan AI yang lebih santai untuk eksperimen
 
 ```
-

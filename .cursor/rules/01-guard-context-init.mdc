@@ -44,7 +44,7 @@ After reading all five, emit exactly this confirmation block:
 
 ## PART 2 — MANDATORY SESSION LOGGING (after any code/config change)
 
-Append to today's session log (create if missing):
+Append to today's local session log (create if missing):
 ```
 .agent/sessions/YYYY-MM-DD.md
 ```

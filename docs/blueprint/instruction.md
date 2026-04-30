@@ -183,7 +183,7 @@ Buat file `.agents/AGENTS.md` di root sebagai instruksi tertinggi bagi semua age
 Anda adalah bagian dari **Sentra AI Agent Swarm**. Semua tindakan Anda harus mematuhi protokol berikut:
 
 ### 1. Protokol Plan-Before-Change (HANDOFF.md)
-- **DILARANG** menulis kode sebelum membuat file `HANDOFF.md` di folder sesi terkait.
+- **DILARANG** menulis kode sebelum membuat file `HANDOFF.md` untuk sesi kerja terkait.
 - File harus berisi: Diagnosis, Arsitektur yang diusulkan, dan Rencana Verifikasi.
 - Eksekusi hanya boleh dimulai setelah ada string `GO` dari otoritas manusia (Chief).
 
@@ -192,7 +192,8 @@ Anda adalah bagian dari **Sentra AI Agent Swarm**. Semua tindakan Anda harus mem
 - Aturan lokal mengesampingkan aturan global jika terjadi konflik.
 
 ### 3. Traceability (Audit Trail)
-- Setiap sesi pengerjaan harus dicatat di `.agent/sessions/`.
+- Setiap sesi pengerjaan boleh dicatat di `.agent/sessions/` sebagai catatan
+  lokal.
 - Gunakan trailer commit: `Agent: [Nama]`, `Phase: [Fase]`, `Handoff: [Link/Path]`.
 
 ### 4. Standar Kode
@@ -236,7 +237,8 @@ Buat package di `packages/iskandar-gatekeeper/index.ts` untuk memvalidasi aturan
 
 1. Inisialisasi package: `pnpm init` di dalam folder tersebut.
 2. Buat script sederhana (Node.js/TypeScript) yang:
-    - Memeriksa apakah ada file `.md` baru di folder `.agent/sessions/`.
+    - Memeriksa apakah ada catatan sesi lokal terbaru di folder
+      `.agent/sessions/`.
     - Memastikan file tersebut mengandung string `✅ GO` atau `GO` di bagian Approval.
     - Melempar `process.exit(1)` jika tidak valid (untuk menggagalkan build CI).
 
@@ -257,7 +259,10 @@ Buat file `apps/healthcare/AGENTS.md` untuk menunjukkan cara kerja hirarki:
 
 Langkah 5: Setup Session Logging
 
-Buat file `.gitkeep` di `.agent/sessions/` agar folder tersebut tetap terlacak di Git. Instruksikan agen untuk selalu membuat file Markdown baru di sini setiap kali memulai tugas baru (misal: `SESSION-2026-03-30-INIT.md`).
+Gunakan `.agent/sessions/` sebagai folder catatan lokal bila diperlukan.
+Folder ini tidak perlu dilacak di Git. Instruksikan agen untuk membuat file
+Markdown baru di sini hanya jika sesi tersebut membutuhkan catatan operasional
+tambahan.
 
 ---
 
@@ -307,7 +312,7 @@ Pusat data untuk seluruh monorepo:
 2. **Schema Definition:** Buat `schema.prisma` awal yang mencakup:
     - `User` & `Organization` (Multi-tenant).
     - `AuditLog` (Untuk mencatat aksi Agen AI & Manusia).
-    - `AiSession` (Menghubungkan ke `.agent/sessions`).
+    - `AiSession` (Menghubungkan ke metadata sesi, bukan ke file Git-tracked).
 3. **Client Export:** Pastikan paket ini mengekspor `PrismaClient` agar bisa di-import oleh `apps/healthcare`, dll.
 
 ####
@@ -431,7 +436,9 @@ Agar kita bisa menguji flow baru tanpa merusak produksi:
 
 Langkah 5: Integration dengan Agent Sessions Logs
 
-1. Pastikan setiap kali `apps/orchestrator` menjalankan flow, ID sesi tersebut dicatat dan dihubungkan ke folder `.agent/sessions/`.
+1. Pastikan setiap kali `apps/orchestrator` menjalankan flow, ID sesi tersebut
+   dicatat dan dapat dikaitkan dengan catatan lokal `.agent/sessions/` bila
+   tersedia.
 2. Simpan metadata seperti: _latency, token usage, dan model confidence score_.
 
 ####
@@ -488,7 +495,8 @@ Ini adalah "pusat kendali" untuk memantau aktivitas monorepo dan Agen AI:
 
 1. **Scaffold:** Inisialisasi **Next.js** (App Router) di folder ini.
 2. **Visualizer:** Buat dashboard untuk:
-    - Menampilkan daftar sesi dari `.agent/sessions/`.
+    - Menampilkan daftar sesi dari metadata aplikasi atau catatan lokal
+      `.agent/sessions/` bila tersedia.
     - Menampilkan statistik eksekusi AI dari `packages/database` (Audit Log).
     - Visualisasi grafik dependensi monorepo (Integrasikan dengan output `turbo graph`).
 3. **Internal UI:** Gunakan secara eksklusif komponen dari `packages/ui` (Shadcn UI).
@@ -575,9 +583,11 @@ Perintah ini digunakan setiap kali ada tugas baru dimulai:
 
 1. **Input:** Judul tugas (misal: `abyss init-task "Fitur Chat Medis"`).
 2. **Logic:**
-    - Buat folder sesi baru di `.agent/sessions/SESSION-[TIMESTAMP]-[JUDUL]/`.
-    - Salin template `docs/templates/HANDOFF.md` ke folder tersebut.
-    - Isi metadata awal secara otomatis (Nama Agent, Tanggal, Path Sesi).
+    - Buat atau perbarui `HANDOFF.md` utama untuk tugas yang sedang berjalan.
+    - Buat catatan lokal di `.agent/sessions/` hanya jika sesi tersebut
+      membutuhkan jejak operasional tambahan.
+    - Isi metadata awal secara otomatis (nama agent, tanggal, dan konteks
+      tugas).
 3. **Output:** Path ke file `HANDOFF.md` yang baru dibuat agar agen bisa langsung mengisinya.
 
 ####
@@ -638,7 +648,9 @@ Langkah 7: Dokumentasi CLI
 
 ### Cara Verifikasi Fase 6:
 
-- **Test Command:** Jalankan `pnpm abyss init-task "Test Run"` dan pastikan folder sesi serta file handoff terbentuk dengan benar.
+- **Test Command:** Jalankan `pnpm abyss init-task "Test Run"` dan pastikan
+  `HANDOFF.md` serta metadata tugas terbentuk dengan benar. Catatan
+  `.agent/sessions/` bersifat opsional dan lokal.
 - **Dry Run Sync:** Coba sinkronisasi file JSON dummy dan pastikan file tersebut pindah ke folder `flows/definitions/` dengan penamaan yang rapi.
 - **Check Scaffolding:** Jalankan `pnpm abyss create app test-app` dan periksa apakah folder `apps/test-app` sudah berisi file `package.json` yang benar dan `AGENTS.md`.
 
@@ -721,8 +733,12 @@ Pipeline untuk pengiriman ke produksi:
 
 Langkah 6: Proof-of-Verification Audit
 
-1. Tambahkan step akhir di CI untuk mengunggah laporan hasil test (Jest/Playwright) dan security scan (Snyk/OWASP) ke folder `.agent/sessions/`.
-2. Ini memastikan bahwa setiap deployment memiliki bukti verifikasi yang bisa diperiksa oleh manusia di dashboard **Agent Sessions**.
+1. Tambahkan step akhir di CI untuk menyimpan laporan hasil test
+   (Jest/Playwright) dan security scan (Snyk/OWASP) ke artefak CI atau storage
+   audit yang sesuai, bukan ke `.agent/sessions/`.
+2. Ini memastikan bahwa setiap deployment memiliki bukti verifikasi yang bisa
+   diperiksa oleh manusia tanpa menjadikan catatan lokal agent sebagai bagian
+   dari surface Git yang dipush.
 
 ---
 

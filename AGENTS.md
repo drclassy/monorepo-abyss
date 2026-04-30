@@ -550,13 +550,15 @@ pnpm --filter <healthcare-app> security:semgrep
 
 ---
 
-## §14 — Session Log Protocol (Dual Write)
+## §14 — Session Log Protocol
 
-Every session that modifies code must write to both systems:
+Every session that modifies code must maintain:
 
-1. `.agent/sessions/YYYY-MM-DD.md` — agent memory and audit trail
+1. tracked governance state in `.agent/HANDOFF.md` and `.agent/PROGRESS.md`
+2. local operational notes in `.agent/sessions/YYYY-MM-DD.md` when needed
 
-Log to `.agent/sessions/` at J8 and J9. No external audit system required.
+`.agent/sessions/` is a local working surface and must not be pushed. Keep the
+core repo-facing state in the tracked governance files above.
 
 ---
 

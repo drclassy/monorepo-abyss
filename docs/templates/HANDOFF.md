@@ -139,7 +139,7 @@
 
 **Handoff created:** [ISO timestamp]  
 **Last updated:** [ISO timestamp]  
-**Session path:** `.agent/sessions/SESSION-[DATE]-[SLUG]/`
+**Local session notes:** `.agent/sessions/YYYY-MM-DD.md` (local-only, not versioned)
 
 ---
 

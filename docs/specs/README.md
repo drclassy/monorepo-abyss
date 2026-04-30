@@ -16,4 +16,5 @@ surface.
 
 - Use sentence case for page titles and headings.
 - Add lightweight front matter so each spec is identifiable by type and status.
-- Keep canonical specs here; put active execution plans in `docs/superpowers/`.
+- Keep canonical specs here. Treat agent execution plans as local working
+  material rather than part of the pushed documentation surface by default.

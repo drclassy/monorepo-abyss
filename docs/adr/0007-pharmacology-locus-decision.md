@@ -3,7 +3,9 @@
 - Status: Accepted
 - Date: 2026-04-22
 - Deciders: Chief, Codex/Dexton
-- Related: `docs/superpowers/plans/2026-04-20-symphony-canonicalization.md`, `.agent/reports/2026-04-20-symphony-coverage-audit.md`
+- Related local working artifacts (not versioned by default): Symphony
+  canonicalization planning notes and coverage audit notes used during the
+  decision process
 
 ## Context
 

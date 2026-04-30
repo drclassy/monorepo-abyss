@@ -11,7 +11,6 @@ historical material.
 | `docs/blueprint/` | Bootstrap and repo-pattern guidance for new workstreams. |
 | `docs/guides/` | Operator-facing guides and onboarding documents that are still relevant. Start at `docs/guides/README.md`. |
 | `docs/specs/` | Canonical product and integration specs that remain in active use. Start at `docs/specs/README.md`. |
-| `docs/superpowers/` | Execution specs and implementation plans tied to current architecture work. |
 | `docs/templates/` | Reusable templates for new guides, specs, and handoff documents. |
 
 ## Archive
@@ -36,9 +35,13 @@ See `docs/archive/README.md` for the archive map.
 - New architectural decisions: `docs/adr/`
 - New operational or onboarding guides: `docs/guides/`
 - New canonical specifications: `docs/specs/`
-- New implementation plans that belong to the active AADI/Symphony workstream:
-  `docs/superpowers/`
 - New reusable templates: `docs/templates/`
 
 If a document is only useful as historical evidence after a task closes, place
 it in `docs/archive/` instead of the active root.
+
+## Local working docs
+
+Agent-specific execution notes and temporary planning bundles may live under
+`docs/superpowers/` locally, but they are not part of the pushed documentation
+surface by default.
