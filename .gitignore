@@ -210,3 +210,7 @@ gha-creds-*.json
 
 # Secrets Vault
 .secrets/
+
+# ---- ROGUE AI & IDE ARTIFACTS ----
+.obsidian/
+conductor/
