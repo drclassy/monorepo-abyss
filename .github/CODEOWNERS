@@ -17,8 +17,8 @@ pnpm-workspace.yaml @drclassy
 
 # Healthcare Domain (Strict Compliance)
 apps/healthcare/ @drclassy
-packages/fhir-engine/ @drclassy
-packages/database/ @drclassy
+packages/sentra/sentra-sandi/ @drclassy
+packages/platform/database/ @drclassy
 
 # Academic Domain
 apps/academic/ @drclassy
@@ -31,15 +31,15 @@ tooling/ @drclassy
 apps/incubator/ @drclassy
 
 # Orchestrator & AI Flows
-apps/orchestrator/ @drclassy
+platform/orchestrator/ @drclassy
 flows/ @drclassy
-packages/langflow-client/ @drclassy
+packages/platform/langflow-client/ @drclassy
 
 # Shared Packages
-packages/ui/ @drclassy
-packages/shared-types/ @drclassy
-packages/vector-store/ @drclassy
-packages/iskandar-gatekeeper/ @drclassy
+packages/shared/sentra-ui/ @drclassy
+packages/shared/shared-types/ @drclassy
+packages/sentra/sentra-cermin/ @drclassy
+packages/sentra/sentra-bentara/ @drclassy
 
 # Infrastructure
 infrastructure/ @drclassy

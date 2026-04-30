@@ -1,5 +1,5 @@
 {
-  "extends": "../../packages/config-typescript/tsconfig.json",
+  "extends": "../../packages/tooling/config-typescript/tsconfig.json",
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
