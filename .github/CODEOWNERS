@@ -2,48 +2,48 @@
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Global Owners
-* @Avvcenna+
+* @classy
 
 # AI Steering & Governance
-.agents/ @Avvcenna+
-.agents/AGENTS.md @Avvcenna+
-.agents/MCP-CONFIG.json @Avvcenna+
+.agents/ @classy
+.agents/AGENTS.md @classy
+.agents/MCP-CONFIG.json @classy
 
 # CI/CD & Automation
-.github/ @Avvcenna+
-.github/workflows/ @Avvcenna+
-turbo.json @Avvcenna+
-pnpm-workspace.yaml @Avvcenna+
+.github/ @classy
+.github/workflows/ @classy
+turbo.json @classy
+pnpm-workspace.yaml @classy
 
 # Healthcare Domain (Strict Compliance)
-apps/healthcare/ @Avvcenna+
-packages/fhir-engine/ @Avvcenna+
-packages/database/ @Avvcenna+
+apps/healthcare/ @classy
+packages/fhir-engine/ @classy
+packages/database/ @classy
 
 # Academic Domain
-apps/academic/ @Avvcenna+
+apps/academic/ @classy
 
 # Internal Tools
-apps/internal/ @Avvcenna+
-tooling/ @Avvcenna+
+apps/internal/ @classy
+tooling/ @classy
 
 # Incubator (R&D)
-apps/incubator/ @Avvcenna+
+apps/incubator/ @classy
 
 # Orchestrator & AI Flows
-apps/orchestrator/ @Avvcenna+
-flows/ @Avvcenna+
-packages/langflow-client/ @Avvcenna+
+apps/orchestrator/ @classy
+flows/ @classy
+packages/langflow-client/ @classy
 
 # Shared Packages
-packages/ui/ @Avvcenna+
-packages/shared-types/ @Avvcenna+
-packages/vector-store/ @Avvcenna+
-packages/iskandar-gatekeeper/ @Avvcenna+
+packages/ui/ @classy
+packages/shared-types/ @classy
+packages/vector-store/ @classy
+packages/iskandar-gatekeeper/ @classy
 
 # Infrastructure
-infrastructure/ @Avvcenna+
-docs/ @Avvcenna+
+infrastructure/ @classy
+docs/ @classy
 
 # Documentation
-*.md @Avvcenna+
+*.md @classy
