@@ -1015,3 +1015,33 @@ the repository tree.
 - **Final residue cleanup:** the remaining non-runtime residue was cleared from
   the generic template example, the `cspell` dictionary, and the historical ADR
   phrasing, leaving the targeted active scope grep-clean.
+## 2026-04-30 16:53 — `211fc48` — master
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(repo): sync GCP exit, doc normalization, and repo cleanup
+- **Files changed**: 134 file(s)
+
+```
+.agent/CONTEXT.md
+.agent/DECISIONS.md
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+.agent/sessions/2026-04-29.md
+.cursor/README.md
+.cursor/index.mdc
+.cursor/rules/04-state-machine-discipline.mdc
+.env.example
+AGENTS.md
+ONBOARDING.md
+README.md
+docs/GEMINI.md
+docs/cursor/.vscodeignore
+docs/cursor/cursor-handbook-1.0.0.vsix
+docs/cursor/docs/superpowers/plans/2026-04-11-cursor-handbook-vsix.md
+docs/cursor/docs/superpowers/specs/2026-04-11-cursor-handbook-design.md
+docs/cursor/media/handbook.html
+docs/cursor/media/icon.svg
+docs/cursor/package.json
+```
+
+---

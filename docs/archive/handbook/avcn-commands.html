@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVCN — Superpowers Ref</title>
+<style>
+@font-face{font-family:'Geist';src:url('./fonts/GeistVF.woff2')format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Geist Mono';src:url('./fonts/GeistMonoVF.woff2')format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Geist';src:url('./fonts/Geist-Regular.woff2')format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Geist';src:url('./fonts/Geist-Medium.woff2')format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Geist';src:url('./fonts/Geist-Bold.woff2')format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'Geist Mono';src:url('./fonts/GeistMono-Regular.woff2')format('woff2');font-weight:400;font-display:swap}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+html { background: #1a1a1a }
+
+body {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 16px 20px 32px;
+  -webkit-font-smoothing: antialiased;
+  max-width: 100%;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #1f1f1f;
+}
+.logo { font-size: 18px; font-weight: 700; letter-spacing: -.04em; color: #fff }
+.logo em { color: #f5a623; font-style: normal }
+.tagline { font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace; font-size: 11px; color: #444; letter-spacing: .05em }
+.ver { margin-left: auto; font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace; font-size: 11px; color: #333 }
+
+.label {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #333;
+  margin: 20px 0 8px;
+}
+
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  padding: 8px 12px;
+  background: #0d0d0d;
+  border: 1px solid #1f1f1f;
+  border-left: 3px solid #f5a623;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.flow + .flow { border-left-color: #e04040 }
+.fc { font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: #f5a623; white-space: nowrap }
+.flow + .flow .fc { color: #e04040 }
+.fa { color: #222; font-size: 12px }
+.fn { font-size: 11px; color: #444 }
+
+table { width: 100%; border-collapse: collapse; margin-top: 4px }
+
+th {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #333;
+  text-align: left;
+  padding: 0 8px 8px;
+  border-bottom: 1px solid #1a1a1a;
+}
+th:first-child { padding-left: 0 }
+
+td { padding: 8px 8px; border-bottom: 1px solid #111; vertical-align: middle }
+td:first-child { padding-left: 0 }
+tr:last-child td { border-bottom: none }
+tr:hover td { background: #0a0a0a }
+
+.cmd {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f5a623;
+  white-space: nowrap;
+  letter-spacing: -.01em;
+}
+
+.sk { font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace; font-size: 11px; color: #555 }
+
+.tag {
+  display: inline-block;
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: 2px 4px;
+  border-radius: 2px;
+  margin-right: 4px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+.t-plan { background: #1a2744; color: #4d8ef7 }
+.t-code { background: #0f2b1a; color: #2ed47a }
+.t-git  { background: #1e1030; color: #9b6ef7 }
+.t-rev  { background: #0b2422; color: #1dc9aa }
+.t-dbg  { background: #2a0f0f; color: #f04040 }
+.t-meta { background: #1a1a1a; color: #555 }
+
+.desc { font-size: 12px; color: #999; line-height: 1.55 }
+.desc .hi   { color: #fff; font-weight: 500 }
+.desc .warn { color: #f04040; font-weight: 600 }
+.desc .step { color: #4d8ef7; font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace; font-size: 11px }
+.desc .arr  { color: #333; margin: 0 2px }
+
+footer {
+  margin-top: 24px;
+  padding-top: 10px;
+  border-top: 1px solid #111;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 11px;
+  color: #222;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">AVCN<em>.</em></div>
+  <div class="tagline">SUPERPOWERS × CLAUDE CODE</div>
+  <div class="ver">Opus 4.7 · Apr 2026</div>
+</header>
+
+<div class="label">Flow Harian</div>
+
+<div class="flow">
+  <span class="fc">/avcn-worktree</span><span class="fa">→</span>
+  <span class="fc">/avcn-brainstorm</span><span class="fa">→</span>
+  <span class="fc">/avcn-write-plan</span><span class="fa">→</span>
+  <span class="fn">Chief: GO</span><span class="fa">→</span>
+  <span class="fc">/avcn-execute-plan</span><span class="fa">→</span>
+  <span class="fc">/avcn-request-review</span><span class="fa">→</span>
+  <span class="fc">/avcn-verify</span><span class="fa">→</span>
+  <span class="fc">/avcn-finish</span>
+</div>
+
+<div class="flow">
+  <span class="fn" style="color:#e04040;font-weight:600">BUG</span><span class="fa">→</span>
+  <span class="fc">/avcn-debug</span><span class="fa">→</span>
+  <span class="fc">/avcn-tdd</span><span class="fa">→</span>
+  <span class="fc">/avcn-execute-plan</span><span class="fa">→</span>
+  <span class="fc">/avcn-verify</span>
+</div>
+
+<div class="label" style="margin-top:28px">Slash Commands</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:220px">Command</th>
+      <th style="width:210px">Skill</th>
+      <th>Kapan Pakai</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="cmd">/avcn-brainstorm</span></td>
+      <td><span class="tag t-plan">PLAN</span><span class="sk">brainstorming</span></td>
+      <td class="desc">Sebelum nulis kode apapun — eksplorasi, ajukan 2–3 opsi ke Chief. <span class="warn">Hard gate:</span> dilarang langsung kode.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-write-plan</span></td>
+      <td><span class="tag t-plan">PLAN</span><span class="sk">writing-plans</span></td>
+      <td class="desc">Brainstorm disetujui — buat <span class="hi">HANDOFF.md</span> step-by-step dengan rollback plan.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-execute-plan</span></td>
+      <td><span class="tag t-plan">PLAN</span><span class="sk">executing-plans</span></td>
+      <td class="desc">Setelah Chief ketik <span class="hi">GO</span> — jalankan plan per task, review tiap batch.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-tdd</span></td>
+      <td><span class="tag t-code">CODE</span><span class="sk">test-driven-development</span></td>
+      <td class="desc">Tulis <span class="hi">failing test dulu</span>, baru implementasi. Iron law: merah dulu, baru hijau.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-subagent</span></td>
+      <td><span class="tag t-code">CODE</span><span class="sk">subagent-driven-development</span></td>
+      <td class="desc">Task besar — dispatch subagent per step, review setiap task selesai.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-parallel</span></td>
+      <td><span class="tag t-code">CODE</span><span class="sk">dispatching-parallel-agents</span></td>
+      <td class="desc">Ada 3+ bug/failure <span class="hi">independent</span> sekaligus — selesaikan semua bersamaan.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-worktree</span></td>
+      <td><span class="tag t-git">GIT</span><span class="sk">using-git-worktrees</span></td>
+      <td class="desc">Sebelum mulai feature baru — isolated workspace, cegah branch saling ganggu.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-finish</span></td>
+      <td><span class="tag t-git">GIT</span><span class="sk">finishing-a-development-branch</span></td>
+      <td class="desc">Tests hijau, done — pilih: <span class="hi">merge</span> / <span class="hi">PR</span> / simpan / discard. Worktree cleanup otomatis.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-request-review</span></td>
+      <td><span class="tag t-rev">REVIEW</span><span class="sk">requesting-code-review</span></td>
+      <td class="desc">Setelah tiap task di subagent workflow — dispatch code-reviewer, catch issues lebih awal.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-receive-review</span></td>
+      <td><span class="tag t-rev">REVIEW</span><span class="sk">receiving-code-review</span></td>
+      <td class="desc">Dapat feedback reviewer — <span class="hi">evaluasi dulu</span> baru implement. Boleh push back kalau salah.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-debug</span></td>
+      <td><span class="tag t-dbg">DEBUG</span><span class="sk">systematic-debugging</span></td>
+      <td class="desc"><span class="warn">WAJIB</span> sebelum propose fix. 4 fase: <span class="step">Root Cause</span><span class="arr">→</span><span class="step">Pattern</span><span class="arr">→</span><span class="step">Hipotesis</span><span class="arr">→</span><span class="step">Fix</span></td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-verify</span></td>
+      <td><span class="tag t-dbg">DEBUG</span><span class="sk">verification-before-completion</span></td>
+      <td class="desc"><span class="warn">WAJIB</span> sebelum bilang selesai — run command, lihat output, <span class="hi">baru</span> claim done.</td>
+    </tr>
+    <tr>
+      <td><span class="cmd">/avcn-write-skill</span></td>
+      <td><span class="tag t-meta">META</span><span class="sk">writing-skills</span></td>
+      <td class="desc">Buat skill baru yang bisa di-reuse — TDD approach, test dulu baru tulis skill.</td>
+    </tr>
+  </tbody>
+</table>
+
+<footer>
+  <span>docs/claude-handbook/avcn-commands.html</span>
+  <span>/clear dulu di Claude Code untuk refresh commands</span>
+</footer>
+
+</body>
+</html>

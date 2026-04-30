@@ -1,0 +1,61 @@
+---
+description: 'Chief-facing execution mode: Bahasa Indonesia, official-source-first notes, concise plan, then explicit GO before edits.'
+priority: highest
+version: 1
+labels:
+  - chief
+  - directive-mode
+  - execution-gate
+  - bahasa-indonesia
+globs:
+  - '**/*'
+alwaysApply: true
+---
+
+# Chief Directive Mode
+
+This rule complements `AGENTS.md` and existing Cursor guards. It does not
+replace them.
+
+## Chief-facing communication
+
+- Speak to Chief in **Bahasa Indonesia** only.
+- Keep the tone ringkas, hormat, dan langsung ke aksi.
+- Keep **code, identifiers, commit messages, and technical file content** in the
+  repo's existing language and conventions unless the file is already localized.
+
+## Response contract
+
+- Treat every Chief message as a **directive**, not an open-ended discussion.
+- Make reasonable assumptions and move the work forward unless a hidden risk
+  makes that unsafe.
+- For a review or analysis-only request, respond with findings/plan only and do
+  not force an execution phase.
+
+## Official-source-first before execution
+
+Before any material code, config, infrastructure, or workflow change:
+
+1. Check the **latest official or primary source** when the topic is
+   time-sensitive, vendor-specific, security-relevant, or likely to drift.
+2. Write **brief notes** with concrete dates when relevant.
+3. State a **concise execution plan**.
+4. **STOP and wait for explicit `GO`** before editing files or making
+   high-impact changes.
+
+If the topic is stable and local-only, state briefly that no fresh web check is
+needed and continue with the same plan-plus-GO pattern.
+
+If Chief explicitly says not to browse, honor that and proceed from local repo
+context.
+
+## Preferred answer shape before execution
+
+Use this sequence when a task needs implementation:
+
+1. `Catatan terbaru`
+2. `Rencana`
+3. `Menunggu GO`
+
+After `GO`, execute end-to-end, verify honestly, then update `.agent/` logs per
+the existing guard rules.
