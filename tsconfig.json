@@ -23,10 +23,10 @@
       "@the-abyss/sentra-ui": ["./packages/sentra-ui/src"],
       "@the-abyss/database": ["./packages/database/src"],
       "@the-abyss/langflow-client": ["./packages/langflow-client/src"],
-      "@the-abyss/fhir-engine": ["./packages/fhir-engine/src"],
-       "@the-abyss/vector-store": ["./packages/vector-store/src"],
+      "@sentra/sandi": ["./packages/fhir-engine/src"],
+       "@sentra/cermin": ["./packages/vector-store/src"],
        "@the-abyss/shared-types": ["./packages/shared-types/src"],
-       "@the-abyss/iskandar-gatekeeper": ["./packages/iskandar-gatekeeper/src"],
+       "@sentra/bentara": ["./packages/iskandar-gatekeeper/src"],
        "@the-abyss/literature-harvester": ["./packages/literature-harvester/src"]
     },
     "types": ["node"]

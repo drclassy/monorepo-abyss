@@ -26,7 +26,7 @@
       "id": "fhir-validator",
       "type": "TransformNode",
       "label": "FHIR R4 Validator",
-      "package": "@the-abyss/fhir-engine",
+      "package": "@sentra/sandi",
       "method": "validateServiceRequest"
     },
     {

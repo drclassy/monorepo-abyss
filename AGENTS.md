@@ -96,16 +96,16 @@ v:\avcn-sentra\abyss-monorepo\
 │   ├── config-typescript/            ← @the-abyss/config-typescript (shared TS configs)
 │   ├── database/                     ← @the-abyss/database (Prisma client + schema)
 │   ├── design-token/                 ← @the-abyss/design-token (Sentra UI tokens)
-│   ├── fhir-engine/                  ← @the-abyss/fhir-engine (FHIR compliance engine)
+│   ├── sentra-sandi/                  ← @sentra/sandi (FHIR compliance engine)
 │   ├── integration-bridge/           ← @the-abyss/integration-bridge (Notion, Linear)
-│   ├── iskandar-gatekeeper/          ← @the-abyss/iskandar-gatekeeper (access gatekeeper)
+│   ├── sentra-bentara/          ← @sentra/bentara (access gatekeeper)
 │   ├── langflow-client/              ← @the-abyss/langflow-client (LangFlow REST client)
 │   ├── literature-harvester/         ← @the-abyss/literature-harvester (open-access literature CLI)
-│   ├── sentra-rag/                   ← @the-abyss/sentra-rag (local-first RAG: pgvector + Ollama)
+│   ├── sentra-pustaka/                   ← @sentra/pustaka (local-first RAG: pgvector + Ollama)
 │   ├── sentra-ui/                    ← @the-abyss/ui (React component library, Radix + Tailwind)
 │   ├── shared-types/                 ← @the-abyss/shared-types (cross-app TypeScript contracts)
-│   ├── symphony/                     ← @the-abyss/symphony (orchestration layer)
-│   └── vector-store/                 ← @the-abyss/vector-store (PDF parsing, local embedding helpers)
+│   ├── sentra-nada/                     ← @sentra/nada (orchestration layer)
+│   └── vector-store/                 ← @sentra/cermin (PDF parsing, local embedding helpers)
 ├── tooling/
 │   ├── abyss-cli/                    ← @the-abyss/cli (monorepo CLI)
 │   ├── governance/                   ← Compliance: STANDARD.md, CHECKLIST.md, TROUBLESHOOTING.md, validate.ps1
@@ -610,11 +610,11 @@ Every package carries a `"sentra:tier"` field in its `package.json`:
 
 ### Tier 1 — Crown Jewel Packages (Do Not Expose)
 
-- `@the-abyss/symphony` — clinical reasoning engine, safety gates, scoring
-- `@the-abyss/sentra-rag` — RAG pipeline, embedding orchestration, retrieval
-- `@the-abyss/fhir-engine` — FHIR compliance, interoperability rules
-- `@the-abyss/iskandar-gatekeeper` — access control, authorization enforcement
-- `@the-abyss/vector-store` — embedding provider, semantic search logic
+- `@sentra/nada` — clinical reasoning engine, safety gates, scoring
+- `@sentra/pustaka` — RAG pipeline, embedding orchestration, retrieval
+- `@sentra/sandi` — FHIR compliance, interoperability rules
+- `@sentra/bentara` — access control, authorization enforcement
+- `@sentra/cermin` — embedding provider, semantic search logic
 - `apps/platform/orchestrator` — CQRS saga engine, flow orchestration
 - `flows/definitions/healthcare/` — LangFlow AI workflow definitions
 - `.cursor/agents/` — prompt systems

@@ -37,7 +37,7 @@
       "id": "memory-fetch",
       "type": "VectorNode",
       "label": "Conversation Memory Fetch",
-      "package": "@the-abyss/vector-store",
+      "package": "@sentra/cermin",
       "method": "getRelevantContext"
     },
     {
