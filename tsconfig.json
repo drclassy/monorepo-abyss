@@ -38,5 +38,12 @@
     "types": ["node"]
   },
   "include": ["packages/**/src/**/*", "tooling/**/src/**/*"],
-  "exclude": ["node_modules", "dist", "build", ".next", "coverage"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".next",
+    "coverage",
+    "tooling/kilo/worktrees/**"
+  ]
 }

@@ -9,3 +9,4 @@ packages:
   - 'packages/integration-bridge'
   - 'platform/**'
   - 'tooling/**'
+  - '!tooling/kilo/worktrees/**'

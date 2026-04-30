@@ -5,7 +5,7 @@ import type {
   AadiV2FhirDiagnosticReport,
   AadiV2FhirObservation,
   AadiV2FhirRiskAssessment,
-} from '../../../fhir-engine/src/index'
+} from '@sentra/sandi'
 import type {
   SymphonyAlert,
   SymphonyDiagnosticHypothesis,
