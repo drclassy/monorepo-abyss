@@ -20,7 +20,7 @@ interface Profile01Props {
 const defaultProfile = {
   name: "Eugene An",
   role: "Prompt Engineer",
-  avatar: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/avatar-02-albo9B0tWOSLXCVZh9rX9KFxXIVWMr.png",
+  avatar: "/avatars/abyss-doctor.png",
   subscription: "Free Trial",
 } satisfies Required<Profile01Props>
 
@@ -111,4 +111,3 @@ export default function Profile01({
     </div>
   )
 }
-
