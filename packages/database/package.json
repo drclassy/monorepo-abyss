@@ -23,5 +23,6 @@
     "tsx": "^4.0.0",
     "@the-abyss/config-typescript": "workspace:*",
     "@the-abyss/config-eslint": "workspace:*"
-  }
+  },
+  "sentra:tier": "private-product"
 }

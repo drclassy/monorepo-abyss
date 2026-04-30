@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 export { SentraRAGEngine } from './engine.js'
 export { PgVectorStore } from './storage/pgvector.store.js'
 export { OllamaEmbedder } from './ingestion/embedder.js'

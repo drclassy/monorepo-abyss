@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
 import type { Request, Response, NextFunction } from 'express'

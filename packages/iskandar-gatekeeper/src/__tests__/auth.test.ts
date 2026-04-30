@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { createHmac } from 'node:crypto'
 
 import { describe, it, expect, afterEach } from 'vitest'

@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 /**
  * ABYSS-RAG-005 — Retrieval Validation & Evidence Quality Evaluation Pipeline
  * Core type contracts for the retrieval evaluation lifecycle.

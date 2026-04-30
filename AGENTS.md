@@ -591,5 +591,68 @@ Key env domains (from `.env.example`):
 
 ---
 
+## §17 — IP Protection Policy
+
+**Effective:** 2026-04-30 · **Owner:** Dr. Ferdi Iskandar (Classy) / Sentra
+
+Sentra operates a B2G SaaS model. Government and institutional clients receive access to
+Platform outputs via UI and API. Engine source code is never shared.
+
+### Sensitivity Tiers
+
+Every package carries a `"sentra:tier"` field in its `package.json`:
+
+| Tier | Value | Rule |
+|---|---|---|
+| **1 — Crown Jewel** | `"crown-jewel"` | Source never exposed. Never deployed to client infra. |
+| **2 — Private Product** | `"private-product"` | Private repos. PHI-aware. Not for external access. |
+| **3 — Shell** | `"shell"` | Safe to expose publicly if needed (UI, contracts, docs). |
+
+### Tier 1 — Crown Jewel Packages (Do Not Expose)
+
+- `@the-abyss/symphony` — clinical reasoning engine, safety gates, scoring
+- `@the-abyss/sentra-rag` — RAG pipeline, embedding orchestration, retrieval
+- `@the-abyss/fhir-engine` — FHIR compliance, interoperability rules
+- `@the-abyss/iskandar-gatekeeper` — access control, authorization enforcement
+- `@the-abyss/vector-store` — embedding provider, semantic search logic
+- `apps/platform/orchestrator` — CQRS saga engine, flow orchestration
+- `flows/definitions/healthcare/` — LangFlow AI workflow definitions
+- `.cursor/agents/` — prompt systems
+
+### Absolute Deployment Rule
+
+> Crown Jewel packages are **never deployed to client or government infrastructure.**
+> If on-premise deployment is required, only UI shell and API proxy are deployed.
+> Engine runtime stays on Sentra private infrastructure (Railway or Sentra server).
+
+### API Boundary
+
+All external access flows through `iskandar-gatekeeper` → `orchestrator` → engine.
+Clients never call engine packages directly. They receive only outputs.
+
+### Copyright
+
+All Tier 1 source files carry the header:
+```
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
+```
+
+### Legal Documents
+
+Contract templates for government clients are in `docs/legal/`:
+- `MSA-template.md` — Master Service Agreement
+- `NDA-template.md` — Non-Disclosure Agreement
+- `ToS-template.md` — Terms of Service
+
+All contracts must include an explicit clause that Engine IP remains property of Sentra.
+
+### Source Escrow (If Required by Audit)
+
+If a government authority (e.g., BSSN, Kominfo) requires a formal source audit,
+use a third-party source escrow arrangement. Never grant direct source access.
+Activate escrow only on written legal requirement. Document in `.agent/DECISIONS.md`.
+
+---
+
 _If a local rule contradicts this document, this document wins._ _Append new
 decisions to `.agent/DECISIONS.md` and new lessons to `.agent/LESSONS.md`._

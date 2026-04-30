@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import type { QueryResult, VectorStoreConfig, VectorStoreDatabaseClient } from './types'
 import { getEmbedding, DEFAULT_EMBEDDING_MODEL } from './embedding-provider'
 

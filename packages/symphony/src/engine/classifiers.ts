@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import type { SymphonyAvpuLevel, SymphonyConsciousnessLevel } from '../contracts'
 
 export interface SymphonyBpReading {

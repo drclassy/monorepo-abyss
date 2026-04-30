@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 export type KnowledgeSourceStatus =
   | 'ready_for_review'
   | 'approved_for_embedding'

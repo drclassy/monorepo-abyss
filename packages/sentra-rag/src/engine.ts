@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as dotenv from 'dotenv'
 import { GemmaEngine } from './assessment/gemma.js'
 import { GuardEngine } from './compliance/guard.js'

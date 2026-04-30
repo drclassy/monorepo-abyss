@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { describe, it, expect } from 'vitest'
 
 import type { FhirPatient, FhirObservation } from '../types'

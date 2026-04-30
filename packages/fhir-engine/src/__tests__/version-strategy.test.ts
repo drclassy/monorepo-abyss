@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 /**
  * Pin the FHIR version-strategy posture so that bumping target version,
  * current shape, or phase is a deliberate review-gated change.

@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 export interface Chunk {
   content: string
   headingPath: string[]

@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { canValidateResourceType } from './validation-hooks'
 
 export interface AadiV2FhirCoding {

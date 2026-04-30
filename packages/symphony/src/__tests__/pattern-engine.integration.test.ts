@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 // Designed and constructed by Classy.
 /**
  * pattern-engine — integration tests for the SYMPHONY generic pattern evaluator.

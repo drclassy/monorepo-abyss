@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 /**
  * Modernization baseline — locks current package behavior before honesty pass.
  *

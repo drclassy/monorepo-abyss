@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 // Designed and constructed by Classy.
 /**
  * Anaphylaxis — deterministic safety gate per WAO 2020 criteria.

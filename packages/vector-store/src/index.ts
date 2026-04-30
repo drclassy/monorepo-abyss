@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 // @the-abyss/vector-store - RAGOps & Vector Search
 
 /** Vector database abstraction with similarity search and RAG pipeline support. */

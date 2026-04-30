@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 // Designed and constructed by Classy.
 /**
  * anaphylaxis — RED test suite for the deterministic anaphylaxis safety gate.

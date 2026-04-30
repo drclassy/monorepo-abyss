@@ -12,5 +12,6 @@
   "devDependencies": {
     "@the-abyss/config-typescript": "workspace:*",
     "@the-abyss/config-eslint": "workspace:*"
-  }
+  },
+  "sentra:tier": "shell"
 }

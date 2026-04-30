@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 export type MedicalCategory = 'gen' | 'int' | 'pha' | 'ped' | 'obg' | 'bas'
 
 export interface MedicalChunk {

@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 /**
  * ABYSS-RAG-005 CLI — Retrieval Validation & Evidence Quality Evaluation Pipeline
  *

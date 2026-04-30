@@ -22,5 +22,6 @@
     "vitest": "^2.0.0",
     "@the-abyss/config-typescript": "workspace:*",
     "@the-abyss/config-eslint": "workspace:*"
-  }
+  },
+  "sentra:tier": "crown-jewel"
 }

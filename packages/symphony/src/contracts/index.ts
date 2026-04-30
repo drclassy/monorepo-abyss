@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 export {
   SYMPHONY_CONTRACT_VERSION,
   type SymphonyActionProtocol,

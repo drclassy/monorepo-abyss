@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import type { VectorStore } from '@the-abyss/vector-store'
 import type { KnowledgeSourceRegistryEntry } from '../registry/registry-types.js'
 import type { EvalQuery, QueryEvalResult } from './types.js'

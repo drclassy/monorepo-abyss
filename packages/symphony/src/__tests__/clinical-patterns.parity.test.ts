@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 // Designed and constructed by Classy.
 /**
  * clinical-patterns.parity — parity tests for Phase 3.

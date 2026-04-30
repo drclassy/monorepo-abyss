@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as path from 'path'
 import { runPdfDryRunIngestion } from '../ingestion/pdf-batch-runner'
 

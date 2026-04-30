@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import type { SymphonyAlert, SymphonyVitalsInput } from '../contracts'
 
 function alert(

@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as fs from 'fs'
 import * as path from 'path'
 import { ingestDocument, renderMarkdown, toChunkerInput } from '@the-abyss/document-ingestion'

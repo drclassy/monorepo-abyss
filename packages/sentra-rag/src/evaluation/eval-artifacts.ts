@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import fs from 'fs'
 import path from 'path'
 import type {

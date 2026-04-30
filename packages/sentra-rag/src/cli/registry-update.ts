@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as path from 'path'
 import * as fs from 'fs'
 import { updateKnowledgeRegistry } from '../registry/knowledge-registry'

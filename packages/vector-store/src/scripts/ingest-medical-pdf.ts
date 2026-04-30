@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import path from 'node:path'
 
 import fs from 'fs-extra'

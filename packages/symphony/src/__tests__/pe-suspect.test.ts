@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 // Designed and constructed by Classy.
 /**
  * pe-suspect — RED test suite for the deterministic PE (pulmonary embolism)

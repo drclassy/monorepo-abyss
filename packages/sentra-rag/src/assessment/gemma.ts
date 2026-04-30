@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 /**
  * [A] Assessment Engine — Ollama local LLM
  * Local-first GemmaEngine, default upgraded to gemma3:12b.

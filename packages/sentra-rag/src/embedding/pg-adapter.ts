@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import type { Pool, PoolClient } from 'pg'
 import type { VectorStoreDatabaseClient } from '@the-abyss/vector-store'
 

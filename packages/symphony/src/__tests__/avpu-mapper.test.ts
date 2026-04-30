@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { describe, expect, it } from 'vitest'
 
 import { normalizeSymphonyConsciousnessToAvpu } from '../engine/classifiers'

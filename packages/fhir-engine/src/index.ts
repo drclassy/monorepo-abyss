@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 // @the-abyss/fhir-engine — bounded FHIR validation and normalization candidate (modernization in progress)
 //
 // Role: structural validator + normalization seam, R5-target.

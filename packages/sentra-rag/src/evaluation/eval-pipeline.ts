@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import path from 'path'
 import { createVectorStore, DEFAULT_EMBEDDING_MODEL } from '@the-abyss/vector-store'
 import { readKnowledgeRegistry } from '../registry/registry-reader.js'

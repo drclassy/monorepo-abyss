@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 /**
  * Validation hook seam for future promotion of structural validation
  * responsibilities out of `@the-abyss/symphony/src/interop/`.

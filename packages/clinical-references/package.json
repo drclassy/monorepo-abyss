@@ -15,5 +15,6 @@
     "@the-abyss/config-typescript": "workspace:*",
     "@types/node": "^22.0.0",
     "vitest": "^2.1.0"
-  }
+  },
+  "sentra:tier": "private-product"
 }

@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 export {
   SYMPHONY_ENGINE_PACKAGE_NAME,
   SYMPHONY_ENGINE_VERSION,

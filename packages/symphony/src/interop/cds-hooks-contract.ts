@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 export type SymphonyCdsHookName = 'patient-view'
 
 export type SymphonyCdsHookCardIndicator = 'info' | 'warning' | 'critical'

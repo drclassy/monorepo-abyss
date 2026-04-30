@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 /**
  * FHIR version strategy metadata for `@the-abyss/fhir-engine`.
  *

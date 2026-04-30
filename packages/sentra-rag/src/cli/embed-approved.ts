@@ -1,3 +1,4 @@
+// Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 /**
  * ABYSS-RAG-004 CLI — Approved Knowledge Embedding and Vector Store Write Pipeline
  *
