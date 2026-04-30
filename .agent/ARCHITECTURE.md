@@ -106,23 +106,25 @@ abyss-monorepo/
 
 ## 4. Packages — Shared Libraries
 
-Semua package ada di `packages/` dan dipublish sebagai `@the-abyss/*`.
+Semua package ada di taxonomy `packages/{sentra,platform,clinical,shared,tooling}/` dan dipublish sebagai `@the-abyss/*` atau `@sentra/*`.
 
 | Package dir | Package name | Tujuan |
 |-------------|-------------|--------|
-| `config-eslint` | `@the-abyss/config-eslint` | Shared ESLint configs (base, node, react) |
-| `config-typescript` | `@the-abyss/config-typescript` | Shared tsconfig base (strict) |
-| `database` | `@the-abyss/database` | Prisma client untuk **platform apps only** (`orchestrator`, `sentra-portal`) — ⚠️ TIDAK digunakan healthcare apps; tiap healthcare app punya Prisma schema sendiri |
-| `design-token` | — | Design token system — Classy Dark Theme |
-| `fhir-engine` | `@the-abyss/fhir-engine` | FHIR R4 validation + transformation layer |
+| `tooling/config-eslint` | `@the-abyss/config-eslint` | Shared ESLint configs (base, node, react) |
+| `tooling/config-typescript` | `@the-abyss/config-typescript` | Shared tsconfig base (strict) |
+| `platform/database` | `@the-abyss/database` | Prisma client untuk **platform apps only** (`orchestrator`, `sentra-portal`) — ⚠️ TIDAK digunakan healthcare apps; tiap healthcare app punya Prisma schema sendiri |
+| `shared/design-token` | `@the-abyss/design-token` | Design token system — Classy Dark Theme |
+| `platform/langflow-client` | `@the-abyss/langflow-client` | HTTP client untuk LangFlow AI orchestration server |
+| `platform/document-ingestion` | `@the-abyss/document-ingestion` | Canonical document ingestion surface |
+| `platform/literature-harvester` | `@the-abyss/literature-harvester` | Open-access literature harvesting tooling |
 | `integration-bridge` | `@the-abyss/integration-bridge` | Notion + Linear integration client |
-| `iskandar-gatekeeper` | `@the-abyss/iskandar-gatekeeper` | Security layer: JWT (HS256-only) + API key auth + GO-Gate CI/CD validator |
-| `langflow-client` | `@the-abyss/langflow-client` | HTTP client untuk Langflow AI orchestration server |
-| `notebooklm` | `@the-abyss/notebooklm` | NotebookLM connector |
-| `sentra-ui` | `@the-abyss/ui` | Shared React component library (Radix + Tailwind v4) |
-| `shared-types` | `@the-abyss/shared-types` | Central TypeScript type contracts untuk seluruh monorepo |
-| `symphony` | `@the-abyss/symphony` | Orchestration contracts + engine |
-| `vector-store` | `@the-abyss/vector-store` | RAGOps + vector search abstraction (pgvector) |
+| `shared/sentra-ui` | `@the-abyss/ui` | Shared React component library (Radix + Tailwind v4) |
+| `shared/shared-types` | `@the-abyss/shared-types` | Central TypeScript type contracts untuk seluruh monorepo |
+| `sentra/sentra-nada` | `@sentra/nada` | Orchestration contracts + engine |
+| `sentra/sentra-pustaka` | `@sentra/pustaka` | Local-first RAG and retrieval engine |
+| `sentra/sentra-sandi` | `@sentra/sandi` | FHIR validation + transformation layer |
+| `sentra/sentra-bentara` | `@sentra/bentara` | Security layer + GO-Gate enforcement |
+| `sentra/sentra-cermin` | `@sentra/cermin` | RAGOps + vector search abstraction (pgvector) |
 
 ---
 

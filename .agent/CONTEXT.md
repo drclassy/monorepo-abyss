@@ -34,7 +34,7 @@ Each healthcare app is an **independent repository** with its own:
 
 **The monorepo shell does NOT provide:** a single shared database. Every app that has a database owns it exclusively.
 
-Any agent that assumes `packages/database` is the database for all apps is WRONG.
+Any agent that assumes `packages/platform/database` is the database for all apps is WRONG.
 Always check each app's own `prisma/` folder before touching any database concern.
 
 Current session direction: Google Cloud, Vertex AI, and Gemini are being exited from
@@ -129,10 +129,10 @@ the monorepo. Do not treat "migration to Vertex AI" as the active target.
 
 | Package | Path | Purpose | Notes |
 |---------|------|---------|-------|
-| `database` | `packages/database/` | Prisma schema for platform apps | ⚠️ NOT used by healthcare apps — each has own schema |
-| `vector-store` | `packages/vector-store/` | pgvector RAG with pluggable embedding provider | Refactored to dependency injection — injectable Prisma client |
-| `design-token` | `packages/design-token/` | UI token system | |
-| `shared-types` | `packages/shared-types/` | Cross-app TypeScript types | |
+| `database` | `packages/platform/database/` | Prisma schema for platform apps | ⚠️ NOT used by healthcare apps — each has own schema |
+| `vector-store` | `packages/sentra/sentra-cermin/` | pgvector RAG with pluggable embedding provider | Refactored to dependency injection — injectable Prisma client |
+| `design-token` | `packages/shared/design-token/` | UI token system | |
+| `shared-types` | `packages/shared/shared-types/` | Cross-app TypeScript types | |
 
 ---
 
@@ -158,7 +158,7 @@ sentra-assist             → calls intelligenceboard RAG endpoint
 sentra-main               → calls intelligenceboard RAG endpoint (if needed)
 ```
 
-**KnowledgeBase table location:** `intelligenceboard` Prisma schema — single source of truth for medical RAG. Not in `packages/database`.
+**KnowledgeBase table location:** `intelligenceboard` Prisma schema — single source of truth for medical RAG. Not in `packages/platform/database`.
 
 ---
 
@@ -169,7 +169,7 @@ sentra-main               → calls intelligenceboard RAG endpoint (if needed)
 | intelligenceboard | Gemini REST API | Local-first runtime / provider-neutral fallback | Google exit in progress |
 | sentra-assist | `@google-cloud/vertexai` | Local-first runtime / provider-neutral fallback | Google exit in progress |
 | referralink | OpenAI | TBD | Out of scope for current sprint |
-| packages/vector-store | Provider-neutral abstraction | — | Vertex provider scheduled for removal |
+| packages/sentra/sentra-cermin | Provider-neutral abstraction | — | Vertex provider scheduled for removal |
 
 ---
 
@@ -179,7 +179,7 @@ sentra-main               → calls intelligenceboard RAG endpoint (if needed)
 |-----|----------|---------|-------------|----------|
 | intelligenceboard | Neon PostgreSQL | ✅ | ✅ 12 migrations | `apps/healthcare/intelligenceboard/prisma/` |
 | referralink | Neon (serverless) + Vercel Postgres | ❌ raw SQL | N/A | Direct queries in `database/` |
-| packages/database | Neon PostgreSQL | ✅ | ❌ never migrated | Platform-level only |
+| packages/platform/database | Neon PostgreSQL | ✅ | ❌ never migrated | Platform-level only |
 | sentra-assist | None | ❌ | — | Browser extension |
 | sentra-main | None | ❌ | — | Marketing site |
 | primary-healthcare | None | ❌ | — | JSON files only |
@@ -214,5 +214,5 @@ Security scan mandatory before any healthcare PR merge.
 - JET Protocol J5 — hard gate, no execution before explicit "GO"
 - Session logs — `.agent/sessions/` must be updated every session
 - Database operations — each app uses its OWN Prisma client. Never cross-inject.
-- `packages/database` — platform-level only, not for healthcare apps
-- KnowledgeBase (RAG) — lives in intelligenceboard schema, not packages/database
+- `packages/platform/database` — platform-level only, not for healthcare apps
+- KnowledgeBase (RAG) — lives in intelligenceboard schema, not packages/platform/database

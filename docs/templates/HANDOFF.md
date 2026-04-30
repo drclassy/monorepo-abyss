@@ -39,7 +39,7 @@
 ### Database changes
 - [ ] New table: `[table_name]`
 - [ ] Modified table: `[table_name]`
-- [ ] Migration required: `packages/database/prisma/migrations/`
+- [ ] Migration required: `packages/platform/database/prisma/migrations/`
 
 ### API changes
 | Endpoint | Method | Status |

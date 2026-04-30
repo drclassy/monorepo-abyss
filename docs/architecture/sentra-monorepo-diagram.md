@@ -292,11 +292,11 @@ SEKARANG (2026-04-30):
 ══════════════════════════════════════════════════
 github.com/drclassy/abyss-monorepo  [PRIVATE]
   ├── apps/ (semua aplikasi)
-  ├── packages/symphony/          ← crown jewel masih di sini
-  ├── packages/sentra-rag/        ← crown jewel masih di sini
-  ├── packages/fhir-engine/       ← crown jewel masih di sini
-  ├── packages/iskandar-gatekeeper/ ← crown jewel masih di sini
-  └── packages/vector-store/      ← crown jewel masih di sini
+  ├── packages/sentra/sentra-nada/      ← crown jewel taxonomy live
+  ├── packages/sentra/sentra-pustaka/   ← crown jewel taxonomy live
+  ├── packages/sentra/sentra-sandi/     ← crown jewel taxonomy live
+  ├── packages/sentra/sentra-bentara/   ← crown jewel taxonomy live
+  └── packages/sentra/sentra-cermin/    ← crown jewel taxonomy live
 
 Risiko: kalau repo bocor, semua engine terekspos.
 

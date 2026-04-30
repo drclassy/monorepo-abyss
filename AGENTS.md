@@ -38,7 +38,7 @@ corporate, and platform domains.
 
 - **Frontend:** Next.js 15/16 + React 19 + Tailwind CSS v3/v4
 - **Backend:** NestJS 11 (orchestrator) + Next.js API routes (healthcare apps)
-- **Database:** PostgreSQL (legacy Cloud SQL / current Neon surfaces) accessed exclusively via `packages/database` (Prisma)
+- **Database:** PostgreSQL (legacy Cloud SQL / current Neon surfaces) accessed exclusively via `packages/platform/database` (Prisma)
 - **AI Orchestration:** LangFlow (REST API) + local-first inference + OpenAI + Anthropic + DeepSeek
 - **Message Broker:** Kafka + Zookeeper (for saga orchestration)
 - **Cache:** Redis
@@ -91,21 +91,27 @@ v:\avcn-sentra\abyss-monorepo\
 │   ├── orchestrator/                 ← NestJS 11, CQRS, Kafka, Socket.io (Saga Engine)
 │   └── sentra-portal/                ← Next.js 15, React 19, Tailwind v3 (clinical dashboard)
 ├── packages/
-│   ├── clinical-references/          ← @the-abyss/clinical-references (clinical data types)
-│   ├── config-eslint/                ← @the-abyss/config-eslint (shared ESLint v9 flat configs)
-│   ├── config-typescript/            ← @the-abyss/config-typescript (shared TS configs)
-│   ├── database/                     ← @the-abyss/database (Prisma client + schema)
-│   ├── design-token/                 ← @the-abyss/design-token (Sentra UI tokens)
-│   ├── sentra-sandi/                  ← @sentra/sandi (FHIR compliance engine)
-│   ├── integration-bridge/           ← @the-abyss/integration-bridge (Notion, Linear)
-│   ├── sentra-bentara/          ← @sentra/bentara (access gatekeeper)
-│   ├── langflow-client/              ← @the-abyss/langflow-client (LangFlow REST client)
-│   ├── literature-harvester/         ← @the-abyss/literature-harvester (open-access literature CLI)
-│   ├── sentra-pustaka/                   ← @sentra/pustaka (local-first RAG: pgvector + Ollama)
-│   ├── sentra-ui/                    ← @the-abyss/ui (React component library, Radix + Tailwind)
-│   ├── shared-types/                 ← @the-abyss/shared-types (cross-app TypeScript contracts)
-│   ├── sentra-nada/                     ← @sentra/nada (orchestration layer)
-│   └── vector-store/                 ← @sentra/cermin (PDF parsing, local embedding helpers)
+│   ├── clinical/
+│   │   └── clinical-references/      ← @the-abyss/clinical-references (clinical data types)
+│   ├── platform/
+│   │   ├── database/                 ← @the-abyss/database (Prisma client + schema)
+│   │   ├── document-ingestion/       ← @the-abyss/document-ingestion (canonical ingestion surface)
+│   │   ├── langflow-client/          ← @the-abyss/langflow-client (LangFlow REST client)
+│   │   └── literature-harvester/     ← @the-abyss/literature-harvester (open-access literature CLI)
+│   ├── sentra/
+│   │   ├── sentra-bentara/           ← @sentra/bentara (access gatekeeper)
+│   │   ├── sentra-cermin/            ← @sentra/cermin (PDF parsing, local embedding helpers)
+│   │   ├── sentra-nada/              ← @sentra/nada (orchestration layer)
+│   │   ├── sentra-pustaka/           ← @sentra/pustaka (local-first RAG: pgvector + Ollama)
+│   │   └── sentra-sandi/             ← @sentra/sandi (FHIR compliance engine)
+│   ├── shared/
+│   │   ├── design-token/             ← @the-abyss/design-token (Sentra UI tokens)
+│   │   ├── sentra-ui/                ← @the-abyss/ui (React component library, Radix + Tailwind)
+│   │   └── shared-types/             ← @the-abyss/shared-types (cross-app TypeScript contracts)
+│   ├── tooling/
+│   │   ├── config-eslint/            ← @the-abyss/config-eslint (shared ESLint v9 flat configs)
+│   │   └── config-typescript/        ← @the-abyss/config-typescript (shared TS configs)
+│   └── integration-bridge/           ← @the-abyss/integration-bridge (Notion, Linear)
 ├── tooling/
 │   ├── abyss-cli/                    ← @the-abyss/cli (monorepo CLI)
 │   ├── governance/                   ← Compliance: STANDARD.md, CHECKLIST.md, TROUBLESHOOTING.md, validate.ps1
@@ -144,6 +150,20 @@ the task matches (not auto-loaded like rules). MCP: use `mcp.json.example` →
 | `code-reviewer` | Review diffs and changed files for quality, security, reuse, and rule compliance. |
 | `test-writer` | Author high-value tests across unit/component/E2E/integration layers. |
 | `config-writer` | Decide whether behavior belongs in central config, a rule, a skill, or an agent; then create or update the artifact and cross-references. |
+
+### §2.2 — Package Taxonomy Rule
+
+Agents must not create new packages directly under `packages/*`.
+
+Allowed package locations:
+
+- `packages/sentra/*` for proprietary Sentra crown-jewel capabilities
+- `packages/platform/*` for runtime infrastructure
+- `packages/clinical/*` for clinical knowledge and safety substrate
+- `packages/shared/*` for low-level reusable primitives
+- `packages/tooling/*` for developer and build tooling
+
+If classification is unclear, stop and request Chief decision before creating the package.
 
 ---
 
@@ -236,7 +256,7 @@ The following are forbidden under any circumstance:
 | Build system      | Turborepo v2                                         |
 | Frontend          | Next.js 15/16, React 19, Tailwind CSS v3/v4, Radix UI |
 | Backend framework | NestJS 11 (TypeScript)                               |
-| ORM               | Prisma (via `packages/database`)                     |
+| ORM               | Prisma (via `packages/platform/database`)            |
 | Validation        | class-validator + class-transformer, Zod             |
 | API docs          | Swagger / OpenAPI (NestJS apps)                      |
 | AI orchestration  | LangFlow (`flows/definitions/`)                      |
@@ -273,7 +293,7 @@ pnpm format                 # Prettier write
 pnpm format:check           # Prettier check (CI)
 pnpm typecheck              # tsc --noEmit (root)
 
-# Database (via packages/database)
+# Database (via packages/platform/database)
 pnpm db:generate            # Prisma generate
 pnpm db:push                # Prisma db push
 pnpm db:migrate             # Prisma migrate deploy
@@ -387,7 +407,7 @@ not acceptable for request validation.
 handle HTTP concerns exclusively.
 
 **Database access:** All database operations must route through
-`packages/database`. No raw queries or direct ORM calls in application code.
+`packages/platform/database`. No raw queries or direct ORM calls in application code.
 
 **PHI/PII protection:** All PHI/PII fields in healthcare apps must be decorated
 with `@Exclude()` from `class-transformer`. This is enforced at the
@@ -627,7 +647,7 @@ Every package carries a `"sentra:tier"` field in its `package.json`:
 
 ### API Boundary
 
-All external access flows through `iskandar-gatekeeper` → `orchestrator` → engine.
+All external access flows through `sentra-bentara` → `orchestrator` → engine.
 Clients never call engine packages directly. They receive only outputs.
 
 ### Copyright
