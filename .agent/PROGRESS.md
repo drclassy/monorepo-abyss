@@ -12,7 +12,7 @@
 | **Active branch** | `master` |
 | **Active JET phase** | GO granted — Chief authorized all classes (A/B/C) |
 | **Next major initiative** | Consumer Trial Readiness: Dashboard/ASSIST readiness, shadow telemetry, and limited trial gating |
-| **Recent tooling** | Cursor IDE audit executed locally (see `.agent/sessions/2026-04-28.md`): Claude Code permission posture tightened, wrapper removed, overlapping extensions trimmed; 2026-04-30 added always-on Chief directive bridge for Cursor rule flow and reclassified the root `docs/` surface into active vs archive buckets |
+| **Recent tooling** | Cursor IDE audit executed locally (see `.agent/sessions/2026-04-28.md`): Claude Code permission posture tightened, wrapper removed, overlapping extensions trimmed; 2026-04-30 added always-on Chief directive bridge for Cursor rule flow and reclassified the root `docs/` surface into active vs archive buckets; 2026-04-30 excluded `tooling/kilo/worktrees/**` from workspace discovery to prevent ghost package duplicates; 2026-04-30 landed workspace `.vscode/settings.json` (watcher/search exclude), fixed `.cursorindexingignore` corporate path typo + follow-up **`platform/orchestrator/`** indexing path (was incorrect `apps/orchestrator/`), and added `docs/cursor/cursor-settings-profiles.md` (solo vs non-coder templates + hooks eval) |
 
 ---
 
@@ -1165,6 +1165,215 @@ docs/blueprint/infrastructure.md
 
 ```
 README.md
+```
+
+---
+## 2026-04-30 20:17 — `dcfd55c` — master
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(legal): establish B2G IP protection architecture
+- **Files changed**: 157 file(s)
+
+```
+AGENTS.md
+LICENSE
+docs/legal/MSA-template.md
+docs/legal/NDA-template.md
+docs/legal/ToS-template.md
+packages/clinical-references/package.json
+packages/config-eslint/package.json
+packages/config-typescript/package.json
+packages/database/package.json
+packages/design-token/package.json
+packages/document-ingestion/package.json
+packages/fhir-engine/package.json
+packages/fhir-engine/src/__tests__/aadi-v2-fhir-bundle.test.ts
+packages/fhir-engine/src/__tests__/deferred-resource-baseline.test.ts
+packages/fhir-engine/src/__tests__/fhir-engine.test.ts
+packages/fhir-engine/src/__tests__/modernization-baseline.test.ts
+packages/fhir-engine/src/__tests__/transformer.test.ts
+packages/fhir-engine/src/__tests__/validation-hooks.test.ts
+packages/fhir-engine/src/__tests__/validator.test.ts
+packages/fhir-engine/src/__tests__/version-strategy.test.ts
+```
+
+---
+## 2026-04-30 20:37 — `9693b19` — master
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(architecture): add complete monorepo reference diagram
+- **Files changed**: 1 file(s)
+
+```
+docs/architecture/sentra-monorepo-diagram.md
+```
+
+---
+## 2026-04-30 21:11 — `d5fc2d3` — master
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(rename): crown jewel packages → Sentra identity names
+- **Files changed**: 389 file(s)
+
+```
+AGENTS.md
+flows/definitions/healthcare/assist-flow.json
+flows/definitions/healthcare/referral-flow.json
+packages/fhir-engine/README.md
+packages/fhir-engine/package.json
+packages/fhir-engine/src/__tests__/aadi-v2-fhir-bundle.test.ts
+packages/fhir-engine/src/__tests__/deferred-resource-baseline.test.ts
+packages/fhir-engine/src/__tests__/fhir-engine.test.ts
+packages/fhir-engine/src/__tests__/modernization-baseline.test.ts
+packages/fhir-engine/src/__tests__/transformer.test.ts
+packages/fhir-engine/src/__tests__/validation-hooks.test.ts
+packages/fhir-engine/src/__tests__/validator.test.ts
+packages/fhir-engine/src/__tests__/version-strategy.test.ts
+packages/fhir-engine/src/aadi-v2-fhir-bundle.ts
+packages/fhir-engine/src/index.ts
+packages/fhir-engine/src/transformer.ts
+packages/fhir-engine/src/types.ts
+packages/fhir-engine/src/validation-hooks.ts
+packages/fhir-engine/src/validator.ts
+packages/fhir-engine/src/version-strategy.ts
+```
+
+---
+## 2026-04-30 21:37 — `97e669c` — master
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(cleanup): remove rogue Gemini artifacts and Obsidian config
+- **Files changed**: 9 file(s)
+
+```
+.gitignore
+.obsidian/app.json
+.obsidian/appearance.json
+.obsidian/core-plugins.json
+.obsidian/workspace.json
+conductor/ORCHESTRATOR.md
+conductor/agent-execution.md
+conductor/agent-registry.yaml
+conductor/handoff-schema.ts
+```
+
+---
+## 2026-04-30 22:50 — `8143709` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-REPO-STRUCTURE-001] fix: repair stale tsconfig paths from prior rename
+- **Files changed**: 1 file(s)
+
+```
+tsconfig.json
+```
+
+---
+## 2026-04-30 22:52 — `fa0103c` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-REPO-STRUCTURE-001] docs: add package taxonomy handoff and ADR 0008
+- **Files changed**: 2 file(s)
+
+```
+docs/adr/0008-package-taxonomy-and-boundary-model.md
+docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-HANDOFF.md
+```
+
+---
+## 2026-04-30 22:53 — `d38e869` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-REPO-STRUCTURE-001] refactor: move packages into taxonomy folders (git mv)
+- **Files changed**: 544 file(s)
+
+```
+packages/clinical-references/README.md
+packages/clinical-references/package.json
+packages/clinical-references/src/__tests__/clinical-references.test.ts
+packages/clinical-references/src/contracts.ts
+packages/clinical-references/src/ddi.ts
+packages/clinical-references/src/dosage.ts
+packages/clinical-references/src/epidemiology.ts
+packages/clinical-references/src/index.ts
+packages/clinical-references/src/pharmacotherapy.ts
+packages/clinical/clinical-references/README.md
+packages/clinical/clinical-references/package.json
+packages/clinical/clinical-references/src/__tests__/clinical-references.test.ts
+packages/clinical/clinical-references/src/contracts.ts
+packages/clinical/clinical-references/src/ddi.ts
+packages/clinical/clinical-references/src/dosage.ts
+packages/clinical/clinical-references/src/epidemiology.ts
+packages/clinical/clinical-references/src/index.ts
+packages/clinical/clinical-references/src/pharmacotherapy.ts
+packages/config-eslint/.eslintrc.json
+packages/config-eslint/README.md
+```
+
+---
+## 2026-04-30 22:55 — `2f925e0` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-REPO-STRUCTURE-001] chore: update workspace and build configuration
+- **Files changed**: 4 file(s)
+
+```
+.github/CODEOWNERS
+platform/orchestrator/tsconfig.json
+pnpm-workspace.yaml
+tsconfig.json
+```
+
+---
+## 2026-05-01 — ABYSS-REPO-STRUCTURE-001 phase close-out (working tree)
+
+- **Agent:** Codex
+- **What:** Closed the remaining governance/doc/report phases for the package taxonomy migration by adding package-boundary ESLint restrictions, syncing active taxonomy references in steering docs, and writing final execution + verification reports.
+- **Validation:** `pnpm install` PASS; `pnpm turbo run build`, `pnpm turbo run lint`, and `pnpm turbo run test` all executed and failed on local module-resolution / `.pnpm` instability rather than package-path drift.
+- **Artifacts:** `docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-EXECUTION-REPORT.md`, `docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-VERIFICATION-REPORT.md`
+
+---
+## 2026-05-01 01:49 — `4a903fa` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-REPO-STRUCTURE-001] fix: complete phase 3 path follow-ups
+- **Files changed**: 6 file(s)
+
+```
+packages/platform/literature-harvester/tsconfig.json
+packages/sentra/sentra-nada/src/interop/fhir-bundle-projection.ts
+packages/sentra/sentra-nada/src/interop/symphony-to-fhir.ts
+pnpm-lock.yaml
+pnpm-workspace.yaml
+tsconfig.json
+```
+
+---
+## 2026-05-01 01:49 — `118a049` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-REPO-STRUCTURE-001] feat: enforce package taxonomy boundaries
+- **Files changed**: 1 file(s)
+
+```
+packages/tooling/config-eslint/base.js
+```
+
+---
+## 2026-05-01 01:49 — `ea3f9b1` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-REPO-STRUCTURE-001] docs: update agent steering and architecture
+- **Files changed**: 7 file(s)
+
+```
+.agent/ARCHITECTURE.md
+.agent/CONTEXT.md
+AGENTS.md
+README.md
+docs/architecture/sentra-monorepo-diagram.md
+docs/guides/package-taxonomy-migration.md
+docs/templates/HANDOFF.md
 ```
 
 ---

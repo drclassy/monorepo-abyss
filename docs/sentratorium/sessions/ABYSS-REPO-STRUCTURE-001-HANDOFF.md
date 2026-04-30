@@ -6,7 +6,7 @@
 **Independent Verifier:** Codex  
 **Branch:** `refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy`  
 **Date:** 2026-04-30  
-**Status:** ✅ GO — Execution in progress
+**Status:** ✅ EXECUTED — Final reports recorded
 
 ---
 
@@ -91,21 +91,21 @@ packages/
 
 | Source | Destination | Package Name | Status |
 |---|---|---|---|
-| `packages/sentra-nada` | `packages/sentra/sentra-nada` | `@sentra/nada` | PENDING |
-| `packages/sentra-pustaka` | `packages/sentra/sentra-pustaka` | `@sentra/pustaka` | PENDING |
-| `packages/sentra-sandi` | `packages/sentra/sentra-sandi` | `@sentra/sandi` | PENDING |
-| `packages/sentra-bentara` | `packages/sentra/sentra-bentara` | `@sentra/bentara` | PENDING |
-| `packages/sentra-cermin` | `packages/sentra/sentra-cermin` | `@sentra/cermin` | PENDING |
-| `packages/database` | `packages/platform/database` | `@the-abyss/database` | PENDING |
-| `packages/langflow-client` | `packages/platform/langflow-client` | `@the-abyss/langflow-client` | PENDING |
-| `packages/document-ingestion` | `packages/platform/document-ingestion` | `@the-abyss/document-ingestion` | PENDING |
-| `packages/literature-harvester` | `packages/platform/literature-harvester` | `@the-abyss/literature-harvester` | PENDING |
-| `packages/clinical-references` | `packages/clinical/clinical-references` | `@the-abyss/clinical-references` | PENDING |
-| `packages/shared-types` | `packages/shared/shared-types` | `@the-abyss/shared-types` | PENDING |
-| `packages/sentra-ui` | `packages/shared/sentra-ui` | `@the-abyss/ui` | PENDING |
-| `packages/design-token` | `packages/shared/design-token` | `@the-abyss/design-token` | PENDING |
-| `packages/config-eslint` | `packages/tooling/config-eslint` | `@the-abyss/config-eslint` | PENDING |
-| `packages/config-typescript` | `packages/tooling/config-typescript` | `@the-abyss/config-typescript` | PENDING |
+| `packages/sentra-nada` | `packages/sentra/sentra-nada` | `@sentra/nada` | MOVED |
+| `packages/sentra-pustaka` | `packages/sentra/sentra-pustaka` | `@sentra/pustaka` | MOVED |
+| `packages/sentra-sandi` | `packages/sentra/sentra-sandi` | `@sentra/sandi` | MOVED |
+| `packages/sentra-bentara` | `packages/sentra/sentra-bentara` | `@sentra/bentara` | MOVED |
+| `packages/sentra-cermin` | `packages/sentra/sentra-cermin` | `@sentra/cermin` | MOVED |
+| `packages/database` | `packages/platform/database` | `@the-abyss/database` | MOVED |
+| `packages/langflow-client` | `packages/platform/langflow-client` | `@the-abyss/langflow-client` | MOVED |
+| `packages/document-ingestion` | `packages/platform/document-ingestion` | `@the-abyss/document-ingestion` | MOVED |
+| `packages/literature-harvester` | `packages/platform/literature-harvester` | `@the-abyss/literature-harvester` | MOVED |
+| `packages/clinical-references` | `packages/clinical/clinical-references` | `@the-abyss/clinical-references` | MOVED |
+| `packages/shared-types` | `packages/shared/shared-types` | `@the-abyss/shared-types` | MOVED |
+| `packages/sentra-ui` | `packages/shared/sentra-ui` | `@the-abyss/ui` | MOVED |
+| `packages/design-token` | `packages/shared/design-token` | `@the-abyss/design-token` | MOVED |
+| `packages/config-eslint` | `packages/tooling/config-eslint` | `@the-abyss/config-eslint` | MOVED |
+| `packages/config-typescript` | `packages/tooling/config-typescript` | `@the-abyss/config-typescript` | MOVED |
 | `packages/integration-bridge` | *(not moved)* | `@the-abyss/integration-bridge` | EXCLUDED |
 
 **NOT PRESENT** (in mission doc target, already renamed in prior sessions):
@@ -225,9 +225,9 @@ pnpm turbo run test
 | Commit | Description |
 |---|---|
 | `8143709` | PRE-FLIGHT: repair stale tsconfig paths |
-| *(pending)* | HANDOFF + ADR |
-| *(pending)* | git mv structural move |
-| *(pending)* | workspace and config update |
-| *(pending)* | boundary enforcement |
-| *(pending)* | agent docs update |
-| *(pending)* | execution report |
+| `fa0103c` | HANDOFF + ADR |
+| `d38e869` | git mv structural move |
+| `2f925e0` | workspace and config update |
+| *(working tree)* | boundary enforcement |
+| *(working tree)* | agent docs update |
+| *(working tree)* | execution report + verification report |

@@ -31,6 +31,14 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - Cursor rules now include an always-on Chief directive bridge at `.cursor/rules/05-chief-directive-mode.mdc`.
 - Future Cursor sessions should front-load latest official notes when relevant, respond in Bahasa Indonesia to Chief, and stop for explicit `GO` before implementation.
 - AGENTS.md corrected (2026-04-30 19:06) to clarify `packages/database` scope: it is platform-level only; healthcare apps own their databases (see `.agent/DECISIONS.md` 2026-04-27).
+- Workspace ghost mitigation applied: `tooling/kilo/worktrees/**` is excluded from discovery so pnpm does not resolve the stale flat-repo snapshot as an active workspace source.
+- **Cursor settings (2026-04-30):** `.vscode/settings.json` adds monorepo watcher/search excludes; `docs/cursor/cursor-settings-profiles.md` documents Solo-Dev-Perf vs NonCoder-Simple user JSON blocks, baseline audit of Chief's User settings, and hook cost (keep `autofix-loop`, optional local-disable); `.cursorindexingignore`: typo `apps/coorporate/` fixed earlier; follow-up fix **`apps/orchestrator/` → `platform/orchestrator/`** so indexing exclude matches AGENTS.md layout.
+
+**Session addendum (2026-05-01):**
+- `ABYSS-REPO-STRUCTURE-001` package taxonomy mission now has Phase 7 artifacts at `docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-EXECUTION-REPORT.md` and `docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-VERIFICATION-REPORT.md`.
+- Phase 5 boundary enforcement was implemented in `packages/tooling/config-eslint/base.js`.
+- Phase 6 steering/docs were synced across `AGENTS.md`, `README.md`, `.agent/CONTEXT.md`, `.agent/ARCHITECTURE.md`, `docs/templates/HANDOFF.md`, and `docs/architecture/sentra-monorepo-diagram.md`.
+- Final validation commands were run; `pnpm install` passed, while `build`, `lint`, and `test` remained blocked by local module-resolution instability in the `.pnpm` tree rather than by taxonomy path drift.
 
 ---
 
