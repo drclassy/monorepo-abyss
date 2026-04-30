@@ -1,4 +1,4 @@
-# Avvcenna Medical Library (AML) — Inventory & Hierarchy
+# Classy Medical Library (AML) — Inventory & Hierarchy
 <!-- Last Updated: 2026-04-23 · Milestone: 100 Documents -->
 
 ## §0 — Summary
@@ -20,7 +20,7 @@ Library ini sekarang menampung **100 dokumen PDF** valid yang mencakup 36 spesia
 4. **sur** (Surgery): 5 files (Kompilasi PABI, Safe Surgery WHO, Karies, Trauma)
 
 ## §3 — Engineering Access
-Path: `V:\avcn-sentra\avvcenna-med-lib`
+Path: `V:\avcn-sentra\classy-med-lib`
 Format: `.pdf` (Verified Header)
 Security: 100% HTTPS Secure Source Ingestion.
 

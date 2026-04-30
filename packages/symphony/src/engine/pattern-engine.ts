@@ -1,4 +1,4 @@
-// Designed and constructed by Avvcenna+.
+// Designed and constructed by Classy.
 /**
  * pattern-engine — SYMPHONY generic clinical pattern evaluator.
  *

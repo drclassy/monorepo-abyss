@@ -72,7 +72,7 @@ packages:
 ```markdown
 # 🌐 The Abyss: Global Agent Steering
 
-Semua Agen AI wajib mematuhi **Avvcenna+ Workflow**:
+Semua Agen AI wajib mematuhi **Classy Workflow**:
 1. **HANDOFF FIRST:** Dilarang coding tanpa `HANDOFF.md` untuk sesi kerja aktif.
 2. **GO-GATE:** Eksekusi hanya setelah ada string `✅ GO` dari Chief.
 3. **TRACEABILITY:** Commit wajib menggunakan trailer `Agent:`, `Phase:`, `Handoff:`.

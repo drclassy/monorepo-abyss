@@ -15,7 +15,7 @@ Thank you for your interest in contributing to The Abyss monorepo!
 ## 🎯 CODE OF CONDUCT
 
 - Be respectful and inclusive
-- Follow Avvcenna+ Workflow (HANDOFF.md, GO-Gate)
+- Follow Classy Workflow (HANDOFF.md, GO-Gate)
 - Maintain traceability in all work
 - Prioritize security and compliance
 
@@ -26,7 +26,7 @@ Thank you for your interest in contributing to The Abyss monorepo!
 ### 1. Fork and Clone
 
 ```bash
-git clone https://github.com/Avvcenna+/abyss-monorepo.git
+git clone https://github.com/drclassy/abyss-monorepo.git
 cd abyss-monorepo
 ```
 

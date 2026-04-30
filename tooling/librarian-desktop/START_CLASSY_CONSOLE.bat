@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-title Avvcenna Guardian Console
+title Classy Guardian Console
 
 set "REPO_ROOT=V:\avcn-sentra\abyss-monorepo"
 set "CONSOLE_DIR=%REPO_ROOT%\tooling\librarian-desktop"

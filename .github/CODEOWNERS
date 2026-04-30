@@ -2,48 +2,48 @@
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Global Owners
-* @classy
+* @drclassy
 
 # AI Steering & Governance
-.agents/ @classy
-.agents/AGENTS.md @classy
-.agents/MCP-CONFIG.json @classy
+.agents/ @drclassy
+.agents/AGENTS.md @drclassy
+.agents/MCP-CONFIG.json @drclassy
 
 # CI/CD & Automation
-.github/ @classy
-.github/workflows/ @classy
-turbo.json @classy
-pnpm-workspace.yaml @classy
+.github/ @drclassy
+.github/workflows/ @drclassy
+turbo.json @drclassy
+pnpm-workspace.yaml @drclassy
 
 # Healthcare Domain (Strict Compliance)
-apps/healthcare/ @classy
-packages/fhir-engine/ @classy
-packages/database/ @classy
+apps/healthcare/ @drclassy
+packages/fhir-engine/ @drclassy
+packages/database/ @drclassy
 
 # Academic Domain
-apps/academic/ @classy
+apps/academic/ @drclassy
 
 # Internal Tools
-apps/internal/ @classy
-tooling/ @classy
+apps/internal/ @drclassy
+tooling/ @drclassy
 
 # Incubator (R&D)
-apps/incubator/ @classy
+apps/incubator/ @drclassy
 
 # Orchestrator & AI Flows
-apps/orchestrator/ @classy
-flows/ @classy
-packages/langflow-client/ @classy
+apps/orchestrator/ @drclassy
+flows/ @drclassy
+packages/langflow-client/ @drclassy
 
 # Shared Packages
-packages/ui/ @classy
-packages/shared-types/ @classy
-packages/vector-store/ @classy
-packages/iskandar-gatekeeper/ @classy
+packages/ui/ @drclassy
+packages/shared-types/ @drclassy
+packages/vector-store/ @drclassy
+packages/iskandar-gatekeeper/ @drclassy
 
 # Infrastructure
-infrastructure/ @classy
-docs/ @classy
+infrastructure/ @drclassy
+docs/ @drclassy
 
 # Documentation
-*.md @classy
+*.md @drclassy

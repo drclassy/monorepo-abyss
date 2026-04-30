@@ -1,6 +1,6 @@
 # ============================================================
 # AVVCENNA+ — Documentation Guard v2
-# Rebuilt by Avvcenna+ — 2026-04-11
+# Rebuilt by Classy — 2026-04-11
 # ============================================================
 # Runs on every push/PR to main or develop.
 # Checks that documentation is complete and healthy.
@@ -170,7 +170,7 @@ jobs:
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "  ⚡ AVVCENNA+ Doc Guard — Results"
-          echo "  Rebuilt by Avvcenna+ — 2026"
+          echo "  Rebuilt by Classy — 2026"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "  Doc Completeness : ${{ needs.doc-completeness.result }}"
           echo "  Repo Efficiency  : ${{ needs.repo-efficiency.result }}"

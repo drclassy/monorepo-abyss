@@ -1,4 +1,4 @@
-// Designed and constructed by Avvcenna+.
+// Designed and constructed by Classy.
 /**
  * symptom-signals — RED test suite for the deterministic Indonesian
  * symptom-signals NLP module.

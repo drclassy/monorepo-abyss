@@ -281,7 +281,7 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
-  apps/community/avvcenna-memory:
+  apps/community/classy-memory:
     dependencies:
       '@react-three/drei':
         specifier: ^10.7.7
@@ -369,7 +369,7 @@ importers:
         specifier: ^5
         version: 5.9.3
 
-  apps/community/avvcenna-transformer:
+  apps/community/classy-transformer:
     dependencies:
       '@anthropic-ai/sdk':
         specifier: ^0.39.0
@@ -574,7 +574,7 @@ importers:
         specifier: ^3.0.0
         version: 3.2.4(@edge-runtime/vm@3.2.0)(@types/debug@4.1.13)(@types/node@22.19.17)(jiti@1.21.7)(jsdom@25.0.1(bufferutil@4.1.0))(lightningcss@1.32.0)(msw@2.12.14(@types/node@22.19.17)(typescript@5.9.3))(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3)
 
-  apps/community/avvcenna-transformer/website:
+  apps/community/classy-transformer/website:
     dependencies:
       '@hookform/resolvers':
         specifier: ^3.10.0

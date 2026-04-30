@@ -13,8 +13,8 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 ## Quick Orient (for new thread)
 
 **Branch:** `master` · repo topology sudah kembali tunggal, bersih, dan aktif di jalur `master`; engine close-out anchored on `255c50f`
-**Working tree:** Avvcenna rebrand in-progress (Chief owns) + misc drift — do NOT touch
-**Cursor IDE (2026-04-28):** User-level + profile `Avvcenna+` sudah di-hardten per audit plan — Claude Code bypass permission dimatikan, wrapper dihapus, overlap extension dikurangi; detail di `.agent/sessions/2026-04-28.md`.
+**Working tree:** Classy rebrand in-progress (Chief owns) + misc drift — do NOT touch
+**Cursor IDE (2026-04-28):** User-level + profile `Classy` sudah di-hardten per audit plan — Claude Code bypass permission dimatikan, wrapper dihapus, overlap extension dikurangi; detail di `.agent/sessions/2026-04-28.md`.
 **Primary mission:**
 1. **Consumer Trial Readiness** — move from core-engine completion into operational rollout preparation.
 2. **Dashboard / ASSIST readiness** — prepare consumer adoption in the correct order: Dashboard first, ASSIST second.
@@ -92,7 +92,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Known Entanglements (DO NOT TOUCH)
 
-1. **Avvcenna rebrand in working tree** — Chief's in-progress. Do NOT commit rebrand files.
+1. **Classy rebrand in working tree** — Chief's in-progress. Do NOT commit rebrand files.
 2. **2 pre-existing stashes** — bukan Claude punya. Do NOT `stash pop`.
 3. **`packages/symphony/.agent/` misplaced hook session artifact** — historical bug residue. Leave as-is unless Chief explicitly orders archive/removal.
 4. **Unrelated working tree drift** — `.env.example`, `.gitignore`, `AGENTS.md`, infra Terraform, dll. Do NOT `git add .` / `-A`.
@@ -120,7 +120,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 ## Do-Not-Touch Contract
 
-- ❌ Tidak commit Avvcenna rebrand working tree (Chief own)
+- ❌ Tidak commit Classy rebrand working tree (Chief own)
 - ❌ Tidak pop stash@{0} atau stash@{1}
 - ❌ Tidak push ke remote tanpa Chief explicit GO
 - ❌ Tidak touch `packages/database` sebagai healthcare target

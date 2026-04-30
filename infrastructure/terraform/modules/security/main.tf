@@ -31,7 +31,7 @@ variable "secret_names" {
     "database-url",
     "anthropic-api-key",
     "langflow-api-url",
-    "avvcenna-api-key",
+    "classy-api-key",
   ]
 }
 

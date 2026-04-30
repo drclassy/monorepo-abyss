@@ -1,7 +1,7 @@
 {
-  "name": "avvcenna-librarian-console",
+  "name": "classy-librarian-console",
   "version": "1.0.0",
-  "description": "Desktop Console for Avvcenna+ Guardian Repo and Sentinel Library",
+  "description": "Desktop Console for Classy Guardian Repo and Sentinel Library",
   "main": "main.js",
   "scripts": {
     "start": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"Remove-Item Env:ELECTRON_RUN_AS_NODE -ErrorAction SilentlyContinue; & '.\\\\node_modules\\\\electron\\\\dist\\\\electron.exe' '.'\""

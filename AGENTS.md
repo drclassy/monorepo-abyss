@@ -31,7 +31,7 @@ corporate, and platform domains.
 | **Node runtime** | >= 22.0.0 |
 | **Build system** | Turborepo v2 |
 | **Primary language** | TypeScript |
-| **Author** | Dr. Ferdi Iskandar (Avvcenna+) |
+| **Author** | Dr. Ferdi Iskandar (Classy) |
 | **License** | UNLICENSED |
 
 ### High-Level Architecture
@@ -69,8 +69,8 @@ v:\avcn-sentra\abyss-monorepo\
 │   │   ├── clinical-simulator/       ← Next.js 16, React 19 (AI clinical case simulation)
 │   │   └── evaluation-engine/        ← Node/TS backend (competency evaluation)
 │   ├── community/
-│   │   ├── avvcenna-memory/          ← Next.js 16, React 19, Tailwind v4, Playwright (memory UI)
-│   │   ├── avvcenna-transformer/     ← Next.js 15, React 19, Tailwind v3, Prisma, Vitest (multi-LLM platform)
+│   │   ├── classy-memory/          ← Next.js 16, React 19, Tailwind v4, Playwright (memory UI)
+│   │   ├── classy-transformer/     ← Next.js 15, React 19, Tailwind v3, Prisma, Vitest (multi-LLM platform)
 │   │   │   └── website/              ← Next.js 14 marketing site
 │   │   └── daf-website/              ← Next.js 15, React 19, Tailwind v3 (foundation site)
 │   ├── corporate/
@@ -411,7 +411,7 @@ coverage threshold: 80% for healthcare apps, 60% for other apps.
 | Runner | Projects | Config Location |
 |--------|----------|-----------------|
 | **Vitest** | Most apps/packages | `vitest.config.ts` at project root |
-| **Playwright** | E2E apps (`sentra-assist`, `sentra-main`, `avvcenna-memory`, `agent-hermes`) | `playwright.config.ts` |
+| **Playwright** | E2E apps (`sentra-assist`, `sentra-main`, `classy-memory`, `agent-hermes`) | `playwright.config.ts` |
 | **Jest** | Legacy vendor subprojects only (`agent-hermes/vendor/*`) | `jest.config.*` |
 
 ### Typical Vitest Config
@@ -546,7 +546,7 @@ pnpm --filter <healthcare-app> security:semgrep
 - Terraform security module is **Chief-only**.
 - Legacy GCP Cloud SQL configs require encryption at rest and backup retention >= 7 days (enforced by validation).
 - Healthcare subnet is PHI-isolated (`infrastructure/terraform/modules/networking`).
-- Secrets managed via provider-native secret storage or local secure stores (`database-url`, `anthropic-api-key`, `langflow-api-url`, `avvcenna-api-key`).
+- Secrets managed via provider-native secret storage or local secure stores (`database-url`, `anthropic-api-key`, `langflow-api-url`, `classy-api-key`).
 
 ---
 

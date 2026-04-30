@@ -76,7 +76,7 @@ function createWindow() {
     frame: false,
     transparent: true,
     alwaysOnTop: true,
-    title: 'Avvcenna Guardian Console',
+    title: 'Classy Guardian Console',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,

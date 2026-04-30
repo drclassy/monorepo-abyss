@@ -1,4 +1,4 @@
-// Designed and constructed by Avvcenna+.
+// Designed and constructed by Classy.
 /**
  * symptom-signals — deterministic Indonesian symptom-signals NLP evaluator.
  *

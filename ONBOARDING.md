@@ -12,7 +12,7 @@ This project is built to endure extreme structural deficits in Indonesian primar
 
 Clinicians and hospital staff interact with the end-user applications like **AADI** (Autonomous Diagnostic Intelligence) and the **Sentra Dashboard**. These tools automate medical records via ambient voice, validate referrals, and provide multi-model diagnostic consensus, dramatically reducing cognitive load during patient encounters.
 
-Developers and AI agents consume this project through the **Avvcenna+ Genesis Framework**. Contributors participate in a "Contract-First" governance lifecycle. Development starts by defining a task with the Abyss CLI (`pnpm abyss init-task`), which creates a mandatory `HANDOFF.md` document. After implementing features across the Next.js applications or NestJS APIs, changes must pass strict continuous integration checks and receive a manual `GO` approval from the Chief before deployment.
+Developers and AI agents consume this project through the **Classy Genesis Framework**. Contributors participate in a "Contract-First" governance lifecycle. Development starts by defining a task with the Abyss CLI (`pnpm abyss init-task`), which creates a mandatory `HANDOFF.md` document. After implementing features across the Next.js applications or NestJS APIs, changes must pass strict continuous integration checks and receive a manual `GO` approval from the Chief before deployment.
 
 ---
 
@@ -86,7 +86,7 @@ abyss-monorepo/
 
 ## Primary Flows
 
-The most critical flow for any new contributor (human or AI) is the Avvcenna+ Development Workflow. Nothing ships without following this precise sequence.
+The most critical flow for any new contributor (human or AI) is the Classy Development Workflow. Nothing ships without following this precise sequence.
 
 ```text
 Developer / Agent

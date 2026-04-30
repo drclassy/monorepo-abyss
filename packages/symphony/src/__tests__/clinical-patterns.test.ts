@@ -1,4 +1,4 @@
-// Designed and constructed by Avvcenna+.
+// Designed and constructed by Classy.
 /**
  * clinical-patterns — unit tests for Phase 3 SYMPHONY clinical patterns evaluator.
  *

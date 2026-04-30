@@ -1,4 +1,4 @@
-// Designed and constructed by Avvcenna+.
+// Designed and constructed by Classy.
 /**
  * clinical-patterns.parity — parity tests for Phase 3.
  *

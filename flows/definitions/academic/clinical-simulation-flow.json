@@ -59,7 +59,7 @@
     { "source": "evaluator", "target": "feedback-output" }
   ],
   "metadata": {
-    "author": "Dr. Ferdi Iskandar (Avvcenna+)",
+    "author": "Dr. Ferdi Iskandar (Classy)",
     "created_at": "2026-04-19",
     "last_updated": "2026-04-19",
     "langflow_compatible": true

@@ -10,7 +10,7 @@
 |-------|-------|
 | Name | The Abyss |
 | Type | AI-native Turborepo monorepo (polyrepo hybrid) |
-| Author | Dr. Ferdi Iskandar (Avvcenna+) |
+| Author | Dr. Ferdi Iskandar (Classy) |
 | Email | ferdi@sentra.ai |
 | License | UNLICENSED (private) |
 | Engine | Node ≥22, pnpm ≥9 |
@@ -48,7 +48,7 @@ the monorepo. Do not treat "migration to Vertex AI" as the active target.
 | Field | Value |
 |-------|-------|
 | Path | `apps/healthcare/intelligenceboard/` |
-| Package name | `@avvcenna-plus/intelligenceboard` |
+| Package name | `@classy/intelligenceboard` |
 | Type | Next.js 16 server app (custom Express server via server.ts) |
 | Deploy | Railway (`railway.toml`) |
 | Database | Own Neon PostgreSQL via Prisma — **12 migrations active as of 2026-04** |

@@ -1,4 +1,4 @@
-// Designed and constructed by Avvcenna+.
+// Designed and constructed by Classy.
 /**
  * pe-suspect — RED test suite for the deterministic PE (pulmonary embolism)
  * suspect safety gate.

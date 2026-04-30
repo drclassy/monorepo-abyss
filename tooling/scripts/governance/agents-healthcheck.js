@@ -67,7 +67,7 @@ function isSubAppFile(file) {
   const segments = relPath.split(/[/\\]/)
   if (segments.length < 3) return false
   if (segments.includes('vendor')) return false
-  // Skip thin nested workspaces (e.g., avvcenna+-transformer/website/) that lack JET section
+  // Skip thin nested workspaces (e.g., classy-transformer/website/) that lack JET section
   const content = readFileSync(file, 'utf-8')
   if (!content.includes('## 3. JET')) return false
   return true

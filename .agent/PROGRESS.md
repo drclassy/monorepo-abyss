@@ -59,7 +59,7 @@
 
 ## 2026-04-24 02:53 — `57c3bad` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(tooling): add guardian console and literature harvest stack
 - **Files changed**: 27 file(s)
 
@@ -77,7 +77,7 @@ packages/literature-harvester/src/types.ts
 packages/literature-harvester/src/utils.ts
 packages/literature-harvester/tsconfig.json
 pnpm-lock.yaml
-tooling/librarian-desktop/START_AVVCENNA_CONSOLE.bat
+tooling/librarian-desktop/START_CLASSY_CONSOLE.bat
 tooling/librarian-desktop/index.html
 tooling/librarian-desktop/literature-worker/README.md
 tooling/librarian-desktop/literature-worker/package.json
@@ -87,7 +87,7 @@ tooling/librarian-desktop/literature-worker/src/__tests__/server.test.ts
 ---
 ## 2026-04-24 02:54 — `7e10c12` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: test(literature-harvester): avoid committing anchor fixtures
 - **Files changed**: 4 file(s)
 
@@ -99,7 +99,7 @@ packages/literature-harvester/src/__tests__/harvester.test.ts
 ---
 ## 2026-04-24 02:58 — `3826a79` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(console): differentiate guardian and sentinel reply colors
 - **Files changed**: 1 file(s)
 
@@ -110,7 +110,7 @@ tooling/librarian-desktop/index.html
 ---
 ## 2026-04-25 15:07 — `085a6b6` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: chore(repo): retire legacy ai-core package
 - **Files changed**: 17 file(s)
 
@@ -137,7 +137,7 @@ tsconfig.json
 ---
 ## 2026-04-25 15:08 — `240b1d1` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(agent): sync memory backlog
 - **Files changed**: 5 file(s)
 
@@ -152,7 +152,7 @@ tsconfig.json
 ---
 ## 2026-04-25 15:12 — `a411856` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: chore(repo): consolidate governance and retire legacy docs
 - **Files changed**: 38 file(s)
 
@@ -182,7 +182,7 @@ docs/cursor-qrh/pnpm-lock.yaml
 ---
 ## 2026-04-25 15:12 — `9545f12` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(platform): add orchestrator and sentra portal workspaces
 - **Files changed**: 140 file(s)
 
@@ -212,7 +212,7 @@ platform/orchestrator/src/flows/flows.module.ts
 ---
 ## 2026-04-25 15:12 — `d9f65db` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(rag): add vertex rag package
 - **Files changed**: 24 file(s)
 
@@ -242,7 +242,7 @@ packages/vertex-rag/src/official-uploader.ts
 ---
 ## 2026-04-25 15:13 — `808d632` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(agent): add clinical curation dossiers
 - **Files changed**: 6 file(s)
 
@@ -258,7 +258,7 @@ platform/AGENTS.md
 ---
 ## 2026-04-25 15:14 — `8a3fb47` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(library): add medical corpus snapshot
 - **Files changed**: 110 file(s)
 
@@ -288,7 +288,7 @@ library/medical/ent/PNPK_2018_-_Tata_Laksana_Tonsilitis.pdf
 ---
 ## 2026-04-25 15:14 — `2b6cb2e` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: chore(workspace): refresh root lockfile and progress
 - **Files changed**: 2 file(s)
 
@@ -300,7 +300,7 @@ pnpm-lock.yaml
 ---
 ## 2026-04-25 15:15 — `a6f6b0a` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(agent): capture residual session logs
 - **Files changed**: 2 file(s)
 
@@ -331,7 +331,7 @@ packages/symphony/.agent/(misplaced hook session artifact)
 - **Next recommended action**: write the diagnosis-engine design frame first; do not start Dashboard/ASSIST rewiring before that design is locked.
 ## 2026-04-26 00:14 — `c7ed75a` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: chore(repo): tighten vertex-rag boundary and prune orphan refs
 - **Files changed**: 8 file(s)
 
@@ -349,7 +349,7 @@ tooling/scripts/rag/trigger-import.ts
 ---
 ## 2026-04-26 00:16 — `b3715f5` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(agent): sync architecture lock and progress log
 - **Files changed**: 2 file(s)
 
@@ -361,7 +361,7 @@ tooling/scripts/rag/trigger-import.ts
 ---
 ## 2026-04-27 03:16 — `fcf395c` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(aadi-v2): add two-layer WBS with Claude/Codex allocation
 - **Files changed**: 1 file(s)
 
@@ -372,7 +372,7 @@ docs/superpowers/specs/2026-04-27-aadi-v2-wbs.md
 ---
 ## 2026-04-27 03:37 — `31b0ab7` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): add AADI V2 shared contracts
 - **Files changed**: 4 file(s)
 
@@ -386,7 +386,7 @@ packages/symphony/src/index.ts
 ---
 ## 2026-04-27 03:44 — `7ecd6fa` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: [ABYSS-RAG-001] [RAG] Implement local-first PDF OCR ingestion layer
 - **Files changed**: 28 file(s)
 
@@ -416,7 +416,7 @@ packages/document-ingestion/tests/markdown-renderer.test.ts
 ---
 ## 2026-04-27 03:56 — `24d9fc1` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): add AADI V2 syndrome classifier
 - **Files changed**: 4 file(s)
 
@@ -430,7 +430,7 @@ packages/symphony/src/index.ts
 ---
 ## 2026-04-27 04:06 — `958120c` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): add AADI V2 diagnosis packs and native differential
 - **Files changed**: 5 file(s)
 
@@ -445,7 +445,7 @@ packages/symphony/src/index.ts
 ---
 ## 2026-04-27 04:16 — `cd3d2e3` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: [ABYSS-RAG-002] [RAG] Add dry-run PDF ingestion artifacts pipeline
 - **Files changed**: 21 file(s)
 
@@ -475,7 +475,7 @@ packages/sentra-rag/tests/pdf-discovery.test.ts
 ---
 ## 2026-04-27 04:17 — `988dfd0` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: [ABYSS-RAG-003] [RAG] Add knowledge source registry and versioning layer
 - **Files changed**: 15 file(s)
 
@@ -500,7 +500,7 @@ packages/sentra-rag/tests/supersession.test.ts
 ---
 ## 2026-04-27 04:29 — `22565b7` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: chore(gcp): standardize GCP env vars across vertex-rag and sentra-rag
 - **Files changed**: 7 file(s)
 
@@ -517,7 +517,7 @@ packages/vertex-rag/src/search-connector.ts
 ---
 ## 2026-04-27 19:23 — `efe8359` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): add AADI V2 reasoning arbiter with safety dominance
 - **Files changed**: 4 file(s)
 
@@ -531,7 +531,7 @@ packages/symphony/src/index.ts
 ---
 ## 2026-04-27 19:30 — `bc19a24` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): add AADI V2 explainability and clinical disposition
 - **Files changed**: 5 file(s)
 
@@ -546,7 +546,7 @@ packages/symphony/src/index.ts
 ---
 ## 2026-04-27 19:41 — `f730478` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): wire AADI V2 native pipeline into assess.ts
 - **Files changed**: 3 file(s)
 
@@ -559,7 +559,7 @@ packages/symphony/src/engine/assess.ts
 ---
 ## 2026-04-27 21:05 — `0184a6d` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: fix(symphony): observable AADI V2 fallback + native→trafficLight bridge
 - **Files changed**: 2 file(s)
 
@@ -571,7 +571,7 @@ packages/symphony/src/engine/assess.ts
 ---
 ## 2026-04-27 21:13 — `0a211a8` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): add AADI V2 shadow comparison engine
 - **Files changed**: 6 file(s)
 
@@ -587,7 +587,7 @@ packages/symphony/src/index.ts
 ---
 ## 2026-04-27 21:19 — `16c5546` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): add AADI V2 parity verification engine
 - **Files changed**: 4 file(s)
 
@@ -601,7 +601,7 @@ packages/symphony/src/index.ts
 ---
 ## 2026-04-27 21:42 — `62759d7` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): add AADI V2 interoperability stubs
 - **Files changed**: 7 file(s)
 
@@ -618,7 +618,7 @@ packages/symphony/src/interop/symphony-to-fhir.ts
 ---
 ## 2026-04-27 21:52 — `63fee04` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: fix(symphony): widen shadow old-path availability + document status transition rule
 - **Files changed**: 3 file(s)
 
@@ -631,7 +631,7 @@ packages/symphony/src/engine/shadow-comparison.ts
 ---
 ## 2026-04-27 22:06 — `5d97a85` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(symphony): formal-defer Sprint 4+ items + record Tahap A status lift readiness
 - **Files changed**: 1 file(s)
 
@@ -642,7 +642,7 @@ docs/superpowers/specs/2026-04-27-aadi-v2-feature-coverage-matrix.md
 ---
 ## 2026-04-27 22:17 — `885ecce` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): lift metadata.status to runtime-derived contract v0.8.0
 - **Files changed**: 9 file(s)
 
@@ -661,7 +661,7 @@ packages/symphony/src/engine/assess.ts
 ---
 ## 2026-04-27 23:30 — `e2dd48a` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(orchestrator): wire DiagnosisFlowSaga to real assessSymphonyInput()
 - **Files changed**: 8 file(s)
 
@@ -679,7 +679,7 @@ pnpm-lock.yaml
 ---
 ## 2026-04-27 23:41 — `002f8e5` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: fix(orchestrator): PHI-safe DLQ + remove any + narrow determinism claim
 - **Files changed**: 3 file(s)
 
@@ -692,7 +692,7 @@ platform/orchestrator/src/sagas/diagnosis-flow.saga.ts
 ---
 ## 2026-04-28 08:13 — `97a9861` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): canonical AVPU mapper — retire toAvpu() and consciousnessToAvpu()
 - **Files changed**: 5 file(s)
 
@@ -707,7 +707,7 @@ packages/symphony/src/index.ts
 ---
 ## 2026-04-28 08:27 — `e81a7e6` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(symphony): preserve 'unknown' consciousness in snapshot.patient.avpuManual
 - **Files changed**: 3 file(s)
 
@@ -720,7 +720,7 @@ packages/symphony/src/engine/clinical-facts.ts
 ---
 ## 2026-04-28 08:51 — `31e3683` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: test(symphony): complete classifier function coverage — AVPU/GCS/NEWS2 scoring
 - **Files changed**: 2 file(s)
 
@@ -732,7 +732,7 @@ packages/symphony/src/__tests__/news2.test.ts
 ---
 ## 2026-04-29 00:47 — `f338b3f` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: test(fhir-engine): lock modernization baseline expectations
 - **Files changed**: 1 file(s)
 
@@ -743,7 +743,7 @@ packages/fhir-engine/src/__tests__/modernization-baseline.test.ts
 ---
 ## 2026-04-29 00:48 — `4bd0dd6` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(fhir-engine): clarify bounded modernization role
 - **Files changed**: 2 file(s)
 
@@ -755,7 +755,7 @@ packages/fhir-engine/src/index.ts
 ---
 ## 2026-04-29 00:50 — `7a394ac` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: refactor(fhir-engine): make transformer surface honest
 - **Files changed**: 4 file(s)
 
@@ -769,7 +769,7 @@ packages/fhir-engine/src/transformer.ts
 ---
 ## 2026-04-29 00:52 — `136dfae` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(fhir-engine): declare bounded resource support matrix
 - **Files changed**: 4 file(s)
 
@@ -783,7 +783,7 @@ packages/fhir-engine/src/validator.ts
 ---
 ## 2026-04-29 00:53 — `1924f75` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(fhir-engine): align package wording with R5-target path
 - **Files changed**: 3 file(s)
 
@@ -796,7 +796,7 @@ packages/fhir-engine/src/version-strategy.ts
 ---
 ## 2026-04-29 00:55 — `3e43c8d` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(fhir-engine): add validation hook seam for future promotion
 - **Files changed**: 3 file(s)
 
@@ -809,7 +809,7 @@ packages/fhir-engine/src/validation-hooks.ts
 ---
 ## 2026-04-29 00:57 — `c3842b1` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(fhir-engine): close modernization baseline handoff
 - **Files changed**: 2 file(s)
 
@@ -821,7 +821,7 @@ packages/fhir-engine/src/__tests__/fhir-engine.test.ts
 ---
 ## 2026-04-29 01:04 — `e603d1d` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: chore(fhir-engine): add scoped tsconfig.json — close typecheck noise
 - **Files changed**: 1 file(s)
 
@@ -832,7 +832,7 @@ packages/fhir-engine/tsconfig.json
 ---
 ## 2026-04-29 01:20 — `ba21f35` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: test(fhir-engine): lock deferred resource baseline behavior
 - **Files changed**: 1 file(s)
 
@@ -843,7 +843,7 @@ packages/fhir-engine/src/__tests__/deferred-resource-baseline.test.ts
 ---
 ## 2026-04-29 01:25 — `b61eabe` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(fhir-engine): add bounded Condition validation
 - **Files changed**: 8 file(s)
 
@@ -861,7 +861,7 @@ packages/fhir-engine/src/validator.ts
 ---
 ## 2026-04-29 01:28 — `d7fcc07` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(fhir-engine): add bounded RiskAssessment validation
 - **Files changed**: 8 file(s)
 
@@ -879,7 +879,7 @@ packages/fhir-engine/src/validator.ts
 ---
 ## 2026-04-29 01:32 — `47d677f` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(fhir-engine): add bounded DiagnosticReport validation
 - **Files changed**: 8 file(s)
 
@@ -897,7 +897,7 @@ packages/fhir-engine/src/validator.ts
 ---
 ## 2026-04-29 01:33 — `a964e47` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: feat(fhir-engine): reconcile validation seam with expanded support matrix
 - **Files changed**: 2 file(s)
 
@@ -909,7 +909,7 @@ packages/fhir-engine/src/validation-hooks.ts
 ---
 ## 2026-04-29 01:35 — `0cde716` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(fhir-engine): close deferred resource validation expansion
 - **Files changed**: 1 file(s)
 
@@ -920,7 +920,7 @@ packages/fhir-engine/src/validation-hooks.ts
 ---
 ## 2026-04-29 12:01 — `8cf17a5` — abyss-core
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: chore(repo): sync completed AADI V2 and RAG workstreams
 - **Files changed**: 134 file(s)
 
@@ -950,7 +950,7 @@ docs/guides/aadiv2.md
 ---
 ## 2026-04-29 12:20 — `882775a` — master
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: fix(orchestrator): harden saga DLQ and persistence typing
 - **Files changed**: 7 file(s)
 
@@ -967,7 +967,7 @@ platform/orchestrator/src/sagas/saga.repository.ts
 ---
 ## 2026-04-29 12:35 — `9270e83` — master
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: docs(agent): record SYMPHONY core completion state
 - **Files changed**: 2 file(s)
 
@@ -1004,7 +1004,7 @@ the repository tree.
   passes.
 - **Second-pass repo cleanup:** active product/docs surfaces were further
   neutralized across `sentra-main`, `intelligenceboard`, `sentra-assist`,
-  `referralink`, `avvcenna-transformer`, root `README.md`, and
+  `referralink`, `classy-transformer`, root `README.md`, and
   `ONBOARDING.md`, so the remaining hits are now limited to ADR/history,
   spelling dictionaries, generic templates, or evaluation artifacts.
 - **Second-pass verification:** `pnpm --filter @the-abyss/sentra-assist
@@ -1017,7 +1017,7 @@ the repository tree.
   phrasing, leaving the targeted active scope grep-clean.
 ## 2026-04-30 16:53 — `211fc48` — master
 
-- **Agent**: Avvcenna+
+- **Agent**: Classy
 - **Commit**: chore(repo): sync GCP exit, doc normalization, and repo cleanup
 - **Files changed**: 134 file(s)
 
@@ -1042,6 +1042,80 @@ docs/cursor/docs/superpowers/specs/2026-04-11-cursor-handbook-design.md
 docs/cursor/media/handbook.html
 docs/cursor/media/icon.svg
 docs/cursor/package.json
+```
+
+---
+## 2026-04-30 17:04 — `ada5d8a` — master
+
+- **Agent**: Classy
+- **Commit**: docs(governance): finalize cursor and docs archive follow-up
+- **Files changed**: 53 file(s)
+
+```
+.agent/PROGRESS.md
+.agent/sessions/2026-04-30.md
+.cursor/rules/05-chief-directive-mode.mdc
+docs/README.md
+docs/archive/README.md
+docs/archive/cursor-handbook/.vscodeignore
+docs/archive/cursor-handbook/cursor-handbook-1.0.0.vsix
+docs/archive/cursor-handbook/docs/superpowers/plans/2026-04-11-cursor-handbook-vsix.md
+docs/archive/cursor-handbook/docs/superpowers/specs/2026-04-11-cursor-handbook-design.md
+docs/archive/cursor-handbook/media/handbook.html
+docs/archive/cursor-handbook/media/icon.svg
+docs/archive/cursor-handbook/package.json
+docs/archive/cursor-handbook/pnpm-lock.yaml
+docs/archive/cursor-handbook/src/extension.ts
+docs/archive/cursor-handbook/tsconfig.json
+docs/archive/handbook/avcn-commands.html
+docs/archive/handbook/avcn-tips.html
+docs/archive/handbook/fonts/geistmono/GeistMono-Black.woff2
+docs/archive/handbook/fonts/geistmono/GeistMono-BlackItalic.woff2
+docs/archive/handbook/fonts/geistmono/GeistMono-Bold.woff2
+```
+
+---
+## 2026-04-30 17:26 — `a2bb24b` — master
+
+- **Agent**: Classy
+- **Commit**: chore(governance): untrack local ai artifacts
+- **Files changed**: 129 file(s)
+
+```
+.agent/01_PANDUAN_PENGUMPULAN_BAHAN_SENTRA_CDSS_v1.md
+.agent/CURATION_TASKS.md
+.agent/MASTER_CONTEXT_2026-04-19.md
+.agent/MASTER_SITREP.md
+.agent/PROGRESS.archive.md
+.agent/reports/2026-04-20-symphony-alignment.md
+.agent/reports/2026-04-20-symphony-coverage-audit.md
+.agent/reports/2026-04-23-abyss-core-rag-bucket-audit.md
+.agent/reports/2026-04-23-abyss-core-runtime-rag-bucket-audit.md
+.agent/reports/2026-04-23-abyss-core-tooling-docs-bucket-audit.md
+.agent/reports/2026-04-23-rag-bucket-status.txt
+.agent/reports/2026-04-23-rag-bucket.pathspec
+.agent/reports/2026-04-23-runtime-rag-bucket-status.txt
+.agent/reports/2026-04-23-runtime-rag-bucket.pathspec
+.agent/reports/2026-04-23-tooling-docs-bucket-status.txt
+.agent/reports/2026-04-23-tooling-docs-bucket.pathspec
+.agent/sessions/2026-04-13.md
+.agent/sessions/2026-04-14.md
+.agent/sessions/2026-04-15-audit-clearance.md
+.agent/sessions/2026-04-15-audit-gitignore-patches.md
+```
+
+---
+## 2026-04-30 17:51 — `bfd7e3c` — master
+
+- **Agent**: Classy
+- **Commit**: chore(branding): refresh repo and portal avatar
+- **Files changed**: 4 file(s)
+
+```
+.github/abyss.png
+platform/sentra-portal/components/kokonutui/profile-01.tsx
+platform/sentra-portal/components/kokonutui/top-nav.tsx
+platform/sentra-portal/public/avatars/abyss-doctor.png
 ```
 
 ---

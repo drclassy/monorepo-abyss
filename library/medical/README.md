@@ -1,10 +1,10 @@
-# Avvcenna Medical Library (AML) — The Penthouse
+# Classy Medical Library (AML) — The Penthouse
 <!-- Single Source of Truth for Clinical References & Medical Literature -->
 <!-- Last Updated: 2026-04-23 -->
 
 ## §0 — Mission
 **"Setiap Nyawa Berharga"**
-Library ini adalah repositori pusat untuk seluruh literatur medis, pedoman praktik klinis (PPK), dan data farmakologi yang digunakan oleh ekosistem **Avvcenna+** dan **Sentra Healthcare Solutions**. Data di sini menjadi "otak" bagi `SentraRAGEngine` dan asisten klinis Kate Voss.
+Library ini adalah repositori pusat untuk seluruh literatur medis, pedoman praktik klinis (PPK), dan data farmakologi yang digunakan oleh ekosistem **Classy** dan **Sentra Healthcare Solutions**. Data di sini menjadi "otak" bagi `SentraRAGEngine` dan asisten klinis Kate Voss.
 
 ## §1 — Directory Structure (36 Pillars)
 Setiap folder menggunakan kode 3-huruf sebagai standar pengelompokan disiplin ilmu kedokteran spesialisik:
@@ -60,5 +60,5 @@ Pipeline `SentraRAGEngine` melakukan scanning rekursif terhadap folder ini.
 - **Store:** Neon PostgreSQL (pgvector)
 
 ---
-**Chief:** Dr. Ferdi Iskandar (Avvcenna+)
+**Chief:** Dr. Ferdi Iskandar (Classy)
 **Representative:** Kate Voss

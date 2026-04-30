@@ -1,4 +1,4 @@
-// Designed and constructed by Avvcenna+.
+// Designed and constructed by Classy.
 /**
  * pattern-types — internal type definitions for the SYMPHONY generic pattern
  * evaluator. These are engine-internal; consumers import only the public

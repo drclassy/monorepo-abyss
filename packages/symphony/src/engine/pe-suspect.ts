@@ -1,4 +1,4 @@
-// Designed and constructed by Avvcenna+.
+// Designed and constructed by Classy.
 /**
  * Pulmonary Embolism (PE) Suspect — deterministic safety gate.
  *

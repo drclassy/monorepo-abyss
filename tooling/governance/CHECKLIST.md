@@ -82,5 +82,5 @@
 
 ---
 
-*Maintained by Avvcenna+ — dr. Ferdi Iskandar*
+*Maintained by Classy — dr. Ferdi Iskandar*
 *Last updated: April 2026*

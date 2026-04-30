@@ -20,7 +20,7 @@ Quick guide for new engineers from zero to first build.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Avvcenna+/abyss-monorepo.git
+git clone https://github.com/drclassy/abyss-monorepo.git
 cd abyss-monorepo
 
 # 2. Install all dependencies

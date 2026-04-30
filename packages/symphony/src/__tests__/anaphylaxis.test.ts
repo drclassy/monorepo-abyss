@@ -1,4 +1,4 @@
-// Designed and constructed by Avvcenna+.
+// Designed and constructed by Classy.
 /**
  * anaphylaxis — RED test suite for the deterministic anaphylaxis safety gate.
  *
