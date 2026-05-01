@@ -1,6 +1,6 @@
 # PROGRESS.md — The Abyss (Monorepo Root)
 <!-- Agent MUST update at every session end or completed JET phase. -->
-<!-- Last updated: 2026-04-30 -->
+<!-- Last updated: 2026-05-01 -->
 
 ---
 
@@ -8,11 +8,20 @@
 
 |Field|Value|
 |-------|-------|
-| **Last updated** | 2026-04-30 |
+| **Last updated** | 2026-05-01 |
 | **Active branch** | `master` |
 | **Active JET phase** | GO granted — Chief authorized all classes (A/B/C) |
 | **Next major initiative** | Consumer Trial Readiness: Dashboard/ASSIST readiness, shadow telemetry, and limited trial gating |
+| **CI (2026-05-01)** | GitHub Actions refactored to vendor-clean reusable stack (`reusable-verify.yml`, maintenance, security hardening, fork-safe auto-fix); Chief to align branch protection required checks |
 | **Recent tooling** | Cursor IDE audit executed locally (see `.agent/sessions/2026-04-28.md`): Claude Code permission posture tightened, wrapper removed, overlapping extensions trimmed; 2026-04-30 added always-on Chief directive bridge for Cursor rule flow and reclassified the root `docs/` surface into active vs archive buckets; 2026-04-30 excluded `tooling/kilo/worktrees/**` from workspace discovery to prevent ghost package duplicates; 2026-04-30 landed workspace `.vscode/settings.json` (watcher/search exclude), fixed `.cursorindexingignore` corporate path typo + follow-up **`platform/orchestrator/`** indexing path (was incorrect `apps/orchestrator/`), and added `docs/cursor/cursor-settings-profiles.md` (solo vs non-coder templates + hooks eval) |
+
+---
+
+## 2026-05-01 18:51 — QRH handbook redesign patuh Sentra token
+
+- **Agent:** Codex (session)  
+- **What:** Redesign `docs/handbook/avcn-commands.html` untuk compliance token Sentra: menautkan `packages/shared/design-token/packages/design-tokens/sentra-tokens.css`, menghapus hardcoded warna pada stylesheet lokal, memperbaiki path font handbook ke `docs/handbook/fonts/geistmono/*`, menambahkan struktur semantik ringan dan focus-visible token.  
+- **Files changed:** `docs/handbook/avcn-commands.html`, `.agent/HANDOFF.md`, `.agent/PROGRESS.md`, `.agent/sessions/2026-05-01.md`
 
 ---
 
@@ -54,6 +63,27 @@
 - Broad consumer rollout remains blocked until Dashboard/ASSIST readiness and shadow telemetry gates are explicitly defined.
 - Limited trial should not start until operational monitoring, fallback handling, and rollback expectations are locked.
 - Retrieval packages still need boundary discipline so they do not drift into parallel reasoning or shadow-clinical authority.
+
+---
+
+## 2026-05-01 — ClinicalTrajectory coverage truth locked
+
+- **What:** Completed the required CT coverage-map analysis against the exact
+  canonical source set and wrote the implementation-ready truth map into
+  `.agent/HANDOFF.md`.
+- **Truth locked:** `2576984` landed only the CT v1 shared contract + fixtures.
+  The canonical **52 trajectories / 5 quadrants** taxonomy is still a target,
+  not an executable engine. Current executable trajectory behavior remains in
+  legacy Intelligenceboard / Assist analyzers.
+- **Main analytical outcome:** current coverage is strongest only around the
+  legacy acute vital-based family; mortality/EOL, chronic progression,
+  treatment-linked response, and operational quadrants are mostly partial or
+  missing.
+- **Next safe path:** preserve current legacy behavior first, then add a
+  canonical adapter from legacy outputs into `ClinicalTrajectoryV1`, plus an
+  explicit coverage registry for the 52-taxonomy before claiming any engine
+  completion.
+
 ## 2026-04-25 — `ai-core` retired from active workspace
 
 **Event:** Chief authorized full staged removal of legacy `packages/ai-core`, confirmed as baggage from a cancelled chatbot/AI experiment.
@@ -1469,3 +1499,23 @@ docs/specs/ct_spec_v_1.md
 - **Follow-up**: shared-types lacks a native `test` script; node:test resolves `'./clinical-trajectory'` only with explicit `.ts` extension or via tsx. Workaround: invoke IB's `tsx` from shared-types. Adding a `test` script to `packages/shared/shared-types/package.json` deferred to a separate commit to keep this change additive only.
 
 ---
+
+## 2026-05-01 18:05 — ClinicalTrajectory scope clarified for future threads
+
+- **Agent**: Codex
+- **What**: Added a focused `.agent/HANDOFF.md` reset so future Codex threads do
+  not confuse the landed CT v1 contract with the unimplemented 52-trajectory
+  engine target defined in `docs/task/`.
+- **Canonical clarification**:
+  - `docs/task/Feature-Clinical Trajectory.md` = target **52 trajectories / 5 quadrants** taxonomy
+  - `docs/task/Input for Clinical Trajectory.md` = target CT input-output shape
+  - `docs/task/Summary Clinical Trajectory.md` = target modeling architecture and validation posture
+  - commit `2576984` = **contract-first CT v1 shell only**, not full engine logic
+  - executable logic still lives in existing trajectory analyzers / momentum / convergence / baseline helpers
+- **Next required analytical step**: build a coverage map from `docs/task` 52-taxonomy
+  to the existing executable engine surfaces before making any claim that CT logic
+  or algorithms are complete.
+
+---
+
+[2026-05-01 19:06] CT Adapter Phase A complete — 14/14 tests pass. Files: ct-adapter.ts (new), ct-coverage-registry.ts (new, 52 entries), ct-adapter.test.ts (new). Coverage: 0/52 executable, 12 partial, 40 missing. Legacy engines untouched. treatmentResponsiveness='unknown' always. linkedReasoning.authority='SYMPHONY' always. Next: Phase B (treatment layer, T-51/T-52), Phase C (NEWS2, T-50), Phase D (CRP lab, T-48).

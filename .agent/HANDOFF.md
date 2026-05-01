@@ -39,6 +39,7 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - Phase 5 boundary enforcement was implemented in `packages/tooling/config-eslint/base.js`.
 - Phase 6 steering/docs were synced across `AGENTS.md`, `README.md`, `.agent/CONTEXT.md`, `.agent/ARCHITECTURE.md`, `docs/templates/HANDOFF.md`, and `docs/architecture/sentra-monorepo-diagram.md`.
 - Final validation commands were run; `pnpm install` passed, while `build`, `lint`, and `test` remained blocked by local module-resolution instability in the `.pnpm` tree rather than by taxonomy path drift.
+- `docs/handbook/avcn-commands.html` selesai diredesign agar patuh Sentra design token: memuat `sentra-tokens.css`, mengganti hardcoded color ke `var(--sentra-*)`, merapikan font Geist Mono lokal, dan menambahkan struktur semantik ringan (`main/section/h1/h2/th scope`).
 
 ---
 
@@ -140,6 +141,13 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 
 **Fresh thread protocol:** Read CONTEXT → PROGRESS → this file → LESSONS → DECISIONS. Output CONTEXT LOADED confirmation. Wait for Chief instruction.
 
+---
+
+## 2026-05-01 addendum — GitHub Actions (vendor-clean stack)
+
+- Implemented: `reusable-verify.yml` + thin `ci.yml`; `maintenance.yml`; `ai-review.yml` placeholder; hardened `security-scan.yml`; fork-safe `auto-fix.yml`; aligned `generate-documentation.yml` to Node 22 / pnpm 9.15; `doc-guard` / `pr-label` concurrency + read permissions; `auto-merge` default read.
+- Verify gate: `pnpm governance:agents-check` + `pnpm --filter @sentra/bentara run start` (replaces removed `@the-abyss/iskandar-gatekeeper`).
+- **Chief follow-up:** refresh branch protection required checks to match UI names under **The Abyss CI** and **Security Scan** (see `AGENTS.md` §11).
 
 ---
 ## 2026-04-25 Architecture Alignment Addendum
@@ -209,3 +217,441 @@ Explicit out-of-scope (left dirty in working tree, do NOT touch):
 - An auto-hook may re-touch `.agent/PROGRESS.md` with timestamp normalisation after session ends — that is the hook's contract, not application drift.
 
 **Out of scope (preserved):** No new engine, no FHIR change, no orchestrator/flows/ingestion wiring, no `wxt.config.ts` change, no new dependency, existing trajectory engines untouched. SYMPHONY remains the reasoning authority.
+
+---
+
+## 2026-05-01 — ClinicalTrajectory focus reset for new Codex threads
+
+This addendum supersedes any casual assumption that "CT v1 is done" means the
+full Clinical Trajectory engine or the full 52-trajectory taxonomy is already
+implemented in code.
+
+### Canonical source of truth for this lane
+
+Read in this order before proposing any CT architecture or implementation:
+
+1. `docs/task/Feature-Clinical Trajectory.md`
+2. `docs/task/Input for Clinical Trajectory.md`
+3. `docs/task/Summary Clinical Trajectory.md`
+4. `docs/specs/ct_spec_v_1.md`
+5. `docs/specs/clinical-trajectory-v1-specification.md`
+6. `packages/shared/shared-types/src/clinical-trajectory.ts`
+7. `apps/healthcare/intelligenceboard/src/lib/clinical/trajectory-analyzer.ts`
+8. `apps/healthcare/intelligenceboard/src/lib/clinical/momentum-engine.ts`
+9. `apps/healthcare/intelligenceboard/src/lib/clinical/convergence-detector.ts`
+10. `apps/healthcare/intelligenceboard/src/lib/clinical/personal-baseline.ts`
+11. `apps/healthcare/sentra-assist/lib/iskandar-diagnosis-engine/trajectory-analyzer.ts`
+
+### What `docs/task` actually means
+
+- `docs/task/Feature-Clinical Trajectory.md` is the canonical taxonomy target:
+  **52 trajectories / 5 quadrants**.
+- `docs/task/Input for Clinical Trajectory.md` is the canonical input-output
+  shape target for a future canonical CT engine.
+- `docs/task/Summary Clinical Trajectory.md` is the canonical modeling
+  architecture target: layered models, local fit/validation, no fantasy universal
+  coefficients.
+
+### What is actually implemented today
+
+- Commit `2576984` landed **CT v1 shared contract + fixtures**, not the full CT
+  engine.
+- Current executable trajectory logic still lives in the existing legacy
+  analyzers and helpers in Intelligenceboard and Sentra Assist.
+- No verified repo surface currently materializes the full **52 trajectories**
+  as a canonical executable taxonomy.
+- Therefore:
+  - **CT v1 complete** = contract-first consumer shell complete
+  - **CT engine complete** = false
+  - **52 trajectory taxonomy executable in code** = false
+
+### Non-negotiable interpretation
+
+- Do not tell Chief that CT logic/algorithm is "finished" unless the work
+  explicitly maps and executes the 52-trajectory taxonomy.
+- Do not invent a new engine from scratch while ignoring the existing analyzer /
+  momentum / convergence / baseline stack.
+- Do not claim that the shared-types contract itself generates trajectories. It
+  does not.
+- Do not widen into orchestrator, flows, ingestion, or FHIR just because the
+  taxonomy is larger.
+
+### Required next analytical task before any new implementation claim
+
+Produce a **coverage map**:
+
+1. `52 trajectory taxonomy from docs/task`
+2. `existing executable engine coverage in Intelligenceboard / Assist`
+3. `gap list: covered / partially covered / not represented`
+4. `canonicalization plan: how legacy outputs should be transformed into a real
+   future CT engine`
+
+### Expected framing for the next thread
+
+Use this exact mental model:
+
+- **SYMPHONY** = reasoning authority
+- **CT v1 landed** = shared rendering contract
+- **Legacy trajectory analyzers** = current executable behavior
+- **52 trajectories** = target taxonomy still requiring coverage mapping and
+  canonical engine design
+
+---
+
+## 2026-05-01 — ClinicalTrajectory coverage map and implementation-ready analysis
+
+### Executive truth statement
+
+CT v1 landed as a **contract-first shell** in commit `2576984`, specifically as
+shared contract + fixtures under `packages/shared/shared-types/src/`; it did
+not land a canonical executable CT engine. Current executable trajectory
+behavior still lives in the legacy analyzers and helpers in
+`apps/healthcare/intelligenceboard/src/lib/clinical/` and
+`apps/healthcare/sentra-assist/lib/iskandar-diagnosis-engine/`.
+
+What is implemented now:
+
+- Shared `ClinicalTrajectoryV1` contract and fixtures exist.
+- Intelligenceboard legacy analyzer executes deterministic trajectory scoring
+  over the latest 5 visits, including vital trends, early-warning burden,
+  volatility, acute-risk heuristics, time-to-critical estimates, a mortality
+  proxy, chronic-diagnosis extraction, and momentum/baseline/convergence
+  enrichment.
+- Sentra Assist still has its own legacy analyzer with a narrower version of
+  the same rule family.
+
+What is not implemented now:
+
+- No canonical engine that maps the target taxonomy into explicit executable CT
+  trajectory classes.
+- No verified repo surface that materializes the canonical **52 trajectories /
+  5 quadrants** as first-class executable outputs.
+- No treatment-aware response engine, no workflow/operational trajectory
+  engine, no lab-rich chronic progression engine, and no local-fit validation
+  stack as described in `docs/task/Summary Clinical Trajectory.md`.
+
+Bottom line:
+
+- **CT v1 complete** = yes, as shared rendering contract.
+- **Canonical CT engine complete** = no.
+- **52 trajectories executable today** = no.
+
+### Source reality check on taxonomy
+
+- `docs/task/Feature-Clinical Trajectory.md` is the canonical target framing:
+  **52 trajectories / 5 quadrants**.
+- The same file currently contains semantic drift inside the body: after the
+  canonical `T-45` to `T-52` range, it continues with extra entries
+  (`T-53`..`T-62` plus one unnamed combo row). Treat those as taxonomy drift or
+  appendix content, not proof that more than 52 trajectories are executable.
+
+### Coverage map
+
+| Taxonomy item or group | Current engine/file coverage | Status | Semantic mismatch / notes |
+| --- | --- | --- | --- |
+| Q1 Mortality & EOL overall (`T-01`..`T-12`) | `trajectory-analyzer.ts` exposes `mortality_proxy`, `global_deterioration`, `clinical_safe_output` | partial | Current output is a short-horizon vital-driven proxy, not the canonical mortality/EOL family. No explicit trajectory IDs, no event models, no frailty/ADL/palliative state engine. |
+| `T-01` Imminent Mortality 0-72h | `trajectory-analyzer.ts` mortality proxy + acute risk + burden | partial | No lactate input, no NEWS2 implementation, no calibrated 0-72h mortality model. |
+| `T-02` 30-Day Mortality | `trajectory-analyzer.ts` mortality proxy | partial | No `NEWS2_peak`, no frailty model, no 30-day horizon semantics. |
+| `T-03` Palliative Transition | none beyond generic chronic diagnosis extraction | missing | No ICU-readmission count, organ slope, or palliative transition logic. |
+| `T-04` Metabolic Age Acceleration | none | missing | No HbA1c, BMI, CRP, eGFR composite model. |
+| Q2 acute deterioration family (`T-13`..`T-24`) | `trajectory-analyzer.ts` + `momentum-engine.ts` + `convergence-detector.ts` + `personal-baseline.ts` | partial | Current engine can detect worsening acute dynamics, but only as generic heuristics and patterns, not as canonical `T-13`..`T-24` outputs. |
+| `T-13` Imminent Cardiac Arrest | `convergence-detector.ts` cardiovascular / multi-system patterns, `trajectory-analyzer.ts` `shock_decompensation_risk`, `spo2` trend support | partial | No explicit cardiac-arrest trajectory class, no sub-hour model, no calibrated arrest probability. |
+| `T-14` Flash ARDS | `convergence-detector.ts` respiratory pattern, `trajectory-analyzer.ts` RR + SpO2 trend | partial | Missing FiO2, oxygen support slope, PaO2/FiO2 ratio, Berlin semantics. |
+| `T-15` Neurological Cascade | `VisitRecord` in IB carries optional `avpu`; CT contract has consciousness field | missing | Current analyzers do not compute GCS/Cushing-style neuro cascade. Assist analyzer has no parallel neuro engine. |
+| `T-16` Sepsis No-Return | `trajectory-analyzer.ts` `sepsis_like_deterioration_risk`; `convergence-detector.ts` `sepsis_like` | partial | Missing antibiotic delay, qSOFA/GCS implementation, lactate, and formal no-return flag. |
+| Remaining Q2 items `T-17`..`T-24` | none as named outputs | missing | No explicit executable mapping found in the required source set. |
+| Q3 chronic / general health (`T-25`..`T-36`) | `trajectory-analyzer.ts` glucose trend + chronic diagnosis extraction; `personal-baseline.ts` personal vital baseline | partial | Only generic baseline and diagnosis heuristics exist. No eGFR/creatinine trajectory, frailty, ADL, WHODAS, or disease-progression classes. |
+| `T-25`..`T-28` renal / metabolic progression | glucose handling in `trajectory-analyzer.ts`; no renal lab model | missing | No eGFR slope, creatinine composite, insulin/SGLT2i treatment-adjusted progression. |
+| `T-29` Loss of Independence / `T-30` Delirium Risk | none | missing | No ADL/Barthel/frailty longitudinal model; no delirium-specific feature set. |
+| Q4 operational authority (`T-37`..`T-44`) | none in required engine files | missing | No workflow-state, readmission, ICU-occupancy, or multi-patient operational trajectory logic in the required CT files. |
+| `T-45` Respiratory Worsening | `trajectory-analyzer.ts` RR/SpO2 trends and time-to-critical; `convergence-detector.ts` respiratory pattern; `momentum-engine.ts` supports RR/SpO2 velocity | partial | This is the closest legacy fit, but still lacks NEWS2/oxygen/FiO2 semantics from the target model. |
+| `T-46` Hemodynamic Instability | `trajectory-analyzer.ts` SBP/DBP/HR trends, shock risk, time-to-critical; `momentum-engine.ts` baseline deviation and velocity | partial | Current output is hemodynamic worsening support, not a named canonical trajectory with explicit class identity. |
+| `T-47` Metabolic Crash | `trajectory-analyzer.ts` glucose trend + glycemic crisis risk; `convergence-detector.ts` metabolic pattern | partial | Missing lactate and broader metabolic organ-dysfunction layer. |
+| `T-48` Infectious Surge | `trajectory-analyzer.ts` temp + tachycardia + tachypnea; `convergence-detector.ts` sepsis-like | partial | Missing CRP slope, procalcitonin, culture/treatment context. |
+| `T-49` Neurologic Decline | none beyond optional consciousness field in contract / IB record | missing | No GCS slope or neurologic decline trajectory execution. |
+| `T-50` Mixed Acute | `trajectory-analyzer.ts` global deterioration + volatility; `convergence-detector.ts` `multi_system`; `momentum-engine.ts` `CONVERGING` / `CRITICAL_MOMENTUM` | partial | Current engine can express mixed worsening, but not as NEWS2 aggregate trajectory class. |
+| `T-51` Treatment Response Good | generic improving trend + recommendations | partial | No true treatment timeline or segmented response modeling. Improvement is inferred from raw vital movement, not intervention-linked response. |
+| `T-52` Treatment Response Poor | generic worsening/non-resolution via trend + burden + recommendations | partial | Same gap as above: no explicit treatment-response episode model. |
+| Extra rows beyond 52 (`T-53`..`T-62` and unnamed appendix entry) | none in required engine files | missing | These rows are outside the canonical 52-count and should not be treated as implemented scope. |
+
+### Canonical model gap analysis
+
+#### 1. Raw inputs
+
+Exists today:
+
+- Serial vitals in both legacy analyzers: `sbp`, `dbp`, `hr`, `rr`, `temp`,
+  `glucose`; Intelligenceboard also carries `spo2`.
+- Complaint text and optional diagnosis.
+- Limited patient identity / encounter reference in legacy visit records.
+- CT v1 contract shell for baseline, encounter context, vitals, labs, symptoms,
+  treatment, derived, response, and quality.
+
+Missing or materially incomplete today:
+
+- No canonical raw input ingestion path into the executable legacy engines for
+  `MAP`, `FiO2`, oxygen supplementation, `GCS`, pain score, capillary refill.
+- No executable lab trajectory inputs other than glucose.
+- No executable treatment timeline inputs.
+- No executable workflow context inputs such as setting, triage acuity,
+  referral, transfer, admission/discharge state.
+- Baseline modifiers are narrower than target; contract and analyzers do not
+  cover the full target baseline set.
+
+#### 2. Derived signals
+
+Exists today:
+
+- Trend direction per vital.
+- Volatility / stability label.
+- Early-warning burden.
+- Acute risk heuristics.
+- Time-to-critical estimates.
+- Personal baseline deviation via `personal-baseline.ts`.
+- Momentum, acceleration, and convergence patterning in Intelligenceboard.
+
+Missing or materially incomplete today:
+
+- No executable NEWS2 total/subscores in the required source set.
+- No canonical pulse pressure, MAP, fever burden AUC, formal SpO2 drop-rate,
+  FiO2-aware respiratory signal, or calibrated event-risk layer.
+- No explicit derived-signal to taxonomy-class mapping.
+
+#### 3. Response assessment
+
+Exists today:
+
+- Legacy analyzers produce `overallTrend`, `overallRisk`, summary text,
+  recommendations, urgency/risk tier, confidence score, missing-data list, and
+  drivers.
+- CT v1 contract can hold `direction`, `momentum`, `instabilityPattern`,
+  `treatmentResponsiveness`, `severityBand`, and `confidence`.
+
+Missing or materially incomplete today:
+
+- No canonical executable adapter that transforms legacy outputs into the CT v1
+  response shape as the primary source of truth.
+- No explicit trajectory-ID classification against the 52-target taxonomy.
+- No horizon-specific response semantics aligned to the target docs.
+
+#### 4. Treatment-response
+
+Exists today:
+
+- Only indirect inference from pre/post vital movement and recommendation text.
+- CT v1 contract has `treatmentTimeline` and `response` fields ready to receive
+  treatment-linked context.
+
+Missing or materially incomplete today:
+
+- No executable treatment-response timeline in either analyzer.
+- No dose / route / response-window / repeat-intervention / rescue-med /
+  adverse-effect logic.
+- No segmented or intervention-aware response model.
+- Therefore `T-51` and `T-52` are not truly implemented as treatment-response
+  trajectories.
+
+#### 5. Quality / missingness
+
+Exists today:
+
+- `deriveMissingData()` in both legacy analyzers.
+- Confidence score derived from coverage, temporal depth, volatility, and
+  missingness.
+- CT v1 contract includes a first-class `quality` node.
+
+Missing or materially incomplete today:
+
+- No duplicate/conflicting reading detection in executable legacy logic.
+- No measurement-quality, timestamp-certainty, device-availability, or source
+  weighting model in executable legacy logic.
+- No systematic quality gating that feeds trajectory-class eligibility.
+
+### Engine alignment analysis
+
+#### `trajectory-analyzer.ts`
+
+How it relates to target CT:
+
+- It is the current executable core for short-horizon, vitals-led trajectory
+  support.
+- It already covers several target CT ideas in rough form: direction,
+  risk/urgency, missingness, confidence, acute instability, and time-to-critical.
+
+Where it diverges:
+
+- It is rule-based over the latest 5 visits, not a canonical CT engine.
+- It does not emit taxonomy IDs or quadrant classes.
+- It does not execute the target input model end to end.
+- It is thin on labs, treatment, workflow, and quality reliability.
+- Its mortality and response outputs are heuristic proxies, not the target model
+  families described in the summary doc.
+
+#### `momentum-engine.ts`
+
+How it relates to target CT:
+
+- Best match to the target notion of trajectory velocity, acceleration, and
+  multi-parameter worsening.
+- Useful future feeder for CT `response.momentum` and instability evidence.
+
+Where it diverges:
+
+- Momentum levels (`STABLE`, `DRIFTING`, `ACCELERATING`, `CONVERGING`,
+  `CRITICAL_MOMENTUM`) are internal heuristic states, not canonical CT v1
+  enumerations and not taxonomy classes.
+- No treatment-awareness, no lab-aware chronic progression, no operational
+  pathway semantics.
+
+#### `convergence-detector.ts`
+
+How it relates to target CT:
+
+- Best current executable representation of instability patterning:
+  respiratory, metabolic, hypertensive/shock, sepsis-like, multi-system.
+- Strong candidate as a source for future CT `instabilityPattern`.
+
+Where it diverges:
+
+- Pattern set is still narrower and differently named than the full target
+  taxonomy.
+- Some target semantics are approximated only loosely. Example: `shock`,
+  `cardiovascular`, and `sepsis_like` patterns are not equivalent to named
+  target trajectories such as `T-13`, `T-16`, or operational ICU escalation.
+
+#### `personal-baseline.ts`
+
+How it relates to target CT:
+
+- Directly supports the target requirement to interpret deterioration relative
+  to a patient’s own baseline, not only population thresholds.
+
+Where it diverges:
+
+- It is limited to weighted vital baselines.
+- It does not cover broader baseline modifiers from the target spec such as
+  frailty, medication baseline, immunocompromised state, nutritional context,
+  or longitudinal functional status.
+
+#### Assist legacy analyzer
+
+How it relates to target CT:
+
+- Preserves executable trajectory behavior inside Sentra Assist and should be
+  treated as a consumer-specific legacy implementation.
+
+Where it diverges:
+
+- Narrower than Intelligenceboard.
+- No momentum-engine integration in the required source set.
+- No `spo2` lane in the required Assist analyzer file.
+- Therefore Assist is even further from the target canonical CT model than
+  Intelligenceboard.
+
+### Recommendation — minimal safe path forward
+
+1. Preserve the existing Intelligenceboard analyzer stack as the behavioral
+   baseline.
+   Do not rewrite `trajectory-analyzer`, `momentum-engine`,
+   `convergence-detector`, or `personal-baseline` just to satisfy the new
+   contract vocabulary.
+
+2. Introduce a **canonical adapter layer**, not a new fantasy engine.
+   First transform current Intelligenceboard outputs into `ClinicalTrajectoryV1`
+   consistently:
+   - map raw vitals into `vitalsTimeline`
+   - map momentum / convergence / burden / acute-risk evidence into
+     `derivedTimeline`
+   - map trend / severity / escalation / confidence into `response`
+   - map `deriveMissingData()` output into `quality`
+
+3. Define an explicit **coverage registry** for the 52-taxonomy.
+   This should be a declarative matrix stating, for each target trajectory:
+   - backed by current logic
+   - partially approximated
+   - missing
+   No one should claim implementation progress without moving rows in that
+   registry.
+
+4. Expand coverage in **legacy-first order**:
+   - first: formalize the already-nearby legacy acute family
+     (`T-45`..`T-50`, plus partial `T-13`/`T-16`)
+   - second: add treatment-linked response execution for `T-51`/`T-52`
+   - third: add missing raw inputs and quality fields
+   - fourth: only then consider chronic, mortality, and operational families
+
+5. Keep SYMPHONY as reasoning authority.
+   CT should remain a longitudinal evidence companion, not a replacement engine
+   or diagnosis authority.
+
+6. Do not widen scope.
+   No orchestrator, flows, ingestion, FHIR, or new backend service until root +
+   Dashboard + Assist canonicalization is complete and the coverage registry is
+   honest.
+
+### Immediate implementation framing for the next CT thread
+
+- Truth anchor: `2576984` = contract-first shell only.
+- Executable truth: legacy analyzers still own runtime trajectory behavior.
+- Safe next build step: canonical adapter + coverage registry.
+- Unsafe next build step: claiming that the 52-taxonomy is already executable or
+  replacing the legacy engines with an unvalidated new CT engine.
+
+---
+
+## CT Adapter Phase A — 2026-05-01 19:06
+
+### Status: COMPLETE ✅
+
+Three files created. 14/14 tests pass. Legacy engines untouched (git diff = empty).
+
+```
+CREATED: apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+CREATED: apps/healthcare/intelligenceboard/src/lib/clinical/ct-coverage-registry.ts
+CREATED: apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+UNTOUCHED: trajectory-analyzer.ts · momentum-engine.ts · convergence-detector.ts · personal-baseline.ts
+```
+
+### Verified
+
+- `tsx --test ct-adapter.test.ts` → 14/14 pass, exit 0
+- `tsc --noEmit` on shared-types → exit 0 (unchanged)
+- No TypeScript errors from the three new files
+- `git diff trajectory-analyzer.ts` → empty (legacy untouched)
+
+### Adapter Contract
+
+`legacyIBToCtV1(analysis, visits, patientId) → ClinicalTrajectoryV1`
+`legacyIBToCtV1Envelope(analysis, visits, patientId) → ClinicalTrajectoryEnvelope`
+
+Pure functions. Caller provides already-computed TrajectoryAnalysis.
+`treatmentResponsiveness` is ALWAYS `'unknown'` — no treatment data in pipeline.
+`linkedReasoning.authority` is ALWAYS `'SYMPHONY'`.
+
+### direction precedence rule (critical)
+
+```
+1. global_deterioration.state === 'critical'                  → 'worsening'   // overrides stability_label
+2. overallTrend === 'insufficient_data'                       → 'unknown'
+3. trajectory_volatility.stability_label === 'pseudo_stable'  → 'fluctuating'
+4. global_deterioration.state === 'improving'                 → 'improving'
+5. global_deterioration.state === 'deteriorating'             → 'worsening'
+6. else                                                       → 'stable'
+```
+
+### Coverage registry: 52 entries in TRAJECTORY_REGISTRY
+
+12 partial proxies, 40 missing. 0 fully covered. T-53 to T-62 are outside canonical 52.
+
+### What Phase A does NOT do
+
+- Does NOT call `analyzeTrajectory()` — adapter receives already-computed analysis
+- Does NOT produce `instabilityPattern: 'allergic'` — allergy path is T-53 (extended scope)
+- Does NOT derive NEWS2 — T-50 remains missing until Phase C
+- Does NOT carry treatment data — T-51/T-52 remain missing until Phase B
+
+### Next phases
+
+- **Phase B**: extend ingestion to carry `TreatmentEvent[]` → unlocks T-51, T-52
+- **Phase C**: implement `computeNEWS2()` in derivedTimeline → unlocks T-50
+- **Phase D**: extend `VisitRecord` or `labsTimeline` with CRP → unlocks T-48
