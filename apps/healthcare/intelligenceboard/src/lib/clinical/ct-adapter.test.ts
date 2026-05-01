@@ -134,9 +134,23 @@ test('vitalsTimeline length equals visits count', () => {
   assert.equal(result.vitalsTimeline.length, mockVisits.length)
 })
 
-test('derivedTimeline has N+1 points (per-visit + aggregate)', () => {
+test('derivedTimeline has 2N+1 points (sentra + NEWS2 per visit, plus aggregate)', () => {
   const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
-  assert.equal(result.derivedTimeline?.length, mockVisits.length + 1)
+  assert.equal(result.derivedTimeline?.length, mockVisits.length * 2 + 1)
+})
+
+test('derivedTimeline NEWS2 points have calculationBasis official_score', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  const news2Points = result.derivedTimeline?.filter(d => d.calculationBasis === 'official_score')
+  assert.equal(news2Points?.length, mockVisits.length)
+  assert.ok(news2Points?.every(d => d.news2Total !== undefined))
+})
+
+test('NEWS2 score for critical respiratory visit is ≥9', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  const lastNews2 = result.derivedTimeline?.find(d => d.id === 'dp-news2-enc-003')
+  assert.ok(lastNews2?.news2Total !== undefined && lastNews2.news2Total >= 9,
+    `expected ≥9 for critical visit, got ${lastNews2?.news2Total}`)
 })
 
 test('source scrape maps to imported', () => {

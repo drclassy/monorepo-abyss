@@ -4,6 +4,7 @@ import type {
   TrajectoryAnalysis,
   VisitRecord,
 } from './trajectory-analyzer'
+import { computeNEWS2 } from './news2-score'
 import type {
   ClinicalConsciousnessLevel,
   ClinicalInstabilityPattern,
@@ -122,8 +123,9 @@ function buildVitalsTimeline(visits: VisitRecord[]): ClinicalTrajectoryVitalPoin
 function buildDerivedTimeline(
   analysis: TrajectoryAnalysis,
   visits: VisitRecord[],
+  vitalsTimeline: ClinicalTrajectoryVitalPoint[],
 ): ClinicalTrajectoryDerivedPoint[] {
-  const perVisit: ClinicalTrajectoryDerivedPoint[] = visits.map(v => ({
+  const sentraPoints: ClinicalTrajectoryDerivedPoint[] = visits.map(v => ({
     id: `dp-${v.encounter_id}`,
     observedAt: v.timestamp,
     source: 'derived' as const,
@@ -133,6 +135,20 @@ function buildDerivedTimeline(
     shockIndex: v.vitals.sbp > 0 ? v.vitals.hr / v.vitals.sbp : undefined,
     flags: [],
   }))
+
+  const news2Points: ClinicalTrajectoryDerivedPoint[] = visits.map((v, i) => {
+    const vp = vitalsTimeline[i]
+    return {
+      id: `dp-news2-${v.encounter_id}`,
+      observedAt: v.timestamp,
+      source: 'derived' as const,
+      calculationBasis: 'official_score' as const,
+      calculationLabel: 'NEWS2',
+      evidenceRefs: [vp?.id ?? `vp-${i}`],
+      news2Total: vp ? computeNEWS2(vp) : undefined,
+      flags: [],
+    }
+  })
 
   const lastVisit = visits[visits.length - 1]
   const aggregateFlags: string[] = [analysis.trajectory_volatility.stability_label]
@@ -154,7 +170,9 @@ function buildDerivedTimeline(
     summary: analysis.momentum.narrative,
   }
 
-  return [...perVisit, aggregate]
+  // Interleave: sentra_rule_v1 + NEWS2 point per visit, then aggregate
+  const perVisitInterleaved = visits.flatMap((_, i) => [sentraPoints[i], news2Points[i]])
+  return [...perVisitInterleaved, aggregate]
 }
 
 function buildResponse(analysis: TrajectoryAnalysis): ClinicalTrajectoryResponseAssessment {
@@ -210,13 +228,14 @@ export function legacyIBToCtV1(
   visits: VisitRecord[],
   patientId: string,
 ): ClinicalTrajectoryV1 {
+  const vitalsTimeline = buildVitalsTimeline(visits)
   return {
     version: 'ct.v1',
     generatedAt: new Date().toISOString(),
     baseline: buildBaseline(analysis),
     encounterContext: buildEncounterContext(visits, patientId),
-    vitalsTimeline: buildVitalsTimeline(visits),
-    derivedTimeline: buildDerivedTimeline(analysis, visits),
+    vitalsTimeline,
+    derivedTimeline: buildDerivedTimeline(analysis, visits, vitalsTimeline),
     response: buildResponse(analysis),
     quality: buildQuality(analysis),
   }
