@@ -1448,11 +1448,11 @@ docs/specs/ct_spec_v_1.md
 
 ---
 
-## 2026-05-01 14:xx — `/clas-postcode` slash command added
+## 2026-05-01 14:51 — `/class-postcode` slash command added
 
 - **Agent**: Codex
 - **What**: Added a repo-local Claude slash command for post-coding verification on changed files only, with mandatory static/test/security/compatibility gates and a final GO/NO-GO outcome.
-- **Files changed**: `.claude/commands/clas-postcode.md`, `.agent/sessions/2026-05-01.md`, `.agent/PROGRESS.md`
+- **Files changed**: `.claude/commands/class-postcode.md`, `.agent/sessions/2026-05-01.md`, `.agent/PROGRESS.md`
 
 ---
 
@@ -1460,7 +1460,7 @@ docs/specs/ct_spec_v_1.md
 
 - **Agent**: Claude (Opus 4.7)
 - **What**: Landed ClinicalTrajectory v1 as a contract-first consumer-rendering layer. Single shared-types contract (`packages/shared/shared-types/src/clinical-trajectory.ts`, 474 lines, 9 discriminator unions, 7 interfaces, envelope linked to SYMPHONY, review-note hook, 3 fixtures). Extended shared-types tests from 2 → 6 cases (response states, raw/derived split, escalation, sparse-data missingness, JSON round-trip, advisory-only copy). Polished sparse fixture: vitals `0` → `null` to honor missingness rule.
-- **Verification**: shared-types `typecheck` ✅. shared-types tests via tsx (workspace fallback) **6/6 ✅**. IB `ClinicalTrajectoryV1Panel.test.tsx` **3/3 ✅**. Assist `typecheck` ✅. Boundary guard grep returns **0 matches** in `packages/platform/document-ingestion/`, `platform/`, `flows/`.
+- **Verification**: shared-types `typecheck` ✅. shared-types tests via tsx (workspace fallback) **6/6 ✅**. IB `ClinicalTrajectoryV1Panel.test.tsx` **3/3 ✅**. Assist app-wide `typecheck` ❌ with pre-existing CT-unrelated Vitest matcher typing errors in `DiagnosisSuggestions.test.tsx`, `DosageCalculator.test.tsx`, and `HTNCrisisTriage.test.tsx`. Boundary guard grep returns **0 matches** in `packages/platform/document-ingestion/`, `platform/`, `flows/`.
 - **Decisions locked (also recorded in `.agent/DECISIONS.md`)**: D1 fixtures-only · D2 new file `ClinicalTrajectoryV1Card.tsx` for Assist · D3 single contract file · D4 augment IB panel via optional prop + conditional mount · D5 existing engines untouched.
 - **Files added**: `packages/shared/shared-types/src/clinical-trajectory.ts`, `packages/shared/shared-types/src/clinical-trajectory.test.ts`.
 - **Files modified**: `packages/shared/shared-types/src/index.ts` (barrel export added).

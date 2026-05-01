@@ -164,3 +164,48 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - Only after readiness and telemetry are locked should consumer rewiring begin:
   1. Dashboard first
   2. ASSIST second
+
+---
+
+## 2026-05-01 — CT v1 Final State (Claude Opus 4.7)
+
+Commit `2576984` — `feat(ct-v1): land ClinicalTrajectory v1 contract + fixtures`.
+
+**Verified passing (fresh runs, this session):**
+- `pnpm --filter @the-abyss/shared-types typecheck` → exit 0.
+- `pnpm --filter @the-abyss/shared-types lint` → exit 0.
+- `pnpm --dir apps/healthcare/intelligenceboard exec tsx --test ../../../packages/shared/shared-types/src/clinical-trajectory.test.ts` → 6/6 pass, exit 0.
+- `pnpm --dir apps/healthcare/intelligenceboard exec tsx --test src/components/features/trajectory/ClinicalTrajectoryV1Panel.test.tsx` → 3/3 pass, exit 0.
+- `pnpm --filter @the-abyss/integration-bridge build` → exit 0 (covers `fs-extra → node:fs/promises` swap in `packages/integration-bridge/src/index.ts`).
+- Boundary guard: `ClinicalTrajectory|clinical-trajectory|ct.v1` returns 0 matches in `packages/platform/document-ingestion/`, `platform/`, `flows/`.
+- Existing trajectory engines (5 files in IB `src/lib/clinical/`, 1 file in Assist `lib/iskandar-diagnosis-engine/`) — `git diff HEAD~1 HEAD` returns 0 lines for those paths in commit `2576984`.
+
+**Pre-existing failure (recorded — NOT in current patch scope):**
+- `pnpm --filter @the-abyss/sentra-assist typecheck` → exit 2, 39 errors of type `Property 'toBeInTheDocument' does not exist on type 'Assertion<HTMLElement>'`.
+- Erroring files: `components/clinical/DiagnosisSuggestions.test.tsx`, `components/clinical/DosageCalculator.test.tsx`, `components/clinical/HTNCrisisTriage.test.tsx`. Zero overlap with the 5 files in commit `2576984` and zero overlap with the 5 uncommitted lane paths below. Root cause is Vitest+jsdom typing setup (likely missing `'@testing-library/jest-dom/vitest'` in tsconfig types) — repo-wide hygiene issue tracked separately.
+- Status tags: **pre-existing**, **CT-unrelated**, **outside current patch scope**. Do NOT claim Assist app-wide green.
+
+**Lane scope (this commit-ready batch):**
+
+Already in `2576984` (reference, verified passing this session):
+- `packages/shared/shared-types/src/clinical-trajectory.ts`
+- `packages/shared/shared-types/src/clinical-trajectory.test.ts`
+- `packages/shared/shared-types/src/index.ts`
+
+Uncommitted lane files (proposed follow-up commit):
+- `.agent/PROGRESS.md` — `14:51` timestamp filled + honest Assist-typecheck record (pre-existing, CT-unrelated).
+- `.agent/HANDOFF.md` — this final-state refresh.
+- `.gitignore` — whitelist `.claude/commands/class-postcode.md`.
+- `packages/integration-bridge/src/index.ts` — `fs-extra` → `node:fs/promises` swap.
+- `.claude/commands/class-postcode.md` — repo-local post-coding verifier slash command.
+
+Explicit out-of-scope (left dirty in working tree, do NOT touch):
+- `pnpm-lock.yaml` (unrelated lockfile drift).
+- `docs/cursor/`, `docs/handbook/` (untracked directory drift).
+- `packages/integration-bridge/tsconfig.json` (older drift — Chief excluded).
+
+**Working-tree state (intentional, do NOT auto-clean):**
+- `stash@{0}` retained (prior unrelated working-tree drift: cursor rules, docs cleanup, PROGRESS auto-hook log entry). Not popped per Chief direction.
+- An auto-hook may re-touch `.agent/PROGRESS.md` with timestamp normalisation after session ends — that is the hook's contract, not application drift.
+
+**Out of scope (preserved):** No new engine, no FHIR change, no orchestrator/flows/ingestion wiring, no `wxt.config.ts` change, no new dependency, existing trajectory engines untouched. SYMPHONY remains the reasoning authority.

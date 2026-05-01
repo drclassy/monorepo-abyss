@@ -191,6 +191,10 @@ apps/
 !.agent/PROTOCOL.md
 !.agent/SESSION_STATE.md
 !pnpm-lock.yaml
+!.claude/
+.claude/**
+!.claude/commands/
+!.claude/commands/class-postcode.md
 
 # KEPT: Cursor project rules, subagents, hooks — team parity (cursor.com/docs)
 !.cursor/README.md

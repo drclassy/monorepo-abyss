@@ -1,6 +1,6 @@
 import { Client } from '@notionhq/client'
 import { LinearClient } from '@linear/sdk'
-import * as fs from 'fs-extra'
+import { access, readFile } from 'node:fs/promises'
 import * as path from 'path'
 import dotenv from 'dotenv'
 
@@ -34,11 +34,13 @@ export class AbyssIntegrationBridge {
     }
 
     const handoffPath = path.join(sessionPath, 'handoff.md')
-    if (!(await fs.pathExists(handoffPath))) {
+    try {
+      await access(handoffPath)
+    } catch {
       throw new Error(`handoff.md not found at ${sessionPath}`)
     }
 
-    const content = await fs.readFile(handoffPath, 'utf-8')
+    const content = await readFile(handoffPath, 'utf-8')
     const sessionName = path.basename(sessionPath)
 
     // Extract basic info
