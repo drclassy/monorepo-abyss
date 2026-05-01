@@ -9,6 +9,8 @@ import type { TreatmentEvent } from './treatment-response-scorer'
 import { aggregateResponsiveness, buildTreatmentTimeline } from './treatment-response-scorer'
 import type { LabEvent } from './lab-event-scorer'
 import { buildLabsTimeline, classifyInfectiousSurge } from './lab-event-scorer'
+import type { GCSEvent } from './gcs-scorer'
+import { buildGCSTimeline, classifyNeurologicDecline } from './gcs-scorer'
 import type {
   ClinicalConsciousnessLevel,
   ClinicalInstabilityPattern,
@@ -22,6 +24,7 @@ import type {
   ClinicalTrajectoryQuality,
   ClinicalTrajectoryResponseAssessment,
   ClinicalTrajectorySeverityBand,
+  ClinicalTrajectoryGCSPoint,
   ClinicalTrajectoryTreatmentPoint,
   ClinicalTrajectoryV1,
   ClinicalTrajectoryVitalPoint,
@@ -132,6 +135,7 @@ function buildDerivedTimeline(
   vitalsTimeline: ClinicalTrajectoryVitalPoint[],
   labEvents?: LabEvent[],
   copdScale2?: boolean,
+  gcsEvents?: GCSEvent[],
 ): ClinicalTrajectoryDerivedPoint[] {
   const sentraPoints: ClinicalTrajectoryDerivedPoint[] = visits.map(v => ({
     id: `dp-${v.encounter_id}`,
@@ -196,6 +200,23 @@ function buildDerivedTimeline(
     })
   }
 
+  // T-49: append GCS-based neurologic decline point when GCS events are available
+  if (gcsEvents && gcsEvents.length > 0) {
+    const { classification, slopePerHour } = classifyNeurologicDecline(gcsEvents)
+    const slopeFlag = slopePerHour !== undefined
+      ? `t49:slope:${slopePerHour.toFixed(2)}`
+      : 't49:slope:unknown'
+    derived.push({
+      id: `dp-t49-${lastVisit?.encounter_id ?? 'unknown'}`,
+      observedAt: lastVisit?.timestamp ?? new Date().toISOString(),
+      source: 'derived' as const,
+      calculationBasis: 'standard_formula' as const,
+      calculationLabel: 'T-49 Neurologic Decline (GCS Slope)',
+      evidenceRefs: ['Feature-Clinical Trajectory §T-49'],
+      flags: [`t49:${classification}`, slopeFlag],
+    })
+  }
+
   return derived
 }
 
@@ -256,6 +277,7 @@ function buildEncounterContext(
 
 export interface CTAdapterOptions {
   copdScale2?: boolean
+  gcsEvents?: GCSEvent[]
 }
 
 export function legacyIBToCtV1(
@@ -273,15 +295,21 @@ export function legacyIBToCtV1(
   const labsTimeline = labs && labs.length > 0
     ? buildLabsTimeline(labs)
     : undefined
+  const gcsEvents = options?.gcsEvents
+  const gcsTimeline: ClinicalTrajectoryGCSPoint[] | undefined =
+    gcsEvents && gcsEvents.length > 0 ? buildGCSTimeline(gcsEvents) : undefined
   return {
     version: 'ct.v1',
     generatedAt: new Date().toISOString(),
     baseline: buildBaseline(analysis),
     encounterContext: buildEncounterContext(visits, patientId),
     vitalsTimeline,
-    derivedTimeline: buildDerivedTimeline(analysis, visits, vitalsTimeline, labs, options?.copdScale2),
+    derivedTimeline: buildDerivedTimeline(
+      analysis, visits, vitalsTimeline, labs, options?.copdScale2, gcsEvents,
+    ),
     treatmentTimeline,
     labsTimeline,
+    gcsTimeline,
     response: buildResponse(analysis, treatmentTimeline ?? []),
     quality: buildQuality(analysis),
   }

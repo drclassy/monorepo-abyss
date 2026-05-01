@@ -3,6 +3,7 @@ import test from 'node:test'
 import type { TrajectoryAnalysis, VisitRecord } from './trajectory-analyzer'
 import type { TreatmentEvent } from './treatment-response-scorer'
 import { legacyIBToCtV1, legacyIBToCtV1Envelope } from './ct-adapter'
+import type { GCSEvent } from './gcs-scorer'
 
 // ─── Fixture data ─────────────────────────────────────────────────────────────
 
@@ -341,4 +342,47 @@ test('backward compat: no options → NEWS2 points do not carry news2:scale2 fla
   const news2Points = result.derivedTimeline?.filter(d => d.calculationBasis === 'official_score')
   assert.ok(news2Points?.every(d => !d.flags?.includes('news2:scale2')),
     'Scale 2 flag must not appear when copdScale2 not set')
+})
+
+// ─── Phase F: T-49 GCS seam ───────────────────────────────────────────────────
+
+const mockGCSEvents: GCSEvent[] = [
+  { id: 'gcs-1', observedAt: '2026-05-01T08:00:00.000Z', source: 'manual', gcsTotal: 15 },
+  { id: 'gcs-2', observedAt: '2026-05-01T10:00:00.000Z', source: 'manual', gcsTotal: 12 },
+]
+
+test('Phase F: gcsTimeline is populated when gcsEvents supplied', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, undefined, { gcsEvents: mockGCSEvents })
+  assert.ok(result.gcsTimeline !== undefined, 'gcsTimeline should be present')
+  assert.equal(result.gcsTimeline?.length, 2)
+  assert.equal(result.gcsTimeline?.[0].id, 'gcs-1')
+  assert.equal(result.gcsTimeline?.[0].interpretation, 'normal')
+  assert.equal(result.gcsTimeline?.[1].interpretation, 'mild_impairment')
+})
+
+test('Phase F: gcsTimeline is absent when no gcsEvents', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  assert.equal(result.gcsTimeline, undefined)
+})
+
+test('Phase F: T-49 derived point added with classification flag when gcsEvents supplied', () => {
+  // GCS: 15 → 12 over 2 hours = slope -1.5 pts/hr → active_decline (≤ -1.3)
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, undefined, { gcsEvents: mockGCSEvents })
+  const t49 = result.derivedTimeline?.find(d => d.id?.startsWith('dp-t49-'))
+  assert.ok(t49 !== undefined, 'T-49 derived point must be present')
+  assert.equal(t49?.calculationLabel, 'T-49 Neurologic Decline (GCS Slope)')
+  assert.ok(t49?.flags?.some(f => f === 't49:active_decline'), `expected t49:active_decline, got ${JSON.stringify(t49?.flags)}`)
+})
+
+test('Phase F: T-49 derived point absent when no gcsEvents', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  const t49 = result.derivedTimeline?.find(d => d.id?.startsWith('dp-t49-'))
+  assert.equal(t49, undefined)
+})
+
+test('Phase F: backward compat — copdScale2 still works alongside gcsEvents', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, undefined, { copdScale2: true, gcsEvents: mockGCSEvents })
+  const news2Points = result.derivedTimeline?.filter(d => d.calculationBasis === 'official_score')
+  assert.ok(news2Points?.every(d => d.flags?.includes('news2:scale2')), 'news2:scale2 flag must still be present')
+  assert.ok(result.gcsTimeline !== undefined, 'gcsTimeline must also be present')
 })

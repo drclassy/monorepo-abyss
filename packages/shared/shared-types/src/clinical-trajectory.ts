@@ -91,6 +91,18 @@ export interface ClinicalTrajectoryLabPoint {
   notes?: string[]
 }
 
+export interface ClinicalTrajectoryGCSPoint {
+  id: string
+  observedAt: string
+  source: Exclude<ClinicalDataSource, 'derived'>
+  gcsTotal: number
+  eyeScore?: number
+  verbalScore?: number
+  motorScore?: number
+  interpretation?: 'normal' | 'mild_impairment' | 'moderate_impairment' | 'severe_impairment'
+  notes?: string[]
+}
+
 export interface ClinicalTrajectorySymptomPoint {
   id: string
   observedAt: string
@@ -154,6 +166,7 @@ export interface ClinicalTrajectoryV1 {
   encounterContext?: ClinicalTrajectoryEncounterContext
   vitalsTimeline: ClinicalTrajectoryVitalPoint[]
   labsTimeline?: ClinicalTrajectoryLabPoint[]
+  gcsTimeline?: ClinicalTrajectoryGCSPoint[]
   symptomsTimeline?: ClinicalTrajectorySymptomPoint[]
   treatmentTimeline?: ClinicalTrajectoryTreatmentPoint[]
   derivedTimeline?: ClinicalTrajectoryDerivedPoint[]
