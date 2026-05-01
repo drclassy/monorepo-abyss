@@ -1663,3 +1663,33 @@ apps/healthcare/intelligenceboard/src/lib/clinical/news2-score.ts
 ```
 
 ---
+## 2026-05-01 21:35 — `f3fc004` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(agent): update HANDOFF + PROGRESS for Phase C.2 (NEWS2 Scale 2)
+- **Files changed**: 2 file(s)
+
+```
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+```
+
+---
+
+[2026-05-01 23:48] Phase F (T-49 GCS seam) complete — additive seam only, legacy engines untouched. New: gcs-scorer.ts (22 tests), shared-types ClinicalTrajectoryGCSPoint + gcsTimeline, CTAdapterOptions.gcsEvents wired. 163/163 pass. T-49 status: partial (caller must supply GCSEvent[]). Typecheck: EXIT:0.
+## 2026-05-02 01:11 — `72ed862` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(ct-v1): Phase F — T-49 GCS seam additive support
+- **Files changed**: 6 file(s)
+
+```
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-coverage-registry.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/gcs-scorer.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/gcs-scorer.ts
+packages/shared/shared-types/src/clinical-trajectory.ts
+```
+
+---

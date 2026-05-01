@@ -924,3 +924,56 @@ Parked per Chief instruction. Requires explicit decision: whether biomarker-driv
 - **Phase F** (T-49 GCS seam): Add `GCSEvent` type, additive seam alongside LabEvent pattern
 - **Phase G** (T-01 logistic): Replace mortality_proxy with validated logistic inputs
 - **Phase E** (SYMPHONY wiring): Blocked by orchestrator LangFlow Phase B
+
+---
+## Phase F — T-49 GCS Seam — 2026-05-01
+
+### What was done
+Additive GCS seam opened. No legacy engine touched.
+
+**Files created:**
+- `apps/healthcare/intelligenceboard/src/lib/clinical/gcs-scorer.ts` — GCSEvent interface, T-49 slope classifier (`classifyNeurologicDecline`), `buildGCSTimeline` (sorts + maps to ClinicalTrajectoryGCSPoint with interpretation thresholds)
+- `apps/healthcare/intelligenceboard/src/lib/clinical/gcs-scorer.test.ts` — 22 tests (all pass)
+
+**Files modified:**
+- `packages/shared/shared-types/src/clinical-trajectory.ts` — added `ClinicalTrajectoryGCSPoint` interface + `gcsTimeline?: ClinicalTrajectoryGCSPoint[]` to `ClinicalTrajectoryV1`
+- `apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts` — added `gcsEvents?: GCSEvent[]` to `CTAdapterOptions`; wired `gcsTimeline` into output; added T-49 derived point in `buildDerivedTimeline` when gcsEvents present
+- `apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts` — +5 Phase F integration tests
+- `apps/healthcare/intelligenceboard/src/lib/clinical/ct-coverage-registry.ts` — T-49 adapterNote updated to document GCS seam
+
+### T-49 formula implemented
+```
+slopePerHour = (lastGCS - firstGCS) / deltaHours
+slope ≤ -1.3  → active_decline
+slope < 0     → gradual_decline
+slope ≥ 0     → stable_or_improving
+< 2 events OR deltaHours=0 → insufficient_data
+```
+
+### What Phase F does NOT do
+- Does NOT override `instabilityPattern` from AVPU — GCS slope classification is in derivedTimeline only
+- T-49 status remains `partial` — caller must supply GCSEvent[] from EMR; adapter cannot source it from VisitRecord
+- Does NOT claim T-49 as covered
+
+### Test counts after Phase F
+| File | Tests |
+|---|---|
+| news2-score.test.ts | 62 |
+| ct-adapter.test.ts | 34 |
+| gcs-scorer.test.ts | 22 |
+| treatment-response-scorer.test.ts | 23 |
+| lab-event-scorer.test.ts | 22 |
+| **TOTAL** | **163** |
+
+### Verification
+- `pnpm --filter @the-abyss/shared-types typecheck` → EXIT:0
+- `tsx --test` all 5 clinical files → 163/163 pass
+- `git diff trajectory-analyzer.ts momentum-engine.ts convergence-detector.ts personal-baseline.ts` → empty
+
+### Hold status unchanged
+- Phase A (T-48 instabilityPattern): still parked
+- Phase G (T-01 logistic): still on hold — activate after next truth freeze
+
+### Next phases
+- **Phase G** (T-01 logistic): Replace mortality_proxy with validated logistic inputs — Chief GO required
+- **Phase E** (SYMPHONY wiring): Blocked by orchestrator LangFlow Phase B
