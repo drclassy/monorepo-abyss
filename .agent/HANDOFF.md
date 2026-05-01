@@ -732,6 +732,36 @@ export function legacyIBToCtV1(
 - **Phase D**: extend `VisitRecord` or `labsTimeline` with CRP → unlocks T-48 (Infectious Surge)
 
 ---
+## CT Adapter Phase C — 2026-05-01 19:18
+
+### Commit
+`6bcc405` — feat(ct-v1): Phase C — computeNEWS2, T-50 partial coverage
+
+### What landed
+- **NEW** `news2-score.ts`: `computeNEWS2(vital: ClinicalTrajectoryVitalPoint): number | undefined` — RCP NEWS2 2017 Scale 1 implementation. 7 parameters: RR, SpO2 (Scale 1), O2 supplement (always 0), SBP, HR, ACVPU consciousness, Temp. Returns `undefined` if any required vital absent.
+- **NEW** `news2-score.test.ts`: 54 tests — all parameter boundary conditions, full-score cases, undefined-vital handling
+- **MODIFIED** `ct-adapter.ts`: NEWS2 points added to `derivedTimeline` — one `ClinicalTrajectoryDerivedPoint` per visit with `calculationBasis: 'official_score'` and `news2Total` computed. `derivedTimeline` structure becomes 2N+1 (N sentra_rule_v1 + N NEWS2 per-visit interleaved + 1 aggregate).
+- **MODIFIED** `ct-coverage-registry.ts`: T-50 `status: 'missing'` → `status: 'partial'`
+- **MODIFIED** `ct-adapter.test.ts`: NEWS2 boundary assertions added
+
+### Test totals (Phase C baseline)
+| Suite | Tests | Pass |
+|---|---|---|
+| news2-score | 54 | 54 |
+| ct-adapter | 20 | 20 |
+| treatment-response-scorer | 23 | 23 |
+| **TOTAL** | **97** | **97** |
+
+### What Phase C does NOT do
+- Does NOT implement NEWS2 Scale 2 (COPD/hypercapnic) — no device flag in VisitRecord
+- O2 supplement score is always 0 — no supplemental O2 device data
+- T-50 is `partial` not `covered`: projection formula (NEWS2_0 + 1.0×t) requires SYMPHONY synthesis
+- Does NOT touch `instabilityPattern` or `requiresEscalation`
+
+### Known limitation
+NEWS2 for COPD patients (Scale 2: SpO2 target 88–92%) will score higher than clinically appropriate on Scale 1 — potential overcall. No fix until COPD flag added to VisitRecord.
+
+---
 ## CT Adapter Phase D — 2026-05-01 19:51
 
 ### Commit
@@ -749,9 +779,9 @@ export function legacyIBToCtV1(
 |---|---|---|
 | lab-event-scorer | 22 | 22 |
 | ct-adapter | 26 | 26 |
-| treatment-response-scorer | 43 | 43 |
+| treatment-response-scorer | 23 | 23 |
 | news2-score | 54 | 54 |
-| **TOTAL** | **145** | **145** |
+| **TOTAL** | **125** | **125** |
 
 ### Conservative design decisions
 - `instabilityPattern` NOT overridden in Phase D — CRP surge does NOT force `'infectious'`; SYMPHONY is the synthesis authority
@@ -770,3 +800,84 @@ Wire `instabilityPattern: 'infectious'` when CRP `active_surge` AND no stronger 
 ### Do not touch
 - `trajectory-analyzer.ts` — legacy engine, untouched since Phase A
 - `momentum-engine.ts`, `convergence-detector.ts`, `personal-baseline.ts`
+
+---
+## CT Consolidation Audit — 2026-05-01 20:00
+
+### Trigger
+Manual consolidation requested by Chief after Phases A–D landed. Verify registry, adapter seams, and handoff state are consistent.
+
+### Verified state
+
+**Commits (all on `refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy`):**
+| Phase | Commit | Description |
+|---|---|---|
+| A | `2576984` | CT v1 contract + fixtures (shared-types); adapter seam + registry |
+| C | `6bcc405` | NEWS2 scorer; T-50 → partial |
+| B | `ac0487d` | Treatment-response scorer; T-51/T-52 → partial |
+| D | `6b8e3aa` | CRP/lab scorer; T-48 → partial |
+| Agent docs | `e1f3400` | HANDOFF + PROGRESS Phase D completion |
+| Audit fix | (this commit) | Phase C section restored in HANDOFF; test count corrected; consolidation audit added |
+
+Note: B was committed after C chronologically (B = 19:33, C = 19:18). Order of implementation was A → C → B → D.
+
+**Test counts (verified 125/125 pass):**
+| Suite | File | Tests |
+|---|---|---|
+| news2-score | `news2-score.test.ts` | 54 |
+| ct-adapter | `ct-adapter.test.ts` | 26 |
+| treatment-response-scorer | `treatment-response-scorer.test.ts` | 23 |
+| lab-event-scorer | `lab-event-scorer.test.ts` | 22 |
+| **TOTAL** | | **125** |
+
+**Registry coverage (verified against source):**
+- 16 partial, 36 missing, 0 covered — total 52 canonical trajectories ✓
+- T-53 to T-62 are OUTSIDE canonical 52 — not counted
+
+### Governance fix applied in this commit
+- Phase C section was MISSING from HANDOFF.md (present in PROGRESS.md commit log only) — **restored**
+- Phase D test table had wrong row (`treatment-response-scorer: 43` was combined Phase B total, not per-file) — **corrected to 23**
+- Phase D test TOTAL was `145` — **corrected to 125**
+
+### Quality audit — seam strength classification
+
+| Trajectory | Seam Type | Strength | Formula Source | Key Gap |
+|---|---|---|---|---|
+| T-48 (CRP Surge) | `lab-event-scorer.ts` | **MODERATE** | Spec §T-48 (37 mg/L/hr) | procalcitonin, WBC, validated logistic |
+| T-50 (NEWS2) | `news2-score.ts` | **STRONG (Scale 1 only)** | RCP NEWS2 2017 | Scale 2 (COPD), O2 device flag |
+| T-51 (Response Good) | `treatment-response-scorer.ts` | **MODERATE** | Spec HR slope ≤-7.9 bpm/hr | No validated logistic; needs TreatmentEvent[] input |
+| T-52 (Response Poor) | `treatment-response-scorer.ts` | **MODERATE** | Spec HR slope ≥+2.6 bpm/hr | Same gaps as T-51 |
+| T-45 (Respiratory) | convergence.pattern proxy | **WEAK PROXY** | Pattern match only | FiO2, P/F ratio; no actual RR slope formula |
+| T-46 (Hemodynamic) | convergence.pattern proxy | **WEAK PROXY** | Pattern match only | MAP missing; no SBP slope formula |
+| T-47 (Metabolic) | convergence.pattern proxy | **WEAK PROXY** | Pattern match only | Lactate, pH missing |
+| T-49 (Neurologic) | AVPU → consciousness level | **SYMBOLIC** | Not formula-based | GCS series required for T-49; AVPU ≠ GCS |
+| T-13 (Cardiac Arrest) | shock_decompensation_risk flag | **FLAG ONLY** | No formula | ECG, troponin missing |
+| T-14 (Flash ARDS) | SpO2+RR vitalTrends | **FLAG ONLY** | No formula | FiO2, PaO2/FiO2 missing |
+| T-15 (Neurological Cascade) | AVPU | **WEAK PROXY** | No formula | GCS series, focal signs |
+| T-16 (Sepsis No-Return) | sepsis_like_deterioration_risk | **FLAG ONLY** | No formula | lactate, WBC, procalcitonin |
+| T-01 (Imminent Mortality) | mortality_proxy_tier | **WEAK PROXY** | No formula | No validated logistic, no lab inputs |
+| T-25 (DM-ESRD Baseline) | glucose only | **VERY WEAK** | PERKENI thresholds | creatinine, eGFR |
+| T-30 (Delirium Risk) | single AVPU point | **SYMBOLIC** | No formula | No delirium trajectory model |
+| T-37 (ICU Escalation) | clinical_urgency_tier flag | **FLAG ONLY** | No formula | Different granularity; not an ICU escalation model |
+
+### Overclaim risk areas (DO NOT claim as covered)
+
+1. **T-45/T-46/T-47** — current `instabilityPattern` mapping is a convergence-pattern proxy. The T-45/T-46/T-47 target formulas require FiO2/MAP/Lactate inputs that do not exist in legacy pipeline. Calling these "implemented" would be false.
+2. **T-49** — AVPU is NOT GCS. T-49 formula requires GCS series (slope computation). The AVPU → consciousness mapping provides NEWS2 sub-score only, not T-49 trajectory.
+3. **T-50** — NEWS2 computation is correct for Scale 1 patients. COPD patients on Scale 2 will get inflated scores. T-50 trajectory projection (NEWS2_0 + 1.0×t) is not yet computed — that requires SYMPHONY.
+4. **T-48** — `instabilityPattern` is NOT set to `'infectious'` in Phase D. Only `labsTimeline` + derivedTimeline flag emitted. SYMPHONY synthesis authority.
+5. **Any trajectory in Q1/Q2/Q3/Q4 with `status: 'missing'`** — these 36 have zero adapter seam.
+
+### Priority order for next phases
+
+1. **Phase D+ (quickest)**: Wire `instabilityPattern: 'infectious'` when `t48:active_surge` flag set AND no stronger pattern. Additive, low risk. SYMPHONY sign-off. ~1h scope.
+2. **Phase F (T-49 GCS input)**: Add `GCSEvent` type alongside `LabEvent` pattern. Additive seam. Requires caller to supply GCS readings.
+3. **Phase G (T-01 logistic)**: Replace `mortality_proxy_tier` proxy with validated logistic regression. Requires clinical validation of formula inputs.
+4. **Phase E (SYMPHONY wiring)**: Connect `ClinicalTrajectoryEnvelope` to SYMPHONY LangFlow. Blocked by orchestrator Phase B (LangFlow connectivity). Not a clinical module concern — belongs in orchestrator scope.
+
+### Governance constraints (unchanged)
+- DO NOT rewrite `trajectory-analyzer.ts` or any legacy engine
+- DO NOT change existing legacy scoring behavior
+- DO NOT claim `'covered'` without executable formula + validated inputs
+- Adapter is ADDITIVE — legacy TrajectoryAnalysis output preserved alongside CT v1 envelope
+- SYMPHONY remains reasoning authority — no synthetic clinical judgments from adapter layer
