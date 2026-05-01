@@ -17,6 +17,34 @@
 
 ---
 
+## 2026-05-01 — Handbook wrap text (no clipping)
+
+- **What:** `index.html`, `avcn-commands.html`, dan `avcn-tips.html` diubah agar teks membungkus ke baris berikutnya pada viewport sempit (menghapus pola no-wrap clipping, menambah overflow-wrap/word-break).  
+- **Files changed:** `docs/handbook/index.html`, `docs/handbook/avcn-commands.html`, `docs/handbook/avcn-tips.html`, `.agent/sessions/2026-05-01.md`
+
+---
+
+## 2026-05-01 — Index font +1px dan layout normal
+
+- **What:** `docs/handbook/index.html` dinormalisasi ke format satu kolom (tanpa sidebar fixed) dan font dasar dinaikkan +1px (`--sz`) supaya keterbacaan dan susunan menyerupai halaman handbook lain.  
+- **Files changed:** `docs/handbook/index.html`, `.agent/sessions/2026-05-01.md`
+
+---
+
+## 2026-05-01 — Index handbook quick links localhost
+
+- **What:** Menambahkan quick-links panel di `docs/handbook/index.html` untuk akses langsung full-view ke `avcn-cursor.html`, `avcn-tips.html`, dan `avcn-commands.html` via `http://127.0.0.1:8765/docs/handbook/...`.  
+- **Files changed:** `docs/handbook/index.html`, `.agent/sessions/2026-05-01.md`
+
+---
+
+## 2026-05-01 — Handbook `avcn-cursor.html` (Cursor best practices)
+
+- **What:** Halaman statis baru `docs/handbook/avcn-cursor.html` (tab Rules, Context, MCP, Skills, Agent, Hooks, Rujukan) berbasis ringkasan dokumentasi resmi Cursor; token Sentra; `switchTab` via `data-tab`. Footer `avcn-tips.html` menaut ke halaman ini.  
+- **Files changed:** `docs/handbook/avcn-cursor.html`, `docs/handbook/avcn-tips.html`, `.agent/sessions/2026-05-01.md`, `.agent/HANDOFF.md`, `.agent/PROGRESS.md`
+
+---
+
 ## 2026-05-01 18:51 — QRH handbook redesign patuh Sentra token
 
 - **Agent:** Codex (session)  
@@ -1560,3 +1588,37 @@ apps/healthcare/intelligenceboard/src/lib/clinical/news2-score.ts
 
 ---
 [2026-05-01 19:30] CT Adapter Phase B complete — treatment-response scorer implemented. T-51/T-52 promoted from missing to partial. TreatmentEvent interface, classifyTreatmentResponse (HR slope thresholds T-51/T-52), aggregateResponsiveness, buildTreatmentTimeline. legacyIBToCtV1 accepts optional treatments param. 43/43 tests pass (treatment-response-scorer: 23, ct-adapter: 20). Shared-types typecheck clean. Files: treatment-response-scorer.ts (new), treatment-response-scorer.test.ts (new), ct-adapter.ts (updated), ct-coverage-registry.ts (updated), ct-adapter.test.ts (updated). Next: Phase D (CRP/lab extension for T-48).
+## 2026-05-01 19:33 — `ac0487d` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(ct-v1): Phase B — treatment-response scorer, T-51/T-52 partial
+- **Files changed**: 7 file(s)
+
+```
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-coverage-registry.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/treatment-response-scorer.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/treatment-response-scorer.ts
+```
+
+---
+## 2026-05-01 19:51 — `6b8e3aa` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(ct-v1): land Phase D CRP lab layer + T-48 Infectious Surge partial coverage
+- **Files changed**: 5 file(s)
+
+```
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-coverage-registry.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/lab-event-scorer.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/lab-event-scorer.ts
+```
+
+---
+
+[2026-05-01 19:51] Phase D complete — CRP lab layer landed. LabEvent interface + classifyInfectiousSurge() (T-48 formula: slope ≥ 37 mg/L/hr). T-48 promoted from missing→partial in registry. labsTimeline + T-48 derived point wired into legacyIBToCtV1. 125/125 tests pass. Commit: 6b8e3aa. instabilityPattern override deferred to Phase D+ (SYMPHONY).

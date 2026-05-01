@@ -35,6 +35,9 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - **Cursor settings (2026-04-30):** `.vscode/settings.json` adds monorepo watcher/search excludes; `docs/cursor/cursor-settings-profiles.md` documents Solo-Dev-Perf vs NonCoder-Simple user JSON blocks, baseline audit of Chief's User settings, and hook cost (keep `autofix-loop`, optional local-disable); `.cursorindexingignore`: typo `apps/coorporate/` fixed earlier; follow-up fix **`apps/orchestrator/` → `platform/orchestrator/`** so indexing exclude matches AGENTS.md layout.
 
 **Session addendum (2026-05-01):**
+- Handbook readability: wrapping anti-cutoff diterapkan pada `docs/handbook/index.html`, `docs/handbook/avcn-commands.html`, dan `docs/handbook/avcn-tips.html` supaya teks turun ke bawah saat kolom dipersempit.
+- Handbook index: `docs/handbook/index.html` ditambah quick links localhost (`127.0.0.1:8765`) untuk buka `avcn-cursor.html`, `avcn-tips.html`, `avcn-commands.html` dalam mode full render.
+- Handbook: `docs/handbook/avcn-cursor.html` — ringkasan best practice Cursor 2026 (Rules, Context/ignore, MCP, Skills, Agent, Hooks) + token Sentra; footer `avcn-tips.html` menaut ke halaman ini.
 - `ABYSS-REPO-STRUCTURE-001` package taxonomy mission now has Phase 7 artifacts at `docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-EXECUTION-REPORT.md` and `docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-VERIFICATION-REPORT.md`.
 - Phase 5 boundary enforcement was implemented in `packages/tooling/config-eslint/base.js`.
 - Phase 6 steering/docs were synced across `AGENTS.md`, `README.md`, `.agent/CONTEXT.md`, `.agent/ARCHITECTURE.md`, `docs/templates/HANDOFF.md`, and `docs/architecture/sentra-monorepo-diagram.md`.
@@ -727,3 +730,43 @@ export function legacyIBToCtV1(
 ### Next phase
 
 - **Phase D**: extend `VisitRecord` or `labsTimeline` with CRP → unlocks T-48 (Infectious Surge)
+
+---
+## CT Adapter Phase D — 2026-05-01 19:51
+
+### Commit
+`6b8e3aa` — feat(ct-v1): land Phase D CRP lab layer + T-48 Infectious Surge partial coverage
+
+### What landed
+- **NEW** `lab-event-scorer.ts`: `LabEvent` interface, `classifyInfectiousSurge()` (T-48 spec formula: slope ≥ 37 mg/L/hr → `active_surge`), `buildLabsTimeline()` (numeric → string conversion for CT v1 `value: string` contract)
+- **NEW** `lab-event-scorer.test.ts`: 22 tests — all classification paths, edge cases, timeline mapping
+- **MODIFIED** `ct-adapter.ts`: `legacyIBToCtV1` accepts optional `labs?: LabEvent[]`; `labsTimeline` emitted when labs provided; T-48 derived point (`calculationBasis: 'standard_formula'`) appended to `derivedTimeline` when labs present
+- **MODIFIED** `ct-coverage-registry.ts`: T-48 `status: 'missing'` → `status: 'partial'`; legacyProxy + adapterNote updated
+- **MODIFIED** `ct-adapter.test.ts`: 6 Phase D integration tests added
+
+### Test totals
+| Suite | Tests | Pass |
+|---|---|---|
+| lab-event-scorer | 22 | 22 |
+| ct-adapter | 26 | 26 |
+| treatment-response-scorer | 43 | 43 |
+| news2-score | 54 | 54 |
+| **TOTAL** | **145** | **145** |
+
+### Conservative design decisions
+- `instabilityPattern` NOT overridden in Phase D — CRP surge does NOT force `'infectious'`; SYMPHONY is the synthesis authority
+- T-48 is `partial` (not `covered`): missing procalcitonin, WBC series, validated logistic for CRP-to-sepsis probability
+- `labsTimeline` only populated when `labs` param provided; `undefined` otherwise (backward compat)
+- T-48 derived point added even when classification is `insufficient_data` (signals labs were considered but data sparse)
+
+### Phase D+ open question
+Wire `instabilityPattern: 'infectious'` when CRP `active_surge` AND no stronger convergence pattern already set. Requires SYMPHONY sign-off.
+
+### Next phases
+- **Phase E** (SYMPHONY wiring): Connect `ClinicalTrajectoryEnvelope` to SYMPHONY LangFlow endpoint
+- **Phase F** (T-49 GCS series): Replace AVPU proxy with real GCS when series available
+- **Phase G** (T-01 logistic): Replace mortality_proxy with validated logistic regression inputs
+
+### Do not touch
+- `trajectory-analyzer.ts` — legacy engine, untouched since Phase A
+- `momentum-engine.ts`, `convergence-detector.ts`, `personal-baseline.ts`
