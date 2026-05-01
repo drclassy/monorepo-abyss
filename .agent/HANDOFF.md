@@ -881,3 +881,46 @@ Note: B was committed after C chronologically (B = 19:33, C = 19:18). Order of i
 - DO NOT claim `'covered'` without executable formula + validated inputs
 - Adapter is ADDITIVE — legacy TrajectoryAnalysis output preserved alongside CT v1 envelope
 - SYMPHONY remains reasoning authority — no synthetic clinical judgments from adapter layer
+
+---
+## CT Adapter Phase C.2 — 2026-05-01 21:23
+
+### Commit
+`fdc4931` — feat(ct-v1): Phase C.2 — NEWS2 Scale 2 (COPD flag) additive support
+
+### What landed
+- **MODIFIED** `news2-score.ts`: `scoreSpo2Scale2()` added (RCP NEWS2 2017 Scale 2: ≤83→3, 84–85→2, 86–87→1, ≥88→0 on air); `NEWS2ComputeOptions { spo2Scale?: 1 | 2 }` exported; `computeNEWS2(vital, options?)` accepts optional options param — default Scale 1, fully backward compatible
+- **MODIFIED** `ct-adapter.ts`: `CTAdapterOptions { copdScale2?: boolean }` exported; `legacyIBToCtV1` accepts optional 6th param `options?: CTAdapterOptions`; `copdScale2` wired through `buildDerivedTimeline` to `computeNEWS2`; NEWS2 derived points carry `'news2:scale2'` flag when Scale 2 active
+- **MODIFIED** `ct-coverage-registry.ts`: T-50 `missingInputs` updated — 'hypercapnic/COPD flag' gap resolved; `legacyProxy` and `adapterNote` reflect dual-scale support
+- **MODIFIED** `news2-score.test.ts`: 8 Scale 2 tests added (boundary conditions: 84, 86, 88, 92, 93, 97, backward compat, null guard)
+- **MODIFIED** `ct-adapter.test.ts`: 3 Phase C.2 integration tests added (lower score for spo2=93, flag presence, backward compat)
+
+### Test totals
+| Suite | Tests | Pass |
+|---|---|---|
+| news2-score | 62 | 62 |
+| ct-adapter | 29 | 29 |
+| treatment-response-scorer | 23 | 23 |
+| lab-event-scorer | 22 | 22 |
+| **TOTAL** | **136** | **136** |
+
+### Backward compatibility guarantee
+- `computeNEWS2(vital)` with no options → Scale 1 (unchanged behavior)
+- `legacyIBToCtV1(..., undefined, undefined)` with no 6th arg → Scale 1, no `news2:scale2` flag
+- All 125 previously passing tests continue to pass unmodified
+
+### What Scale 2 does
+For COPD/hypercapnic patients, SpO2 in the 88–92% target range correctly scores 0 instead of 3 (Scale 1). SpO2 93% on air scores 0 instead of 2. This eliminates NEWS2 overcall for COPD patients. The O2-supplement penalty arm of Scale 2 (SpO2 ≥93% on supplemental O2 → 1–3 points) never fires since O2 supplement is always 0 in this pipeline.
+
+### What Phase C.2 does NOT do
+- Does NOT auto-detect COPD from `confirmed_chronic_diagnoses` — caller provides flag
+- O2 supplement score is still always 0
+- T-50 trajectory projection (NEWS2_0 + 1.0×t) still requires SYMPHONY
+
+### Hold: Phase A (T-48 instabilityPattern wire)
+Parked per Chief instruction. Requires explicit decision: whether biomarker-driven `instabilityPattern` propagation is permitted at adapter layer or is SYMPHONY-only territory.
+
+### Next phases
+- **Phase F** (T-49 GCS seam): Add `GCSEvent` type, additive seam alongside LabEvent pattern
+- **Phase G** (T-01 logistic): Replace mortality_proxy with validated logistic inputs
+- **Phase E** (SYMPHONY wiring): Blocked by orchestrator LangFlow Phase B

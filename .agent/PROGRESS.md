@@ -1623,6 +1623,7 @@ apps/healthcare/intelligenceboard/src/lib/clinical/lab-event-scorer.ts
 
 [2026-05-01 19:51] Phase D complete — CRP lab layer landed. LabEvent interface + classifyInfectiousSurge() (T-48 formula: slope ≥ 37 mg/L/hr). T-48 promoted from missing→partial in registry. labsTimeline + T-48 derived point wired into legacyIBToCtV1. 125/125 tests pass. Commit: 6b8e3aa. instabilityPattern override deferred to Phase D+ (SYMPHONY).
 [2026-05-01 20:00] CT Consolidation Audit complete — state verified across registry, adapter seams, HANDOFF.md, PROGRESS.md. Registry: 16 partial / 36 missing / 0 covered = 52 canonical ✓. Governance fixes: (1) Phase C section restored in HANDOFF.md (was missing; commit was in PROGRESS only); (2) Phase D test table corrected (treatment-response-scorer 43→23, TOTAL 145→125). Quality audit documented: T-50/NEWS2 is strongest seam (STRONG Scale 1); T-48/T-51/T-52 are MODERATE (formula-based but require caller inputs); T-45/T-46/T-47/T-49 are WEAK PROXY or SYMBOLIC (convergence pattern mapping, not spec formulas). Priority: Phase D+ (instabilityPattern wire for T-48) → Phase F (T-49 GCS) → Phase G (T-01 logistic) → Phase E (SYMPHONY, blocked by orchestrator).
+[2026-05-01 21:23] Phase C.2 complete — NEWS2 Scale 2 (COPD flag) additive support. computeNEWS2() accepts NEWS2ComputeOptions { spo2Scale?: 1|2 }; CTAdapterOptions { copdScale2?: boolean } wired through legacyIBToCtV1 → buildDerivedTimeline → computeNEWS2; news2:scale2 flag in derivedTimeline when Scale 2 active. T-50 registry updated (COPD flag gap resolved). 136/136 tests pass. 125 existing tests unmodified. Commit: fdc4931. Phase A (T-48 instabilityPattern) parked — awaiting Chief decision on biomarker-driven instabilityPattern at adapter layer.
 ## 2026-05-01 19:54 — `e1f3400` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
 
 - **Agent**: Avvcenna+
@@ -1632,6 +1633,33 @@ apps/healthcare/intelligenceboard/src/lib/clinical/lab-event-scorer.ts
 ```
 .agent/HANDOFF.md
 .agent/PROGRESS.md
+```
+
+---
+## 2026-05-01 20:25 — `783653b` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(agent): CT consolidation audit — restore Phase C docs, fix test count, add quality audit
+- **Files changed**: 2 file(s)
+
+```
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+```
+
+---
+## 2026-05-01 21:23 — `fdc4931` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(ct-v1): Phase C.2 — NEWS2 Scale 2 (COPD flag) additive support
+- **Files changed**: 5 file(s)
+
+```
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-coverage-registry.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/news2-score.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/news2-score.ts
 ```
 
 ---
