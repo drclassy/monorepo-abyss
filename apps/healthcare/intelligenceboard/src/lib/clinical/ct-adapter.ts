@@ -7,6 +7,8 @@ import type {
 import { computeNEWS2 } from './news2-score'
 import type { TreatmentEvent } from './treatment-response-scorer'
 import { aggregateResponsiveness, buildTreatmentTimeline } from './treatment-response-scorer'
+import type { LabEvent } from './lab-event-scorer'
+import { buildLabsTimeline, classifyInfectiousSurge } from './lab-event-scorer'
 import type {
   ClinicalConsciousnessLevel,
   ClinicalInstabilityPattern,
@@ -128,6 +130,7 @@ function buildDerivedTimeline(
   analysis: TrajectoryAnalysis,
   visits: VisitRecord[],
   vitalsTimeline: ClinicalTrajectoryVitalPoint[],
+  labEvents?: LabEvent[],
 ): ClinicalTrajectoryDerivedPoint[] {
   const sentraPoints: ClinicalTrajectoryDerivedPoint[] = visits.map(v => ({
     id: `dp-${v.encounter_id}`,
@@ -176,7 +179,23 @@ function buildDerivedTimeline(
 
   // Interleave: sentra_rule_v1 + NEWS2 point per visit, then aggregate
   const perVisitInterleaved = visits.flatMap((_, i) => [sentraPoints[i], news2Points[i]])
-  return [...perVisitInterleaved, aggregate]
+  const derived = [...perVisitInterleaved, aggregate]
+
+  // T-48: append CRP-based infectious surge point when lab data is available
+  if (labEvents && labEvents.length > 0) {
+    const surgeClass = classifyInfectiousSurge(labEvents)
+    derived.push({
+      id: `dp-t48-${lastVisit?.encounter_id ?? 'unknown'}`,
+      observedAt: lastVisit?.timestamp ?? new Date().toISOString(),
+      source: 'derived' as const,
+      calculationBasis: 'standard_formula' as const,
+      calculationLabel: 'T-48 Infectious Surge (CRP Slope)',
+      evidenceRefs: ['Feature-Clinical Trajectory §T-48'],
+      flags: [`t48:${surgeClass}`],
+    })
+  }
+
+  return derived
 }
 
 function buildResponse(
@@ -239,10 +258,14 @@ export function legacyIBToCtV1(
   visits: VisitRecord[],
   patientId: string,
   treatments?: TreatmentEvent[],
+  labs?: LabEvent[],
 ): ClinicalTrajectoryV1 {
   const vitalsTimeline = buildVitalsTimeline(visits)
   const treatmentTimeline = treatments && treatments.length > 0
     ? buildTreatmentTimeline(treatments, visits)
+    : undefined
+  const labsTimeline = labs && labs.length > 0
+    ? buildLabsTimeline(labs)
     : undefined
   return {
     version: 'ct.v1',
@@ -250,8 +273,9 @@ export function legacyIBToCtV1(
     baseline: buildBaseline(analysis),
     encounterContext: buildEncounterContext(visits, patientId),
     vitalsTimeline,
-    derivedTimeline: buildDerivedTimeline(analysis, visits, vitalsTimeline),
+    derivedTimeline: buildDerivedTimeline(analysis, visits, vitalsTimeline, labs),
     treatmentTimeline,
+    labsTimeline,
     response: buildResponse(analysis, treatmentTimeline ?? []),
     quality: buildQuality(analysis),
   }

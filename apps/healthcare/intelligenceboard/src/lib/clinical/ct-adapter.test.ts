@@ -250,3 +250,67 @@ test('treatmentResponsiveness reflects HR slope when treatments provided', () =>
   )
   assert.equal(result.response.treatmentResponsiveness, 'worsening')
 })
+
+// ─── Phase D: Lab / CRP layer ─────────────────────────────────────────────────
+
+import type { LabEvent } from './lab-event-scorer'
+
+const mockLabEvents: LabEvent[] = [
+  {
+    id: 'lab-001',
+    observedAt: '2026-05-01T08:00:00.000Z',  // enc-001
+    code: 'CRP',
+    label: 'C-Reactive Protein',
+    value: 45,
+    unit: 'mg/L',
+    source: 'manual',
+  },
+  {
+    id: 'lab-002',
+    observedAt: '2026-05-01T09:00:00.000Z',  // 1h later → slope=(82-45)/1=37 → active_surge
+    code: 'CRP',
+    label: 'C-Reactive Protein',
+    value: 82,
+    unit: 'mg/L',
+    source: 'manual',
+  },
+]
+
+test('labsTimeline undefined when no labs provided', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  assert.equal(result.labsTimeline, undefined)
+})
+
+test('labsTimeline populated when labs provided', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, mockLabEvents)
+  assert.ok(Array.isArray(result.labsTimeline))
+  assert.equal(result.labsTimeline?.length, 2)
+  assert.equal(result.labsTimeline?.[0].id, 'lab-001')
+  assert.equal(result.labsTimeline?.[0].name, 'C-Reactive Protein')
+  assert.equal(result.labsTimeline?.[0].value, '45')  // string in CT v1 contract
+})
+
+test('T-48 derived point appended to derivedTimeline when labs provided', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, mockLabEvents)
+  const t48Point = result.derivedTimeline?.find(d => d.calculationBasis === 'standard_formula')
+  assert.ok(t48Point !== undefined, 'expected T-48 derived point')
+  assert.ok(t48Point?.id.startsWith('dp-t48-'))
+  assert.equal(t48Point?.calculationLabel, 'T-48 Infectious Surge (CRP Slope)')
+})
+
+test('T-48 derived point carries active_surge flag for CRP slope ≥ 37', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, mockLabEvents)
+  const t48Point = result.derivedTimeline?.find(d => d.calculationBasis === 'standard_formula')
+  assert.ok(t48Point?.flags?.includes('t48:active_surge'), `expected t48:active_surge, got ${JSON.stringify(t48Point?.flags)}`)
+})
+
+test('no T-48 derived point when no labs provided', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  const t48Point = result.derivedTimeline?.find(d => d.calculationBasis === 'standard_formula')
+  assert.equal(t48Point, undefined)
+})
+
+test('derivedTimeline length is 2N+2 when labs provided (2N+1 existing + T-48 point)', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, mockLabEvents)
+  assert.equal(result.derivedTimeline?.length, mockVisits.length * 2 + 2)
+})
