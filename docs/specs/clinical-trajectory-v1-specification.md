@@ -33,6 +33,7 @@ The primary function of ClinicalTrajectory is to transform fragmented time-serie
 - data quality and reliability limitations
 
 ClinicalTrajectory v1 is intentionally scoped as a **consumer-safe contract and rendering layer**, not as a new clinical reasoning engine.
+Its advanced-v2 direction is prevention-first: the same contract must be able to support early warning, missing-data awareness, and next-step clinical guidance inside Dashboard Intelligence.
 
 ---
 
@@ -81,6 +82,20 @@ export interface ClinicalTrajectoryEnvelope {
 }
 ```
 
+### Relationship with advanced v2
+
+ClinicalTrajectory advanced v2 is the intended north star for the Dashboard Intelligence experience.
+
+The v1 contract stays compact and safe, but it must be capable of expressing:
+
+- prevention-oriented warning posture
+- next best clinical question
+- next best clinical check
+- missing data that blocks safe interpretation
+- escalation context when clinical consequence is high
+
+This is why v1 remains a contract-first evidence layer while v2 is the preventive cockpit direction.
+
 ---
 
 ## Core definition
@@ -101,7 +116,7 @@ It represents:
 
 It is designed for UI consumers first:
 
-- **Intelligenceboard:** full clinical review surface
+- **Intelligenceboard / Dashboard Intelligence:** full clinical review and prevention surface
 - **Sentra Assist:** compact point-of-care trajectory card
 
 ---
@@ -131,7 +146,7 @@ ClinicalTrajectory v1 does not include:
 - replacement of `SymphonyResult`
 - modification of SYMPHONY reasoning contract beyond minimal optional attachment
 - FHIR engine changes
-- orchestrator or Langflow wiring
+- `platform/orchestrator` or `flows/definitions` wiring
 - new diagnosis taxonomy
 - SATUSEHAT integration
 - autonomous treatment recommendation
@@ -199,19 +214,14 @@ The UI must show trend, evidence, and uncertainty without presenting CT as a bla
 ### Root documentation
 
 ```txt
-docs/clinical-trajectory/
-  CT_SPEC_V1.md
-  CT_FIELD_SEMANTICS.md
-  CT_CALCULATION_BASIS.md
-  CT_RENDERING_GUIDE.md
-  CT_NON_GOALS.md
-  CT_SHADOW_REVIEW_PROTOCOL.md
+docs/specs/ct_spec_v_1.md
+docs/specs/clinical-trajectory-v1-specification.md
 ```
 
 ### Shared types
 
 ```txt
-packages/shared-types/src/clinical-trajectory/
+packages/shared/shared-types/src/
   clinical-trajectory.types.ts
   clinical-trajectory.fixtures.ts
   clinical-trajectory.calculation-basis.ts
@@ -222,30 +232,32 @@ packages/shared-types/src/clinical-trajectory/
 Shared export:
 
 ```txt
-packages/shared-types/src/index.ts
+packages/shared/shared-types/src/index.ts
 ```
 
 ### Intelligenceboard consumer
 
 ```txt
-apps/healthcare/intelligenceboard/src/components/clinical-trajectory/
-  ClinicalTrajectoryPanel.tsx
-  TrajectorySummaryCard.tsx
-  TrajectoryTrendChips.tsx
-  InstabilityPatternStrip.tsx
-  TreatmentResponseStrip.tsx
-  TrajectoryMiniTimeline.tsx
-  EvidenceTrailList.tsx
-  DataQualityNotice.tsx
+apps/healthcare/intelligenceboard/src/components/features/trajectory/
+  TrajectoryIntelligencePanel.tsx
+  MomentumScoreCard.tsx
+  ConvergencePatternAlert.tsx
+  BaselineDeviationGauge.tsx
+  TimeToCriticalTimeline.tsx
+  AcuteAttackRiskGrid.tsx
+  ClinicalUrgencyMatrix.tsx
+  VitalTrendChart.tsx
+  MomentumHistoryChart.tsx
 ```
 
 ### Sentra Assist consumer
 
 ```txt
-apps/healthcare/sentra-assist/src/components/clinical-trajectory/
-  CompactClinicalTrajectoryCard.tsx
-  TrajectoryWarningBadge.tsx
-  TrajectoryQuickRationale.tsx
+apps/healthcare/sentra-assist/components/clinical/
+  ClinicalTrajectory.tsx
+  CTHeader.tsx
+  ClinicalDifferential.tsx
+  ClinicalAlert.tsx
 ```
 
 ---
@@ -833,7 +845,7 @@ ClinicalTrajectory v1 must not:
 - override AADI output
 - produce autonomous treatment recommendations
 - create or modify FHIR schema
-- call orchestrator or Langflow
+- call `platform/orchestrator` or `flows/definitions`
 - create a new diagnosis taxonomy
 - create a backend CT service
 - require SATUSEHAT dependency
@@ -869,9 +881,9 @@ This review hook is not a workflow engine. It exists only to support future audi
 
 | Area | Acceptance Criteria |
 |---|---|
-| Spec | `CT_SPEC_V1.md` created and approved |
+| Spec | `docs/specs/ct_spec_v_1.md` is canonical; `docs/specs/clinical-trajectory-v1-specification.md` is aligned companion reference |
 | Field semantics | All fields documented |
-| Contract | `ClinicalTrajectoryV1` exported from shared-types |
+| Contract | `ClinicalTrajectoryV1` exported from `@the-abyss/shared-types` |
 | Fixtures | Three mock trajectories created |
 | Intelligenceboard | Full CT panel renders without backend dependency |
 | Sentra Assist | Compact CT card renders without backend dependency |
@@ -885,12 +897,13 @@ This review hook is not a workflow engine. It exists only to support future audi
 ## Verification commands
 
 Package names must be adjusted to actual repository configuration.
+Run these after workspace dependencies are installed and package binaries are available.
 
 ```bash
-pnpm --filter @the-abyss/shared-types build
-pnpm --filter @the-abyss/shared-types test
-pnpm --filter @the-abyss/intelligenceboard build
-pnpm --filter @the-abyss/intelligenceboard test
+pnpm --filter @the-abyss/shared-types typecheck
+pnpm --filter @the-abyss/shared-types lint
+pnpm --filter @classy/intelligenceboard build
+pnpm --filter @classy/intelligenceboard test
 pnpm --filter @the-abyss/sentra-assist build
 pnpm --filter @the-abyss/sentra-assist test
 pnpm lint
@@ -900,14 +913,14 @@ pnpm test
 Boundary guard:
 
 ```bash
-grep -R "ClinicalTrajectory" packages/fhir-engine apps/orchestrator flows || true
+rg -n "ClinicalTrajectory" packages/platform/document-ingestion platform/orchestrator flows/definitions
 ```
 
 Expected result:
 
-- no required CT implementation in `packages/fhir-engine`
+- no required CT implementation in `packages/platform/document-ingestion`
 - no CT orchestrator wiring
-- no CT Langflow/flows wiring
+- no CT LangFlow/flows wiring
 - no diagnosis taxonomy changes
 
 ---
