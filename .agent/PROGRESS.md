@@ -1519,3 +1519,44 @@ docs/specs/ct_spec_v_1.md
 ---
 
 [2026-05-01 19:06] CT Adapter Phase A complete — 14/14 tests pass. Files: ct-adapter.ts (new), ct-coverage-registry.ts (new, 52 entries), ct-adapter.test.ts (new). Coverage: 0/52 executable, 12 partial, 40 missing. Legacy engines untouched. treatmentResponsiveness='unknown' always. linkedReasoning.authority='SYMPHONY' always. Next: Phase B (treatment layer, T-51/T-52), Phase C (NEWS2, T-50), Phase D (CRP lab, T-48).
+## 2026-05-01 19:09 — `6aa81c2` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(agent): CT Adapter Phase A complete — 14/14 tests pass
+- **Files changed**: 2 file(s)
+
+```
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+```
+
+---
+## 2026-05-01 19:11 — `9a3c549` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(ct-v1): Phase A — adapter, coverage registry, and tests
+- **Files changed**: 3 file(s)
+
+```
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-coverage-registry.ts
+```
+
+---
+## 2026-05-01 19:18 — `6bcc405` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: feat(ct-v1): Phase C — computeNEWS2, T-50 partial coverage
+- **Files changed**: 5 file(s)
+
+```
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-coverage-registry.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/news2-score.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/news2-score.ts
+```
+
+---
+[2026-05-01 19:30] CT Adapter Phase B complete — treatment-response scorer implemented. T-51/T-52 promoted from missing to partial. TreatmentEvent interface, classifyTreatmentResponse (HR slope thresholds T-51/T-52), aggregateResponsiveness, buildTreatmentTimeline. legacyIBToCtV1 accepts optional treatments param. 43/43 tests pass (treatment-response-scorer: 23, ct-adapter: 20). Shared-types typecheck clean. Files: treatment-response-scorer.ts (new), treatment-response-scorer.test.ts (new), ct-adapter.ts (updated), ct-coverage-registry.ts (updated), ct-adapter.test.ts (updated). Next: Phase D (CRP/lab extension for T-48).

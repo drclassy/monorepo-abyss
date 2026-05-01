@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import type { TrajectoryAnalysis, VisitRecord } from './trajectory-analyzer'
+import type { TreatmentEvent } from './treatment-response-scorer'
 import { legacyIBToCtV1, legacyIBToCtV1Envelope } from './ct-adapter'
 
 // ─── Fixture data ─────────────────────────────────────────────────────────────
@@ -204,4 +205,48 @@ test('envelope: linkedReasoning.authority is SYMPHONY', () => {
 test('envelope: trajectory.version is ct.v1', () => {
   const envelope = legacyIBToCtV1Envelope(mockAnalysis, mockVisits, 'patient-test-001')
   assert.equal(envelope.trajectory.version, 'ct.v1')
+})
+
+// ─── Phase B: Treatment-response layer ───────────────────────────────────────
+
+const mockTreatments: TreatmentEvent[] = [
+  {
+    id: 'tx-001',
+    occurredAt: '2026-05-01T11:00:00.000Z',  // between enc-001 (08:00) and enc-002 (14:00)
+    category: 'medication',
+    label: 'Salbutamol',
+    dose: '2.5mg',
+    route: 'nebulization',
+  },
+]
+
+test('treatmentTimeline undefined when no treatments provided', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  assert.equal(result.treatmentTimeline, undefined)
+})
+
+test('treatmentTimeline populated when treatments provided', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', mockTreatments)
+  assert.ok(Array.isArray(result.treatmentTimeline))
+  assert.equal(result.treatmentTimeline?.length, 1)
+  assert.equal(result.treatmentTimeline?.[0].id, 'tx-001')
+  assert.equal(result.treatmentTimeline?.[0].intervention, 'Salbutamol 2.5mg (nebulization)')
+  assert.equal(result.treatmentTimeline?.[0].source, 'manual')
+})
+
+test('treatmentResponsiveness is unknown when no treatments provided (backward compat)', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  assert.equal(result.response.treatmentResponsiveness, 'unknown')
+})
+
+test('treatmentResponsiveness reflects HR slope when treatments provided', () => {
+  // enc-001 (08:00): hr=98, enc-002 (14:00): hr=108, tx-001 at 11:00
+  // HR pre (08:00)=98, HR post (14:00)=108, delta=3h → slope=(108-98)/3=+3.33 bpm/hr ≥ T52=+2.6
+  // spo2 08:00=93, spo2 14:00=89 → drop=4pp ≥ 2pp → worsening
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', mockTreatments)
+  assert.ok(
+    result.response.treatmentResponsiveness !== 'unknown',
+    'expected treatmentResponsiveness to be classified when events are provided',
+  )
+  assert.equal(result.response.treatmentResponsiveness, 'worsening')
 })

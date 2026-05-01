@@ -655,3 +655,75 @@ Pure functions. Caller provides already-computed TrajectoryAnalysis.
 - **Phase B**: extend ingestion to carry `TreatmentEvent[]` → unlocks T-51, T-52
 - **Phase C**: implement `computeNEWS2()` in derivedTimeline → unlocks T-50
 - **Phase D**: extend `VisitRecord` or `labsTimeline` with CRP → unlocks T-48
+
+---
+## CT Adapter Phase B — 2026-05-01
+
+### What Phase B delivers
+
+Treatment-response scorer wired into CT v1 adapter. T-51 and T-52 promoted from `missing` to `partial`.
+
+**3 new/updated files:**
+```
+CREATE: apps/healthcare/intelligenceboard/src/lib/clinical/treatment-response-scorer.ts
+CREATE: apps/healthcare/intelligenceboard/src/lib/clinical/treatment-response-scorer.test.ts
+UPDATE: apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+UPDATE: apps/healthcare/intelligenceboard/src/lib/clinical/ct-coverage-registry.ts
+UPDATE: apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+```
+
+### TreatmentEvent interface (new public surface)
+
+```typescript
+export interface TreatmentEvent {
+  id: string
+  occurredAt: string   // ISO timestamp
+  category: string     // e.g. 'medication', 'procedure', 'oxygen'
+  label: string        // human-readable intervention name
+  dose?: string
+  route?: string
+}
+```
+
+### Classification logic (classifyTreatmentResponse)
+
+Evidence requirement: ≥1 pre-event visit + ≥1 post-event visit within 24h window.
+
+| Condition | Result |
+|---|---|
+| No pre-event visit OR no post-event visit within 24h | `'unknown'` |
+| HR slope ≤ −7.9 bpm/hr (T-51 formula) | `'responsive'` |
+| HR slope ≥ +2.6 bpm/hr AND (SpO2 drops ≥ 2pp OR RR rises ≥ 4/min) | `'worsening'` |
+| HR slope ≥ +2.6 bpm/hr | `'non_responsive'` |
+| HR slope between −7.9 and +2.6 | `'partially_responsive'` |
+
+### legacyIBToCtV1 signature (updated)
+
+```typescript
+export function legacyIBToCtV1(
+  analysis: TrajectoryAnalysis,
+  visits: VisitRecord[],
+  patientId: string,
+  treatments?: TreatmentEvent[],   // NEW optional param
+): ClinicalTrajectoryV1
+```
+
+- `treatmentTimeline` is `undefined` when no treatments provided (backward compat)
+- `treatmentResponsiveness` is `'unknown'` when no treatments provided (backward compat)
+- Aggregate responsiveness uses worst-case priority: worsening > non_responsive > partially_responsive > responsive > unknown
+
+### Test counts
+
+- `treatment-response-scorer.test.ts`: 23 tests, all pass
+- `ct-adapter.test.ts`: 20 tests total (+4 Phase B tests), all pass
+- Combined: 43/43 pass
+
+### What Phase B does NOT do
+
+- Does NOT add lab-aware treatment signals (Phase D scope)
+- Does NOT guarantee temporal precision <1h (limited by visit cadence)
+- T-51/T-52 are `partial` not `covered` — HR slope proxy only, no validated logistic regression
+
+### Next phase
+
+- **Phase D**: extend `VisitRecord` or `labsTimeline` with CRP → unlocks T-48 (Infectious Surge)

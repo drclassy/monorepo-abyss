@@ -5,6 +5,8 @@ import type {
   VisitRecord,
 } from './trajectory-analyzer'
 import { computeNEWS2 } from './news2-score'
+import type { TreatmentEvent } from './treatment-response-scorer'
+import { aggregateResponsiveness, buildTreatmentTimeline } from './treatment-response-scorer'
 import type {
   ClinicalConsciousnessLevel,
   ClinicalInstabilityPattern,
@@ -18,8 +20,10 @@ import type {
   ClinicalTrajectoryQuality,
   ClinicalTrajectoryResponseAssessment,
   ClinicalTrajectorySeverityBand,
+  ClinicalTrajectoryTreatmentPoint,
   ClinicalTrajectoryV1,
   ClinicalTrajectoryVitalPoint,
+  ClinicalTreatmentResponsiveness,
 } from '@the-abyss/shared-types'
 
 function mapAVPU(avpu: AVPULevel | undefined): ClinicalConsciousnessLevel {
@@ -175,12 +179,19 @@ function buildDerivedTimeline(
   return [...perVisitInterleaved, aggregate]
 }
 
-function buildResponse(analysis: TrajectoryAnalysis): ClinicalTrajectoryResponseAssessment {
+function buildResponse(
+  analysis: TrajectoryAnalysis,
+  treatmentTimeline: ClinicalTrajectoryTreatmentPoint[],
+): ClinicalTrajectoryResponseAssessment {
+  const treatmentResponsiveness: ClinicalTreatmentResponsiveness =
+    treatmentTimeline.length > 0
+      ? aggregateResponsiveness(treatmentTimeline.map(t => t.response))
+      : 'unknown'
   return {
     direction: mapDirection(analysis),
     momentum: mapMomentum(analysis.momentum),
     instabilityPattern: mapInstabilityPattern(analysis.momentum.convergence.pattern),
-    treatmentResponsiveness: 'unknown',
+    treatmentResponsiveness,
     severityBand: mapSeverityBand(analysis),
     confidence: mapConfidence(analysis, analysis.momentum),
     summary: analysis.summary,
@@ -227,8 +238,12 @@ export function legacyIBToCtV1(
   analysis: TrajectoryAnalysis,
   visits: VisitRecord[],
   patientId: string,
+  treatments?: TreatmentEvent[],
 ): ClinicalTrajectoryV1 {
   const vitalsTimeline = buildVitalsTimeline(visits)
+  const treatmentTimeline = treatments && treatments.length > 0
+    ? buildTreatmentTimeline(treatments, visits)
+    : undefined
   return {
     version: 'ct.v1',
     generatedAt: new Date().toISOString(),
@@ -236,7 +251,8 @@ export function legacyIBToCtV1(
     encounterContext: buildEncounterContext(visits, patientId),
     vitalsTimeline,
     derivedTimeline: buildDerivedTimeline(analysis, visits, vitalsTimeline),
-    response: buildResponse(analysis),
+    treatmentTimeline,
+    response: buildResponse(analysis, treatmentTimeline ?? []),
     quality: buildQuality(analysis),
   }
 }
