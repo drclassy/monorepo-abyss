@@ -1,7 +1,7 @@
 import type { ClinicalConsciousnessLevel, ClinicalTrajectoryVitalPoint } from '@the-abyss/shared-types'
 
 // NEWS2 (National Early Warning Score 2) — Royal College of Physicians 2017.
-// Scale 1 (standard SpO2) used throughout — no hypercapnic/COPD flag available in legacy pipeline.
+// Scale 1 (standard SpO2) is the default. Scale 2 (COPD/hypercapnic) available via NEWS2ComputeOptions.
 // O2 supplement score is always 0 — no device data in VisitRecord.
 
 function scoreRR(rr: number): number {
@@ -18,6 +18,19 @@ function scoreSpo2(spo2: number): number {
   if (spo2 <= 93) return 2
   if (spo2 <= 95) return 1
   return 0
+}
+
+// Scale 2: target SpO2 88–92% (COPD/hypercapnic respiratory failure, type 2).
+// O2 supplement assumed 0 throughout — elevated-O2 penalty arm (≥93% on O2) never fires here.
+function scoreSpo2Scale2(spo2: number): number {
+  if (spo2 <= 83) return 3
+  if (spo2 <= 85) return 2
+  if (spo2 <= 87) return 1
+  return 0  // 88–92 = target; ≥93 on air = acceptable
+}
+
+export interface NEWS2ComputeOptions {
+  spo2Scale?: 1 | 2  // default: 1 (standard)
 }
 
 function scoreSBP(sbp: number): number {
@@ -56,9 +69,12 @@ function scoreConsciousness(level: ClinicalConsciousnessLevel | undefined): numb
  *
  * Returns `undefined` if any required vital (rr, spo2, sbp, hr, temp) is absent.
  * O2 supplement is always scored 0 — no device data available.
- * SpO2 Scale 1 used — no hypercapnic risk indicator in legacy pipeline.
+ * Default: Scale 1 (standard). Pass `{ spo2Scale: 2 }` for COPD/hypercapnic patients.
  */
-export function computeNEWS2(vital: ClinicalTrajectoryVitalPoint): number | undefined {
+export function computeNEWS2(
+  vital: ClinicalTrajectoryVitalPoint,
+  options?: NEWS2ComputeOptions,
+): number | undefined {
   if (
     vital.rr   == null ||
     vital.spo2 == null ||
@@ -68,9 +84,12 @@ export function computeNEWS2(vital: ClinicalTrajectoryVitalPoint): number | unde
   ) {
     return undefined
   }
+  const spo2Score = options?.spo2Scale === 2
+    ? scoreSpo2Scale2(vital.spo2)
+    : scoreSpo2(vital.spo2)
   return (
     scoreRR(vital.rr) +
-    scoreSpo2(vital.spo2) +
+    spo2Score +
     0 + // O2 supplement — assumed breathing air (no device data)
     scoreSBP(vital.sbp) +
     scoreHR(vital.hr) +

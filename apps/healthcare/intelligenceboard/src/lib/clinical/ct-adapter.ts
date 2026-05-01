@@ -131,6 +131,7 @@ function buildDerivedTimeline(
   visits: VisitRecord[],
   vitalsTimeline: ClinicalTrajectoryVitalPoint[],
   labEvents?: LabEvent[],
+  copdScale2?: boolean,
 ): ClinicalTrajectoryDerivedPoint[] {
   const sentraPoints: ClinicalTrajectoryDerivedPoint[] = visits.map(v => ({
     id: `dp-${v.encounter_id}`,
@@ -152,8 +153,8 @@ function buildDerivedTimeline(
       calculationBasis: 'official_score' as const,
       calculationLabel: 'NEWS2',
       evidenceRefs: [vp?.id ?? `vp-${i}`],
-      news2Total: vp ? computeNEWS2(vp) : undefined,
-      flags: [],
+      news2Total: vp ? computeNEWS2(vp, copdScale2 ? { spo2Scale: 2 } : undefined) : undefined,
+      flags: copdScale2 ? ['news2:scale2'] : [],
     }
   })
 
@@ -253,12 +254,17 @@ function buildEncounterContext(
   }
 }
 
+export interface CTAdapterOptions {
+  copdScale2?: boolean
+}
+
 export function legacyIBToCtV1(
   analysis: TrajectoryAnalysis,
   visits: VisitRecord[],
   patientId: string,
   treatments?: TreatmentEvent[],
   labs?: LabEvent[],
+  options?: CTAdapterOptions,
 ): ClinicalTrajectoryV1 {
   const vitalsTimeline = buildVitalsTimeline(visits)
   const treatmentTimeline = treatments && treatments.length > 0
@@ -273,7 +279,7 @@ export function legacyIBToCtV1(
     baseline: buildBaseline(analysis),
     encounterContext: buildEncounterContext(visits, patientId),
     vitalsTimeline,
-    derivedTimeline: buildDerivedTimeline(analysis, visits, vitalsTimeline, labs),
+    derivedTimeline: buildDerivedTimeline(analysis, visits, vitalsTimeline, labs, options?.copdScale2),
     treatmentTimeline,
     labsTimeline,
     response: buildResponse(analysis, treatmentTimeline ?? []),

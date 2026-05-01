@@ -314,3 +314,31 @@ test('derivedTimeline length is 2N+2 when labs provided (2N+1 existing + T-48 po
   const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, mockLabEvents)
   assert.equal(result.derivedTimeline?.length, mockVisits.length * 2 + 2)
 })
+
+// ─── Phase C: NEWS2 Scale 2 / COPD flag ──────────────────────────────────────
+
+test('copdScale2: enc-001 (spo2=93) scores lower on Scale 2 than Scale 1', () => {
+  // enc-001: spo2=93. Scale 1: 93→2 (+2 to total). Scale 2: 93 on air→0 (no penalty).
+  const s1Result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  const s2Result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, undefined, { copdScale2: true })
+  const s1Point = s1Result.derivedTimeline?.find(d => d.id === 'dp-news2-enc-001')
+  const s2Point = s2Result.derivedTimeline?.find(d => d.id === 'dp-news2-enc-001')
+  assert.ok(
+    (s2Point?.news2Total ?? Infinity) < (s1Point?.news2Total ?? 0),
+    `expected Scale 2 < Scale 1, got s1=${s1Point?.news2Total} s2=${s2Point?.news2Total}`,
+  )
+})
+
+test('copdScale2: all NEWS2 derived points carry news2:scale2 flag', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, undefined, { copdScale2: true })
+  const news2Points = result.derivedTimeline?.filter(d => d.calculationBasis === 'official_score')
+  assert.ok(news2Points?.every(d => d.flags?.includes('news2:scale2')),
+    'all NEWS2 points must carry news2:scale2 flag when copdScale2=true')
+})
+
+test('backward compat: no options → NEWS2 points do not carry news2:scale2 flag', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001')
+  const news2Points = result.derivedTimeline?.filter(d => d.calculationBasis === 'official_score')
+  assert.ok(news2Points?.every(d => !d.flags?.includes('news2:scale2')),
+    'Scale 2 flag must not appear when copdScale2 not set')
+})

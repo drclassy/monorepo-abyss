@@ -116,3 +116,52 @@ test('mild deterioration: spo2=94, rr=22, sbp=105, hr=100, temp=37.8, alert → 
   // rr=22→2, spo2=94→1, sbp=105→1, hr=100→1, temp=37.8→0, alert→0 = 5
   assert.equal(score, 5)
 })
+
+// ─── SpO2 Scale 2 (COPD/hypercapnic) ────────────────────────────────────────
+// Thresholds: ≤83→3, 84-85→2, 86-87→1, ≥88→0 (target range + on air)
+
+test('Scale 2: spo2 84 scores lower than Scale 1 (84-85 → 2, not 3)', () => {
+  const s1 = computeNEWS2(vital({ spo2: 84 }))
+  const s2 = computeNEWS2(vital({ spo2: 84 }), { spo2Scale: 2 })
+  assert.ok(s2! < s1!, `expected Scale 2 < Scale 1, got s1=${s1} s2=${s2}`)
+})
+
+test('Scale 2: spo2 86 scores lower than Scale 1 (86-87 → 1, not 3)', () => {
+  const s1 = computeNEWS2(vital({ spo2: 86 }))
+  const s2 = computeNEWS2(vital({ spo2: 86 }), { spo2Scale: 2 })
+  assert.ok(s2! < s1!)
+})
+
+test('Scale 2: spo2 88 in COPD target range → SpO2 score 0 (Scale 1 scores 3)', () => {
+  const s1 = computeNEWS2(vital({ spo2: 88 }))
+  const s2 = computeNEWS2(vital({ spo2: 88 }), { spo2Scale: 2 })
+  assert.ok(s2! < s1!)
+})
+
+test('Scale 2: spo2 92 at target ceiling → SpO2 score 0 (Scale 1 scores 2)', () => {
+  const s1 = computeNEWS2(vital({ spo2: 92 }))
+  const s2 = computeNEWS2(vital({ spo2: 92 }), { spo2Scale: 2 })
+  assert.ok(s2! < s1!)
+})
+
+test('Scale 2: spo2 93 on air → SpO2 score 0 (acceptable; Scale 1 scores 2)', () => {
+  const s1 = computeNEWS2(vital({ spo2: 93 }))
+  const s2 = computeNEWS2(vital({ spo2: 93 }), { spo2Scale: 2 })
+  assert.ok(s2! < s1!)
+})
+
+test('Scale 2: spo2 97 fully normal → same score as Scale 1 (both 0)', () => {
+  const s1 = computeNEWS2(vital({ spo2: 97 }))
+  const s2 = computeNEWS2(vital({ spo2: 97 }), { spo2Scale: 2 })
+  assert.equal(s1, s2)
+})
+
+test('backward compat: no options equals explicit spo2Scale: 1', () => {
+  const implicit = computeNEWS2(vital({ spo2: 92 }))
+  const explicit  = computeNEWS2(vital({ spo2: 92 }), { spo2Scale: 1 })
+  assert.equal(implicit, explicit)
+})
+
+test('Scale 2 with missing spo2 still returns undefined', () => {
+  assert.equal(computeNEWS2(vital({ spo2: null }), { spo2Scale: 2 }), undefined)
+})
