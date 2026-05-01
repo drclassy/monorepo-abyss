@@ -4,6 +4,7 @@
 
 export * from './symphony'
 export * from './platform-api'
+export * from './clinical-trajectory'
 
 /** User identity, roles, and session types — used across all authentication flows. */
 // User & Authentication

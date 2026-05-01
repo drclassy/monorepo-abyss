@@ -1377,3 +1377,95 @@ docs/templates/HANDOFF.md
 ```
 
 ---
+## 2026-05-01 01:50 — `2d5ee85` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-REPO-STRUCTURE-001] docs: add execution and verification reports
+- **Files changed**: 5 file(s)
+
+```
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-EXECUTION-REPORT.md
+docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-HANDOFF.md
+docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-VERIFICATION-REPORT.md
+```
+
+---
+## 2026-05-01 01:50 — `dc5a51f` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(rename-cleanup): finish symphony→nada / sentra-rag→pustaka consumer updates
+- **Files changed**: 5 file(s)
+
+```
+platform/orchestrator/package.json
+platform/orchestrator/src/sagas/diagnosis-flow.saga.ts
+platform/orchestrator/src/sagas/symphony-bridge.spec.ts
+platform/orchestrator/src/sagas/symphony-bridge.ts
+tooling/scripts/rag/medical-search.ts
+```
+
+---
+## 2026-05-01 02:04 — `356f62e` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: [ABYSS-REPO-STRUCTURE-001] fix: restore tailwindcss hoisting workaround for @the-abyss/ui
+- **Files changed**: 2 file(s)
+
+```
+package.json
+pnpm-lock.yaml
+```
+
+---
+## 2026-05-01 11:50 — `5bc3ad9` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: docs(spec): align clinical trajectory specs with prevention-first direction
+- **Files changed**: 2 file(s)
+
+```
+docs/specs/clinical-trajectory-v1-specification.md
+docs/specs/ct_spec_v_1.md
+```
+
+---
+
+## 2026-05-01 14:21 — CT v1 implementation prep
+
+- **Agent**: Codex
+- **What**: Strengthened the ClinicalTrajectory v1 implementation brief for Claude Code, with explicit reuse rules, scope boundaries, file targets, and verification gates.
+- **Files changed**: `.agent/HANDOFF.md`, `.agent/PROGRESS.md`, `.agent/sessions/2026-05-01.md`
+
+---
+
+## 2026-05-01 14:38 — CT v1 Chief decisions locked
+
+- **Agent**: Codex
+- **What**: Locked the 2 open CT v1 decisions into `.agent/HANDOFF.md`: fixtures-only data source for v1, augment Intelligenceboard, and new independent `ClinicalTrajectoryV1Card.tsx` for Sentra Assist.
+- **Operational rule**: `.agent/` remains the mandatory working handoff surface; no external handoff artifact is used for CT v1.
+
+---
+
+## 2026-05-01 14:xx — `/clas-postcode` slash command added
+
+- **Agent**: Codex
+- **What**: Added a repo-local Claude slash command for post-coding verification on changed files only, with mandatory static/test/security/compatibility gates and a final GO/NO-GO outcome.
+- **Files changed**: `.claude/commands/clas-postcode.md`, `.agent/sessions/2026-05-01.md`, `.agent/PROGRESS.md`
+
+---
+
+## 2026-05-01 14:55 — CT v1 contract + consumer rendering landed
+
+- **Agent**: Claude (Opus 4.7)
+- **What**: Landed ClinicalTrajectory v1 as a contract-first consumer-rendering layer. Single shared-types contract (`packages/shared/shared-types/src/clinical-trajectory.ts`, 474 lines, 9 discriminator unions, 7 interfaces, envelope linked to SYMPHONY, review-note hook, 3 fixtures). Extended shared-types tests from 2 → 6 cases (response states, raw/derived split, escalation, sparse-data missingness, JSON round-trip, advisory-only copy). Polished sparse fixture: vitals `0` → `null` to honor missingness rule.
+- **Verification**: shared-types `typecheck` ✅. shared-types tests via tsx (workspace fallback) **6/6 ✅**. IB `ClinicalTrajectoryV1Panel.test.tsx` **3/3 ✅**. Assist `typecheck` ✅. Boundary guard grep returns **0 matches** in `packages/platform/document-ingestion/`, `platform/`, `flows/`.
+- **Decisions locked (also recorded in `.agent/DECISIONS.md`)**: D1 fixtures-only · D2 new file `ClinicalTrajectoryV1Card.tsx` for Assist · D3 single contract file · D4 augment IB panel via optional prop + conditional mount · D5 existing engines untouched.
+- **Files added**: `packages/shared/shared-types/src/clinical-trajectory.ts`, `packages/shared/shared-types/src/clinical-trajectory.test.ts`.
+- **Files modified**: `packages/shared/shared-types/src/index.ts` (barrel export added).
+- **Files unchanged but verified in HEAD**: IB `ClinicalTrajectoryV1Panel.tsx`, IB `ClinicalTrajectoryV1Panel.test.tsx`, IB `TrajectoryIntelligencePanel.tsx` (mount), IB `index.ts`, Assist `ClinicalTrajectoryV1Card.tsx`, Assist `ClinicalTrajectory.tsx` (mount), Assist `index.ts`.
+- **Out of scope (preserved)**: no FHIR change, no orchestrator/flows/ingestion wiring, no diagnosis-engine surface, no `wxt.config.ts` change, no new dependency.
+- **Follow-up**: shared-types lacks a native `test` script; node:test resolves `'./clinical-trajectory'` only with explicit `.ts` extension or via tsx. Workaround: invoke IB's `tsx` from shared-types. Adding a `test` script to `packages/shared/shared-types/package.json` deferred to a separate commit to keep this change additive only.
+
+---
