@@ -386,3 +386,17 @@ test('Phase F: backward compat — copdScale2 still works alongside gcsEvents', 
   assert.ok(news2Points?.every(d => d.flags?.includes('news2:scale2')), 'news2:scale2 flag must still be present')
   assert.ok(result.gcsTimeline !== undefined, 'gcsTimeline must also be present')
 })
+
+test('Phase F: derivedTimeline length is 2N+2 when gcsEvents supplied (2N+1 base + T-49 point)', () => {
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, undefined, { gcsEvents: mockGCSEvents })
+  assert.equal(result.derivedTimeline?.length, mockVisits.length * 2 + 2)
+})
+
+test('Phase F: T-49 observedAt matches last GCS event timestamp, not last visit timestamp', () => {
+  // mockGCSEvents last event is at 10:00; mockVisits last visit is at 20:00 — must be GCS timestamp
+  const result = legacyIBToCtV1(mockAnalysis, mockVisits, 'patient-test-001', undefined, undefined, { gcsEvents: mockGCSEvents })
+  const t49 = result.derivedTimeline?.find(d => d.id?.startsWith('dp-t49-'))
+  const lastGcsObservedAt = '2026-05-01T10:00:00.000Z'
+  const lastVisitTimestamp = '2026-05-01T20:00:00.000Z'
+  assert.equal(t49?.observedAt, lastGcsObservedAt, `T-49 observedAt must be GCS lane timestamp, not ${lastVisitTimestamp}`)
+})

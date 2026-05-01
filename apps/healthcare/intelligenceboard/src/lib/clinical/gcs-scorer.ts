@@ -4,6 +4,7 @@ export interface GCSEvent {
   id: string
   observedAt: string
   source: 'manual' | 'imported'
+  /** Clinical GCS range: 3 (deep coma) – 15 (fully alert). Values outside this range are accepted but clinically invalid. */
   gcsTotal: number
   eyeScore?: number
   verbalScore?: number
@@ -25,8 +26,14 @@ function gcsInterpretation(
   return 'severe_impairment'
 }
 
-// T-49 formula: GCS_t = GCS_0 + (-1.3) × t (slope in pts/hr, R²=0.97)
-// slope ≤ -1.3 → active_decline; slope < 0 → gradual_decline; ≥ 0 → stable_or_improving
+// T-49 trend seam — NOT a full neurologic deterioration engine.
+// Slope = (lastGCS − firstGCS) / deltaHours  (endpoint arithmetic, not regression).
+// Threshold -1.3 pts/hr is from the T-49 feature spec. Classification:
+//   slope ≤ -1.3  → active_decline
+//   slope <  0    → gradual_decline
+//   slope ≥  0    → stable_or_improving
+//   < 2 events OR deltaHours = 0 → insufficient_data
+// Mid-series fluctuations are not captured; only the overall first-to-last trend is scored.
 export function classifyNeurologicDecline(
   events: GCSEvent[],
 ): { classification: NeurologicDeclineClassification; slopePerHour?: number } {

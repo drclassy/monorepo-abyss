@@ -200,15 +200,21 @@ function buildDerivedTimeline(
     })
   }
 
-  // T-49: append GCS-based neurologic decline point when GCS events are available
+  // T-49: append GCS-based neurologic decline point when GCS events are available.
+  // observedAt uses the last GCS event's timestamp — honest to the GCS evidence lane,
+  // not the vitals lane. The two lanes may cover different observation windows.
   if (gcsEvents && gcsEvents.length > 0) {
+    const sortedGcs = [...gcsEvents].sort(
+      (a, b) => new Date(a.observedAt).getTime() - new Date(b.observedAt).getTime(),
+    )
+    const lastGcsObservedAt = sortedGcs[sortedGcs.length - 1].observedAt
     const { classification, slopePerHour } = classifyNeurologicDecline(gcsEvents)
     const slopeFlag = slopePerHour !== undefined
       ? `t49:slope:${slopePerHour.toFixed(2)}`
       : 't49:slope:unknown'
     derived.push({
       id: `dp-t49-${lastVisit?.encounter_id ?? 'unknown'}`,
-      observedAt: lastVisit?.timestamp ?? new Date().toISOString(),
+      observedAt: lastGcsObservedAt,
       source: 'derived' as const,
       calculationBasis: 'standard_formula' as const,
       calculationLabel: 'T-49 Neurologic Decline (GCS Slope)',

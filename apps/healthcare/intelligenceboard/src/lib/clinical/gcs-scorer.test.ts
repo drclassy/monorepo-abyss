@@ -41,13 +41,23 @@ test('insufficient_data: 2 events same timestamp', () => {
   assert.equal(r.classification, 'insufficient_data')
 })
 
-test('active_decline: slope exactly -1.3 pts/hr', () => {
-  // GCS drops 1.3 in 1 hour = slope -1.3
+test('active_decline: slope exactly -1.3 pts/hr (boundary)', () => {
+  // GCS 15 → 2 over 10 hours: (2-15)/10 = -1.3 pts/hr — exactly on threshold → active_decline
   const r = classifyNeurologicDecline([
-    makeEvent('e1', 0, 15),
-    makeEvent('e2', 1, 13.7 as unknown as number),  // slope = -1.3
+    makeEvent('e1', 0,  15),
+    makeEvent('e2', 10, 2),
   ])
   assert.equal(r.classification, 'active_decline')
+  assert.ok(r.slopePerHour !== undefined && Math.abs(r.slopePerHour - (-1.3)) < 0.0001)
+})
+
+test('gradual_decline: slope -1.2 pts/hr (just outside boundary)', () => {
+  // GCS 15 → 3 over 10 hours: (3-15)/10 = -1.2 pts/hr — just above threshold → gradual_decline
+  const r = classifyNeurologicDecline([
+    makeEvent('e1', 0,  15),
+    makeEvent('e2', 10, 3),
+  ])
+  assert.equal(r.classification, 'gradual_decline')
 })
 
 test('active_decline: slope -2 pts/hr (severe)', () => {
@@ -183,4 +193,47 @@ test('buildGCSTimeline: preserves sub-scores and source', () => {
   assert.equal(result[0].verbalScore, 3)
   assert.equal(result[0].motorScore, 4)
   assert.equal(result[0].source, 'imported')
+})
+
+// ─── 3+ event series — first-to-last endpoint behavior documented ─────────────
+// This scorer is a TREND SEAM, not a regression engine.
+// Mid-series fluctuations are NOT captured — only first-to-last slope is scored.
+
+test('3 events: mid-crash ignored — first-to-last slope determines classification', () => {
+  // GCS: 15 (t=0) → 10 (t=1, mid-crash) → 14 (t=4)
+  // Endpoint slope: (14-15)/4 = -0.25 → gradual_decline
+  // A regression over all 3 points would capture the crash and produce a steeper slope,
+  // but this seam intentionally uses endpoint arithmetic only.
+  const r = classifyNeurologicDecline([
+    makeEvent('e1', 0, 15),
+    makeEvent('e2', 1, 10),
+    makeEvent('e3', 4, 14),
+  ])
+  assert.equal(r.classification, 'gradual_decline')
+  assert.ok(r.slopePerHour !== undefined && Math.abs(r.slopePerHour - (-0.25)) < 0.0001)
+})
+
+test('3 events: monotone decline — endpoint slope matches active_decline', () => {
+  // GCS: 15 (t=0) → 12 (t=1) → 9 (t=2)
+  // Endpoint slope: (9-15)/2 = -3.0 → active_decline
+  const r = classifyNeurologicDecline([
+    makeEvent('e1', 0, 15),
+    makeEvent('e2', 1, 12),
+    makeEvent('e3', 2,  9),
+  ])
+  assert.equal(r.classification, 'active_decline')
+  assert.ok(r.slopePerHour !== undefined && Math.abs(r.slopePerHour - (-3.0)) < 0.0001)
+})
+
+test('4 events unsorted input: classification uses chronological first and last', () => {
+  // Input in arbitrary order; first-to-last after sorting: GCS 14 (t=0) → GCS 8 (t=4)
+  // Endpoint slope: (8-14)/4 = -1.5 → active_decline
+  const r = classifyNeurologicDecline([
+    makeEvent('e3', 3, 11),
+    makeEvent('e1', 0, 14),
+    makeEvent('e4', 4,  8),
+    makeEvent('e2', 1, 13),
+  ])
+  assert.equal(r.classification, 'active_decline')
+  assert.ok(r.slopePerHour !== undefined && Math.abs(r.slopePerHour - (-1.5)) < 0.0001)
 })
