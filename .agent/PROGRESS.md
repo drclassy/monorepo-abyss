@@ -1719,3 +1719,33 @@ apps/healthcare/intelligenceboard/src/lib/clinical/gcs-scorer.ts
 ```
 
 ---
+## 2026-05-06 12:06 — `e130591` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Classy+
+- **Commit**: chore: snapshot in-progress refactor + governance updates
+- **Files changed**: 63 file(s)
+
+```
+.agent/DECISIONS.md
+.agent/PROGRESS.md
+.github/commands/gemini-invoke.toml
+.github/commands/gemini-plan-execute.toml
+.github/commands/gemini-review.toml
+.github/commands/gemini-scheduled-triage.toml
+.github/commands/gemini-triage.toml
+.github/workflows/ai-review.yml
+.github/workflows/auto-fix.yml
+.github/workflows/auto-merge.yml
+.github/workflows/ci.yml
+.github/workflows/doc-guard.yml
+.github/workflows/gemini-dispatch.yml
+.github/workflows/gemini-invoke.yml
+.github/workflows/gemini-plan-execute.yml
+.github/workflows/gemini-review.yml
+.github/workflows/gemini-scheduled-triage.yml
+.github/workflows/gemini-triage.yml
+.github/workflows/generate-documentation.yml
+.github/workflows/maintenance.yml
+```
+
+---
