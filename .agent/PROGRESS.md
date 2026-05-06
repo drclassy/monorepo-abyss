@@ -8,12 +8,24 @@
 
 |Field|Value|
 |-------|-------|
-| **Last updated** | 2026-05-01 |
-| **Active branch** | `master` |
-| **Active JET phase** | GO granted — Chief authorized all classes (A/B/C) |
+| **Last updated** | 2026-05-06 |
+| **Active branch** | `refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy` (17 ahead of origin) |
+| **Active JET phase** | Migration session closed — both prototype apps migrated and cleanup committed |
 | **Next major initiative** | Consumer Trial Readiness: Dashboard/ASSIST readiness, shadow telemetry, and limited trial gating |
 | **CI (2026-05-01)** | GitHub Actions refactored to vendor-clean reusable stack (`reusable-verify.yml`, maintenance, security hardening, fork-safe auto-fix); Chief to align branch protection required checks |
 | **Recent tooling** | Cursor IDE audit executed locally (see `.agent/sessions/2026-04-28.md`): Claude Code permission posture tightened, wrapper removed, overlapping extensions trimmed; 2026-04-30 added always-on Chief directive bridge for Cursor rule flow and reclassified the root `docs/` surface into active vs archive buckets; 2026-04-30 excluded `tooling/kilo/worktrees/**` from workspace discovery to prevent ghost package duplicates; 2026-04-30 landed workspace `.vscode/settings.json` (watcher/search exclude), fixed `.cursorindexingignore` corporate path typo + follow-up **`platform/orchestrator/`** indexing path (was incorrect `apps/orchestrator/`), and added `docs/cursor/cursor-settings-profiles.md` (solo vs non-coder templates + hooks eval) |
+
+---
+
+## 2026-05-06 — Cleanup: prototype migration backups removed + final smoke
+
+- **Agent:** Claude Opus 4.7 (1M context)
+- **Commit:** `d99137e` chore: cleanup prototype migration backups
+- **What:** After live smoke confirmed both migrated apps boot and serve cleanly, both pre-prototype backup folders deleted from disk: `apps/corporate/_ferdiiskandar.preprototype-backup` (124 files), `apps/community/classy-transformer/_website.preprototype-backup` (129 files). Two corresponding exclusion lines removed from root `pnpm-workspace.yaml`. Lockfile regenerated.
+- **Live smoke results:**
+  - ferdiiskandar `:3005` — Next 15.5.15 ready 1.4–1.6s. `/`, `/about`, `/robots.txt` HTTP 200. `/api/chat` endpoint compiled + reachable; NVIDIA upstream returns 401 with Chief-provided `con-…` key (NVIDIA NIM expects `nvapi-…` prefix). Error handling correctly maps 401→502 RFC7807.
+  - classy-transformer/website `:3007` — Vite 6.4.2 ready 349ms. `/`, `/login` HTTP 200 with proper React+Vite HMR. `/api/*` throws on `new URL("")` because `KIMI_AUTH_URL` env empty. Both expected — not regressions; same behavior at prototype source.
+- **Pending (Chief area):** valid `nvapi-` NVIDIA key, Kimi OAuth credentials (APP_ID/APP_SECRET registered at Kimi dev console — note: `sk-kimi-…` chat completion key does not fit OAuth slot), MySQL `DATABASE_URL`. Polyrepo extraction to per-app GitHub repos.
 
 ---
 
@@ -1805,6 +1817,18 @@ pnpm-workspace.yaml
 .agent/PROGRESS.md
 AGENTS.md
 pnpm-lock.yaml
+pnpm-workspace.yaml
+```
+
+---
+## 2026-05-06 13:06 — `d99137e` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Classy+
+- **Commit**: chore: cleanup prototype migration backups
+- **Files changed**: 2 file(s)
+
+```
+.agent/PROGRESS.md
 pnpm-workspace.yaml
 ```
 
