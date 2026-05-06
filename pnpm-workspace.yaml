@@ -10,6 +10,4 @@ packages:
   - 'platform/**'
   - 'tooling/**'
   - '!tooling/kilo/worktrees/**'
-  - '!apps/corporate/_ferdiiskandar.preprototype-backup'
   - 'apps/community/classy-transformer/website'
-  - '!apps/community/classy-transformer/_website.preprototype-backup'

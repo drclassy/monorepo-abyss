@@ -1795,3 +1795,17 @@ pnpm-workspace.yaml
 ```
 
 ---
+## 2026-05-06 12:42 — `6982079` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Classy+
+- **Commit**: chore(community/classy-transformer/website): align monorepo meta with website prototype migration
+- **Files changed**: 4 file(s)
+
+```
+.agent/PROGRESS.md
+AGENTS.md
+pnpm-lock.yaml
+pnpm-workspace.yaml
+```
+
+---
