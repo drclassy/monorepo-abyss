@@ -71,7 +71,7 @@ v:\avcn-sentra\abyss-monorepo\
 │   ├── community/
 │   │   ├── classy-memory/          ← Next.js 16, React 19, Tailwind v4, Playwright (memory UI)
 │   │   ├── classy-transformer/     ← Next.js 15, React 19, Tailwind v3, Prisma, Vitest (multi-LLM platform)
-│   │   │   └── website/              ← Next.js 14 marketing site
+│   │   │   └── website/              ← Vite 7 + Hono 4 + tRPC + Drizzle/MySQL + Kimi OAuth (Sentra Prompt landing + light dashboard, prototype-aligned 2026-05-06)
 │   │   └── daf-website/              ← Next.js 15, React 19, Tailwind v3 (foundation site)
 │   ├── corporate/
 │   │   └── ferdiiskandar/            ← Next.js 15.5.15, React 19, no Tailwind, Vitest, NVIDIA chat API (personal brand site, prototype-aligned 2026-05-06)

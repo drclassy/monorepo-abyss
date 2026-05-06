@@ -17,6 +17,17 @@
 
 ---
 
+## 2026-05-06 — Migrate class-prototype/classy-transformer into apps/community/classy-transformer/website (Opsi 3 consolidation)
+
+- **Agent:** Claude Opus 4.7 (1M context)
+- **What:** Replace `apps/community/classy-transformer/website/` (Next.js 14 marketing scaffold) with `class-prototype/classy-transformer/app/` build (Vite 7 + Hono 4 + tRPC + Drizzle/MySQL + Kimi OAuth + light dashboard). Resources sibling brought in via `website/resources/` with vite alias rewrite. Workspace identity `@the-abyss/classy-transformer-website` preserved. Pre-prototype Next.js 14 scaffold archived at `apps/community/classy-transformer/_website.preprototype-backup` (excluded from pnpm workspace). CTE2 transformation + Indonesian translation artifacts preserved at `website/_legacy-cte2/` (CTE2_CHANGES_SUMMARY, CTE2_CONTENT_MAPPING, CTE2_TRANSFORMATION_QA_REPORT, INDONESIAN_TRANSLATION_SUMMARY, DEPLOYMENT_INSTRUCTIONS, prior AGENTS.md).
+- **Verification:** AT-01 install OK · **AT-05 build PASS** (Vite 5.04s, 2518 modules, dist/boot.js 42.9kb). AT-02 typecheck, AT-03 lint, AT-04 test failures are **pre-existing in prototype source** (verified by running same scripts at `class-prototype/classy-transformer/app/` — produces same/equivalent errors). No regression introduced by migration. AT-06 dev smoke + AT-10 DB connect deferred to Chief manual.
+- **pnpm-workspace.yaml**: added `apps/community/classy-transformer/website` (depth-3, default `apps/*/*` glob doesn't reach) + `!apps/community/classy-transformer/_website.preprototype-backup` exclusion.
+- **Files changed:** `AGENTS.md` (line ~74 stack descriptor), `pnpm-workspace.yaml` (workspace path + backup exclusion), `pnpm-lock.yaml`, `.agent/PROGRESS.md`. App folder content all on disk (apps/ gitignored, polyrepo design).
+- **Pending:** Chief smoke confirm + DB local setup; then delete `_website.preprototype-backup` + remove pnpm-workspace exclusion in cleanup commit. Pre-existing prototype typecheck/lint cleanup is separate effort (out of migration scope).
+
+---
+
 ## 2026-05-06 — Migrate class-prototype/ferdiiskandar into apps/corporate/ferdiiskandar
 
 - **Agent:** Claude Opus 4.7 (1M context)
@@ -1767,6 +1778,20 @@ apps/healthcare/intelligenceboard/src/lib/clinical/gcs-scorer.ts
 
 ```
 .agent/PROGRESS.md
+```
+
+---
+## 2026-05-06 12:21 — `7059bdc` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Classy+
+- **Commit**: chore(corporate/ferdiiskandar): align monorepo meta with prototype migration
+- **Files changed**: 4 file(s)
+
+```
+.agent/PROGRESS.md
+AGENTS.md
+pnpm-lock.yaml
+pnpm-workspace.yaml
 ```
 
 ---
