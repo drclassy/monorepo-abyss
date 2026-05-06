@@ -350,3 +350,18 @@ The three lines in [2026-04-21] beginning with `**Decision:** .claude/ at monore
 - CT v1 must not leak into orchestrator, flows, or document-ingestion. The boundary guard is a recurring check.
 - The 3 fixtures are the spec's acceptance contract; future CT v1 changes must keep them passing or formally update the contract via a new ADR.
 - Source of truth: session log entry "ClinicalTrajectory v1 contract + consumer rendering landed (2026-05-01)" in `.agent/sessions/2026-05-01.md`; brief in `.agent/HANDOFF.md`; specs in `docs/specs/ct_spec_v_1.md` and `docs/specs/clinical-trajectory-v1-specification.md`.
+
+### [2026-05-01] GitHub Actions — vendor-clean reusable CI stack
+**Context:** Gemini/Vertex/GCP workflows removed; monorepo needs an understandable, fork-safe, mostly-automatic Actions architecture without Google-hosted AI.
+**Decision:**
+1. **Split CI:** `ci.yml` is a thin entry (triggers, `permissions: contents: read`, concurrency, `vars.TURBO_TEAM` via `with`) calling **`reusable-verify.yml`** for the full DAG.
+2. **Verify gate:** `pnpm governance:agents-check` plus `pnpm --filter @sentra/bentara run start` (replaces obsolete `@the-abyss/iskandar-gatekeeper`).
+3. **Typecheck:** Add `pnpm turbo run //#typecheck` (affected filter) after build; keep build artifact handoff for test/typecheck.
+4. **CI security job:** Blocking `npm audit --audit-level=high`; Snyk remains informational (`continue-on-error`).
+5. **`security-scan.yml`:** PRs to `main` and `develop`; separate blocking dependency audit job; TruffleHog PR/push diff blocking where applicable; filesystem/schedule paths `continue-on-error: true` to avoid flaky weekly failures.
+6. **`auto-fix.yml`:** Same-repo guard `workflow_run.head_repository.full_name == github.repository`; default `permissions: contents: read`, job elevates write for PR creation.
+7. **New:** `maintenance.yml` (weekly + dispatch), `ai-review.yml` (`workflow_dispatch` placeholder, no AI vendors).
+8. **Docs-only PRs:** Remove `paths-ignore` for `**.md` / `docs/**` on CI so documentation changes still run the main pipeline.
+**Rejected alternatives:** Reintroducing Gemini/Vertex/GCP actions; using Cursor SDK inside Actions for this iteration; keeping soft-failed `npm audit` as the only dependency signal on required checks.
+**Rationale:** One reusable DAG reduces drift; explicit permissions and fork guards reduce privilege escalation; blocking audit + optional Snyk/Trivy matches healthcare merge discipline without vendor lock-in.
+**Consequences:** Branch protection required check names must be updated to match jobs under **The Abyss CI** and **Security Scan** (see `AGENTS.md` §11). `actionlint` was not available via npx package name in this environment — optional local install recommended.

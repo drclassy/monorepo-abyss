@@ -1693,3 +1693,29 @@ packages/shared/shared-types/src/clinical-trajectory.ts
 ```
 
 ---
+## 2026-05-02 01:11 — `6acb6df` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: chore(agent): update HANDOFF + PROGRESS for Phase F (GCS seam)
+- **Files changed**: 2 file(s)
+
+```
+.agent/HANDOFF.md
+.agent/PROGRESS.md
+```
+
+---
+## 2026-05-02 01:50 — `fd21473` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Avvcenna+
+- **Commit**: fix(ct-v1): Phase F review fixes — GCS seam clarity + timestamp honesty
+- **Files changed**: 4 file(s)
+
+```
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/gcs-scorer.test.ts
+apps/healthcare/intelligenceboard/src/lib/clinical/gcs-scorer.ts
+```
+
+---

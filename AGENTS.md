@@ -474,14 +474,16 @@ pnpm --filter <package> quality       # typecheck + lint + test
 
 | Workflow | Purpose |
 |----------|---------|
-| `ci.yml` | **Main pipeline**. Triggers on push/PR to `main`/`develop`. Sequence: **Verify** → **Build** → **Test** → **Lint** → **Security** → **Flows**. Uses `--filter=[HEAD^1]` to only build/test affected projects. |
-| `security-scan.yml` | Dedicated security: npm audit, Snyk, TruffleHog secret detection, Trivy container scan. Runs weekly via cron. |
-| `doc-guard.yml` | Checks mandatory docs, flags oversized markdown (>500KB), validates Mermaid diagrams. |
+| `ci.yml` | **CI entry**. Push/PR to `main`/`develop` with explicit `permissions` and concurrency; calls `reusable-verify.yml`. |
+| `reusable-verify.yml` | **Reusable monorepo DAG**: governance + Bentara GO-Gate → build (affected) → test/typecheck/security; lint + Langflow validation parallel after verify. Uses `--filter=[HEAD^1]` where applicable. |
+| `security-scan.yml` | **Blocking** root `npm audit` (high+); **informational** Snyk, Trivy, and TruffleHog (PR/push diff blocking; filesystem paths soft-fail on schedule / empty `before`). Weekly cron + PRs to `main`/`develop`. |
+| `doc-guard.yml` | Mandatory root docs, oversized markdown, Mermaid blocks, optional PR changelog reminder. |
 | `pr-label.yml` | Auto-labels PRs using `.github/labeler.yml`. |
-| `auto-merge.yml` | Auto-merges Renovate patch PRs via squash. |
-| `auto-fix.yml` | Self-healing CI: runs `prettier --write` + `eslint --fix`; creates PR if changes found. |
-| `generate-documentation.yml` | Runs doc generators on `main` push; opens PR with updates. |
-| `reusable-ai-agent.yml` | Reusable workflow for dispatching AI agents. |
+| `auto-merge.yml` | Auto-merges Renovate patch PRs via squash (requires repo “Allow auto-merge”). |
+| `auto-fix.yml` | After failed **The Abyss CI**, same-repo only: Prettier + ESLint fix PR. |
+| `generate-documentation.yml` | Doc generators on `main` push; opens PR (Node 22 + pnpm 9.15). |
+| `maintenance.yml` | Weekly cron + manual: governance, `pnpm outdated -r` report, non-blocking Prettier check. |
+| `ai-review.yml` | **Disabled extension slot** (`workflow_dispatch` only): no vendor-hosted AI; placeholder for future neutral review lane. |
 
 ### CI Environment
 
@@ -493,10 +495,14 @@ pnpm --filter <package> quality       # typecheck + lint + test
 ### Pipeline Sequence
 
 ```
-verify → build → test → lint → security → flows
+verify → build → test
+       → typecheck ─┐
+       → security ─┤ (parallel after build where noted)
+lint ──────────────┘ (after verify)
+flows ───────────── (after verify)
 ```
 
-Security scan must pass before any healthcare PR is merged. No exceptions.
+Configure branch protection to require the stable check names emitted by **The Abyss CI** (for example `CI / verify`, `CI / build (affected)`, `CI / test (affected)`, `CI / lint & format`, `CI / typecheck (affected)`, `CI / security (blocking audit)`, `CI / Langflow definitions`) plus **Security Scan / dependency audit (blocking)** and **Doc Guard** jobs as appropriate. The standalone **Security Scan** workflow adds scheduled and informational coverage. No exceptions on healthcare merge posture: blocking gates must stay green.
 
 ---
 

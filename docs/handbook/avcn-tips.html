@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVCN — Tips & Tricks</title>
+<link rel="stylesheet" href="../../packages/shared/design-token/packages/design-tokens/sentra-tokens.css">
+<style>
+@font-face{font-family:'Geist';src:url('./fonts/GeistVF.woff2')format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Geist Mono';src:url('./fonts/GeistMonoVF.woff2')format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Geist';src:url('./fonts/Geist-Regular.woff2')format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Geist';src:url('./fonts/Geist-Medium.woff2')format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Geist';src:url('./fonts/Geist-Bold.woff2')format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'Geist Mono';src:url('./fonts/GeistMono-Regular.woff2')format('woff2');font-weight:400;font-display:swap}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+/* Depth + warna: 100% dari sentra-tokens.css — tanpa hex/rgba lokal (SSOT) */
+
+html { background: var(--sentra-bg-base) }
+
+body {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist', system-ui, sans-serif;
+  font-size: var(--sentra-small-size);
+  line-height: var(--sentra-line-height);
+  background: var(--sentra-bg-base);
+  color: var(--sentra-text-primary);
+  padding: 16px 20px 32px;
+  -webkit-font-smoothing: antialiased;
+  max-width: 100%;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--sentra-border-subtle);
+}
+.logo { font-size: 18px; font-weight: 700; letter-spacing: -.04em; color: var(--sentra-text-primary) }
+.logo em { color: var(--sentra-warning); font-style: normal }
+.tagline { font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace; font-size: 11px; color: var(--sentra-text-muted); letter-spacing: .05em }
+.ver { margin-left: auto; font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace; font-size: 11px; color: var(--sentra-text-muted) }
+
+/* NAV TABS */
+.tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--sentra-border-subtle);
+}
+.tab {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--sentra-text-muted);
+  padding: 8px 16px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color var(--sentra-transition), border-color var(--sentra-transition);
+  user-select: none;
+}
+.tab:hover { color: var(--sentra-text-secondary) }
+.tab.active { color: var(--sentra-warning); border-bottom-color: var(--sentra-warning) }
+
+/* SECTION */
+.section { display: none }
+.section.active { display: block }
+
+/* SECTION LABEL */
+.label {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--sentra-text-muted);
+  margin: 0 0 10px;
+}
+
+/* TIP GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.grid-3 {
+  /* overrides handled by auto-fit */
+}
+.grid-1 { grid-template-columns: 1fr }
+
+/* TIP CARD — primary container: surface + living edge (token) */
+.card {
+  position: relative;
+  overflow: hidden;
+  background: var(--sentra-surface);
+  border: var(--sentra-border-main);
+  border-radius: var(--sentra-card-radius);
+  padding: var(--sentra-card-padding);
+  box-shadow: var(--sentra-card-shadow);
+  transition:
+    box-shadow var(--sentra-transition),
+    transform var(--sentra-transition);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--sentra-top-shimmer);
+  pointer-events: none;
+}
+.card:hover {
+  box-shadow: var(--sentra-card-shadow-hover);
+  transform: var(--sentra-hover-lift-sm);
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sentra-text-primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--sentra-border-subtle);
+}
+.card-body {
+  font-size: 12px;
+  color: var(--sentra-text-secondary);
+  line-height: 1.6;
+}
+.card-body .hi  { color: var(--sentra-text-primary); font-weight: 500 }
+.card-body .cmd {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--sentra-warning);
+  background: var(--sentra-warning-bg);
+  border: 1px solid color-mix(in srgb, var(--sentra-warning) 22%, transparent);
+  padding: 1px 6px;
+  border-radius: var(--sentra-input-radius);
+}
+.card-body .red { color: var(--sentra-error); font-weight: 600 }
+.card-body .grn { color: var(--sentra-success); font-weight: 500 }
+.card-body .blu { color: var(--sentra-info) }
+.card-body code {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--sentra-text-secondary);
+  display: block;
+  background: var(--sentra-inset);
+  border: 1px solid var(--sentra-border-subtle);
+  border-radius: var(--sentra-input-radius);
+  box-shadow: var(--sentra-neu-inset);
+  padding: 10px 12px;
+  margin: 8px 0 6px;
+  line-height: 1.7;
+  white-space: pre;
+}
+.card-body code .y { color: var(--sentra-warning) }
+.card-body code .g { color: var(--sentra-success) }
+.card-body code .b { color: var(--sentra-info) }
+.card-body code .r { color: var(--sentra-error) }
+.card-body code .d { color: var(--sentra-text-muted) }
+
+/* ICON BADGE */
+.icon {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--sentra-input-radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+.icon-amber { background: var(--sentra-warning-bg); color: var(--sentra-warning); border: 1px solid color-mix(in srgb, var(--sentra-warning) 22%, transparent) }
+.icon-red   { background: var(--sentra-error-bg); color: var(--sentra-error); border: 1px solid color-mix(in srgb, var(--sentra-error) 28%, transparent) }
+.icon-green { background: var(--sentra-success-bg); color: var(--sentra-success); border: 1px solid color-mix(in srgb, var(--sentra-success) 28%, transparent) }
+.icon-blue  { background: color-mix(in srgb, var(--sentra-info) 12%, var(--sentra-surface)); color: var(--sentra-info); border: 1px solid color-mix(in srgb, var(--sentra-info) 22%, transparent) }
+.icon-purple{ background: var(--sentra-surface-elevated); color: var(--sentra-text-secondary); border: var(--sentra-border-main) }
+.icon-teal  { background: var(--sentra-compliance-bg); color: var(--sentra-compliance-color); border: 1px solid var(--sentra-compliance-border) }
+.icon-gray  { background: var(--sentra-btn-ghost-hover); color: var(--sentra-text-muted); border: 1px solid var(--sentra-border-subtle) }
+
+/* DIVIDER */
+.sep { height: 1px; background: var(--sentra-border-subtle); margin: 24px 0 }
+
+/* KEY-VALUE ROW */
+.kv {
+  display: flex;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--sentra-border-subtle);
+  align-items: baseline;
+}
+.kv:last-child { border-bottom: none }
+.kv-k {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--sentra-warning);
+  min-width: 140px;
+  flex-shrink: 0;
+}
+.kv-v { font-size: 11px; color: var(--sentra-text-secondary); line-height: 1.5 }
+.kv-v .hi  { color: var(--sentra-text-primary); font-weight: 500 }
+.kv-v .red { color: var(--sentra-error) }
+.kv-v .grn { color: var(--sentra-success) }
+
+/* DO/DONT */
+.do-dont {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+.do, .dont {
+  padding: 8px 10px;
+  border-radius: var(--sentra-input-radius);
+  font-size: 11px;
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  line-height: 1.6;
+}
+.do   { background: var(--sentra-success-bg); border: 1px solid color-mix(in srgb, var(--sentra-success) 28%, transparent); color: var(--sentra-success) }
+.dont { background: var(--sentra-error-bg); border: 1px solid color-mix(in srgb, var(--sentra-error) 28%, transparent); color: var(--sentra-error) }
+.do::before   { content: '✓  '; font-weight: 700 }
+.dont::before { content: '✗  '; font-weight: 700 }
+
+/* SHORTCUT TABLE */
+.sc-table { width: 100%; border-collapse: collapse }
+.sc-table td { padding: 6px 8px; border-bottom: 1px solid var(--sentra-border-subtle); font-size: 11px; vertical-align: middle }
+.sc-table td:first-child { padding-left: 0; width: 140px }
+.sc-table tr:last-child td { border-bottom: none }
+.sc-table tr:hover td { background: var(--sentra-btn-ghost-hover) }
+.key {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--sentra-warning);
+  background: var(--sentra-warning-bg);
+  border: 1px solid color-mix(in srgb, var(--sentra-warning) 20%, transparent);
+  padding: 2px 6px;
+  border-radius: var(--sentra-input-radius);
+  display: inline-block;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.sc-desc { color: var(--sentra-text-secondary); font-size: 11px }
+.sc-desc .hi { color: var(--sentra-text-primary); font-weight: 500 }
+
+/* PILL */
+.pill {
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: 2px 7px;
+  border-radius: var(--sentra-input-radius);
+}
+.p-warn { background: var(--sentra-warning-bg); color: var(--sentra-warning); border: 1px solid color-mix(in srgb, var(--sentra-warning) 22%, transparent) }
+.p-crit { background: var(--sentra-error-bg); color: var(--sentra-error); border: 1px solid color-mix(in srgb, var(--sentra-error) 28%, transparent) }
+.p-good { background: var(--sentra-success-bg); color: var(--sentra-success); border: 1px solid color-mix(in srgb, var(--sentra-success) 28%, transparent) }
+.p-info { background: color-mix(in srgb, var(--sentra-info) 12%, var(--sentra-surface)); color: var(--sentra-info); border: 1px solid color-mix(in srgb, var(--sentra-info) 22%, transparent) }
+.p-new  { background: var(--sentra-compliance-bg); color: var(--sentra-compliance-color); border: 1px solid var(--sentra-compliance-border) }
+
+/* FOOTER */
+footer {
+  margin-top: 24px;
+  padding-top: 10px;
+  border-top: 1px solid var(--sentra-border-subtle);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--sentra-text-muted);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">AVCN<em>.</em></div>
+  <div class="tagline">TIPS & TRICKS — CLAUDE CODE × CURSOR</div>
+  <div class="ver">Opus 4.7 · Apr 2026</div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('context')">Context</div>
+  <div class="tab" onclick="switchTab('prompting')">Prompting</div>
+  <div class="tab" onclick="switchTab('shortcuts')">Shortcuts</div>
+  <div class="tab" onclick="switchTab('opus47')">Opus 4.7</div>
+  <div class="tab" onclick="switchTab('cursor')">Cursor IDE</div>
+  <div class="tab" onclick="switchTab('workflow')">Workflow</div>
+  <div class="tab" onclick="switchTab('traps')">Jangan Dilakukan</div>
+</div>
+
+<!-- ═══════════════════ TAB: CONTEXT ═══════════════════ -->
+<div class="section active" id="tab-context">
+  <div class="label">Context Management</div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-amber">⟳</span> Kapan /clear vs /compact</div>
+      <div class="card-body">
+        <span class="cmd">/clear</span> — ganti task yang tidak berhubungan, dikerjakan 2x+ di satu session, atau context sudah kacau.<br><br>
+        <span class="cmd">/compact focus on X</span> — masih di task yang sama tapi context hampir penuh (~50%). Tambahkan <span class="hi">focus keyword</span> biar summary tepat sasaran.
+        <div class="do-dont">
+          <div class="do">/compact focus on the auth refactor</div>
+          <div class="dont">/compact</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-blue">@</span> @-Mention yang Efisien</div>
+      <div class="card-body">
+        Jangan embed file besar ke prompt. Pakai pointer dulu, baru minta Claude baca kalau perlu.<br><br>
+        <span class="cmd">@.agent/HANDOFF.md</span> — muat file spesifik<br>
+        <span class="cmd">@src/services/</span> — muat seluruh folder<br>
+        <span class="cmd">@AGENTS.md §5</span> — referensi section tertentu<br><br>
+        <span class="red">Hindari</span> <span class="cmd">@node_modules</span> atau file besar yang irrelevant — buang context sia-sia.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-green">↩</span> /rewind & Checkpoints</div>
+      <div class="card-body">
+        <span class="cmd">double-Esc</span> atau <span class="cmd">/rewind</span> — undo last change.<br>
+        3 mode: <span class="hi">code only</span>, <span class="hi">conversation only</span>, atau <span class="hi">keduanya</span>.<br><br>
+        <span class="red">Catatan penting:</span> /rewind track file edits Claude saja. Bash <span class="cmd">rm</span>, <span class="cmd">mv</span>, <span class="cmd">cp</span> tidak ter-capture. Selalu stash dulu sebelum risky run:<br>
+        <code><span class="d"># sebelum task berisiko</span>
+<span class="y">git stash push</span> -u -m <span class="g">"pre-task"</span></code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-purple">⑂</span> Session Branching</div>
+      <div class="card-body">
+        <span class="cmd">/fork-session</span> — clone session dengan ID baru. Cocok untuk explore dua pendekatan berbeda tanpa buang progress.<br><br>
+        <span class="cmd">claude -c</span> — lanjut session terakhir<br>
+        <span class="cmd">claude --resume</span> — pilih session dari list<br>
+        <span class="cmd">claude --from-pr 42</span> — resume session yang terkait PR #42<br><br>
+        <span class="hi">Pro tip:</span> Selalu <span class="cmd">/handoff</span> di akhir session biar HANDOFF.md up-to-date sebelum tutup.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-teal">✦</span> .agent/ Folder Contract</div>
+      <div class="card-body">
+        Ini adalah "memori" antar session. Jaga tetap ringkas — setiap token bersaing dengan kode yang dikerjakan.
+        <div class="kv" style="margin-top:10px">
+          <span class="kv-k">CONTEXT.md</span><span class="kv-v">Static. Update hanya kalau stack berubah.</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">PROGRESS.md</span><span class="kv-v">Live checklist. <span class="hi">[&gt;]</span> = posisi sekarang.</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">HANDOFF.md</span><span class="kv-v">Ditulis ulang tiap session. Last commit + next action.</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">LESSONS.md</span><span class="kv-v">Append-only. Kesalahan yang tidak boleh terulang.</span>
+        </div>
+        <div class="kv" style="border:none">
+          <span class="kv-k">DECISIONS.md</span><span class="kv-v">Append-only ADR. Keputusan arsitektur + alasannya.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-gray">%</span> Context Window Facts</div>
+      <div class="card-body">
+        <div class="kv">
+          <span class="kv-k">Context window</span><span class="kv-v hi">1,000,000 tokens (1M)</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">Max output</span><span class="kv-v">128k tokens default</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">Compact threshold</span><span class="kv-v"><span class="grn">~50%</span> — jangan tunggu auto-compact</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">Tokenizer 4.7</span><span class="kv-v"><span class="red">1.0–1.35× lebih banyak</span> dari 4.6 — recalculate cost!</span>
+        </div>
+        <div class="kv" style="border:none">
+          <span class="kv-k">min max_tokens</span><span class="kv-v">≥64k untuk xhigh/max effort</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-amber">⟳</span> Kasih Context yang Tepat Saat Dibutuhkan</div>
+      <div class="card-body">
+        Dua skenario berbeda, dua penanganan berbeda.
+        <div style="margin-top:12px;margin-bottom:4px;font-size:12px;font-weight:600;color:var(--sentra-text-primary)">Skenario 1 — Awal session, Claude masih blank</div>
+        <code><span class="d"># Re-anchor ke situasi aktif</span>
+baca <span class="y">@.agent/HANDOFF.md</span> dan <span class="y">@.agent/PROGRESS.md</span>,
+lalu konfirmasi kamu sudah paham situasinya</code>
+        Kalau summary Claude salah — benahi file-nya dulu sebelum lanjut kerja.
+        <div style="margin-top:12px;margin-bottom:4px;font-size:12px;font-weight:600;color:var(--sentra-text-primary)">Skenario 2 — Tengah task, Claude mulai "nyasar"</div>
+        <code><span class="b">/status</span>             <span class="d"># lihat % context terpakai</span>
+<span class="y">@.agent/HANDOFF.md</span>   <span class="d"># re-anchor ke task aktif</span>
+<span class="y">@path/file/relevan</span>   <span class="d"># inject context spesifik</span></code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-red">!</span> Decision Table — Chief Merasa...</div>
+      <div class="card-body">
+        <table class="sc-table">
+          <tr>
+            <td style="width:55%"><span style="color:var(--sentra-text-secondary)">Claude tidak tahu situasi terkini</span></td>
+            <td><span class="cmd">baca @.agent/HANDOFF.md</span></td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--sentra-text-secondary)">Claude salah file / module</span></td>
+            <td><span class="cmd">@path/ke/file/yang/benar</span></td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--sentra-text-secondary)">Claude verbose / mulai berulang</span></td>
+            <td><span class="cmd">/compact focus on X</span></td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--sentra-text-secondary)">Context sudah &gt; 50%</span></td>
+            <td><span class="cmd">/compact</span> <span style="color:var(--sentra-error);font-size:12px">sekarang, jangan tunggu</span></td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--sentra-text-secondary)">Claude dikoreksi 2x+ dalam session</span></td>
+            <td><span class="cmd">/clear</span> <span style="color:var(--sentra-error);font-size:12px">langsung, mulai bersih</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ TAB: PROMPTING ═══════════════════ -->
+<div class="section" id="tab-prompting">
+  <div class="label">Prompting yang Efektif</div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-amber">✎</span> Spesifik > Umum</div>
+      <div class="card-body">
+        Opus 4.7 sangat literal — kalau minta "fix error handling", dia hanya fix di fungsi yang disebutkan, tidak generalize ke seluruh module.
+        <div class="do-dont">
+          <div class="do">Fix error handling di PatientService.findOne() dan tambahkan NotFoundException</div>
+          <div class="dont">Improve error handling in the codebase</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-green">+</span> Positive Framing</div>
+      <div class="card-body">
+        Opus 4.7 merespons lebih baik ke instruksi positif daripada negatif.<br><br>
+        <div class="do-dont">
+          <div class="do">Prefer concise responses without extra context</div>
+          <div class="dont">Don't be verbose</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="do">Spawn one subagent per module in parallel</div>
+          <div class="dont">Don't do this sequentially</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-blue">⟳</span> Thinking Keywords</div>
+      <div class="card-body">
+        Keyword ini adalah <span class="hi">soft cues</span> di atas effort level — pakai dengan hemat, bukan di setiap prompt.
+        <div class="kv" style="margin-top:10px">
+          <span class="kv-k" style="min-width:90px">think</span><span class="kv-v">Sedikit lebih dalam dari default</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:90px">think hard</span><span class="kv-v">Analisis lebih mendalam</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:90px">think harder</span><span class="kv-v">Untuk masalah kompleks</span>
+        </div>
+        <div class="kv" style="border:none">
+          <span class="kv-k" style="min-width:90px">ultrathink</span><span class="kv-v">Maximum — schema migration, concurrency bug</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-purple">◈</span> Scope yang Jelas</div>
+      <div class="card-body">
+        Selalu sebut scope eksplisit — file path, function name, line range. Semakin narrow scope-nya, semakin akurat hasilnya.
+        <code><span class="d"># Explicit scope — bagus</span>
+Refactor <span class="y">PatientService.create()</span> di
+<span class="g">apps/healthcare/sentra-main/src/</span>
+<span class="g">patient/patient.service.ts:L24-L67</span>
+<span class="d"># tanpa ganti struktur yang lain</span></code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-teal">⚡</span> Parallelism Explicit</div>
+      <div class="card-body">
+        Opus 4.7 spawn lebih sedikit subagent secara default dibanding 4.6. Kalau butuh parallel, minta secara eksplisit.
+        <code><span class="d"># Minta paralel secara eksplisit</span>
+Spawn <span class="y">one subagent per module</span> in parallel:
+- sentra-main auth module
+- sentra-assist referral module
+- packages/database migrations</code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-amber">⊞</span> Structured Output</div>
+      <div class="card-body">
+        Minta format spesifik kalau butuh output yang konsisten — terutama untuk analysis atau review.<br><br>
+        <span class="hi">Contoh:</span><br>
+        <code><span class="d"># Format yang diminta eksplisit</span>
+Analyze dan return dalam format:
+<span class="y">VERDICT:</span> APPROVED/BLOCKED
+<span class="y">CRITICAL:</span> [list]
+<span class="y">WARNINGS:</span> [list]
+<span class="y">REASON:</span> [satu kalimat]</code>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ TAB: SHORTCUTS ═══════════════════ -->
+<div class="section" id="tab-shortcuts">
+  <div class="label">Keyboard Shortcuts</div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-amber">⌨</span> Claude Code CLI</div>
+      <div class="card-body">
+        <table class="sc-table">
+          <tr><td><span class="key">Esc</span></td><td class="sc-desc">Interrupt response saat ini</td></tr>
+          <tr><td><span class="key">Esc Esc</span></td><td class="sc-desc"><span class="hi">Rewind</span> — undo last change</td></tr>
+          <tr><td><span class="key">Shift+Tab</span></td><td class="sc-desc">Cycle: Normal → Auto-accept → Plan</td></tr>
+          <tr><td><span class="key">Shift+Tab ×2</span></td><td class="sc-desc">Masuk <span class="hi">Plan Mode</span> langsung</td></tr>
+          <tr><td><span class="key">Ctrl+C</span></td><td class="sc-desc">Cancel / keluar dari Claude Code</td></tr>
+          <tr><td><span class="key">↑ / ↓</span></td><td class="sc-desc">Navigate prompt history</td></tr>
+          <tr><td><span class="key">Tab</span></td><td class="sc-desc">Autocomplete slash commands & @files</td></tr>
+          <tr><td><span class="key">/</span></td><td class="sc-desc">Buka slash command menu</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-blue">▣</span> Cursor IDE</div>
+      <div class="card-body">
+        <table class="sc-table">
+          <tr><td><span class="key">Ctrl+`</span></td><td class="sc-desc">Toggle terminal (Claude Code di sini)</td></tr>
+          <tr><td><span class="key">Ctrl+Shift+`</span></td><td class="sc-desc">Terminal panel baru</td></tr>
+          <tr><td><span class="key">Ctrl+L</span></td><td class="sc-desc">Buka Cursor AI chat</td></tr>
+          <tr><td><span class="key">Ctrl+K</span></td><td class="sc-desc">Cursor inline quick fix</td></tr>
+          <tr><td><span class="key">Ctrl+Shift+P</span></td><td class="sc-desc">Command palette</td></tr>
+          <tr><td><span class="key">Ctrl+P</span></td><td class="sc-desc">Quick open file</td></tr>
+          <tr><td><span class="key">Ctrl+\</span></td><td class="sc-desc">Split editor (buka handbook di sebelah)</td></tr>
+          <tr><td><span class="key">Ctrl+B</span></td><td class="sc-desc">Toggle sidebar (kasih ruang terminal)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-green">▶</span> Plan Mode</div>
+      <div class="card-body">
+        <table class="sc-table">
+          <tr><td><span class="key">Shift+Tab ×2</span></td><td class="sc-desc">Masuk plan mode dari normal</td></tr>
+          <tr><td><span class="key">Enter</span></td><td class="sc-desc">Submit prompt (read-only, no execution)</td></tr>
+          <tr><td><span class="key">GO</span></td><td class="sc-desc"><span class="hi">Approval token</span> — trigger eksekusi plan</td></tr>
+          <tr><td><span class="key">Shift+Tab</span></td><td class="sc-desc">Kembali ke normal mode</td></tr>
+        </table>
+        <div style="margin-top:10px;padding:8px 12px;background:var(--sentra-success-bg);border:1px solid color-mix(in srgb,var(--sentra-success) 28%,transparent);border-radius:var(--sentra-input-radius);font-size:12px;color:var(--sentra-text-secondary)">
+          <span style="color:var(--sentra-warning)">GO</span> harus ditulis sendiri sebaris. "ok", "sure", emoji = <span style="color:var(--sentra-error)">BUKAN approval</span>.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ TAB: OPUS 4.7 ═══════════════════ -->
+<div class="section" id="tab-opus47">
+  <div class="label">Opus 4.7 — Yang Berubah</div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-red">✕</span> Breaking Changes API</div>
+      <div class="card-body">
+        <span class="red">Langsung return HTTP 400</span> kalau masih ada ini di API call:<br><br>
+        <div class="do-dont">
+          <div class="dont">temperature, top_p, top_k</div>
+          <div class="dont">budget_tokens dalam thinking</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="do">thinking: { type: "adaptive" }</div>
+          <div class="do">effort: "xhigh" (ganti budget_tokens)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-amber">★</span> Effort Levels</div>
+      <div class="card-body">
+        <div class="kv">
+          <span class="kv-k" style="min-width:90px;color:var(--sentra-info)">low</span>
+          <span class="kv-v">Q&A sederhana, lookup cepat</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:90px;color:var(--sentra-info)">medium</span>
+          <span class="kv-v">Edit rutin, debugging ringan</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:90px;color:var(--sentra-warning)">high</span>
+          <span class="kv-v">Default API — balanced</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:90px;color:var(--sentra-warning);font-weight:700">xhigh ★</span>
+          <span class="kv-v"><span class="grn">Default Claude Code</span> — semua agentic work</span>
+        </div>
+        <div class="kv" style="border:none">
+          <span class="kv-k" style="min-width:90px;color:var(--sentra-error)">max</span>
+          <span class="kv-v">Masalah terberat — risiko overthinking</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-green">↑</span> Apa yang Lebih Baik</div>
+      <div class="card-body">
+        <div class="kv">
+          <span class="kv-k" style="min-width:110px;color:var(--sentra-success)">Literal</span>
+          <span class="kv-v">Ikuti instruksi persis — tidak generalize diam-diam</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:110px;color:var(--sentra-success)">Self-verify</span>
+          <span class="kv-v">Re-cek sendiri tanpa diminta</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:110px;color:var(--sentra-success)">Progress updates</span>
+          <span class="kv-v">Status interim tanpa perlu instruksi</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:110px;color:var(--sentra-success)">Vision</span>
+          <span class="kv-v">2576px long edge, ~3.75MP — bagus untuk OCR/lab</span>
+        </div>
+        <div class="kv" style="border:none">
+          <span class="kv-k" style="min-width:110px;color:var(--sentra-success)">Hook compliance</span>
+          <span class="kv-v">Gate PreToolUse jauh lebih reliable</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-red">!</span> Yang Harus Disesuaikan</div>
+      <div class="card-body">
+        <div class="kv">
+          <span class="kv-k" style="min-width:110px;color:var(--sentra-error)">CLAUDE.md</span>
+          <span class="kv-v">Hapus "double-check before returning" — 4.7 sudah lakukan itu otomatis</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:110px;color:var(--sentra-error)">Fewer subagents</span>
+          <span class="kv-v">4.7 spawn lebih sedikit by default — minta paralel secara eksplisit</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k" style="min-width:110px;color:var(--sentra-error)">Tokenizer cost</span>
+          <span class="kv-v">1.0–1.35× lebih banyak token dari 4.6 — recalculate budget</span>
+        </div>
+        <div class="kv" style="border:none">
+          <span class="kv-k" style="min-width:110px;color:var(--sentra-error)">Safety behavior</span>
+          <span class="kv-v">Tidak ada implicit safety — state constraint eksplisit di CLAUDE.md</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-purple">✦</span> Settings Optimal 4.7</div>
+      <div class="card-body">
+        <code><span class="d">// ~/.claude/settings.json</span>
+{
+  <span class="b">"model"</span>: <span class="g">"claude-opus-4-7"</span>,
+  <span class="b">"env"</span>: {
+    <span class="b">"CLAUDE_CODE_DEFAULT_EFFORT"</span>: <span class="g">"xhigh"</span>,
+    <span class="b">"CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR"</span>: <span class="g">"1"</span>,
+    <span class="b">"MAX_MCP_OUTPUT_TOKENS"</span>: <span class="g">"50000"</span>
+  },
+  <span class="b">"outputStyle"</span>: <span class="g">"Concise"</span>,
+  <span class="b">"fileCheckpointingEnabled"</span>: <span class="y">true</span>,
+  <span class="b">"attribution"</span>: { <span class="b">"commit"</span>: <span class="g">""</span> }
+}</code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-teal">≋</span> Adaptive Thinking</div>
+      <div class="card-body">
+        Model memutuskan sendiri seberapa dalam berpikir per step — tidak ada lagi fixed budget.<br><br>
+        <span class="hi">Kontrol depth</span> via effort saja. Keyword <span class="cmd">think</span>, <span class="cmd">think hard</span>, <span class="cmd">ultrathink</span> tetap jalan sebagai soft cue di atas effort level.<br><br>
+        <span class="pill p-warn">CATATAN</span> <span style="font-size:13px;color:var(--sentra-text-secondary)">thinking.display default sekarang "omitted" — set ke "summarized" kalau butuh lihat reasoning.</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ TAB: CURSOR IDE ═══════════════════ -->
+<div class="section" id="tab-cursor">
+  <div class="label">Cursor IDE — Setup Optimal</div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-amber">⊞</span> Layout Terminal Terbaik</div>
+      <div class="card-body">
+        Split terminal menjadi dua panel:<br><br>
+        <span style="color:var(--sentra-success)">Panel kiri</span> — Claude Code (agentic)<br>
+        <span style="color:var(--sentra-info)">Panel kanan</span> — bash biasa (git, inspect, test manual)<br><br>
+        <span class="hi">Pro tip:</span> Tutup sidebar Cursor (<span class="cmd">Ctrl+B</span>) kalau Claude Code sedang running — kasih ruang terminal lebih luas untuk baca output.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-blue">⋯</span> Cursor AI vs Claude Code</div>
+      <div class="card-body">
+        Dua tool, dua peran — jangan tumpang tindih saat keduanya aktif.<br><br>
+        <div class="kv">
+          <span class="kv-k" style="min-width:90px;color:var(--sentra-info)">Cursor AI</span>
+          <span class="kv-v">Inline edit, single file, quick fix, autocomplete</span>
+        </div>
+        <div class="kv" style="border:none">
+          <span class="kv-k" style="min-width:90px;color:var(--sentra-warning)">Claude Code</span>
+          <span class="kv-v">Multi-file, planning, test runs, git ops, agentic</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-green">@</span> @-mentions dari Claude Code</div>
+      <div class="card-body">
+        <code><span class="d"># File spesifik</span>
+Fix bug di <span class="y">@src/patient.service.ts</span>
+
+<span class="d"># Bandingkan dua file</span>
+Compare <span class="y">@apps/sentra-main/src/</span>
+dan <span class="y">@apps/sentra-assist/src/</span>
+
+<span class="d"># Referensi agent memory</span>
+Based on <span class="y">@.agent/DECISIONS.md</span>,
+apakah kita pakai CQRS di sini?</code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-purple">⚙</span> Windows PowerShell Tips</div>
+      <div class="card-body">
+        Selalu pakai <span class="cmd">pwsh</span> (PowerShell 7) bukan <span class="cmd">bash</span> di hooks — lebih stabil di Cursor integrated terminal.<br><br>
+        <code><span class="d"># Hooks — gunakan pwsh</span>
+<span class="g">"command"</span>: <span class="g">"pwsh -Command \"...\""</span>
+
+<span class="d"># Kalau harus bash (Git Bash)</span>
+<span class="g">"C:\\Program Files\\Git\\bin\\bash.exe"</span>
+<span class="g">-c "..."</span></code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-teal">▶</span> Start Claude Code yang Tepat</div>
+      <div class="card-body">
+        <code><span class="d"># Dari project root — pick up CLAUDE.md</span>
+<span class="y">cd</span> D:\Devop\abyss-monorepo
+<span class="y">claude</span> --effort xhigh
+
+<span class="d"># Untuk app spesifik</span>
+<span class="y">cd</span> apps/healthcare/sentra-main
+<span class="y">claude</span>  <span class="d"># baca ./CLAUDE.md otomatis</span>
+
+<span class="d"># Plan mode dari awal</span>
+<span class="y">claude</span> --permission-mode plan</code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-amber">◎</span> Live Server Tips</div>
+      <div class="card-body">
+        Handbook HTML ini bisa dibuka langsung di browser:<br><br>
+        <span class="hi">Cara 1</span> — Klik kanan file di Cursor Explorer → <span class="cmd">Open with Live Server</span><br><br>
+        <span class="hi">Cara 2</span> — Buka di browser langsung:<br>
+        <code>file:///D:/Devop/abyss-monorepo/
+docs/claude-handbook/avcn-commands.html</code>
+        <span style="font-size:12px;color:var(--sentra-text-muted);margin-top:6px;display:block">Geist font butuh font folder (./fonts/GeistVF.woff2)</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ TAB: JANGAN DILAKUKAN ═══════════════════ -->
+<div class="section" id="tab-workflow">
+  <div class="label">GitHub Actions Workflow (Fix 2026)</div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-green">▶</span> Cara Kerja Singkat</div>
+      <div class="card-body">
+        Saat ada <span class="hi">push</span> atau <span class="hi">PR</span> ke <span class="cmd">main/develop</span>, workflow entry
+        <span class="cmd">ci.yml</span> otomatis jalan lalu memanggil
+        <span class="cmd">reusable-verify.yml</span> sebagai mesin utama.
+        <code><span class="y">push/PR</span> → <span class="b">ci.yml</span> → <span class="g">reusable-verify.yml</span> → checks di PR</code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-blue">∥</span> Pipeline Inti (Blocking)</div>
+      <div class="card-body">
+        Urutan check utama:
+        <code>verify → build → test
+       → typecheck
+       → security (blocking audit)
+lint + flows berjalan paralel setelah verify</code>
+        <span class="hi">verify</span> sekarang pakai:
+        <span class="cmd">pnpm governance:agents-check</span> +
+        <span class="cmd">pnpm --filter @sentra/bentara run start</span>.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-amber">⏱</span> Workflow Otomatis yang Aktif</div>
+      <div class="card-body">
+        <div class="kv" style="margin-top:2px">
+          <span class="kv-k">Per push/PR</span><span class="kv-v"><span class="hi">ci.yml</span>, <span class="hi">security-scan.yml</span>, <span class="hi">doc-guard.yml</span></span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">Per push main</span><span class="kv-v"><span class="hi">generate-documentation.yml</span></span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">Jika CI gagal</span><span class="kv-v"><span class="hi">auto-fix.yml</span> (same-repo only, fork-safe)</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">Mingguan</span><span class="kv-v"><span class="hi">maintenance.yml</span> + security schedule</span>
+        </div>
+        <div class="kv" style="border:none">
+          <span class="kv-k">Manual-only</span><span class="kv-v"><span class="hi">ai-review.yml</span> (placeholder, disabled lane)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-purple">✓</span> One-time Setup di GitHub</div>
+      <div class="card-body">
+        Supaya merge gate benar-benar bekerja, admin repo tetap perlu setup sekali:
+        <div class="do-dont" style="margin-top:8px">
+          <div class="do">Branch protection + required checks (CI / verify, build, test, lint, typecheck, security, flows)</div>
+          <div class="dont">Anggap workflow saja cukup tanpa required checks</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="do">Set repo variable <span class="cmd">TURBO_TEAM</span> dan secret <span class="cmd">TURBO_TOKEN</span> / <span class="cmd">SNYK_TOKEN</span> jika dipakai</div>
+          <div class="dont">Biarkan token kosong lalu berharap remote cache/scan lengkap</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="do">Enable repo setting <span class="cmd">Allow auto-merge</span> kalau mau pakai auto-merge Renovate</div>
+          <div class="dont">Aktifkan auto-merge tanpa policy PR yang jelas</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-red">!</span> Guardrails yang Sudah Dikunci</div>
+      <div class="card-body">
+        <div class="kv" style="margin-top:2px">
+          <span class="kv-k">Vendor-clean</span><span class="kv-v">Tidak ada Gemini / Vertex / GCP WIF di workflow aktif</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">Least privilege</span><span class="kv-v">Permissions eksplisit per workflow/job</span>
+        </div>
+        <div class="kv">
+          <span class="kv-k">Fork safety</span><span class="kv-v">auto-fix hanya untuk run dari repository yang sama</span>
+        </div>
+        <div class="kv" style="border:none">
+          <span class="kv-k">Concurrency</span><span class="kv-v">Run lama dibatalkan saat ada commit terbaru di PR yang sama</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ TAB: JANGAN DILAKUKAN ═══════════════════ -->
+<div class="section" id="tab-traps">
+  <div class="label">Jangan Dilakukan — Common Traps</div>
+
+  <div class="grid grid-1">
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-red">✕</span> CLAUDE.md Overloading</div>
+      <div class="card-body">
+        <div class="do-dont">
+          <div class="dont">Masukin formatting rules (pakai .eslintrc/prettier)</div>
+          <div class="do">Stack facts, commands, hard constraints, @path pointers</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="dont">CLAUDE.md > 200 baris (rule adherence turun)</div>
+          <div class="do">Target < 50 baris per project, sisanya @pointer</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="dont">"Double-check before returning" (4.7 sudah otomatis)</div>
+          <div class="do">Tulis hanya yang Claude salah tanpa instruksi</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-red">✕</span> Context & Session Traps</div>
+      <div class="card-body">
+        <div class="do-dont">
+          <div class="dont">Tunggu auto-compact — bisa fire di tengah eksekusi</div>
+          <div class="do">/compact manual di ~50% sebelum task kritis</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="dont">Langsung lanjut task baru di session yang sama tanpa /clear</div>
+          <div class="do">/clear dulu — context lama bisa kontaminasi task baru</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="dont">Rely pada memory antar session tanpa .agent/ files</div>
+          <div class="do">/handoff di akhir setiap session — HANDOFF.md jadi sumber kebenaran</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-red">✕</span> Agentic & Planning Traps</div>
+      <div class="card-body">
+        <div class="do-dont">
+          <div class="dont">Langsung kode tanpa brainstorm/write-plan untuk task besar</div>
+          <div class="do">/avcn-brainstorm → /avcn-write-plan → GO → /avcn-execute-plan</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="dont">Anggap "ok" atau emoji = GO untuk Class C task</div>
+          <div class="do">Literal token "GO" satu baris sendiri — tidak ada shortcut</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="dont">Biarkan agent fix 3+ kali tanpa intervensi</div>
+          <div class="do">Max 2 autonomous fix — stop & /avcn-debug pada attempt ke-3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon icon-red">✕</span> Permissions & Hooks Traps</div>
+      <div class="card-body">
+        <div class="do-dont">
+          <div class="dont">Exit code 1 di hook — Claude Code abaikan silently</div>
+          <div class="do">Exit code 2 untuk block + feed error ke Claude sebagai context</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="dont">Hanya pakai deny array untuk proteksi destructive commands</div>
+          <div class="do">Double layer: deny array + PreToolUse hook (deny menang, tapi hook lebih informative)</div>
+        </div>
+        <div class="do-dont" style="margin-top:8px">
+          <div class="dont">--dangerously-skip-permissions di project settings</div>
+          <div class="do">CLI flag saja, jangan commit — project settings ignore flag ini</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <span>docs/handbook/avcn-tips.html</span>
+  <span>Lihat juga: avcn-cursor.html · avcn-commands.html</span>
+</footer>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+</script>
+
+</body>
+</html>

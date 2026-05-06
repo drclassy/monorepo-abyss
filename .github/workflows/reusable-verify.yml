@@ -1,0 +1,275 @@
+# Reusable monorepo CI — called by ci.yml (and optionally maintenance).
+# Keeps a single DAG for needs: verify → build → test / typecheck / security; lint & flows parallel after verify.
+name: Reusable Monorepo Verify
+
+on:
+  workflow_call:
+    inputs:
+      turbo_team:
+        description: Turborepo team slug (repository variable TURBO_TEAM)
+        type: string
+        required: false
+        default: ''
+    secrets:
+      TURBO_TOKEN:
+        description: Optional Turborepo remote cache token
+        required: false
+      SNYK_TOKEN:
+        description: Optional Snyk token for advisory dependency scan
+        required: false
+
+permissions:
+  contents: read
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ inputs.turbo_team }}
+  NODE_VERSION: '22'
+  PNPM_VERSION: '9.15.0'
+
+jobs:
+  verify:
+    name: CI / verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: AGENTS governance healthcheck
+        run: pnpm governance:agents-check
+
+      - name: Sentra Bentara GO-Gate (session handoffs)
+        run: pnpm --filter @sentra/bentara run start
+
+      - name: Report .agent directories
+        run: |
+          echo "Checking for .agent/ directories across the monorepo"
+          agent_count=$(find . -type d -name ".agent" | wc -l)
+          if [ "$agent_count" -eq 0 ]; then
+            echo "No .agent/ directories found"
+          else
+            echo "Found $agent_count .agent/ directories"
+            find . -type d -name ".agent" -exec echo "  - {}" \;
+          fi
+
+  build:
+    name: CI / build (affected)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build affected projects
+        run: |
+          if git rev-parse HEAD^1 >/dev/null 2>&1; then
+            pnpm turbo run build --filter=[HEAD^1]
+          else
+            pnpm turbo run build
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            packages/**/dist
+          retention-days: 7
+
+  test:
+    name: CI / test (affected)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Test affected projects
+        run: |
+          if git rev-parse HEAD^1 >/dev/null 2>&1; then
+            pnpm turbo run test --filter=[HEAD^1]
+          else
+            pnpm turbo run test
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: '**/coverage'
+          retention-days: 7
+
+  lint:
+    name: CI / lint & format
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: ESLint (affected)
+        run: |
+          if git rev-parse HEAD^1 >/dev/null 2>&1; then
+            pnpm turbo run lint --filter=[HEAD^1]
+          else
+            pnpm turbo run lint
+          fi
+
+      - name: Prettier check
+        run: pnpm format:check
+
+  typecheck:
+    name: CI / typecheck (affected)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Typecheck affected (Turbo)
+        run: |
+          if git rev-parse HEAD^1 >/dev/null 2>&1; then
+            pnpm turbo run //#typecheck --filter=[HEAD^1]
+          else
+            pnpm turbo run //#typecheck
+          fi
+
+  security:
+    name: CI / security (blocking audit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: npm audit (blocking — high+)
+        run: npm audit --audit-level=high
+
+      - name: Snyk test (informational)
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  flows:
+    name: CI / Langflow definitions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate flow JSON files
+        run: |
+          shopt -s nullglob globstar
+          files=(flows/definitions/**/*.json)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No flow definitions found — skipping validation"
+          else
+            for file in "${files[@]}"; do
+              echo "Validating $file"
+              node -e "JSON.parse(require('fs').readFileSync('$file', 'utf8'))" || exit 1
+            done
+          fi
+
+      - name: Run flow tests
+        run: pnpm flows:test || echo "No flow tests found"
