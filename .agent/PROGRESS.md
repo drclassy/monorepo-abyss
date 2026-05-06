@@ -17,6 +17,16 @@
 
 ---
 
+## 2026-05-06 — Migrate class-prototype/ferdiiskandar into apps/corporate/ferdiiskandar
+
+- **Agent:** Claude Opus 4.7 (1M context)
+- **What:** Replace `apps/corporate/ferdiiskandar` (Next 16 + Tailwind v4 scaffold) with `class-prototype/ferdiiskandar` build (Next 15.5.15, custom FI-* CSS, Vitest 4, NVIDIA `/api/chat`, security headers + CSP). Workspace identity `@the-abyss/ferdiiskandar` preserved. Pre-prototype scaffold archived at `apps/corporate/_ferdiiskandar.preprototype-backup` (excluded from pnpm workspace).
+- **Verification:** AT-01 install OK · AT-02 typecheck OK · AT-03 lint OK · AT-04 vitest 41/41 · AT-05 build OK · AT-06 dev smoke pending Chief.
+- **Files changed:** `apps/corporate/ferdiiskandar/**` (full payload), `pnpm-workspace.yaml` (+ backup exclusion), `pnpm-lock.yaml`, `AGENTS.md` (line 77 stack descriptor), `apps/corporate/ferdiiskandar/.agent/{CONTEXT,PROGRESS,DECISIONS}.md`, new `apps/corporate/ferdiiskandar/.agent/sessions/2026-05-06.md`.
+- **Pending:** Chief smoke confirm + Lighthouse audit; then delete backup + remove pnpm-workspace exclusion in a cleanup commit.
+
+---
+
 ## 2026-05-01 — Handbook wrap text (no clipping)
 
 - **What:** `index.html`, `avcn-commands.html`, dan `avcn-tips.html` diubah agar teks membungkus ke baris berikutnya pada viewport sempit (menghapus pola no-wrap clipping, menambah overflow-wrap/word-break).  
@@ -1746,6 +1756,17 @@ apps/healthcare/intelligenceboard/src/lib/clinical/gcs-scorer.ts
 .github/workflows/gemini-triage.yml
 .github/workflows/generate-documentation.yml
 .github/workflows/maintenance.yml
+```
+
+---
+## 2026-05-06 12:07 — `156ab6d` — refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy
+
+- **Agent**: Classy+
+- **Commit**: chore(agent): persist post-commit hook log entry
+- **Files changed**: 1 file(s)
+
+```
+.agent/PROGRESS.md
 ```
 
 ---

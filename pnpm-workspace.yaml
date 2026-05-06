@@ -10,3 +10,4 @@ packages:
   - 'platform/**'
   - 'tooling/**'
   - '!tooling/kilo/worktrees/**'
+  - '!apps/corporate/_ferdiiskandar.preprototype-backup'

@@ -74,7 +74,7 @@ v:\avcn-sentra\abyss-monorepo\
 │   │   │   └── website/              ← Next.js 14 marketing site
 │   │   └── daf-website/              ← Next.js 15, React 19, Tailwind v3 (foundation site)
 │   ├── corporate/
-│   │   └── ferdiiskandar/            ← Next.js 16, React 19, Tailwind v4 (personal brand site)
+│   │   └── ferdiiskandar/            ← Next.js 15.5.15, React 19, no Tailwind, Vitest, NVIDIA chat API (personal brand site, prototype-aligned 2026-05-06)
 │   ├── healthcare/                     ← PHI-aware domain
 │   │   ├── aby-dashboard/            ← Next.js 15, React 19, Tailwind v3
 │   │   ├── intelligenceboard/        ← Next.js 16, React 19, Tailwind v4, Prisma, Neon, LiveKit (clinical AI dashboard)
