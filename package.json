@@ -27,7 +27,8 @@
     "db:studio": "pnpm --filter @the-abyss/database db:studio",
     "flows:test": "turbo run flows:test",
     "security:primary-healthcare": "pnpm --filter @the-abyss/sentra-dashboard run security:catch-scan && pnpm --filter @the-abyss/sentra-dashboard run security:secret-scan && pnpm --filter @the-abyss/puskesmas-website run security:catch-scan && pnpm --filter @the-abyss/puskesmas-website run security:secret-scan && pnpm --filter @the-abyss/sentra-dashboard run security:audit && pnpm --filter @the-abyss/puskesmas-website run security:audit",
-    "governance:agents-check": "node tooling/scripts/governance/agents-healthcheck.js"
+    "governance:agents-check": "node tooling/scripts/governance/agents-healthcheck.js",
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -47,6 +48,7 @@
     "baseline-browser-mapping": "^2.10.24",
     "caniuse-lite": "1.0.30001788",
     "eslint": "^9.0.0",
+    "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
     "picocolors": "1.1.1",
     "prettier": "^3.4.0",
