@@ -166,14 +166,12 @@ docs/superpowers/
 .agent/reports/
 .agent/workflows/
 .agent/01_PANDUAN_PENGUMPULAN_BAHAN_SENTRA_CDSS_v1.md
-.agent/CURATION_TASKS.md
-.agent/MASTER_CONTEXT_2026-04-19.md
-.agent/MASTER_SITREP.md
-.agent/PROGRESS.archive.md
+.agent/archive/
+.agent/references/
 
 # ---- POLYREPO SPLIT — apps/ MIGRATED TO SEPARATE REPOS ----
 # apps/ is excluded from abyss-core. Each app lives in its own repo.
-# See .agent/ARCHITECTURE.md §8 for the polyrepo plan.
+# See .agent/references/ARCHITECTURE.md §8 for the polyrepo plan.
 apps/
 
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
@@ -181,15 +179,23 @@ apps/
 # Git evaluates .gitignore top-down; trailing negations override earlier rules.
 # KEPT: core `.agent/` governance memory + `CLAUDE.md` (Claude Code project instructions)
 !.agent/
-!.agent/ARCHITECTURE.md
 !.agent/CONTEXT.md
 !.agent/DECISIONS.md
-!.agent/FEATURE.md
 !.agent/HANDOFF.md
 !.agent/LESSONS.md
 !.agent/PROGRESS.md
-!.agent/PROTOCOL.md
 !.agent/SESSION_STATE.md
+!.agent/archive/
+!.agent/archive/HANDOFF.archive.md
+!.agent/archive/MASTER_CONTEXT_2026-04-19.md
+!.agent/archive/MASTER_SITREP.md
+!.agent/archive/PROGRESS.archive.md
+!.agent/references/
+!.agent/references/ARCHITECTURE.md
+!.agent/references/CURATION_TASKS.md
+!.agent/references/FEATURE.md
+!.agent/references/KNOWLEDGE CURATED.md
+!.agent/references/PROTOCOL.md
 !pnpm-lock.yaml
 !.claude/
 .claude/**

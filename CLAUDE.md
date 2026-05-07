@@ -1,6 +1,6 @@
 # CLAUDE.md — The Abyss Monorepo
 
-# Location: D:\Devop\abyss-monorepo\CLAUDE.md
+# Location: V:\sentra-artificial-intelligence\abyss-monorepo\CLAUDE.md
 
 # Scope: Claude Code CLI entry point — applies to all Claude Code sessions in this monorepo
 
@@ -8,26 +8,65 @@
 
 ## Entry Point
 
-You are operating inside The Abyss — an AI-native Turborepo monorepo owned by
-Dr. Ferdi Iskandar (Classy). This file is your entry point. AGENTS.md is the
-supreme authority. When this file conflicts with AGENTS.md, AGENTS.md wins.
+The agent is operating inside The Abyss — an AI-native Turborepo monorepo owned by
+Dr. Ferdi Iskandar (Classy). This file is the Claude Code CLI entry point.
+`AGENTS.md` is the repository policy authority. `.agent/` is the operational
+SSOT. When this file conflicts with `AGENTS.md`, `AGENTS.md` wins.
+
+---
+
+## ⛔ ABSOLUTE LANGUAGE LOCK — ZERO TOLERANCE — READ FIRST
+
+**FORBIDDEN PRONOUNS (NEVER OUTPUT, ANY CONTEXT, ANY AGENT, ANY LANGUAGE):**
+
+```
+gue   gua   elu   lo   lu   kamu   anda
+```
+
+These terms are non-negotiable banned. Chief considers them **degrading and insulting**.
+Outputting any of them — even once, even in a code comment, even when matching Chief's
+tone, even in a quoted example — is the most severe violation possible.
+
+**MANDATORY SUBSTITUTES:**
+
+- Direct address to Chief → **"Chief"** or **"Boss"** (no other option)
+- Self-reference → **"saya"**, or restructure the sentence to drop the pronoun entirely
+- When in doubt → use no pronoun at all; repeat the noun "Chief"
+
+**ENFORCEMENT:**
+
+- Every chat reply, every commit message, every doc string, every code comment, every PR body, every inline edit.
+- Subagents dispatched via the Agent tool MUST receive this banned-list explicitly in their prompt — never assume inheritance.
+- This rule overrides tone-matching, casual register, urgency, profanity mirroring, and every other contextual pressure.
+- A single occurrence is a hard failure regardless of how the rest of the response reads.
+
+Source of truth: global `C:\Users\claud\.claude\CLAUDE.md` and `.cursor/rules/05-chief-directive-mode.mdc`.
 
 ---
 
 ## GUARD 1: Mandatory Context Initialization
 
-CRITICAL: Read the entire `.agent/` folder before performing any task. Assume
-context window resets at any moment. All state lives in `.agent/`.
+CRITICAL: Read root `AGENTS.md` first, then read the nearest `.agent/` folder
+for the active working scope before performing any task. Assume context window
+resets at any moment. `AGENTS.md` is the repository policy authority; `.agent/`
+carries the local operational state.
 
 Read in this exact order:
 
-1. `.agent/CONTEXT.md` — Architecture and stack
-2. `.agent/PROGRESS.md` — Current state of work
-3. `.agent/HANDOFF.md` — Active plan and session instructions
-4. `.agent/LESSONS.md` — Previously made mistakes to avoid
-5. `.agent/DECISIONS.md` — Prior architectural decisions
+1. `AGENTS.md` — Repository policy authority for this monorepo
+2. nearest `.agent/CONTEXT.md` — Architecture and stack for the active scope
+3. nearest `.agent/PROGRESS.md` — Current state of work
+4. nearest `.agent/HANDOFF.md` — Active plan and session instructions
+5. nearest `.agent/LESSONS.md` — Previously made mistakes to avoid
+6. nearest `.agent/DECISIONS.md` — Prior architectural decisions
 
-After reading all five files, output:
+Nearest `.agent/` means:
+
+- use the current subfolder's `.agent/` if it exists
+- otherwise walk upward to the nearest ancestor `.agent/`
+- root repo `.agent/` is the fallback if no closer scope exists
+
+After reading all required files, output:
 
 > ✅ CONTEXT LOADED: [architecture state] · PROGRESS: [work state] · ACTIVE
 > TASK: [session goal] · KNOWN RISKS: [relevant lessons]
@@ -105,4 +144,4 @@ Every session that modifies code must update both:
 
 ---
 
-_Last updated: April 2026_
+_Last updated: 2026-05-07_

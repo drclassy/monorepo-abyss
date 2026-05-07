@@ -1,17 +1,20 @@
 # AGENTS.md — The Abyss Monorepo
 
-# Supreme authority. All local AGENTS.md files defer to this document.
+# Repository policy authority. All local AGENTS.md files defer to this document.
 
 # Last updated: 2026-04-25
 
 ---
 
-## §0 — SSOT Declaration
+## §0 — Authority Model
 
-This file is the Single Source of Truth for all agents operating in this
-monorepo. Division-level and sub-app-level AGENTS.md files are scoped additions
-only — they never duplicate or contradict this document. When conflict exists,
-this file wins.
+This file is the repository-wide policy authority for all agents operating in
+this monorepo. Division-level and sub-app-level AGENTS.md files are scoped
+additions only — they never duplicate or contradict this document. When policy
+conflict exists, this file wins.
+
+The operational Single Source of Truth (SSOT) for active state, session memory,
+handoff, and evolving project context lives under `.agent/`.
 
 ---
 
@@ -53,12 +56,12 @@ corporate, and platform domains.
 
 ```
 v:\avcn-sentra\abyss-monorepo\
-├── AGENTS.md                    ← this file (supreme authority)
+├── AGENTS.md                    ← repository policy authority
 ├── CLAUDE.md                    ← Claude Code CLI entry point
 ├── package.json
 ├── pnpm-workspace.yaml
 ├── turbo.json
-├── .agent/                      ← agent memory (CONTEXT, PROGRESS, HANDOFF, LESSONS, DECISIONS, sessions/)
+├── .agent/                      ← operational SSOT (live state at root; archives in archive/; deep docs in references/)
 ├── .claude/                     ← Claude Code config (agents/, commands/, skills/, settings.json)
 ├── .cursor/                     ← IDE rules, hooks, subagents (tracked — see root .gitignore negations)
 ├── .mcp.json                    ← MCP server registry (local only; gitignored)

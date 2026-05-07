@@ -15,7 +15,7 @@
 | License | UNLICENSED (private) |
 | Engine | Node ≥22, pnpm ≥9 |
 | Build | Turborepo v2 |
-| Root path | D:\Devop\abyss-monorepo\ |
+| Root path | V:\sentra-artificial-intelligence\abyss-monorepo\ |
 
 ---
 
@@ -37,8 +37,7 @@ Each healthcare app is an **independent repository** with its own:
 Any agent that assumes `packages/platform/database` is the database for all apps is WRONG.
 Always check each app's own `prisma/` folder before touching any database concern.
 
-Current session direction: Google Cloud, Vertex AI, and Gemini are being exited from
-the monorepo. Do not treat "migration to Vertex AI" as the active target.
+Current session direction: Monorepo governance, Codex behavior layering, and SSOT cleanup are active. Do not assume older cloud-exit work is still the primary session objective unless HANDOFF explicitly says so. Do not treat "migration to Vertex AI" as the active target.
 
 ---
 

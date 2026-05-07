@@ -10,15 +10,16 @@ alwaysApply: true
 
 ## GUARD 1: MANDATORY CONTEXT INITIALIZATION
 
-**CRITICAL:** Every agent MUST read the entire `.agent/` folder before performing any task. Assume the context window can be reset at any moment. All status, decisions, and plans live in `.agent/`.
+**CRITICAL:** Every agent MUST read `AGENTS.md` first, then the root `.agent/` startup files before performing any task. Assume the context window can be reset at any moment. `AGENTS.md` holds repository policy; `.agent/` holds live operational state.
 
 You MUST read in this EXACT order at session start:
 
-1. `.agent/CONTEXT.md` — Understand architecture and stack
-2. `.agent/PROGRESS.md` — Know the current state of work
-3. `.agent/HANDOFF.md` — Read the plan and instructions for this session
-4. `.agent/LESSONS.md` — Avoid previously made mistakes
-5. `.agent/DECISIONS.md` — Understand prior architectural decisions
+1. `AGENTS.md` — Repository policy authority
+2. `.agent/CONTEXT.md` — Understand architecture and stack
+3. `.agent/PROGRESS.md` — Know the current state of work
+4. `.agent/HANDOFF.md` — Read the plan and instructions for this session
+5. `.agent/LESSONS.md` — Avoid previously made mistakes
+6. `.agent/DECISIONS.md` — Understand prior architectural decisions
 
 ## GUARD 2: THE JET WORKFLOW PROTOCOL (Risk-Based)
 

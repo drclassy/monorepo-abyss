@@ -118,7 +118,7 @@ Task dimulai
 | `LESSONS.md` | Mistakes to avoid |
 | `DECISIONS.md` | Prior architectural decisions |
 
-**Full rules:** `AGENTS.md` §2.1 (supreme authority)
+**Full rules:** `AGENTS.md` §2.1 (repository policy authority) plus `.agent/` for operational SSOT.
 
 ---
 

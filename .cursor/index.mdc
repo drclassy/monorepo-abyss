@@ -22,11 +22,12 @@ alwaysApply: true
 ## Precedence (binding order when instructions overlap)
 
 1. Patient safety & PHI/HIPAA — cannot be relaxed by any document.
-2. Root `AGENTS.md` — monorepo SSOT. Nothing below may contradict it.
-3. Per-project `AGENTS.md` — nearest file to the code wins for local detail.
-4. Division `apps/<division>/AGENTS.md` — only when present.
-5. `.cursor/index.mdc` (this file) — identity and pointers only.
-6. `.cursor/rules/**/*.mdc` — supplementary; never override root `AGENTS.md`.
+2. Root `AGENTS.md` — repository policy authority. Nothing below may contradict it.
+3. Root `.agent/` — operational SSOT for current state, handoff, progress, lessons, and decisions.
+4. Per-project `AGENTS.md` — nearest file to the code wins for local detail.
+5. Division `apps/<division>/AGENTS.md` — only when present.
+6. `.cursor/index.mdc` (this file) — identity and pointers only.
+7. `.cursor/rules/**/*.mdc` — supplementary; never override root `AGENTS.md`.
 
 **GO rule:** Before material code or config changes, wait for explicit Chief GO when any document above requires it.
 
@@ -38,8 +39,8 @@ alwaysApply: true
 |------|---------|
 | `00-constitution.mdc` | JET Protocol, GUARD 1+2+3, NestJS rules — **read this for all workflow details** |
 | `01-guard-context-init.mdc` | Context init enforcement + session logging |
-| `02-notebooklm-intelligence.mdc` | NotebookLM query protocol |
-| `05-chief-directive-mode.mdc` | Chief-facing Bahasa Indonesia, official-source-first notes, plan, then explicit GO |
+| `03-agent-attitude.mdc` | Tone, adab, sopan santun + forbidden pronouns ban |
+| `05-chief-directive-mode.mdc` | Chief-facing Bahasa Indonesia, forbidden pronouns, official-source-first notes, plan, then explicit GO |
 | `10-backend/` | API routes, DB, validation |
 | `20-frontend/` | React, Tailwind, UI components |
 | `30-quality/` | Tests, lint, general conventions |

@@ -39,6 +39,13 @@
 **Rationale:** Each tool has a different entry point; all three must enforce identical JET Protocol and GUARD 1 to prevent any bypass path.
 **Consequences:** All three files must be kept in sync when JET Protocol or GUARD 1 is updated.
 
+### [2026-05-07] Authority model revised: .agent is operational SSOT
+**Context:** Codex behavior was moved into `.codex/PERSONA.md`, while startup state and execution truth needed to live separately from repository-wide policy. Existing records treated `AGENTS.md` as both policy authority and active-state SSOT, causing contradictions in startup context.
+**Decision:** Split authority into three layers: `.codex/PERSONA.md` = Codex-only behavior layer, `AGENTS.md` = repository policy authority, `.agent/` = operational single source of truth for current state, handoff, progress, lessons, and decisions.
+**Supersedes:** The 2026-04-10 interpretation that `AGENTS.md at root = single source of truth` for all operational purposes.
+**Rationale:** Policy, persona, and active execution state change at different rates and should not share one authority file.
+**Consequences:** Startup order must be `.codex/PERSONA.md` → `AGENTS.md` → `.agent/*`; `.agent` files must stay current, concise, and internally consistent or they fail their SSOT role.
+
 ### [2026-04-13] CQRS mandatory for orchestrator only
 **Context:** CQRS adds complexity — applying it universally would slow development across all apps.
 **Decision:** CQRS pattern is mandatory only for apps/platform/orchestrator/ (Saga Engine). Other NestJS apps use standard REST pattern.
@@ -111,6 +118,18 @@ WITH (m = 24, ef_construction = 256);
 **Context:** Chief mengizinkan penggunaan OpenAI ChatGPT Memory untuk membantu kontinuitas kerja, tetapi monorepo butuh sumber kebenaran yang audit-able dan lintas-agent.
 **Decision:** Gunakan ChatGPT Memory hanya untuk preferensi kerja yang stabil pada sesi Codex (mis. format output, preferensi verifikasi), bukan sebagai SSOT. SSOT tetap: `.agent/CONTEXT.md`, `.agent/PROGRESS.md`, `.agent/HANDOFF.md`, `.agent/LESSONS.md`, `.agent/DECISIONS.md`.
 **Guardrails:** Jangan pernah menyimpan secret/token, PHI/PII, atau detail sensitif sebagai memory. Untuk diskusi sensitif gunakan Temporary Chat (tidak membaca/menulis memory).
+
+### [2026-05-07] .agent root hygiene: active state at root, bulk docs out of startup path
+**Context:** The `.agent/` directory had been promoted to operational SSOT, but its root still mixed live startup files with heavy historical ledgers and bulky reference documents. This contradicted the goal of a fast, unambiguous startup path.
+**Decision:** Keep only live operational state files at `.agent/` root. Move historical ledgers to `.agent/archive/` and non-startup reference documents to `.agent/references/`. Startup order and hooks remain focused on the core state files only.
+**Rationale:** Active state, historical archive, and deep reference documents serve different purposes and should not compete for the same namespace.
+**Consequences:** Any future bulky governance or briefing document must be placed under `archive/` or `references/` unless it is required startup state.
+
+### [2026-05-07] Claude and Cursor governance aligned with Codex authority model and cloud exit
+**Context:** After Codex was aligned to `.codex/PERSONA.md` + `AGENTS.md` + `.agent/`, `CLAUDE.md` and several Cursor rules still carried stale authority wording and older cloud references.
+**Decision:** Standardize cross-agent governance as follows: `AGENTS.md` remains repository policy authority, `.agent/` remains operational SSOT, and Google Cloud / Vertex AI / Gemini references in governance files are treated as legacy unless explicitly marked current by a newer decision.
+**Rationale:** Cross-agent drift recreates the same startup ambiguity even when Codex alone is correct.
+**Consequences:** Any governance audit must include `.codex/`, `CLAUDE.md`, `.cursor/`, and `.agent/` together rather than treating them as independent rule systems.
 **Consequences:** Setiap perubahan aturan kerja jangka panjang harus ditulis ke `.agent/DECISIONS.md`/`.agent/LESSONS.md`, bukan mengandalkan memory produk.
 
 ### [2026-04-20] Symptom Signals NLP canonicalized into SYMPHONY (Phase 1 complete)
