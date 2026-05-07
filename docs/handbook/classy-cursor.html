@@ -292,7 +292,13 @@ code{font-family:var(--f-mono);font-size:.68rem;color:rgba(253,253,253,.8);backg
       <div class="card-title"><span class="icon">7</span> Pre-Commit Gate</div>
       <div class="card-body">
         <span class="cmd">husky</span> + <span class="cmd">lint-staged</span> jalan otomatis sebelum commit: secret scan (PAT, API key), PHI scan (NIK, BPJS, phone), lint-fix file staged saja. Bypass darurat: <span class="cmd">--no-verify</span> (tidak direkomendasikan).
+        <code>FAQ bootstrap:
+pnpm install --package-import-method=copy
+git config core.hooksPath .husky/_
+pnpm exec lint-staged --version</code>
         <div class="do-dont">
+          <div class="do">Di volume <span class="cmd">V:</span>, pakai <span class="cmd">--package-import-method=copy</span> bila install gagal karena reflink / copy-on-write</div>
+          <div class="do">Kalau hook tidak terpanggil, cek <span class="cmd">git config core.hooksPath</span> harus menunjuk ke <span class="cmd">.husky/_</span></div>
           <div class="do">Test fixture pakai data synthetic (NIK <span class="cmd">0000...</span>)</div>
           <div class="dont">Commit <span class="cmd">.env</span> walau gitignored sekalipun</div>
         </div>
