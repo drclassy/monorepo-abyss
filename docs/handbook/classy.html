@@ -4,82 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Classy Workflow 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --sentra-black: #000000;
-      --sentra-white: #fdfdfd;
-      --graphite-core: #111318;
-      --clinical-slate: #2b2f38;
-      --neural-silver: #a0a0a2;
-      --soft-grid: #e8eaf0;
-      --deep-interface-blue: #0b1f3a;
-      --ai-violet: #6d5dfc;
-      --sentra-cyan: #00d4ff;
-      --success-green: #12b981;
-      --warning-amber: #f59e0b;
-      --critical-red: #ef4444;
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 24px;
+      --black: #000000;
+      --white: #FDFDFD;
+      --graphite: #111318;
+      --slate: #2B2F38;
+      --silver: #A0A0A2;
+      --grid: #E8EAF0;
+      --blue: #0B1F3A;
+      --f-display: 'Space Grotesk', 'Inter', 'IBM Plex Sans', Arial, sans-serif;
+      --f-body: 'Inter', 'IBM Plex Sans', Arial, sans-serif;
+      --f-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+      --r-lg: 16px;
+      --r-md: 12px;
+      --r-sm: 8px;
+      --r-xl: 24px;
       --shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
-      --font-display: "Space Grotesk", Inter, "IBM Plex Sans", Arial, sans-serif;
-      --font-body: Inter, "IBM Plex Sans", Arial, sans-serif;
-      --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
-      --text-base: 13px;
-      --line-base: 1.6;
-      --page-width: 1180px;
+      --b: 1px solid var(--slate);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html {
-      background:
-        radial-gradient(circle at top right, rgba(0, 212, 255, 0.16), transparent 30%),
-        linear-gradient(135deg, #000000 0%, #111318 56%, #0b1f3a 100%);
-      color: var(--sentra-white);
-      font-size: var(--text-base);
+      background: var(--black);
+      color: var(--white);
+      font-size: 13px;
       scroll-behavior: smooth;
     }
 
     body {
-      margin: 0;
-      font-family: var(--font-body);
+      font-family: var(--f-body);
       font-size: 1rem;
-      line-height: var(--line-base);
-      color: var(--sentra-white);
+      line-height: 1.6;
+      color: var(--white);
     }
 
-    a {
-      color: var(--sentra-cyan);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
+    a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--slate); }
+    a:hover { text-decoration-color: var(--white); }
 
     .page {
-      width: min(calc(100% - 32px), var(--page-width));
+      width: min(calc(100% - 32px), 1180px);
       margin: 0 auto;
       padding: 28px 0 48px;
     }
 
-    .hero,
-    .panel,
-    .card,
-    .command,
-    .source-item {
-      background: rgba(17, 19, 24, 0.78);
-      border: 1px solid rgba(232, 234, 240, 0.12);
+    .hero, .panel, .card, .command, .source-item {
+      background: var(--graphite);
+      border: var(--b);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
     }
 
     .hero {
-      border-radius: var(--radius-xl);
+      border-radius: var(--r-xl);
       padding: 28px;
       position: relative;
       overflow: hidden;
@@ -91,7 +71,7 @@
       inset: auto -8% -28% auto;
       width: 320px;
       height: 320px;
-      background: radial-gradient(circle, rgba(109, 93, 252, 0.18), transparent 62%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04), transparent 62%);
       pointer-events: none;
     }
 
@@ -100,8 +80,8 @@
       align-items: center;
       gap: 10px;
       margin-bottom: 14px;
-      color: var(--sentra-cyan);
-      font-family: var(--font-mono);
+      color: var(--silver);
+      font-family: var(--f-mono);
       font-size: 0.84rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -115,232 +95,120 @@
       background: currentColor;
     }
 
-    h1,
-    h2,
-    h3 {
+    h1, h2, h3 {
       margin: 0;
-      font-family: var(--font-display);
-      font-weight: 700;
+      font-family: var(--f-display);
+      font-weight: 600;
       line-height: 1.05;
     }
 
-    h1 {
-      max-width: 780px;
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      letter-spacing: -0.04em;
-    }
+    h1 { max-width: 780px; font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: -0.04em; }
+    h2 { font-size: clamp(1.55rem, 2.5vw, 2.2rem); letter-spacing: -0.03em; }
+    h3 { font-size: 1.15rem; letter-spacing: -0.02em; }
 
-    h2 {
-      font-size: clamp(1.55rem, 2.5vw, 2.2rem);
-      letter-spacing: -0.03em;
-    }
+    .hero-grid, .two-col, .flow-grid, .command-grid,
+    .practice-grid, .rules-grid, .source-grid { display: grid; gap: 16px; }
 
-    h3 {
-      font-size: 1.15rem;
-      letter-spacing: -0.02em;
-    }
+    .hero-grid { grid-template-columns: 2.2fr 1fr; margin-top: 22px; align-items: end; }
 
-    .hero-grid,
-    .two-col,
-    .flow-grid,
-    .command-grid,
-    .practice-grid,
-    .rules-grid,
-    .source-grid {
-      display: grid;
-      gap: 16px;
-    }
+    .hero-copy p, .lede, .muted { margin: 0; color: rgba(253, 253, 253, 0.78); }
+    .hero-copy p { max-width: 720px; margin-top: 14px; font-size: 1.02rem; }
 
-    .hero-grid {
-      grid-template-columns: 2.2fr 1fr;
-      margin-top: 22px;
-      align-items: end;
-    }
-
-    .hero-copy p,
-    .lede,
-    .muted {
-      margin: 0;
-      color: rgba(253, 253, 253, 0.78);
-    }
-
-    .hero-copy p {
-      max-width: 720px;
-      margin-top: 14px;
-      font-size: 1.02rem;
-    }
-
-    .hero-meta {
-      display: grid;
-      gap: 10px;
-    }
+    .hero-meta { display: grid; gap: 10px; }
 
     .meta-box {
-      border-radius: var(--radius-lg);
+      border-radius: var(--r-lg);
       padding: 14px 16px;
-      background: rgba(11, 31, 58, 0.45);
-      border: 1px solid rgba(0, 212, 255, 0.16);
+      background: var(--blue);
+      border: var(--b);
     }
 
-    .meta-box strong,
-    .card strong,
-    .command strong {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--sentra-white);
-    }
+    .meta-box strong, .card strong, .command strong { display: block; margin-bottom: 4px; color: var(--white); }
 
-    .section {
-      margin-top: 20px;
-    }
+    .section { margin-top: 20px; }
 
     .section-header {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 14px;
+      display: flex; align-items: end; justify-content: space-between;
+      gap: 16px; margin-bottom: 14px;
     }
+    .section-header p { max-width: 700px; }
 
-    .section-header p {
-      max-width: 700px;
-    }
-
-    .panel {
-      border-radius: var(--radius-xl);
-      padding: 22px;
-    }
-
-    .flow-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
+    .panel { border-radius: var(--r-xl); padding: 22px; }
+    .flow-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
     .card {
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      min-height: 178px;
+      border-radius: var(--r-lg);
+      padding: 16px; min-height: 178px;
       position: relative;
+      transition: border-color 0.2s;
     }
+    .card:hover { border-color: rgba(160, 160, 162, 0.4); }
 
     .card::before {
       content: attr(data-step);
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      color: rgba(0, 212, 255, 0.7);
-      letter-spacing: 0.16em;
+      position: absolute; top: 14px; right: 14px;
+      font-family: var(--f-mono); font-size: 0.82rem;
+      color: var(--silver); letter-spacing: 0.16em;
     }
 
     .tag {
-      display: inline-flex;
-      margin-bottom: 10px;
-      padding: 5px 9px;
-      border-radius: 999px;
-      background: rgba(0, 212, 255, 0.1);
-      border: 1px solid rgba(0, 212, 255, 0.18);
-      color: var(--sentra-cyan);
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      letter-spacing: 0.05em;
+      display: inline-flex; margin-bottom: 10px;
+      padding: 5px 9px; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: var(--b);
+      color: var(--silver);
+      font-family: var(--f-mono); font-size: 0.82rem; letter-spacing: 0.05em;
     }
 
-    code,
-    .mono {
-      font-family: var(--font-mono);
-    }
+    code, .mono { font-family: var(--f-mono); }
 
-    .command-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    .command-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
     .command {
-      border-radius: var(--radius-lg);
-      padding: 16px;
+      border-radius: var(--r-lg); padding: 16px;
+      transition: border-color 0.2s;
     }
+    .command:hover { border-color: rgba(160, 160, 162, 0.4); }
 
     .command code {
-      display: inline-block;
-      margin-bottom: 8px;
-      color: var(--sentra-cyan);
-      font-size: 0.95rem;
-      font-weight: 700;
+      display: inline-block; margin-bottom: 8px;
+      color: var(--white); font-size: 0.95rem; font-weight: 700;
     }
 
-    .practice-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+    .practice-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .rules-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-    .practice-list,
-    .rule-list {
-      margin: 10px 0 0;
-      padding-left: 18px;
+    .practice-list, .rule-list {
+      margin: 10px 0 0; padding-left: 18px;
       color: rgba(253, 253, 253, 0.78);
     }
+    .practice-list li, .rule-list li { margin: 0 0 8px; }
 
-    .practice-list li,
-    .rule-list li {
-      margin: 0 0 8px;
-    }
+    .rule-good { border-left: 3px solid var(--silver); }
+    .rule-watch { border-left: 3px solid var(--slate); }
+    .rule-stop { border-left: 3px solid var(--white); }
 
-    .rules-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .rule-good {
-      border-left: 3px solid var(--success-green);
-    }
-
-    .rule-watch {
-      border-left: 3px solid var(--warning-amber);
-    }
-
-    .rule-stop {
-      border-left: 3px solid var(--critical-red);
-    }
-
-    .source-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    .source-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
     .source-item {
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
+      border-radius: var(--r-md); padding: 14px 16px;
+      transition: border-color 0.2s;
     }
-
-    .source-item strong {
-      display: block;
-      margin-bottom: 6px;
-    }
+    .source-item:hover { border-color: rgba(160, 160, 162, 0.4); }
+    .source-item strong { display: block; margin-bottom: 6px; }
 
     .footer-note {
-      margin-top: 18px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(232, 234, 240, 0.12);
-      color: rgba(253, 253, 253, 0.6);
+      margin-top: 18px; padding-top: 14px;
+      border-top: var(--b);
+      color: rgba(160, 160, 162, 0.6);
       font-size: 0.92rem;
     }
 
     @media (max-width: 980px) {
-      .hero-grid,
-      .flow-grid,
-      .command-grid,
-      .practice-grid,
-      .rules-grid,
-      .source-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .page {
-        width: min(calc(100% - 20px), var(--page-width));
-        padding-top: 16px;
-      }
-
-      .hero,
-      .panel {
-        padding: 18px;
-      }
+      .hero-grid, .flow-grid, .command-grid,
+      .practice-grid, .rules-grid, .source-grid { grid-template-columns: 1fr; }
+      .page { width: min(calc(100% - 20px), 1180px); padding-top: 16px; }
+      .hero, .panel { padding: 18px; }
     }
   </style>
 </head>
@@ -351,24 +219,20 @@
       <h1>Structured execution for high-trust software delivery.</h1>
       <div class="hero-grid">
         <div class="hero-copy">
-          <p>
-            This workflow defines how Classy moves from intent to validated delivery:
-            understand first, plan deliberately, implement with discipline, verify with evidence,
-            then submit for review and close the branch cleanly.
-          </p>
+          <p>This workflow defines how Classy moves from intent to validated delivery: understand first, plan deliberately, implement with discipline, verify with evidence, then submit for review and close the branch cleanly.</p>
         </div>
         <div class="hero-meta">
           <div class="meta-box">
             <strong>Display baseline</strong>
-            13px text, editor-safe typography, static HTML, no runtime dependencies.
+            13px text, editor-safe typography, static HTML.
           </div>
           <div class="meta-box">
-            <strong>Brand source</strong>
-            Sentra Artificial Intelligence 2026 token system.
+            <strong>Brand</strong>
+            Sentra Artificial Intelligence 2026 pure monochrome.
           </div>
           <div class="meta-box">
             <strong>Reference date</strong>
-            Verified against official OpenAI and GitHub guidance on May 3, 2026.
+            Verified against OpenAI and GitHub guidance on May 3, 2026.
           </div>
         </div>
       </div>
@@ -380,9 +244,7 @@
           <div class="eyebrow">Mandatory Order</div>
           <h2>Classy command sequence</h2>
         </div>
-        <p class="lede">
-          Default means default. If a task is not purely administrative, follow the sequence unless there is a specific technical reason to compress it.
-        </p>
+        <p class="lede">Default means default. If a task is not purely administrative, follow the sequence unless there is a specific technical reason to compress it.</p>
       </div>
       <div class="flow-grid">
         <article class="card" data-step="01">
@@ -434,51 +296,17 @@
           <div class="eyebrow">Command Registry</div>
           <h2>Operational mapping</h2>
         </div>
-        <p class="lede">
-          Each command is an interface for a specific engineering posture. The command name is short. The expectation is not.
-        </p>
+        <p class="lede">Each command is an interface for a specific engineering posture. The command name is short. The expectation is not.</p>
       </div>
       <div class="command-grid">
-        <article class="command">
-          <code>/classy-using</code>
-          <strong>Maps to `superpowers:using-superpowers`</strong>
-          Establishes the baseline workflow and skill discipline for the current task.
-        </article>
-        <article class="command">
-          <code>/classy-brainstorming</code>
-          <strong>Maps to `superpowers:brainstorming`</strong>
-          Clarifies scope, intent, success criteria, and solution options before implementation.
-        </article>
-        <article class="command">
-          <code>/classy-plan</code>
-          <strong>Maps to `superpowers:writing-plans`</strong>
-          Produces the concrete execution path, sequencing, and implementation boundaries.
-        </article>
-        <article class="command">
-          <code>/classy-implement</code>
-          <strong>Maps to `superpowers:test-driven-development`</strong>
-          Drives implementation with disciplined change control, test thinking, and short feedback loops.
-        </article>
-        <article class="command">
-          <code>/classy-review-in</code>
-          <strong>Maps to `superpowers:receiving-code-review`</strong>
-          Verifies and processes incoming review feedback item by item.
-        </article>
-        <article class="command">
-          <code>/classy-verify</code>
-          <strong>Maps to `superpowers:verification-before-completion`</strong>
-          Forces objective evidence before the work is declared complete.
-        </article>
-        <article class="command">
-          <code>/classy-review-out</code>
-          <strong>Maps to `superpowers:requesting-code-review`</strong>
-          Packages the work for external review only after internal verification is done.
-        </article>
-        <article class="command">
-          <code>/classy-finish</code>
-          <strong>Maps to `superpowers:finishing-a-development-branch`</strong>
-          Handles closure, readiness, and branch completion decisions with discipline.
-        </article>
+        <article class="command"><code>/classy-using</code><strong>Maps to superpowers:using-superpowers</strong>Establishes the baseline workflow and skill discipline for the current task.</article>
+        <article class="command"><code>/classy-brainstorming</code><strong>Maps to superpowers:brainstorming</strong>Clarifies scope, intent, success criteria, and solution options before implementation.</article>
+        <article class="command"><code>/classy-plan</code><strong>Maps to superpowers:writing-plans</strong>Produces the concrete execution path, sequencing, and implementation boundaries.</article>
+        <article class="command"><code>/classy-implement</code><strong>Maps to superpowers:test-driven-development</strong>Drives implementation with disciplined change control, test thinking, and short feedback loops.</article>
+        <article class="command"><code>/classy-review-in</code><strong>Maps to superpowers:receiving-code-review</strong>Verifies and processes incoming review feedback item by item.</article>
+        <article class="command"><code>/classy-verify</code><strong>Maps to superpowers:verification-before-completion</strong>Forces objective evidence before the work is declared complete.</article>
+        <article class="command"><code>/classy-review-out</code><strong>Maps to superpowers:requesting-code-review</strong>Packages the work for external review only after internal verification is done.</article>
+        <article class="command"><code>/classy-finish</code><strong>Maps to superpowers:finishing-a-development-branch</strong>Handles closure, readiness, and branch completion decisions with discipline.</article>
       </div>
     </section>
 
@@ -488,9 +316,7 @@
           <div class="eyebrow">OpenAI Codex</div>
           <h2>Best practice 2026</h2>
         </div>
-        <p class="lede">
-          These points synthesize the most relevant official OpenAI guidance for Codex, GPT-5 coding prompts, and code-review workflows.
-        </p>
+        <p class="lede">These points synthesize the most relevant official OpenAI guidance for Codex, GPT-5 coding prompts, and code-review workflows.</p>
       </div>
       <div class="practice-grid">
         <article class="command">
@@ -550,9 +376,7 @@
           <div class="eyebrow">Operating Rules</div>
           <h2>Enforcement intent</h2>
         </div>
-        <p class="lede">
-          The workflow exists to protect delivery quality, review speed, branch stability, and decision clarity.
-        </p>
+        <p class="lede">The workflow exists to protect delivery quality, review speed, branch stability, and decision clarity.</p>
       </div>
       <div class="rules-grid">
         <article class="command rule-good">
@@ -594,39 +418,37 @@
           <div class="eyebrow">Sources</div>
           <h2>Reference basis</h2>
         </div>
-        <p class="lede">
-          Official documentation and established engineering guidance used as the basis for this page.
-        </p>
+        <p class="lede">Official documentation and established engineering guidance used as the basis for this page.</p>
       </div>
       <div class="source-grid">
         <article class="source-item">
           <strong>OpenAI Codex Quickstart</strong>
-          <a href="https://developers.openai.com/codex/quickstart">developers.openai.com/codex/quickstart</a>
+          <a href="https://developers.openai.com/codex/quickstart" target="_blank" rel="noopener">developers.openai.com/codex/quickstart</a>
         </article>
         <article class="source-item">
           <strong>OpenAI Prompt Engineering for Coding</strong>
-          <a href="https://developers.openai.com/api/docs/guides/prompt-engineering#coding">developers.openai.com/api/docs/guides/prompt-engineering#coding</a>
+          <a href="https://developers.openai.com/api/docs/guides/prompt-engineering#coding" target="_blank" rel="noopener">developers.openai.com/api/docs/guides/prompt-engineering#coding</a>
         </article>
         <article class="source-item">
           <strong>GitHub Pull Request Reviews</strong>
-          <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews">docs.github.com/.../about-pull-request-reviews</a>
+          <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews" target="_blank" rel="noopener">docs.github.com/.../about-pull-request-reviews</a>
         </article>
         <article class="source-item">
-          <strong>GitHub Protected Branches and Required Checks</strong>
-          <a href="https://docs.github.com/articles/about-required-reviews-for-pull-requests">docs.github.com/articles/about-required-reviews-for-pull-requests</a>
+          <strong>GitHub Protected Branches</strong>
+          <a href="https://docs.github.com/articles/about-required-reviews-for-pull-requests" target="_blank" rel="noopener">docs.github.com/articles/about-required-reviews-for-pull-requests</a>
         </article>
         <article class="source-item">
           <strong>GitHub CODEOWNERS</strong>
-          <a href="https://docs.github.com/articles/about-code-owners">docs.github.com/articles/about-code-owners</a>
+          <a href="https://docs.github.com/articles/about-code-owners" target="_blank" rel="noopener">docs.github.com/articles/about-code-owners</a>
         </article>
         <article class="source-item">
           <strong>Trunk-Based Development</strong>
-          <a href="https://trunkbaseddevelopment.com/short-lived-feature-branches/">trunkbaseddevelopment.com/short-lived-feature-branches</a>
+          <a href="https://trunkbaseddevelopment.com/short-lived-feature-branches/" target="_blank" rel="noopener">trunkbaseddevelopment.com/short-lived-feature-branches</a>
         </article>
       </div>
       <div class="footer-note">
-        Token basis: <span class="mono">sentra-brand-tokens.json</span> and <span class="mono">sentra-tailwind-theme.ts</span> from the Sentra 2026 brand asset kit.
-        Typography is editor-safe and degrades gracefully if local fonts are unavailable.
+        Sentra Artificial Intelligence 2026 — pure monochrome brand system.
+        Typography: Space Grotesk (display), Inter (body), JetBrains Mono (code).
       </div>
     </section>
   </main>

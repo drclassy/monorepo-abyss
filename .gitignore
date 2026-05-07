@@ -57,6 +57,7 @@ prompts/private/
 .roo/
 .windsurf/
 .codex/
+.husky/_/
 
 # ---- DEPENDENCIES ----
 node_modules/

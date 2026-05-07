@@ -1,5 +1,5 @@
 ---
-description: 'API and route handlers: contract-first, shared-types, validation, errors, no PHI ? aligned with AGENTS.md.'
+description: 'API and route handlers: contract-first, shared-types, validation, errors, no PHI → aligned with AGENTS.md.'
 globs:
   - '**/app/api/**/*.{ts,tsx}'
   - '**/route.ts'
@@ -10,28 +10,28 @@ alwaysApply: false
 
 # API routes & HTTP handlers
 
-**Authoritative source:** [`AGENTS.md`](../../AGENTS.md) ?3??5 (operating model, contract-first, JET). **`AGENTS.md` wins** on any conflict.
+**Authoritative source:** [`AGENTS.md`](../../AGENTS.md) §3↔§5 (operating model, contract-first, JET). **`AGENTS.md` wins** on any conflict.
 
 ## Contract-first
 
-1. **Find existing schemas** in **`packages/shared-types`** before defining request/response shapes (**`AGENTS.md` ?4**).
-2. **Do not** redefine domain models ad hoc in app code when a shared type exists (**`AGENTS.md` ?4**).
-3. **API changes** must include **validation schemas** and **clear error semantics** (status codes, stable error codes/messages where applicable) (**`AGENTS.md` ?4**).
-4. **Public contract changes** require impact analysis before shipping (**`AGENTS.md` ?3**).
+1. **Find existing schemas** in **`packages/shared-types`** before defining request/response shapes (**`AGENTS.md` §4**).
+2. **Do not** redefine domain models ad hoc in app code when a shared type exists (**`AGENTS.md` §4**).
+3. **API changes** must include **validation schemas** and **clear error semantics** (status codes, stable error codes/messages where applicable) (**`AGENTS.md` §4**).
+4. **Public contract changes** require impact analysis before shipping (**`AGENTS.md` §3**).
 
 ## Implementation patterns
 
-- Prefer **Zod** (or the repo's established validator) aligned with shared types ? follow patterns already used in the target app/package.
+- Prefer **Zod** (or the repo's established validator) aligned with shared types → follow patterns already used in the target app/package.
 - **Route handlers** (e.g. Next.js App Router `route.ts`): validate input, return typed JSON responses, propagate errors explicitly (no empty catch).
-- **Observability:** log structured metadata suitable for audit; **never** log PHI, raw patient identifiers, or secrets (**`AGENTS.md` ?5**).
+- **Observability:** log structured metadata suitable for audit; **never** log PHI, raw patient identifiers, or secrets (**`AGENTS.md` §5**).
 
 ## Compliance-sensitive code
 
-- Touching FHIR or clinical boundaries may involve **`packages/fhir-engine`** or **`packages/iskandar-gatekeeper`** ? treat as **compliance-critical** per **`AGENTS.md`** directory map; follow division **`AGENTS.md`** and existing ADRs (**`.agent/DECISIONS.md`**).
+- Touching FHIR or clinical boundaries may involve **`packages/fhir-engine`** or **`packages/iskandar-gatekeeper`** → treat as **compliance-critical** per **`AGENTS.md`** directory map; follow division **`AGENTS.md`** and existing ADRs (**`.agent/DECISIONS.md`**).
 
 ## JET & GO
 
-- Multi-step or risky API work: follow **JET** and **Chief 'GO'** when required (**`AGENTS.md` ?5**, **`00-constitution.mdc`**).
+- Multi-step or risky API work: follow **JET** and **Chief 'GO'** when required (**`AGENTS.md` §5**, **`00-constitution.mdc`**).
 
 ## Gold standard references
 

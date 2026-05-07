@@ -3,289 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AVCN — Tips & Tricks</title>
-<link rel="stylesheet" href="../../packages/shared/design-token/packages/design-tokens/sentra-tokens.css">
+<title>Classy - Tips &amp; Tricks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-@font-face{font-family:'Geist';src:url('./fonts/GeistVF.woff2')format('woff2');font-weight:100 900;font-display:swap}
-@font-face{font-family:'Geist Mono';src:url('./fonts/GeistMonoVF.woff2')format('woff2');font-weight:100 900;font-display:swap}
-@font-face{font-family:'Geist';src:url('./fonts/Geist-Regular.woff2')format('woff2');font-weight:400;font-display:swap}
-@font-face{font-family:'Geist';src:url('./fonts/Geist-Medium.woff2')format('woff2');font-weight:500;font-display:swap}
-@font-face{font-family:'Geist';src:url('./fonts/Geist-Bold.woff2')format('woff2');font-weight:700;font-display:swap}
-@font-face{font-family:'Geist Mono';src:url('./fonts/GeistMono-Regular.woff2')format('woff2');font-weight:400;font-display:swap}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
-/* Depth + warna: 100% dari sentra-tokens.css — tanpa hex/rgba lokal (SSOT) */
-
-html { background: var(--sentra-bg-base) }
-
-body {
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist', system-ui, sans-serif;
-  font-size: var(--sentra-small-size);
-  line-height: var(--sentra-line-height);
-  background: var(--sentra-bg-base);
-  color: var(--sentra-text-primary);
-  padding: 16px 20px 32px;
-  -webkit-font-smoothing: antialiased;
-  max-width: 100%;
+:root{
+  --black:#000000;--white:#FDFDFD;--graphite:#111318;--slate:#2B2F38;--silver:#A0A0A2;
+  --f-disp:'Space Grotesk','Inter','IBM Plex Sans',Arial,sans-serif;
+  --f-body:'Inter','IBM Plex Sans',Arial,sans-serif;
+  --f-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+  --r-lg:16px;--r-md:12px;--r-sm:8px;--r-pill:999px;
+  --b:1px solid var(--slate);
 }
 
-/* HEADER */
-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--sentra-border-subtle);
-}
-.logo { font-size: 18px; font-weight: 700; letter-spacing: -.04em; color: var(--sentra-text-primary) }
-.logo em { color: var(--sentra-warning); font-style: normal }
-.tagline { font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace; font-size: 11px; color: var(--sentra-text-muted); letter-spacing: .05em }
-.ver { margin-left: auto; font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace; font-size: 11px; color: var(--sentra-text-muted) }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f-body);background:var(--black);color:var(--white);line-height:1.7;padding:20px;max-width:1100px;margin:0 auto;-webkit-font-smoothing:antialiased}
 
-/* NAV TABS */
-.tabs {
-  display: flex;
-  gap: 2px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--sentra-border-subtle);
-}
-.tab {
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--sentra-text-muted);
-  padding: 8px 16px;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: color var(--sentra-transition), border-color var(--sentra-transition);
-  user-select: none;
-}
-.tab:hover { color: var(--sentra-text-secondary) }
-.tab.active { color: var(--sentra-warning); border-bottom-color: var(--sentra-warning) }
+header{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:12px;border-bottom:var(--b)}
+header .logo{font-family:var(--f-disp);font-size:1.15rem;font-weight:700;letter-spacing:-.03em;color:var(--white)}
+header .tag{font-family:var(--f-mono);font-size:.62rem;color:var(--silver);text-transform:uppercase;letter-spacing:1.5px}
+header .ver{margin-left:auto;font-family:var(--f-mono);font-size:.62rem;color:var(--silver)}
 
-/* SECTION */
-.section { display: none }
-.section.active { display: block }
+h2{font-family:var(--f-disp);font-size:1.1rem;font-weight:600;margin:28px 0 12px 0;padding-bottom:6px;border-bottom:var(--b)}
+h3{font-family:var(--f-disp);font-size:.9rem;font-weight:600;color:var(--white);margin:16px 0 8px 0}
 
-/* SECTION LABEL */
-.label {
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--sentra-text-muted);
-  margin: 0 0 10px;
-}
+p{font-size:.82rem;color:rgba(253,253,253,.78);margin-bottom:10px;line-height:1.65}
+strong{color:var(--white)}
+ul,ol{padding-left:20px;margin-bottom:12px}
+li{font-size:.8rem;color:rgba(253,253,253,.75);margin-bottom:4px;line-height:1.55}
 
-/* TIP GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.grid-3 {
-  /* overrides handled by auto-fit */
-}
-.grid-1 { grid-template-columns: 1fr }
+code{font-family:var(--f-mono);font-size:.72rem;color:var(--silver);background:rgba(255,255,255,.04);padding:1px 6px;border-radius:3px;border:1px solid rgba(43,47,56,.3)}
+pre{font-family:var(--f-mono);font-size:.72rem;color:rgba(253,253,253,.8);background:var(--graphite);border:var(--b);border-radius:var(--r-sm);padding:12px 14px;overflow-x:auto;margin:8px 0 14px 0;line-height:1.6}
+pre .c{color:rgba(160,160,162,.6);font-style:italic}
+pre .p{color:var(--silver)}
+pre .s{color:var(--white)}
+pre .n{color:rgba(160,160,162,.8)}
 
-/* TIP CARD — primary container: surface + living edge (token) */
-.card {
-  position: relative;
-  overflow: hidden;
-  background: var(--sentra-surface);
-  border: var(--sentra-border-main);
-  border-radius: var(--sentra-card-radius);
-  padding: var(--sentra-card-padding);
-  box-shadow: var(--sentra-card-shadow);
-  transition:
-    box-shadow var(--sentra-transition),
-    transform var(--sentra-transition);
-}
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--sentra-top-shimmer);
-  pointer-events: none;
-}
-.card:hover {
-  box-shadow: var(--sentra-card-shadow-hover);
-  transform: var(--sentra-hover-lift-sm);
-}
-.card-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--sentra-text-primary);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--sentra-border-subtle);
-}
-.card-body {
-  font-size: 12px;
-  color: var(--sentra-text-secondary);
-  line-height: 1.6;
-}
-.card-body .hi  { color: var(--sentra-text-primary); font-weight: 500 }
-.card-body .cmd {
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
-  font-size: 11px;
-  color: var(--sentra-warning);
-  background: var(--sentra-warning-bg);
-  border: 1px solid color-mix(in srgb, var(--sentra-warning) 22%, transparent);
-  padding: 1px 6px;
-  border-radius: var(--sentra-input-radius);
-}
-.card-body .red { color: var(--sentra-error); font-weight: 600 }
-.card-body .grn { color: var(--sentra-success); font-weight: 500 }
-.card-body .blu { color: var(--sentra-info) }
-.card-body code {
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
-  font-size: 11px;
-  color: var(--sentra-text-secondary);
-  display: block;
-  background: var(--sentra-inset);
-  border: 1px solid var(--sentra-border-subtle);
-  border-radius: var(--sentra-input-radius);
-  box-shadow: var(--sentra-neu-inset);
-  padding: 10px 12px;
-  margin: 8px 0 6px;
-  line-height: 1.7;
-  white-space: pre;
-}
-.card-body code .y { color: var(--sentra-warning) }
-.card-body code .g { color: var(--sentra-success) }
-.card-body code .b { color: var(--sentra-info) }
-.card-body code .r { color: var(--sentra-error) }
-.card-body code .d { color: var(--sentra-text-muted) }
+.tip{border-left:2px solid var(--silver);padding:10px 14px;margin:12px 0;font-size:.8rem;color:rgba(253,253,253,.7);background:rgba(255,255,255,.015);border-radius:0 var(--r-sm) var(--r-sm) 0}
+.tip::before{content:"TIP: ";font-family:var(--f-mono);font-size:.62rem;color:var(--silver);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
 
-/* ICON BADGE */
-.icon {
-  width: 18px;
-  height: 18px;
-  border-radius: var(--sentra-input-radius);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  flex-shrink: 0;
-}
-.icon-amber { background: var(--sentra-warning-bg); color: var(--sentra-warning); border: 1px solid color-mix(in srgb, var(--sentra-warning) 22%, transparent) }
-.icon-red   { background: var(--sentra-error-bg); color: var(--sentra-error); border: 1px solid color-mix(in srgb, var(--sentra-error) 28%, transparent) }
-.icon-green { background: var(--sentra-success-bg); color: var(--sentra-success); border: 1px solid color-mix(in srgb, var(--sentra-success) 28%, transparent) }
-.icon-blue  { background: color-mix(in srgb, var(--sentra-info) 12%, var(--sentra-surface)); color: var(--sentra-info); border: 1px solid color-mix(in srgb, var(--sentra-info) 22%, transparent) }
-.icon-purple{ background: var(--sentra-surface-elevated); color: var(--sentra-text-secondary); border: var(--sentra-border-main) }
-.icon-teal  { background: var(--sentra-compliance-bg); color: var(--sentra-compliance-color); border: 1px solid var(--sentra-compliance-border) }
-.icon-gray  { background: var(--sentra-btn-ghost-hover); color: var(--sentra-text-muted); border: 1px solid var(--sentra-border-subtle) }
+.warn{border-left:2px solid var(--white);padding:10px 14px;margin:12px 0;font-size:.8rem;color:rgba(253,253,253,.7);background:rgba(255,255,255,.02);border-radius:0 var(--r-sm) var(--r-sm) 0}
+.warn::before{content:"WARNING: ";font-family:var(--f-mono);font-size:.62rem;color:var(--white);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
 
-/* DIVIDER */
-.sep { height: 1px; background: var(--sentra-border-subtle); margin: 24px 0 }
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.card{background:var(--graphite);border:var(--b);border-radius:var(--r-md);padding:14px 16px}
+.card h3{margin-top:0}
 
-/* KEY-VALUE ROW */
-.kv {
-  display: flex;
-  gap: 12px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--sentra-border-subtle);
-  align-items: baseline;
-}
-.kv:last-child { border-bottom: none }
-.kv-k {
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
-  font-size: 11px;
-  color: var(--sentra-warning);
-  min-width: 140px;
-  flex-shrink: 0;
-}
-.kv-v { font-size: 11px; color: var(--sentra-text-secondary); line-height: 1.5 }
-.kv-v .hi  { color: var(--sentra-text-primary); font-weight: 500 }
-.kv-v .red { color: var(--sentra-error) }
-.kv-v .grn { color: var(--sentra-success) }
+footer{margin-top:40px;padding-top:14px;border-top:var(--b);font-family:var(--f-mono);font-size:.62rem;color:rgba(160,160,162,.4);text-align:center}
 
-/* DO/DONT */
-.do-dont {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 8px;
-}
-.do, .dont {
-  padding: 8px 10px;
-  border-radius: var(--sentra-input-radius);
-  font-size: 11px;
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
-  line-height: 1.6;
-}
-.do   { background: var(--sentra-success-bg); border: 1px solid color-mix(in srgb, var(--sentra-success) 28%, transparent); color: var(--sentra-success) }
-.dont { background: var(--sentra-error-bg); border: 1px solid color-mix(in srgb, var(--sentra-error) 28%, transparent); color: var(--sentra-error) }
-.do::before   { content: '✓  '; font-weight: 700 }
-.dont::before { content: '✗  '; font-weight: 700 }
-
-/* SHORTCUT TABLE */
-.sc-table { width: 100%; border-collapse: collapse }
-.sc-table td { padding: 6px 8px; border-bottom: 1px solid var(--sentra-border-subtle); font-size: 11px; vertical-align: middle }
-.sc-table td:first-child { padding-left: 0; width: 140px }
-.sc-table tr:last-child td { border-bottom: none }
-.sc-table tr:hover td { background: var(--sentra-btn-ghost-hover) }
-.key {
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
-  font-size: 10px;
-  color: var(--sentra-warning);
-  background: var(--sentra-warning-bg);
-  border: 1px solid color-mix(in srgb, var(--sentra-warning) 20%, transparent);
-  padding: 2px 6px;
-  border-radius: var(--sentra-input-radius);
-  display: inline-block;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-.sc-desc { color: var(--sentra-text-secondary); font-size: 11px }
-.sc-desc .hi { color: var(--sentra-text-primary); font-weight: 500 }
-
-/* PILL */
-.pill {
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  padding: 2px 7px;
-  border-radius: var(--sentra-input-radius);
-}
-.p-warn { background: var(--sentra-warning-bg); color: var(--sentra-warning); border: 1px solid color-mix(in srgb, var(--sentra-warning) 22%, transparent) }
-.p-crit { background: var(--sentra-error-bg); color: var(--sentra-error); border: 1px solid color-mix(in srgb, var(--sentra-error) 28%, transparent) }
-.p-good { background: var(--sentra-success-bg); color: var(--sentra-success); border: 1px solid color-mix(in srgb, var(--sentra-success) 28%, transparent) }
-.p-info { background: color-mix(in srgb, var(--sentra-info) 12%, var(--sentra-surface)); color: var(--sentra-info); border: 1px solid color-mix(in srgb, var(--sentra-info) 22%, transparent) }
-.p-new  { background: var(--sentra-compliance-bg); color: var(--sentra-compliance-color); border: 1px solid var(--sentra-compliance-border) }
-
-/* FOOTER */
-footer {
-  margin-top: 24px;
-  padding-top: 10px;
-  border-top: 1px solid var(--sentra-border-subtle);
-  display: flex;
-  justify-content: space-between;
-  font-family: 'Cascadia Code NF', 'FiraCode Nerd Font', 'Geist Mono', monospace;
-  font-size: 11px;
-  color: var(--sentra-text-muted);
-}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">AVCN<em>.</em></div>
+  <div class="logo">Classy<em>.</em></div>
   <div class="tagline">TIPS & TRICKS — CLAUDE CODE × CURSOR</div>
   <div class="ver">Opus 4.7 · Apr 2026</div>
 </header>
@@ -779,7 +552,7 @@ apakah kita pakai CQRS di sini?</code>
       <div class="card-title"><span class="icon icon-teal">▶</span> Start Claude Code yang Tepat</div>
       <div class="card-body">
         <code><span class="d"># Dari project root — pick up CLAUDE.md</span>
-<span class="y">cd</span> D:\Devop\abyss-monorepo
+<span class="y">cd</span> V:\sentra-artificial-intelligence\abyss-monorepo
 <span class="y">claude</span> --effort xhigh
 
 <span class="d"># Untuk app spesifik</span>
@@ -797,9 +570,9 @@ apakah kita pakai CQRS di sini?</code>
         Handbook HTML ini bisa dibuka langsung di browser:<br><br>
         <span class="hi">Cara 1</span> — Klik kanan file di Cursor Explorer → <span class="cmd">Open with Live Server</span><br><br>
         <span class="hi">Cara 2</span> — Buka di browser langsung:<br>
-        <code>file:///D:/Devop/abyss-monorepo/
-docs/claude-handbook/avcn-commands.html</code>
-        <span style="font-size:12px;color:var(--sentra-text-muted);margin-top:6px;display:block">Geist font butuh font folder (./fonts/GeistVF.woff2)</span>
+<code>file:///V:/sentra-artificial-intelligence/abyss-monorepo/
+docs/claude-handbook/classy-commands.html</code>
+        <span style="font-size:12px;color:var(--sentra-text-muted);margin-top:6px;display:block">Inter font butuh font folder (./fonts/InterVF.woff2)</span>
       </div>
     </div>
 
@@ -944,7 +717,7 @@ lint + flows berjalan paralel setelah verify</code>
       <div class="card-body">
         <div class="do-dont">
           <div class="dont">Langsung kode tanpa brainstorm/write-plan untuk task besar</div>
-          <div class="do">/avcn-brainstorm → /avcn-write-plan → GO → /avcn-execute-plan</div>
+          <div class="do">/classy-brainstorm → /classy-write-plan → GO → /classy-execute-plan</div>
         </div>
         <div class="do-dont" style="margin-top:8px">
           <div class="dont">Anggap "ok" atau emoji = GO untuk Class C task</div>
@@ -952,7 +725,7 @@ lint + flows berjalan paralel setelah verify</code>
         </div>
         <div class="do-dont" style="margin-top:8px">
           <div class="dont">Biarkan agent fix 3+ kali tanpa intervensi</div>
-          <div class="do">Max 2 autonomous fix — stop & /avcn-debug pada attempt ke-3</div>
+          <div class="do">Max 2 autonomous fix — stop & /classy-debug pada attempt ke-3</div>
         </div>
       </div>
     </div>
@@ -979,8 +752,8 @@ lint + flows berjalan paralel setelah verify</code>
 </div>
 
 <footer>
-  <span>docs/handbook/avcn-tips.html</span>
-  <span>Lihat juga: avcn-cursor.html · avcn-commands.html</span>
+  <span>docs/handbook/classy-tips.html</span>
+  <span>Lihat juga: classy-cursor.html · classy-commands.html</span>
 </footer>
 
 <script>

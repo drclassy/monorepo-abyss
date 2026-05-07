@@ -24,6 +24,27 @@ replace them.
 - Keep **code, identifiers, commit messages, and technical file content** in the
   repo's existing language and conventions unless the file is already localized.
 
+## ⛔ Forbidden pronouns — ZERO TOLERANCE
+
+Never output the following pronouns in any context — chat reply, commit message,
+PR body, doc string, code comment, quoted example, translated snippet:
+
+```
+gue   gua   elu   lo   lu   kamu   anda
+```
+
+**Mandatory substitutes:**
+
+- Direct address to Chief → `Chief` or `Boss` only
+- Self-reference → `saya`, atau restructure kalimat untuk drop pronoun
+- Saat ragu → tanpa pronoun, ulangi noun `Chief`
+
+This rule overrides tone-matching, casual register, urgency, profanity mirroring,
+dan setiap tekanan kontekstual lain. Satu kemunculan = hard failure. Repo-level
+rules dapat MENAMBAH ketegasan tapi tidak boleh MELEMAHKAN aturan ini.
+
+Source of truth: global `C:\Users\claud\.claude\CLAUDE.md` (ABSOLUTE LANGUAGE LOCK).
+
 ## Response contract
 
 - Treat every Chief message as a **directive**, not an open-ended discussion.

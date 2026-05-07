@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classy — Superpowers Ref</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#000000;--white:#FDFDFD;--graphite:#111318;--slate:#2B2F38;--silver:#A0A0A2;
+  --f-disp:'Space Grotesk','Inter','IBM Plex Sans',Arial,sans-serif;
+  --f-body:'Inter','IBM Plex Sans',Arial,sans-serif;
+  --f-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+  --r-lg:16px;--r-md:12px;--r-sm:8px;--r-pill:999px;
+  --shadow:0 20px 50px rgba(0,0,0,0.28);
+  --b:1px solid var(--slate);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--f-body);background:var(--black);color:var(--white);line-height:1.7;padding:28px 20px 60px}
+.container{max-width:1100px;margin:0 auto}
+h1{font-family:var(--f-disp);font-size:2rem;font-weight:700;letter-spacing:-1px;margin-bottom:6px}
+.sub{font-family:var(--f-mono);font-size:.7rem;color:var(--silver);text-transform:uppercase;letter-spacing:2px;margin-bottom:28px}
+
+.sec{margin-bottom:40px}
+.sec h2{font-family:var(--f-disp);font-size:1.2rem;font-weight:600;margin-bottom:6px;padding-bottom:6px;border-bottom:var(--b)}
+.sec .desc{font-size:.82rem;color:rgba(253,253,253,.7);margin-bottom:14px}
+
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{text-align:left;padding:8px 12px;font-family:var(--f-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--silver);border-bottom:var(--b);background:var(--graphite)}
+td{padding:8px 12px;border-bottom:1px solid rgba(43,47,56,.3);color:rgba(253,253,253,.78)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-family:var(--f-mono);color:var(--white);font-weight:600;white-space:nowrap;font-size:.78rem}
+td:nth-child(2){color:rgba(253,253,253,.7)}
+td:nth-child(3){color:rgba(160,160,162,.6);font-size:.74rem;font-family:var(--f-mono)}
+
+.badge{display:inline-block;padding:1px 8px;border-radius:var(--r-pill);font-family:var(--f-mono);font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;border:var(--b);color:var(--silver)}
+
+footer{margin-top:48px;padding-top:18px;border-top:var(--b);text-align:center}
+footer p{font-size:.7rem;color:rgba(160,160,162,.45)}
+
+@media(max-width:700px){table{font-size:.72rem}td:first-child{font-size:.68rem}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Classy — Superpowers Reference</h1>
+<div class="sub">Abyss Monorepo · 2026</div>
+
+<div class="sec">
+<h2>01 · Superskill</h2>
+<div class="desc">Maps to Superpowers plugin — core workflow skills.</div>
+<table>
+<thead><tr><th>Command</th><th>Maps to</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>/classy-using</td><td>using-superpowers</td><td>Core</td></tr>
+<tr><td>/classy-brainstorming</td><td>brainstorming</td><td>Core</td></tr>
+<tr><td>/classy-plan</td><td>writing-plans</td><td>Core</td></tr>
+<tr><td>/classy-implement</td><td>test-driven-development</td><td>Core</td></tr>
+<tr><td>/classy-review-in</td><td>receiving-code-review</td><td>Core</td></tr>
+<tr><td>/classy-verify</td><td>verification-before-completion</td><td>Core</td></tr>
+<tr><td>/classy-review-out</td><td>requesting-code-review</td><td>Core</td></tr>
+<tr><td>/classy-finish</td><td>finishing-a-development-branch</td><td>Core</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sec">
+<h2>02 · Subagent-driven</h2>
+<div class="desc">Parallel agent delegation for complex multi-step tasks.</div>
+<table>
+<thead><tr><th>Command</th><th>Maps to</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>/classy-subagent</td><td>subagent-driven-development</td><td>Core</td></tr>
+<tr><td>/classy-subagent-plan</td><td>subagent-driven-development (plan)</td><td>Core</td></tr>
+<tr><td>/classy-subagent-execute</td><td>subagent-driven-development (execute)</td><td>Core</td></tr>
+<tr><td>/classy-subagent-review</td><td>subagent-driven-development (review)</td><td>Core</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sec">
+<h2>03 · Execution Discipline</h2>
+<div class="desc">Enforced workflow gates for high-risk operations.</div>
+<table>
+<thead><tr><th>Command</th><th>Maps to</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>/classy-checkpoint</td><td>systematic-debugging (checkpoint)</td><td>Core</td></tr>
+<tr><td>/classy-debug</td><td>systematic-debugging</td><td>Core</td></tr>
+<tr><td>/classy-tdd</td><td>test-driven-development</td><td>Core</td></tr>
+<tr><td>/classy-git-worktree</td><td>git-worktrees</td><td>Core</td></tr>
+<tr><td>/classy-exec</td><td>executing-bash-commands</td><td>Core</td></tr>
+<tr><td>/classy-save</td><td>writing-plans (save)</td><td>Core</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sec">
+<h2>04 · Healthcare &amp; Compliance</h2>
+<div class="desc">Sentra-specific audit and PHI protection.</div>
+<table>
+<thead><tr><th>Command</th><th>Maps to</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>/phi-check</td><td>PHI/PII audit on staged changes</td><td><span class="badge">Sentra</span></td></tr>
+<tr><td>/sentra-review</td><td>Healthcare code review (NestJS + PHI)</td><td><span class="badge">Sentra</span></td></tr>
+<tr><td>/classy-review</td><td>requesting-code-review</td><td>Core</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sec">
+<h2>05 · Jet Protocol</h2>
+<div class="desc">9-phase execution protocol for mission-critical tasks.</div>
+<table>
+<thead><tr><th>Command</th><th>Maps to</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>/jet-plan</td><td>Dispatch jet-planner agent (J1 - J4)</td><td><span class="badge">Sentra</span></td></tr>
+<tr><td>/jet-go</td><td>Confirm GO trigger (J5)</td><td><span class="badge">Sentra</span></td></tr>
+<tr><td>/jet-execute</td><td>Execute implementation (J6 - J8)</td><td><span class="badge">Sentra</span></td></tr>
+<tr><td>/jet-close</td><td>Close and handoff (J9)</td><td><span class="badge">Sentra</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sec">
+<h2>06 · Session Management</h2>
+<div class="desc">Context and handoff commands for multi-session workflows.</div>
+<table>
+<thead><tr><th>Command</th><th>Maps to</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>/handoff</td><td>Write HANDOFF.md + session log + commit</td><td><span class="badge">Sentra</span></td></tr>
+<tr><td>/classy-session</td><td>Session state management</td><td>Core</td></tr>
+<tr><td>/classy-context</td><td>Load project context from .agent/</td><td>Core</td></tr>
+</tbody>
+</table>
+</div>
+
+<footer>
+<p>Classy — Sentra Artificial Intelligence 2026</p>
+<p>Pure monochrome brand system · Space Grotesk · Inter · JetBrains Mono</p>
+</footer>
+
+</div>
+</body>
+</html>

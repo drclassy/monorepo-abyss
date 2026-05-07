@@ -1,5 +1,5 @@
 ---
-description: 'Prisma/database package: migrations, generate, integrity ? AGENTS.md + Chief-only Terraform.'
+description: 'Prisma/database package: migrations, generate, integrity → AGENTS.md + Chief-only Terraform.'
 globs:
   - 'packages/database/**/*'
   - '**/prisma/**/*'
@@ -10,31 +10,31 @@ alwaysApply: false
 
 # Database & Prisma
 
-**Authoritative source:** [`AGENTS.md`](../../AGENTS.md) ?1 (Prisma, Neon/Postgres ecosystem), ?5??6 (commands, never terraform apply/destroy). **`AGENTS.md` wins** on any conflict.
+**Authoritative source:** [`AGENTS.md`](../../AGENTS.md) §1 (Prisma, Neon/Postgres ecosystem), §5↔§6 (commands, never terraform apply/destroy). **`AGENTS.md` wins** on any conflict.
 
 ## Location
 
-- Primary ORM workspace: **`packages/database`** (Prisma) ? see monorepo map in **`AGENTS.md` ?4**.
+- Primary ORM workspace: **`packages/database`** (Prisma) → see monorepo map in **`AGENTS.md` §4**.
 
 ## Commands (from root)
 
-- After schema changes: **`pnpm db:generate`** (**`AGENTS.md` ?6**).
-- Apply migrations (dev): **`pnpm db:migrate`** (**`AGENTS.md` ?6**).
-- Studio (when appropriate): **`pnpm --filter @the-abyss/database db:studio`** (**`AGENTS.md` ?6**).
+- After schema changes: **`pnpm db:generate`** (**`AGENTS.md` §6**).
+- Apply migrations (dev): **`pnpm db:migrate`** (**`AGENTS.md` §6**).
+- Studio (when appropriate): **`pnpm --filter @the-abyss/database db:studio`** (**`AGENTS.md` §6**).
 
 ## Migrations & data safety
 
 - **One migration per logical change**; review SQL for destructive operations.
-- **No PII** in seeds, fixtures, or example data (**`AGENTS.md` ?5**).
+- **No PII** in seeds, fixtures, or example data (**`AGENTS.md` §5**).
 - **Backups / rollback:** document in the PR or **`.agent/`** when migration risk is non-trivial; follow **`AGENTS.md`** and **`packages/AGENTS.md`** for breaking schema changes.
 
 ## Infrastructure
 
-- **Do not** run **`terraform apply`** or **`terraform destroy`** ? **Chief only** (**`AGENTS.md` ?5**). Database **hosting** changes belong under **`infrastructure/`** with the same gate.
+- **Do not** run **`terraform apply`** or **`terraform destroy`** → **Chief only** (**`AGENTS.md` §5**). Database **hosting** changes belong under **`infrastructure/`** with the same gate.
 
 ## Contracts
 
-- Align persisted shapes with **`packages/shared-types`** and API contracts where applicable ? **contract-first** (**`AGENTS.md` ?4**).
+- Align persisted shapes with **`packages/shared-types`** and API contracts where applicable → **contract-first** (**`AGENTS.md` §4**).
 
 ## Gold standard references
 

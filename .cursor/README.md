@@ -7,8 +7,7 @@
 | `.cursor/index.mdc` | Compact **always-on** layer: Sentra identity, precedence vs [`AGENTS.md`](../AGENTS.md), pointer table to scoped rules. |
 | `.cursor/rules/00-constitution.mdc` | **Always-on** SSOT reminder: JET Protocol, GUARD 1–3, NestJS enforcement. |
 | `.cursor/rules/01-guard-context-init.mdc` | **Always-on** enforcement for the two most skipped steps: read `.agent/` before act, log local session notes after act. |
-| `.cursor/rules/02-notebooklm-intelligence.mdc` | NotebookLM integration protocol (globs-based). |
-| `.cursor/rules/03-agent-attitude.mdc` | Tone, rigor, and collaboration norms for agent output. |
+| `.cursor/rules/03-agent-attitude.mdc` | Tone, adab, collaboration norms, and **forbidden pronouns ban** for agent output. |
 | `.cursor/rules/04-state-machine-discipline.mdc` | State-machine discipline for workflows and handoffs. |
 | `.cursor/rules/05-chief-directive-mode.mdc` | Chief-facing directive mode: Bahasa Indonesia, latest official notes first, concise plan, wait for `GO` before execution. |
 | `.cursor/rules/06-handoff-master.mdc` | `.agent/` handoff and session-close discipline. |
@@ -29,7 +28,7 @@
 ```
 00-  → Core governance (always-on)
 01-  → Guard enforcement (always-on)
-02-  → Intelligence protocol (globs-based)
+03-  → Agent attitude + pronoun ban (always-on)
 05-  → Chief directive mode (always-on)
 10-  → Backend rules
 20-  → Frontend rules
