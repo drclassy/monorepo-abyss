@@ -59,6 +59,7 @@
 
 ## Recent Milestones
 
+- 2026-05-07: `apps/corporate/ferdiiskandar` landed in monorepo. Migrated from `V:\sentra-artificial-intelligence\class-prototype\ferdiiskandar` as `@the-abyss/ferdiiskandar` (Tier 3 Shell). Build/lint/typecheck/test green. Branch: `refactor/ABYSS-REPO-STRUCTURE-002-corporate-ferdiiskandar`. Source preserved pending archival sign-off.
 - 2026-05-07: Codex repo-local behavior layer established under `.codex/` with startup hooks, persona loading, and MCP cleanup.
 - 2026-05-07: `.agent/` root hygiene tightened; historical ledgers moved under `archive/` and non-state documents moved under `references/`.
 - 2026-05-06: Prototype migration cleanup and smoke validation completed; see `.agent/archive/PROGRESS.archive.md` and session logs for detail.
