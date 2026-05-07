@@ -125,6 +125,13 @@ WITH (m = 24, ef_construction = 256);
 **Rationale:** Active state, historical archive, and deep reference documents serve different purposes and should not compete for the same namespace.
 **Consequences:** Any future bulky governance or briefing document must be placed under `archive/` or `references/` unless it is required startup state.
 
+### [2026-05-07] ADR 0009 — adopt `@the-abyss/config-eslint` + `@the-abyss/config-typescript` in `@the-abyss/ferdiiskandar`
+**Context:** ferdiiskandar landed 2026-05-07 with standalone tooling config (eslint.config.mjs uses only `next/core-web-vitals`; tsconfig declares all options inline). AGENTS.md §8 mandates `@the-abyss/config-eslint`; ADR 0008 reaffirms preset location at `packages/tooling/`. Preset adoption is partial across the monorepo: 13 internal packages declare devDep but only `@the-abyss/document-ingestion` actually extends the tsconfig, and zero apps adopt either preset.
+**Decision:** Adopt `@the-abyss/config-eslint/react` + `@the-abyss/config-typescript` in ferdiiskandar across two phases. Phase A (this entry, 2026-05-07): record decision via ADR 0009, ferdiiskandar is the first `apps/**` reference. Phase B (separate Class B work item): apply config edits + lint --fix sweep + verification gate. Recipes and remediation notes live in ADR 0009.
+**Rationale:** Single source of truth for type-import + import-order rules. ferdiiskandar is small (Tier 3, ~30 source files, no PHI/clinical) — ideal pilot for the recipe that subsequent apps will inherit. Two-phase split keeps the noisy lint --fix commit isolated from architectural decision recording, preserving bisect surface.
+**Consequences:** Establishes the canonical app-side adoption pattern. Phase B will produce a large mechanical diff (lint --fix). ferdiiskandar will gain `workspace:*` deps on internal tooling packages — must un-bundle if app is ever extracted to standalone repo. `next/core-web-vitals` retained as a separate compat layer because the preset is intentionally framework-agnostic.
+**Reference:** `docs/adr/0009-corporate-ferdiiskandar-config-preset-adoption.md`
+
 ### [2026-05-07] `ferdiiskandar` migrated from class-prototype into `apps/corporate/`
 **Context:** AGENTS.md §2 had documented `apps/corporate/ferdiiskandar` since 2026-05-06 ("prototype-aligned") but the folder was never landed in working tree. Source lived as standalone repo at `V:\sentra-artificial-intelligence\class-prototype\ferdiiskandar` with its own `.git`, `.superpowers/` brainstorm artifacts, and npm-style `package-lock.json`.
 **Decision:**
