@@ -8,6 +8,7 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 const config = [
   {
     ignores: [
+      'next-env.d.ts',
       '.next/**',
       'node_modules/**',
       'out/**',
