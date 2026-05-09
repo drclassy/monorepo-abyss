@@ -14,11 +14,22 @@ export default function CountUp({ to, duration = 1.8, className }: Props) {
   const ref = useRef<HTMLSpanElement>(null)
   const isInView = useInView(ref, { once: true, amount: 0.5 })
   const shouldReduce = useReducedMotion()
-  const displayCount = shouldReduce ? to : count
+  const displayCount = count
 
   useEffect(() => {
-    if (shouldReduce) return
     if (!isInView) return
+
+    let frameId = 0
+
+    if (shouldReduce) {
+      frameId = requestAnimationFrame(() => {
+        setCount(to)
+      })
+
+      return () => {
+        cancelAnimationFrame(frameId)
+      }
+    }
 
     let startTime: number
     const animate = (timestamp: number) => {
@@ -26,10 +37,14 @@ export default function CountUp({ to, duration = 1.8, className }: Props) {
       const progress = Math.min((timestamp - startTime) / (duration * 1000), 1)
       const eased = 1 - Math.pow(1 - progress, 3)
       setCount(Math.floor(eased * to))
-      if (progress < 1) requestAnimationFrame(animate)
+      if (progress < 1) frameId = requestAnimationFrame(animate)
     }
-    requestAnimationFrame(animate)
-  }, [isInView, to, duration, shouldReduce])
+    frameId = requestAnimationFrame(animate)
+
+    return () => {
+      cancelAnimationFrame(frameId)
+    }
+  }, [duration, isInView, shouldReduce, to])
 
   return (
     <span ref={ref} className={className}>
