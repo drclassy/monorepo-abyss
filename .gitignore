@@ -174,6 +174,12 @@ docs/superpowers/
 # apps/ is excluded from abyss-core. Each app lives in its own repo.
 # See .agent/references/ARCHITECTURE.md §8 for the polyrepo plan.
 apps/
+!apps/
+apps/*
+!apps/corporate/
+apps/corporate/*
+!apps/corporate/ferdiiskandar/
+!apps/corporate/ferdiiskandar/**
 
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
