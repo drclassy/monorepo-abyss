@@ -180,6 +180,23 @@ apps/*
 apps/corporate/*
 !apps/corporate/ferdiiskandar/
 !apps/corporate/ferdiiskandar/**
+apps/corporate/ferdiiskandar/.abyss-backup/
+apps/corporate/ferdiiskandar/.editorconfig
+apps/corporate/ferdiiskandar/.gitattributes
+apps/corporate/ferdiiskandar/.github/
+apps/corporate/ferdiiskandar/.gitignore
+apps/corporate/ferdiiskandar/.prettierrc
+apps/corporate/ferdiiskandar/AGENTS.md
+apps/corporate/ferdiiskandar/CHANGELOG.md
+apps/corporate/ferdiiskandar/CODE_OF_CONDUCT.md
+apps/corporate/ferdiiskandar/COMMIT_CONVENTION.md
+apps/corporate/ferdiiskandar/CONTRIBUTING.md
+apps/corporate/ferdiiskandar/LICENSE
+apps/corporate/ferdiiskandar/REVIEW_REPORT.md
+apps/corporate/ferdiiskandar/SECURITY.md
+apps/corporate/ferdiiskandar/docs/architecture.md
+apps/corporate/ferdiiskandar/docs/superpowers/
+apps/corporate/ferdiiskandar/pnpm-lock.yaml
 
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
@@ -204,6 +221,7 @@ apps/corporate/*
 !.agent/references/KNOWLEDGE CURATED.md
 !.agent/references/PROTOCOL.md
 !pnpm-lock.yaml
+apps/corporate/ferdiiskandar/pnpm-lock.yaml
 !.claude/
 .claude/**
 !.claude/commands/
