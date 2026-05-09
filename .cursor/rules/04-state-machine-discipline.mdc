@@ -1,6 +1,9 @@
 ---
 description: "Task lifecycle discipline: Analyze → Prepare → Implement → Validate. Auto-update PROGRESS.md and SESSION_STATE.md."
-alwaysApply: true
+globs:
+  - ".agent/**"
+  - "AGENTS.md"
+alwaysApply: false
 ---
 
 ## Machine Discipline

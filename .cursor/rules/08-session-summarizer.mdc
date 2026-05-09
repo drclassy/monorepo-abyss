@@ -1,7 +1,9 @@
 ---
 description: Stores technical discussion summaries in local .agent/sessions/ notes for future reference.
-globs: **/*
-alwaysApply: true
+globs:
+  - ".agent/**"
+  - "AGENTS.md"
+alwaysApply: false
 ---
 # Session Summarizer
 

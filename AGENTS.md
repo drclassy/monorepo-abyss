@@ -2,7 +2,7 @@
 
 # Repository policy authority. All local AGENTS.md files defer to this document.
 
-# Last updated: 2026-04-25
+# Last updated: 2026-05-07
 
 ---
 
@@ -21,32 +21,36 @@ handoff, and evolving project context lives under `.agent/`.
 ## §1 — Project Overview
 
 **The Abyss** is an AI-native monorepo powering the **Sentra Healthcare AI**
-ecosystem. It is organized as a multi-domain pnpm workspace managed by
-Turborepo v2, with applications spanning healthcare, academic, community,
-corporate, and platform domains.
+ecosystem. It is organized as a multi-domain pnpm workspace managed by Turborepo
+v2, with applications spanning healthcare, academic, community, corporate, and
+platform domains.
 
 ### Key Facts
 
-| Attribute | Value |
-|-----------|-------|
-| **Monorepo name** | the-abyss |
-| **Package manager** | pnpm 9.15.0 |
-| **Node runtime** | >= 22.0.0 |
-| **Build system** | Turborepo v2 |
-| **Primary language** | TypeScript |
-| **Author** | Dr. Ferdi Iskandar (Classy) |
-| **License** | UNLICENSED |
+| Attribute            | Value                       |
+| -------------------- | --------------------------- |
+| **Monorepo name**    | the-abyss                   |
+| **Package manager**  | pnpm 9.15.0                 |
+| **Node runtime**     | >= 22.0.0                   |
+| **Build system**     | Turborepo v2                |
+| **Primary language** | TypeScript                  |
+| **Author**           | Dr. Ferdi Iskandar (Classy) |
+| **License**          | UNLICENSED                  |
 
 ### High-Level Architecture
 
 - **Frontend:** Next.js 15/16 + React 19 + Tailwind CSS v3/v4
 - **Backend:** NestJS 11 (orchestrator) + Next.js API routes (healthcare apps)
-- **Database:** PostgreSQL (legacy Cloud SQL / current Neon surfaces) accessed exclusively via `packages/platform/database` (Prisma)
-- **AI Orchestration:** LangFlow (REST API) + local-first inference + OpenAI + Anthropic + DeepSeek
+- **Database:** PostgreSQL (legacy Cloud SQL / current Neon surfaces) accessed
+  exclusively via `packages/platform/database` (Prisma)
+- **AI Orchestration:** LangFlow (REST API) + local-first inference + OpenAI +
+  Anthropic + DeepSeek
 - **Message Broker:** Kafka + Zookeeper (for saga orchestration)
 - **Cache:** Redis
-- **Vector Store:** pgvector + local embeddings (`nomic-embed-text`, 768 dimensions)
-- **Containerization:** Docker + Docker Compose (multi-stage builds, PHI-hardened images)
+- **Vector Store:** pgvector + local embeddings (`nomic-embed-text`, 768
+  dimensions)
+- **Containerization:** Docker + Docker Compose (multi-stage builds,
+  PHI-hardened images)
 - **IaC:** Terraform (legacy GCP modules under retirement; Chief-only execution)
 - **GitOps:** ArgoCD
 
@@ -144,14 +148,14 @@ v:\avcn-sentra\abyss-monorepo\
 
 ### §2.1 — Cursor Subagents (Explicit Invoke)
 
-Specialized prompts under `.cursor/agents/` (tracked in Git). Invoke by name when
-the task matches (not auto-loaded like rules). MCP: use `mcp.json.example` →
-`.mcp.json` per `.cursor/README.md`.
+Specialized prompts under `.cursor/agents/` (tracked in Git). Invoke by name
+when the task matches (not auto-loaded like rules). MCP: use `mcp.json.example`
+→ `.mcp.json` per `.cursor/README.md`.
 
-| Name | Role |
-| ---- | ---- |
-| `code-reviewer` | Review diffs and changed files for quality, security, reuse, and rule compliance. |
-| `test-writer` | Author high-value tests across unit/component/E2E/integration layers. |
+| Name            | Role                                                                                                                                      |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `code-reviewer` | Review diffs and changed files for quality, security, reuse, and rule compliance.                                                         |
+| `test-writer`   | Author high-value tests across unit/component/E2E/integration layers.                                                                     |
 | `config-writer` | Decide whether behavior belongs in central config, a rule, a skill, or an agent; then create or update the artifact and cross-references. |
 
 ### §2.2 — Package Taxonomy Rule
@@ -166,7 +170,8 @@ Allowed package locations:
 - `packages/shared/*` for low-level reusable primitives
 - `packages/tooling/*` for developer and build tooling
 
-If classification is unclear, stop and request Chief decision before creating the package.
+If classification is unclear, stop and request Chief decision before creating
+the package.
 
 ---
 
@@ -239,11 +244,13 @@ state.
 
 The following are forbidden under any circumstance:
 
-- `terraform apply` / `terraform destroy` — Chief execution only, never agent-executed
+- `terraform apply` / `terraform destroy` — Chief execution only, never
+  agent-executed
 - PHI/PII in logs, commits, fixtures, or test data — zero tolerance
 - `rm -rf`, `git reset --hard`, `git clean` without explicit Chief approval
 - Creating a new repository without direct instruction in the current session
-- Cross-repository file operations without confirmed source and destination paths
+- Cross-repository file operations without confirmed source and destination
+  paths
 - Database migrations, drops, or truncations executed autonomously
 - Pushing to any remote branch without explicit approval
 - Skipping J5 for Class C tasks
@@ -252,24 +259,24 @@ The following are forbidden under any circumstance:
 
 ## §6 — Technology Stack
 
-| Layer             | Technology                                           |
-| ----------------- | ---------------------------------------------------- |
-| Runtime           | Node >= 22                                           |
-| Package manager   | pnpm >= 9                                            |
-| Build system      | Turborepo v2                                         |
-| Frontend          | Next.js 15/16, React 19, Tailwind CSS v3/v4, Radix UI |
-| Backend framework | NestJS 11 (TypeScript)                               |
-| ORM               | Prisma (via `packages/platform/database`)            |
-| Validation        | class-validator + class-transformer, Zod             |
-| API docs          | Swagger / OpenAPI (NestJS apps)                      |
-| AI orchestration  | LangFlow (`flows/definitions/`)                      |
-| CI/CD             | GitHub Actions                                       |
+| Layer             | Technology                                                  |
+| ----------------- | ----------------------------------------------------------- |
+| Runtime           | Node >= 22                                                  |
+| Package manager   | pnpm >= 9                                                   |
+| Build system      | Turborepo v2                                                |
+| Frontend          | Next.js 15/16, React 19, Tailwind CSS v3/v4, Radix UI       |
+| Backend framework | NestJS 11 (TypeScript)                                      |
+| ORM               | Prisma (via `packages/platform/database`)                   |
+| Validation        | class-validator + class-transformer, Zod                    |
+| API docs          | Swagger / OpenAPI (NestJS apps)                             |
+| AI orchestration  | LangFlow (`flows/definitions/`)                             |
+| CI/CD             | GitHub Actions                                              |
 | IaC               | Terraform (legacy GCP modules under retirement; Chief-only) |
-| Container         | Docker + Docker Compose                              |
-| Message broker    | Kafka + Zookeeper                                    |
-| Vector DB         | pgvector + Upstash Vector                            |
-| Browser testing   | Playwright                                           |
-| Unit testing      | Vitest (dominant), Jest (legacy vendor subprojects)  |
+| Container         | Docker + Docker Compose                                     |
+| Message broker    | Kafka + Zookeeper                                           |
+| Vector DB         | pgvector + Upstash Vector                                   |
+| Browser testing   | Playwright                                                  |
+| Unit testing      | Vitest (dominant), Jest (legacy vendor subprojects)         |
 
 ---
 
@@ -309,6 +316,15 @@ pnpm security:primary-healthcare   # Runs catch-scan + secret-scan + audit for h
 pnpm governance:agents-check       # Run agents healthcheck
 ```
 
+Command hygiene:
+
+- Do not use `husky --version`, `pnpm exec husky --version`, or
+  `npx husky --version` in this repo. Husky v9 can mis-handle `--version` as a
+  path argument and create a stray `--version/` directory at repo root instead
+  of printing a version.
+- To inspect the installed Husky version safely, use `pnpm ls husky` or read
+  `devDependencies.husky` in `package.json`.
+
 ### Per-Project Filtering
 
 Use `pnpm --filter <package-name>` to target a specific workspace package:
@@ -337,16 +353,17 @@ From `turbo.json`:
 
 Config: root `.prettierrc`
 
-| Setting | Value |
-|---------|-------|
-| `semi` | `false` |
-| `singleQuote` | `true` |
-| `tabWidth` | `2` |
+| Setting         | Value   |
+| --------------- | ------- |
+| `semi`          | `false` |
+| `singleQuote`   | `true`  |
+| `tabWidth`      | `2`     |
 | `trailingComma` | `"es5"` |
-| `printWidth` | `100` |
-| `endOfLine` | `"lf"` |
+| `printWidth`    | `100`   |
+| `endOfLine`     | `"lf"`  |
 
 Overrides:
+
 - `*.json`: `printWidth: 120`
 - `*.md`, `*.mdx`: `printWidth: 80`, `proseWrap: "always"`
 
@@ -360,17 +377,22 @@ export default [{ ignores: ['docs/**', '.output/**'] }, ...base, ...boundaries]
 ```
 
 Shared presets exported by `@the-abyss/config-eslint`:
+
 - `./base` — `@eslint/js` recommended + `typescript-eslint` strict + `import-x`
 - `./react` — React-specific rules
 - `./node` — Node.js-specific rules
 
 Key enforced rules:
+
 - `@typescript-eslint/no-unused-vars`: error (ignores `_` prefix)
 - `@typescript-eslint/no-explicit-any`: error
-- `@typescript-eslint/consistent-type-imports`: error (prefer `type` imports, inline fix)
-- `import-x/order`: error (builtin → external → internal → parent → sibling → index, alphabetized)
+- `@typescript-eslint/consistent-type-imports`: error (prefer `type` imports,
+  inline fix)
+- `import-x/order`: error (builtin → external → internal → parent → sibling →
+  index, alphabetized)
 - `import-x/no-duplicates`: error
-- `no-restricted-imports`: **Domain boundaries** — Healthcare cannot import from Academic/Incubator/Internal, and vice versa.
+- `no-restricted-imports`: **Domain boundaries** — Healthcare cannot import from
+  Academic/Incubator/Internal, and vice versa.
 
 ### EditorConfig
 
@@ -388,6 +410,7 @@ insert_final_newline = true
 ### Lint-Staged
 
 Root `package.json` configures `lint-staged`:
+
 - `*.{ts,tsx}` → `eslint --fix` → `prettier --write`
 - `*.{js,jsx,mjs}` → `prettier --write`
 - `*.{json,md,mdx,yml,yaml}` → `prettier --write`
@@ -410,7 +433,8 @@ not acceptable for request validation.
 handle HTTP concerns exclusively.
 
 **Database access:** All database operations must route through
-`packages/platform/database`. No raw queries or direct ORM calls in application code.
+`packages/platform/database`. No raw queries or direct ORM calls in application
+code.
 
 **PHI/PII protection:** All PHI/PII fields in healthcare apps must be decorated
 with `@Exclude()` from `class-transformer`. This is enforced at the
@@ -431,11 +455,11 @@ coverage threshold: 80% for healthcare apps, 60% for other apps.
 
 ### Test Runners
 
-| Runner | Projects | Config Location |
-|--------|----------|-----------------|
-| **Vitest** | Most apps/packages | `vitest.config.ts` at project root |
-| **Playwright** | E2E apps (`sentra-assist`, `sentra-main`, `classy-memory`, `agent-hermes`) | `playwright.config.ts` |
-| **Jest** | Legacy vendor subprojects only (`agent-hermes/vendor/*`) | `jest.config.*` |
+| Runner         | Projects                                                                   | Config Location                    |
+| -------------- | -------------------------------------------------------------------------- | ---------------------------------- |
+| **Vitest**     | Most apps/packages                                                         | `vitest.config.ts` at project root |
+| **Playwright** | E2E apps (`sentra-assist`, `sentra-main`, `classy-memory`, `agent-hermes`) | `playwright.config.ts`             |
+| **Jest**       | Legacy vendor subprojects only (`agent-hermes/vendor/*`)                   | `jest.config.*`                    |
 
 ### Typical Vitest Config
 
@@ -475,18 +499,18 @@ pnpm --filter <package> quality       # typecheck + lint + test
 
 ### Workflow Files (`.github/workflows/`)
 
-| Workflow | Purpose |
-|----------|---------|
-| `ci.yml` | **CI entry**. Push/PR to `main`/`develop` with explicit `permissions` and concurrency; calls `reusable-verify.yml`. |
-| `reusable-verify.yml` | **Reusable monorepo DAG**: governance + Bentara GO-Gate → build (affected) → test/typecheck/security; lint + Langflow validation parallel after verify. Uses `--filter=[HEAD^1]` where applicable. |
-| `security-scan.yml` | **Blocking** root `npm audit` (high+); **informational** Snyk, Trivy, and TruffleHog (PR/push diff blocking; filesystem paths soft-fail on schedule / empty `before`). Weekly cron + PRs to `main`/`develop`. |
-| `doc-guard.yml` | Mandatory root docs, oversized markdown, Mermaid blocks, optional PR changelog reminder. |
-| `pr-label.yml` | Auto-labels PRs using `.github/labeler.yml`. |
-| `auto-merge.yml` | Auto-merges Renovate patch PRs via squash (requires repo “Allow auto-merge”). |
-| `auto-fix.yml` | After failed **The Abyss CI**, same-repo only: Prettier + ESLint fix PR. |
-| `generate-documentation.yml` | Doc generators on `main` push; opens PR (Node 22 + pnpm 9.15). |
-| `maintenance.yml` | Weekly cron + manual: governance, `pnpm outdated -r` report, non-blocking Prettier check. |
-| `ai-review.yml` | **Disabled extension slot** (`workflow_dispatch` only): no vendor-hosted AI; placeholder for future neutral review lane. |
+| Workflow                     | Purpose                                                                                                                                                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ci.yml`                     | **CI entry**. Push/PR to `main`/`develop` with explicit `permissions` and concurrency; calls `reusable-verify.yml`.                                                                                           |
+| `reusable-verify.yml`        | **Reusable monorepo DAG**: governance + Bentara GO-Gate → build (affected) → test/typecheck/security; lint + Langflow validation parallel after verify. Uses `--filter=[HEAD^1]` where applicable.            |
+| `security-scan.yml`          | **Blocking** root `npm audit` (high+); **informational** Snyk, Trivy, and TruffleHog (PR/push diff blocking; filesystem paths soft-fail on schedule / empty `before`). Weekly cron + PRs to `main`/`develop`. |
+| `doc-guard.yml`              | Mandatory root docs, oversized markdown, Mermaid blocks, optional PR changelog reminder.                                                                                                                      |
+| `pr-label.yml`               | Auto-labels PRs using `.github/labeler.yml`.                                                                                                                                                                  |
+| `auto-merge.yml`             | Auto-merges Renovate patch PRs via squash (requires repo “Allow auto-merge”).                                                                                                                                 |
+| `auto-fix.yml`               | After failed **The Abyss CI**, same-repo only: Prettier + ESLint fix PR.                                                                                                                                      |
+| `generate-documentation.yml` | Doc generators on `main` push; opens PR (Node 22 + pnpm 9.15).                                                                                                                                                |
+| `maintenance.yml`            | Weekly cron + manual: governance, `pnpm outdated -r` report, non-blocking Prettier check.                                                                                                                     |
+| `ai-review.yml`              | **Disabled extension slot** (`workflow_dispatch` only): no vendor-hosted AI; placeholder for future neutral review lane.                                                                                      |
 
 ### CI Environment
 
@@ -505,19 +529,29 @@ lint ──────────────┘ (after verify)
 flows ───────────── (after verify)
 ```
 
-Configure branch protection to require the stable check names emitted by **The Abyss CI** (for example `CI / verify`, `CI / build (affected)`, `CI / test (affected)`, `CI / lint & format`, `CI / typecheck (affected)`, `CI / security (blocking audit)`, `CI / Langflow definitions`) plus **Security Scan / dependency audit (blocking)** and **Doc Guard** jobs as appropriate. The standalone **Security Scan** workflow adds scheduled and informational coverage. No exceptions on healthcare merge posture: blocking gates must stay green.
+Configure branch protection to require the stable check names emitted by **The
+Abyss CI** (for example `CI / verify`, `CI / build (affected)`,
+`CI / test (affected)`, `CI / lint & format`, `CI / typecheck (affected)`,
+`CI / security (blocking audit)`, `CI / Langflow definitions`) plus **Security
+Scan / dependency audit (blocking)** and **Doc Guard** jobs as appropriate. The
+standalone **Security Scan** workflow adds scheduled and informational coverage.
+No exceptions on healthcare merge posture: blocking gates must stay green.
 
 ---
 
 ## §12 — Repository Compliance System
 
-Every agent MUST follow the Repository Compliance System before pushing any project.
+Every agent MUST follow the Repository Compliance System before pushing any
+project.
 
-**Rules (grounded in real incidents):** [`tooling/governance/STANDARD.md`](tooling/governance/STANDARD.md)
-**Pre-push gate:** [`tooling/governance/CHECKLIST.md`](tooling/governance/CHECKLIST.md)
-**Fix guides:** [`tooling/governance/TROUBLESHOOTING.md`](tooling/governance/TROUBLESHOOTING.md)
-**Automated validator:** [`tooling/governance/validate.ps1`](tooling/governance/validate.ps1)
-**Bootstrap templates:** [`tooling/governance/templates/`](tooling/governance/templates/)
+**Rules (grounded in real incidents):**
+[`tooling/governance/STANDARD.md`](tooling/governance/STANDARD.md) **Pre-push
+gate:** [`tooling/governance/CHECKLIST.md`](tooling/governance/CHECKLIST.md)
+**Fix guides:**
+[`tooling/governance/TROUBLESHOOTING.md`](tooling/governance/TROUBLESHOOTING.md)
+**Automated validator:**
+[`tooling/governance/validate.ps1`](tooling/governance/validate.ps1) **Bootstrap
+templates:** [`tooling/governance/templates/`](tooling/governance/templates/)
 
 ### Mandatory checks before every `git push`:
 
@@ -536,9 +570,10 @@ Every agent MUST follow the Repository Compliance System before pushing any proj
 ### Key Rules (Summary — read STANDARD.md for full context)
 
 - Lockfile regeneration must happen in `/tmp/` — never inside the monorepo root
-- Auto-generated directories (`dist/`, `.output/`, `docs/api/`) must be in `.gitignore`
-  before the first build is ever run
-- Agent coordination via `.agent/HANDOFF.md` — read before acting, write before starting
+- Auto-generated directories (`dist/`, `.output/`, `docs/api/`) must be in
+  `.gitignore` before the first build is ever run
+- Agent coordination via `.agent/HANDOFF.md` — read before acting, write before
+  starting
 
 ---
 
@@ -546,10 +581,14 @@ Every agent MUST follow the Repository Compliance System before pushing any proj
 
 ### PHI/PII Handling
 
-- **Zero tolerance:** PHI/PII must never appear in logs, commits, fixtures, or test data.
-- **Serialization:** Use `@Exclude()` from `class-transformer` on all PHI fields.
-- **Client-side:** Never store patient identifiers in browser localStorage/sessionStorage.
-- **Error handling:** No silent `catch` blocks in healthcare code — every error must be logged (without PHI) or re-thrown.
+- **Zero tolerance:** PHI/PII must never appear in logs, commits, fixtures, or
+  test data.
+- **Serialization:** Use `@Exclude()` from `class-transformer` on all PHI
+  fields.
+- **Client-side:** Never store patient identifiers in browser
+  localStorage/sessionStorage.
+- **Error handling:** No silent `catch` blocks in healthcare code — every error
+  must be logged (without PHI) or re-thrown.
 
 ### Healthcare App Security Scripts
 
@@ -565,17 +604,22 @@ pnpm --filter <healthcare-app> security:semgrep
 
 ### Container Hardening
 
-- `healthcare.Dockerfile` removes shell binaries (`/bin/sh`, `wget`, `curl`) from the runner stage.
+- `healthcare.Dockerfile` removes shell binaries (`/bin/sh`, `wget`, `curl`)
+  from the runner stage.
 - Read-only filesystem recommended for PHI workloads.
 - `PHI_MODE=true` triggers additional runtime guards.
-- Non-root users (`nestjs` uid 1001, `nextjs` uid 1001) in all production images.
+- Non-root users (`nestjs` uid 1001, `nextjs` uid 1001) in all production
+  images.
 
 ### Infrastructure
 
 - Terraform security module is **Chief-only**.
-- Legacy GCP Cloud SQL configs require encryption at rest and backup retention >= 7 days (enforced by validation).
-- Healthcare subnet is PHI-isolated (`infrastructure/terraform/modules/networking`).
-- Secrets managed via provider-native secret storage or local secure stores (`database-url`, `anthropic-api-key`, `langflow-api-url`, `classy-api-key`).
+- Legacy GCP Cloud SQL configs require encryption at rest and backup
+  retention >= 7 days (enforced by validation).
+- Healthcare subnet is PHI-isolated
+  (`infrastructure/terraform/modules/networking`).
+- Secrets managed via provider-native secret storage or local secure stores
+  (`database-url`, `anthropic-api-key`, `langflow-api-url`, `classy-api-key`).
 
 ---
 
@@ -595,28 +639,36 @@ core repo-facing state in the tracked governance files above.
 
 Key env domains (from `.env.example`):
 
-| Domain | Variables |
-|--------|-----------|
-| **Database** | `DATABASE_URL` |
-| **AI Providers** | `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GROQ_API_KEY`, `OLLAMA_BASE_URL` |
-| **Legacy GCP / Vertex AI** | `GOOGLE_APPLICATION_CREDENTIALS`, `GCP_PROJECT_ID`, `GCP_LOCATION` |
-| **LangFlow** | `LANGFLOW_API_URL`, `LANGFLOW_API_KEY` |
-| **Redis** | `REDIS_URL` |
-| **Auth** | `NEXTAUTH_URL`, `NEXTAUTH_SECRET` |
-| **Turborepo** | `TURBO_TOKEN`, `TURBO_TEAM` |
-| **Sentry** | `SENTRY_DSN`, `SENTRY_ORG`, `SENTRY_PROJECT` |
-| **Feature Flags** | `ENABLE_SHADOW_MODE`, `ENABLE_AI_CONSENSUS`, `ENABLE_RAG` |
-| **Vector Store** | `VECTOR_STORE_EMBEDDING_MODEL`, `VECTOR_STORE_EMBEDDING_DIMENSIONS` |
+| Domain                     | Variables                                                                |
+| -------------------------- | ------------------------------------------------------------------------ |
+| **Database**               | `DATABASE_URL`                                                           |
+| **AI Providers**           | `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GROQ_API_KEY`, `OLLAMA_BASE_URL` |
+| **Legacy GCP / Vertex AI** | `GOOGLE_APPLICATION_CREDENTIALS`, `GCP_PROJECT_ID`, `GCP_LOCATION`       |
+| **LangFlow**               | `LANGFLOW_API_URL`, `LANGFLOW_API_KEY`                                   |
+| **Redis**                  | `REDIS_URL`                                                              |
+| **Auth**                   | `NEXTAUTH_URL`, `NEXTAUTH_SECRET`                                        |
+| **Turborepo**              | `TURBO_TOKEN`, `TURBO_TEAM`                                              |
+| **Sentry**                 | `SENTRY_DSN`, `SENTRY_ORG`, `SENTRY_PROJECT`                             |
+| **Feature Flags**          | `ENABLE_SHADOW_MODE`, `ENABLE_AI_CONSENSUS`, `ENABLE_RAG`                |
+| **Vector Store**           | `VECTOR_STORE_EMBEDDING_MODEL`, `VECTOR_STORE_EMBEDDING_DIMENSIONS`      |
 
 ---
 
 ## §16 — Continual Learning (Plugin)
 
-- Agent transcripts for this workspace live under `C:\Users\claud\.cursor\projects\d-Devop-abyss-monorepo\agent-transcripts\` (session folders contain `*.jsonl`); newest files are the default Continual Learning mining surface.
-- Flow `/continual-learning` plus the `agents-memory-updater` subagent merges durable bullets into this `AGENTS.md` after transcript review.
-- Incremental transcript index expected at `.cursor/hooks/state/continual-learning-index.json` is not in the tree yet; add it when the plugin starts recording processed transcript mtimes.
-- Session transcripts show Chief-facing answers in Bahasa Indonesia with neutral wording and without second-person pronouns.
-- Before push, run `tooling/governance/validate.ps1 -path <project-root>` per the compliance section.
+- Agent transcripts for this workspace live under
+  `C:\Users\claud\.cursor\projects\d-Devop-abyss-monorepo\agent-transcripts\`
+  (session folders contain `*.jsonl`); newest files are the default Continual
+  Learning mining surface.
+- Flow `/continual-learning` plus the `agents-memory-updater` subagent merges
+  durable bullets into this `AGENTS.md` after transcript review.
+- Incremental transcript index expected at
+  `.cursor/hooks/state/continual-learning-index.json` is not in the tree yet;
+  add it when the plugin starts recording processed transcript mtimes.
+- Session transcripts show Chief-facing answers in Bahasa Indonesia with neutral
+  wording and without second-person pronouns.
+- Before push, run `tooling/governance/validate.ps1 -path <project-root>` per
+  the compliance section.
 
 ---
 
@@ -624,18 +676,18 @@ Key env domains (from `.env.example`):
 
 **Effective:** 2026-04-30 · **Owner:** Dr. Ferdi Iskandar (Classy) / Sentra
 
-Sentra operates a B2G SaaS model. Government and institutional clients receive access to
-Platform outputs via UI and API. Engine source code is never shared.
+Sentra operates a B2G SaaS model. Government and institutional clients receive
+access to Platform outputs via UI and API. Engine source code is never shared.
 
 ### Sensitivity Tiers
 
 Every package carries a `"sentra:tier"` field in its `package.json`:
 
-| Tier | Value | Rule |
-|---|---|---|
-| **1 — Crown Jewel** | `"crown-jewel"` | Source never exposed. Never deployed to client infra. |
-| **2 — Private Product** | `"private-product"` | Private repos. PHI-aware. Not for external access. |
-| **3 — Shell** | `"shell"` | Safe to expose publicly if needed (UI, contracts, docs). |
+| Tier                    | Value               | Rule                                                     |
+| ----------------------- | ------------------- | -------------------------------------------------------- |
+| **1 — Crown Jewel**     | `"crown-jewel"`     | Source never exposed. Never deployed to client infra.    |
+| **2 — Private Product** | `"private-product"` | Private repos. PHI-aware. Not for external access.       |
+| **3 — Shell**           | `"shell"`           | Safe to expose publicly if needed (UI, contracts, docs). |
 
 ### Tier 1 — Crown Jewel Packages (Do Not Expose)
 
@@ -650,9 +702,10 @@ Every package carries a `"sentra:tier"` field in its `package.json`:
 
 ### Absolute Deployment Rule
 
-> Crown Jewel packages are **never deployed to client or government infrastructure.**
-> If on-premise deployment is required, only UI shell and API proxy are deployed.
-> Engine runtime stays on Sentra private infrastructure (Railway or Sentra server).
+> Crown Jewel packages are **never deployed to client or government
+> infrastructure.** If on-premise deployment is required, only UI shell and API
+> proxy are deployed. Engine runtime stays on Sentra private infrastructure
+> (Railway or Sentra server).
 
 ### API Boundary
 
@@ -662,6 +715,7 @@ Clients never call engine packages directly. They receive only outputs.
 ### Copyright
 
 All Tier 1 source files carry the header:
+
 ```
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 ```
@@ -669,17 +723,20 @@ All Tier 1 source files carry the header:
 ### Legal Documents
 
 Contract templates for government clients are in `docs/legal/`:
+
 - `MSA-template.md` — Master Service Agreement
 - `NDA-template.md` — Non-Disclosure Agreement
 - `ToS-template.md` — Terms of Service
 
-All contracts must include an explicit clause that Engine IP remains property of Sentra.
+All contracts must include an explicit clause that Engine IP remains property of
+Sentra.
 
 ### Source Escrow (If Required by Audit)
 
 If a government authority (e.g., BSSN, Kominfo) requires a formal source audit,
 use a third-party source escrow arrangement. Never grant direct source access.
-Activate escrow only on written legal requirement. Document in `.agent/DECISIONS.md`.
+Activate escrow only on written legal requirement. Document in
+`.agent/DECISIONS.md`.
 
 ---
 

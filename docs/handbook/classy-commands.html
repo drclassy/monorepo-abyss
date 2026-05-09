@@ -36,6 +36,13 @@ td:nth-child(2){color:rgba(253,253,253,.7)}
 td:nth-child(3){color:rgba(160,160,162,.6);font-size:.74rem;font-family:var(--f-mono)}
 
 .badge{display:inline-block;padding:1px 8px;border-radius:var(--r-pill);font-family:var(--f-mono);font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;border:var(--b);color:var(--silver)}
+.cmd-actions{display:flex;gap:8px;flex-wrap:wrap}
+.copy-btn{appearance:none;border:var(--b);background:transparent;color:var(--white);font-family:var(--f-mono);font-size:.68rem;padding:6px 10px;border-radius:var(--r-sm);cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease}
+.copy-btn:hover{background:rgba(253,253,253,.08);border-color:var(--silver)}
+.copy-btn.copied{background:var(--white);color:var(--black);border-color:var(--white)}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.section-brand{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;padding:8px 10px;border-radius:999px;border:var(--b);background:rgba(255,255,255,.04)}
+.section-brand img{display:block;width:92px;height:auto}
 
 footer{margin-top:48px;padding-top:18px;border-top:var(--b);text-align:center}
 footer p{font-size:.7rem;color:rgba(160,160,162,.45)}
@@ -50,49 +57,46 @@ footer p{font-size:.7rem;color:rgba(160,160,162,.45)}
 <div class="sub">Abyss Monorepo · 2026</div>
 
 <div class="sec">
-<h2>01 · Superskill</h2>
-<div class="desc">Maps to Superpowers plugin — core workflow skills.</div>
+<h2>01 · Core Flow</h2>
+<div class="desc">Default high-discipline workflow for Classy operations.</div>
 <table>
 <thead><tr><th>Command</th><th>Maps to</th><th>Status</th></tr></thead>
 <tbody>
-<tr><td>/classy-using</td><td>using-superpowers</td><td>Core</td></tr>
-<tr><td>/classy-brainstorming</td><td>brainstorming</td><td>Core</td></tr>
-<tr><td>/classy-plan</td><td>writing-plans</td><td>Core</td></tr>
-<tr><td>/classy-implement</td><td>test-driven-development</td><td>Core</td></tr>
-<tr><td>/classy-review-in</td><td>receiving-code-review</td><td>Core</td></tr>
+<tr><td>/classy-using</td><td>Select the right primary classy mode</td><td>Core</td></tr>
+<tr><td>/classy-execution-control</td><td>Declare scope, non-scope, and verification path first</td><td>Core</td></tr>
+<tr><td>/classy-investigate</td><td>Trace ownership, architecture, and likely edit surface</td><td>Core</td></tr>
+<tr><td>/classy-plan</td><td>Sequence non-trivial work in tight, reviewable steps</td><td>Core</td></tr>
+<tr><td>/classy-implement</td><td>Execute the agreed change in the smallest coherent delta</td><td>Core</td></tr>
 <tr><td>/classy-verify</td><td>verification-before-completion</td><td>Core</td></tr>
-<tr><td>/classy-review-out</td><td>requesting-code-review</td><td>Core</td></tr>
 <tr><td>/classy-finish</td><td>finishing-a-development-branch</td><td>Core</td></tr>
 </tbody>
 </table>
 </div>
 
 <div class="sec">
-<h2>02 · Subagent-driven</h2>
-<div class="desc">Parallel agent delegation for complex multi-step tasks.</div>
+<h2>02 · Specialized Modes</h2>
+<div class="desc">Focused branches used when the default core flow is not sufficient.</div>
 <table>
 <thead><tr><th>Command</th><th>Maps to</th><th>Status</th></tr></thead>
 <tbody>
-<tr><td>/classy-subagent</td><td>subagent-driven-development</td><td>Core</td></tr>
-<tr><td>/classy-subagent-plan</td><td>subagent-driven-development (plan)</td><td>Core</td></tr>
-<tr><td>/classy-subagent-execute</td><td>subagent-driven-development (execute)</td><td>Core</td></tr>
-<tr><td>/classy-subagent-review</td><td>subagent-driven-development (review)</td><td>Core</td></tr>
+<tr><td>/classy-debug</td><td>systematic-debugging with evidence-first root cause isolation</td><td>Core</td></tr>
+<tr><td>/classy-review</td><td>review-first mode focused on findings, regressions, and test gaps</td><td>Core</td></tr>
+<tr><td>/classy-refactor</td><td>behavior-preserving structural improvement</td><td>Core</td></tr>
 </tbody>
 </table>
 </div>
 
 <div class="sec">
-<h2>03 · Execution Discipline</h2>
-<div class="desc">Enforced workflow gates for high-risk operations.</div>
+<h2>03 · Flow Rules</h2>
+<div class="desc">Recommended routing order for non-trivial work.</div>
 <table>
 <thead><tr><th>Command</th><th>Maps to</th><th>Status</th></tr></thead>
 <tbody>
-<tr><td>/classy-checkpoint</td><td>systematic-debugging (checkpoint)</td><td>Core</td></tr>
-<tr><td>/classy-debug</td><td>systematic-debugging</td><td>Core</td></tr>
-<tr><td>/classy-tdd</td><td>test-driven-development</td><td>Core</td></tr>
-<tr><td>/classy-git-worktree</td><td>git-worktrees</td><td>Core</td></tr>
-<tr><td>/classy-exec</td><td>executing-bash-commands</td><td>Core</td></tr>
-<tr><td>/classy-save</td><td>writing-plans (save)</td><td>Core</td></tr>
+<tr><td>Default</td><td>/classy-using → /classy-execution-control → /classy-investigate or /classy-plan</td><td>Core</td></tr>
+<tr><td>Build path</td><td>/classy-implement → /classy-verify → /classy-finish</td><td>Core</td></tr>
+<tr><td>Debug branch</td><td>Switch to /classy-debug when the cause is not yet understood</td><td>Core</td></tr>
+<tr><td>Review branch</td><td>Switch to /classy-review when the task is evaluation-first</td><td>Core</td></tr>
+<tr><td>Refactor branch</td><td>Switch to /classy-refactor for structural cleanup without intended behavior change</td><td>Core</td></tr>
 </tbody>
 </table>
 </div>
@@ -105,7 +109,7 @@ footer p{font-size:.7rem;color:rgba(160,160,162,.45)}
 <tbody>
 <tr><td>/phi-check</td><td>PHI/PII audit on staged changes</td><td><span class="badge">Sentra</span></td></tr>
 <tr><td>/sentra-review</td><td>Healthcare code review (NestJS + PHI)</td><td><span class="badge">Sentra</span></td></tr>
-<tr><td>/classy-review</td><td>requesting-code-review</td><td>Core</td></tr>
+<tr><td>/classy-review</td><td>Review-first mode for findings, regressions, and test gaps</td><td>Core</td></tr>
 </tbody>
 </table>
 </div>
@@ -137,11 +141,65 @@ footer p{font-size:.7rem;color:rgba(160,160,162,.45)}
 </table>
 </div>
 
+<div class="sec">
+<div class="sec-head">
+<h2>07 · Command Examples</h2>
+<div class="section-brand" aria-label="Claude Code logo">
+<img src="./logos/claudecode.svg" alt="Claude Code logo">
+</div>
+</div>
+<div class="desc">Short usage examples so the team can invoke the right mode without drifting.</div>
+<table>
+<thead><tr><th>Command</th><th>Use when</th><th>Actions</th></tr></thead>
+<tbody>
+<tr><td>/classy-using</td><td>The task just started and the correct mode is not yet explicit.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-using">Copy Command</button><button class="copy-btn" data-copy="Route this task to the right classy workflow before we begin.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-using&#10;&#10;Route this task to the right classy workflow before we begin.">Copy Combined</button></div></td></tr>
+<tr><td>/classy-execution-control</td><td>The task is non-trivial and needs strict scope boundaries first.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-execution-control">Copy Command</button><button class="copy-btn" data-copy="Lock the scope, non-scope, and verification path before implementation.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-execution-control&#10;&#10;Lock the scope, non-scope, and verification path before implementation.">Copy Combined</button></div></td></tr>
+<tr><td>/classy-investigate</td><td>The code owner, architecture path, or likely edit surface is not yet clear.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-investigate">Copy Command</button><button class="copy-btn" data-copy="Trace the upload failure to the owning module and likely fix point.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-investigate&#10;&#10;Trace the upload failure to the owning module and likely fix point.">Copy Combined</button></div></td></tr>
+<tr><td>/classy-plan</td><td>The task needs sequencing before code changes begin.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-plan">Copy Command</button><button class="copy-btn" data-copy="Write a tight implementation plan for this change with verification checkpoints.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-plan&#10;&#10;Write a tight implementation plan for this change with verification checkpoints.">Copy Combined</button></div></td></tr>
+<tr><td>/classy-implement</td><td>The direction is already clear and the task should move into execution.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-implement">Copy Command</button><button class="copy-btn" data-copy="Implement the agreed fix in the smallest coherent delta.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-implement&#10;&#10;Implement the agreed fix in the smallest coherent delta.">Copy Combined</button></div></td></tr>
+<tr><td>/classy-debug</td><td>There is a failure, but the cause is not yet understood.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-debug">Copy Command</button><button class="copy-btn" data-copy="Reproduce this timeout and isolate the smallest credible root cause.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-debug&#10;&#10;Reproduce this timeout and isolate the smallest credible root cause.">Copy Combined</button></div></td></tr>
+<tr><td>/classy-review</td><td>The task is evaluation-first and should focus on findings.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-review">Copy Command</button><button class="copy-btn" data-copy="Review this diff for bugs, regressions, and missing tests.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-review&#10;&#10;Review this diff for bugs, regressions, and missing tests.">Copy Combined</button></div></td></tr>
+<tr><td>/classy-refactor</td><td>The goal is structural improvement without intended behavior change.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-refactor">Copy Command</button><button class="copy-btn" data-copy="Refactor this service for clarity without changing runtime behavior.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-refactor&#10;&#10;Refactor this service for clarity without changing runtime behavior.">Copy Combined</button></div></td></tr>
+<tr><td>/classy-verify</td><td>The work needs evidence before it can be considered complete.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-verify">Copy Command</button><button class="copy-btn" data-copy="Run the strongest relevant verification and state any remaining gaps.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-verify&#10;&#10;Run the strongest relevant verification and state any remaining gaps.">Copy Combined</button></div></td></tr>
+<tr><td>/classy-finish</td><td>The task is ready to close with an evidence-based summary.</td><td><div class="cmd-actions"><button class="copy-btn" data-copy="/classy-finish">Copy Command</button><button class="copy-btn" data-copy="Close this task with outcome, changed scope, verification, and risk.">Copy Prompt</button><button class="copy-btn" data-copy="/classy-finish&#10;&#10;Close this task with outcome, changed scope, verification, and risk.">Copy Combined</button></div></td></tr>
+</tbody>
+</table>
+</div>
+
 <footer>
 <p>Classy — Sentra Artificial Intelligence 2026</p>
 <p>Pure monochrome brand system · Space Grotesk · Inter · JetBrains Mono</p>
 </footer>
 
 </div>
+<script>
+const copyButtons = document.querySelectorAll('.copy-btn');
+
+async function copyText(button) {
+  const text = button.getAttribute('data-copy') || '';
+  const originalLabel = button.textContent;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    button.textContent = 'Copied';
+    button.classList.add('copied');
+    window.setTimeout(() => {
+      button.textContent = originalLabel;
+      button.classList.remove('copied');
+    }, 1200);
+  } catch (error) {
+    button.textContent = 'Copy failed';
+    window.setTimeout(() => {
+      button.textContent = originalLabel;
+    }, 1200);
+  }
+}
+
+copyButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    copyText(button);
+  });
+});
+</script>
 </body>
 </html>

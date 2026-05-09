@@ -1,7 +1,9 @@
 ---
 description: Ensures AI always updates .agent/HANDOFF.md before the session ends or major tasks are completed.
-globs: **/*
-alwaysApply: true
+globs:
+  - ".agent/**"
+  - "AGENTS.md"
+alwaysApply: false
 ---
 # Handoff Master Protocol
 

@@ -1,0 +1,17 @@
+node_modules/
+.git/
+.next/
+dist/
+coverage/
+.turbo/
+.vercel/
+.output/
+**/*.log
+**/*.tmp
+**/*.tsbuildinfo
+docs/archive/
+tooling/kilo/worktrees/
+**/playwright-report/
+**/test-results/
+terminals/
+agent-transcripts/

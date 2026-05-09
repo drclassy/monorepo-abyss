@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Classy Workflow 2026</title>
+  <title>Classy — Codex Workflow Reference</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -47,9 +47,9 @@
     a:hover { text-decoration-color: var(--white); }
 
     .page {
-      width: min(calc(100% - 32px), 1180px);
+      width: min(calc(100% - 20px), 760px);
       margin: 0 auto;
-      padding: 28px 0 48px;
+      padding: 18px 0 36px;
     }
 
     .hero, .panel, .card, .command, .source-item {
@@ -60,7 +60,7 @@
 
     .hero {
       border-radius: var(--r-xl);
-      padding: 28px;
+      padding: 20px;
       position: relative;
       overflow: hidden;
     }
@@ -102,19 +102,36 @@
       line-height: 1.05;
     }
 
-    h1 { max-width: 780px; font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: -0.04em; }
-    h2 { font-size: clamp(1.55rem, 2.5vw, 2.2rem); letter-spacing: -0.03em; }
-    h3 { font-size: 1.15rem; letter-spacing: -0.02em; }
+    h1 { max-width: 560px; font-size: clamp(2rem, 4.2vw, 3rem); letter-spacing: -0.04em; }
+    h2 { font-size: clamp(1.25rem, 2.3vw, 1.75rem); letter-spacing: -0.03em; }
+    h3 { font-size: 1.02rem; letter-spacing: -0.02em; }
 
     .hero-grid, .two-col, .flow-grid, .command-grid,
     .practice-grid, .rules-grid, .source-grid { display: grid; gap: 16px; }
 
-    .hero-grid { grid-template-columns: 2.2fr 1fr; margin-top: 22px; align-items: end; }
+    .hero-grid { grid-template-columns: 1fr; margin-top: 18px; align-items: start; }
 
     .hero-copy p, .lede, .muted { margin: 0; color: rgba(253, 253, 253, 0.78); }
-    .hero-copy p { max-width: 720px; margin-top: 14px; font-size: 1.02rem; }
+    .hero-copy p { max-width: 100%; margin-top: 12px; font-size: 0.94rem; }
 
     .hero-meta { display: grid; gap: 10px; }
+
+    .section-brand {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: var(--b);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .section-brand img {
+      display: block;
+      width: 92px;
+      height: auto;
+    }
 
     .meta-box {
       border-radius: var(--r-lg);
@@ -125,7 +142,7 @@
 
     .meta-box strong, .card strong, .command strong { display: block; margin-bottom: 4px; color: var(--white); }
 
-    .section { margin-top: 20px; }
+    .section { margin-top: 14px; }
 
     .section-header {
       display: flex; align-items: end; justify-content: space-between;
@@ -133,12 +150,12 @@
     }
     .section-header p { max-width: 700px; }
 
-    .panel { border-radius: var(--r-xl); padding: 22px; }
-    .flow-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .panel { border-radius: var(--r-xl); padding: 18px; }
+    .flow-grid { grid-template-columns: 1fr; }
 
     .card {
       border-radius: var(--r-lg);
-      padding: 16px; min-height: 178px;
+      padding: 14px; min-height: 0;
       position: relative;
       transition: border-color 0.2s;
     }
@@ -162,7 +179,7 @@
 
     code, .mono { font-family: var(--f-mono); }
 
-    .command-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .command-grid { grid-template-columns: 1fr; }
 
     .command {
       border-radius: var(--r-lg); padding: 16px;
@@ -170,13 +187,44 @@
     }
     .command:hover { border-color: rgba(160, 160, 162, 0.4); }
 
+    .cmd-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .copy-btn {
+      appearance: none;
+      border: var(--b);
+      background: transparent;
+      color: var(--white);
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      padding: 6px 10px;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(253, 253, 253, 0.08);
+      border-color: var(--silver);
+    }
+
+    .copy-btn.copied {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+
     .command code {
       display: inline-block; margin-bottom: 8px;
       color: var(--white); font-size: 0.95rem; font-weight: 700;
     }
 
-    .practice-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .rules-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .practice-grid { grid-template-columns: 1fr; }
+    .rules-grid { grid-template-columns: 1fr; }
 
     .practice-list, .rule-list {
       margin: 10px 0 0; padding-left: 18px;
@@ -188,7 +236,7 @@
     .rule-watch { border-left: 3px solid var(--slate); }
     .rule-stop { border-left: 3px solid var(--white); }
 
-    .source-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .source-grid { grid-template-columns: 1fr; }
 
     .source-item {
       border-radius: var(--r-md); padding: 14px 16px;
@@ -207,19 +255,19 @@
     @media (max-width: 980px) {
       .hero-grid, .flow-grid, .command-grid,
       .practice-grid, .rules-grid, .source-grid { grid-template-columns: 1fr; }
-      .page { width: min(calc(100% - 20px), 1180px); padding-top: 16px; }
-      .hero, .panel { padding: 18px; }
+      .page { width: min(calc(100% - 16px), 760px); padding-top: 12px; }
+      .hero, .panel { padding: 16px; }
     }
   </style>
 </head>
 <body>
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">Classy Workflow 2026</div>
-      <h1>Structured execution for high-trust software delivery.</h1>
+      <div class="eyebrow">Codex Classy Flow</div>
+      <h1>Classy — Codex Workflow Reference</h1>
       <div class="hero-grid">
         <div class="hero-copy">
-          <p>This workflow defines how Classy moves from intent to validated delivery: understand first, plan deliberately, implement with discipline, verify with evidence, then submit for review and close the branch cleanly.</p>
+          <p>This workflow defines how Classy moves from intent to validated delivery in Codex: establish the operating frame, clarify the problem, plan deliberately, implement with discipline, process review critically, verify with evidence, submit for review only when ready, then close the work cleanly.</p>
         </div>
         <div class="hero-meta">
           <div class="meta-box">
@@ -286,6 +334,101 @@
           <span class="tag">/classy-finish</span>
           <h3>Close the branch cleanly</h3>
           <p class="muted">Finish with merge readiness, branch hygiene, and a clear definition of done.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Cursor Ready</div>
+          <h2>Command prompts</h2>
+        </div>
+        <div class="section-brand" aria-label="OpenAI logo">
+          <img src="./logos/openai.svg" alt="OpenAI logo">
+        </div>
+      </div>
+      <p class="lede">Copy a command, a prompt, or both together so the flow can be pasted directly into the Cursor chatbox.</p>
+      <div class="command-grid">
+        <article class="command">
+          <code>/classy-using</code>
+          <strong>Use when the task just started.</strong>
+          Route this task into the correct Classy workflow before we begin.
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/classy-using">Copy Command</button>
+            <button class="copy-btn" data-copy="Route this task into the correct Classy workflow before we begin.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/classy-using&#10;&#10;Route this task into the correct Classy workflow before we begin.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/classy-brainstorming</code>
+          <strong>Use when the problem or solution space needs clarification.</strong>
+          Clarify the goal, constraints, risks, and possible solution options before implementation.
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/classy-brainstorming">Copy Command</button>
+            <button class="copy-btn" data-copy="Clarify the goal, constraints, risks, and possible solution options before implementation.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/classy-brainstorming&#10;&#10;Clarify the goal, constraints, risks, and possible solution options before implementation.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/classy-plan</code>
+          <strong>Use when the task needs sequencing before edits begin.</strong>
+          Write a tight implementation plan with scope boundaries and verification checkpoints.
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/classy-plan">Copy Command</button>
+            <button class="copy-btn" data-copy="Write a tight implementation plan with scope boundaries and verification checkpoints.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/classy-plan&#10;&#10;Write a tight implementation plan with scope boundaries and verification checkpoints.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/classy-implement</code>
+          <strong>Use when the implementation direction is already clear.</strong>
+          Implement the agreed change in small, reviewable deltas and verify after each meaningful step.
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/classy-implement">Copy Command</button>
+            <button class="copy-btn" data-copy="Implement the agreed change in small, reviewable deltas and verify after each meaningful step.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/classy-implement&#10;&#10;Implement the agreed change in small, reviewable deltas and verify after each meaningful step.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/classy-review-in</code>
+          <strong>Use when incoming review feedback needs technical triage.</strong>
+          Process these review comments critically and apply only the changes that are technically correct.
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/classy-review-in">Copy Command</button>
+            <button class="copy-btn" data-copy="Process these review comments critically and apply only the changes that are technically correct.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/classy-review-in&#10;&#10;Process these review comments critically and apply only the changes that are technically correct.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/classy-verify</code>
+          <strong>Use when the work needs evidence before completion.</strong>
+          Run the strongest relevant verification and state any remaining gaps clearly.
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/classy-verify">Copy Command</button>
+            <button class="copy-btn" data-copy="Run the strongest relevant verification and state any remaining gaps clearly.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/classy-verify&#10;&#10;Run the strongest relevant verification and state any remaining gaps clearly.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/classy-review-out</code>
+          <strong>Use when the work is ready to be packaged for external review.</strong>
+          Prepare this change for review only after internal verification is complete and the summary is review-ready.
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/classy-review-out">Copy Command</button>
+            <button class="copy-btn" data-copy="Prepare this change for review only after internal verification is complete and the summary is review-ready.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/classy-review-out&#10;&#10;Prepare this change for review only after internal verification is complete and the summary is review-ready.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/classy-finish</code>
+          <strong>Use when the task is ready to close cleanly.</strong>
+          Close this task with final outcome, verification evidence, and branch readiness.
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/classy-finish">Copy Command</button>
+            <button class="copy-btn" data-copy="Close this task with final outcome, verification evidence, and branch readiness.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/classy-finish&#10;&#10;Close this task with final outcome, verification evidence, and branch readiness.">Copy Combined</button>
+          </div>
         </article>
       </div>
     </section>
@@ -452,5 +595,34 @@
       </div>
     </section>
   </main>
+  <script>
+    const copyButtons = document.querySelectorAll('.copy-btn');
+
+    async function copyText(button) {
+      const text = button.getAttribute('data-copy') || '';
+      const originalLabel = button.textContent;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = 'Copied';
+        button.classList.add('copied');
+        window.setTimeout(() => {
+          button.textContent = originalLabel;
+          button.classList.remove('copied');
+        }, 1200);
+      } catch (error) {
+        button.textContent = 'Copy failed';
+        window.setTimeout(() => {
+          button.textContent = originalLabel;
+        }, 1200);
+      }
+    }
+
+    copyButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        copyText(button);
+      });
+    });
+  </script>
 </body>
 </html>

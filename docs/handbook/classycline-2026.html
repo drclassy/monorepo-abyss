@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sentra — Cline 2026 Command Center</title>
+  <style>
+    :root {
+      --black: #050506;
+      --ink: #0B0D10;
+      --graphite: #111318;
+      --panel: #151821;
+      --panel2: #0F1218;
+      --slate: #2A2F3A;
+      --line: #303642;
+      --muted: #A1A6B3;
+      --soft: rgba(253, 253, 253, 0.76);
+      --white: #F7F8FA;
+      --blue: #0B1F3A;
+      --green: #7EE787;
+      --yellow: #E3B341;
+      --red: #FF7B72;
+      --mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+      --sans: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      --display: "Space Grotesk", Inter, "Segoe UI", system-ui, sans-serif;
+      --r-xl: 24px;
+      --r-lg: 16px;
+      --r-md: 12px;
+      --r-sm: 8px;
+      --shadow: 0 18px 50px rgba(0,0,0,.32);
+      --b: 1px solid var(--line);
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--black); color: var(--white); scroll-behavior: smooth; font-size: 13px; }
+    body { margin: 0; font-family: var(--sans); line-height: 1.58; color: var(--white); }
+    a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--slate); }
+    a:hover { text-decoration-color: var(--white); }
+    code, pre, .mono { font-family: var(--mono); }
+
+    .shell {
+      width: min(calc(100% - 20px), 1120px);
+      margin: 0 auto;
+      padding: 16px 0 44px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero, .panel, .card, .cmd, .source, .mini, .toc {
+      background: linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,0)) var(--graphite);
+      border: var(--b);
+      box-shadow: var(--shadow);
+    }
+
+    .hero { border-radius: var(--r-xl); padding: 22px; position: relative; overflow: hidden; }
+    .hero:after {
+      content:""; position:absolute; right:-110px; bottom:-160px; width:420px; height:420px;
+      background: radial-gradient(circle, rgba(255,255,255,.055), transparent 62%); pointer-events:none;
+    }
+    .eyebrow { display:inline-flex; align-items:center; gap:10px; color:var(--muted); font: 600 .78rem/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; margin-bottom: 12px; }
+    .eyebrow:before { content:""; width: 38px; height: 1px; background: currentColor; display:inline-block; }
+    h1, h2, h3 { font-family: var(--display); line-height: 1.08; margin: 0; letter-spacing: -.035em; }
+    h1 { font-size: clamp(2rem, 4vw, 4rem); max-width: 780px; }
+    h2 { font-size: clamp(1.28rem, 2vw, 2rem); }
+    h3 { font-size: 1.04rem; }
+    p { margin: 0; }
+    .lede, .muted { color: var(--soft); }
+    .tiny { color: var(--muted); font-size: .88rem; }
+
+    .hero-grid { display:grid; grid-template-columns: 1.35fr .65fr; gap: 18px; align-items: start; margin-top: 18px; }
+    .meta-stack { display:grid; gap: 10px; }
+    .meta-box { border: var(--b); background: var(--blue); border-radius: var(--r-lg); padding: 13px 14px; }
+    .meta-box strong { display:block; margin-bottom:4px; }
+
+    .sticky-nav { position: sticky; top: 0; z-index: 20; background: rgba(5,5,6,.92); backdrop-filter: blur(12px); border: var(--b); border-radius: var(--r-lg); padding: 10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .nav-links { display:flex; gap:8px; flex-wrap:wrap; }
+    .pill, .filter-btn { display:inline-flex; align-items:center; gap:6px; padding: 7px 10px; border: var(--b); border-radius: 999px; background: rgba(255,255,255,.035); color:var(--white); font: 600 .78rem/1 var(--mono); text-decoration:none; cursor:pointer; }
+    .pill:hover, .filter-btn:hover, .filter-btn.active { background: var(--white); color: var(--black); border-color: var(--white); }
+    .search { min-width: 220px; flex: 1; max-width: 360px; border: var(--b); background: var(--ink); color:var(--white); border-radius: 999px; padding: 8px 12px; font: 500 .86rem/1 var(--mono); outline:none; }
+
+    .panel { border-radius: var(--r-xl); padding: 18px; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap: 18px; margin-bottom: 14px; }
+    .section-head .lede { max-width: 760px; }
+
+    .grid { display:grid; gap: 14px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card, .cmd, .source, .mini { border-radius: var(--r-lg); padding: 14px; position: relative; }
+    .card:hover, .cmd:hover, .source:hover, .mini:hover { border-color: rgba(247,248,250,.28); }
+    .step:before { content: attr(data-step); position:absolute; right: 14px; top: 14px; color: var(--muted); font: 600 .78rem/1 var(--mono); letter-spacing: .14em; }
+    .tag { display:inline-flex; padding: 5px 8px; margin-bottom: 10px; border: var(--b); border-radius: 999px; color: var(--muted); background: rgba(255,255,255,.035); font: 600 .74rem/1 var(--mono); letter-spacing:.04em; }
+    .cmd code { display:inline-block; margin-bottom:8px; color: var(--white); font-weight: 800; font-size: .94rem; }
+    .cmd strong, .card strong, .mini strong, .source strong { display:block; margin-bottom: 4px; }
+    .cmd-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top: 12px; }
+    .copy-btn { appearance:none; border: var(--b); background:transparent; color:var(--white); border-radius: var(--r-sm); font: 700 .7rem/1 var(--mono); padding: 7px 9px; cursor:pointer; }
+    .copy-btn:hover { background: rgba(255,255,255,.08); border-color: var(--muted); }
+    .copy-btn.copied { background: var(--white); color: var(--black); border-color: var(--white); }
+
+    ul { margin: 8px 0 0; padding-left: 18px; color: var(--soft); }
+    li { margin: 0 0 7px; }
+    .matrix { width:100%; border-collapse: collapse; overflow:hidden; border-radius: var(--r-lg); border: var(--b); }
+    .matrix th, .matrix td { border-bottom: var(--b); padding: 10px; text-align:left; vertical-align:top; }
+    .matrix th { background: var(--panel2); color: var(--muted); font: 700 .76rem/1.4 var(--mono); letter-spacing:.08em; text-transform:uppercase; }
+    .matrix tr:last-child td { border-bottom:0; }
+    .matrix td { color: var(--soft); }
+    .good { border-left: 3px solid var(--green); }
+    .warn { border-left: 3px solid var(--yellow); }
+    .stop { border-left: 3px solid var(--red); }
+    .neutral { border-left: 3px solid var(--muted); }
+
+    pre { margin: 12px 0 0; border: var(--b); border-radius: var(--r-md); padding: 13px; background: #07080B; overflow:auto; color: #EDEFF3; font-size: .84rem; }
+    .callout { border: var(--b); background: rgba(11,31,58,.7); border-radius: var(--r-lg); padding: 14px; color: var(--soft); }
+    .kbd { border: var(--b); border-bottom-width: 2px; border-radius: 6px; padding: 2px 6px; background: rgba(255,255,255,.045); font: 700 .78rem/1 var(--mono); color: var(--white); }
+    .footer { color: rgba(160,166,179,.72); padding: 14px 2px; }
+    .hidden { display:none !important; }
+
+    @media (max-width: 920px) {
+      .hero-grid, .grid.two, .grid.three, .grid.four { grid-template-columns: 1fr; }
+      .sticky-nav { position: static; }
+      .search { max-width: none; }
+      .section-head { align-items:start; flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero" id="top">
+      <div class="eyebrow">Sentra IDE Command Center</div>
+      <h1>Cline 2026 Workflow, Slash Command, dan Best Practice Reference</h1>
+      <div class="hero-grid">
+        <div>
+          <p class="lede">Halaman statis ini dibuat untuk dibuka langsung dari IDE sebagai panel kerja cepat: pilih workflow, copy prompt, jalankan slash command, dan jaga Cline tetap disiplin dengan pola <strong>Plan → Approve → Act → Verify → Report</strong>.</p>
+          <p class="tiny" style="margin-top:10px">Designed for Sentra Artificial Intelligence · local static HTML · no external runtime dependency · copy buttons included.</p>
+        </div>
+        <div class="meta-stack">
+          <div class="meta-box"><strong>Default posture</strong>Plan Mode first untuk task non-trivial.</div>
+          <div class="meta-box"><strong>Safety baseline</strong>YOLO off, edit/command manual approval.</div>
+          <div class="meta-box"><strong>Reference date</strong>Best practice checkpoint: May 2026.</div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="sticky-nav" aria-label="Page navigation">
+      <div class="nav-links">
+        <a class="pill" href="#workflow">Workflow</a>
+        <a class="pill" href="#commands">Slash</a>
+        <a class="pill" href="#context">Context</a>
+        <a class="pill" href="#rules">Rules</a>
+        <a class="pill" href="#tips">Tips</a>
+        <a class="pill" href="#snippets">Snippets</a>
+      </div>
+      <input id="searchBox" class="search" type="search" placeholder="filter cards: docs, git, verify..." />
+    </nav>
+
+    <section class="panel" id="workflow">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Mandatory Operating Loop</div>
+          <h2>Workflow utama Cline untuk repo Sentra</h2>
+        </div>
+        <p class="lede">Urutan ini mencegah agent langsung mengedit tanpa konteks. Kompres hanya untuk task kecil yang jelas.</p>
+      </div>
+      <div class="grid four">
+        <article class="card step searchable" data-search="awareness rules agents clinerules" data-step="01"><span class="tag">Awareness</span><h3>Baca rules</h3><p class="muted">AGENTS.md, .agent/, .clinerules/, .cursor/rules/, .codex/, .clineignore.</p></article>
+        <article class="card step searchable" data-search="plan mode architecture inspect" data-step="02"><span class="tag">Plan Mode</span><h3>Inspect dulu</h3><p class="muted">Baca file relevan, jelaskan struktur, risiko, dan file yang akan disentuh.</p></article>
+        <article class="card step searchable" data-search="approval act mode manual" data-step="03"><span class="tag">Approval</span><h3>Minta izin</h3><p class="muted">Sebelum edit, sebutkan exact files dan verification command.</p></article>
+        <article class="card step searchable" data-search="act implementation small delta" data-step="04"><span class="tag">Act Mode</span><h3>Edit kecil</h3><p class="muted">Implementasi minimal, hindari refactor oportunistik.</p></article>
+        <article class="card step searchable" data-search="verify build test typecheck lint" data-step="05"><span class="tag">Verify</span><h3>Bukti objektif</h3><p class="muted">Run build/typecheck/test/lint yang paling relevan dari package.json.</p></article>
+        <article class="card step searchable" data-search="report changed files risks rollback" data-step="06"><span class="tag">Report</span><h3>Ringkas hasil</h3><p class="muted">Changed files, pass/fail, risiko sisa, rollback path.</p></article>
+        <article class="card step searchable" data-search="docs git changes changelog readme" data-step="07"><span class="tag">Docs</span><h3>Update dokumentasi</h3><p class="muted">Gunakan @git-changes untuk docs impact map sebelum menulis dokumen.</p></article>
+        <article class="card step searchable" data-search="finish commit push review" data-step="08"><span class="tag">Finish</span><h3>Siap review</h3><p class="muted">Audit before push, suggested commit, jangan push tanpa approval.</p></article>
+      </div>
+    </section>
+
+    <section class="panel" id="commands">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Copy Ready</div>
+          <h2>Slash command dan custom workflow</h2>
+        </div>
+        <p class="lede">Klik tombol copy lalu paste ke Cline. Gunakan <span class="kbd">/</span> untuk autocomplete workflow di <code>.clinerules/workflows/</code>.</p>
+      </div>
+      <div class="grid two">
+        <article class="cmd searchable" data-search="newtask context clean handoff"><code>/newtask</code><strong>Fresh task dengan distilled context.</strong><p class="muted">Dipakai saat task panjang mulai penuh konteks atau perlu handoff bersih.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/newtask">Copy Command</button><button class="copy-btn" data-copy="/newtask\n\nCreate a fresh task with only the essential context, decisions, files changed, current status, and next step.">Copy Combined</button></div></article>
+        <article class="cmd searchable" data-search="smol compact context compress"><code>/smol</code><strong>Kompres percakapan tanpa ganti task.</strong><p class="muted">Bagus untuk debugging panjang yang masih ingin dilanjutkan di task yang sama.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/smol">Copy Command</button><button class="copy-btn" data-copy="/smol\n\nCompress this conversation while preserving decisions, constraints, files touched, errors, and the next safe step.">Copy Combined</button></div></article>
+        <article class="cmd searchable" data-search="newrule clinerules preferences"><code>/newrule</code><strong>Buat rule saat instruksi sering diulang.</strong><p class="muted">Simpan preferensi kerja ke <code>.clinerules/</code> agar Cline ingat di task berikutnya.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/newrule">Copy Command</button><button class="copy-btn" data-copy="/newrule\n\nCreate a concise Cline rule for this repeated preference. Keep AGENTS.md as the highest authority and avoid duplication.">Copy Combined</button></div></article>
+        <article class="cmd searchable" data-search="deep planning architecture multi file"><code>/deep-planning</code><strong>Untuk fitur kompleks / arsitektur.</strong><p class="muted">Investigasi, diskusi, rencana implementasi, lalu task baru yang terstruktur.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/deep-planning">Copy Command</button><button class="copy-btn" data-copy="/deep-planning\n\nInvestigate the codebase silently, ask only critical questions, then produce an implementation plan. Do not edit files yet.">Copy Combined</button></div></article>
+        <article class="cmd searchable" data-search="explain changes git diff"><code>/explain-changes</code><strong>Jelaskan git diff.</strong><p class="muted">Gunakan saat perlu ringkasan perubahan sebelum commit atau dokumentasi.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/explain-changes">Copy Command</button><button class="copy-btn" data-copy="/explain-changes\n\nExplain the current git diff in plain Indonesian: intent, files changed, risks, and docs impact.">Copy Combined</button></div></article>
+        <article class="cmd searchable" data-search="reportbug diagnostic"><code>/reportbug</code><strong>Laporkan bug Cline.</strong><p class="muted">Dipakai kalau extension behavior aneh dan butuh diagnostic info.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/reportbug">Copy Command</button><button class="copy-btn" data-copy="/reportbug\n\nPrepare a concise bug report with model, provider, task context, error text, and reproduction steps.">Copy Combined</button></div></article>
+        <article class="cmd searchable" data-search="safe implementation workflow act verify"><code>/safe-implementation.md</code><strong>Workflow implementasi aman.</strong><p class="muted">Default untuk task non-trivial: inspect, plan, approve, implement, verify, report.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/safe-implementation.md">Copy Command</button><button class="copy-btn" data-copy="/safe-implementation.md\n\nUse repository AI rules. Start in Plan Mode. Do not edit until exact files and verification command are approved.">Copy Combined</button></div></article>
+        <article class="cmd searchable" data-search="audit before push git status diff verify"><code>/audit-before-push.md</code><strong>Audit sebelum push.</strong><p class="muted">Cek status, diff, risiko rahasia, verification, dan commit message.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/audit-before-push.md">Copy Command</button><button class="copy-btn" data-copy="/audit-before-push.md\n\nAudit current changes before push. Do not commit or push. Report risk, verification, and suggested commit message.">Copy Combined</button></div></article>
+        <article class="cmd searchable" data-search="docs from git changes documentation changelog readme"><code>/docs-from-git-changes.md</code><strong>Generate dokumentasi dari perubahan Git.</strong><p class="muted">Baca <code>@git-changes</code>, buat docs impact map, tunggu approval sebelum edit docs.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/docs-from-git-changes.md">Copy Command</button><button class="copy-btn" data-copy="/docs-from-git-changes.md\n\nUse @git-changes as main context. Produce a documentation impact map first. Do not edit until approved.">Copy Combined</button></div></article>
+        <article class="cmd searchable" data-search="bug triage problems terminal root cause"><code>/bug-triage.md</code><strong>Root-cause debugging.</strong><p class="muted">Gunakan dengan <code>@problems</code> dan <code>@terminal</code>; diagnosis sebelum edit.</p><div class="cmd-actions"><button class="copy-btn" data-copy="/bug-triage.md">Copy Command</button><button class="copy-btn" data-copy="/bug-triage.md\n\n@problems @terminal\nAnalyze the root cause first. Do not edit yet. Propose smallest safe fix and verification command.">Copy Combined</button></div></article>
+      </div>
+    </section>
+
+    <section class="panel" id="context">
+      <div class="section-head">
+        <div><div class="eyebrow">Right Context, Not More Context</div><h2>Context mention yang paling berguna</h2></div>
+        <p class="lede">Cline lebih akurat jika konteksnya spesifik. Jangan dump seluruh repo kecuali memang perlu.</p>
+      </div>
+      <table class="matrix">
+        <thead><tr><th>Mention</th><th>Gunakan untuk</th><th>Prompt pendek</th></tr></thead>
+        <tbody>
+          <tr><td><code>@/path/file.ts</code></td><td>File spesifik.</td><td><button class="copy-btn" data-copy="@/path/to/file.ts\nExplain the current behavior and propose the smallest safe improvement. Do not edit yet.">Copy</button></td></tr>
+          <tr><td><code>@/src/folder/</code></td><td>Folder spesifik.</td><td><button class="copy-btn" data-copy="@/src/folder/\nMap the structure and identify only the files relevant to this task. Do not edit yet.">Copy</button></td></tr>
+          <tr><td><code>@problems</code></td><td>Errors/warnings dari Problems panel.</td><td><button class="copy-btn" data-copy="@problems\nGroup the errors by root cause. Do not edit yet. Propose the smallest safe fix.">Copy</button></td></tr>
+          <tr><td><code>@terminal</code></td><td>Build/test/runtime output terakhir.</td><td><button class="copy-btn" data-copy="@terminal\nAnalyze this failure. Identify the root cause, affected files, and verification command.">Copy</button></td></tr>
+          <tr><td><code>@git-changes</code></td><td>Review diff / docs update / pre-push audit.</td><td><button class="copy-btn" data-copy="@git-changes\nReview these changes for intent, risk, docs impact, and verification gaps. Do not edit yet.">Copy</button></td></tr>
+          <tr><td><code>@https://...</code></td><td>Dokumentasi web spesifik.</td><td><button class="copy-btn" data-copy="@https://example.com/docs\nUse this documentation only as reference. Summarize exact implications for this repo.">Copy</button></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel" id="rules">
+      <div class="section-head">
+        <div><div class="eyebrow">Repo Constitution</div><h2>Rules, folders, dan authority hierarchy</h2></div>
+        <p class="lede">Jangan semua instruksi digandakan di semua tempat. Buat layer yang jelas.</p>
+      </div>
+      <div class="grid two">
+        <article class="mini searchable good" data-search="agents authority policy"><strong>AGENTS.md</strong><p class="muted">Highest policy authority lintas agent: scope, safety, architecture, verification.</p></article>
+        <article class="mini searchable neutral" data-search="clinerules adapter workflow"><strong>.clinerules/</strong><p class="muted">Adapter khusus Cline: persona, workflow, guardrails, verification.</p></article>
+        <article class="mini searchable neutral" data-search="workflows slash commands"><strong>.clinerules/workflows/</strong><p class="muted">Custom slash workflow. Filename menjadi command: <code>/audit-before-push.md</code>.</p></article>
+        <article class="mini searchable neutral" data-search="agent operational ssot state"><strong>.agent/</strong><p class="muted">Operational SSOT/state: current status, decisions, handoff, project memory.</p></article>
+        <article class="mini searchable neutral" data-search="cursor rules"><strong>.cursor/rules/</strong><p class="muted">Guard khusus Cursor. Jangan jadikan authority tertinggi jika AGENTS.md ada.</p></article>
+        <article class="mini searchable neutral" data-search="codex behavior"><strong>.codex/</strong><p class="muted">Layer perilaku Codex jika relevant. Hindari konflik wording dengan AGENTS.md.</p></article>
+        <article class="mini searchable warn" data-search="clineignore noise secrets"><strong>.clineignore</strong><p class="muted">Kurangi noise dan lindungi file sensitif: node_modules, dist, build, secrets, env.</p></article>
+        <article class="mini searchable stop" data-search="yolo auto approve safety"><strong>YOLO Mode</strong><p class="muted">Jangan aktif di repo utama. Boleh hanya sandbox disposable.</p></article>
+      </div>
+    </section>
+
+    <section class="panel" id="tips">
+      <div class="section-head">
+        <div><div class="eyebrow">Best Practice 2026</div><h2>Tips dan trik Cline paling penting</h2></div>
+        <p class="lede">Ini adalah checklist operasional harian untuk memaksimalkan Cline tanpa membuat repo berantakan.</p>
+      </div>
+      <div class="grid three">
+        <article class="cmd searchable good" data-search="plan act mode"><strong>1. Plan Mode untuk yang belum jelas</strong><ul><li>Fitur baru, arsitektur, bug sulit, security review, codebase asing.</li><li>Act Mode hanya setelah plan dan file list jelas.</li></ul></article>
+        <article class="cmd searchable good" data-search="model strategy gpt codex"><strong>2. Model strategy</strong><ul><li>Default: GPT-5.4 Medium.</li><li>High untuk refactor besar/arsitektur/debugging sulit.</li><li>GPT-5.2 untuk edit kecil dan hemat.</li></ul></article>
+        <article class="cmd searchable good" data-search="verification build typecheck test"><strong>3. Verification first</strong><ul><li>Jangan percaya narasi sukses.</li><li>Wajib ada build/typecheck/test/lint atau alasan mengapa tidak bisa.</li></ul></article>
+        <article class="cmd searchable warn" data-search="browser tool local"><strong>4. Browser off by default</strong><ul><li>Untuk task lokal, matikan browser agar tool-call tidak melebar.</li><li>Nyalakan hanya jika perlu dokumen web atau UI testing.</li></ul></article>
+        <article class="cmd searchable warn" data-search="layout diff editor"><strong>5. Jaga layout IDE</strong><ul><li>YOLO off.</li><li>Lock editor group jika perlu.</li><li>Aktifkan Background Edit jika tersedia.</li></ul></article>
+        <article class="cmd searchable stop" data-search="dependency secrets destructive"><strong>6. Stop condition</strong><ul><li>Dependency baru, config deploy, env/secrets, delete file, atau >3 file berubah: stop dan minta approval.</li></ul></article>
+        <article class="cmd searchable neutral" data-search="new task context reset"><strong>7. Gunakan /newtask saat mulai drift</strong><ul><li>Task panjang, error berulang, atau konteks sudah kotor.</li><li>Minta distilled handoff dulu.</li></ul></article>
+        <article class="cmd searchable neutral" data-search="docs git changes"><strong>8. Docs agent dari Git diff</strong><ul><li><code>@git-changes</code> → documentation impact map → approval → update README/docs/CHANGELOG.</li></ul></article>
+        <article class="cmd searchable neutral" data-search="clineignore performance"><strong>9. Kurangi context noise</strong><ul><li>Gunakan .clineignore untuk build output, lock noise, generated files, dan secret files.</li></ul></article>
+      </div>
+    </section>
+
+    <section class="panel" id="snippets">
+      <div class="section-head">
+        <div><div class="eyebrow">Reusable Snippets</div><h2>Prompt siap pakai</h2></div>
+        <p class="lede">Copy snippet ke Cline ketika ingin pola kerja yang aman dan konsisten.</p>
+      </div>
+      <div class="grid two">
+        <article class="cmd searchable" data-search="awareness initialization"><strong>Awareness initialization</strong><pre id="snip-awareness">Chief in Command requests Cline rules awareness initialization.
+
+Task:
+Read AGENTS.md, .agent/, .clinerules/, .cursor/rules/, .codex/, and .clineignore if present.
+
+Rules:
+- Do not edit files.
+- Do not create files.
+- Do not run destructive commands.
+- Produce a concise Cline Awareness Report.
+
+End with:
+Awareness initialized. Waiting for Chief in Command's next implementation instruction.</pre><div class="cmd-actions"><button class="copy-btn" data-copy-target="snip-awareness">Copy Snippet</button></div></article>
+        <article class="cmd searchable" data-search="safe scoped implementation"><strong>Safe scoped implementation</strong><pre id="snip-safe">Use repository AI rules.
+
+Task:
+[describe the task]
+
+Rules:
+- Start in Plan Mode.
+- Inspect relevant files first.
+- Do not edit yet.
+- List exact files to change.
+- Explain risks and rollback path.
+- Mention verification command.
+- Wait for approval before Act Mode.</pre><div class="cmd-actions"><button class="copy-btn" data-copy-target="snip-safe">Copy Snippet</button></div></article>
+        <article class="cmd searchable" data-search="documentation git changes"><strong>Docs from Git changes</strong><pre id="snip-docs">/docs-from-git-changes.md
+
+Use @git-changes as the main context.
+
+Goal:
+Analyze current uncommitted changes and recommend documentation updates.
+
+Rules:
+- Do not edit yet.
+- Produce documentation impact map first.
+- Wait for approval before writing.</pre><div class="cmd-actions"><button class="copy-btn" data-copy-target="snip-docs">Copy Snippet</button></div></article>
+        <article class="cmd searchable" data-search="debug root cause terminal problems"><strong>Debug root cause</strong><pre id="snip-debug">@problems @terminal
+
+Analyze this error.
+
+Rules:
+- Do not edit files yet.
+- Find the root cause first.
+- Show affected files.
+- Propose the smallest safe fix.
+- Provide verification command.
+- Stop and wait for approval.</pre><div class="cmd-actions"><button class="copy-btn" data-copy-target="snip-debug">Copy Snippet</button></div></article>
+        <article class="cmd searchable" data-search="pre push audit git"><strong>Pre-push audit</strong><pre id="snip-push">/audit-before-push.md
+
+Audit current changes before push.
+
+Rules:
+- Do not commit.
+- Do not push.
+- Check git status and diff.
+- Identify unrelated changes and secrets risk.
+- Run relevant verification if safe.
+- Suggest a commit message.</pre><div class="cmd-actions"><button class="copy-btn" data-copy-target="snip-push">Copy Snippet</button></div></article>
+        <article class="cmd searchable" data-search="persona sentra guardian"><strong>Mini persona guard</strong><pre id="snip-persona">You are Sentra Engineering Guardian for Chief in Command.
+
+Priorities:
+1. Safety over speed.
+2. Minimal scope.
+3. No unrelated refactor.
+4. No new dependency without justification.
+5. Verify before claiming success.
+6. Explain technical decisions in clear Bahasa Indonesia.
+7. Stop and ask approval when risk increases.</pre><div class="cmd-actions"><button class="copy-btn" data-copy-target="snip-persona">Copy Snippet</button></div></article>
+      </div>
+    </section>
+
+    <section class="panel" id="sources">
+      <div class="section-head">
+        <div><div class="eyebrow">Reference Basis</div><h2>Sumber resmi dan penting</h2></div>
+        <p class="lede">Link ini dipakai sebagai basis ringkasan, bukan sebagai dekorasi.</p>
+      </div>
+      <div class="grid two">
+        <article class="source"><strong>Cline Plan & Act Mode</strong><a href="https://docs.cline.bot/core-workflows/plan-and-act" target="_blank" rel="noopener">docs.cline.bot/core-workflows/plan-and-act</a></article>
+        <article class="source"><strong>Cline Adding Context</strong><a href="https://docs.cline.bot/core-workflows/working-with-files" target="_blank" rel="noopener">docs.cline.bot/core-workflows/working-with-files</a></article>
+        <article class="source"><strong>Cline Using Commands</strong><a href="https://docs.cline.bot/core-workflows/using-commands" target="_blank" rel="noopener">docs.cline.bot/core-workflows/using-commands</a></article>
+        <article class="source"><strong>Cline Workflows</strong><a href="https://docs.cline.bot/customization/workflows" target="_blank" rel="noopener">docs.cline.bot/customization/workflows</a></article>
+        <article class="source"><strong>Cline Rules</strong><a href="https://docs.cline.bot/customization/cline-rules" target="_blank" rel="noopener">docs.cline.bot/customization/cline-rules</a></article>
+        <article class="source"><strong>Cline Auto Approve & YOLO</strong><a href="https://docs.cline.bot/features/auto-approve" target="_blank" rel="noopener">docs.cline.bot/features/auto-approve</a></article>
+      </div>
+      <p class="footer">Sentra Artificial Intelligence · Cline 2026 IDE Reference · Static HTML by Dexton.</p>
+    </section>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll('.copy-btn');
+    async function copyValue(btn) {
+      const targetId = btn.getAttribute('data-copy-target');
+      const text = targetId ? document.getElementById(targetId).innerText : (btn.getAttribute('data-copy') || '');
+      const old = btn.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+      } catch (e) {
+        btn.textContent = 'Copy failed';
+      }
+      setTimeout(() => { btn.textContent = old; btn.classList.remove('copied'); }, 1200);
+    }
+    buttons.forEach(btn => btn.addEventListener('click', () => copyValue(btn)));
+
+    const searchBox = document.getElementById('searchBox');
+    const cards = document.querySelectorAll('.searchable');
+    searchBox.addEventListener('input', () => {
+      const q = searchBox.value.trim().toLowerCase();
+      cards.forEach(card => {
+        const hay = (card.innerText + ' ' + (card.dataset.search || '')).toLowerCase();
+        card.classList.toggle('hidden', q && !hay.includes(q));
+      });
+    });
+  </script>
+</body>
+</html>
