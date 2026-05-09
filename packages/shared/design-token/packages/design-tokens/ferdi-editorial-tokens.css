@@ -1,0 +1,95 @@
+:root {
+  --fi-token-color-ink: #111318;
+  --fi-token-color-muted: #60646f;
+  --fi-token-color-soft: #8a8f9d;
+  --fi-token-color-line: rgba(17, 19, 24, 0.14);
+  --fi-token-color-paper: #f7f3ec;
+  --fi-token-color-paper-alt: #efe8dc;
+  --fi-token-color-blue: #173d67;
+  --fi-token-color-blue-alt: #0d2a46;
+  --fi-token-color-gold: #aa8548;
+  --fi-token-color-white: #fffdf8;
+  --fi-token-color-accent-warm: #ef6f2e;
+  --fi-token-color-danger: #d65b3f;
+  --fi-token-color-danger-text: #b14c35;
+  --fi-token-color-search: #1eaedb;
+  --fi-token-color-think: #8b5cf6;
+  --fi-token-color-canvas: #ef6f2e;
+
+  --fi-token-font-sans: Inter, Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, sans-serif;
+  --fi-token-font-serif: Georgia, Times New Roman, serif;
+  --fi-token-font-mono: Fragment Mono, ui-monospace, monospace;
+  --fi-token-font-script: Segoe Print, Bradley Hand, Comic Sans MS, cursive;
+
+  --fi-token-radius-sm: 8px;
+  --fi-token-radius-md: 16px;
+  --fi-token-radius-lg: 20px;
+  --fi-token-radius-xl: 28px;
+  --fi-token-radius-pill: 999px;
+
+  --fi-token-spacing-xs: 8px;
+  --fi-token-spacing-sm: 12px;
+  --fi-token-spacing-md: 16px;
+  --fi-token-spacing-lg: 20px;
+  --fi-token-spacing-xl: 24px;
+  --fi-token-spacing-2xl: 28px;
+
+  --fi-token-motion-fast: 0.15s;
+  --fi-token-motion-normal: 0.2s;
+  --fi-token-motion-slow: 0.7s;
+  --fi-token-ease-standard: ease;
+  --fi-token-ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --fi-token-shadow-base: 0 24px 80px rgba(13, 42, 70, 0.12);
+  --fi-token-shadow-prompt: 0 26px 70px rgba(13, 42, 70, 0.11);
+  --fi-token-shadow-dialog: 0 32px 80px rgba(0, 0, 0, 0.28);
+  --fi-token-shadow-floating: 0 4px 24px rgba(13, 42, 70, 0.14);
+  --fi-token-shadow-floating-hover: 0 8px 32px rgba(13, 42, 70, 0.2);
+
+  --fi-token-gradient-shell-backdrop: radial-gradient(
+    circle at 12% 5%,
+    rgba(23, 61, 103, 0.13),
+    transparent 28rem
+  );
+  --fi-token-gradient-prompt-surface: linear-gradient(
+    180deg,
+    rgba(255, 253, 248, 0.98),
+    rgba(247, 243, 236, 0.96)
+  );
+  --fi-token-gradient-visualizer: linear-gradient(
+    180deg,
+    rgba(170, 133, 72, 0.75),
+    rgba(23, 61, 103, 0.4)
+  );
+}
+
+[data-theme='dark'] {
+  --fi-token-color-ink: #f3eadf;
+  --fi-token-color-muted: #b8aa97;
+  --fi-token-color-soft: #7d7266;
+  --fi-token-color-line: rgba(243, 234, 223, 0.08);
+  --fi-token-color-paper: #0b0a09;
+  --fi-token-color-paper-alt: #181411;
+  --fi-token-color-blue: #c98a5c;
+  --fi-token-color-blue-alt: #ddd1c3;
+  --fi-token-color-gold: #c98a5c;
+  --fi-token-color-white: #201b17;
+  --fi-token-color-danger-text: #ffb49d;
+
+  --fi-token-gradient-shell-backdrop: radial-gradient(
+    circle at 12% 5%,
+    rgba(201, 138, 92, 0.12),
+    transparent 26rem
+  );
+  --fi-token-gradient-prompt-surface: linear-gradient(
+    180deg,
+    rgba(24, 20, 17, 0.96),
+    rgba(11, 10, 9, 0.98)
+  );
+  --fi-token-gradient-visualizer: linear-gradient(
+    180deg,
+    rgba(201, 138, 92, 0.65),
+    rgba(34, 29, 24, 0.55)
+  );
+}

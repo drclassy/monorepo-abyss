@@ -1,0 +1,47 @@
+{
+  "name": "classy-handbook-launcher",
+  "displayName": "Classy Handbook Launcher",
+  "description": "Status bar launcher for Classy handbook documents",
+  "version": "0.0.2",
+  "publisher": "sentra-local",
+  "icon": "codex.png",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:classyHandbook.openMenu",
+    "onCommand:classyHandbook.openClassy",
+    "onCommand:classyHandbook.openCommands",
+    "onCommand:classyHandbook.openCursor",
+    "onCommand:classyHandbook.openCline2026"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "classyHandbook.openMenu",
+        "title": "Classy Handbook: Open Menu"
+      },
+      {
+        "command": "classyHandbook.openClassy",
+        "title": "Classy Handbook: Open classy.html"
+      },
+      {
+        "command": "classyHandbook.openCommands",
+        "title": "Classy Handbook: Open classy-commands.html"
+      },
+      {
+        "command": "classyHandbook.openCursor",
+        "title": "Classy Handbook: Open classy-cursor.html"
+      },
+      {
+        "command": "classyHandbook.openCline2026",
+        "title": "Classy Handbook: Open classycline-2026.html"
+      }
+    ]
+  }
+}

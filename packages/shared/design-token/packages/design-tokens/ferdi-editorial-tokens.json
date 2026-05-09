@@ -1,0 +1,169 @@
+{
+  "name": "Ferdi Editorial Design Tokens",
+  "version": "1.0.0",
+  "source": "@the-abyss/ferdiiskandar",
+  "description": "Extracted editorial dossier token set from apps/corporate/ferdiiskandar app/globals.css.",
+  "prefix": "--fi-token-",
+  "themes": {
+    "light": {
+      "color": {
+        "ink": "#111318",
+        "muted": "#60646f",
+        "soft": "#8a8f9d",
+        "line": "rgba(17, 19, 24, 0.14)",
+        "paper": "#f7f3ec",
+        "paperAlt": "#efe8dc",
+        "blue": "#173d67",
+        "blueAlt": "#0d2a46",
+        "gold": "#aa8548",
+        "white": "#fffdf8",
+        "accentWarm": "#ef6f2e",
+        "danger": "#d65b3f",
+        "dangerText": "#b14c35",
+        "search": "#1eaedb",
+        "think": "#8b5cf6",
+        "canvas": "#ef6f2e"
+      },
+      "gradient": {
+        "shellBackdrop": "radial-gradient(circle at 12% 5%, rgba(23, 61, 103, .13), transparent 28rem)",
+        "promptSurface": "linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(247, 243, 236, 0.96))",
+        "visualizer": "linear-gradient(180deg, rgba(170, 133, 72, 0.75), rgba(23, 61, 103, 0.4))"
+      }
+    },
+    "dark": {
+      "color": {
+        "ink": "#f3eadf",
+        "muted": "#b8aa97",
+        "soft": "#7d7266",
+        "line": "rgba(243, 234, 223, 0.08)",
+        "paper": "#0b0a09",
+        "paperAlt": "#181411",
+        "blue": "#c98a5c",
+        "blueAlt": "#ddd1c3",
+        "gold": "#c98a5c",
+        "white": "#201b17",
+        "accentWarm": "#ef6f2e",
+        "danger": "#d65b3f",
+        "dangerText": "#ffb49d"
+      },
+      "gradient": {
+        "shellBackdrop": "radial-gradient(circle at 12% 5%, rgba(201, 138, 92, .12), transparent 26rem)",
+        "promptSurface": "linear-gradient(180deg, rgba(24, 20, 17, 0.96), rgba(11, 10, 9, 0.98))",
+        "visualizer": "linear-gradient(180deg, rgba(201, 138, 92, 0.65), rgba(34, 29, 24, 0.55))"
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "sans": "Inter, Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+      "serif": "Georgia, Times New Roman, serif",
+      "mono": "Fragment Mono, ui-monospace, monospace",
+      "script": "Segoe Print, Bradley Hand, Comic Sans MS, cursive"
+    },
+    "letterSpacing": {
+      "tightHero": "-0.075em",
+      "tightTitle": "-0.055em",
+      "tightBody": "-0.015em",
+      "capsWide": "0.14em",
+      "capsMedium": "0.12em"
+    },
+    "fontSize": {
+      "label": "11px",
+      "caption": "13px",
+      "body": "14px",
+      "bodyLg": "18px",
+      "titleSm": "20px",
+      "titleMd": "32px",
+      "heroMin": "48px",
+      "heroMax": "156px"
+    },
+    "lineHeight": {
+      "tight": "0.86",
+      "display": "0.96",
+      "body": "1.55",
+      "comfortable": "1.6"
+    },
+    "fontWeight": {
+      "regular": 500,
+      "semibold": 680,
+      "bold": 760,
+      "black": 780
+    }
+  },
+  "radius": {
+    "none": "0px",
+    "sm": "8px",
+    "md": "16px",
+    "lg": "20px",
+    "xl": "28px",
+    "pill": "999px",
+    "circle": "50%"
+  },
+  "spacing": {
+    "xxs": "4px",
+    "xs": "8px",
+    "sm": "12px",
+    "md": "16px",
+    "lg": "20px",
+    "xl": "24px",
+    "2xl": "28px",
+    "3xl": "34px"
+  },
+  "motion": {
+    "duration": {
+      "fast": "0.15s",
+      "normal": "0.2s",
+      "slow": "0.7s"
+    },
+    "easing": {
+      "standard": "ease",
+      "entrance": "cubic-bezier(0.16, 1, 0.3, 1)"
+    },
+    "transform": {
+      "hoverLift": "translateY(-2px)",
+      "microShift": "translateX(3px)"
+    }
+  },
+  "shadow": {
+    "base": "0 24px 80px rgba(13, 42, 70, 0.12)",
+    "prompt": "0 26px 70px rgba(13, 42, 70, 0.11)",
+    "dialog": "0 32px 80px rgba(0, 0, 0, 0.28)",
+    "floating": "0 4px 24px rgba(13, 42, 70, 0.14)",
+    "floatingHover": "0 8px 32px rgba(13, 42, 70, 0.2)"
+  },
+  "layout": {
+    "maxShellWidth": "1520px",
+    "breakpoint": {
+      "sm": "480px",
+      "md": "760px",
+      "lg": "1080px",
+      "xl": "1280px"
+    },
+    "gridBase": "72px",
+    "containerPadding": "clamp(20px, 4vw, 72px)"
+  },
+  "component": {
+    "button": {
+      "height": "48px",
+      "radius": "999px",
+      "fontSize": "13px",
+      "fontWeight": 760
+    },
+    "promptBox": {
+      "radius": "28px",
+      "padding": "18px",
+      "textareaMinHeight": "68px",
+      "textareaMaxHeight": "220px"
+    },
+    "chatBubble": {
+      "radius": "18px",
+      "fontSize": "18px",
+      "lineHeight": "1.24"
+    },
+    "chatPanel": {
+      "widthMax": "380px",
+      "radius": "20px",
+      "toggleSize": "56px"
+    }
+  }
+}
