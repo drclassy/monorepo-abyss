@@ -1,6 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 
 import CountUp from '@/components/CountUp'
@@ -28,7 +29,7 @@ export default function Portfolio() {
     >
       {/* ── LEFT: Dossier Index ── */}
       <motion.aside
-        aria-label="Systems registry dossier index"
+        aria-label="Indeks dossier inisiatif dan sistem"
         className="fi-dossier-index"
         initial={revealInitial}
         whileInView="visible"
@@ -36,45 +37,34 @@ export default function Portfolio() {
         variants={mv?.slideIn}
         transition={shouldReduce ? { duration: 0 } : transitions.medium}
       >
-        <div className="fi-dossier-index-title">Dossier Index</div>
-        <nav aria-label="Registry sections" className="fi-dossier-nav">
+        <div className="fi-dossier-index-title">Indeks Inisiatif</div>
+        <nav aria-label="Bagian inisiatif dan sistem" className="fi-dossier-nav">
           <Link href="#portfolio">
             <span>01</span>
-            <strong>Foreword</strong>
-            <em>Why we build systems under responsibility</em>
+            <strong>Laboratorium</strong>
+            <em>Riset teknologi sejak Februari 2025</em>
           </Link>
           <Link href="#featured-systems">
             <span>02</span>
-            <strong>Feature</strong>
-            <em>Two flagship systems</em>
-          </Link>
-          <Link href="#registry-all-systems">
-            <span>03</span>
-            <strong>The Registry</strong>
-            <em>Cross-sector systems at a glance</em>
+            <strong>Sistem Unggulan</strong>
+            <em>AADI dan Sentra Assist</em>
           </Link>
           <Link href="#registry-foundations">
+            <span>03</span>
+            <strong>Fondasi Kerja</strong>
+            <em>Kepercayaan, data, dan tanggung jawab klinis</em>
+          </Link>
+          <Link href="#registry-all-systems">
             <span>04</span>
-            <strong>Built on Foundations</strong>
-            <em>Data. Safety. Human oversight.</em>
+            <strong>Registri Sistem</strong>
+            <em>Semua sistem sekilas</em>
           </Link>
           <Link href="#registry-roadmap">
             <span>05</span>
-            <strong>Looking Ahead</strong>
-            <em>Our roadmap of care</em>
+            <strong>Arah Lanjut</strong>
+            <em>Ruang pembangunan berikutnya</em>
           </Link>
         </nav>
-        <div className="fi-dossier-card">
-          <p>
-            Transparent by design.
-            <br />
-            Accountable by choice.
-            <br />
-            Built for real sectors.
-          </p>
-          <span aria-hidden="true">✧</span>
-          <small>Sentra Healthcare AI</small>
-        </div>
       </motion.aside>
 
       {/* ── CENTER: Dossier Main ── */}
@@ -88,38 +78,32 @@ export default function Portfolio() {
           variants={mv?.fadeUp}
           transition={shouldReduce ? { duration: 0 } : transitions.medium}
         >
-          <SectionNumberMark number="04" />
+          <SectionNumberMark number="03" />
           <div className="fi-dossier-titleblock">
-            <span className="fi-dossier-section">Systems Registry</span>
+            <span className="fi-dossier-section">Inisiatif &amp; Sistem</span>
             <h2 id="systems-dossier-title">
-              Not products for show.
-              <br />
-              <em>Systems across sectors.</em>
-              <span aria-hidden="true">✷</span>
+              Dari Laboratorium Teknologi Sederhana untuk Indonesia
             </h2>
             <p>
-              Dari healthcare systems dan education systems hingga workforce systems dan digital
-              experience yang berhadapan langsung dengan publik, setiap system dalam registry ini
-              dirancang untuk menjawab masalah operasional nyata dengan accountability, clarity, dan
-              manusia tetap di pusatnya.
+              Sejak Februari 2025, dr Ferdi Iskandar memulai riset dan pembangunan teknologi dari
+              kebutuhan nyata di lapangan. Prosesnya tidak berhenti pada eksperimen awal; setiap
+              temuan diuji kembali, dikembangkan, dan dirapikan menjadi sistem yang lebih berguna
+              bagi layanan kesehatan Indonesia.
             </p>
             <div className="fi-dossier-rule">
-              <span>Applied Intelligence Systems Registry</span>
+              <span>Balowerti II 69, Kediri Jawa Timur</span>
             </div>
           </div>
           <blockquote className="fi-dossier-quote">
             <span aria-hidden="true">&ldquo;</span>
-            <p>
-              Teknologi bukan tujuan akhirnya. Yang menjadi tujuan adalah judgment yang lebih baik,
-              koordinasi yang lebih jernih, dan systems yang lebih layak dipercaya.
-            </p>
-            <cite>Founder systems practice</cite>
+            <p>Saya percaya teknologi terbaik adalah yang bekerja dalam diam.</p>
+            <cite>Praktik sistem founder</cite>
           </blockquote>
         </motion.header>
 
         {/* Featured Systems */}
         <motion.section
-          aria-label="Featured systems"
+          aria-label="Sistem unggulan"
           className="fi-feature-panel"
           id="featured-systems"
           initial={revealInitial}
@@ -136,87 +120,30 @@ export default function Portfolio() {
             whileHover={shouldReduce ? undefined : { y: -8, transition: { duration: 0.3 } }}
           >
             <div className="fi-feature-copy">
-              <span>Featured System 01</span>
+              <span>Sistem Unggulan 01</span>
               <h3>AADI</h3>
-              <p className="fi-feature-subtitle">
-                Autonomous Admission &amp; Documentation Intelligence
-              </p>
+              <p className="fi-feature-subtitle">Kecerdasan Admisi dan Dokumentasi Otonom</p>
               <p className="fi-feature-body-italic">
                 AADI mengumpulkan, memverifikasi, dan mendokumentasikan informasi pasien secara
-                otonom lintas sistem, sehingga friction saat admisi menurun dan akurasi meningkat
+                otonom lintas sistem, sehingga gesekan saat admisi menurun dan akurasi meningkat
                 sejak awal proses.
               </p>
               <div className="fi-feature-status">
                 <small>Status</small>
                 <b className="is-testing">Sedang Diuji</b>
               </div>
-              <Link aria-label="Explore AADI in registry" href="#registry-all-systems">
+              <Link aria-label="Telusuri AADI di registri" href="#registry-all-systems">
                 Jelajahi system →
               </Link>
             </div>
-            <div aria-hidden="true" className="fi-feature-illustration">
-              <svg
-                viewBox="0 0 420 310"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ width: '100%', height: '100%', opacity: 0.55 }}
-              >
-                <rect
-                  x="40"
-                  y="30"
-                  width="340"
-                  height="240"
-                  rx="8"
-                  stroke="#6b5a3e"
-                  strokeWidth="1.2"
-                  fill="none"
-                />
-                <line x1="40" y1="70" x2="380" y2="70" stroke="#6b5a3e" strokeWidth="0.8" />
-                <circle cx="60" cy="50" r="6" fill="#aa8548" opacity="0.6" />
-                <circle cx="78" cy="50" r="6" fill="#aa8548" opacity="0.35" />
-                <circle cx="96" cy="50" r="6" fill="#aa8548" opacity="0.2" />
-                <rect x="60" y="90" width="120" height="8" rx="2" fill="#6b5a3e" opacity="0.25" />
-                <rect x="60" y="108" width="80" height="6" rx="2" fill="#6b5a3e" opacity="0.15" />
-                <rect x="60" y="130" width="140" height="8" rx="2" fill="#6b5a3e" opacity="0.25" />
-                <rect x="60" y="148" width="100" height="6" rx="2" fill="#6b5a3e" opacity="0.15" />
-                <rect x="60" y="170" width="120" height="8" rx="2" fill="#6b5a3e" opacity="0.25" />
-                <rect x="60" y="188" width="90" height="6" rx="2" fill="#6b5a3e" opacity="0.15" />
-                <rect
-                  x="220"
-                  y="90"
-                  width="130"
-                  height="130"
-                  rx="6"
-                  fill="#aa8548"
-                  opacity="0.06"
-                  stroke="#aa8548"
-                  strokeWidth="0.8"
-                />
-                <rect x="232" y="102" width="106" height="10" rx="2" fill="#aa8548" opacity="0.3" />
-                <rect x="232" y="118" width="80" height="8" rx="2" fill="#6b5a3e" opacity="0.18" />
-                <rect x="232" y="132" width="96" height="8" rx="2" fill="#6b5a3e" opacity="0.18" />
-                <rect x="232" y="146" width="70" height="8" rx="2" fill="#6b5a3e" opacity="0.18" />
-                <rect
-                  x="232"
-                  y="170"
-                  width="106"
-                  height="28"
-                  rx="4"
-                  fill="#173d67"
-                  opacity="0.15"
-                />
-                <text
-                  x="285"
-                  y="189"
-                  textAnchor="middle"
-                  fontSize="10"
-                  fill="#173d67"
-                  opacity="0.7"
-                  fontFamily="Georgia, serif"
-                >
-                  Verify
-                </text>
-              </svg>
+            <div className="fi-feature-illustration">
+              <Image
+                alt="Tampilan sistem AADI"
+                className="fi-feature-product-image fi-feature-product-image-aadi"
+                height={520}
+                src="/aadi.png"
+                width={720}
+              />
             </div>
           </motion.article>
 
@@ -228,101 +155,39 @@ export default function Portfolio() {
             whileHover={shouldReduce ? undefined : { y: -8, transition: { duration: 0.3 } }}
           >
             <div className="fi-feature-copy">
-              <span>Featured System 02</span>
+              <span>Sistem Unggulan 02</span>
               <h3>Sentra Assist</h3>
-              <p className="fi-feature-subtitle">AI Chrome Side Panel for Full EMR Completion</p>
+              <p className="fi-feature-subtitle">
+                Panel samping Chrome berbasis AI untuk kelengkapan EMR
+              </p>
               <p>
                 Sentra Assist adalah Chrome Side Panel berbasis AI yang membaca dokumen klinis,
                 melakukan ekstraksi OCR, dan menerapkan algoritma field-matching probabilistik untuk
-                membantu penyelesaian formulir EMR secara end-to-end dengan clinician review.
+                membantu penyelesaian formulir EMR secara end-to-end dengan tinjauan klinisi.
               </p>
               <div className="fi-feature-status">
                 <small>Status</small>
                 <b className="is-testing">Sedang Diuji</b>
               </div>
-              <Link aria-label="Explore Sentra Assist in registry" href="#registry-all-systems">
+              <Link aria-label="Telusuri Sentra Assist di registri" href="#registry-all-systems">
                 Jelajahi system →
               </Link>
             </div>
-            <div
-              aria-hidden="true"
-              className="fi-feature-illustration fi-assist-visual fi-sentra-assist-sketch"
-            >
-              <svg
-                viewBox="0 0 420 310"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ width: '100%', height: '100%', opacity: 0.55 }}
-              >
-                <rect
-                  x="20"
-                  y="20"
-                  width="260"
-                  height="270"
-                  rx="6"
-                  stroke="#6b5a3e"
-                  strokeWidth="1"
-                  fill="none"
-                />
-                <line x1="20" y1="50" x2="280" y2="50" stroke="#6b5a3e" strokeWidth="0.7" />
-                <rect x="30" y="62" width="100" height="6" rx="2" fill="#6b5a3e" opacity="0.2" />
-                <rect x="30" y="76" width="150" height="6" rx="2" fill="#6b5a3e" opacity="0.15" />
-                <rect x="30" y="90" width="130" height="6" rx="2" fill="#6b5a3e" opacity="0.15" />
-                <rect x="30" y="112" width="160" height="6" rx="2" fill="#6b5a3e" opacity="0.2" />
-                <rect x="30" y="126" width="120" height="6" rx="2" fill="#6b5a3e" opacity="0.15" />
-                <line
-                  x1="290"
-                  y1="20"
-                  x2="290"
-                  y2="290"
-                  stroke="#aa8548"
-                  strokeWidth="0.8"
-                  strokeDasharray="4 3"
-                  opacity="0.5"
-                />
-                <rect
-                  x="296"
-                  y="20"
-                  width="110"
-                  height="270"
-                  rx="6"
-                  stroke="#aa8548"
-                  strokeWidth="1.2"
-                  fill="rgba(170,133,72,0.04)"
-                />
-                <rect x="304" y="32" width="90" height="8" rx="2" fill="#aa8548" opacity="0.5" />
-                <rect x="304" y="50" width="90" height="6" rx="2" fill="#6b5a3e" opacity="0.2" />
-                <rect x="304" y="62" width="70" height="6" rx="2" fill="#6b5a3e" opacity="0.15" />
-                <rect x="304" y="74" width="80" height="6" rx="2" fill="#6b5a3e" opacity="0.15" />
-                <rect x="304" y="95" width="90" height="6" rx="2" fill="#6b5a3e" opacity="0.2" />
-                <rect x="304" y="107" width="60" height="6" rx="2" fill="#6b5a3e" opacity="0.15" />
-                <rect x="304" y="130" width="90" height="22" rx="4" fill="#173d67" opacity="0.18" />
-                <text
-                  x="349"
-                  y="145"
-                  textAnchor="middle"
-                  fontSize="9"
-                  fill="#173d67"
-                  opacity="0.8"
-                  fontFamily="Georgia,serif"
-                >
-                  AI Fill
-                </text>
-                <path
-                  d="M 200 160 L 296 140"
-                  stroke="#aa8548"
-                  strokeWidth="1"
-                  strokeDasharray="3 2"
-                  opacity="0.6"
-                />
-              </svg>
+            <div className="fi-feature-illustration fi-assist-visual fi-sentra-assist-sketch">
+              <Image
+                alt="Tampilan sistem Sentra Assist"
+                className="fi-feature-product-image fi-feature-product-image-assist"
+                height={520}
+                src="/assist.webp"
+                width={720}
+              />
             </div>
           </motion.article>
         </motion.section>
 
         {/* Registry Proof */}
         <motion.section
-          aria-label="Registry principles and metrics"
+          aria-label="Prinsip dan metrik registri"
           className="fi-registry-proof"
           id="registry-foundations"
           initial={revealInitial}
@@ -360,7 +225,7 @@ export default function Portfolio() {
           <blockquote>
             <span aria-hidden="true">&ldquo;</span>
             <p>
-              Sistem kami dirancang bersama clinicians dan patients. Trust mereka harus dibangun,
+              Sistem kami dirancang bersama klinisi dan pasien. Kepercayaan mereka harus dibangun,
               bukan diasumsikan.
             </p>
             <cite>Sentra Healthcare AI</cite>
@@ -370,35 +235,35 @@ export default function Portfolio() {
               <strong>
                 <CountUp to={22} duration={1.6} />
               </strong>
-              <span>Systems</span>
-              <small>Across healthcare, education, work, and digital surfaces</small>
+              <span>Sistem</span>
+              <small>Lintas layanan kesehatan, pendidikan, kerja, dan permukaan digital</small>
             </div>
             <div>
               <strong>
                 <CountUp to={4} duration={1.2} />
               </strong>
-              <span>Capability Domains</span>
-              <small>Care, learning, coordination, and public experience</small>
+              <span>Domain Kapabilitas</span>
+              <small>Perawatan, pembelajaran, koordinasi, dan pengalaman publik</small>
             </div>
             <div>
               <strong>
                 <CountUp to={1} duration={0.8} />
               </strong>
               <span>Commitment</span>
-              <small>Responsible intelligence in real operational conditions.</small>
+              <small>Kecerdasan bertanggung jawab dalam kondisi operasional nyata.</small>
             </div>
           </div>
         </motion.section>
 
         {/* Registry Board */}
         <section
-          aria-label="The registry: all systems"
+          aria-label="Registri semua sistem"
           className="fi-registry-board"
           id="registry-all-systems"
         >
           <div className="fi-registry-board-head">
-            <h3>The Registry: All Systems</h3>
-            <span>View as list ☷</span>
+            <h3>Registri: Semua Sistem</h3>
+            <span>Lihat sebagai daftar ☷</span>
           </div>
           <motion.div
             className="fi-registry-columns"
@@ -489,7 +354,7 @@ export default function Portfolio() {
               transition={shouldReduce ? { duration: 0 } : transitions.medium}
             >
               <h4>
-                <span className="dot inbuild"></span>Continuing Build
+                <span className="dot inbuild"></span>Pembangunan Berlanjut
               </h4>
               <ul>
                 <li>
@@ -509,11 +374,11 @@ export default function Portfolio() {
                   <small>Autonomous Turnaround Orchestration</small>
                 </li>
                 <li>
-                  <strong>AI Coding Auditor</strong>
+                  <strong>Hospital management Auditor</strong>
                   <small>Clinical Coding &amp; Claim Defense</small>
                 </li>
                 <li>
-                  <strong>OR Orchestrator</strong>
+                  <strong>Hospital Orchestrator</strong>
                   <small>Smart Operating Room Logistics</small>
                 </li>
               </ul>
@@ -547,16 +412,16 @@ export default function Portfolio() {
             </motion.article>
           </motion.div>
           <p className="fi-registry-boundary">
-            <strong>Clinical boundary:</strong> Sentra systems are designed as decision-support,
-            workflow intelligence, and care coordination infrastructure. They do not replace
-            professional medical judgment.
+            <strong>Batas klinis:</strong> Sistem Sentra dirancang sebagai pendukung keputusan,
+            kecerdasan alur kerja, dan infrastruktur koordinasi perawatan. Sistem ini tidak
+            menggantikan penilaian medis profesional.
           </p>
         </section>
       </div>
 
       {/* ── RIGHT: Glance Sidebar ── */}
       <motion.aside
-        aria-label="All systems at a glance"
+        aria-label="Ringkasan semua sistem"
         className="fi-dossier-glance"
         initial={revealInitial}
         whileInView="visible"
@@ -565,8 +430,8 @@ export default function Portfolio() {
         transition={shouldReduce ? { duration: 0 } : { ...transitions.medium, delay: 0.2 }}
       >
         <div className="fi-glance-head">
-          <strong>All Systems at a Glance</strong>
-          <span>22 Systems</span>
+          <strong>Semua Sistem Sekilas</strong>
+          <span>22 Sistem</span>
         </div>
         <section>
           <h3>
@@ -603,8 +468,8 @@ export default function Portfolio() {
             <li>Ambient Scribe</li>
             <li>Critical Alert System</li>
             <li>Predictive Bed Management</li>
-            <li>AI Coding Auditor</li>
-            <li>OR Orchestrator</li>
+            <li>Hospital management Auditor</li>
+            <li>Hospital Orchestrator</li>
           </ul>
         </section>
         <section id="registry-roadmap">

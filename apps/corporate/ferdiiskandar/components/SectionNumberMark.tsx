@@ -5,7 +5,7 @@ type SectionNumberMarkProps = {
 export default function SectionNumberMark({ number }: SectionNumberMarkProps) {
   return (
     <aside aria-hidden="true" className="fi-section-number-mark">
-      <span>Section</span>
+      <span>Bagian</span>
       <strong>{number}</strong>
       <i />
       <b>✧</b>

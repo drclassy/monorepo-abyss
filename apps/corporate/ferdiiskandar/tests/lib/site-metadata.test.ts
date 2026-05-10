@@ -24,11 +24,24 @@ describe('site metadata', () => {
     expect(metadata.openGraph?.url).toBe('/about')
   })
 
+  it('builds classy-news metadata with the new route pathname', () => {
+    const metadata = buildPageMetadata({
+      title: 'Classy News',
+      description:
+        'Halaman editorial khusus Classy News di dalam ferdiiskandar: signal AI, open-source watch, dan jembatan terkurasi ke notes, works, speaking, serta contact surface.',
+      pathname: '/classy-news',
+    })
+
+    expect(metadata.title).toBe('Classy News | dr. Ferdi Iskandar')
+    expect(String(metadata.description)).toContain('Classy News')
+    expect(metadata.openGraph?.url).toBe('/classy-news')
+  })
+
   it('preserves the founder-style homepage title', () => {
     const metadata = buildSiteMetadata()
 
     expect(metadata.title).toBe('dr. Ferdi Iskandar — Augmented Intelligence Architect')
-    expect(String(metadata.description)).toContain('applied intelligence')
+    expect(String(metadata.description)).toContain('kecerdasan terapan')
     expect(String(metadata.description)).toContain('Profil pribadi')
     expect(metadata.openGraph?.url).toBe('/')
   })

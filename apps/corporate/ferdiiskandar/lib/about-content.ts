@@ -1,170 +1,165 @@
 export const aboutHero = {
-  eyebrow: 'About / Professional Positioning',
-  title:
-    'Professional positioning, shaped for high-responsibility systems and institutional reality.',
+  eyebrow: 'Profil / Posisi Profesional',
+  title: 'Posisi profesional yang dibentuk oleh sistem berisiko tinggi dan realitas institusional.',
   thesis:
-    'dr. Ferdi Iskandar bekerja di pertemuan antara healthcare, law, executive leadership, dan applied intelligence lintas sektor.',
+    'dr. Ferdi Iskandar bekerja di pertemuan antara layanan kesehatan, hukum, kepemimpinan eksekutif, dan kecerdasan terapan lintas sektor.',
   context:
-    'Sebuah pembacaan terstruktur atas peran, worldview, dan postur institusional di balik systems work yang mencakup care, learning, work, dan public-facing digital experience.',
-  executiveBio:
-    'Dr. Ferdi Iskandar adalah seorang physician-founder yang bekerja di pertemuan antara care, law, dan intelligence. Ia membangun intelligence systems di sektor healthcare, education, workforce, dan digital experience dengan fokus pada kondisi institusional yang nyata, human judgment, dan tanggung jawab jangka panjang. Dengan 12 tahun pengalaman kepemimpinan sebagai hospital CEO per 2026, karyanya mempertemukan healthcare operations, legal awareness, dan applied intelligence ke dalam systems yang dirancang untuk trust, clarity, dan execution.',
+    'Sebuah pembacaan terstruktur atas peran, cara pandang, dan postur institusional di balik kerja sistem yang mencakup perawatan, pembelajaran, pekerjaan, dan pengalaman digital publik.',
 } as const
 
 export const aboutPositioning = [
-  'Physician-executive yang bekerja dari realitas klinis dan operasional, bukan dari abstraksi.',
-  'Founder yang membangun healthcare intelligence dengan keseriusan institusional dan kesadaran governance.',
-  'Systems architect yang membentuk teknologi sebagai ekstensi human judgment, bukan penggantinya.',
-  'Clinical intelligence builder yang berfokus pada infrastruktur yang akuntabel dan peka konteks.',
-  'Strategic transformation thinker yang menerjemahkan tekanan, kompleksitas, dan tanggung jawab menjadi arah operasional.',
+  'Pijakan klinis dipahami sebagai tanggung jawab langsung terhadap pasien dan operasional layanan, bukan sekadar kerangka konsep. Pengalaman di garis depan pengambilan keputusan—dari ruang gawat darurat hingga tata kelola rumah sakit—membentuk cara membaca risiko, prioritas, dan batas kemampuan sistem. Setiap usulan perbaikan arus kerja atau dukungan keputusan harus dapat dijelaskan dalam bahasa akuntabilitas klinis: siapa memutuskan, atas dasar sinyal apa, dan dengan mitigasi apa bila ketidakpastian tetap ada.',
+  'Postur pendiri berarti menempatkan reputasi institusional dan kepercayaan publik setara dengan ambisi produk. Pembangunan kecerdasan layanan kesehatan dilakukan dengan kesadaran penuh pada regulasi, etika profesi, dan dinamika stakeholder yang tidak selaras. Komitmennya bukan pada narasi pertumbuhan semata, melainkan pada konsistensi tata kelola, transparansi batas kemampuan model, dan kemampuan organisasi untuk belajar dari insiden tanpa mengorbankan keselamatan pasien.',
+  'Arsitektur sistem dirancang agar teknologi memperkuat penilaian manusia: menyajikan konteks, mengurangi beban kognitif berulang, dan menjaga jejak audit yang dapat ditinjau ulang. Integrasi antarmuka, alur data, dan kebijakan akses disusun sebagai satu permukaan tanggung jawab, bukan kumpulan fitur yang bersaing merebut perhatian klinisi. Tujuannya jelas: kejelasan sinyal, alur kerja yang tenang, dan titik intervensi manusia yang eksplisit pada setiap titik kritis.',
+  'Pembangunan kecerdasan klinis menekankan infrastruktur yang akuntabel—dari definisi indikator dan validasi konteks, hingga mekanisme pengawasan setelah peluncuran. Sistem didorong untuk mendukung trajektori perawatan preventif dan peringatan dini, tanpa mengaburkan bahwa penafsiran akhir tetap berada pada profesi yang berwenang. Setiap lapisan model atau aturan bisnis harus dapat dipertanggungjawabkan kepada tim klinis dan pemangku kebijakan institusi.',
+  'Arah strategis menerjemahkan tekanan pasar, kompleksitas regulasi, dan ekspektasi masyarakat menjadi portofolio inisiatif yang dapat dieksekusi bertahap. Prioritas ditetapkan berdasarkan dampak pada keselamatan, keadilan akses, dan keberlanjutan operasional, bukan semata kemewahan demonstrasi teknis. Transformasi dipandang sebagai perjalanan panjang: pengukuran hasil, perbaikan berkelanjutan, dan komunikasi yang jujur tentang apa yang sudah teruji versus apa yang masih dalam eksperimen terkendali.',
 ] as const
 
 export const aboutRegistryPanels = [
   {
     number: '01',
-    title: 'Clinical Grounding',
+    title: 'Pijakan Klinis',
     body: aboutPositioning[0],
   },
   {
     number: '02',
-    title: 'Founder Posture',
+    title: 'Postur Pendiri',
     body: aboutPositioning[1],
   },
   {
     number: '03',
-    title: 'System Architecture',
+    title: 'Arsitektur Sistem',
     body: aboutPositioning[2],
   },
   {
     number: '04',
-    title: 'Intelligence Build',
+    title: 'Pembangunan Kecerdasan',
     body: aboutPositioning[3],
   },
   {
     number: '05',
-    title: 'Strategic Direction',
+    title: 'Arah Strategis',
     body: aboutPositioning[4],
   },
 ] as const
 
 export const aboutManifesto = [
-  'Teknologi healthcare tidak seharusnya bersaing dengan human care untuk mendapatkan perhatian. Perannya adalah menjernihkan signal, mengurangi friction, dan membuat difficult judgment lebih terbaca.',
-  'Intelligence hanya bernilai dalam healthcare ketika tetap akuntabel pada manusia, institusi, dan konsekuensi. Capability tanpa tanggung jawab tidak pernah cukup.',
-  'Systems harus dirancang untuk kondisi yang benar-benar ada: infrastruktur yang tidak merata, tekanan operasional, dan kebutuhan akan trust di antara clinical teams.',
-  'Bentuk tertinggi dari ambisi teknis bukanlah spectacle. Ia adalah quiet reliability di bawah tanggung jawab institusional yang nyata.',
+  'Pengetahuan kedokteran memiliki keluasan yang sangat besar. Ketika fokus hanya pada reasoning dan teori, intuisi klinis dapat melemah; sebaliknya, ketika hanya mengandalkan intuisi, ketelitian penalaran dapat berkurang. AI membuka paradigma kolaborasi baru: mempersempit kemungkinan diagnosis secara sistematis, sementara tenaga kesehatan menggunakan pengetahuan dan intuisi klinis untuk mengejar diagnosis terbaik bagi pasien.',
+  'Disampaikan pada rapat tenaga kesehatan dan Komisaris RSIA Melinda, Maret 2025.',
 ] as const
 
 export const aboutPrinciples = [
   {
-    title: 'Clarity over noise',
+    title: 'Kejernihan sebelum kebisingan',
     body: 'Teknologi seharusnya mengurangi beban kognitif, bukan menambahkan lapisan distraksi baru.',
   },
   {
-    title: 'Judgment stays human',
-    body: 'Systems boleh membantu, menstrukturkan, dan menampilkan signal, tetapi professional judgment harus tetap terlihat dan utuh.',
+    title: 'Penilaian tetap berada pada manusia',
+    body: 'Sistem boleh membantu, menstrukturkan, dan menampilkan sinyal, tetapi penilaian profesional harus tetap terlihat dan utuh.',
   },
   {
-    title: 'Accountability is part of design',
-    body: 'Trust dibangun melalui auditability, restraint, dan kejujuran operasional, bukan hanya melalui volume output.',
+    title: 'Akuntabilitas adalah bagian dari desain',
+    body: 'Kepercayaan dibangun melalui kemampuan audit, pengendalian diri, dan kejujuran operasional, bukan hanya melalui volume output.',
   },
   {
-    title: 'Architecture must fit reality',
-    body: 'Systems yang berguna menghormati kondisi institusional yang nyata, bukan berasumsi pada lingkungan yang ideal.',
+    title: 'Arsitektur harus sesuai realitas',
+    body: 'Sistem yang berguna menghormati kondisi institusional yang nyata, bukan berasumsi pada lingkungan yang ideal.',
   },
 ] as const
 
 export const aboutAuthoritySignals = [
   'Hospital CEO dengan 12 tahun pengalaman kepemimpinan per 2026.',
-  'Kepemimpinan founder yang bertumpu pada transformasi healthcare, bukan product theater yang terlepas dari kenyataan.',
-  'Pengalaman sebagai healthcare executive yang dibentuk oleh tanggung jawab institusional yang berkelanjutan dan tekanan krisis.',
-  'Literasi civil law dan medical malpractice yang memengaruhi bagaimana governance dan accountability dirancang.',
-  'Arah system-building yang dibentuk oleh clinical intelligence, workflow clarity, dan implementation reality.',
-  'Mindset yang institution-facing dan memandang trust, safety, serta coordination sebagai tanggung jawab desain.',
+  'Kepemimpinan founder yang bertumpu pada transformasi layanan kesehatan, bukan teatrikal produk yang terlepas dari kenyataan.',
+  'Pengalaman sebagai eksekutif layanan kesehatan yang dibentuk oleh tanggung jawab institusional berkelanjutan dan tekanan krisis.',
+  'Literasi hukum perdata dan malpraktik medis yang memengaruhi cara tata kelola dan akuntabilitas dirancang.',
+  'Arah pembangunan sistem yang dibentuk oleh kecerdasan klinis, kejernihan alur kerja, dan realitas implementasi.',
+  'Cara pikir yang menghadap institusi dan memandang kepercayaan, keselamatan, serta koordinasi sebagai tanggung jawab desain.',
 ] as const
 
 export const aboutIndexEntries = [
   {
     number: '01',
-    title: 'Foreword',
-    detail: 'Cara membaca postur founder ini',
+    title: 'Pengantar',
+    detail: 'Cara membaca postur pendiri ini',
     href: '#about-foreword',
   },
   {
     number: '02',
-    title: 'Registry',
-    detail: 'Professional positioning yang diurai',
+    title: 'Registri',
+    detail: 'Posisi profesional yang diurai',
     href: '#about-registry',
   },
   {
     number: '03',
-    title: 'Operating Articles',
-    detail: 'Worldview dan logika kerja',
+    title: 'Artikel Kerja',
+    detail: 'Cara pandang dan logika kerja',
     href: '#about-articles',
   },
   {
     number: '04',
-    title: 'Bridge',
-    detail: 'Dari postur founder menuju systems',
+    title: 'Jembatan',
+    detail: 'Dari postur pendiri menuju sistem',
     href: '#about-bridge',
   },
 ] as const
 
 export const aboutGlanceSections = [
   {
-    title: 'Roles',
+    title: 'Peran',
     items: [
-      'Physician-Founder Working at the Intersection of Care, Law, and Intelligence',
-      'Builder of Clinical Intelligence and Accountable Healthcare Systems',
-      'AI Development Enthusiast and Researcher',
-      'Researcher in Applied Intelligence for Healthcare Systems',
-      'Hospital Executive with Twelve Years of Institutional Leadership',
+      'Dokter-pendiri di pertemuan perawatan, hukum, dan kecerdasan',
+      'Pembangun kecerdasan klinis dan sistem kesehatan yang akuntabel',
+      'Peneliti dan praktisi pengembangan AI',
+      'Peneliti kecerdasan terapan untuk sistem layanan kesehatan',
+      'Eksekutif rumah sakit dengan 12 tahun kepemimpinan institusional',
     ],
   },
   {
-    title: 'Qualifications',
+    title: 'Kualifikasi',
     items: [
-      'Licensed General Practitioner',
-      'Bachelor of Laws',
-      'Master of Civil Law',
-      'Executive Leadership and Management Training',
+      'Dokter umum berizin praktik',
+      'Sarjana Hukum',
+      'Magister Kenotariatan',
+      'Pelatihan kepemimpinan dan manajemen eksekutif',
       'Certified Master in Diabetic Care',
       'Certified Master in Hypertension Care',
-      'Tax Law Consultant',
+      'Konsultan hukum pajak',
     ],
   },
   {
-    title: 'Affiliations',
-    items: ['Participant, Minimax Developer Program', 'Member, Google Developer Premium Tier'],
+    title: 'Afiliasi',
+    items: ['Peserta, Minimax Developer Program', 'Anggota, Google Developer Premium Tier'],
   },
   {
-    title: 'Worldview',
+    title: 'Cara Pandang',
     items: [
-      'Accountability as architecture',
-      'Human judgment remains visible',
-      'Quiet reliability over spectacle',
+      'Akuntabilitas sebagai arsitektur',
+      'Penilaian manusia tetap terlihat',
+      'Keandalan tenang sebelum tontonan',
     ],
   },
   {
-    title: 'Authority Signals',
+    title: 'Sinyal Otoritas',
     items: [
-      'Healthcare leadership under pressure',
-      'Governance informed by legal literacy',
-      'Responsible AI shaped by operational reality',
+      'Kepemimpinan layanan kesehatan di bawah tekanan',
+      'Tata kelola yang diinformasikan literasi hukum',
+      'AI bertanggung jawab yang dibentuk realitas operasional',
     ],
   },
 ] as const
 
 export const aboutSystemsBridge = {
-  title: 'From positioning to systems',
-  body: 'Worldview pada halaman ini tidak terpisah dari systems work yang dibangun. Inilah logika operasional di balik bagaimana intelligence layers, care infrastructure, dan route-ready product surfaces dirancang.',
+  title: 'Dari posisi menuju sistem',
+  body: 'Cara pandang pada halaman ini tidak terpisah dari kerja sistem yang dibangun. Inilah logika operasional di balik bagaimana lapisan kecerdasan, infrastruktur perawatan, dan permukaan produk siap-rute dirancang.',
   href: '/systems',
   fallbackHref: '/#portfolio',
-  label: 'Explore systems thinking',
+  label: 'Telusuri cara pikir sistem',
 } as const
 
 export const aboutClosing = {
-  title: 'If this way of thinking is relevant, the next step is conversation.',
+  title: 'Jika cara berpikir ini relevan, langkah berikutnya adalah percakapan.',
   body: 'Tujuan halaman ini bukan untuk mengesankan melalui volume, melainkan untuk membuat postur profesional di balik karya ini dapat dipahami. Jika postur tersebut selaras dengan institusi, agenda kolaborasi, atau arah strategis Anda, langkah berikutnya adalah percakapan yang jelas dan membumi.',
   href: '/contact',
   fallbackHref: '/#contact',
-  label: 'Open a conversation',
+  label: 'Buka percakapan',
 } as const

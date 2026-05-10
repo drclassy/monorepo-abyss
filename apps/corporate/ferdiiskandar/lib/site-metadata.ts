@@ -38,7 +38,7 @@ export function buildPageMetadata({ title, description, pathname }: PageMetadata
 export function buildSiteMetadata(): Metadata {
   const title = `${siteIdentity.name} — ${siteIdentity.headline}`
   const description =
-    'Profil pribadi dr. Ferdi Iskandar sebagai founder di bidang applied intelligence, kepemimpinan institusional, dan pengembangan systems di sektor healthcare, education, workforce, dan digital experience di Indonesia.'
+    'Profil pribadi dr. Ferdi Iskandar sebagai pendiri di bidang kecerdasan terapan, kepemimpinan institusional, dan pengembangan sistem di sektor layanan kesehatan, pendidikan, tenaga kerja, dan pengalaman digital di Indonesia.'
 
   return {
     title,

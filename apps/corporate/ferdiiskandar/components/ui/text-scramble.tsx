@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import type { MotionProps } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
@@ -29,7 +29,7 @@ type TextScrambleProps = {
   onScrambleComplete?: () => void
 } & MotionProps
 
-const defaultChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+const defaultChars = '·∷⊕⊗▪▫◦–—01'
 
 export function TextScramble({
   children,
@@ -43,6 +43,7 @@ export function TextScramble({
   ...props
 }: TextScrambleProps) {
   const MotionComponent = motionElements[Component]
+  const shouldReduce = useReducedMotion()
   const [displayText, setDisplayText] = useState(children)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const animationFrameRef = useRef<number | null>(null)
@@ -66,7 +67,7 @@ export function TextScramble({
     isAnimatingRef.current = false
 
     const runScramble = (): void => {
-      if (!trigger) {
+      if (!trigger || shouldReduce) {
         setDisplayText(text)
         return
       }
@@ -117,7 +118,7 @@ export function TextScramble({
       clearTimers()
       isAnimatingRef.current = false
     }
-  }, [characterSet, duration, onScrambleComplete, speed, text, trigger])
+  }, [characterSet, duration, onScrambleComplete, shouldReduce, speed, text, trigger])
 
   return (
     <MotionComponent className={className} {...props}>

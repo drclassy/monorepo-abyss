@@ -120,7 +120,7 @@ const sentraSimThemeStyle = {
   background:
     'radial-gradient(circle at top right, rgba(242, 237, 232, 0.06), transparent 34%), radial-gradient(circle at bottom left, rgba(242, 237, 232, 0.04), transparent 28%), #1a1a1a',
   backgroundColor: '#1a1a1a',
-  fontFamily: 'Georgia, "Times New Roman", serif',
+  fontFamily: 'Georgia, serif',
   ['--fi-paper' as const]: '#ece7d7',
   ['--fi-paper-2' as const]: '#ece7d7',
   ['--fi-white' as const]: '#ece7d7',
@@ -130,7 +130,7 @@ const sentraSimThemeStyle = {
 } as CSSProperties
 
 const sentraSimGeorgiaFontStyle = {
-  fontFamily: 'Georgia, "Times New Roman", serif',
+  fontFamily: 'Georgia, serif',
 } as CSSProperties
 
 const sentraSimTransparentSurfaceStyle = {
@@ -202,6 +202,13 @@ type SimulationState = {
   diagnosisCount: number
   showManagement: boolean
   managementCount: number
+  vitalsRevealCount: number
+  examRevealCount: number
+  historyRevealCount: number
+  showAnamnesaIdle: boolean
+  showPanel02: boolean
+  showPanel03: boolean
+  showPanel04: boolean
 }
 
 const BASE_LAB_RECOMMENDATIONS: readonly LabRecommendation[] = [
@@ -662,6 +669,13 @@ function createInitialSimulationState(): SimulationState {
     diagnosisCount: 0,
     showManagement: false,
     managementCount: 0,
+    vitalsRevealCount: 0,
+    examRevealCount: 0,
+    historyRevealCount: 0,
+    showAnamnesaIdle: false,
+    showPanel02: false,
+    showPanel03: false,
+    showPanel04: false,
   }
 }
 
@@ -784,13 +798,19 @@ export default function SentraSimSection() {
         await delay(150)
       }
 
-      await delay(500)
+      await delay(400)
+
+      patchSimulation({ showAnamnesaIdle: true })
+      await delay(800)
 
       for (let count = 1; count <= activeBranch.anamnesaTags.length; count += 1) {
         patchSimulation({ anamnesaTagCount: count })
         await delay(300)
       }
 
+      await delay(400)
+      patchSimulation({ showPanel02: true })
+      await delay(150)
       patchSimulation({
         status: STATUS_TEXT.emr,
         historyPhase: 'loading',
@@ -802,10 +822,24 @@ export default function SentraSimSection() {
         historyPhase: 'ready',
         status: STATUS_TEXT.synced,
       })
-      await delay(800)
 
+      for (let count = 1; count <= 4; count += 1) {
+        await delay(280)
+        patchSimulation({ historyRevealCount: count })
+      }
+
+      await delay(200)
+
+      patchSimulation({ showPanel03: true })
+      await delay(200)
       patchSimulation({ showVitalsAnomaly: true })
       focusSimulationStep('evidence')
+
+      for (let count = 1; count <= activeBranch.vitals.length; count += 1) {
+        patchSimulation({ vitalsRevealCount: count })
+        await delay(140)
+      }
+
       await delay(200)
 
       for (let count = 1; count <= activeBranch.anomalyTags.length; count += 1) {
@@ -813,8 +847,17 @@ export default function SentraSimSection() {
         await delay(200)
       }
 
-      await delay(500)
+      await delay(360)
+      patchSimulation({ showPanel04: true })
+      await delay(200)
       focusSimulationStep('exam')
+
+      for (let count = 1; count <= activeBranch.physicalExamRows.length; count += 1) {
+        patchSimulation({ examRevealCount: count })
+        await delay(180)
+      }
+
+      await delay(200)
 
       patchSimulation({
         status: STATUS_TEXT.lab,
@@ -1133,7 +1176,7 @@ export default function SentraSimSection() {
                       </div>
                     ))}
                   </div>
-                ) : (
+                ) : simulation.showAnamnesaIdle ? (
                   <div className="fi-cdss-anamnesis-idle">
                     <p className="fi-cdss-anamnesis-idle-intro">
                       Anamnesis diarahkan terlebih dahulu untuk menangkap keluhan inti, sinyal
@@ -1152,314 +1195,394 @@ export default function SentraSimSection() {
                       ))}
                     </div>
                   </div>
-                )}
-              </article>
-
-              <article
-                ref={historyRef}
-                className="fi-cdss-panel fi-cdss-panel-history"
-                id="cdss-sim-history"
-                style={sentraSimGeorgiaFontStyle}
-              >
-                <div className="fi-cdss-panel-head">
-                  <span>02. Riwayat Penyakit, Alergi, dan Red Flag</span>
-                  <strong>Riwayat Penyakit, Alergi, dan Red Flag</strong>
-                </div>
-                {simulation.historyPhase === 'loading' ? (
-                  <p className="fi-cdss-loading">
-                    [SYSTEM: RETRIEVING EMR, ALLERGY, AND PREVIOUS VISITS...]
-                  </p>
                 ) : null}
-                {simulation.historyPhase === 'ready' ? (
-                  <div className="fi-cdss-history-grid">
-                    <div className="fi-cdss-history-main">
-                      <div>
-                        <small>Riwayat Penyakit Sekarang</small>
-                        <p>{activeBranch.historyNow}</p>
-                      </div>
-                      <div>
-                        <small>Riwayat Penyakit Dahulu</small>
-                        <p>{activeBranch.pastHistory}</p>
-                      </div>
-                      <div className="fi-cdss-flag-grid">
-                        <div className="fi-cdss-flag-card" data-tone="warning">
-                          <small>Red Flag Positif</small>
-                          <p>{activeBranch.positiveFlags}</p>
-                        </div>
-                        <div className="fi-cdss-flag-card">
-                          <small>Red Flag Negatif</small>
-                          <p>{activeBranch.negativeFlags}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="fi-cdss-side-table">
-                      <small>Alergi & Obat Rutin</small>
-                      {activeBranch.allergies.map((row) => (
-                        <div className="fi-cdss-table-row" key={row.label}>
-                          <span>{row.label}</span>
-                          <strong data-alert={row.alert ? 'true' : 'false'}>{row.value}</strong>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="fi-cdss-history-grid fi-cdss-idle-grid">
-                    <div className="fi-cdss-history-main">
-                      <div className="fi-cdss-note-card fi-cdss-idle-card">
-                        <small>Riwayat Penyakit Sekarang</small>
-                        <p>
-                          Kronologi gejala, progres keluhan, dan konteks paparan akan dirakit
-                          setelah anamnesis utama terbaca.
-                        </p>
-                      </div>
-                      <div className="fi-cdss-note-card fi-cdss-idle-card">
-                        <small>Riwayat Penyakit Dahulu</small>
-                        <p>
-                          Komorbid lama, rawat inap sebelumnya, dan faktor risiko baseline akan
-                          muncul setelah EMR mulai dipanggil.
-                        </p>
-                      </div>
-                      <div className="fi-cdss-flag-grid">
-                        <div className="fi-cdss-flag-card fi-cdss-idle-card" data-tone="warning">
-                          <small>Red Flag Positif</small>
-                          <p>
-                            Tanda bahaya prioritas akan dipetakan begitu pola sesak, demam,
-                            saturasi, dan alergi mulai terbaca bersama.
-                          </p>
-                        </div>
-                        <div className="fi-cdss-flag-card fi-cdss-idle-card">
-                          <small>Red Flag Negatif</small>
-                          <p>
-                            Temuan yang belum terdeteksi akan tetap dicatat sebagai penyangga
-                            keputusan sebelum eskalasi klinis.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="fi-cdss-side-table fi-cdss-idle-table">
-                      <small>Alergi & Obat Rutin</small>
-                      <div className="fi-cdss-table-row">
-                        <span>Alergi obat</span>
-                        <strong>menunggu</strong>
-                      </div>
-                      <div className="fi-cdss-table-row">
-                        <span>Komorbid</span>
-                        <strong>menunggu</strong>
-                      </div>
-                      <div className="fi-cdss-table-row">
-                        <span>Obat rutin</span>
-                        <strong>menunggu</strong>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </article>
 
-              <article
-                ref={evidenceRef}
-                className="fi-cdss-panel fi-cdss-panel-evidence"
-                id="cdss-sim-evidence"
-                style={sentraSimGeorgiaFontStyle}
-              >
-                <div className="fi-cdss-panel-head">
-                  <span>03. Tanda Vital, Lab, dan Bukti Objektif</span>
-                  <strong>Tanda Vital, Lab, dan Bukti Objektif</strong>
-                </div>
-                <div className="fi-cdss-vitals-grid">
-                  {activeBranch.vitals.map((item) => (
-                    <div
-                      className="fi-cdss-vital-card"
-                      data-idle={simulation.showVitalsAnomaly ? 'false' : 'true'}
-                      key={item.label}
-                    >
-                      <small>{item.label}</small>
-                      <strong
-                        data-critical={
-                          simulation.showVitalsAnomaly && item.critical ? 'true' : 'false'
-                        }
+              {simulation.showPanel02 ? (
+                <article
+                  ref={historyRef}
+                  className="fi-cdss-panel fi-cdss-panel-history"
+                  id="cdss-sim-history"
+                  style={sentraSimGeorgiaFontStyle}
+                >
+                  <div className="fi-cdss-panel-head">
+                    <span>02. Riwayat Penyakit, Alergi, dan Red Flag</span>
+                    <strong>Riwayat Penyakit, Alergi, dan Red Flag</strong>
+                  </div>
+                  {simulation.historyPhase === 'loading' ? (
+                    <p className="fi-cdss-loading">
+                      [SYSTEM: RETRIEVING EMR, ALLERGY, AND PREVIOUS VISITS...]
+                    </p>
+                  ) : null}
+                  {simulation.historyPhase === 'ready' ? (
+                    <div className="fi-cdss-history-grid">
+                      <div className="fi-cdss-history-main">
+                        <div
+                          className="fi-cdss-fade-card"
+                          data-visible={simulation.historyRevealCount >= 1 ? 'true' : 'false'}
+                        >
+                          <small>Riwayat Penyakit Sekarang</small>
+                          <p>
+                            <TextScramble
+                              as="span"
+                              duration={0.9}
+                              key={`hist-now-${selectedSeverity}`}
+                              speed={0.042}
+                              trigger={simulation.historyRevealCount >= 1}
+                            >
+                              {activeBranch.historyNow}
+                            </TextScramble>
+                          </p>
+                        </div>
+                        <div
+                          className="fi-cdss-fade-card"
+                          data-visible={simulation.historyRevealCount >= 2 ? 'true' : 'false'}
+                        >
+                          <small>Riwayat Penyakit Dahulu</small>
+                          <p>
+                            <TextScramble
+                              as="span"
+                              duration={0.9}
+                              key={`hist-past-${selectedSeverity}`}
+                              speed={0.042}
+                              trigger={simulation.historyRevealCount >= 2}
+                            >
+                              {activeBranch.pastHistory}
+                            </TextScramble>
+                          </p>
+                        </div>
+                        <div
+                          className="fi-cdss-flag-grid fi-cdss-reveal-card"
+                          data-visible={simulation.historyRevealCount >= 3 ? 'true' : 'false'}
+                        >
+                          <div className="fi-cdss-flag-card" data-tone="warning">
+                            <small>Red Flag Positif</small>
+                            <p>{activeBranch.positiveFlags}</p>
+                          </div>
+                          <div className="fi-cdss-flag-card">
+                            <small>Red Flag Negatif</small>
+                            <p>{activeBranch.negativeFlags}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="fi-cdss-side-table fi-cdss-reveal-card"
+                        data-visible={simulation.historyRevealCount >= 4 ? 'true' : 'false'}
                       >
-                        {simulation.showVitalsAnomaly ? item.value : 'Pending'}
-                      </strong>
-                      <span>{simulation.showVitalsAnomaly ? item.unit : 'triage feed'}</span>
+                        <small>Alergi & Obat Rutin</small>
+                        {activeBranch.allergies.map((row) => (
+                          <div className="fi-cdss-table-row" key={row.label}>
+                            <span>{row.label}</span>
+                            <strong data-alert={row.alert ? 'true' : 'false'}>{row.value}</strong>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  ) : (
+                    <div className="fi-cdss-history-grid fi-cdss-idle-grid">
+                      <div className="fi-cdss-history-main">
+                        <div className="fi-cdss-note-card fi-cdss-idle-card">
+                          <small>Riwayat Penyakit Sekarang</small>
+                          <p>
+                            Kronologi gejala, progres keluhan, dan konteks paparan akan dirakit
+                            setelah anamnesis utama terbaca.
+                          </p>
+                        </div>
+                        <div className="fi-cdss-note-card fi-cdss-idle-card">
+                          <small>Riwayat Penyakit Dahulu</small>
+                          <p>
+                            Komorbid lama, rawat inap sebelumnya, dan faktor risiko baseline akan
+                            muncul setelah EMR mulai dipanggil.
+                          </p>
+                        </div>
+                        <div className="fi-cdss-flag-grid">
+                          <div className="fi-cdss-flag-card fi-cdss-idle-card" data-tone="warning">
+                            <small>Red Flag Positif</small>
+                            <p>
+                              Tanda bahaya prioritas akan dipetakan begitu pola sesak, demam,
+                              saturasi, dan alergi mulai terbaca bersama.
+                            </p>
+                          </div>
+                          <div className="fi-cdss-flag-card fi-cdss-idle-card">
+                            <small>Red Flag Negatif</small>
+                            <p>
+                              Temuan yang belum terdeteksi akan tetap dicatat sebagai penyangga
+                              keputusan sebelum eskalasi klinis.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="fi-cdss-side-table fi-cdss-idle-table">
+                        <small>Alergi & Obat Rutin</small>
+                        <div className="fi-cdss-table-row">
+                          <span>Alergi obat</span>
+                          <strong>menunggu</strong>
+                        </div>
+                        <div className="fi-cdss-table-row">
+                          <span>Komorbid</span>
+                          <strong>menunggu</strong>
+                        </div>
+                        <div className="fi-cdss-table-row">
+                          <span>Obat rutin</span>
+                          <strong>menunggu</strong>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </article>
+              ) : null}
 
-                {simulation.showVitalsAnomaly ? null : (
-                  <p className="fi-cdss-evidence-idle-note">
-                    Bukti objektif akan aktif setelah triase awal membaca keluhan, respirasi,
-                    temperatur, dan saturasi secara bersamaan.
-                  </p>
-                )}
+              {simulation.showPanel03 ? (
+                <article
+                  ref={evidenceRef}
+                  className="fi-cdss-panel fi-cdss-panel-evidence"
+                  id="cdss-sim-evidence"
+                  style={sentraSimGeorgiaFontStyle}
+                >
+                  <div className="fi-cdss-panel-head">
+                    <span>03. Tanda Vital, Lab, dan Bukti Objektif</span>
+                    <strong>Tanda Vital, Lab, dan Bukti Objektif</strong>
+                  </div>
+                  <div className="fi-cdss-vitals-grid">
+                    {activeBranch.vitals.map((item, index) => {
+                      const isRevealed = index < simulation.vitalsRevealCount
+                      return (
+                        <div
+                          className="fi-cdss-vital-card fi-cdss-fade-card"
+                          data-idle={!simulation.showVitalsAnomaly ? 'true' : 'false'}
+                          data-visible={
+                            simulation.showVitalsAnomaly
+                              ? isRevealed
+                                ? 'true'
+                                : 'false'
+                              : undefined
+                          }
+                          key={item.label}
+                        >
+                          <small>{item.label}</small>
+                          <strong data-critical={isRevealed && item.critical ? 'true' : 'false'}>
+                            {isRevealed ? (
+                              <TextScramble
+                                as="span"
+                                duration={0.5}
+                                key={`vital-${item.label}-${selectedSeverity}`}
+                                speed={0.04}
+                                trigger={isRevealed}
+                              >
+                                {item.value}
+                              </TextScramble>
+                            ) : (
+                              '–'
+                            )}
+                          </strong>
+                          <span>{isRevealed ? item.unit : 'triage feed'}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
 
-                <div className="fi-cdss-lab-toggle">
-                  <button
-                    aria-controls="fi-cdss-lab-panel"
-                    aria-expanded={simulation.labOpen}
-                    className="fi-cdss-inline-button"
-                    disabled={simulation.isRunning}
-                    onClick={() => patchSimulation({ labOpen: !simulation.labOpen })}
-                    type="button"
-                  >
-                    {simulation.labOpen
-                      ? 'Pemeriksaan terpilih karena dicurigai pneumonia'
-                      : 'Buka pemeriksaan penunjang'}
-                  </button>
-                </div>
+                  {simulation.showVitalsAnomaly ? null : (
+                    <p className="fi-cdss-evidence-idle-note">
+                      Bukti objektif akan aktif setelah triase awal membaca keluhan, respirasi,
+                      temperatur, dan saturasi secara bersamaan.
+                    </p>
+                  )}
 
-                {simulation.labOpen ? (
-                  <div
-                    className="fi-cdss-lab-panel"
-                    id="fi-cdss-lab-panel"
-                    style={sentraSimTransparentSurfaceStyle}
-                  >
-                    <div className="fi-cdss-lab-list">
-                      {activeBranch.labRecommendations.map((item, index) => {
-                        const isSelected = index < simulation.selectedLabCount
+                  <div className="fi-cdss-lab-toggle">
+                    <button
+                      aria-controls="fi-cdss-lab-panel"
+                      aria-expanded={simulation.labOpen}
+                      className="fi-cdss-inline-button"
+                      disabled={simulation.isRunning}
+                      onClick={() => patchSimulation({ labOpen: !simulation.labOpen })}
+                      type="button"
+                    >
+                      {simulation.labOpen
+                        ? 'Pemeriksaan terpilih karena dicurigai pneumonia'
+                        : 'Buka pemeriksaan penunjang'}
+                    </button>
+                  </div>
 
-                        return (
-                          <div className="fi-cdss-lab-row" key={item.name}>
-                            <div>
-                              <span className="fi-cdss-check">[{isSelected ? 'x' : ' '}]</span>
-                              <strong>{item.name}</strong>
+                  {simulation.labOpen ? (
+                    <div
+                      className="fi-cdss-lab-panel"
+                      id="fi-cdss-lab-panel"
+                      style={sentraSimTransparentSurfaceStyle}
+                    >
+                      <div className="fi-cdss-lab-list">
+                        {activeBranch.labRecommendations.map((item, index) => {
+                          const isSelected = index < simulation.selectedLabCount
+
+                          return (
+                            <div className="fi-cdss-lab-row" key={item.name}>
+                              <div>
+                                <span className="fi-cdss-check">[{isSelected ? 'x' : ' '}]</span>
+                                <strong>{item.name}</strong>
+                              </div>
+                              {isSelected ? <small>{item.status}</small> : null}
                             </div>
-                            {isSelected ? <small>{item.status}</small> : null}
+                          )
+                        })}
+                      </div>
+
+                      {simulation.showLabResults ? (
+                        <div className="fi-cdss-lab-results">
+                          {activeBranch.labResults
+                            .slice(0, simulation.labResultCount)
+                            .map((item) => (
+                              <div
+                                className="fi-cdss-result-card"
+                                data-alert={item.alert ? 'true' : 'false'}
+                                key={item.name}
+                              >
+                                <small>{item.name}</small>
+                                <strong>{item.value}</strong>
+                                <p>{item.interpretation}</p>
+                              </div>
+                            ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
+
+                  {simulation.trajectoryOpen ? (
+                    <div className="fi-cdss-trajectory">
+                      <div
+                        className="fi-cdss-trajectory-head"
+                        style={sentraSimTransparentSurfaceStyle}
+                      >
+                        <span style={sentraSimTransparentSurfaceStyle}>
+                          Trajektori Respons Awal
+                        </span>
+                        <button
+                          className="fi-cdss-inline-button"
+                          disabled={simulation.isRunning}
+                          onClick={() => patchSimulation({ trajectoryOpen: false })}
+                          type="button"
+                        >
+                          [X] CLOSE
+                        </button>
+                      </div>
+                      <p className="fi-cdss-trajectory-intro">
+                        Oksigenasi dan temperatur dibaca berdampingan untuk melihat apakah
+                        intervensi awal benar-benar menggeser kondisi pasien ke arah yang lebih
+                        aman.
+                      </p>
+                      <div className="fi-cdss-trajectory-grid">
+                        <div className="fi-cdss-trajectory-chart">
+                          <div className="fi-cdss-trajectory-legend" aria-hidden="true">
+                            <span className="is-primary">Oksigenasi</span>
+                            <span className="is-secondary">Temperatur</span>
+                          </div>
+                          <svg
+                            aria-label="Patient response trajectory chart"
+                            preserveAspectRatio="none"
+                            viewBox="0 0 500 160"
+                          >
+                            <line x1="0" x2="500" y1="30" y2="30" />
+                            <line x1="0" x2="500" y1="80" y2="80" />
+                            <line x1="0" x2="500" y1="130" y2="130" />
+                            <polyline
+                              fill="none"
+                              points={activeBranch.trajectoryOxygenPolyline}
+                              strokeWidth="2"
+                            />
+                            <polyline
+                              className="is-secondary"
+                              fill="none"
+                              points={activeBranch.trajectoryTemperaturePolyline}
+                              strokeWidth="2"
+                            />
+                            <circle
+                              cx={activeBranch.trajectoryFinalPoint.x}
+                              cy={activeBranch.trajectoryFinalPoint.y}
+                              r="4"
+                            />
+                          </svg>
+                        </div>
+                        <div className="fi-cdss-trajectory-list">
+                          {activeBranch.trajectoryPoints.map((point) => (
+                            <div className="fi-cdss-table-row" key={point.label}>
+                              <span>{point.label}</span>
+                              <strong>{point.value}</strong>
+                            </div>
+                          ))}
+                          <div className="fi-cdss-trajectory-medications">
+                            {activeBranch.trajectoryMedications.map((medication) => (
+                              <div className="fi-cdss-trajectory-pill" key={medication.name}>
+                                <span>{medication.name}</span>
+                                <strong>{medication.dosage}</strong>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                </article>
+              ) : null}
+
+              {simulation.showPanel04 ? (
+                <article
+                  ref={examRef}
+                  className="fi-cdss-panel fi-cdss-panel-exam"
+                  id="cdss-sim-exam"
+                  style={sentraSimGeorgiaFontStyle}
+                >
+                  <div className="fi-cdss-panel-head">
+                    <span>04. Pemeriksaan Fisik Head-to-Toe</span>
+                    <strong>Pemeriksaan Fisik Head-to-Toe</strong>
+                  </div>
+                  {simulation.showVitalsAnomaly ? (
+                    <div className="fi-cdss-exam-list">
+                      {activeBranch.physicalExamRows.map((row, index) => {
+                        const isRevealed = index < simulation.examRevealCount
+                        return (
+                          <div
+                            className="fi-cdss-exam-row fi-cdss-fade-card"
+                            data-visible={isRevealed ? 'true' : 'false'}
+                            key={row.organ}
+                          >
+                            <span>{row.organ}</span>
+                            <strong data-alert={row.alert ? 'true' : 'false'}>
+                              {isRevealed ? (
+                                <TextScramble
+                                  as="span"
+                                  duration={0.6}
+                                  key={`exam-${row.organ}-${selectedSeverity}`}
+                                  speed={0.04}
+                                  trigger={isRevealed}
+                                >
+                                  {row.result}
+                                </TextScramble>
+                              ) : null}
+                            </strong>
                           </div>
                         )
                       })}
                     </div>
-
-                    {simulation.showLabResults ? (
-                      <div className="fi-cdss-lab-results">
-                        {activeBranch.labResults.slice(0, simulation.labResultCount).map((item) => (
-                          <div
-                            className="fi-cdss-result-card"
-                            data-alert={item.alert ? 'true' : 'false'}
-                            key={item.name}
-                          >
-                            <small>{item.name}</small>
-                            <strong>{item.value}</strong>
-                            <p>{item.interpretation}</p>
-                          </div>
-                        ))}
+                  ) : (
+                    <div className="fi-cdss-exam-list fi-cdss-idle-grid">
+                      <div className="fi-cdss-exam-row fi-cdss-idle-row">
+                        <span>Kepala & Leher</span>
+                        <strong>Menunggu observasi awal dan keluhan utama.</strong>
                       </div>
-                    ) : null}
-                  </div>
-                ) : null}
-
-                {simulation.trajectoryOpen ? (
-                  <div className="fi-cdss-trajectory">
-                    <div
-                      className="fi-cdss-trajectory-head"
-                      style={sentraSimTransparentSurfaceStyle}
-                    >
-                      <span style={sentraSimTransparentSurfaceStyle}>Trajektori Respons Awal</span>
-                      <button
-                        className="fi-cdss-inline-button"
-                        disabled={simulation.isRunning}
-                        onClick={() => patchSimulation({ trajectoryOpen: false })}
-                        type="button"
-                      >
-                        [X] CLOSE
-                      </button>
-                    </div>
-                    <p className="fi-cdss-trajectory-intro">
-                      Oksigenasi dan temperatur dibaca berdampingan untuk melihat apakah intervensi
-                      awal benar-benar menggeser kondisi pasien ke arah yang lebih aman.
-                    </p>
-                    <div className="fi-cdss-trajectory-grid">
-                      <div className="fi-cdss-trajectory-chart">
-                        <div className="fi-cdss-trajectory-legend" aria-hidden="true">
-                          <span className="is-primary">Oksigenasi</span>
-                          <span className="is-secondary">Temperatur</span>
-                        </div>
-                        <svg
-                          aria-label="Patient response trajectory chart"
-                          preserveAspectRatio="none"
-                          viewBox="0 0 500 160"
-                        >
-                          <line x1="0" x2="500" y1="30" y2="30" />
-                          <line x1="0" x2="500" y1="80" y2="80" />
-                          <line x1="0" x2="500" y1="130" y2="130" />
-                          <polyline
-                            fill="none"
-                            points={activeBranch.trajectoryOxygenPolyline}
-                            strokeWidth="2"
-                          />
-                          <polyline
-                            className="is-secondary"
-                            fill="none"
-                            points={activeBranch.trajectoryTemperaturePolyline}
-                            strokeWidth="2"
-                          />
-                          <circle
-                            cx={activeBranch.trajectoryFinalPoint.x}
-                            cy={activeBranch.trajectoryFinalPoint.y}
-                            r="4"
-                          />
-                        </svg>
+                      <div className="fi-cdss-exam-row fi-cdss-idle-row">
+                        <span>Dada (Cor & Pulmo)</span>
+                        <strong>
+                          Pemeriksaan fisik akan muncul setelah tanda vital mulai terisi.
+                        </strong>
                       </div>
-                      <div className="fi-cdss-trajectory-list">
-                        {activeBranch.trajectoryPoints.map((point) => (
-                          <div className="fi-cdss-table-row" key={point.label}>
-                            <span>{point.label}</span>
-                            <strong>{point.value}</strong>
-                          </div>
-                        ))}
-                        <div className="fi-cdss-trajectory-medications">
-                          {activeBranch.trajectoryMedications.map((medication) => (
-                            <div className="fi-cdss-trajectory-pill" key={medication.name}>
-                              <span>{medication.name}</span>
-                              <strong>{medication.dosage}</strong>
-                            </div>
-                          ))}
-                        </div>
+                      <div className="fi-cdss-exam-row fi-cdss-idle-row">
+                        <span>Ekstremitas</span>
+                        <strong>
+                          Context perfusi, edema, dan status perifer masih menunggu input.
+                        </strong>
                       </div>
                     </div>
-                  </div>
-                ) : null}
-              </article>
-
-              <article
-                ref={examRef}
-                className="fi-cdss-panel fi-cdss-panel-exam"
-                id="cdss-sim-exam"
-                style={sentraSimGeorgiaFontStyle}
-              >
-                <div className="fi-cdss-panel-head">
-                  <span>04. Pemeriksaan Fisik Head-to-Toe</span>
-                  <strong>Pemeriksaan Fisik Head-to-Toe</strong>
-                </div>
-                {simulation.showVitalsAnomaly ? (
-                  <div className="fi-cdss-exam-list">
-                    {activeBranch.physicalExamRows.map((row) => (
-                      <div className="fi-cdss-exam-row" key={row.organ}>
-                        <span>{row.organ}</span>
-                        <strong data-alert={row.alert ? 'true' : 'false'}>{row.result}</strong>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="fi-cdss-exam-list fi-cdss-idle-grid">
-                    <div className="fi-cdss-exam-row fi-cdss-idle-row">
-                      <span>Kepala & Leher</span>
-                      <strong>Menunggu observasi awal dan keluhan utama.</strong>
-                    </div>
-                    <div className="fi-cdss-exam-row fi-cdss-idle-row">
-                      <span>Dada (Cor & Pulmo)</span>
-                      <strong>
-                        Pemeriksaan fisik akan muncul setelah tanda vital mulai terisi.
-                      </strong>
-                    </div>
-                    <div className="fi-cdss-exam-row fi-cdss-idle-row">
-                      <span>Ekstremitas</span>
-                      <strong>
-                        Context perfusi, edema, dan status perifer masih menunggu input.
-                      </strong>
-                    </div>
-                  </div>
-                )}
-              </article>
+                  )}
+                </article>
+              ) : null}
 
               {renderAssessmentSection('mobile', mobileAssessmentRef)}
 

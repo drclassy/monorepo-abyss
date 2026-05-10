@@ -11,24 +11,24 @@ import {
 describe('site content', () => {
   it('defines the current homepage reading order', () => {
     expect(sectionIds).toEqual([
-      { id: 'top', label: 'Top' },
-      { id: 'impact', label: 'Impact' },
-      { id: 'expertise', label: 'Thinking' },
-      { id: 'sentra-sim', label: 'Simulation' },
-      { id: 'portfolio', label: 'Systems' },
-      { id: 'story-sentra', label: 'Story' },
-      { id: 'contact', label: 'Contact' },
+      { id: 'top', label: 'Awal' },
+      { id: 'impact', label: 'Fokus' },
+      { id: 'expertise', label: 'Prinsip Berpikir' },
+      { id: 'portfolio', label: 'Inisiatif & Sistem' },
+      { id: 'story-sentra', label: 'Perjalanan' },
+      { id: 'contact', label: 'Kontak' },
     ])
   })
 
   it('uses route-based navigation for the current public surfaces', () => {
     expect(primaryNav).toEqual([
-      { label: 'About', href: '/about' },
-      { label: 'Works', href: '/works' },
-      { label: 'Notes', href: '/notes' },
+      { label: 'Profil', href: '/about' },
+      { label: 'Karya', href: '/works' },
+      { label: 'Catatan', href: '/notes' },
+      { label: 'Berita', href: '/classy-news' },
       { label: 'Speaking', href: '/speaking' },
       { label: 'CV', href: '/cv' },
-      { label: 'Contact', href: '/#contact' },
+      { label: 'Kontak', href: '/#contact' },
     ])
   })
 
@@ -44,7 +44,7 @@ describe('site content', () => {
 
   it('keeps the current founder identity metadata stable', () => {
     expect(siteIdentity.headline).toBe('Augmented Intelligence Architect')
-    expect(thinkingMeta.editionLabel).toBe('Current Edition')
+    expect(thinkingMeta.editionLabel).toBe('Edisi Aktif')
     expect(footerMeta.year).toBe(new Date().getFullYear())
   })
 })

@@ -308,7 +308,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="42"
             y="43"
           >
-            AADI Symphony Pipeline — Clinical Intelligence Architecture
+            AADI Symphony Pipeline — Arsitektur Kecerdasan Klinis
           </text>
           <text
             className="fade-anim"
@@ -319,7 +319,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="42"
             y="62"
           >
-            8-phase autonomous diagnostic and decision support framework
+            Kerangka diagnostik otonom dan pendukung keputusan dalam 8 fase
           </text>
           <text
             className="fade-anim"
@@ -330,7 +330,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="42"
             y="76"
           >
-            operating 100% offline · SKDI · PPK IDI · FORNAS 2023
+            Beroperasi 100% luring · SKDI · PPK IDI · FORNAS 2023
           </text>
         </g>
 
@@ -358,7 +358,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="168"
             y="125"
           >
-            PHASE 1–2: CAPTURE &
+            FASE 1–2: PENANGKAPAN &
           </text>
           <text
             className="fade-anim"
@@ -370,7 +370,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="168"
             y="140"
           >
-            SCREENING
+            PENAPISAN
           </text>
 
           <rect
@@ -395,7 +395,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="200"
             y="178"
           >
-            DATA INTAKE
+            INTAKE DATA
           </text>
           <text
             className="fade-anim"
@@ -406,7 +406,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="200"
             y="192"
           >
-            (Chief complaint,
+            (Keluhan utama,
           </text>
           <text
             className="fade-anim"
@@ -443,7 +443,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="200"
               y="212"
             >
-              PRE-ASSESSMENT
+              PRA-PENILAIAN
             </text>
             <text
               className="fade-anim"
@@ -454,7 +454,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="200"
               y="226"
             >
-              (History extraction,
+              (Ekstraksi riwayat,
             </text>
             <text
               className="fade-anim"
@@ -465,7 +465,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="200"
               y="238"
             >
-              risk stratification)
+              stratifikasi risiko)
             </text>
           </g>
 
@@ -492,7 +492,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="200"
               y="270"
             >
-              TRIAGE LAYER
+              LAPISAN TRIASE
             </text>
             <text
               className="fade-anim"
@@ -503,7 +503,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="200"
               y="284"
             >
-              (Severity scoring,
+              (Skor keparahan,
             </text>
             <text
               className="fade-anim"
@@ -514,7 +514,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="200"
               y="296"
             >
-              red flag detection)
+              deteksi tanda bahaya)
             </text>
           </g>
 
@@ -541,7 +541,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="200"
               y="326"
             >
-              CONTEXT BUILDER
+              PEMBANGUN KONTEKS
             </text>
             <text
               className="fade-anim"
@@ -552,7 +552,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="200"
               y="340"
             >
-              (Clinical context trim,
+              (Ringkas konteks klinis,
             </text>
             <text
               className="fade-anim"
@@ -563,7 +563,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="200"
               y="352"
             >
-              session management)
+              manajemen sesi)
             </text>
           </g>
 
@@ -576,7 +576,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="168"
             y="440"
           >
-            Input layer: structured anamnesis and
+            Lapisan masukan: anamnesis terstruktur dan
           </text>
           <text
             className="fade-anim"
@@ -587,7 +587,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="168"
             y="454"
           >
-            vitals form the diagnostic query vector.
+            tanda vital membentuk vektor kueri diagnostik.
           </text>
         </g>
 
@@ -615,7 +615,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="408"
             y="125"
           >
-            PHASE 3–4: DIAGNOSTIC
+            FASE 3–4: MESIN
           </text>
           <text
             className="fade-anim"
@@ -639,7 +639,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="408"
             y="155"
           >
-            MULTI-LAYER REASONING
+            PENALARAN BERLAPIS
           </text>
 
           <rect
@@ -664,7 +664,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="438"
             y="182"
           >
-            TF-IDF RETRIEVAL
+            RETRIEVAL TF-IDF
           </text>
           <text
             className="fade-anim"
@@ -761,7 +761,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="438"
               y="272"
             >
-              KNOWLEDGE BASE
+              BASIS PENGETAHUAN
             </text>
             <text
               className="fade-anim"
@@ -845,7 +845,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="408"
             y="420"
           >
-            92% accuracy (46/50 cases) for
+            Akurasi 92% (46/50 kasus) untuk
           </text>
           <text
             className="fade-anim"
@@ -895,7 +895,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="638"
             y="124"
           >
-            PHASE 5–6: TREATMENT
+            FASE 5–6: PROTOKOL
           </text>
           <text
             className="fade-anim"
@@ -1084,7 +1084,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
               x="646"
               y="342"
             >
-              RISS check, red flag
+              Cek RISS, tanda bahaya
             </text>
             <text
               className="fade-anim"
@@ -1130,7 +1130,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="638"
             y="449"
           >
-            TF-IDF over semantic search
+            TF-IDF dibanding pencarian semantik
           </text>
           <text
             className="fade-anim"
@@ -1141,7 +1141,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="638"
             y="463"
           >
-            for speed + offline reliability.
+            untuk kecepatan dan keandalan luring.
           </text>
         </g>
 
@@ -1169,7 +1169,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="868"
             y="125"
           >
-            PHASE 7–8: OUTCOME
+            FASE 7–8: HASIL
           </text>
           <text
             className="fade-anim"
@@ -1443,7 +1443,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="868"
             y="472"
           >
-            Observability closes the loop —
+            Observabilitas menutup putaran:
           </text>
           <text
             className="fade-anim"
@@ -1454,7 +1454,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="868"
             y="484"
           >
-            every session feeds accuracy
+            setiap sesi memperkaya akurasi,
           </text>
           <text
             className="fade-anim"
@@ -1465,7 +1465,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="868"
             y="496"
           >
-            metrics and model iteration.
+            metrik, dan iterasi model.
           </text>
         </g>
 
@@ -2007,7 +2007,7 @@ export default function WorksBlueprint({ startDelay = 0 }: WorksBlueprintProps) 
             x="1040"
             y="569"
           >
-            AADI SYMPHONY PIPELINE — CLINICAL INTELLIGENCE
+            AADI SYMPHONY PIPELINE — KECERDASAN KLINIS
           </text>
           <text
             className="fade-anim"

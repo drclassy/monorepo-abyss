@@ -1,14 +1,17 @@
 // Architected and built by dr Classy
 
 export const notesHero = {
-  eyebrow: 'Catatan / Arsip Tulisan',
-  title: 'Catatan dr Classy',
-  thesis:
-    'Sebuah ruang baca yang menampilkan tulisan aktual mengenai AI medis, praktik kedokteran, dan cara berpikir institusional di titik temu care, leadership, dan implementasi.',
-  context:
-    'Halaman ini disusun sebagai arsip editorial yang rapi. Fokusnya bukan feed otomatis, melainkan pilihan tulisan yang benar-benar sudah terbit dan relevan untuk dibaca ulang.',
-  abstract:
-    'Seluruh daftar di bawah ini bersifat statis, manual, dan berbasis tulisan aktual yang tampil di profil Medium saat pengecekan.',
+  eyebrow: 'Ruang Observasi',
+  issue: 'Meja Catatan / Edisi Terpilih',
+  date: 'Kurasi aktif',
+  title: 'Catatan dr Ferdi',
+  paragraphs: [
+    'Sebelum sebuah keputusan menjadi tindakan, ia selalu melewati ruang observasi.',
+    'Di ruang itu, pengalaman diperiksa kembali. Peristiwa tidak langsung disimpulkan. Percakapan tidak langsung dijadikan pendapat. Setiap hal diberi jarak, dilihat ulang, lalu disusun menjadi pemahaman yang lebih jernih.',
+    'Catatan ini adalah ruang observasi tersebut.',
+    'Bukan tempat untuk mengejar kecepatan, bukan juga panggung untuk menunjukkan kepintaran. Ia adalah ruang untuk memperlambat pikiran, membaca pola, dan menemukan makna di balik hal-hal yang sering terlihat biasa.',
+    'Karena bagi saya, menulis bukan sekadar mencatat apa yang terjadi. Menulis adalah cara memahami mengapa sesuatu terjadi, apa artinya, dan ke mana seharusnya kita bergerak setelahnya.',
+  ],
 } as const
 
 export const notesIndexEntries = [
@@ -38,22 +41,31 @@ export const notesIndexEntries = [
   },
 ] as const
 
-export const notesSignals = [
-  'Seluruh isi memakai kurasi manual, bukan sinkronisasi otomatis.',
-  'Yang ditampilkan hanya tulisan yang benar-benar sudah terbit.',
-  'Nada halaman dijaga tenang, rapi, dan editorial.',
+export const notesDeskStats = [
+  {
+    value: '04',
+    label: 'tulisan terkurasi',
+  },
+  {
+    value: '01',
+    label: 'substansi dulu',
+  },
+  {
+    value: '03',
+    label: 'tema utama',
+  },
 ] as const
 
 export const notesLedgerCards = [
   {
     number: '01',
     title: 'Tulisan aktual',
-    body: 'Halaman ini hanya menampilkan tulisan yang benar-benar sudah terbit di Medium, bukan draft, bukan placeholder, dan bukan konten simulasi.',
+    body: 'Halaman ini menempatkan tulisan sebagai jejak pemikiran yang bisa dibaca ulang, bukan sekadar daftar publikasi yang lewat begitu saja.',
   },
   {
     number: '02',
-    title: 'Kurasi manual',
-    body: 'Tidak ada feed yang muncul sendiri. Setiap item dipilih dan dipasang manual agar layout tetap tertib dan bisa dikendalikan.',
+    title: 'Konteks sebelum tautan',
+    body: 'Setiap item diberi alasan kehadiran: apa gagasan utamanya, mengapa relevan, dan bagaimana ia tersambung ke agenda yang lebih besar.',
   },
   {
     number: '03',
@@ -65,8 +77,8 @@ export const notesLedgerCards = [
 export const notesReadingOrder = [
   {
     number: '01',
-    title: 'Baca sebagai arsip, bukan feed',
-    body: 'Urutannya dibuat untuk membantu pembacaan yang tenang: pengantar singkat, satu tulisan utama, lalu daftar tulisan lainnya.',
+    title: 'Baca sebagai arsip pemikiran',
+    body: 'Urutannya dibuat untuk membantu pembacaan yang tenang: pengantar singkat, satu tulisan utama, lalu rak lanjutan yang masih satu napas.',
   },
   {
     number: '02',
@@ -75,14 +87,32 @@ export const notesReadingOrder = [
   },
   {
     number: '03',
-    title: 'Daftar lanjutan tetap nyata',
-    body: 'Artikel lain di bawahnya adalah tulisan aktual lain yang tampil di profil Medium, bukan daftar contoh dan bukan pengisi sementara.',
+    title: 'Daftar lanjutan tetap terhubung',
+    body: 'Artikel lain di bawahnya memperluas pembahasan yang sama: AI medis, implementasi, empati dokter, dan cara institusi mengambil keputusan.',
+  },
+] as const
+
+export const notesDeskCards = [
+  {
+    label: 'Arah Baca',
+    title: 'Dari beban administrasi menuju desain institusi.',
+    body: 'Catatan diposisikan sebagai jembatan antara praktik medis sehari-hari, model AI yang sedang berubah cepat, dan kebutuhan organisasi untuk mengambil keputusan dengan lebih tenang.',
+  },
+  {
+    label: 'Ruang Editorial',
+    title: 'Lebih dekat ke meja baca daripada ruang riuh.',
+    body: 'Setiap item diberi konteks agar pembaca tahu mengapa tulisan itu ada di rak ini, bukan sekadar melihat daftar tautan keluar.',
+  },
+  {
+    label: 'Prinsip Kurasi',
+    title: 'Yang penting dibuat terlihat, yang bising disisihkan.',
+    body: 'Halaman ini mengutamakan hierarki, ritme baca, dan kredibilitas rujukan dibanding animasi atau dekorasi yang tidak membantu pemahaman.',
   },
 ] as const
 
 export const mediumArchive = {
   title: 'Tulisan di Medium',
-  subtitle: 'Pilihan tulisan aktual dari profil Medium dr Classy',
+  subtitle: 'Pilihan tulisan aktual dari profil Medium dr Ferdi',
   href: 'https://medium.com/@claudesy.id',
   label: 'Buka Arsip Medium',
 } as const
@@ -93,7 +123,7 @@ export const mediumFeaturedPost = {
   date: 'Mar 16',
   title: 'Peran Generative AI dalam Reduksi Beban Administrasi Medis.',
   synopsis:
-    'Tulisan terbaru yang tampil di profil Medium saat pengecekan menyorot bagaimana generative AI dapat membantu mengurangi beban administratif medis tanpa mengaburkan tanggung jawab profesional.',
+    'Tulisan terbaru yang tampil di profil Medium saat pengecekan menyorot bagaimana AI generatif dapat membantu mengurangi beban administratif medis tanpa mengaburkan tanggung jawab profesional.',
   body: 'Bagian ini sengaja dibuat paling dominan agar pembaca langsung melihat tulisan paling aktual terlebih dahulu. Daftar di bawahnya berfungsi sebagai rak lanjutan untuk artikel lain yang benar-benar sudah terbit.',
   href: 'https://medium.com/@claudesy.id',
   cta: 'Buka Tulisan Terbaru',
@@ -117,7 +147,7 @@ export const mediumEntries = [
       'Menyelaraskan Visi dan Implementasi: Refleksi CEO dan Peneliti atas “Modeling Medical Diagnosis”',
     synopsis:
       'Tulisan reflektif yang menghubungkan visi sistem medis dengan realitas implementasi dan evaluasi model.',
-    body: 'Masuk sebagai artikel lanjutan yang memperlihatkan kesinambungan antara sudut pandang kepemimpinan dan disiplin system-building.',
+    body: 'Masuk sebagai artikel lanjutan yang memperlihatkan kesinambungan antara sudut pandang kepemimpinan dan disiplin pembangunan sistem.',
     href: 'https://medium.com/@claudesy.id',
     cta: 'Baca di Medium',
   },
@@ -126,7 +156,7 @@ export const mediumEntries = [
     date: 'Mar 8',
     title: 'Di Balik Layar Algoritma: AI dan Masa Depan Empati Dokter di Indonesia',
     synopsis: 'Pembacaan atas AI, empati dokter, dan konteks praktik layanan primer di Indonesia.',
-    body: 'Diletakkan sebagai bagian dari rak tulisan yang memperluas sisi humanistik dan institusional dari diskusi AI di healthcare.',
+    body: 'Diletakkan sebagai bagian dari rak tulisan yang memperluas sisi humanistik dan institusional dari diskusi AI di layanan kesehatan.',
     href: 'https://medium.com/@claudesy.id',
     cta: 'Baca di Medium',
   },
@@ -136,9 +166,9 @@ export const notesGlanceSections = [
   {
     title: 'Logika Arsip',
     items: [
-      'Yang ditampilkan hanya tulisan yang benar-benar sudah terbit.',
-      'Section Medium dikurasi manual, bukan dirender otomatis.',
-      'Satu tulisan terbaru dibuat lebih dominan daripada artikel lainnya.',
+      'Tulisan ditempatkan sebagai jejak berpikir yang bisa dibaca ulang.',
+      'Setiap tautan diberi konteks sebelum pembaca berpindah halaman.',
+      'Satu tulisan terbaru dibuat lebih dominan sebagai titik masuk utama.',
     ],
   },
   {
@@ -154,7 +184,7 @@ export const notesGlanceSections = [
     items: [
       'Tenang, presisi, editorial',
       'Hierarki publikasi yang tegas',
-      'Dibangun untuk dibaca ulang, bukan sebagai auto-feed',
+      'Dibangun untuk dibaca ulang sebagai rak pemikiran',
     ],
   },
 ] as const
@@ -162,7 +192,7 @@ export const notesGlanceSections = [
 export const notesClosing = {
   title:
     'Jika sebuah tulisan terasa relevan, langkah berikutnya adalah percakapan yang lebih jernih.',
-  body: 'Halaman ini dimaksudkan sebagai rak baca yang ringkas namun jelas. Jika salah satu tulisan menyentuh agenda institusional, healthcare AI, atau arah transformasi yang sedang dihadapi, percakapan lanjutan sebaiknya dimulai dari substansi, bukan dari kebisingan presentasi.',
+  body: 'Halaman ini dimaksudkan sebagai rak baca yang ringkas namun jelas. Jika salah satu tulisan menyentuh agenda institusional, AI kesehatan, atau arah transformasi yang sedang dihadapi, percakapan lanjutan sebaiknya dimulai dari substansi, bukan dari kebisingan presentasi.',
   primaryHref: '/#contact',
   primaryLabel: 'Mulai Percakapan',
   secondaryHref: '/about',

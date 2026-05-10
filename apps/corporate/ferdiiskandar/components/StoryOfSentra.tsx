@@ -2,7 +2,6 @@
 
 // Architected and built by dr Classy
 
-import Image from 'next/image'
 import { useState } from 'react'
 
 import SectionNumberMark from '@/components/SectionNumberMark'
@@ -12,9 +11,9 @@ const storyChapters = [
     marker: 'Februari 2025',
     title: 'Inisiatif Awal dari CSR RSIA Melinda DHAI',
     paragraphs: [
-      'Sentra Artificial Intelligence berawal dari sebuah inisiatif Corporate Social Responsibility (CSR) di RSIA Melinda DHAI. Gagasan awalnya sederhana: menghadirkan teknologi AI yang memberikan manfaat nyata bagi layanan kesehatan—bukan untuk menggantikan peran manusia, melainkan untuk mendukung tenaga kesehatan agar dapat bekerja dengan lebih jelas, konsisten, dan percaya diri. Bekerja sama dengan seorang yang berpengalaman lebih dari 25 tahun di layanan primer, Bpk. Joseph Arianto, serta asisten saya, Sdr. Norma, kami mengumpulkan permasalahan nyata, potensi solusi, berdiskusi, membuat konsep, implementasi, repeat.',
+      'Sentra Artificial Intelligence berawal dari sebuah inisiatif tanggung jawab sosial perusahaan di RSIA Melinda DHAI. Gagasan awalnya sederhana: menghadirkan teknologi AI yang memberikan manfaat nyata bagi layanan kesehatan, bukan untuk menggantikan peran manusia, melainkan untuk mendukung tenaga kesehatan agar dapat bekerja dengan lebih jelas, konsisten, dan percaya diri. Bekerja sama dengan Bpk. Joseph Arianto yang berpengalaman lebih dari 25 tahun di layanan primer, serta asisten saya Sdr. Norma, kami mengumpulkan masalah nyata, membaca potensi solusi, berdiskusi, membuat konsep, mengimplementasikan, lalu mengulang prosesnya.',
       'Seiring waktu, Sentra berkembang melampaui konsep awal tersebut.',
-      'Perjalanan ini membuka pemahaman bahwa kekuatan utama AI tidak terletak pada otomatisasi semata, tetapi pada kemampuannya untuk berkolaborasi dengan manusia. AI dapat berperan sebagai partner berpikir, asisten dokumentasi, pendukung clinical reasoning, media edukasi, serta penghubung antara kompleksitas data dan pengambilan keputusan di lapangan.',
+      'Perjalanan ini membuka pemahaman bahwa kekuatan utama AI tidak terletak pada otomatisasi semata, tetapi pada kemampuannya untuk berkolaborasi dengan manusia. AI dapat berperan sebagai rekan berpikir, asisten dokumentasi, pendukung penalaran klinis, media edukasi, serta penghubung antara kompleksitas data dan pengambilan keputusan di lapangan.',
     ],
   },
   {
@@ -23,7 +22,7 @@ const storyChapters = [
     paragraphs: [
       'Dari titik ini, arah Sentra menjadi semakin terdefinisi: menghadirkan AI yang relevan dan dapat digunakan secara langsung di lini depan pelayanan kesehatan primer.',
       'Pengembangan Sentra dilakukan melalui kolaborasi lintas disiplin bersama berbagai tenaga kesehatan, termasuk dokter spesialis seperti dr. Dibya Arfianda, Sp.OG dan dr. Boyong Baskoro, Sp.OG, dokter umum, perawat, bidan, hingga staf administrasi. Pendekatan ini memastikan bahwa setiap solusi yang dikembangkan berangkat dari kebutuhan nyata di lapangan.',
-      'Dalam aspek teknologi, Sentra juga didukung oleh kolaborasi dengan Nathanael Kevin Susanto, BIT, M.Tech, Software Engineer di Visa Worldwide, Singapore, yang berperan dalam menjaga standar reliabilitas sistem serta menjembatani praktik engineering kelas enterprise dengan kebutuhan spesifik sektor healthcare.',
+      'Dalam aspek teknologi, Sentra juga didukung oleh kolaborasi dengan Nathanael Kevin Susanto, BIT, M.Tech, Software Engineer di Visa Worldwide, Singapore, yang berperan dalam menjaga standar reliabilitas sistem serta menjembatani praktik rekayasa kelas enterprise dengan kebutuhan spesifik sektor layanan kesehatan.',
     ],
   },
   {
@@ -34,11 +33,11 @@ const storyChapters = [
     ],
   },
   {
-    marker: 'Primary Care',
+    marker: 'Layanan Primer',
     title: 'Implementasi Nyata di Lini Pelayanan Kesehatan',
     paragraphs: [
-      'Sentra dirancang untuk memahami secara menyeluruh alur kerja layanan kesehatan, mulai dari penerimaan pasien, dokumentasi, triase, clinical reasoning, komunikasi, tindak lanjut, koordinasi operasional, edukasi pasien, hingga deteksi dini risiko.',
-      'Seiring perkembangan, Sentra berevolusi menjadi ekosistem AI yang lebih luas. Selain berfokus pada healthcare intelligence dan clinical decision support, Sentra juga mengembangkan platform edukasi berbasis AI, Sentra Mitra Design, serta berbagai inisiatif lain yang lahir dari kebutuhan nyata di bidang edukasi, dokumentasi, desain, komunikasi, operasional, dan pengembangan sistem.',
+      'Sentra dirancang untuk memahami secara menyeluruh alur kerja layanan kesehatan, mulai dari penerimaan pasien, dokumentasi, triase, penalaran klinis, komunikasi, tindak lanjut, koordinasi operasional, edukasi pasien, hingga deteksi dini risiko.',
+      'Seiring perkembangan, Sentra berevolusi menjadi ekosistem AI yang lebih luas. Selain berfokus pada kecerdasan layanan kesehatan dan pendukung keputusan klinis, Sentra juga mengembangkan platform edukasi berbasis AI, Sentra Mitra Design, serta berbagai inisiatif lain yang lahir dari kebutuhan nyata di bidang edukasi, dokumentasi, desain, komunikasi, operasional, dan pengembangan sistem.',
     ],
   },
   {
@@ -50,21 +49,21 @@ const storyChapters = [
     ],
   },
   {
-    marker: 'Founder Work',
+    marker: 'Kerja Pendiri',
     title: 'Perjalanan Personal dan Filosofi Pengembangan',
     paragraphs: [
       'Dari sebuah inisiatif CSR, Sentra berkembang menjadi sebuah misi yang lebih luas: membangun sistem di mana keahlian manusia tetap menjadi pusat, sementara AI berperan dalam menyusun informasi, mendukung pengambilan keputusan, mempercepat pembelajaran, memperjelas komunikasi, dan membantu tim bertindak lebih proaktif.',
     ],
   },
   {
-    marker: 'Mission',
+    marker: 'Misi',
     title: 'Visi Kolaborasi Manusia dan AI di Masa Depan',
     paragraphs: [
       'Ke depan, Sentra percaya bahwa masa depan tidak dibentuk oleh AI semata, melainkan oleh kolaborasi antara manusia dan teknologi—melibatkan tenaga kesehatan, tenaga pendukung, pendidik, desainer, pemimpin organisasi, serta masyarakat luas.',
     ],
   },
   {
-    marker: 'Now',
+    marker: 'Saat Ini',
     title: 'Komitmen Sentra Artificial Intelligence',
     paragraphs: [
       'Sentra Artificial Intelligence bergerak dengan satu komitmen: membangun ekosistem AI yang praktis, etis, relevan, dan berakar pada kebutuhan nyata manusia. Kedaulatan dan keputusan tetap berada di tangan tenaga kesehatan. Artificial Intelligence bertugas memenuhi mayoritas informasi yang diperlukan agar kita dapat menghasilkan diagnosis terbaik bagi pasien.',
@@ -83,7 +82,7 @@ export default function StoryOfSentra() {
           <SectionNumberMark number="05" />
           <div className="fi-story-headline">
             <div className="fi-story-headline-copy">
-              <div className="fi-kicker">Story of Sentra</div>
+              <div className="fi-kicker">Kisah Sentra</div>
               <h2 className="fi-story-title" id="story-sentra-title">
                 Perjalanan Sentra Artificial Intelligence
               </h2>
@@ -92,14 +91,17 @@ export default function StoryOfSentra() {
               </p>
             </div>
             <figure aria-label="Kolaborator Sentra" className="fi-story-portrait">
-              <Image
-                alt="dr. Ferdi bersama kolaborator Sentra Artificial Intelligence"
+              <video
+                aria-label="Video promosi Sentra Artificial Intelligence"
+                autoPlay
                 className="fi-story-portrait-image"
-                height={450}
-                sizes="(max-width: 1080px) 100vw, 34vw"
-                src="/drferdi-friends.png"
-                width={800}
-              />
+                loop
+                muted
+                playsInline
+                preload="metadata"
+              >
+                <source src="/promovideo.mp4" type="video/mp4" />
+              </video>
             </figure>
           </div>
         </header>

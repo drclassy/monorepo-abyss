@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
+import { cvCredentials } from '@/lib/cv-content'
 import {
   signatureLines,
   signatureTransformation,
@@ -37,11 +38,11 @@ export default function SpeakingPage() {
           </nav>
           <div className="fi-speaking-index-card">
             <p>
-              Platform sebelum panggung.
+              Platform before the stage.
               <br />
-              Klinis sebelum teknis.
+              Clinical clarity before technical language.
               <br />
-              Nurani di atas otomasi.
+              Conscience above automation.
             </p>
             <span aria-hidden="true">✧</span>
             <small>Speaker Registry</small>
@@ -72,8 +73,9 @@ export default function SpeakingPage() {
               </div>
               <div className="fi-speaking-hero-credentials">
                 <strong>{speakerProfile.name}</strong>
-                <span>{speakerProfile.credentials}</span>
-                <span>{speakerProfile.title}</span>
+                <p className="fi-speaking-hero-credentials-shorthand">
+                  {cvCredentials.map((c) => c.code).join(' · ')}
+                </p>
               </div>
             </div>
           </header>

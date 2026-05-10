@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import AbbyWidget from '@/components/AbbyWidget'
+import ClassyNewsSpotlight from '@/components/ClassyNewsSpotlight'
 import Contact from '@/components/Contact'
 import Expertise from '@/components/Expertise'
 import Footer from '@/components/Footer'
@@ -9,7 +10,6 @@ import Impact from '@/components/Impact'
 import Navbar from '@/components/Navbar'
 import Portfolio from '@/components/Portfolio'
 import ScrollReveal from '@/components/ScrollReveal'
-import SentraSimSection from '@/components/SentraSimSection'
 import StoryOfSentra from '@/components/StoryOfSentra'
 import { sectionIds, siteIdentity } from '@/lib/site-content'
 
@@ -24,32 +24,29 @@ export default function HomePage() {
         <Hero />
         <section aria-labelledby="home-dossier-title" className="fi-home-preface">
           <div className="fi-home-preface-head">
-            <p className="fi-home-preface-kicker">Founder Dossier / Homepage Reading Order</p>
+            <p className="fi-home-preface-kicker">Dossier Pendiri / Peta Isi Beranda</p>
             <div>
-              <h2 id="home-dossier-title">
-                A homepage that reads like an operating brief, not a brochure.
-              </h2>
+              <h2 id="home-dossier-title">Clinical Intelligence, Built from Real Practice</h2>
               <p>
-                The landing experience is arranged as an editorial sequence: leadership context
-                first, then thinking system, then institutional simulations, selected systems,
-                founder narrative, and finally the right conversation channel.
+                Sebuah ringkasan terkurasi mengenai pemikiran, sistem, dan inisiatif yang dibangun
+                dr Ferdi Iskandar melalui Sentra Artificial Intelligence.
               </p>
             </div>
           </div>
 
           <div className="fi-home-preface-grid">
             <article className="fi-home-preface-card">
-              <span>Position</span>
+              <span>Posisi</span>
               <strong>{siteIdentity.headline}</strong>
               <p>
-                Built around clinical responsibility, public trust, and founder-led systems thinking
-                rather than generic personal-brand signaling.
+                Dibangun dari tanggung jawab klinis, kepercayaan publik, dan cara berpikir sistem
+                yang dipimpin pendiri, bukan sekadar penanda personal-brand yang generik.
               </p>
             </article>
 
             <article className="fi-home-preface-card">
-              <span>Reading Order</span>
-              <nav aria-label="Homepage reading order">
+              <span>Peta Isi</span>
+              <nav aria-label="Peta isi beranda">
                 <ul className="fi-home-preface-index">
                   {homeReadingOrder.map((section, index) => (
                     <li key={section.id}>
@@ -64,11 +61,12 @@ export default function HomePage() {
             </article>
 
             <article className="fi-home-preface-card">
-              <span>Current Signal</span>
-              <strong>{siteIdentity.location}</strong>
+              <span>Basis & Fokus</span>
+              <strong>Kediri, Jawa Timur, Indonesia</strong>
               <p>
-                {siteIdentity.tagline}. The page is meant to feel like a guided dossier for
-                healthcare leadership, applied intelligence, and human-AI collaboration.
+                Berfokus pada pengembangan healthcare AI, clinical decision support, dan AI-native
+                healthcare operations untuk mendukung sistem kesehatan yang lebih terkoordinasi,
+                manusiawi, dan adaptif.
               </p>
             </article>
           </div>
@@ -80,13 +78,13 @@ export default function HomePage() {
           <Expertise />
         </ScrollReveal>
         <ScrollReveal>
-          <SentraSimSection />
-        </ScrollReveal>
-        <ScrollReveal>
           <Portfolio />
         </ScrollReveal>
         <ScrollReveal>
           <StoryOfSentra />
+        </ScrollReveal>
+        <ScrollReveal>
+          <ClassyNewsSpotlight />
         </ScrollReveal>
         <ScrollReveal>
           <Contact />

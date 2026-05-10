@@ -1,5 +1,6 @@
 // Architected and built by dr Classy
 
+import Image from 'next/image'
 import Link from 'next/link'
 
 import Footer from '@/components/Footer'
@@ -9,12 +10,13 @@ import {
   mediumEntries,
   mediumFeaturedPost,
   notesClosing,
+  notesDeskCards,
+  notesDeskStats,
   notesGlanceSections,
   notesHero,
   notesIndexEntries,
   notesLedgerCards,
   notesReadingOrder,
-  notesSignals,
 } from '@/lib/notes-content'
 
 export default function NotesPage() {
@@ -22,9 +24,9 @@ export default function NotesPage() {
     <div className="fi-page-notes fi-notes-dossier" id="notes-page">
       <Navbar />
       <main className="fi-notes-dossier-shell" id="main-content">
-        <aside aria-label="Notes archive index" className="fi-notes-index">
+        <aside aria-label="Indeks arsip catatan" className="fi-notes-index">
           <div className="fi-notes-index-title">Indeks Catatan</div>
-          <nav aria-label="Notes sections" className="fi-notes-index-nav">
+          <nav aria-label="Bagian catatan" className="fi-notes-index-nav">
             {notesIndexEntries.map((item) => (
               <Link href={item.href} key={item.number}>
                 <span>{item.number}</span>
@@ -35,35 +37,80 @@ export default function NotesPage() {
           </nav>
           <div className="fi-notes-index-card">
             <p>
-              Arsip sebelum algoritma.
+              Observasi sebelum tindakan.
               <br />
-              Kejelasan sebelum kecepatan.
+              Jarak sebelum kesimpulan.
               <br />
-              Isi sebelum teatrikal.
+              Makna sebelum pendapat.
             </p>
             <span aria-hidden="true">✧</span>
-            <small>Catatan dr Classy</small>
+            <small>Catatan dr Ferdi</small>
           </div>
         </aside>
 
         <div className="fi-notes-main">
           <header className="fi-notes-hero" id="notes-foreword">
             <div className="fi-notes-hero-copy">
-              <span className="fi-notes-section-label">Section 05</span>
+              <div className="fi-notes-masthead">
+                <span className="fi-notes-section-label">Bagian 05</span>
+                <span>{notesHero.issue}</span>
+                <span>{notesHero.date}</span>
+              </div>
               <h1>{notesHero.title}</h1>
-              <p className="fi-notes-hero-thesis">{notesHero.thesis}</p>
-              <p className="fi-notes-hero-context">{notesHero.context}</p>
-            </div>
-            <aside className="fi-notes-hero-aside" aria-label="Notes foreword abstract">
-              <span className="fi-notes-panel-label">{notesHero.eyebrow}</span>
-              <p>{notesHero.abstract}</p>
-              <ul>
-                {notesSignals.map((signal) => (
-                  <li key={signal}>{signal}</li>
+              <div className="fi-notes-hero-prose">
+                {notesHero.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
                 ))}
-              </ul>
+              </div>
+              <div className="fi-notes-hero-statline" aria-label="Ringkasan arsip catatan">
+                {notesDeskStats.map((stat) => (
+                  <div key={stat.label}>
+                    <strong>{stat.value}</strong>
+                    <span>{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <aside className="fi-notes-hero-aside" aria-label="Abstrak dan visual arsip catatan">
+              <div className="fi-notes-hero-visual">
+                <Image
+                  alt="dr Ferdi Iskandar menulis catatan di meja kerja"
+                  fill
+                  priority
+                  sizes="(max-width: 860px) 100vw, 34vw"
+                  src="/cdrferdi-study.png"
+                />
+              </div>
+              <div className="fi-notes-hero-brief">
+                <span className="fi-notes-panel-label">{notesHero.eyebrow}</span>
+                <p>
+                  Setiap tulisan dibaca sebagai jejak pengamatan: dari pengalaman, menuju pemahaman,
+                  lalu menjadi arah tindakan yang lebih jernih.
+                </p>
+              </div>
             </aside>
           </header>
+
+          <section aria-labelledby="notes-reading-desk-title" className="fi-notes-reading-desk">
+            <div className="fi-notes-reading-desk-head">
+              <span className="fi-notes-panel-label">Meja Baca</span>
+              <h2 id="notes-reading-desk-title">Bukan daftar tautan. Ini meja baca.</h2>
+              <p>
+                Rancangan halaman ini dibuat untuk memberi konteks sebelum pembaca keluar ke Medium:
+                apa yang sedang dibahas, mengapa tulisan itu disimpan, dan bagaimana membacanya
+                sebagai bagian dari pemikiran yang lebih panjang.
+              </p>
+            </div>
+            <div className="fi-notes-reading-desk-grid">
+              {notesDeskCards.map((card) => (
+                <article className="fi-notes-reading-card" key={card.label}>
+                  <span>{card.label}</span>
+                  <h3>{card.title}</h3>
+                  <p>{card.body}</p>
+                </article>
+              ))}
+            </div>
+          </section>
 
           <section aria-labelledby="notes-order-title" className="fi-notes-ledger" id="notes-order">
             <div className="fi-notes-section-head">
@@ -103,10 +150,12 @@ export default function NotesPage() {
             </div>
             <div className="fi-notes-medium-lead">
               <article className="fi-notes-medium-featured">
-                <span className="fi-notes-panel-label">Rak Medium</span>
-                <div className="fi-notes-entry-meta">
-                  <span className="fi-notes-entry-code">{mediumFeaturedPost.code}</span>
-                  <span className="fi-notes-entry-date">{mediumFeaturedPost.date}</span>
+                <div className="fi-notes-featured-label-row">
+                  <span className="fi-notes-panel-label">Rak Medium</span>
+                  <div className="fi-notes-entry-meta">
+                    <span className="fi-notes-entry-code">{mediumFeaturedPost.code}</span>
+                    <span className="fi-notes-entry-date">{mediumFeaturedPost.date}</span>
+                  </div>
                 </div>
                 <strong className="fi-notes-medium-kicker">{mediumFeaturedPost.label}</strong>
                 <h3>{mediumFeaturedPost.title}</h3>
@@ -131,12 +180,12 @@ export default function NotesPage() {
                   </Link>
                 </div>
               </article>
-              <aside className="fi-notes-medium-note" aria-label="Medium curation note">
-                <span className="fi-notes-panel-label">Curation Note</span>
+              <aside className="fi-notes-medium-note" aria-label="Catatan kurasi Medium">
+                <span className="fi-notes-panel-label">Catatan Kurasi</span>
                 <p>
-                  Semua item Medium di halaman ini dipasang manual. Tidak ada bagian yang muncul
-                  otomatis, tidak ada feed dinamis, dan tidak ada sinkronisasi otomatis ke halaman
-                  catatan ini.
+                  Tulisan di rak ini dipilih karena membantu membaca pola yang sering muncul dalam
+                  pekerjaan dr Ferdi: AI medis, beban administrasi, empati klinis, dan disiplin
+                  membangun sistem yang bisa dipakai.
                 </p>
               </aside>
             </div>
@@ -184,7 +233,7 @@ export default function NotesPage() {
           </section>
         </div>
 
-        <aside aria-label="Founder notes at a glance" className="fi-notes-glance">
+        <aside aria-label="Ringkasan catatan founder" className="fi-notes-glance">
           <div className="fi-notes-glance-head">
             <strong>Sekilas</strong>
             <span>Catatan</span>

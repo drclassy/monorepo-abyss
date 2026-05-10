@@ -1,29 +1,32 @@
 export const cvHero = {
-  sectionLabel: 'Curriculum Vitae / Section 07',
+  sectionLabel: 'Curriculum Vitae / Bagian 07',
   name: 'dr. Ferdi Iskandar',
-  credentials: 'dr., SH, MKN, CLM, CMDC',
-  title: 'Physician · Hospital CEO · AI Founder',
-  thesis: 'Law before medicine. Medicine before leadership. Leadership before intelligence.',
-  context:
-    'A credential record is not a career summary. What follows is a sequence — one that explains why every system dr. Ferdi Iskandar builds is shaped by someone who has been accountable for patient outcomes, not just model performance.',
+  credentials: 'dr., SH, MKN, CLM, CMDC, C.AIS, CDS, MLE, Gen AI',
+  profileEyebrow: 'Profil Profesional',
+  profileIntersectionLines: ['Di pertemuan antara', 'hukum, kode, dan kognisi.'] as const,
+  profileBody:
+    'Lintas disiplin adalah kekuatan. Dari interpretasi regulasi teknologi hingga arsitektur model fondasi, setiap keputusan diinformasikan oleh perspektif multidimensional. Bukan sekadar pengembang. Bukan sekadar akademisi. Seorang pembangun yang memahami sistem secara utuh.',
+  profileMottoLines: ['Setiap gelar ditempuh.', 'Setiap standar dibuktikan.'] as const,
+  profileClosing:
+    'Kombinasi keahlian hukum, keamanan siber, manajemen risiko, dan arsitektur cloud menciptakan fondasi unik untuk memimpin dalam era perusahaan yang diatur oleh AI.',
 } as const
 
 export const cvIndexEntries = [
-  { number: '01', title: 'Profile', detail: 'Executive Summary', href: '#cv-profile' },
-  { number: '02', title: 'Experience', detail: 'Career Timeline', href: '#cv-experience' },
-  { number: '03', title: 'Education', detail: 'Academic Record', href: '#cv-education' },
-  { number: '04', title: 'Research', detail: 'Publications', href: '#cv-research' },
-  { number: '05', title: 'Download', detail: 'Full CV · PDF', href: '#cv-download' },
+  { number: '01', title: 'Profil', detail: 'Ringkasan eksekutif', href: '#cv-profile' },
+  { number: '02', title: 'Pengalaman', detail: 'Linimasa karier', href: '#cv-experience' },
+  { number: '03', title: 'Pendidikan', detail: 'Rekam akademik', href: '#cv-education' },
+  { number: '04', title: 'Riset', detail: 'Publikasi', href: '#cv-research' },
+  { number: '05', title: 'Unduh', detail: 'CV lengkap · PDF', href: '#cv-download' },
 ] as const
 
 export const cvProfile = {
-  eyebrow: 'Executive Profile',
+  eyebrow: 'Profil Eksekutif',
   body: [
-    'dr. Ferdi Iskandar is not a technologist who discovered healthcare. He is a clinician, a hospital CEO, and a legal thinker who built an AI company because the problem demanded it.',
-    'His path is unconventional by design: law before medicine, emergency practice before institutional leadership, and a decade of running a clinical facility before writing a single line of production AI. This sequence matters. It means every system he builds is shaped by someone who has been accountable for patient outcomes — not just model performance.',
-    'Through Sentra Artificial Intelligence, he is translating that institutional experience into practical, explainable, and preventive healthcare AI — focused on clinical trajectory, early warning systems, and AI-native hospital operations.',
+    'dr. Ferdi Iskandar bukan teknolog yang baru menemukan layanan kesehatan. Ia adalah klinisi, CEO rumah sakit, dan pemikir hukum yang membangun perusahaan AI karena masalahnya memang menuntut itu.',
+    'Jalurnya tidak konvensional secara sadar: hukum sebelum kedokteran, praktik gawat darurat sebelum kepemimpinan institusional, dan satu dekade menjalankan fasilitas klinis sebelum menulis sistem AI produksi. Urutan ini penting karena setiap sistem yang ia bangun dibentuk oleh seseorang yang pernah memikul akuntabilitas atas hasil pasien, bukan hanya performa model.',
+    'Melalui Sentra Artificial Intelligence, ia menerjemahkan pengalaman institusional itu menjadi AI kesehatan yang praktis, dapat dijelaskan, dan preventif, dengan fokus pada trajektori klinis, sistem peringatan dini, dan operasi rumah sakit yang berangkat dari cara kerja AI sejak awal.',
   ],
-  tagline: 'Built from the inside of healthcare, not the outside.',
+  tagline: 'Dibangun dari dalam realitas layanan kesehatan, bukan dari luar.',
 } as const
 
 export type ExperienceStatus = 'current' | 'past'
@@ -44,30 +47,30 @@ export const cvExperience: ExperienceItem[] = [
     number: '01',
     role: 'Founder & CEO',
     organization: 'Sentra Artificial Intelligence',
-    years: '2025 — Present',
+    years: '2025 — Saat ini',
     status: 'current',
     description:
-      'Building the operating system for preventive healthcare. Sentra develops clinical trajectory systems, AI-native hospital operations, and next-generation clinical decision support — rooted in twelve years of direct hospital leadership and frontline clinical practice. The company is the direct institutional response to systemic vulnerabilities observed during hospital operations.',
+      'Membangun sistem operasi untuk layanan kesehatan preventif. Sentra mengembangkan sistem trajektori klinis, operasi rumah sakit yang berangkat dari cara kerja AI sejak awal, dan pendukung keputusan klinis generasi berikutnya yang berakar pada 12 tahun kepemimpinan rumah sakit langsung dan praktik klinis lini depan. Perusahaan ini menjadi respons institusional langsung atas kerentanan sistemik yang terlihat dalam operasi rumah sakit.',
   },
   {
     id: 'rsia-melinda',
     number: '02',
     role: 'Chief Executive Officer',
     organization: 'RSIA Melinda DHAI',
-    years: '2016 — Present',
+    years: '2016 — Saat ini',
     status: 'current',
     description:
-      'Leading a private maternal hospital through nearly a decade of operational, clinical, and strategic transformation. Responsible for clinical governance, patient safety architecture, service quality, and institutional performance. The facility maintained a zero mortality record prior to February 2025, when a systemic external exposure prompted the development of Sentra. The hospital now operates as the primary real-world implementation environment for AI-integrated clinical operations.',
+      'Memimpin rumah sakit ibu dan anak swasta melalui hampir satu dekade transformasi operasional, klinis, dan strategis. Bertanggung jawab atas tata kelola klinis, arsitektur keselamatan pasien, mutu layanan, dan performa institusi. Fasilitas ini mempertahankan catatan nol mortalitas sebelum Februari 2025, ketika paparan eksternal sistemik mendorong lahirnya Sentra. Rumah sakit kini menjadi lingkungan implementasi nyata utama untuk operasi klinis yang terintegrasi AI.',
   },
   {
     id: 'er-clinician',
     number: '03',
-    role: 'Emergency Room Clinician',
-    organization: 'Clinical Practice',
+    role: 'Klinisi Instalasi Gawat Darurat',
+    organization: 'Praktik Klinis',
     years: '2014 — 2016',
     status: 'past',
     description:
-      'Frontline clinical practice in emergency medicine — direct exposure to acute decision-making under time pressure, resource constraints, and high-stakes conditions. The formative experience for understanding where clinical intelligence systems fail and where they are needed most. The gap between what data shows and what a clinician must decide in real time became a defining professional question.',
+      'Praktik klinis lini depan dalam kedokteran gawat darurat, dengan paparan langsung pada pengambilan keputusan akut di bawah tekanan waktu, keterbatasan sumber daya, dan kondisi berisiko tinggi. Pengalaman ini membentuk pemahaman tentang titik kegagalan sistem kecerdasan klinis dan tempat sistem itu paling dibutuhkan. Jarak antara apa yang ditunjukkan data dan apa yang harus diputuskan klinisi secara waktu nyata menjadi pertanyaan profesional yang menentukan.',
   },
 ]
 
@@ -85,32 +88,32 @@ export const cvEducation: EducationItem[] = [
   {
     id: 'medicine',
     number: 'EDU-01',
-    degree: 'Bachelor of Medicine',
-    field: 'General Medicine',
+    degree: 'Sarjana Kedokteran',
+    field: 'Kedokteran Umum',
     institution: 'Universitas Wijaya Kusuma',
     years: '2008 — 2013',
     description:
-      'Medical degree — the pivot point that transformed a legal thinker into a clinician. The rare combination of law and medicine would later become the structural foundation for building healthcare AI that is both clinically sound and institutionally accountable.',
+      'Gelar kedokteran menjadi titik balik yang mengubah pemikir hukum menjadi klinisi. Kombinasi langka antara hukum dan kedokteran kemudian menjadi fondasi struktural untuk membangun AI kesehatan yang kuat secara klinis dan akuntabel secara institusional.',
   },
   {
     id: 's2-hukum',
     number: 'EDU-02',
-    degree: 'Master of Law',
-    field: 'Notarial Law (MKN)',
+    degree: 'Magister Kenotariatan',
+    field: 'Hukum Kenotariatan (MKN)',
     institution: 'Universitas Ubaya',
     years: '2005 — 2008',
     description:
-      'Graduate legal studies with a thesis exploring in vitro fertilization from the perspective of surrogate motherhood — an early engagement with the ethical and legal dimensions of medical technology, reproductive rights, and institutional responsibility.',
+      'Studi hukum pascasarjana dengan tesis mengenai fertilisasi in vitro dari perspektif ibu pengganti, sebagai keterlibatan awal dengan dimensi etik dan hukum teknologi medis, hak reproduksi, serta tanggung jawab institusional.',
   },
   {
     id: 's1-hukum',
     number: 'EDU-03',
-    degree: 'Bachelor of Law',
-    field: 'Legal Studies (SH)',
+    degree: 'Sarjana Hukum',
+    field: 'Ilmu Hukum (SH)',
     institution: 'Universitas Ubaya',
     years: '2001 — 2005',
     description:
-      'The beginning of a discipline that would later inform a career at the intersection of medicine, clinical governance, and AI ethics. Law was not a detour — it became the lens through which healthcare systems, institutional liability, and patient rights are understood.',
+      'Awal dari disiplin yang kemudian membentuk karier di pertemuan kedokteran, tata kelola klinis, dan etika AI. Hukum bukan jalan memutar; ia menjadi lensa untuk memahami sistem kesehatan, tanggung jawab institusi, dan hak pasien.',
   },
 ]
 
@@ -144,46 +147,66 @@ export const cvPublications: PublicationItem[] = [
       'Clinical Decision Support',
     ],
     abstract:
-      'An integrative analysis of Digital Twin Brain and Neuro-Symbolic AI for next-generation clinical decision support architecture. The paper proposes a TCMA extension into a neurosymbolic architecture integrating synaptic primitives, acetylcholine-modulated TAN, and spiking temporal dynamics. Simulation prototype across 100 urban patients yielded 94% accuracy and 92% explainability. Predicts human-parity clinical decision support by 2027.',
+      'Analisis integratif atas Digital Twin Brain dan Neuro-Symbolic AI untuk arsitektur pendukung keputusan klinis generasi berikutnya. Makalah ini mengusulkan perluasan TCMA ke arsitektur neurosimbolik yang mengintegrasikan primitif sinaptik, TAN termodulasi asetilkolin, dan dinamika temporal spiking. Prototipe simulasi pada 100 pasien urban menghasilkan akurasi 94% dan explainability 92%. Arah risetnya memprediksi pendukung keputusan klinis setara manusia pada 2027.',
   },
 ]
 
 export const cvCredentials = [
-  { code: 'dr.', label: 'Medical Doctor', source: 'Universitas Wijaya Kusuma' },
-  { code: 'SH', label: 'Bachelor of Law', source: 'Universitas Ubaya' },
-  { code: 'MKN', label: 'Master of Notarial Law', source: 'Universitas Ubaya' },
-  { code: 'CLM', label: 'Certified Legal Manager', source: 'Professional Certification' },
+  { code: 'dr.', label: 'Dokter', source: 'Universitas Wijaya Kusuma' },
+  { code: 'SH', label: 'Sarjana Hukum', source: 'Universitas Ubaya' },
+  { code: 'MKN', label: 'Magister Kenotariatan', source: 'Universitas Ubaya' },
+  { code: 'CLM', label: 'Certified Leadership Mastery', source: 'Sertifikasi profesional' },
   {
     code: 'CMDC',
     label: 'Certified Medical Doctor Consultant',
-    source: 'Professional Certification',
+    source: 'Sertifikasi profesional',
+  },
+  {
+    code: 'C.AIS',
+    label: 'Certified Artificial Intelligence Specialist',
+    source: 'Sertifikasi profesional',
+  },
+  {
+    code: 'CDS',
+    label: 'Certified Data Scientist',
+    source: 'Sertifikasi profesional',
+  },
+  {
+    code: 'MLE',
+    label: 'Machine Learning Engineer',
+    source: 'Sertifikasi profesional',
+  },
+  {
+    code: 'Gen AI',
+    label: 'Generative AI',
+    source: 'Praktik profesional',
   },
 ] as const
 
 export const cvGlanceSections = [
   {
-    title: 'Active Roles',
+    title: 'Peran Aktif',
     items: ['Founder & CEO, Sentra AI', 'CEO, RSIA Melinda DHAI'],
   },
   {
-    title: 'Credentials',
-    items: ['dr. · SH · MKN · CLM · CMDC'],
+    title: 'Kredensial',
+    items: ['dr. · SH · MKN · CLM · CMDC · C.AIS · CDS · MLE · Gen AI'],
   },
   {
-    title: 'Education',
+    title: 'Pendidikan',
     items: ['Universitas Wijaya Kusuma', 'Universitas Ubaya (×2)'],
   },
   {
-    title: 'Research',
-    items: ['TCMA — In Preparation'],
+    title: 'Riset',
+    items: ['TCMA — Dalam Persiapan'],
   },
   {
-    title: 'Background',
+    title: 'Latar Belakang',
     items: [
-      'Law & Governance',
-      'Clinical Medicine',
-      'Hospital Leadership',
-      'Artificial Intelligence',
+      'Hukum dan tata kelola',
+      'Kedokteran klinis',
+      'Kepemimpinan rumah sakit',
+      'Kecerdasan buatan',
     ],
   },
 ] as const

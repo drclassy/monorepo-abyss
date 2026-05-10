@@ -7,7 +7,6 @@ import WorksBlueprint from '@/components/WorksBlueprint'
 import {
   worksCategories,
   worksGlanceSections,
-  worksHero,
   worksIndexEntries,
   worksItems,
 } from '@/lib/works-content'
@@ -33,9 +32,9 @@ export default function WorksPage() {
     <div className="fi-works-dossier" id="works-page">
       <Navbar />
       <main className="fi-works-dossier-shell" id="main-content">
-        <aside aria-label="Works index" className="fi-works-index">
-          <div className="fi-works-index-title">Works Index</div>
-          <nav aria-label="Works categories" className="fi-works-index-nav">
+        <aside aria-label="Indeks karya" className="fi-works-index">
+          <div className="fi-works-index-title">Indeks Karya</div>
+          <nav aria-label="Kategori karya" className="fi-works-index-nav">
             {worksIndexEntries.map((item) => (
               <Link href={item.href} key={item.number}>
                 <span>{item.number}</span>
@@ -46,25 +45,20 @@ export default function WorksPage() {
           </nav>
           <div className="fi-works-index-card">
             <p>
-              Systems built for real conditions.
+              Sistem dibangun untuk kondisi nyata.
               <br />
-              Intelligence that serves judgment.
+              Kecerdasan yang melayani penilaian.
               <br />
-              Quiet reliability over spectacle.
+              Keandalan tenang sebelum tontonan.
             </p>
             <span aria-hidden="true">✧</span>
-            <small>Builder&rsquo;s Registry</small>
+            <small>Registri Pembangun</small>
           </div>
         </aside>
 
         <div className="fi-works-main">
           <header className="fi-works-hero" id="works-header">
-            <div className="fi-works-hero-copy">
-              <span className="fi-works-hero-section-label">{worksHero.sectionLabel}</span>
-              <h1>{worksHero.title}</h1>
-              <p className="fi-works-hero-thesis">{worksHero.thesis}</p>
-              <p className="fi-works-hero-context">{worksHero.context}</p>
-            </div>
+            <h1 className="fi-prompt-sr-only">Karya — sistem terbangun</h1>
             <div className="fi-works-hero-blueprint">
               <div className="fi-works-hero-integrated">
                 <div className="fi-works-hero-integrated-copy">
@@ -84,7 +78,7 @@ export default function WorksPage() {
                         className="fi-works-hero-integrated-kicker fi-enter-up"
                         style={withDelay('0.08s')}
                       >
-                        Section 03 / Systems Explainer
+                        Bagian 03 / Penjelasan Sistem
                       </span>
                       <div className="fi-works-hero-integrated-title">
                         {worksExplainerLines.map((line, index) => (
@@ -108,23 +102,25 @@ export default function WorksPage() {
                     className="fi-works-hero-integrated-body fi-enter-up"
                     style={withDelay('0.4s')}
                   >
-                    These projects originate from an original applied-systems thesis, developed
-                    through twelve years of executive hospital leadership and sustained medical
-                    practice, then translated into accountable architectures for clinical,
-                    operational, and public intelligence.
+                    Proyek-proyek ini berangkat dari tesis sistem terapan yang orisinal, dibentuk
+                    melalui 12 tahun kepemimpinan eksekutif rumah sakit dan praktik medis
+                    berkelanjutan, lalu diterjemahkan menjadi arsitektur yang akuntabel untuk
+                    kecerdasan klinis, operasional, dan publik.
                   </p>
                 </div>
                 <aside
                   className="fi-works-hero-motion-note fi-enter-aside"
                   style={withDelay('0.34s')}
                 >
-                  <span>Institutional Signal</span>
-                  <strong>Intelligence should support judgment, not perform theater.</strong>
+                  <span>Sinyal Institusional</span>
+                  <strong>
+                    Kecerdasan seharusnya mendukung penilaian, bukan memainkan panggung.
+                  </strong>
                 </aside>
               </div>
               <div className="fi-works-blueprint-panel">
                 <div className="fi-works-blueprint-panel-head">
-                  <span>Blueprint Excerpt</span>
+                  <span>Cuplikan Blueprint</span>
                   <strong>AADI Symphony Pipeline</strong>
                 </div>
                 <WorksBlueprint startDelay={300} />
@@ -166,7 +162,7 @@ export default function WorksPage() {
                           <div className="fi-works-project-credit">
                             <span className="fi-works-entry-year">{work.year}</span>
                             <span className="fi-works-project-credit-item">
-                              <em>Lead project</em>
+                              <em>Lead proyek</em>
                               <strong>{worksProjectCredit.lead}</strong>
                             </span>
                             <span className="fi-works-project-credit-item is-team">
@@ -200,10 +196,10 @@ export default function WorksPage() {
           })}
         </div>
 
-        <aside aria-label="Works at a glance" className="fi-works-glance">
+        <aside aria-label="Ringkasan karya" className="fi-works-glance">
           <div className="fi-works-glance-head">
-            <strong>At a Glance</strong>
-            <span>Builder&rsquo;s registry</span>
+            <strong>Sekilas</strong>
+            <span>Registri pembangun</span>
           </div>
           {worksGlanceSections.map((section) => (
             <section key={section.title}>

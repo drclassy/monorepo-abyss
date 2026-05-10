@@ -23,7 +23,7 @@ const copyParagraphs: React.ReactNode[] = [
   <>
     Visi ini bukan tentang substitusi, melainkan augmentasi. AI seharusnya membantu manusia melihat
     pola lebih cepat, mengurangi beban administratif, dan menjaga konteks keputusan tetap jelas di
-    lingkungan healthcare, education, workforce, maupun digital systems.
+    lingkungan layanan kesehatan, pendidikan, tenaga kerja, maupun sistem digital.
   </>,
   <>
     Melalui Melinda DHAI dan Sentra Healthcare Artificial Intelligence, saya berupaya membangun

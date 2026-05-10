@@ -20,37 +20,37 @@ const cells = [
   },
   {
     num: '02',
-    title: 'Education Intelligence Systems',
-    desc: 'Membangun sistem pembelajaran, riset, dan knowledge work yang membantu orang belajar lebih terarah, menstrukturkan pemikiran, dan bekerja dengan dukungan AI yang bertanggung jawab.',
+    title: 'Sistem Kecerdasan Pendidikan',
+    desc: 'Membangun sistem pembelajaran, riset, dan kerja pengetahuan yang membantu orang belajar lebih terarah, menstrukturkan pemikiran, dan bekerja dengan dukungan AI yang bertanggung jawab.',
   },
   {
     num: '03',
-    title: 'Digital Experience Systems',
-    desc: 'Merancang website dan permukaan digital editorial yang membangun trust, menjelaskan sistem yang kompleks, dan memberi pengalaman publik yang lebih jernih.',
+    title: 'Sistem Pengalaman Digital',
+    desc: 'Merancang website dan permukaan digital editorial yang membangun kepercayaan, menjelaskan sistem yang kompleks, dan memberi pengalaman publik yang lebih jernih.',
   },
   {
     num: '04',
-    title: 'Workforce Coordination Systems',
+    title: 'Sistem Koordinasi Tenaga Kerja',
     desc: 'Mengembangkan sistem untuk manajemen karyawan, koordinasi tim, dan visibilitas operasional agar struktur kerja menjadi lebih jelas, rapi, dan dapat diandalkan.',
   },
   {
     num: '05',
-    title: 'Prompt and Transformer Architect',
-    desc: 'Merancang prompt system, reasoning pattern, dan pemanfaatan transformer agar AI bekerja lebih terarah, konsisten, dan dapat dikendalikan.',
+    title: 'Arsitek Prompt dan Transformer',
+    desc: 'Merancang sistem prompt, pola penalaran, dan pemanfaatan transformer agar AI bekerja lebih terarah, konsisten, dan dapat dikendalikan.',
   },
   {
     num: '06',
-    title: 'Director of System Choreography',
-    desc: 'Menyusun orkestrasi antar sistem, agent, workflow, dan decision layer agar teknologi bergerak sebagai satu ekosistem yang koheren.',
+    title: 'Pengarah Koreografi Sistem',
+    desc: 'Menyusun orkestrasi antar sistem, agen, alur kerja, dan lapisan keputusan agar teknologi bergerak sebagai satu ekosistem yang koheren.',
   },
   {
     num: '07',
-    title: 'Chief Automation Conductor',
-    desc: 'Mengarahkan automasi agar tidak sekadar mempercepat pekerjaan, tetapi mengurangi friction, menjaga konteks, dan meningkatkan reliability operasional.',
+    title: 'Pengarah Otomasi Utama',
+    desc: 'Mengarahkan otomasi agar tidak sekadar mempercepat pekerjaan, tetapi mengurangi gesekan, menjaga konteks, dan meningkatkan reliabilitas operasional.',
   },
   {
     num: '08',
-    title: 'VP of Process & Service Coordination',
+    title: 'Pengarah Koordinasi Proses dan Layanan',
     desc: 'Menghubungkan proses layanan, koordinasi manusia, dan sistem digital agar pengalaman kerja klinis menjadi lebih jelas, rapi, dan terukur.',
   },
 ]
@@ -72,11 +72,11 @@ export default function Impact() {
       >
         <SectionNumberMark number="01" />
         <div>
-          <div className="fi-kicker">Leadership Under Constraint</div>
-          <h2 className="fi-section-title">Leadership under real responsibility.</h2>
+          <div className="fi-kicker">Fokus</div>
+          <h2 className="fi-section-title">Leadership with clinical gravity</h2>
           <p className="fi-section-lead">
-            Ini adalah rekam jejak seorang founder-architect yang membangun intelligence systems di
-            bawah tekanan institusional, kompleksitas operasional, dan tuntutan public trust.
+            Ini adalah rekam jejak seorang pendiri-arsitek yang membangun sistem kecerdasan di bawah
+            tekanan institusional, kompleksitas operasional, dan tuntutan kepercayaan publik.
           </p>
         </div>
       </motion.div>

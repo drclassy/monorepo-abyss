@@ -1,6 +1,7 @@
 'use client'
 
 import { LazyMotion, domAnimation } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
@@ -8,10 +9,22 @@ import { FadeIn } from '@/components/HeroMotion'
 import { primaryNav } from '@/lib/site-content'
 import { useMotionReady } from '@/lib/use-motion-ready'
 
+const speakingNav = [
+  { label: 'About', href: '/about' },
+  { label: 'Works', href: '/works' },
+  { label: 'Notes', href: '/notes' },
+  { label: 'News', href: '/classy-news' },
+  { label: 'Speaking', href: '/speaking' },
+  { label: 'CV', href: '/cv' },
+  { label: 'Contact', href: '/#contact' },
+] as const
+
 export default function Navbar() {
   const isMotionReady = useMotionReady()
   const pathname = usePathname()
   const router = useRouter()
+  const isSpeakingPage = pathname === '/speaking'
+  const navItems = isSpeakingPage ? speakingNav : primaryNav
 
   function isActive(href: string) {
     if (href === '/#contact') return pathname === '/'
@@ -20,7 +33,10 @@ export default function Navbar() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <header aria-label="Primary navigation" className="fi-nav fi-nav-modernized">
+      <header
+        aria-label={isSpeakingPage ? 'Primary navigation' : 'Navigasi utama'}
+        className="fi-nav fi-nav-modernized"
+      >
         <FadeIn
           as="div"
           delay={0.06}
@@ -30,20 +46,38 @@ export default function Navbar() {
           y={-14}
         >
           <div className="fi-shell fi-nav-editorial-shell">
-            <Link aria-label="Back to homepage" className="fi-nav-editorial-mark" href="/">
-              <span>FI</span>
+            <Link
+              aria-label={isSpeakingPage ? 'Back to homepage' : 'Kembali ke beranda'}
+              className="fi-nav-editorial-mark"
+              href="/"
+            >
+              <Image
+                alt="Classy mark"
+                className="fi-nav-editorial-mark-image"
+                height={48}
+                priority
+                src="/classy-square.png"
+                width={48}
+              />
             </Link>
 
             <div className="fi-nav-editorial-stack">
-              <div className="fi-nav-editorial-edition">Current issue / Founder dossier 2026</div>
+              <div className="fi-nav-editorial-edition">
+                {isSpeakingPage
+                  ? 'Current issue / Speaker dossier 2026'
+                  : 'Edisi aktif / Dossier pendiri 2026'}
+              </div>
 
-              <nav aria-label="Primary navigation" className="fi-nav-editorial-links">
-                {primaryNav.map((item) => (
+              <nav
+                aria-label={isSpeakingPage ? 'Primary navigation' : 'Navigasi utama'}
+                className="fi-nav-editorial-links"
+              >
+                {navItems.map((item) => (
                   <Link
                     className={[
                       'fi-nav-editorial-link',
                       isActive(item.href) ? 'is-active' : '',
-                      item.label === 'Contact' ? 'is-contact' : '',
+                      item.label === (isSpeakingPage ? 'Contact' : 'Kontak') ? 'is-contact' : '',
                     ]
                       .filter(Boolean)
                       .join(' ')}

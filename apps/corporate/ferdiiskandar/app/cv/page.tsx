@@ -5,7 +5,7 @@ import CVPage from '@/components/CVPage'
 export const metadata: Metadata = {
   title: 'CV — dr. Ferdi Iskandar',
   description:
-    'Curriculum vitae of dr. Ferdi Iskandar — physician, hospital CEO, and founder of Sentra Artificial Intelligence. Law before medicine. Medicine before leadership. Leadership before intelligence.',
+    'Curriculum vitae — dr. Ferdi Iskandar: professional profile at the intersection of law, code, and cognition; multidisciplinary builder and AI-regulated enterprise leadership.',
 }
 
 export default function Page() {
