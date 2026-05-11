@@ -20,7 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@llamaindex/liteparse": "^1.5.2",
+    "@llamaindex/liteparse": "^1.5.3",
     "zod": "^4.3.6"
   },
   "devDependencies": {
