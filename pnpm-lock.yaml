@@ -357,7 +357,7 @@ importers:
   packages/vector-store:
     dependencies:
       fs-extra:
-        specifier: ^11.2.0
+        specifier: ^11.3.5
         version: 11.3.5
       pdf-parse:
         specifier: ^2.4.5
@@ -666,7 +666,7 @@ importers:
         specifier: ^12.1.0
         version: 12.1.0
       fs-extra:
-        specifier: ^11.2.0
+        specifier: ^11.3.5
         version: 11.3.5
       ora:
         specifier: ^8.0.0

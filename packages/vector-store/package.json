@@ -11,7 +11,7 @@
     "clean": "rm -rf .turbo node_modules dist"
   },
   "dependencies": {
-    "fs-extra": "^11.2.0",
+    "fs-extra": "^11.3.5",
     "pdf-parse": "^2.4.5",
     "zod": "^3.24.0"
   },
