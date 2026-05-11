@@ -36,14 +36,14 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
-    "@nestjs/testing": "^11.1.18",
+    "@nestjs/testing": "11.1.19",
     "@the-abyss/config-eslint": "workspace:*",
     "@the-abyss/config-typescript": "workspace:*",
-    "@types/node": "^22.0.0",
-    "@types/supertest": "^6.0.2",
-    "supertest": "^7.0.0",
-    "tsx": "^4.0.0",
-    "typescript": "^5.7.0",
-    "vitest": "^2.1.0"
+    "@types/node": "22.19.18",
+    "@types/supertest": "6.0.3",
+    "supertest": "7.2.2",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3",
+    "vitest": "2.1.9"
   }
 }
