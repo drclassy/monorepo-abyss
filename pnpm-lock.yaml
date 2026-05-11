@@ -700,7 +700,7 @@ importers:
   tooling/librarian-desktop:
     dependencies:
       electron:
-        specifier: ^30.0.0
+        specifier: ^30.5.1
         version: 30.5.1
 
   tooling/librarian-desktop/literature-worker:
