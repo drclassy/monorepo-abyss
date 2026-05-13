@@ -176,7 +176,7 @@ code{font-family:var(--f-mono);font-size:12px;color:var(--t1);background:var(--c
 
   <div class="sb-section">Configuration</div>
   <a class="sb-link" href="#sec-claudemd">05 CLAUDE.md Structure</a>
-  <a class="sb-link" href="#sec-settings">06 settings.json</a>
+  <a class="sb-link" href="#sec-settings">06 Settings</a>
   <a class="sb-link" href="#sec-permissions">07 Permissions</a>
   <a class="sb-link" href="#sec-hooks">08 Hooks System</a>
   <a class="sb-link" href="#sec-mcp">09 MCP Servers</a>
@@ -208,17 +208,29 @@ code{font-family:var(--f-mono);font-size:12px;color:var(--t1);background:var(--c
   </div>
 
   <div class="quick-links">
-    <a class="quick-link" href="http://127.0.0.1:8765/docs/handbook/classy-cursor.html" target="_blank" rel="noopener noreferrer">
+    <a class="quick-link" href="./classy-cursor.html" target="_blank" rel="noopener noreferrer">
       <div class="quick-link-title">Open: Cursor Best Practices</div>
-      <div class="quick-link-url">http://127.0.0.1:8765/docs/handbook/classy-cursor.html</div>
+      <div class="quick-link-url">./classy-cursor.html</div>
     </a>
-    <a class="quick-link" href="http://127.0.0.1:8765/docs/handbook/classy-tips.html" target="_blank" rel="noopener noreferrer">
+    <a class="quick-link" href="./classy-tips.html" target="_blank" rel="noopener noreferrer">
       <div class="quick-link-title">Open: Tips & Tricks</div>
-      <div class="quick-link-url">http://127.0.0.1:8765/docs/handbook/classy-tips.html</div>
+      <div class="quick-link-url">./classy-tips.html</div>
     </a>
-    <a class="quick-link" href="http://127.0.0.1:8765/docs/handbook/classy-commands.html" target="_blank" rel="noopener noreferrer">
+    <a class="quick-link" href="./classy-commands.html" target="_blank" rel="noopener noreferrer">
       <div class="quick-link-title">Open: Commands Quick Reference</div>
-      <div class="quick-link-url">http://127.0.0.1:8765/docs/handbook/classy-commands.html</div>
+      <div class="quick-link-url">./classy-commands.html</div>
+    </a>
+    <a class="quick-link" href="./classy-codex.html" target="_blank" rel="noopener noreferrer">
+      <div class="quick-link-title">Open: Codex Workflow Reference</div>
+      <div class="quick-link-url">./classy-codex.html</div>
+    </a>
+    <a class="quick-link" href="./classy-cline-2026.html" target="_blank" rel="noopener noreferrer">
+      <div class="quick-link-title">Open: Cline 2026 Guide</div>
+      <div class="quick-link-url">./classy-cline-2026.html</div>
+    </a>
+    <a class="quick-link" href="./classy-claude.html" target="_blank" rel="noopener noreferrer">
+      <div class="quick-link-title">Open: Claude Configuration</div>
+      <div class="quick-link-url">./classy-claude.html</div>
     </a>
   </div>
 
@@ -227,7 +239,7 @@ code{font-family:var(--f-mono);font-size:12px;color:var(--t1);background:var(--c
   <section class="section" id="sec-setup">
     <div class="section-head">
       <span class="section-num">01</span>
-      <span class="section-title">Setup &amp; Integration</span>
+      <span class="section-title">Setup & Integration</span>
       <span class="section-tag pill pill-must">CORE</span>
     </div>
 
@@ -318,7 +330,7 @@ claude --permission-mode plan</pre>
         </table>
       </div>
       <div>
-        <div class="card-label" style="margin-bottom:8px">Info &amp; Debug</div>
+        <div class="card-label" style="margin-bottom:8px">Info & Debug</div>
         <table class="cmd-table">
           <tr><th>Command</th><th>What it does</th></tr>
           <tr><td><code>/status</code></td><td>Show context usage, current model, session ID.</td></tr>
@@ -397,7 +409,7 @@ claude --permission-mode plan</pre>
   <section class="section" id="sec-effort">
     <div class="section-head">
       <span class="section-num">04</span>
-      <span class="section-title">Effort &amp; Thinking (Opus 4.7)</span>
+      <span class="section-title">Effort & Thinking (Opus 4.7)</span>
       <span class="section-tag pill pill-new">NEW IN 4.7</span>
     </div>
 
@@ -505,8 +517,8 @@ NestJS backend. Prisma via packages/database (no direct @prisma/client in app co
 <span class="n">PHI/PII</span>: zero-tolerance in logs, fixtures, error messages.
 
 <span class="h">## Commands</span>
-Dev: `pnpm dev --filter &lt;app&gt;` · Test: `pnpm test --filter &lt;pkg&gt;` · TC: `pnpm typecheck`
-Migrate: `pnpm db:migrate` (<span class="n">NEVER edit packages/db/migrations/** manually</span>)
+Dev: <code>pnpm dev --filter &lt;app&gt;</code> · Test: <code>pnpm test --filter &lt;pkg&gt;</code> · TC: <code>pnpm typecheck</code>
+Migrate: <code>pnpm db:migrate</code> (<span class="n">NEVER edit packages/db/migrations/** manually</span>)
 
 <span class="h">## Constraints</span>
 - All DB ops → packages/database only
@@ -516,7 +528,7 @@ Migrate: `pnpm db:migrate` (<span class="n">NEVER edit packages/db/migrations/**
 
 <span class="h">## Workflow</span>
 Class C tasks (DB, infra, PHI, polyrepo) → full JET Protocol, hard GO gate.
-Check `.agent/SESSION_STATE.md` before Class B/C execution.
+Check <code>.agent/SESSION_STATE.md</code> before Class B/C execution.
 
 <span class="h">## Pointers (load on demand)</span>
 - NestJS standards: @AGENTS.md §5
@@ -620,8 +632,6 @@ Check `.agent/SESSION_STATE.md` before Class B/C execution.
           <tr><td><code>Write</code></td><td><code>Write(path/glob/**)</code></td></tr>
           <tr><td><code>Edit</code></td><td><code>Edit(path/glob/**)</code></td></tr>
           <tr><td><code>MultiEdit</code></td><td><code>MultiEdit(path/**)</code></td></tr>
-          <tr><td><code>WebSearch</code></td><td><code>WebSearch</code> (no params)</td></tr>
-          <tr><td><code>WebFetch</code></td><td><code>WebFetch(domain:example.com)</code></td></tr>
           <tr><td>MCP tools</td><td><code>mcp__servername__toolname</code></td></tr>
         </table>
         <div class="warn warn-amber" style="margin-top:10px">
@@ -783,7 +793,7 @@ if (-not (pnpm test --silent 2&gt;&1)) {
       <span class="p">"env"</span>: { <span class="p">"PGPASSWORD"</span>: <span class="s">"${PG_PASSWORD}"</span> }
     },
     <span class="p">"github"</span>: {
-      <span class="p">"type"</span>: <span class="s">"http"</span>,        <span class="c">// streamable-http (SSE deprecated Apr 2026)</span>
+      <span class="p">"type"</span>: <span class="s">"http"</span>,
       <span class="p">"url"</span>: <span class="s">"https://api.githubcopilot.com/mcp/"</span>,
       <span class="p">"headers"</span>: {
         <span class="p">"Authorization"</span>: <span class="s">"Bearer ${GITHUB_TOKEN}"</span>
@@ -841,8 +851,7 @@ if (-not (pnpm test --silent 2&gt;&1)) {
 <span class="p">permissionMode</span>: <span class="s">default</span>  <span class="c"># or "plan" or "bypassPermissions"</span>
 ---
 
-Agent instructions in markdown here.
-</pre>
+Agent instructions in markdown here.</pre>
 
         <div class="card-label" style="margin:12px 0 8px">Active agents (this setup)</div>
         <table class="cmd-table">
@@ -1176,6 +1185,7 @@ CQRS here or standard service pattern?</pre>
           <span class="kv-key" style="font-size:11px;display:block">7. Review HANDOFF.md → type "GO" when ready</span>
         </div>
       </div>
+
       <div>
         <div class="card-label" style="margin-bottom:8px">Session end ritual</div>
         <div class="card" style="font-size:12px;color:var(--t1);line-height:1.7">
@@ -1186,6 +1196,7 @@ CQRS here or standard service pattern?</pre>
           <span class="kv-key" style="font-size:11px;display:block">5. Close terminal / type <code>/clear</code></span>
         </div>
       </div>
+
       <div>
         <div class="card-label" style="margin-bottom:8px">Healthcare code flow</div>
         <div class="card" style="font-size:12px;color:var(--t1);line-height:1.7">
@@ -1196,6 +1207,7 @@ CQRS here or standard service pattern?</pre>
           Only push when verdict is APPROVED
         </div>
       </div>
+
       <div>
         <div class="card-label" style="margin-bottom:8px">Context compaction strategy</div>
         <div class="card" style="font-size:12px;color:var(--t1);line-height:1.7">
@@ -1213,7 +1225,7 @@ CQRS here or standard service pattern?</pre>
   <section class="section" id="sec-errors">
     <div class="section-head">
       <span class="section-num">16</span>
-      <span class="section-title">Error Recovery &amp; Debug</span>
+      <span class="section-title">Error Recovery & Debug</span>
       <span class="section-tag pill pill-should">TROUBLESHOOT</span>
     </div>
 

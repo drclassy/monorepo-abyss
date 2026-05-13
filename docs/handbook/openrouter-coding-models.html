@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenRouter Coding Model Cost Board</title>
+  <style>
+    :root {
+      /* DEPTH HIERARCHY */
+      --bg-body: #050505;
+      --bg-card: #0F1012;
+      --neu-inset-bg: #0A0A0C;
+
+      /* LIVING EDGE BORDERS */
+      --border-glow: rgba(255, 255, 255, 0.12);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-highlight: rgba(255, 255, 255, 0.04);
+
+      /* TYPOGRAPHY */
+      --text-main: #EDEDED;
+      --text-muted: #737373;
+
+      /* NEUMORPHISM BUILDING BLOCKS */
+      --neu-shadow-light: rgba(255, 255, 255, 0.03);
+      --neu-shadow-dark: rgba(0, 0, 0, 0.6);
+
+      --font-display: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --radius-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background: var(--bg-body);
+      color: var(--text-main);
+      font-size: 13px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.06), transparent 36%),
+        var(--bg-body);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(calc(100% - 20px), 980px);
+      margin: 0 auto;
+      padding: 18px 0 36px;
+    }
+
+    .hero,
+    .panel,
+    .model-board,
+    .model-row,
+    .note-card,
+    .source-item {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 20px 40px -10px rgba(0,0,0,0.8);
+    }
+
+    .hero::before,
+    .panel::before,
+    .model-board::before,
+    .model-row::before,
+    .note-card::before,
+    .source-item::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      pointer-events: none;
+    }
+
+    .hero {
+      border-radius: var(--radius-xl);
+      padding: 22px;
+    }
+
+    .eyebrow,
+    .label,
+    .rank,
+    .tag,
+    .table-head,
+    .source-kicker {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 38px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      color: var(--text-main);
+      font-family: var(--font-display);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.05;
+    }
+
+    h1 {
+      max-width: 720px;
+      font-size: clamp(2rem, 4.2vw, 3.35rem);
+    }
+
+    h2 {
+      font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    }
+
+    h3 {
+      font-size: 1.08rem;
+    }
+
+    p {
+      color: var(--text-muted);
+    }
+
+    .hero-grid,
+    .meta-grid,
+    .notes-grid,
+    .source-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      margin-top: 18px;
+      align-items: start;
+    }
+
+    .hero-copy {
+      max-width: 720px;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+
+    .meta-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .meta-box {
+      background: var(--neu-inset-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      /* NEU ACCENT #1 - inset operational metadata */
+      box-shadow:
+        inset 2px 2px 4px rgba(0,0,0,0.4),
+        inset -1px -1px 2px rgba(255,255,255,0.02);
+    }
+
+    .meta-box strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--text-main);
+    }
+
+    .section {
+      margin-top: 14px;
+    }
+
+    .panel {
+      border-radius: var(--radius-xl);
+      padding: 18px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .section-header p {
+      max-width: 560px;
+    }
+
+    .model-board {
+      border-radius: var(--radius-xl);
+      padding: 10px;
+    }
+
+    .table-head,
+    .model-row {
+      display: grid;
+      grid-template-columns: 52px minmax(220px, 1.25fr) minmax(168px, 0.85fr) 118px minmax(260px, 1.35fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .table-head {
+      padding: 7px 12px 12px;
+    }
+
+    .model-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .model-row {
+      min-height: 104px;
+      border-radius: var(--radius-lg);
+      padding: 15px 12px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .model-row:hover {
+      border-color: rgba(255,255,255,0.18);
+      transform: translateY(-2px);
+    }
+
+    .rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: var(--neu-inset-bg);
+    }
+
+    .model-name {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .model-name strong {
+      color: var(--text-main);
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      overflow-wrap: anywhere;
+    }
+
+    .model-name code,
+    .price code,
+    .context code {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.86rem;
+      overflow-wrap: anywhere;
+    }
+
+    .price {
+      display: grid;
+      gap: 3px;
+    }
+
+    .price strong {
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .level {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      min-height: 38px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: #1A1C20;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 600;
+      /* NEU ACCENT #2 - raised capability score */
+      box-shadow:
+        0 2px 4px rgba(0,0,0,0.4),
+        0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .usage {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 9px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      background: var(--neu-inset-bg);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+
+    .notes-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .note-card,
+    .source-item {
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .note-card:hover,
+    .source-item:hover {
+      border-color: rgba(255,255,255,0.18);
+      transform: translateY(-2px);
+    }
+
+    .note-card strong,
+    .source-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .source-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12px;
+      min-height: 38px;
+      padding: 9px 14px;
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      color: #000000;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(255,255,255,0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .source-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(255,255,255,0.25);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 880px) {
+      .hero-grid,
+      .notes-grid,
+      .source-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page {
+        width: min(calc(100% - 16px), 760px);
+        padding-top: 12px;
+      }
+
+      .hero,
+      .panel {
+        padding: 16px;
+      }
+
+      .section-header {
+        display: grid;
+        gap: 10px;
+      }
+
+      .table-head {
+        display: none;
+      }
+
+      .model-board {
+        padding: 8px;
+      }
+
+      .model-row {
+        grid-template-columns: 42px 1fr;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .price,
+      .level,
+      .usage {
+        grid-column: 2;
+      }
+
+      .price::before,
+      .level::before,
+      .usage::before {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .price::before {
+        content: "Harga per 1M";
+      }
+
+      .level::before {
+        content: "Coding level";
+      }
+
+      .usage::before {
+        content: "Saat pas digunakan";
+      }
+
+      .level {
+        width: 72px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-labelledby="page-title">
+    <section class="hero" aria-label="OpenRouter coding cost overview" data-metric="handbook.openrouter.hero.render" data-slo="static-html">
+      <div class="eyebrow">OpenRouter Cost Intelligence</div>
+      <h1 id="page-title">OpenRouter Coding Model Cost Board</h1>
+      <div class="hero-grid">
+        <p class="hero-copy">
+          Papan ringkas untuk memilih model coding yang seimbang antara biaya rendah, kemampuan implementasi, context length, dan stabilitas operasional. Ranking ini memasukkan opsi gratis sebagai jalur hemat, model paid murah, DeepSeek, dan model baru yang layak dipantau untuk pekerjaan repo.
+        </p>
+        <div class="meta-grid" aria-label="Metadata sumber dan harga">
+          <div class="meta-box">
+            <strong>Checked date</strong>
+            11/05/2026 Asia/Jakarta
+          </div>
+          <div class="meta-box">
+            <strong>Source</strong>
+            OpenRouter API /api/v1/models
+          </div>
+          <div class="meta-box">
+            <strong>Currency basis</strong>
+            USD per 1M input/output tokens
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section panel" aria-labelledby="ranking-title" data-metric="handbook.openrouter.ranking.render" data-slo="static-html">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Top 10 Balance</div>
+          <h2 id="ranking-title">Coding models termurah yang masih layak dipakai</h2>
+        </div>
+        <p>Level coding adalah skala operasional 1-10 untuk penggunaan engineering harian. Ranking direfresh dengan DeepSeek dan model baru dari snapshot OpenRouter.</p>
+      </div>
+
+      <div class="model-board" role="table" aria-label="Daftar 10 model coding OpenRouter hemat">
+        <div class="table-head" role="row">
+          <span>Rank</span>
+          <span>Model name</span>
+          <span>Harga per 1M</span>
+          <span>Coding</span>
+          <span>Kapan pas digunakan</span>
+        </div>
+        <div class="model-list">
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">01</span>
+            <div class="model-name" role="cell">
+              <strong>Qwen3 Coder 480B A35B</strong>
+              <code>qwen/qwen3-coder:free</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0 input / $0 output</strong>
+              <code>context 262K</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 8 dari 10">8/10</div>
+            <p class="usage" role="cell">Patch kecil-menengah, coding hemat, dan fallback gratis utama saat availability mencukupi.</p>
+          </article>
+
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">02</span>
+            <div class="model-name" role="cell">
+              <strong>Qwen3.5 9B</strong>
+              <code>qwen/qwen3.5-9b</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0.04 input / $0.15 output</strong>
+              <code>context 262K</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 7 dari 10">7/10</div>
+            <p class="usage" role="cell">Model baru murah untuk patch kecil, review ringan, dan pekerjaan repo saat butuh paid route stabil.</p>
+          </article>
+
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">03</span>
+            <div class="model-name" role="cell">
+              <strong>Qwen3.5 Flash</strong>
+              <code>qwen/qwen3.5-flash-02-23</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0.065 input / $0.26 output</strong>
+              <code>context 1M</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 7 dari 10">7/10</div>
+            <p class="usage" role="cell">Pilihan baru untuk membaca konteks sangat panjang, merangkum banyak file, dan membuat patch ringan.</p>
+          </article>
+
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">04</span>
+            <div class="model-name" role="cell">
+              <strong>Qwen3 Coder 30B A3B Instruct</strong>
+              <code>qwen/qwen3-coder-30b-a3b-instruct</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0.07 input / $0.27 output</strong>
+              <code>context 160K</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 8 dari 10">8/10</div>
+            <p class="usage" role="cell">Default paid hemat untuk coding harian, TypeScript, React, bugfix, dan patch reviewable.</p>
+          </article>
+
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">05</span>
+            <div class="model-name" role="cell">
+              <strong>Gemini 2.0 Flash Lite</strong>
+              <code>google/gemini-2.0-flash-lite-001</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0.075 input / $0.30 output</strong>
+              <code>context 1M</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 7 dari 10">7/10</div>
+            <p class="usage" role="cell">Konteks sangat panjang, membaca banyak file atau dokumen, dan membuat ringkasan teknis luas.</p>
+          </article>
+
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">06</span>
+            <div class="model-name" role="cell">
+              <strong>Devstral Small 1.1</strong>
+              <code>mistralai/devstral-small</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0.10 input / $0.30 output</strong>
+              <code>context 131K</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 7 dari 10">7/10</div>
+            <p class="usage" role="cell">Agentic coding ringan, issue fixing, navigasi repo, dan perubahan kecil dengan alur jelas.</p>
+          </article>
+
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">07</span>
+            <div class="model-name" role="cell">
+              <strong>Qwen3 Coder Next</strong>
+              <code>qwen/qwen3-coder-next</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0.11 input / $0.80 output</strong>
+              <code>context 262K</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 8 dari 10">8/10</div>
+            <p class="usage" role="cell">Naik kelas untuk bug lebih sulit, refactor sedang, dan reasoning kode yang butuh konteks panjang.</p>
+          </article>
+
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">08</span>
+            <div class="model-name" role="cell">
+              <strong>DeepSeek V4 Flash</strong>
+              <code>deepseek/deepseek-v4-flash</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0.14 input / $0.28 output</strong>
+              <code>context 1M</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 8 dari 10">8/10</div>
+            <p class="usage" role="cell">DeepSeek hemat dengan output murah dan context besar; cocok untuk audit repo, debugging, dan patch menengah.</p>
+          </article>
+
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">09</span>
+            <div class="model-name" role="cell">
+              <strong>DeepSeek V3.2</strong>
+              <code>deepseek/deepseek-v3.2</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0.252 input / $0.378 output</strong>
+              <code>context 131K</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 8 dari 10">8/10</div>
+            <p class="usage" role="cell">DeepSeek generasi baru untuk code review, bug diagnosis, dan perubahan yang perlu reasoning lebih kuat.</p>
+          </article>
+
+          <article class="model-row" role="row">
+            <span class="rank" role="cell">10</span>
+            <div class="model-name" role="cell">
+              <strong>GPT-5.1 Codex Mini</strong>
+              <code>openai/gpt-5.1-codex-mini</code>
+            </div>
+            <div class="price" role="cell">
+              <strong>$0.25 input / $2.00 output</strong>
+              <code>context 400K</code>
+            </div>
+            <div class="level" role="cell" aria-label="Coding level 8 dari 10">8/10</div>
+            <p class="usage" role="cell">Model coding baru untuk task Codex-style saat perlu perilaku coding lebih spesifik, meski output lebih mahal.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section panel" aria-labelledby="ops-title" data-metric="handbook.openrouter.ops.render" data-slo="static-html">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Operating Notes</div>
+          <h2 id="ops-title">Cara pakai yang hemat namun tetap aman</h2>
+        </div>
+        <p>Tujuannya bukan mencari model paling mahal, melainkan rute yang cukup kuat untuk task tertentu.</p>
+      </div>
+      <div class="notes-grid">
+        <article class="note-card">
+          <strong>Gratis untuk eksplorasi</strong>
+          <p>Pakai model free untuk membaca konteks, membuat ringkasan, atau patch ringan. Siapkan fallback paid karena limit dan availability bisa berubah.</p>
+          <div class="tag-row">
+            <span class="tag">Discovery</span>
+            <span class="tag">Zero cost</span>
+          </div>
+        </article>
+        <article class="note-card">
+          <strong>Paid murah untuk kerja repo</strong>
+          <p>Gunakan Qwen3 Coder 30B A3B sebagai default paid hemat. Naik ke Qwen3 Coder Next bila bug atau refactor mulai butuh reasoning lebih kuat.</p>
+          <div class="tag-row">
+            <span class="tag">Daily coding</span>
+            <span class="tag">Stable route</span>
+          </div>
+        </article>
+        <article class="note-card">
+          <strong>DeepSeek untuk audit dan debug</strong>
+          <p>DeepSeek V4 Flash menarik karena output murah dan context 1M. DeepSeek V3.2 lebih pas untuk diagnosis kode yang butuh reasoning lebih solid.</p>
+          <div class="tag-row">
+            <span class="tag">DeepSeek</span>
+            <span class="tag">Debug pass</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" aria-labelledby="source-title" data-metric="handbook.openrouter.source.render" data-slo="static-html">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Source Basis</div>
+          <h2 id="source-title">Snapshot dan batasan</h2>
+        </div>
+      </div>
+      <div class="source-grid">
+        <article class="source-item">
+          <div class="source-kicker">Live source</div>
+          <strong>OpenRouter Models API</strong>
+          <p>Harga diambil dari endpoint publik OpenRouter dan dinormalisasi ke USD per 1M token.</p>
+          <a class="source-link" href="https://openrouter.ai/api/v1/models" target="_blank" rel="noopener" data-metric="handbook.openrouter.source.click" data-slo="external-link">Open API Source</a>
+        </article>
+        <article class="source-item">
+          <div class="source-kicker">Review note</div>
+          <strong>Harga bisa berubah</strong>
+          <p>Gunakan halaman ini sebagai snapshot 11/05/2026. Untuk budget berjalan, cek ulang API sebelum menetapkan default produksi.</p>
+        </article>
+      </div>
+      <div class="footer-note">
+        Architected and built by dr Classy. Static handbook page for Sentra Artificial Intelligence.
+      </div>
+    </section>
+  </main>
+</body>
+</html>
