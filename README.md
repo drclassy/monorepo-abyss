@@ -14,7 +14,7 @@
 <table>
 <tr>
 <td valign="middle" width="180">
-  <img src=".github/abyss.png" alt="The Abyss" width="160" />
+  <img src="https://camo.githubusercontent.com/58acde4aecd54fcae0775eb1a16248ab03f5ff303e03887e17c895ed0344b987/68747470733a2f2f692e706f7374696d672e63632f727342675633355a2f6472666572646969736b616e6461722e6a7067" alt="The Abyss" width="160" />
 </td>
 <td valign="top">
 
