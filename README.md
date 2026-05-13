@@ -30,8 +30,6 @@
   <img src="https://img.shields.io/badge/turborepo-2.x-black?style=flat-square&logo=turborepo&logoColor=white" />
 </p>
 
-> **Editorial thesis:** The Abyss is not a brochure repository. It is the active engineering ground for Sentra's healthcare, academic, community, corporate, platform, and prototype systems — documented as it exists now, including active, legacy, prototype, and under-retirement surfaces.
-
 </td>
 </tr>
 </table>
