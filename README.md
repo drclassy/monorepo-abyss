@@ -7,7 +7,7 @@
 <table width="100%">
 <tr>
 <td width="36%" align="center" valign="middle">
-<img src="https://i.postimg.cc/LsLBPbDz/s-abyss.png" alt="The Abyss" width="240">
+<img src="https://i.postimg.cc/fbNSGT7C/logo-fix.png" alt="The Abyss" width="240">
   <br />
   <sub><b>The Abyss</b> · Sentra Healthcare AI Engineering Workspace</sub>
 </td>
