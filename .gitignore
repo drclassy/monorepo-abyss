@@ -117,6 +117,12 @@ Desktop.ini
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.shared.json
+!.vscode/extensions/
+!.vscode/extensions/classy-handbook/
+!.vscode/extensions/classy-handbook/**
+.vscode/extensions/classy-handbook/node_modules/
+.vscode/extensions/classy-handbook/out/
+.vscode/extensions/classy-handbook/*.vsix
 
 # ---- TEST COVERAGE ----
 coverage/
@@ -181,6 +187,7 @@ apps/corporate/*
 !apps/corporate/ferdiiskandar/
 !apps/corporate/ferdiiskandar/**
 apps/corporate/ferdiiskandar/.abyss-backup/
+apps/corporate/ferdiiskandar/.git.bak-standalone/
 apps/corporate/ferdiiskandar/.editorconfig
 apps/corporate/ferdiiskandar/.gitattributes
 apps/corporate/ferdiiskandar/.github/
@@ -209,6 +216,10 @@ apps/corporate/ferdiiskandar/pnpm-lock.yaml
 !.agent/LESSONS.md
 !.agent/PROGRESS.md
 !.agent/SESSION_STATE.md
+!.agent/scripts/
+!.agent/scripts/**
+!.agent/hooks/
+!.agent/hooks/**
 !.agent/archive/
 !.agent/archive/HANDOFF.archive.md
 !.agent/archive/MASTER_CONTEXT_2026-04-19.md
