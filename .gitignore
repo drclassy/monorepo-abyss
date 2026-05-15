@@ -116,6 +116,12 @@ Desktop.ini
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.shared.json
+!.vscode/extensions/
+!.vscode/extensions/classy-handbook/
+!.vscode/extensions/classy-handbook/**
+.vscode/extensions/classy-handbook/node_modules/
+.vscode/extensions/classy-handbook/out/
+.vscode/extensions/classy-handbook/*.vsix
 
 # ---- TEST COVERAGE ----
 coverage/
@@ -190,6 +196,10 @@ apps/
 !.agent/PROGRESS.md
 !.agent/PROTOCOL.md
 !.agent/SESSION_STATE.md
+!.agent/scripts/
+!.agent/scripts/**
+!.agent/hooks/
+!.agent/hooks/**
 !pnpm-lock.yaml
 
 # KEPT: Cursor project rules, subagents, hooks — team parity (cursor.com/docs)
