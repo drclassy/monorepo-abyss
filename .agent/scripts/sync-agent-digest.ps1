@@ -7,11 +7,17 @@ param(
 )
 
 $handoff = Get-Content "$AgentDir/HANDOFF.md" -Raw -ErrorAction SilentlyContinue
+if (-not $handoff)    { Write-Warning "sync-agent-digest: HANDOFF.md not found or empty at $AgentDir" }
+
 $progress = (Get-Content "$AgentDir/PROGRESS.md" -ErrorAction SilentlyContinue) |
             Select-Object -Last 30 | Out-String
+$progress = $progress.TrimEnd()
+if (-not $progress.Trim()) { Write-Warning "sync-agent-digest: PROGRESS.md not found or empty at $AgentDir" }
+
 $lessonsRaw = Get-Content "$AgentDir/LESSONS.md" -Raw -ErrorAction SilentlyContinue
-$lessons = ($lessonsRaw -split "(?m)^## " | Where-Object { $_ -match '\S' } |
-            Select-Object -Last 5 | ForEach-Object { "## $_" }) -join "`n"
+if (-not $lessonsRaw) { Write-Warning "sync-agent-digest: LESSONS.md not found or empty at $AgentDir" }
+$lessonEntries = $lessonsRaw -split "(?m)^### " | Where-Object { $_ -match '\S' } | Select-Object -Last 5
+$lessons = ($lessonEntries | ForEach-Object { "### $_" }) -join "`n"
 
 $digest = @"
 # AGENT DIGEST — Auto-generated $(Get-Date -Format 'yyyy-MM-dd HH:mm')
