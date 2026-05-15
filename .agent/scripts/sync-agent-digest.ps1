@@ -16,7 +16,7 @@ if (-not $progress.Trim()) { Write-Warning "sync-agent-digest: PROGRESS.md not f
 
 $lessonsRaw = Get-Content "$AgentDir/LESSONS.md" -Raw -ErrorAction SilentlyContinue
 if (-not $lessonsRaw) { Write-Warning "sync-agent-digest: LESSONS.md not found or empty at $AgentDir" }
-$lessonEntries = $lessonsRaw -split "(?m)^### " | Where-Object { $_ -match '\S' } | Select-Object -Last 5
+$lessonEntries = $lessonsRaw -split "(?m)^### " | Select-Object -Skip 1 | Where-Object { $_ -match '\S' } | Select-Object -Last 5
 $lessons = ($lessonEntries | ForEach-Object { "### $_" }) -join "`n"
 
 $digest = @"
