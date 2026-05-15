@@ -34,4 +34,3 @@ $lessons
 "@
 
 Set-Content "$AgentDir/DIGEST.md" $digest -Encoding UTF8
-Write-Output "DIGEST.md generated at $AgentDir/DIGEST.md"
