@@ -24,6 +24,7 @@ foreach ($b in $blocked) {
 # $cmd sudah tersedia dari $env:CLAUDE_BASH_COMMAND di baris 2.
 
 if ($cmd -match 'git\s+commit') {
+    # $Matches[1] holds the capture from whichever branch matched first (-or short-circuits)
     if ($cmd -match '-m\s+"([^"]*)"' -or $cmd -match "-m\s+'([^']*)'") {
         $commitMsg = $Matches[1]
         $trailerPattern = 'Agent:\s+.+\s+·\s+Phase:\s+.+\s+·\s+Handoff:\s+.+'
@@ -34,7 +35,7 @@ if ($cmd -match 'git\s+commit') {
                     permissionDecision       = "deny"
                     permissionDecisionReason = "J9 VIOLATION: Commit message missing required trailer.`nFormat: Agent: [name] · Phase: [phase] · Handoff: [session-id]`nContoh: Agent: Claude · Phase: Execution · Handoff: 2026-05-15-task-name"
                 }
-                continue = $true
+                continue = $true  # allow other PreToolUse hooks to still run after denial
             } | ConvertTo-Json -Compress -Depth 5
             [Console]::Out.WriteLine($block)
             exit 0
