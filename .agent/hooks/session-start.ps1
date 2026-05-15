@@ -45,15 +45,18 @@ if ($missing.Count -gt 0) {
 # Step 1: Generate fresh cross-agent DIGEST.md
 $digestScript = "$agentDir/scripts/sync-agent-digest.ps1"
 if (Test-Path $digestScript) {
-    & powershell -NoProfile -NonInteractive -File $digestScript -AgentDir $agentDir 2>$null
+    & $digestScript -AgentDir $agentDir *>$null
 }
 
 # Step 2: Read critical files (token-optimized: ~1,400 tokens total)
-$handoff  = Get-Content "$agentDir/HANDOFF.md" -Raw -ErrorAction SilentlyContinue
+$handoff  = Get-Content "$agentDir/HANDOFF.md"  -Raw -ErrorAction SilentlyContinue
+if ($handoff.Length  -gt 6000) { $handoff  = $handoff.Substring(0, 6000)  + "`n...[truncated]" }
+
 $progress = Get-Content "$agentDir/PROGRESS.md" -Raw -ErrorAction SilentlyContinue
+if ($progress.Length -gt 3000) { $progress = $progress.Substring(0, 3000) + "`n...[truncated]" }
 
 $lessonsRaw = Get-Content "$agentDir/LESSONS.md" -Raw -ErrorAction SilentlyContinue
-$lessonEntries = $lessonsRaw -split "(?m)^### " | Where-Object { $_ -match '\S' } | Select-Object -Last 5
+$lessonEntries = $lessonsRaw -split "(?m)^### " | Select-Object -Skip 1 | Where-Object { $_ -match '\S' } | Select-Object -Last 5
 $lessons = ($lessonEntries | ForEach-Object { "### $_" }) -join "`n"
 
 # Step 3: Build and print context — plain stdout is injected into Claude's context
