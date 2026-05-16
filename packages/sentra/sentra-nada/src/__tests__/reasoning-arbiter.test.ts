@@ -59,7 +59,7 @@ const highVitalsAlert: SymphonyAlert = {
   title: 'Tachypnea',
   reasoning: ['RR > 24'],
   source: 'vitals',
-  actionProtocolId: 'PROTO_RESPIRATORY',
+  actionProtocolId: 'PROTO_RESP_FAILURE',
   acknowledged: false,
   triggeredAt: '2026-04-27T10:01:00.000Z',
 }
@@ -168,7 +168,7 @@ describe('arbitrateSymphonyReasoning', () => {
     })
 
     expect(result.alerts[0]?.actionProtocolId).toBe('PROTO_SEPSIS')
-    expect(result.alerts[1]?.actionProtocolId).toBe('PROTO_RESPIRATORY')
+    expect(result.alerts[1]?.actionProtocolId).toBe('PROTO_RESP_FAILURE')
   })
 
   it('preserves native hypothesis rank order from input (no reordering)', () => {

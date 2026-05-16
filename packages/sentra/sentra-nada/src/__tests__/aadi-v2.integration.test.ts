@@ -62,11 +62,9 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
       baseInput({
         diagnosisCandidates: [
           {
-            id: 'cand-pneumonia',
             icd10Code: 'J18.9',
             diagnosisName: 'Pneumonia, unspecified organism',
             confidence: 0.7,
-            reasoning: ['Demam dan sesak napas'],
           },
         ],
         chiefComplaint: 'demam dan sesak napas',
@@ -275,11 +273,9 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
         chiefComplaint: 'demam dan sesak napas',
         diagnosisCandidates: [
           {
-            id: 'cand-htn',
             icd10Code: 'I10',
             diagnosisName: 'Essential hypertension',
             confidence: 0.6,
-            reasoning: ['BP elevated'],
           },
         ],
       }),

@@ -68,7 +68,7 @@ function buildTriggerSnapshot(def: AssistPatternParityDefinition): SymphonyClini
     negatedSignals: [],
   }
   // patient.physiology cast to object so isOlderAdult resolves
-  const patient = {
+  const patient: SymphonyClinicalSnapshot['patient'] = {
     age: 78,
     physiology: { isOlderAdult: true } as unknown as SymphonyClinicalSnapshot['patient']['physiology'],
     avpuManual: 'P' as const,

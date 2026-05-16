@@ -45,8 +45,10 @@ function criticalAlert(): SymphonyAlert {
     id: 'alert-critical',
     severity: 'critical',
     source: 'safety_gate',
-    message: 'critical',
-    observedAt: '2026-04-27T00:00:00.000Z',
+    title: 'Critical',
+    reasoning: ['critical'],
+    acknowledged: false,
+    triggeredAt: '2026-04-27T00:00:00.000Z',
   }
 }
 

@@ -3,10 +3,12 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 
 import type { Request, Response, NextFunction } from 'express'
 
-declare module 'express-serve-static-core' {
-  interface Request {
-    user?: unknown
-    apiKey?: unknown
+declare global {
+  namespace Express {
+    interface Request {
+      user?: unknown
+      apiKey?: unknown
+    }
   }
 }
 
