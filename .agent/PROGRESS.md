@@ -1,66 +1,48 @@
-# PROGRESS.md — The Abyss (Monorepo Root)
-<!-- Agent MUST update this file at meaningful session end or completed JET phase. -->
-<!-- Keep this file concise. Move deep history to PROGRESS.archive.md or session logs. -->
+# PROGRESS - Milestones and Status
 
----
+Update when a milestone moves. Keep this high-level; details belong in HANDOFF.md, sessions/, reports/, or archive/.
 
-## Current Status
+Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 
-| Field | Value |
-|-------|-------|
-| **Last updated** | 2026-05-07 |
-| **Active branch** | `refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy` |
-| **Branch state** | `HEAD` = `aebfc51` · ahead of origin by 18 |
-| **Active JET phase** | Governance and SSOT alignment in progress |
-| **Primary initiative** | Monorepo operating-model cleanup: Codex persona layer, authority reconciliation, and `.agent/` operational SSOT hardening |
-| **Working tree** | Dirty; active local edits across `.agent/`, `.cursor/`, `docs/handbook/`, `AGENTS.md`, `CLAUDE.md`, `package.json`, `pnpm-lock.yaml`, `tooling/governance/validate.ps1`, and new `.husky/` |
+## Repo Stabilization
 
----
+- [x] Academic solutions build blocker fixed.
+- [x] Orchestrator Prisma generate/cache blocker fixed.
+- [x] DAF website Windows standalone build blocker fixed.
+- [x] Safe non-crown-jewel typecheck blockers fixed.
+- [x] Approved narrow unused/type-only crown-jewel fixes completed.
+- [x] Typecheck fixture and app-local Prisma client blockers fixed.
+- [x] ESLint and typecheck gates restored.
+- [x] Root verification currently passes:
+  - `pnpm typecheck -- --pretty false`
+  - `pnpm build`
+  - `pnpm exec eslint --print-config eslint.config.mjs`
+  - normal pre-commit hook on commit `69168bf`
 
-## Active Focus
+## SSOT and Governance
 
-1. Reconcile authority hierarchy:
-   - `.codex/PERSONA.md` = Codex-only behavior layer
-   - `AGENTS.md` = repository policy authority
-   - `.agent/` = operational SSOT
-2. Reduce stale or contradictory startup context in `.agent/`.
-3. Keep monorepo workflow aligned with real repo state, especially branch, GO posture, and active handoff.
+- [x] .agent/ minimal SSOT shape adopted.
+- [x] .agent.bak records sorted into .agent/.
+- [x] Agent tooling moved to tooling/governance/agent/.
+- [~] Daily SSOT helper simplified to one local model call plus script-rendered files.
+- [!] Governance healthcheck still reports stale references in apps/corporate/ferdiiskandar/AGENTS.md.
 
----
+## Today
 
-## Current Facts
+- Post-stabilization verification passed.
+- Stabilization commits completed:
+  - `60698fa` `fix(sentra): stabilize typecheck fixtures`
+  - `0210c86` `fix(intelligenceboard): use app-local prisma client types`
+  - `b4464bf` `fix(sentra): remove typecheck-blocking unused declarations`
+  - `69168bf` `fix(tooling): restore eslint and typecheck gates`
+- `.agent` conversion to SSOT is ready for migration commit planning once the
+  active files and archive/report/session preservation files are reviewed
+  together.
 
-- Root repo path is `V:\sentra-artificial-intelligence\abyss-monorepo`.
-- Current checked-out branch is `refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy`.
-- The old assumption that `master` is the active branch is stale.
-- `.agent/` contains legacy material that is still valuable historically, but not all of it is safe to treat as current state without refresh.
+## Current Summary
 
----
+Post-stabilization cleanup is in review-only / commit-planning mode. Active
+verification is green; remaining work is governance/SSOT migration packaging,
+not a typecheck blocker.
 
-## Do Not Assume
-
-- Do not assume old cloud-exit work is still the current session target.
-- Do not assume historical GO grants in `SESSION_STATE.md` are still active.
-- Do not assume large historical sections in prior `PROGRESS.md` or `HANDOFF.md` reflect current execution state.
-
----
-
-## Canonical References
-
-- Architecture and stack: `.agent/CONTEXT.md`
-- Active operating instructions: `.agent/HANDOFF.md`
-- Persistent mistakes to avoid: `.agent/LESSONS.md`
-- Durable architectural choices: `.agent/DECISIONS.md`
-- Historical progress ledger: `.agent/archive/PROGRESS.archive.md`
-- Session-by-session logs: `.agent/sessions/`
-- Deep reference docs: `.agent/references/`
-
----
-
-## Recent Milestones
-
-- 2026-05-07: `apps/corporate/ferdiiskandar` landed in monorepo. Migrated from `V:\sentra-artificial-intelligence\class-prototype\ferdiiskandar` as `@the-abyss/ferdiiskandar` (Tier 3 Shell). Build/lint/typecheck/test green. Branch: `refactor/ABYSS-REPO-STRUCTURE-002-corporate-ferdiiskandar`. Source preserved pending archival sign-off.
-- 2026-05-07: Codex repo-local behavior layer established under `.codex/` with startup hooks, persona loading, and MCP cleanup.
-- 2026-05-07: `.agent/` root hygiene tightened; historical ledgers moved under `archive/` and non-state documents moved under `references/`.
-- 2026-05-06: Prototype migration cleanup and smoke validation completed; see `.agent/archive/PROGRESS.archive.md` and session logs for detail.
-- 2026-05-01 to 2026-05-06: Cursor/Codex governance, handbook reshaping, and workspace tooling cleanup continued; detailed ledger preserved in archives and `.agent/sessions/`.
+Last updated: 2026-05-17

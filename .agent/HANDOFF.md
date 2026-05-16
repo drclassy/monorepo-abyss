@@ -1,67 +1,111 @@
-# HANDOFF.md — The Abyss (Monorepo Root)
-<!-- Overwrite at the start of each new session. Keep it short and operational. -->
-<!-- Last updated: 2026-05-07 · Agent: Codex · Session: ssot-governance-reconciliation -->
+# HANDOFF - Current State and Next Action
 
----
+Update every meaningful session. This is the first active file the next agent
+should read after `.agent/README.md`.
 
-## Authority Reminder
+Last updated: 2026-05-17
 
-- Read `.codex/PERSONA.md` first.
-- Then read `AGENTS.md`.
-- Then read `.agent/CONTEXT.md`, `.agent/PROGRESS.md`, `HANDOFF.md`, `.agent/LESSONS.md`, and `.agent/DECISIONS.md`.
-- `AGENTS.md` is repository policy authority.
-- `.agent/` is the operational SSOT.
+## Snapshot
 
----
+- Repo: `D:\Devops\abyss-monorepo`
+- Branch: `refactor/ABYSS-REPO-STRUCTURE-002-corporate-ferdiiskandar`
+- HEAD: `3039306`
+- Active work: ABYSS monorepo stabilization and SSOT simplification
+- Mode: small, scoped changes only
+- `.agent/` is the operational SSOT; `AGENTS.md` is the public rulebook.
+- `.agent/` has been simplified to knowledge files only. Tooling now belongs in
+  `tooling/governance/agent/`.
 
-## Quick Orient
+## Read First
 
-**Branch:** `refactor/ABYSS-REPO-STRUCTURE-001-package-taxonomy`
-**HEAD:** `aebfc51`
-**Branch divergence:** ahead of origin by 18
-**Working tree:** dirty; multiple in-progress local edits exist and must be treated as active context, not noise
+Use the current simplified SSOT order:
 
----
+1. `.agent/README.md`
+2. `.agent/HANDOFF.md`
+3. `.agent/CONTEXT.md` when touching repo boundaries or protected areas
+4. `.agent/PROGRESS.md` for milestone status
+5. `.agent/DECISIONS.md` for durable decisions and lessons
 
-## Active Mission
+Do not expect the old generated `DIGEST.md`, root `LESSONS.md`, or
+`SESSION_STATE.md` files to exist. Their old content was superseded or archived
+as part of the SSOT simplification.
 
-1. Harden `.agent/` as the operational SSOT.
-2. Remove stale and contradictory startup context.
-3. Preserve historical records in archives and session logs without letting them masquerade as current state.
+## Current Technical State
 
----
+- Root `pnpm typecheck -- --pretty false` passes.
+- Root `pnpm build` passes.
+- `pnpm exec eslint --print-config eslint.config.mjs` passes.
+- Normal pre-commit hook passed on commit `69168bf`.
+- Global verification blockers from the stabilization chain are cleared.
 
-## Current High-Signal State
+## Completed In This Stabilization Chain
 
-- Codex behavior layering is now repo-local under `.codex/`.
-- `.codex/PERSONA.md` is the Codex-only behavior layer.
-- `AGENTS.md` has been reclassified from SSOT to repository policy authority.
-- `.agent/` now needs consistency cleanup so its files can safely function as operational truth.
+- `apps/academic/academic-solutions` build got past the missing
+  `@/hooks/use-mobile` blocker.
+- `@the-abyss/orchestrator` got past stale/missing Prisma exports by making
+  database Prisma generation explicit before dependent builds.
+- `@the-abyss/daf-website` Windows local build got past Next standalone symlink
+  EPERM by making standalone output opt-in with `NEXT_STANDALONE=true`.
+- `packages/shared/sentra-ui/src/index.ts` export conflicts were fixed by
+  keeping local UI exports and changing Radix/Lucide wildcard exports to
+  namespace exports.
+- `tooling/abyss-cli/src/index.ts` unused `__filename` / `__dirname` setup was
+  removed.
+- `packages/sentra/sentra-nada/src/engine/early-warning.ts` unused internal
+  `input` parameter was removed after explicit approval.
+- `packages/sentra/sentra-pustaka/src/embedding/approved-embedding.pipeline.ts`
+  unused imports were removed after explicit approval.
+- Typecheck fixture and app-local Prisma client typing fixes were completed.
+- ESLint and typecheck gates were restored.
 
----
+## Completed Commits
 
-## Constraints
+- `60698fa` `fix(sentra): stabilize typecheck fixtures`
+- `0210c86` `fix(intelligenceboard): use app-local prisma client types`
+- `b4464bf` `fix(sentra): remove typecheck-blocking unused declarations`
+- `69168bf` `fix(tooling): restore eslint and typecheck gates`
 
-- Do not touch unrelated product code while performing governance cleanup.
-- Do not assume blanket GO for risky work from historical session state.
-- Do not overwrite append-only records in `LESSONS.md` or `DECISIONS.md`; append corrective entries instead.
-- Preserve auditability by keeping archives and session logs intact.
+## Important Changed Files From This Chain
 
----
+- `packages/platform/database/package.json`
+- `platform/orchestrator/package.json`
+- `turbo.json`
+- `apps/community/daf-website/next.config.ts`
+- `packages/shared/sentra-ui/src/index.ts`
+- `tooling/abyss-cli/src/index.ts`
+- `packages/sentra/sentra-nada/src/engine/early-warning.ts`
+- `packages/sentra/sentra-pustaka/src/embedding/approved-embedding.pipeline.ts`
 
-## Immediate Next Steps
+Note: `apps/community/daf-website/next.config.ts` may not appear in root git
+diff because parts of `apps/` are ignored by the current repo rules.
 
-1. Keep `.agent/CONTEXT.md` factual and architecture-only.
-2. Keep `.agent/PROGRESS.md` as current-state summary, not historical ledger.
-3. Keep `.agent/HANDOFF.md` limited to active execution context.
-4. Treat `.agent/SESSION_STATE.md` as expired by default unless a fresh GO is recorded.
-5. Append authority-model correction to `.agent/DECISIONS.md`.
+## Remaining Follow-Up
 
----
+1. `apps/corporate/ferdiiskandar/AGENTS.md`
+   - Governance healthcheck still reports stale references.
+   - Treat as governance cleanup, not product rewrite.
 
-## Archive Pointers
+## Guardrails
 
-- Prior handoff ledger: `.agent/archive/HANDOFF.archive.md`
-- Historical progress ledger: `.agent/archive/PROGRESS.archive.md`
-- Full session trail: `.agent/sessions/`
-- Deep reference docs: `.agent/references/`
+- Do not delete, clean, reset, move, or treat `.agent/` as junk.
+- Do not touch `packages/sentra/**` automatically.
+- Treat `packages/sentra/**` as crown-jewel / review-first territory.
+- Diagnose first, report, then wait for Chief approval before crown-jewel edits.
+- Do not change schemas, providers, auth behavior, deployment config, or
+  architecture unless explicitly scoped.
+- Do not run destructive Git commands.
+- Keep each fix one file or one issue at a time.
+- Do not claim build, typecheck, or tests passed without fresh verification.
+
+## Suggested Next Action
+
+Plan the `.agent/` migration commit with the active SSOT files and their
+archive/report/session preservation files together.
+
+Verification before commit planning:
+
+```powershell
+pnpm typecheck -- --pretty false
+pnpm build
+git diff --stat
+```
