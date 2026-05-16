@@ -17,7 +17,7 @@
     "test:ui": "turbo run test:ui",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,json}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,json}\"",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "pnpm --filter @the-abyss/database prisma:generate && tsc --noEmit",
     "clean": "turbo run clean && rm -rf node_modules",
     "graph": "turbo run build --graph=dependency-graph.png",
     "abyss": "pnpm --filter @the-abyss/cli",
@@ -44,6 +44,7 @@
   },
   "//hoisting-workaround": "baseline-browser-mapping, caniuse-lite, picocolors are pinned at root to ensure pnpm hoists them into root node_modules so the tailwindcss CLI (used by @the-abyss/ui#build) and browserslist toolchain can resolve them via parent traversal. Removing them breaks @the-abyss/ui build with 'Cannot find module picocolors'. See VERIFICATION-REPORT for context.",
   "devDependencies": {
+    "@the-abyss/config-eslint": "workspace:*",
     "@types/node": "^22.0.0",
     "baseline-browser-mapping": "^2.10.24",
     "caniuse-lite": "1.0.30001788",
