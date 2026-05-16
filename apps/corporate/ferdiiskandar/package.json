@@ -17,7 +17,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "security:deps": "node scripts/pnpm-scope-audit.mjs --audit-level=moderate"
+    "security:deps": "node scripts/pnpm-scope-audit.mjs --audit-level=moderate",
+    "knip": "knip",
+    "knip:prod": "knip --production",
+    "knip:strict": "node --max-old-space-size=4096 ./node_modules/knip/bin/knip.js --production --strict"
   },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.19.2",
@@ -36,23 +39,27 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@the-abyss/config-eslint": "workspace:*",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript-eslint/parser": "8.59.2",
     "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^2.1.9",
     "eslint": "^9.39.4",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.1.1",
     "jsdom": "^29.1.1",
+    "knip": "^6.12.2",
     "typescript": "^5",
     "vitest": "^2.1.0"
   },
   "pnpm": {
     "overrides": {
       "postcss": "8.5.14"
-    }
+    },
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
   }
 }
