@@ -62,7 +62,6 @@ function match(
 }
 
 function checkDengueShockPattern(
-  input: SymphonyEarlyWarningInput,
   v: SymphonyVitalsInput,
   text: string
 ): SymphonyEarlyWarningMatch | null {
@@ -355,7 +354,7 @@ export function detectSymphonyEarlyWarningPatterns(
 
   const text = clinicalText(input)
   const checks = [
-    checkDengueShockPattern(input, v, text),
+    checkDengueShockPattern(v, text),
     checkSepsisPattern(input, v, text),
     checkRespiratoryDeterioration(v, text),
     checkCardiovascularPattern(v, text),

@@ -2,13 +2,11 @@
 import fs from 'fs'
 import path from 'path'
 import { createVectorStore, DEFAULT_EMBEDDING_MODEL, DEFAULT_EMBEDDING_DIMENSIONS } from '@sentra/cermin'
-import type { KnowledgeSourceRegistryEntry } from '../registry/registry-types.js'
 import type {
   ApprovedEmbeddingPipelineParams,
   EmbeddedChunkRecord,
   EmbeddingRunSummary,
   FailureRecord,
-  SkippedRecord,
   VectorWriteReport,
 } from './types.js'
 import { buildVectorId, buildChunkId, buildContentHash } from './vector-id.js'
