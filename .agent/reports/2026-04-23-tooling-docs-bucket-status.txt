@@ -1,0 +1,16 @@
+?? .clinerules
+?? .cursor/
+?? .cursorignore
+?? .cursorindexingignore
+?? ONBOARDING.md
+?? docs/cursor/
+?? docs/handbook/
+?? docs/research/
+?? docs/superpowers/plans/2026-04-20-clear-cursor-history.md
+?? docs/superpowers/plans/2026-04-20-cursor-cleanup.md
+?? docs/superpowers/plans/2026-04-20-god-mode-optimization.md
+?? docs/superpowers/specs/2026-04-19-classy-rebranding-design.md
+?? docs/superpowers/specs/2026-04-20-cursor-cleanup-design.md
+?? mcp.json.example
+?? tooling/governance/
+?? tooling/scripts/run-autoskills.ps1
