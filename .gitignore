@@ -61,6 +61,7 @@ prompts/private/
 
 # ---- DEPENDENCIES ----
 node_modules/
+node_modules.bak-recovered/
 .pnp
 .pnp.js
 .pnpm-store/
@@ -79,6 +80,9 @@ out/
 .cache/
 .parcel-cache/
 .vercel/
+**/__pycache__/
+*.py[cod]
+*$py.class
 *.tsbuildinfo
 .eslintcache
 .stylelintcache
@@ -167,14 +171,11 @@ flows/.langflow/
 .mcp.json
 docs/superpowers/
 
-# ---- LOCAL AGENT OPERATIONS (KEEP ON DISK, DO NOT PUSH) ----
-.agent/**
-.agent/sessions/
-.agent/reports/
-.agent/workflows/
-.agent/01_PANDUAN_PENGUMPULAN_BAHAN_SENTRA_CDSS_v1.md
-.agent/archive/
-.agent/references/
+# ---- AGENT OPERATIONAL SSOT ----
+# .agent/ is protected operational state, not cache or junk.
+# Track the curated SSOT. Only generated local helper output stays ignored.
+.agent/reports/ssot-suggestions/
+.agent/reports/digest/
 
 # ---- POLYREPO SPLIT — apps/ MIGRATED TO SEPARATE REPOS ----
 # apps/ is excluded from abyss-core. Each app lives in its own repo.
@@ -210,27 +211,12 @@ apps/corporate/ferdiiskandar/pnpm-lock.yaml
 # Git evaluates .gitignore top-down; trailing negations override earlier rules.
 # KEPT: core `.agent/` governance memory + `CLAUDE.md` (Claude Code project instructions)
 !.agent/
-!.agent/CONTEXT.md
-!.agent/DECISIONS.md
-!.agent/HANDOFF.md
-!.agent/LESSONS.md
-!.agent/PROGRESS.md
-!.agent/SESSION_STATE.md
-!.agent/scripts/
-!.agent/scripts/**
+!.agent/**
 !.agent/hooks/
 !.agent/hooks/**
-!.agent/archive/
-!.agent/archive/HANDOFF.archive.md
-!.agent/archive/MASTER_CONTEXT_2026-04-19.md
-!.agent/archive/MASTER_SITREP.md
-!.agent/archive/PROGRESS.archive.md
-!.agent/references/
-!.agent/references/ARCHITECTURE.md
-!.agent/references/CURATION_TASKS.md
-!.agent/references/FEATURE.md
-!.agent/references/KNOWLEDGE CURATED.md
-!.agent/references/PROTOCOL.md
+!.codex/
+.codex/*
+!.codex/hooks.json
 !pnpm-lock.yaml
 apps/corporate/ferdiiskandar/pnpm-lock.yaml
 !.claude/
@@ -262,3 +248,12 @@ gha-creds-*.json
 .obsidian/
 conductor/
 tooling/handbook-statusbar-vsix/*.vsix
+
+# Kimi Proxy (BYOK)
+kimi_proxy.py
+start_kimi_proxy.bat
+start_zencoder_with_kimi.bat
+kimi_proxy_https.py
+setup_hosts_kimi.ps1
+kimi_proxy.crt
+kimi_proxy.key
