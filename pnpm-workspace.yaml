@@ -9,5 +9,6 @@ packages:
   - 'packages/integration-bridge'
   - 'platform/**'
   - 'tooling/**'
+  - '!tooling/handbook-statusbar-vsix'
   - '!tooling/kilo/worktrees/**'
   - 'apps/community/classy-transformer/website'

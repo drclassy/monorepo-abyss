@@ -6,7 +6,7 @@
   "types": "./src/index.ts",
   "scripts": {
     "dev": "tsx watch src/main.ts",
-    "build": "tsc",
+    "build": "pnpm -w --filter @the-abyss/database prisma:generate && tsc",
     "start": "node dist/main.js",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit",

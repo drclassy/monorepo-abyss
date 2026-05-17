@@ -17,6 +17,24 @@
       "env": ["DATABASE_URL", "LANGFLOW_API_URL"],
       "cache": true
     },
+    "@the-abyss/orchestrator#build": {
+      "dependsOn": ["@the-abyss/database#prisma:generate", "^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**"],
+      "env": ["DATABASE_URL", "LANGFLOW_API_URL"],
+      "cache": true
+    },
+    "@the-abyss/database#build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "prisma/schema.prisma"],
+      "outputs": [],
+      "cache": false
+    },
+    "prisma:generate": {
+      "cache": false,
+      "inputs": ["prisma/schema.prisma"],
+      "outputs": []
+    },
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.test.ts", "src/**/*.test.tsx"],

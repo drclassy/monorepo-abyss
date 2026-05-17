@@ -26,7 +26,6 @@
     "db:migrate": "turbo run db:migrate",
     "db:studio": "pnpm --filter @the-abyss/database db:studio",
     "flows:test": "turbo run flows:test",
-    "security:primary-healthcare": "pnpm --filter @the-abyss/sentra-dashboard run security:catch-scan && pnpm --filter @the-abyss/sentra-dashboard run security:secret-scan && pnpm --filter @the-abyss/puskesmas-website run security:catch-scan && pnpm --filter @the-abyss/puskesmas-website run security:secret-scan && pnpm --filter @the-abyss/sentra-dashboard run security:audit && pnpm --filter @the-abyss/puskesmas-website run security:audit",
     "governance:agents-check": "node tooling/governance/agent/healthcheck.js",
     "prepare": "husky"
   },
@@ -72,9 +71,5 @@
       "effect": "3.20.0",
       "xlsx": "npm:@e965/xlsx@0.20.3"
     }
-  },
-  "workspaces": [
-    "packages/*",
-    "tooling/*"
-  ]
+  }
 }
