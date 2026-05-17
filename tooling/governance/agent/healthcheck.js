@@ -10,7 +10,7 @@
  *   5. .agent/ folder has 5 required files
  *   6. No contradictions with root absolute prohibitions (section 3)
  *
- * Usage:  node tooling/scripts/governance/agents-healthcheck.js
+ * Usage:  node tooling/governance/agent/healthcheck.js
  * CI:     Add as pre-merge gate in .github/workflows/ci.yml
  *
  * No external dependencies — pure Node.js stdlib.
@@ -24,7 +24,15 @@ const { join, relative } = require('node:path')
 const ROOT = process.cwd()
 const APPS_DIR = join(ROOT, 'apps')
 
-const REQUIRED_AGENT_FILES = [
+const REQUIRED_AGENT_FILES_V2 = [
+  'README.md',
+  'CONTEXT.md',
+  'PROGRESS.md',
+  'HANDOFF.md',
+  'DECISIONS.md',
+]
+
+const REQUIRED_AGENT_FILES_LEGACY = [
   'CONTEXT.md',
   'PROGRESS.md',
   'HANDOFF.md',
@@ -143,12 +151,16 @@ function checkAgentFolder(file) {
     }
   }
   const entries = readdirSync(agentDir)
-  const missing = REQUIRED_AGENT_FILES.filter((f) => !entries.includes(f))
+  const missingV2 = REQUIRED_AGENT_FILES_V2.filter((f) => !entries.includes(f))
+  const missingLegacy = REQUIRED_AGENT_FILES_LEGACY.filter((f) => !entries.includes(f))
+  const pass = missingV2.length === 0 || missingLegacy.length === 0
   return {
     file,
-    pass: missing.length === 0,
-    rule: '.agent/ 5 Files',
-    detail: missing.length ? `Missing: ${missing.join(', ')}` : undefined,
+    pass,
+    rule: '.agent/ SSOT Files',
+    detail: pass
+      ? undefined
+      : `Missing v2: ${missingV2.join(', ')}; missing legacy: ${missingLegacy.join(', ')}`,
   }
 }
 
