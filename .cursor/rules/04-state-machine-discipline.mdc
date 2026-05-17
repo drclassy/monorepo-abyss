@@ -1,5 +1,5 @@
 ---
-description: "Task lifecycle discipline: Analyze → Prepare → Implement → Validate. Auto-update PROGRESS.md and SESSION_STATE.md."
+description: "Task lifecycle discipline: Analyze -> Prepare -> Implement -> Validate. Auto-update PROGRESS.md and HANDOFF.md."
 globs:
   - ".agent/**"
   - "AGENTS.md"
@@ -18,7 +18,7 @@ Validate → Run linter/typecheck/test
 ## 2. Memory (MANDATORY)
 Auto-update files in .agent/:
 PROGRESS.md → after every sub-task
-SESSION_STATE.md → current status & phase
+HANDOFF.md → current status, blockers, and next action
 
 ## 3. Hard Rules
 Failed? → Deep analysis, ROLLBACK if needed, then retry

@@ -18,11 +18,11 @@ alwaysApply: true
 
 Read these five files in exact order before taking ANY action:
 
-1. `.agent/CONTEXT.md` — architecture & stack
-2. `.agent/PROGRESS.md` — current state of work
-3. `.agent/HANDOFF.md` — active plan for this session
-4. `.agent/LESSONS.md` — prior mistakes to avoid
-5. `.agent/DECISIONS.md` — architectural decisions already made
+1. `.agent/README.md` — SSOT map and usage
+2. `.agent/HANDOFF.md` — active state and next action
+3. `.agent/CONTEXT.md` — architecture and boundaries
+4. `.agent/PROGRESS.md` — milestone status
+5. `.agent/DECISIONS.md` — decisions and lessons already made
 
 If any file is missing, **STOP** and report which file is absent. Do not proceed until Chief confirms.
 

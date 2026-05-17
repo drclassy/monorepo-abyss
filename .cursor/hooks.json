@@ -3,12 +3,7 @@
   "hooks": {
     "afterFileEdit": [
       {
-        "command": "node .cursor/hooks/after-edit.mjs"
-      }
-    ],
-    "stop": [
-      {
-        "command": "node .cursor/hooks/autofix-loop.mjs"
+        "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File tooling/governance/agent/hooks/post-tool-use.ps1"
       }
     ]
   }

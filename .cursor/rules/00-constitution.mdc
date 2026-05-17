@@ -15,11 +15,11 @@ alwaysApply: true
 You MUST read in this EXACT order at session start:
 
 1. `AGENTS.md` — Repository policy authority
-2. `.agent/CONTEXT.md` — Understand architecture and stack
-3. `.agent/PROGRESS.md` — Know the current state of work
-4. `.agent/HANDOFF.md` — Read the plan and instructions for this session
-5. `.agent/LESSONS.md` — Avoid previously made mistakes
-6. `.agent/DECISIONS.md` — Understand prior architectural decisions
+2. `.agent/README.md` — Understand SSOT map and usage
+3. `.agent/HANDOFF.md` — Read the current state and next action
+4. `.agent/CONTEXT.md` — Understand architecture and boundaries
+5. `.agent/PROGRESS.md` — Know milestone status
+6. `.agent/DECISIONS.md` — Understand prior decisions and lessons
 
 ## GUARD 2: THE JET WORKFLOW PROTOCOL (Risk-Based)
 
@@ -40,7 +40,7 @@ Every non-trivial task follows JET, but execution depth depends on Task Classifi
 - Minimal local note if needed
 
 **Class B (Checkpoint):**
-- Check `.agent/SESSION_STATE.md` for GO status
+- Check `.agent/HANDOFF.md` for current scope and blockers
 - Plan in HANDOFF.md → Execute → Verify
 - Update local `.agent/sessions/` notes after completion when useful
 
