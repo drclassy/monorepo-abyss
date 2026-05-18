@@ -13,7 +13,7 @@
     "clean": "rm -rf .turbo node_modules dist"
   },
   "dependencies": {
-    "glob": "^10.0.0"
+    "glob": "^10.5.0"
   },
   "devDependencies": {
     "@types/node": "22.19.19",
