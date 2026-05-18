@@ -1,0 +1,46 @@
+---
+description: >-
+  Verification, diff hygiene, rollback, and final reporting expectations for
+  reviewable Cursor-generated changes.
+globs:
+  - "**/*"
+alwaysApply: false
+---
+
+# Verification and Diff Hygiene
+
+No implementation task is complete until verification has been attempted.
+
+## Before Finishing
+
+- Review the changed files.
+- Remove temporary logs, debug output, dead scratch code, and accidental edits.
+- Keep formatting churn out of unrelated files.
+- Confirm generated files are intentional.
+- Do not revert unrelated dirty files.
+
+## Verification Selection
+
+Choose checks by risk and changed surface:
+
+- TypeScript/source: `pnpm lint`, `pnpm typecheck`
+- behavior/test change: `pnpm test`
+- runtime/build surface: `pnpm build`
+- dependency/security surface: `pnpm security:deps`
+- config JSON: parse with Node or the relevant tool
+
+## Reporting
+
+Report:
+
+- what changed
+- files changed
+- verification commands run
+- pass/fail/partial result
+- remaining risks or follow-up
+
+Use actual evidence, not confidence language.
+
+## Rollback
+
+Prefer targeted fixes over rollback when the issue is small and isolated. Recommend rollback only for build/core breakage, architecture violation, sensitive data exposure, overly broad diff, or misunderstood objective.
