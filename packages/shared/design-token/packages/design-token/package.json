@@ -1,0 +1,28 @@
+{
+  "name": "@sentra/design-token",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Sentra AI 2026 brand tokens, CSS variables, logo metadata, and Tailwind preset.",
+  "sideEffects": [
+    "./src/css/sentra-vars.css"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens": "./src/tokens.ts",
+    "./tailwind": "./src/tailwind.ts",
+    "./css": "./src/css/sentra-vars.css",
+    "./assets/*": "./assets/*"
+  },
+  "files": [
+    "src",
+    "assets",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

@@ -5,6 +5,7 @@ packages:
   - 'packages/platform/*'
   - 'packages/clinical/*'
   - 'packages/shared/*'
+  - 'packages/shared/design-token/packages/*'
   - 'packages/tooling/*'
   - 'packages/integration-bridge'
   - 'platform/**'

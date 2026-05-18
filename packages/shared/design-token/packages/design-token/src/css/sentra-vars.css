@@ -1,0 +1,54 @@
+:root, .sentra-theme {
+  --sentra-black: #000000;
+  --sentra-white: #FDFDFD;
+  --sentra-graphite: #111318;
+  --sentra-slate: #2B2F38;
+  --sentra-silver: #A0A0A2;
+  --sentra-grid: #E8EAF0;
+  --sentra-blue: #0B1F3A;
+  --sentra-violet: #6D5DFC;
+  --sentra-cyan: #00D4FF;
+  --sentra-success: #12B981;
+  --sentra-warning: #F59E0B;
+  --sentra-critical: #EF4444;
+
+  --sentra-bg-canvas: var(--sentra-black);
+  --sentra-bg-surface: var(--sentra-graphite);
+  --sentra-bg-elevated: #171A21;
+  --sentra-bg-muted: var(--sentra-slate);
+
+  --sentra-fg-primary: var(--sentra-white);
+  --sentra-fg-secondary: var(--sentra-silver);
+  --sentra-fg-inverse: var(--sentra-black);
+  --sentra-fg-muted: var(--sentra-grid);
+
+  --sentra-border-default: var(--sentra-slate);
+  --sentra-border-subtle: rgba(255,255,255,0.08);
+  --sentra-border-active: var(--sentra-cyan);
+
+  --sentra-font-display: "Space Grotesk", "Inter", "IBM Plex Sans", Arial, sans-serif;
+  --sentra-font-body: "Inter", "IBM Plex Sans", Arial, sans-serif;
+  --sentra-font-mono: "JetBrains Mono", SFMono-Regular, Consolas, monospace;
+
+  --sentra-radius-sm: 8px;
+  --sentra-radius-md: 12px;
+  --sentra-radius-lg: 16px;
+  --sentra-radius-xl: 24px;
+  --sentra-radius-pill: 999px;
+
+  --sentra-shadow-soft: 0 20px 50px rgba(0,0,0,0.28);
+  --sentra-shadow-glow: 0 0 32px rgba(0,212,255,0.18);
+  --sentra-shadow-panel: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.sentra-theme-light {
+  --sentra-bg-canvas: #FDFDFD;
+  --sentra-bg-surface: #FFFFFF;
+  --sentra-bg-elevated: #F7F8FB;
+  --sentra-bg-muted: #E8EAF0;
+  --sentra-fg-primary: #000000;
+  --sentra-fg-secondary: #2B2F38;
+  --sentra-fg-inverse: #FDFDFD;
+  --sentra-border-default: #E8EAF0;
+  --sentra-border-subtle: rgba(0,0,0,0.08);
+}

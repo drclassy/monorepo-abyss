@@ -1,0 +1,9 @@
+@import "@sentra/design-token/css";
+@import "@sentra/ui/styles";
+
+html, body {
+  min-height: 100%;
+  background: var(--sentra-black);
+  color: var(--sentra-white);
+  font-family: var(--sentra-font-body);
+}

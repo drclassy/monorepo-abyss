@@ -1,0 +1,168 @@
+@import "@sentra/design-token/css";
+
+.sentra-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--sentra-white);
+  font-family: var(--sentra-font-display);
+}
+
+.sentra-logo--dark {
+  color: var(--sentra-black);
+}
+
+.sentra-logo__wordmark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.sentra-logo__name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.sentra-logo__descriptor {
+  margin-top: 5px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--sentra-silver);
+}
+
+.sentra-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--sentra-radius-pill);
+  font-family: var(--sentra-font-body);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: transform 180ms cubic-bezier(0.2, 0, 0, 1), border-color 180ms cubic-bezier(0.2, 0, 0, 1), background 180ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.sentra-button:hover {
+  transform: translateY(-1px);
+}
+
+.sentra-button:focus-visible {
+  outline: 2px solid var(--sentra-cyan);
+  outline-offset: 3px;
+}
+
+.sentra-button--sm { height: 34px; padding: 0 14px; font-size: 13px; }
+.sentra-button--md { height: 42px; padding: 0 18px; font-size: 14px; }
+.sentra-button--lg { height: 50px; padding: 0 24px; font-size: 16px; }
+
+.sentra-button--primary {
+  color: var(--sentra-black);
+  background: var(--sentra-cyan);
+  box-shadow: var(--sentra-shadow-glow);
+}
+
+.sentra-button--secondary {
+  color: var(--sentra-white);
+  background: var(--sentra-violet);
+}
+
+.sentra-button--ghost {
+  color: var(--sentra-white);
+  background: transparent;
+  border-color: var(--sentra-border-subtle);
+}
+
+.sentra-button--danger {
+  color: var(--sentra-white);
+  background: var(--sentra-critical);
+}
+
+.sentra-card {
+  border-radius: var(--sentra-radius-xl);
+  border: 1px solid var(--sentra-border-subtle);
+  padding: 24px;
+  font-family: var(--sentra-font-body);
+}
+
+.sentra-card--dark {
+  color: var(--sentra-white);
+  background: var(--sentra-bg-surface);
+  box-shadow: var(--sentra-shadow-soft);
+}
+
+.sentra-card--light {
+  color: var(--sentra-black);
+  background: var(--sentra-white);
+  border-color: rgba(0,0,0,0.08);
+}
+
+.sentra-card--glass {
+  color: var(--sentra-white);
+  background: rgba(17, 19, 24, 0.72);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--sentra-shadow-panel);
+}
+
+.sentra-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--sentra-radius-pill);
+  padding: 5px 10px;
+  font-family: var(--sentra-font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--sentra-border-subtle);
+}
+
+.sentra-badge--neutral { color: var(--sentra-silver); background: rgba(255,255,255,0.04); }
+.sentra-badge--cyan { color: var(--sentra-cyan); background: rgba(0,212,255,0.1); }
+.sentra-badge--violet { color: var(--sentra-violet); background: rgba(109,93,252,0.12); }
+.sentra-badge--success { color: var(--sentra-success); background: rgba(18,185,129,0.1); }
+.sentra-badge--warning { color: var(--sentra-warning); background: rgba(245,158,11,0.1); }
+.sentra-badge--critical { color: var(--sentra-critical); background: rgba(239,68,68,0.1); }
+
+.sentra-panel {
+  color: var(--sentra-white);
+  background-image: radial-gradient(circle at top right, rgba(0, 212, 255, 0.16), transparent 34%), linear-gradient(135deg, #000000 0%, #111318 56%, #0B1F3A 100%);
+  border: 1px solid var(--sentra-border-subtle);
+  border-radius: 32px;
+  padding: 32px;
+  font-family: var(--sentra-font-body);
+  box-shadow: var(--sentra-shadow-panel);
+}
+
+.sentra-panel__eyebrow {
+  margin: 0 0 10px;
+  color: var(--sentra-cyan);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.sentra-panel__title {
+  margin: 0;
+  font-family: var(--sentra-font-display);
+  font-size: clamp(28px, 5vw, 56px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.sentra-panel__description {
+  max-width: 680px;
+  margin: 16px 0 0;
+  color: var(--sentra-silver);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.sentra-panel__content {
+  margin-top: 28px;
+}
