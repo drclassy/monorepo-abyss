@@ -48,7 +48,7 @@ services:
 
   # Abyss AI Engine (Langflow)
   abyss-ai-engine:
-    image: langflowai/langflow:latest@sha256:45238e614ce42bf93fea36a56316d3ebafdaf70c4df4425aeb2c90b035ec4a14
+    image: langflowai/langflow:latest@sha256:59b00513151c224090e2d062ba94b2b5ba7f9f46922d2704bdf1090b59424d81
     container_name: Abyss-AI-Engine
     restart: unless-stopped
     ports:
