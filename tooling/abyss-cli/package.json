@@ -24,7 +24,7 @@
     "fs-extra": "^11.3.5"
   },
   "devDependencies": {
-    "@types/node": "22.19.18",
+    "@types/node": "22.19.19",
     "@types/fs-extra": "11.0.4",
     "@types/prompts": "2.4.9",
     "tsx": "4.21.0",

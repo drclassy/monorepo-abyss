@@ -39,7 +39,7 @@
     "@nestjs/testing": "11.1.19",
     "@the-abyss/config-eslint": "workspace:*",
     "@the-abyss/config-typescript": "workspace:*",
-    "@types/node": "22.19.18",
+    "@types/node": "22.19.19",
     "@types/supertest": "6.0.3",
     "supertest": "7.2.2",
     "tsx": "4.21.0",
