@@ -7,6 +7,7 @@ export { HybridBrainEngine } from './retrieval/hybrid.engine.js'
 export { ingestFile, ingestLibrary } from './ingestion/pipeline.js'
 export { chunkText } from './ingestion/chunker.js'
 export { formatGroundedCitations } from './citation/formatter.js'
+export { attachGroundedCitations } from './citation/query-result.js'
 export { GemmaEngine } from './assessment/gemma.js'
 export { GuardEngine } from './compliance/guard.js'
 export type {

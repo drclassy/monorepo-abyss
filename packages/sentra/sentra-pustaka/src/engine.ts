@@ -2,6 +2,7 @@
 import * as dotenv from 'dotenv'
 
 import { GemmaEngine } from './assessment/gemma.js'
+import { attachGroundedCitations } from './citation/query-result.js'
 import { GuardEngine } from './compliance/guard.js'
 import { OllamaEmbedder } from './ingestion/embedder.js'
 import { HybridBrainEngine } from './retrieval/hybrid.engine.js'
@@ -75,16 +76,16 @@ export class SentraRAGEngine {
 
     try {
       const answer = await this.assessment.think(cleanQuestion, context)
-      return {
+      return attachGroundedCitations({
         answer,
         chunks,
         source,
         model: `${getAssessmentModelName(this.assessment)} via Sentra RAG Engine`,
         status: 'SUCCESS',
         timestamp: new Date().toISOString(),
-      }
+      })
     } catch (err) {
-      return {
+      return attachGroundedCitations({
         answer: 'Gagal mendapatkan jawaban dari model.',
         chunks,
         source,
@@ -92,7 +93,7 @@ export class SentraRAGEngine {
         status: 'ERROR',
         error: String(err),
         timestamp: new Date().toISOString(),
-      }
+      })
     }
   }
 
