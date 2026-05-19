@@ -8,6 +8,8 @@ import {
   DEFAULT_EMBEDDING_DIMENSIONS,
 } from '@sentra/cermin'
 
+import { buildPdfKnowledgeDatabaseRecord } from '../knowledge/pdf-knowledge-record.js'
+
 import { writeEmbeddingRunArtifacts, sanitizeErrorMessage } from './embedding-run-artifacts.js'
 import { loadApprovedCandidates } from './registry-gate.js'
 import type {
@@ -17,7 +19,6 @@ import type {
   FailureRecord,
   VectorWriteReport,
 } from './types.js'
-import { buildVectorId, buildChunkId, buildContentHash } from './vector-id.js'
 
 /**
  * Minimal chunk shape read from chunks.json (produced by ABYSS-RAG-002).
@@ -127,7 +128,7 @@ export async function runApprovedEmbeddingPipeline(
 
   // 3. Process each approved document
   for (const entry of approved) {
-    const { source_hash, document_version, document_title, parser_provider } = entry
+    const { source_hash } = entry
 
     // Load chunks
     const { chunks, error: loadError } = loadChunks(artifactsDir, source_hash)
@@ -153,39 +154,34 @@ export async function runApprovedEmbeddingPipeline(
 
     for (let idx = 0; idx < chunks.length; idx++) {
       const chunk = chunks[idx]
-      const chunkMeta = chunk.metadata
-      const pageNumber = chunkMeta?.page_number ?? 0
-      const chunkId = buildChunkId(source_hash, pageNumber, idx)
-      const vectorId = buildVectorId(source_hash, document_version, pageNumber, idx)
-      const contentHash = buildContentHash(chunk.content)
+      const knowledgeRecord = buildPdfKnowledgeDatabaseRecord({
+        source: entry,
+        chunk,
+        chunkIndex: idx,
+        embeddingModel,
+        embeddingDimensions,
+      })
 
       // Attempt vector write (write mode only)
       if (writeMode === 'write' && vectorStore) {
         totalAttemptedWrites++
         try {
-          await vectorStore.upsertById(vectorId, chunk.content, {
-            source_hash,
-            document_version,
-            document_title: document_title ?? '',
-            chunk_id: chunkId,
-            vector_id: vectorId,
-            page_number: pageNumber,
-            parser_provider: chunkMeta?.parser_provider ?? parser_provider,
-            ocr_confidence: chunkMeta?.ocr_confidence ?? null,
-            registry_status: 'approved_for_embedding',
-            content_hash: contentHash,
-          })
-          upsertedVectorIds.push(vectorId)
+          await vectorStore.upsertById(
+            knowledgeRecord.vectorId,
+            knowledgeRecord.content,
+            knowledgeRecord.metadata
+          )
+          upsertedVectorIds.push(knowledgeRecord.vectorId)
           totalSuccessfulWrites++
         } catch (err) {
           failures.push({
             source_hash,
-            chunk_id: chunkId,
+            chunk_id: knowledgeRecord.chunkId,
             stage: 'vector_write',
             error_code: 'VECTOR_WRITE_FAILED',
             message: sanitizeErrorMessage(err),
           })
-          failedVectorIds.push(vectorId)
+          failedVectorIds.push(knowledgeRecord.vectorId)
           totalFailedWrites++
           docEmbeddingFailed = true
           continue
@@ -193,21 +189,7 @@ export async function runApprovedEmbeddingPipeline(
       }
 
       // Record embedded chunk (both modes)
-      const record: EmbeddedChunkRecord = {
-        source_hash,
-        document_version,
-        chunk_id: chunkId,
-        vector_id: vectorId,
-        page_number: pageNumber,
-        parser_provider: chunkMeta?.parser_provider ?? parser_provider,
-        ocr_confidence: chunkMeta?.ocr_confidence ?? null,
-        registry_status: 'approved_for_embedding',
-        embedding_model: embeddingModel,
-        embedding_dimension: embeddingDimensions,
-        content_hash: contentHash,
-        embedded_at: new Date().toISOString(),
-      }
-      embeddedChunks.push(record)
+      embeddedChunks.push(knowledgeRecord.embeddedChunk)
     }
 
     if (docEmbeddingFailed) {

@@ -68,6 +68,12 @@ export { runApprovedEmbeddingPipeline } from './embedding/approved-embedding.pip
 export { loadApprovedCandidates } from './embedding/registry-gate.js'
 export { buildVectorId, buildChunkId, buildContentHash } from './embedding/vector-id.js'
 export { PgPoolVectorAdapter } from './embedding/pg-adapter.js'
+export { buildPdfKnowledgeDatabaseRecord } from './knowledge/pdf-knowledge-record.js'
+export type {
+  PdfKnowledgeChunk,
+  PdfKnowledgeDatabaseRecord,
+  BuildPdfKnowledgeDatabaseRecordParams,
+} from './knowledge/pdf-knowledge-record.js'
 export type {
   EmbeddingWriteMode,
   EmbeddingRunStatus,
