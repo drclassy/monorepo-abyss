@@ -14,9 +14,39 @@ export interface MedicalChunk {
   createdAt?: Date
 }
 
+export interface CitationSource {
+  sourceHash: string
+  documentId?: string
+  documentVersion?: string
+  sourceTitle?: string
+  parserProvider?: string
+}
+
+export interface CitedEvidenceChunk {
+  chunkId?: string
+  vectorId?: string
+  pageNumber: number | null
+  chunkIndex?: number
+  textSpan?: {
+    start?: number
+    end?: number
+  }
+  ocrConfidence: number | null
+  retrievalScore: number
+  contentPreview: string
+  traceabilityIssues: string[]
+}
+
+export interface GroundedCitation {
+  citationLabel: string
+  source: CitationSource
+  evidence: CitedEvidenceChunk
+}
+
 export interface RAGQueryResult {
   answer: string
   chunks: RetrievedChunk[]
+  citations?: GroundedCitation[]
   source: 'local' | 'vertex' | 'hybrid'
   model: string
   status: 'SUCCESS' | 'ERROR'

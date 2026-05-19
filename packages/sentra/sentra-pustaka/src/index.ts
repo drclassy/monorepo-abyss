@@ -11,6 +11,9 @@ export { GuardEngine } from './compliance/guard.js'
 export type {
   MedicalChunk,
   MedicalCategory,
+  CitationSource,
+  CitedEvidenceChunk,
+  GroundedCitation,
   RAGQueryResult,
   RetrievedChunk,
   IngestionResult,
@@ -72,4 +75,3 @@ export type {
   FailureRecord,
   ApprovedEmbeddingPipelineParams,
 } from './embedding/types.js'
-
