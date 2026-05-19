@@ -24,6 +24,8 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 - [x] .agent/ minimal SSOT shape adopted.
 - [x] .agent.bak records sorted into .agent/.
 - [x] Agent tooling moved to tooling/governance/agent/.
+- [x] Root `.codex/` project layer now explicitly enables hooks and reloads SSOT on `startup`, `resume`, and `clear`.
+- [x] Governance healthcheck now validates root `.codex/` hook coverage for SessionStart, PostToolUse edit logging, and Stop continuity.
 - [~] Daily SSOT helper simplified to one local model call plus script-rendered files.
 - [!] Governance healthcheck still reports stale references in apps/corporate/ferdiiskandar/AGENTS.md.
 
@@ -45,4 +47,4 @@ Post-stabilization cleanup is in review-only / commit-planning mode. Active
 verification is green; remaining work is governance/SSOT migration packaging,
 not a typecheck blocker.
 
-Last updated: 2026-05-17
+Last updated: 2026-05-20

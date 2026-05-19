@@ -78,7 +78,14 @@ $handoff
 ## PROGRESS.md
 $progress
 
+## Required SSOT Read Pattern
+1. Read `.agent/README.md`.
+2. Read `.agent/HANDOFF.md`.
+3. Open `.agent/CONTEXT.md` when touching repo boundaries, protected areas, or crown-jewel code.
+4. Open `.agent/PROGRESS.md` when milestone state matters.
+5. Search `.agent/DECISIONS.md` when a prior rule, lesson, or durable choice matters.
+
 ## Token Discipline
-Do not read all `.agent/` files by default. Start with README.md and HANDOFF.md, then open specific SSOT files only when the task needs them.
+Do not bulk-read every `.agent/` file up front. Start with README.md and HANDOFF.md, then open only the SSOT files the task actually needs.
 === END GUARD 1 CONTEXT ===
 "@

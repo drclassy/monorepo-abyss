@@ -1,0 +1,16 @@
+[features]
+hooks = true
+
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp"
+
+[mcp_servers.github]
+args = [
+    "-y",
+    "@modelcontextprotocol/server-github",
+]
+command = "npx"
+env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
+
+[sandbox_workspace_write]
+network_access = true

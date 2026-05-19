@@ -112,6 +112,19 @@ Reason: Object-hash comparison confirmed identical content for
 Status: Hold for a dedicated `.agent` migration commit after root SSOT files are
 reviewed. Do not restore the references unless the migration scope is rejected.
 
+## 2026-05-20 - Root `.codex/` layer is the canonical SSOT enforcement path
+
+Decision: Repo-level SSOT enforcement must live in the trusted project
+`.codex/` layer and point to `tooling/governance/agent/` hooks. At minimum,
+the project layer must explicitly enable `hooks`, reload SSOT on
+`startup|resume|clear`, and log `apply_patch` edits for continuity gates.
+
+Reason: `AGENTS.md` and `.agent/` define the rulebook and state, but durable
+cross-agent enforcement only becomes consistent when the project-local Codex
+layer validates and reloads the same lifecycle path every session.
+
+Status: Active.
+
 ## Lessons to Keep
 
 - Never do broad global replacements at monorepo root.
@@ -125,4 +138,4 @@ reviewed. Do not restore the references unless the migration scope is rejected.
 - Binary PDFs must be transferred as binary; text-mode corruption is not
   reversible.
 
-Last updated: 2026-05-17
+Last updated: 2026-05-20

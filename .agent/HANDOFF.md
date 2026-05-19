@@ -3,7 +3,7 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-17
+Last updated: 2026-05-20
 
 ## Snapshot
 
@@ -37,6 +37,12 @@ as part of the SSOT simplification.
 - `pnpm exec eslint --print-config eslint.config.mjs` passes.
 - Normal pre-commit hook passed on recent hygiene commits through `ad42434`.
 - Global verification blockers from the stabilization chain are cleared.
+- Agent session stop governance now has a hard SSOT continuity gate: if file
+  edits happened since the previous session stop, at least one active continuity
+  file (`.agent/HANDOFF.md`, `.agent/PROGRESS.md`, or `.agent/DECISIONS.md`)
+  must be updated before handoff.
+- `packages/integration-bridge/` has been renamed to `packages/integration/`;
+  the package name remains `@the-abyss/integration-bridge`.
 - Do not push yet. Finish dirty tree classification and app import review first.
 
 ## Completed In This Stabilization Chain
@@ -96,7 +102,9 @@ as part of the SSOT simplification.
   repeated `ssot-daily/*-backup/` folders, later small generated
   `ssot-daily/*.md` runs, `ssot-suggestions/`, and noisy session logs
   `2026-05-16.md` / `2026-05-17.md`.
-- `.codex/hooks.json` remains HOLD.
+- `.codex/hooks.json` governance alignment updated for Codex 2026 hook coverage;
+  keep it under targeted review until one full real agent cycle confirms the
+  startup/edit/stop path behaves as intended.
 - `.cursor/rules/design.mdc` remains HOLD.
 - `apps/corporate/ferdiiskandar/**` app import remains HOLD.
 - Untracked noisy `.agent` reports/sessions remain HOLD unless curated.
@@ -121,12 +129,15 @@ diff because parts of `apps/` are ignored by the current repo rules.
    - Governance healthcheck still reports stale references.
    - Treat as governance cleanup, not product rewrite.
 2. Re-run dirty tree classification after the hygiene commits.
-3. Keep `.codex/hooks.json` and `.cursor/rules/design.mdc` on HOLD until
-   separate targeted review.
+3. Verify the refreshed `.codex/hooks.json` path in one real agent cycle, then
+   decide whether it can leave HOLD status.
 4. Review `apps/corporate/ferdiiskandar/**` app import only after the dirty tree
    classification is refreshed.
 5. Keep untracked noisy `.agent` reports/sessions on HOLD unless Chief asks for
    a curated SSOT history commit.
+6. Verify the hardened session-stop gate and refreshed SessionStart/PostToolUse
+   coverage in one real agent stop cycle before treating it as fully
+   operational across tools.
 
 ## Guardrails
 
