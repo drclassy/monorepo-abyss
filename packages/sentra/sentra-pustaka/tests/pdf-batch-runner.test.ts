@@ -1,7 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import * as fs from 'fs'
-import * as path from 'path'
 import * as os from 'os'
+import * as path from 'path'
+
+import { ingestDocument } from '@the-abyss/document-ingestion'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { runPdfDryRunIngestion } from '../src/ingestion/pdf-batch-runner'
+import { discoverPdfFiles } from '../src/ingestion/pdf-discovery'
 
 vi.mock('@the-abyss/document-ingestion', () => ({
   ingestDocument: vi.fn(),
@@ -13,14 +18,15 @@ vi.mock('../src/ingestion/pdf-discovery', () => ({
   discoverPdfFiles: vi.fn(),
 }))
 
-import { runPdfDryRunIngestion } from '../src/ingestion/pdf-batch-runner'
-import { ingestDocument, renderMarkdown, toChunkerInput } from '@the-abyss/document-ingestion'
-import { discoverPdfFiles } from '../src/ingestion/pdf-discovery'
-
 const mockDiscover = vi.mocked(discoverPdfFiles)
 const mockIngest = vi.mocked(ingestDocument)
 
-function makeIngestResult(sourceHash: string, status: 'ready' | 'needs_review' | 'failed') {
+type IngestDocumentResult = Awaited<ReturnType<typeof ingestDocument>>
+
+function makeIngestResult(
+  sourceHash: string,
+  status: 'ready' | 'needs_review' | 'failed'
+): IngestDocumentResult {
   return {
     canonical: {
       documentId: `doc-${sourceHash}`,
@@ -49,16 +55,6 @@ function makeIngestResult(sourceHash: string, status: 'ready' | 'needs_review' |
       pages: [],
       metadata: { pageCount: 1 },
     },
-    qualityReport: {
-      status,
-      totalPages: 1,
-      failedPages: [],
-      lowConfidencePages: [],
-      averageOcrConfidence: null,
-      documentType: 'digital_pdf' as const,
-      requiresReview: false,
-      warnings: [],
-    },
     markdown: '# Mocked',
     chunks: [],
   }
@@ -79,9 +75,9 @@ describe('runPdfDryRunIngestion', () => {
   it('calls ingestDocument once per discovered PDF', async () => {
     mockDiscover.mockResolvedValue(['/tmp/a.pdf', '/tmp/b.pdf', '/tmp/c.pdf'])
     mockIngest
-      .mockResolvedValueOnce(makeIngestResult('hash-a', 'ready') as any)
-      .mockResolvedValueOnce(makeIngestResult('hash-b', 'ready') as any)
-      .mockResolvedValueOnce(makeIngestResult('hash-c', 'ready') as any)
+      .mockResolvedValueOnce(makeIngestResult('hash-a', 'ready'))
+      .mockResolvedValueOnce(makeIngestResult('hash-b', 'ready'))
+      .mockResolvedValueOnce(makeIngestResult('hash-c', 'ready'))
 
     const summary = await runPdfDryRunIngestion({ inputDir: '/tmp', outputDir: tmpDir })
 
@@ -92,9 +88,9 @@ describe('runPdfDryRunIngestion', () => {
   it('continues processing after one PDF fails', async () => {
     mockDiscover.mockResolvedValue(['/tmp/ok.pdf', '/tmp/fail.pdf', '/tmp/ok2.pdf'])
     mockIngest
-      .mockResolvedValueOnce(makeIngestResult('hash-ok', 'ready') as any)
+      .mockResolvedValueOnce(makeIngestResult('hash-ok', 'ready'))
       .mockRejectedValueOnce(new Error('OCR exploded'))
-      .mockResolvedValueOnce(makeIngestResult('hash-ok2', 'ready') as any)
+      .mockResolvedValueOnce(makeIngestResult('hash-ok2', 'ready'))
 
     const summary = await runPdfDryRunIngestion({ inputDir: '/tmp', outputDir: tmpDir })
 
@@ -109,9 +105,13 @@ describe('runPdfDryRunIngestion', () => {
     fs.mkdirSync(artifactDir, { recursive: true })
 
     mockDiscover.mockResolvedValue(['/tmp/dup.pdf'])
-    mockIngest.mockResolvedValueOnce(makeIngestResult(hash, 'ready') as any)
+    mockIngest.mockResolvedValueOnce(makeIngestResult(hash, 'ready'))
 
-    const summary = await runPdfDryRunIngestion({ inputDir: '/tmp', outputDir: tmpDir, force: false })
+    const summary = await runPdfDryRunIngestion({
+      inputDir: '/tmp',
+      outputDir: tmpDir,
+      force: false,
+    })
 
     expect(summary.skippedDuplicateCount).toBe(1)
     expect(summary.processedCount).toBe(0)

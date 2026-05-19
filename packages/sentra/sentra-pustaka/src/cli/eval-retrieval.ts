@@ -17,6 +17,9 @@
  */
 
 import path from 'path'
+
+import type { VectorStoreDatabaseClient } from '@sentra/cermin'
+
 import { runRetrievalEvalPipeline } from '../evaluation/eval-pipeline.js'
 import { createSampleQueriesFile } from '../evaluation/query-loader.js'
 import type { EvalWriteMode } from '../evaluation/types.js'
@@ -38,7 +41,9 @@ function getNumArg(flag: string, defaultValue: number): number {
 }
 
 const registryDir = path.resolve(getArg('--registry', './data/knowledge-registry'))
-const embeddingArtifactsDir = path.resolve(getArg('--embedding-artifacts', './data/embedding-artifacts'))
+const embeddingArtifactsDir = path.resolve(
+  getArg('--embedding-artifacts', './data/embedding-artifacts')
+)
 const queriesPath = path.resolve(getArg('--queries', './data/eval/retrieval-queries.json'))
 const outputDir = path.resolve(getArg('--output', './data/retrieval-evaluation'))
 const topK = getNumArg('--top-k', 5)
@@ -69,7 +74,7 @@ async function main(): Promise<void> {
   console.log(`[eval-retrieval] Min similarity      : ${minSimilarity}`)
 
   // Eval mode requires DATABASE_URL
-  let databaseClient: import('@sentra/cermin').VectorStoreDatabaseClient | undefined
+  let databaseClient: VectorStoreDatabaseClient | undefined
 
   if (writeMode === 'eval') {
     if (!process.env.DATABASE_URL) {
@@ -101,7 +106,9 @@ async function main(): Promise<void> {
   console.log(`[eval-retrieval] Avg similarity  : ${summary.avg_similarity}`)
   console.log(`[eval-retrieval] AADI readiness  : ${summary.aadi_readiness}`)
   console.log(`[eval-retrieval] Status          : ${summary.status}`)
-  console.log(`[eval-retrieval] Artifacts       : ${outputDir}/runs/${summary.retrieval_eval_run_id}`)
+  console.log(
+    `[eval-retrieval] Artifacts       : ${outputDir}/runs/${summary.retrieval_eval_run_id}`
+  )
 
   if (summary.status === 'failed') {
     process.exit(1)

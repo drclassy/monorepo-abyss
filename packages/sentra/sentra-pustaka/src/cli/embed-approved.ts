@@ -13,8 +13,11 @@
  *   --write             Write vectors to vector store
  */
 
-import * as dotenv from 'dotenv'
 import path from 'path'
+
+import type { VectorStoreDatabaseClient } from '@sentra/cermin'
+import * as dotenv from 'dotenv'
+
 import { runApprovedEmbeddingPipeline } from '../embedding/approved-embedding.pipeline.js'
 import type { EmbeddingWriteMode } from '../embedding/types.js'
 
@@ -47,7 +50,7 @@ async function main(): Promise<void> {
   console.log(`[embed-approved] Output     : ${outputDir}`)
 
   // Write mode requires DATABASE_URL
-  let databaseClient: import('@sentra/cermin').VectorStoreDatabaseClient | undefined
+  let databaseClient: VectorStoreDatabaseClient | undefined
 
   if (writeMode === 'write') {
     if (!process.env.DATABASE_URL) {

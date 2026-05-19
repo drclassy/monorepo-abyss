@@ -1,7 +1,15 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import fs from 'fs'
 import path from 'path'
-import { createVectorStore, DEFAULT_EMBEDDING_MODEL, DEFAULT_EMBEDDING_DIMENSIONS } from '@sentra/cermin'
+
+import {
+  createVectorStore,
+  DEFAULT_EMBEDDING_MODEL,
+  DEFAULT_EMBEDDING_DIMENSIONS,
+} from '@sentra/cermin'
+
+import { writeEmbeddingRunArtifacts, sanitizeErrorMessage } from './embedding-run-artifacts.js'
+import { loadApprovedCandidates } from './registry-gate.js'
 import type {
   ApprovedEmbeddingPipelineParams,
   EmbeddedChunkRecord,
@@ -10,8 +18,6 @@ import type {
   VectorWriteReport,
 } from './types.js'
 import { buildVectorId, buildChunkId, buildContentHash } from './vector-id.js'
-import { loadApprovedCandidates } from './registry-gate.js'
-import { writeEmbeddingRunArtifacts, sanitizeErrorMessage } from './embedding-run-artifacts.js'
 
 /**
  * Minimal chunk shape read from chunks.json (produced by ABYSS-RAG-002).
@@ -46,7 +52,7 @@ function buildEmbeddingRunId(): string {
 
 function loadChunks(
   artifactsDir: string,
-  sourceHash: string,
+  sourceHash: string
 ): { chunks: ChunkItem[]; error?: string } {
   const chunksPath = path.join(artifactsDir, 'processed', sourceHash, 'chunks.json')
   if (!fs.existsSync(chunksPath)) {
@@ -77,7 +83,7 @@ function loadChunks(
  *   - Generates all artifacts.
  */
 export async function runApprovedEmbeddingPipeline(
-  params: ApprovedEmbeddingPipelineParams,
+  params: ApprovedEmbeddingPipelineParams
 ): Promise<EmbeddingRunSummary> {
   const {
     registryDir,
@@ -150,12 +156,7 @@ export async function runApprovedEmbeddingPipeline(
       const chunkMeta = chunk.metadata
       const pageNumber = chunkMeta?.page_number ?? 0
       const chunkId = buildChunkId(source_hash, pageNumber, idx)
-      const vectorId = buildVectorId(
-        source_hash,
-        document_version,
-        pageNumber,
-        idx,
-      )
+      const vectorId = buildVectorId(source_hash, document_version, pageNumber, idx)
       const contentHash = buildContentHash(chunk.content)
 
       // Attempt vector write (write mode only)
@@ -264,9 +265,7 @@ export async function runApprovedEmbeddingPipeline(
       failures,
     })
   } catch (err) {
-    console.error(
-      `[embed-approved] Failed to write run artifacts: ${sanitizeErrorMessage(err)}`,
-    )
+    console.error(`[embed-approved] Failed to write run artifacts: ${sanitizeErrorMessage(err)}`)
   }
 
   return summary

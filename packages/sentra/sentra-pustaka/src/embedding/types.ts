@@ -3,6 +3,7 @@
  * ABYSS-RAG-004 — Approved Knowledge Embedding and Vector Store Write Pipeline
  * Core type contracts for the embedding run lifecycle.
  */
+import type { VectorStoreDatabaseClient } from '@sentra/cermin'
 
 // ─── Write mode ───────────────────────────────────────────────────────────────
 
@@ -96,5 +97,5 @@ export interface ApprovedEmbeddingPipelineParams {
   embeddingModel?: string
   embeddingDimensions?: number
   /** Injected database adapter. Required for write mode; ignored in dry-run. */
-  databaseClient?: import('@sentra/cermin').VectorStoreDatabaseClient
+  databaseClient?: VectorStoreDatabaseClient
 }

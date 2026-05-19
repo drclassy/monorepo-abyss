@@ -1,18 +1,21 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import path from 'path'
+
 import { createVectorStore, DEFAULT_EMBEDDING_MODEL } from '@sentra/cermin'
+
 import { readKnowledgeRegistry } from '../registry/registry-reader.js'
+
+import { writeEvalArtifacts, buildEvalRunId, sanitizeEvalError } from './eval-artifacts.js'
+import { scoreEvidenceQuality } from './quality-scorer.js'
+import { loadEvalQueries } from './query-loader.js'
+import { generateRecommendations } from './recommendations.js'
+import { runEvalQuery } from './retrieval-runner.js'
 import type {
   RetrievalEvalPipelineParams,
   RetrievalEvalSummary,
   QueryEvalResult,
   FailedQuery,
 } from './types.js'
-import { loadEvalQueries } from './query-loader.js'
-import { runEvalQuery } from './retrieval-runner.js'
-import { scoreEvidenceQuality } from './quality-scorer.js'
-import { generateRecommendations } from './recommendations.js'
-import { writeEvalArtifacts, buildEvalRunId, sanitizeEvalError } from './eval-artifacts.js'
 
 const DEFAULT_TOP_K = 5
 const DEFAULT_MIN_SIMILARITY = 0.5
@@ -32,7 +35,7 @@ const DEFAULT_MIN_SIMILARITY = 0.5
  *   - Generates all evaluation artifacts.
  */
 export async function runRetrievalEvalPipeline(
-  params: RetrievalEvalPipelineParams,
+  params: RetrievalEvalPipelineParams
 ): Promise<RetrievalEvalSummary> {
   const {
     registryDir,

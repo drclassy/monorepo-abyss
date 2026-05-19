@@ -1,8 +1,10 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import type { VectorStore } from '@sentra/cermin'
+
 import type { KnowledgeSourceRegistryEntry } from '../registry/registry-types.js'
-import type { EvalQuery, QueryEvalResult } from './types.js'
+
 import { validateEvidence, buildRegistryMap } from './evidence-validator.js'
+import type { EvalQuery, QueryEvalResult } from './types.js'
 
 const DEFAULT_TOP_K = 5
 const DEFAULT_MIN_SIMILARITY = 0.5
@@ -20,7 +22,7 @@ export async function runEvalQuery(
   vectorStore: VectorStore,
   registryEntries: KnowledgeSourceRegistryEntry[],
   defaultTopK = DEFAULT_TOP_K,
-  defaultMinSimilarity = DEFAULT_MIN_SIMILARITY,
+  defaultMinSimilarity = DEFAULT_MIN_SIMILARITY
 ): Promise<QueryEvalResult> {
   const topK = query.top_k ?? defaultTopK
   const minSimilarity = query.min_similarity ?? defaultMinSimilarity
@@ -70,7 +72,8 @@ export async function runEvalQuery(
   const minSimilarityVal = similarities.length > 0 ? Math.min(...similarities) : 0
 
   const passedThreshold =
-    approvedResults > 0 && evidence.some((e) => e.is_approved && e.similarity_score >= minSimilarity)
+    approvedResults > 0 &&
+    evidence.some((e) => e.is_approved && e.similarity_score >= minSimilarity)
 
   return {
     query_id: query.query_id,

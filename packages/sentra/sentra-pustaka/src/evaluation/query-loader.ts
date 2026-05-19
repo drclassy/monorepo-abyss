@@ -1,5 +1,6 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import fs from 'fs'
+
 import type { EvalQuery } from './types.js'
 
 /**
@@ -53,7 +54,10 @@ export function loadEvalQueries(queriesPath: string): {
   }
 
   if (queries.length === 0 && raw.length > 0) {
-    return { queries, error: `All ${raw.length} query entries were invalid (missing query_id or query_text)` }
+    return {
+      queries,
+      error: `All ${raw.length} query entries were invalid (missing query_id or query_text)`,
+    }
   }
 
   return { queries }

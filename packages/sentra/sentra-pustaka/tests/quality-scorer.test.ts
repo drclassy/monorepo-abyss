@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { scoreEvidenceQuality } from '../src/evaluation/quality-scorer'
 import type { QueryEvalResult } from '../src/evaluation/types'
 
@@ -32,25 +33,6 @@ function makePassedResult(queryId: string, approvedCount = 3): QueryEvalResult {
     passed_threshold: true,
     evidence,
     errors: [],
-    evaluated_at: new Date().toISOString(),
-  }
-}
-
-function makeFailedResult(queryId: string): QueryEvalResult {
-  return {
-    query_id: queryId,
-    query_text_prefix: `Query ${queryId}…`,
-    top_k_requested: 5,
-    results_returned: 0,
-    approved_results: 0,
-    flagged_results: 0,
-    untraceable_results: 0,
-    avg_similarity: 0,
-    max_similarity: 0,
-    min_similarity: 0,
-    passed_threshold: false,
-    evidence: [],
-    errors: ['VECTOR_QUERY_FAILED: connection error'],
     evaluated_at: new Date().toISOString(),
   }
 }
@@ -101,7 +83,6 @@ describe('scoreEvidenceQuality', () => {
   it('returns needs_review when pass rate is 50-79%', () => {
     // 1 passed, 1 not passed (but no approval/traceability issues)
     const passed = makePassedResult('q001')
-    const notPassed = makeFailedResult('q002')
     // not failed query — it returned results but none passed threshold
     const lowSimilarity: QueryEvalResult = {
       ...makePassedResult('q002', 1),

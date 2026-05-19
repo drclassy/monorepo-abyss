@@ -1,6 +1,8 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import type { QueryResult } from '@sentra/cermin'
+
 import type { KnowledgeSourceRegistryEntry } from '../registry/registry-types.js'
+
 import type { EvidenceRecord } from './types.js'
 
 /**
@@ -18,7 +20,7 @@ import type { EvidenceRecord } from './types.js'
  */
 export function validateEvidence(
   result: QueryResult,
-  registryByHash: Map<string, KnowledgeSourceRegistryEntry>,
+  registryByHash: Map<string, KnowledgeSourceRegistryEntry>
 ): EvidenceRecord {
   const meta = result.metadata as Record<string, unknown>
 
@@ -28,8 +30,7 @@ export function validateEvidence(
   const pageNumber = typeof meta['page_number'] === 'number' ? meta['page_number'] : null
   const parserProvider =
     typeof meta['parser_provider'] === 'string' ? meta['parser_provider'] : null
-  const ocrConfidence =
-    typeof meta['ocr_confidence'] === 'number' ? meta['ocr_confidence'] : null
+  const ocrConfidence = typeof meta['ocr_confidence'] === 'number' ? meta['ocr_confidence'] : null
   const registryStatusAtWrite =
     typeof meta['registry_status'] === 'string' ? meta['registry_status'] : null
 
@@ -75,7 +76,7 @@ export function validateEvidence(
  * Builds a registry lookup map from an array of entries.
  */
 export function buildRegistryMap(
-  entries: KnowledgeSourceRegistryEntry[],
+  entries: KnowledgeSourceRegistryEntry[]
 ): Map<string, KnowledgeSourceRegistryEntry> {
   const map = new Map<string, KnowledgeSourceRegistryEntry>()
   for (const entry of entries) {

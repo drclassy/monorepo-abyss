@@ -1,6 +1,7 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-import { LocalBrainEngine } from './local.engine.js'
 import type { RetrievedChunk } from '../types.js'
+
+import { type LocalBrainEngine } from './local.engine.js'
 
 export interface HybridSearchResult {
   chunks: RetrievedChunk[]
@@ -25,7 +26,7 @@ export class HybridBrainEngine {
 
     if (localChunks.length < this.minLocalResults) {
       console.warn(
-        '[HybridBrain] Local retrieval returned fewer chunks than target; continuing without cloud fallback.',
+        '[HybridBrain] Local retrieval returned fewer chunks than target; continuing without cloud fallback.'
       )
     }
 

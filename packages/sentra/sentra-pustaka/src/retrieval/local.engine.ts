@@ -1,6 +1,6 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-import { PgVectorStore } from '../storage/pgvector.store.js'
-import { OllamaEmbedder } from '../ingestion/embedder.js'
+import { type OllamaEmbedder } from '../ingestion/embedder.js'
+import { type PgVectorStore } from '../storage/pgvector.store.js'
 import type { RetrievedChunk } from '../types.js'
 
 export class LocalBrainEngine {

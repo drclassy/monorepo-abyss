@@ -1,6 +1,7 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import fs from 'fs'
 import path from 'path'
+
 import type {
   EmbeddingRunSummary,
   EmbeddedChunkRecord,
@@ -40,7 +41,7 @@ export function writeEmbeddingRunArtifacts(params: {
   fs.writeFileSync(
     path.join(runDir, 'embedding-run-summary.json'),
     JSON.stringify(summary, null, 2),
-    'utf-8',
+    'utf-8'
   )
 
   // embedded-chunks.jsonl — one JSON object per line, no full text
@@ -51,18 +52,14 @@ export function writeEmbeddingRunArtifacts(params: {
   fs.writeFileSync(
     path.join(runDir, 'vector-write-report.json'),
     JSON.stringify(writeReport, null, 2),
-    'utf-8',
+    'utf-8'
   )
 
   // skipped.json
   fs.writeFileSync(path.join(runDir, 'skipped.json'), JSON.stringify(skipped, null, 2), 'utf-8')
 
   // failures.json
-  fs.writeFileSync(
-    path.join(runDir, 'failures.json'),
-    JSON.stringify(failures, null, 2),
-    'utf-8',
-  )
+  fs.writeFileSync(path.join(runDir, 'failures.json'), JSON.stringify(failures, null, 2), 'utf-8')
 
   // latest-run.json (top-level pointer)
   const latestRun = {
@@ -77,7 +74,7 @@ export function writeEmbeddingRunArtifacts(params: {
   fs.writeFileSync(
     path.join(outputDir, 'latest-run.json'),
     JSON.stringify(latestRun, null, 2),
-    'utf-8',
+    'utf-8'
   )
 }
 

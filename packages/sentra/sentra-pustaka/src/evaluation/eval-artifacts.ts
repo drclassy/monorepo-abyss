@@ -1,6 +1,7 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import fs from 'fs'
 import path from 'path'
+
 import type {
   RetrievalEvalSummary,
   QueryEvalResult,
@@ -41,7 +42,7 @@ export function writeEvalArtifacts(params: {
   fs.writeFileSync(
     path.join(runDir, 'retrieval-eval-summary.json'),
     JSON.stringify(summary, null, 2),
-    'utf-8',
+    'utf-8'
   )
 
   // query-results.jsonl — one JSON object per line, no full chunk text
@@ -57,21 +58,21 @@ export function writeEvalArtifacts(params: {
   fs.writeFileSync(
     path.join(runDir, 'evidence-quality-report.json'),
     JSON.stringify(qualityReport, null, 2),
-    'utf-8',
+    'utf-8'
   )
 
   // failed-queries.json
   fs.writeFileSync(
     path.join(runDir, 'failed-queries.json'),
     JSON.stringify(failedQueries, null, 2),
-    'utf-8',
+    'utf-8'
   )
 
   // recommendations.json
   fs.writeFileSync(
     path.join(runDir, 'recommendations.json'),
     JSON.stringify(recommendations, null, 2),
-    'utf-8',
+    'utf-8'
   )
 
   // latest-run.json (top-level pointer)
@@ -88,7 +89,7 @@ export function writeEvalArtifacts(params: {
   fs.writeFileSync(
     path.join(outputDir, 'latest-run.json'),
     JSON.stringify(latestRun, null, 2),
-    'utf-8',
+    'utf-8'
   )
 }
 

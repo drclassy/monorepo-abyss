@@ -1,6 +1,6 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-import type { Pool, PoolClient } from 'pg'
 import type { VectorStoreDatabaseClient } from '@sentra/cermin'
+import type { Pool, PoolClient } from 'pg'
 
 /**
  * Adapts a `pg` Pool to the VectorStoreDatabaseClient interface expected by
