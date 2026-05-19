@@ -125,6 +125,19 @@ layer validates and reloads the same lifecycle path every session.
 
 Status: Active.
 
+## 2026-05-20 - Cross-agent SSOT parity uses the same active read pattern
+
+Decision: Claude Code, Cursor, Roo, and Codex should all align to the same
+active SSOT pattern: `AGENTS.md` first, then nearest active `.agent/README.md`
+and `.agent/HANDOFF.md`, with `CONTEXT.md`, `PROGRESS.md`, and `DECISIONS.md`
+opened only as needed. Legacy `.agent/DIGEST.md`, `.agent/LESSONS.md`, and
+`.agent/SESSION_STATE.md` are not active SSOT by default.
+
+Reason: Cross-agent parity breaks when one tool reads the simplified SSOT and
+another still depends on historical or superseded files.
+
+Status: Active.
+
 ## Lessons to Keep
 
 - Never do broad global replacements at monorepo root.

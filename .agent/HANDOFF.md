@@ -105,6 +105,9 @@ as part of the SSOT simplification.
 - `.codex/hooks.json` governance alignment updated for Codex 2026 hook coverage;
   keep it under targeted review until one full real agent cycle confirms the
   startup/edit/stop path behaves as intended.
+- `CLAUDE.md`, `.claude/settings.json`, `.cursor/rules/00-core.mdc`, `.roomodes`,
+  and `.roo/rules-sentra-*/01-rules.md` were aligned to the same active SSOT
+  read pattern. Runtime proof still exists only for Codex in this session.
 - `.cursor/rules/design.mdc` remains HOLD.
 - `apps/corporate/ferdiiskandar/**` app import remains HOLD.
 - Untracked noisy `.agent` reports/sessions remain HOLD unless curated.
@@ -138,6 +141,8 @@ diff because parts of `apps/` are ignored by the current repo rules.
 6. Verify the hardened session-stop gate and refreshed SessionStart/PostToolUse
    coverage in one real agent stop cycle before treating it as fully
    operational across tools.
+7. If Chief wants full parity proof, run one real runtime session each for
+   Claude Code, Cursor, and Roo using the aligned repo config.
 
 ## Guardrails
 

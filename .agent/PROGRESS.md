@@ -26,6 +26,8 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 - [x] Agent tooling moved to tooling/governance/agent/.
 - [x] Root `.codex/` project layer now explicitly enables hooks and reloads SSOT on `startup`, `resume`, and `clear`.
 - [x] Governance healthcheck now validates root `.codex/` hook coverage for SessionStart, PostToolUse edit logging, and Stop continuity.
+- [x] Claude Code project entrypoint and hook settings now point to the active SSOT shape and governance tooling paths.
+- [x] Cursor core rule and Roo mode rules now use the same active SSOT read pattern as Codex.
 - [~] Daily SSOT helper simplified to one local model call plus script-rendered files.
 - [!] Governance healthcheck still reports stale references in apps/corporate/ferdiiskandar/AGENTS.md.
 
