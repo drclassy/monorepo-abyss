@@ -1,9 +1,6 @@
 [features]
 hooks = true
 
-[mcp_servers.context7]
-url = "https://mcp.context7.com/mcp"
-
 [mcp_servers.github]
 args = [
     "-y",

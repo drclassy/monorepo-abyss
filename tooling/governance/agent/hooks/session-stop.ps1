@@ -53,6 +53,22 @@ function Add-SessionLine {
     }
 }
 
+function Write-StopJson {
+    param(
+        [Parameter(Mandatory)][string]$Message
+    )
+
+    $payload = @{
+        continue = $true
+        hookSpecificOutput = @{
+            hookEventName    = "Stop"
+            additionalContext = $Message
+        }
+    } | ConvertTo-Json -Compress -Depth 5
+
+    [Console]::Out.WriteLine($payload)
+}
+
 $date = (Get-Date).ToString("yyyy-MM-dd")
 $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm")
 $sessionFile = Join-Path $sessionsDir "$date.md"
@@ -74,19 +90,104 @@ $linesSinceLastStop = if ($lastStopIndex -ge 0) {
 }
 $hasEditsSinceLastStop = @($linesSinceLastStop | Where-Object { $_ -match '^## File change logged:' }).Count -gt 0
 
-Add-SessionLine -Path $sessionFile -Value "## Session end: $timestamp (SessionStop hook)"
-Write-Output "SESSION STOP LOG OK: $sessionFile"
-Write-Output "SSOT CHECK OK: Required files exist: README, CONTEXT, DECISIONS, HANDOFF, PROGRESS."
+function Get-LastSessionStopTime {
+    param(
+        [object[]]$Lines = @(),
+        [Parameter(Mandatory)][int]$Index
+    )
+
+    if ($Index -lt 0 -or $Index -ge $Lines.Count) { return $null }
+    $line = [string]$Lines[$Index]
+    $match = [regex]::Match($line, '^## Session end: (?<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2})')
+    if (-not $match.Success) { return $null }
+
+    try {
+        return [datetime]::ParseExact(
+            $match.Groups["timestamp"].Value,
+            "yyyy-MM-dd HH:mm",
+            [System.Globalization.CultureInfo]::InvariantCulture
+        )
+    } catch {
+        return $null
+    }
+}
+
+function Get-FirstFileChangeTime {
+    param(
+        [object[]]$Lines = @()
+    )
+
+    foreach ($line in $Lines) {
+        $text = [string]$line
+        $match = [regex]::Match($text, '^## File change logged: (?<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2})')
+        if (-not $match.Success) { continue }
+
+        try {
+            return [datetime]::ParseExact(
+                $match.Groups["timestamp"].Value,
+                "yyyy-MM-dd HH:mm",
+                [System.Globalization.CultureInfo]::InvariantCulture
+            )
+        } catch {
+            return $null
+        }
+    }
+
+    return $null
+}
+
+function Test-ContinuityUpdated {
+    param(
+        [Parameter(Mandatory)][string]$AgentDir,
+        [object]$BaselineTime = $null
+    )
+
+    $continuityFiles = @(
+        "HANDOFF.md",
+        "PROGRESS.md",
+        "DECISIONS.md"
+    )
+
+    foreach ($file in $continuityFiles) {
+        $path = Join-Path $AgentDir $file
+        if (-not (Test-Path $path)) { continue }
+
+        $updatedAt = (Get-Item -LiteralPath $path).LastWriteTime
+        if ($BaselineTime -is [datetime] -and $updatedAt -ge $BaselineTime) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+$lastStopTime = Get-LastSessionStopTime -Lines $linesBeforeStop -Index $lastStopIndex
+$firstFileChangeTime = Get-FirstFileChangeTime -Lines $linesSinceLastStop
+$continuityBaselineTime = if ($lastStopTime) { $lastStopTime } else { $firstFileChangeTime }
+$continuityUpdated = Test-ContinuityUpdated -AgentDir $agentDir -BaselineTime $continuityBaselineTime
 
 if ($hasEditsSinceLastStop) {
-    Write-Output @"
-SSOT CONTINUITY WARNING:
+    if (-not $continuityUpdated) {
+        [Console]::Error.WriteLine(@"
+SSOT CONTINUITY FAILED:
 File edits happened in this session.
-Before handing off, make sure:
-- .agent/HANDOFF.md says what the next agent should do next.
-- .agent/PROGRESS.md reflects current status.
-- .agent/DECISIONS.md records durable decisions only.
-- .agent/DECISIONS.md also records repeated mistakes or safety lessons.
+Before handing off, update at least one active continuity file:
+- .agent/HANDOFF.md for current status, blockers, and next action.
+- .agent/PROGRESS.md when milestone status changed.
+- .agent/DECISIONS.md for durable decisions or repeated mistakes only.
+
 Do not rely on .agent/sessions/YYYY-MM-DD.md alone for continuity.
 "@
+        )
+        exit 2
+    }
 }
+
+Add-SessionLine -Path $sessionFile -Value "## Session end: $timestamp (SessionStop hook)"
+$summary = if ($hasEditsSinceLastStop) {
+    "SSOT CONTINUITY OK. Session stop logged at $sessionFile and active continuity was updated."
+} else {
+    "SESSION STOP LOG OK. Required SSOT files exist and no new continuity update was required."
+}
+
+Write-StopJson -Message $summary
