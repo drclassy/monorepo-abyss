@@ -1,6 +1,6 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-import type { QueryResult, VectorStoreConfig, VectorStoreDatabaseClient } from './types'
 import { getEmbedding, DEFAULT_EMBEDDING_MODEL } from './embedding-provider'
+import type { QueryResult, VectorStoreConfig, VectorStoreDatabaseClient } from './types'
 
 // ─── VectorStore ──────────────────────────────────────────────────────────────
 
@@ -23,7 +23,7 @@ export class VectorStore {
   private database(): VectorStoreDatabaseClient {
     if (!this.config.database) {
       throw new Error(
-        '[vector-store] database client is required. Inject the caller app Prisma client via VectorStoreConfig.database.',
+        '[vector-store] database client is required. Inject the caller app Prisma client via VectorStoreConfig.database.'
       )
     }
 
@@ -41,7 +41,11 @@ export class VectorStore {
    * @param content  - Text to embed
    * @param metadata - Arbitrary JSON metadata stored alongside the vector
    */
-  async upsertById(id: string, content: string, metadata: Record<string, unknown> = {}): Promise<void> {
+  async upsertById(
+    id: string,
+    content: string,
+    metadata: Record<string, unknown> = {}
+  ): Promise<void> {
     const db = this.database()
     const embedding = await getEmbedding(content, {
       model: this.config.embeddingModel ?? DEFAULT_EMBEDDING_MODEL,
@@ -61,7 +65,7 @@ export class VectorStore {
       id,
       content,
       embeddingLiteral,
-      JSON.stringify(metadata),
+      JSON.stringify(metadata)
     )
   }
 
@@ -85,7 +89,7 @@ export class VectorStore {
       id,
       content,
       embeddingLiteral,
-      JSON.stringify(metadata),
+      JSON.stringify(metadata)
     )
 
     return id
@@ -122,7 +126,7 @@ export class VectorStore {
        ORDER  BY embedding <=> $1::vector
        LIMIT  $2::int`,
       embeddingLiteral,
-      limit,
+      limit
     )
 
     return rows.map((row) => ({

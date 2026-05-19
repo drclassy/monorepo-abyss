@@ -1,9 +1,9 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
+import { getEmbedding } from '../embedding-provider'
 import { VectorStore, createVectorStore } from '../store'
 import type { VectorStoreDatabaseClient } from '../types'
-import { getEmbedding } from '../embedding-provider'
 
 vi.mock('../embedding-provider', () => ({
   DEFAULT_EMBEDDING_MODEL: 'nomic-embed-text',
@@ -33,7 +33,7 @@ describe('VectorStore', () => {
     const storeWithoutDatabase = new VectorStore()
 
     await expect(storeWithoutDatabase.upsert('clinical guideline')).rejects.toThrow(
-      'database client is required',
+      'database client is required'
     )
     expect(getEmbeddingMock).not.toHaveBeenCalled()
   })
@@ -51,13 +51,18 @@ describe('VectorStore', () => {
       id,
       'adult fever guideline',
       '[0.1,0.2,0.3]',
-      JSON.stringify({ source: 'guideline.pdf' }),
+      JSON.stringify({ source: 'guideline.pdf' })
     )
   })
 
   it('uses RETRIEVAL_QUERY and sets HNSW ef_search before querying', async () => {
     queryRaw.mockResolvedValue([
-      { id: 'kb-1', content: 'oxygen saturation guidance', metadata: { source: 'guideline.pdf' }, score: 0.92 },
+      {
+        id: 'kb-1',
+        content: 'oxygen saturation guidance',
+        metadata: { source: 'guideline.pdf' },
+        score: 0.92,
+      },
     ])
 
     const results = await store.query('hypoxemia triage', 3)
@@ -70,10 +75,15 @@ describe('VectorStore', () => {
     expect(queryRaw).toHaveBeenCalledWith(
       expect.stringContaining('LIMIT  $2::int'),
       '[0.1,0.2,0.3]',
-      3,
+      3
     )
     expect(results).toEqual([
-      { id: 'kb-1', content: 'oxygen saturation guidance', metadata: { source: 'guideline.pdf' }, score: 0.92 },
+      {
+        id: 'kb-1',
+        content: 'oxygen saturation guidance',
+        metadata: { source: 'guideline.pdf' },
+        score: 0.92,
+      },
     ])
   })
 
@@ -96,16 +106,16 @@ describe('VectorStore', () => {
       stableId,
       'clinical protocol text',
       '[0.1,0.2,0.3]',
-      JSON.stringify({ source: 'protocol.pdf' }),
+      JSON.stringify({ source: 'protocol.pdf' })
     )
   })
 
   it('upsertById requires caller-owned database injection', async () => {
     const storeWithoutDatabase = new VectorStore()
 
-    await expect(
-      storeWithoutDatabase.upsertById('kb:x:v1:p001:c0001', 'text'),
-    ).rejects.toThrow('database client is required')
+    await expect(storeWithoutDatabase.upsertById('kb:x:v1:p001:c0001', 'text')).rejects.toThrow(
+      'database client is required'
+    )
   })
 })
 
