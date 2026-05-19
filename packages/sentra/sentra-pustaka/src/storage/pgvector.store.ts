@@ -1,6 +1,7 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-import { Pool } from 'pg'
 import * as dotenv from 'dotenv'
+import { Pool } from 'pg'
+
 import type { MedicalChunk, RetrievedChunk } from '../types.js'
 
 dotenv.config()
@@ -96,7 +97,7 @@ export class PgVectorStore {
       params
     )
 
-    return result.rows.map(r => ({
+    return result.rows.map((r) => ({
       id: r.id,
       sourceFile: r.source_file,
       category: r.category,
@@ -121,7 +122,7 @@ export class PgVectorStore {
     )
     return {
       total: parseInt(total.rows[0].count),
-      byCategory: Object.fromEntries(byCat.rows.map(r => [r.category, parseInt(r.count)])),
+      byCategory: Object.fromEntries(byCat.rows.map((r) => [r.category, parseInt(r.count)])),
     }
   }
 

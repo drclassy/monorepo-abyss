@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { createOcrQualityReport } from '../src/quality/ocr-quality-report'
 import type { CanonicalPage, PdfPreflightResult } from '../src/types'
 
@@ -25,7 +26,7 @@ function makeScannedPreflight(): PdfPreflightResult {
 function makePage(
   pageNumber: number,
   text: string,
-  ocrConfidence: number | null = null,
+  ocrConfidence: number | null = null
 ): CanonicalPage {
   return {
     pageNumber,
@@ -65,7 +66,7 @@ describe('createOcrQualityReport', () => {
   it('returns needs_review for low OCR confidence page', () => {
     const pages = [
       makePage(1, 'Some text', 0.95),
-      makePage(2, 'Blurry text', 0.60), // below 0.75 threshold
+      makePage(2, 'Blurry text', 0.6), // below 0.75 threshold
     ]
     const report = createOcrQualityReport(pages, makeScannedPreflight())
     expect(report.status).toBe('needs_review')
@@ -73,21 +74,14 @@ describe('createOcrQualityReport', () => {
   })
 
   it('returns needs_review for scanned PDF without OCR confidence', () => {
-    const pages = [
-      makePage(1, 'extracted text', null),
-      makePage(2, 'more text', null),
-    ]
+    const pages = [makePage(1, 'extracted text', null), makePage(2, 'more text', null)]
     const report = createOcrQualityReport(pages, makeScannedPreflight())
     expect(report.status).toBe('needs_review')
     expect(report.warnings.some((w) => w.includes('no OCR confidence'))).toBe(true)
   })
 
   it('correctly identifies failed pages', () => {
-    const pages = [
-      makePage(1, 'valid text'),
-      makePage(2, ''),
-      makePage(3, 'more text'),
-    ]
+    const pages = [makePage(1, 'valid text'), makePage(2, ''), makePage(3, 'more text')]
     const report = createOcrQualityReport(pages, makeDigitalPreflight())
     expect(report.failedPages).toContain(2)
     expect(report.failedPages).not.toContain(1)
@@ -95,11 +89,7 @@ describe('createOcrQualityReport', () => {
   })
 
   it('computes average OCR confidence correctly', () => {
-    const pages = [
-      makePage(1, 'text', 0.80),
-      makePage(2, 'text', 0.90),
-      makePage(3, 'text', 0.70),
-    ]
+    const pages = [makePage(1, 'text', 0.8), makePage(2, 'text', 0.9), makePage(3, 'text', 0.7)]
     const report = createOcrQualityReport(pages, makeScannedPreflight())
     expect(report.averageOcrConfidence).toBeCloseTo(0.8, 5)
   })

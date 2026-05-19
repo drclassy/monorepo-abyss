@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { renderMarkdown } from '../src/normalization/markdown-renderer'
 import type { CanonicalDocument } from '../src/types'
 

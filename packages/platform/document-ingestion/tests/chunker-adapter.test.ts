@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { toChunkerInput } from '../src/chunking/chunker-adapter'
 import type { CanonicalDocument } from '../src/types'
 

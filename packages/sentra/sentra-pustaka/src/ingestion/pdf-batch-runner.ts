@@ -1,12 +1,19 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as fs from 'fs'
 import * as path from 'path'
+
 import { ingestDocument, renderMarkdown, toChunkerInput } from '@the-abyss/document-ingestion'
-import type { DryRunDocumentResult, IngestionSummary } from './dry-run-types'
-import { discoverPdfFiles } from './pdf-discovery'
+
 import { writeKnowledgeArtifacts } from './artifact-writer'
+import type { DryRunDocumentResult, IngestionSummary } from './dry-run-types'
 import { isDuplicate } from './duplicate-detector'
-import { createSummaryHeader, finalizeSummary, sanitizeError, writeSummary } from './ingestion-summary'
+import {
+  createSummaryHeader,
+  finalizeSummary,
+  sanitizeError,
+  writeSummary,
+} from './ingestion-summary'
+import { discoverPdfFiles } from './pdf-discovery'
 
 export interface DryRunIngestionParams {
   inputDir: string

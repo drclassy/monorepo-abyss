@@ -1,5 +1,6 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { randomUUID } from 'crypto'
+
 import type { KnowledgeRegistry, RegistrySummary } from './registry-types'
 
 export function buildRegistrySummary(

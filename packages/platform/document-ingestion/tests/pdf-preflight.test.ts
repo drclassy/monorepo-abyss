@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { detectPdfPreflight } from '../src/detection/pdf-preflight'
 import type { CanonicalPage } from '../src/types'
 
@@ -23,12 +24,7 @@ describe('detectPdfPreflight', () => {
   })
 
   it('detects digital_pdf when majority of pages have high text density', () => {
-    const pages = [
-      makePage(1, 500),
-      makePage(2, 800),
-      makePage(3, 600),
-      makePage(4, 400),
-    ]
+    const pages = [makePage(1, 500), makePage(2, 800), makePage(3, 600), makePage(4, 400)]
     const result = detectPdfPreflight(pages)
     expect(result.documentType).toBe('digital_pdf')
     expect(result.requiresOcr).toBe(false)
@@ -50,9 +46,9 @@ describe('detectPdfPreflight', () => {
   it('detects hybrid_pdf for mixed pages', () => {
     const pages = [
       makePage(1, 500), // digital
-      makePage(2, 5),   // scanned
+      makePage(2, 5), // scanned
       makePage(3, 600), // digital
-      makePage(4, 3),   // scanned
+      makePage(4, 3), // scanned
     ]
     const result = detectPdfPreflight(pages)
     expect(result.documentType).toBe('hybrid_pdf')

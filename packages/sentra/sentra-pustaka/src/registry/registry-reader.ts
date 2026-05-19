@@ -1,6 +1,7 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as fs from 'fs'
 import * as path from 'path'
+
 import type { KnowledgeRegistry } from './registry-types'
 
 const EMPTY_REGISTRY: KnowledgeRegistry = {

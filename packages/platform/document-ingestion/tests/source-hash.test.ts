@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { createSourceHash } from '../src/hashing/source-hash'
 
 describe('createSourceHash', () => {

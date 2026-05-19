@@ -1,6 +1,7 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as fs from 'fs'
 import * as path from 'path'
+
 import type { KnowledgeRegistry } from './registry-types'
 
 export async function writeKnowledgeRegistry(params: {
@@ -23,11 +24,7 @@ export async function writeKnowledgeRegistry(params: {
   return registryPath
 }
 
-export function writeRegistryExport(
-  registryDir: string,
-  filename: string,
-  data: unknown
-): string {
+export function writeRegistryExport(registryDir: string, filename: string, data: unknown): string {
   fs.mkdirSync(registryDir, { recursive: true })
   const filePath = path.join(registryDir, filename)
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8')
