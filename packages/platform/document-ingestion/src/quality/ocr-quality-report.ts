@@ -1,5 +1,9 @@
-import type { CanonicalDocument, OcrQualityReport } from '../types'
-import type { CanonicalPage, PdfPreflightResult } from '../types'
+import type {
+  CanonicalDocument,
+  OcrQualityReport,
+  CanonicalPage,
+  PdfPreflightResult,
+} from '../types'
 
 /**
  * Re-exports quality report builder for standalone use.
@@ -8,7 +12,7 @@ import type { CanonicalPage, PdfPreflightResult } from '../types'
  */
 export function createOcrQualityReport(
   pages: CanonicalPage[],
-  preflight: PdfPreflightResult,
+  preflight: PdfPreflightResult
 ): OcrQualityReport {
   const warnings: string[] = []
 
@@ -25,18 +29,14 @@ export function createOcrQualityReport(
     }
   }
 
-  const failedPages = pages
-    .filter((p) => p.text.trim().length === 0)
-    .map((p) => p.pageNumber)
+  const failedPages = pages.filter((p) => p.text.trim().length === 0).map((p) => p.pageNumber)
 
   const emptyRatio = failedPages.length / pages.length
   if (emptyRatio > 0.2) {
     warnings.push(`${Math.round(emptyRatio * 100)}% of pages are empty`)
   }
 
-  const confidenceValues = pages
-    .map((p) => p.ocrConfidence)
-    .filter((c): c is number => c !== null)
+  const confidenceValues = pages.map((p) => p.ocrConfidence).filter((c): c is number => c !== null)
 
   const averageOcrConfidence =
     confidenceValues.length > 0

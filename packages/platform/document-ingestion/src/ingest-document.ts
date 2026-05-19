@@ -1,11 +1,12 @@
 import { readFileSync } from 'node:fs'
-import type { CanonicalDocument, ChunkerInput, ParseInput } from './types'
-import { LiteParseProvider } from './providers/liteparse.provider'
-import { renderMarkdown } from './normalization/markdown-renderer'
+
 import { toChunkerInput } from './chunking/chunker-adapter'
-import { createSourceHash } from './hashing/source-hash'
 import { IngestionError } from './errors/ingestion-error'
+import { createSourceHash } from './hashing/source-hash'
+import { renderMarkdown } from './normalization/markdown-renderer'
+import { LiteParseProvider } from './providers/liteparse.provider'
 import { summarizeForLog } from './quality/ocr-quality-report'
+import type { CanonicalDocument, ChunkerInput, ParseInput } from './types'
 
 const provider = new LiteParseProvider()
 
@@ -32,12 +33,18 @@ export async function ingestDocument(input: ParseInput): Promise<{
   // Ensure buffer is loaded for hash before provider does its own read
   let buffer: Buffer
   try {
-    buffer = input.buffer ?? readFileSync(input.filePath!)
+    if (input.buffer) {
+      buffer = input.buffer
+    } else if (input.filePath) {
+      buffer = readFileSync(input.filePath)
+    } else {
+      throw new IngestionError('Either filePath or buffer must be provided', 'NO_INPUT')
+    }
   } catch (err) {
     throw new IngestionError(
       `Cannot read file: ${input.filePath ?? '(buffer)'}`,
       'FILE_READ_ERROR',
-      err,
+      err
     )
   }
 
@@ -51,7 +58,7 @@ export async function ingestDocument(input: ParseInput): Promise<{
 
   // Safe log — no document content, no PHI
   console.log(
-    `[document-ingestion] ${summarizeForLog(canonical)} | source_hash=${sourceHash.slice(0, 12)}...`,
+    `[document-ingestion] ${summarizeForLog(canonical)} | source_hash=${sourceHash.slice(0, 12)}...`
   )
 
   return { canonical, markdown, chunks }
