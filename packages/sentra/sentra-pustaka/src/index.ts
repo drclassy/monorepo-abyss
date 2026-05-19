@@ -14,6 +14,7 @@ export type {
   CitationSource,
   CitedEvidenceChunk,
   GroundedCitation,
+  RetrievedChunkCitationMetadata,
   RAGQueryResult,
   RetrievedChunk,
   IngestionResult,

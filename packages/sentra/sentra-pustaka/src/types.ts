@@ -43,6 +43,16 @@ export interface GroundedCitation {
   evidence: CitedEvidenceChunk
 }
 
+export interface RetrievedChunkCitationMetadata {
+  sourceHash?: string
+  pageNumber: number | null
+  chunkId?: string
+  chunkIndex?: number
+  documentVersion?: string
+  ocrConfidence: number | null
+  retrievalScore: number
+}
+
 export interface RAGQueryResult {
   answer: string
   chunks: RetrievedChunk[]
@@ -61,6 +71,9 @@ export interface RetrievedChunk {
   content: string
   headingPath: string[]
   similarity: number
+  chunkIndex?: number
+  metadata?: Record<string, unknown>
+  citationMetadata?: RetrievedChunkCitationMetadata
 }
 
 export interface IngestionResult {

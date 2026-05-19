@@ -2,6 +2,10 @@
 import * as dotenv from 'dotenv'
 import { Pool } from 'pg'
 
+import {
+  buildRetrievedChunkCitationMetadata,
+  normalizeRetrievedChunkMetadata,
+} from '../retrieval/citation-metadata.js'
 import type { MedicalChunk, RetrievedChunk } from '../types.js'
 
 dotenv.config()
@@ -85,8 +89,10 @@ export class PgVectorStore {
          id::text,
          source_file,
          category,
+         chunk_index,
          content,
          heading_path,
+         metadata,
          1 - (embedding <=> $1::vector) AS similarity
        FROM medical_chunks
        WHERE embedding IS NOT NULL
@@ -104,6 +110,13 @@ export class PgVectorStore {
       content: r.content,
       headingPath: r.heading_path,
       similarity: parseFloat(r.similarity),
+      chunkIndex: typeof r.chunk_index === 'number' ? r.chunk_index : undefined,
+      metadata: normalizeRetrievedChunkMetadata(r.metadata),
+      citationMetadata: buildRetrievedChunkCitationMetadata({
+        metadata: r.metadata,
+        retrievalScore: parseFloat(r.similarity),
+        chunkIndex: typeof r.chunk_index === 'number' ? r.chunk_index : undefined,
+      }),
     }))
   }
 
