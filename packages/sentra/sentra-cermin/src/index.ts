@@ -5,7 +5,16 @@
 export { VectorStore, createVectorStore } from './store'
 
 /** Type contracts for documents, query results, store configuration, and embedding options. */
-export type { VectorDocument, QueryResult, VectorStoreConfig, VectorStoreDatabaseClient } from './types'
+export type {
+  VectorDocument,
+  QueryResult,
+  VectorStoreConfig,
+  VectorStoreDatabaseClient,
+} from './types'
+
+/** Grounded citation consumption helpers for RAG evidence views. */
+export { createCitationEvidenceViews } from './citations'
+export type { ConsumableGroundedCitation, CitationEvidenceView } from './citations'
 
 /** Embedding options for local Ollama — use when constructing VectorStoreConfig. */
 export type { EmbeddingOptions } from './embedding-provider'
