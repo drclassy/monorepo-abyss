@@ -87,4 +87,60 @@ describe('createCitationEvidenceViews', () => {
       isTraceable: false,
     })
   })
+
+  it('consumes Pustaka query-result citations without metadata loss', () => {
+    const pustakaQueryResult = {
+      answer: 'Clinical decision support answer.',
+      citations: [
+        makeCitation({
+          citationLabel: '[7]',
+          source: {
+            sourceHash: 'source-hash-query-result',
+            documentId: 'document-query-result',
+            documentVersion: 'v2',
+            sourceTitle: 'Pustaka Source',
+            parserProvider: 'liteparse',
+          },
+          evidence: {
+            chunkId: 'chunk-query-result',
+            vectorId: 'vector-query-result',
+            pageNumber: 12,
+            chunkIndex: 8,
+            textSpan: {
+              start: 20,
+              end: 128,
+            },
+            ocrConfidence: 0.87,
+            retrievalScore: 0.74,
+            contentPreview: 'Pustaka grounded citation evidence.',
+            traceabilityIssues: ['review_required'],
+          },
+        }),
+      ],
+    }
+
+    const [view] = createCitationEvidenceViews(pustakaQueryResult.citations)
+
+    expect(view).toEqual({
+      label: '[7]',
+      sourceHash: 'source-hash-query-result',
+      documentId: 'document-query-result',
+      documentVersion: 'v2',
+      sourceTitle: 'Pustaka Source',
+      parserProvider: 'liteparse',
+      chunkId: 'chunk-query-result',
+      vectorId: 'vector-query-result',
+      pageNumber: 12,
+      chunkIndex: 8,
+      textSpan: {
+        start: 20,
+        end: 128,
+      },
+      ocrConfidence: 0.87,
+      retrievalScore: 0.74,
+      contentPreview: 'Pustaka grounded citation evidence.',
+      traceabilityIssues: ['review_required'],
+      isTraceable: false,
+    })
+  })
 })
