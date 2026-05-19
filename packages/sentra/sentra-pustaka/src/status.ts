@@ -1,14 +1,16 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as fs from 'fs'
 import * as path from 'path'
+
 import * as dotenv from 'dotenv'
+
 import { PgVectorStore } from './storage/pgvector.store.js'
 import type { MedicalCategory } from './types.js'
 
 dotenv.config()
 
-const LIBRARY_PATH = process.env.MEDICAL_LIBRARY_PATH
-  || path.join(process.cwd(), '../../library/medical')
+const LIBRARY_PATH =
+  process.env.MEDICAL_LIBRARY_PATH || path.join(process.cwd(), '../../library/medical')
 
 const CATEGORIES: MedicalCategory[] = ['gen', 'int', 'pha', 'ped', 'obg', 'bas']
 
@@ -39,11 +41,9 @@ async function getStatus() {
   // Per-file status from DB
   const fileStatus: Record<string, boolean> = {}
   try {
-    const { Pool } = await import('pg') as any
+    const { Pool } = await import('pg')
     const pool = new Pool({ connectionString: process.env.DATABASE_URL })
-    const result = await pool.query(
-      `SELECT DISTINCT source_file FROM medical_chunks`
-    )
+    const result = await pool.query(`SELECT DISTINCT source_file FROM medical_chunks`)
     for (const row of result.rows) fileStatus[row.source_file] = true
     await pool.end()
   } catch {
@@ -65,23 +65,30 @@ async function getStatus() {
       continue
     }
 
-    const allFiles = fs.readdirSync(subdir).filter(f => f.endsWith('.pdf'))
-    const doneFiles = allFiles.filter(f => fileStatus[`library/medical/${cat}/${f}`])
-    const pendingFiles = allFiles.filter(f => !fileStatus[`library/medical/${cat}/${f}`])
+    const allFiles = fs.readdirSync(subdir).filter((f) => f.endsWith('.pdf'))
+    const doneFiles = allFiles.filter((f) => fileStatus[`library/medical/${cat}/${f}`])
+    const pendingFiles = allFiles.filter((f) => !fileStatus[`library/medical/${cat}/${f}`])
     const chunks = dbStats[cat] ?? 0
 
     grandTotal += allFiles.length
     grandDone += doneFiles.length
 
-    const bar = allFiles.length > 0
-      ? `[${'█'.repeat(doneFiles.length)}${'░'.repeat(allFiles.length - doneFiles.length)}]`
-      : '[empty]'
+    const bar =
+      allFiles.length > 0
+        ? `[${'█'.repeat(doneFiles.length)}${'░'.repeat(allFiles.length - doneFiles.length)}]`
+        : '[empty]'
 
-    const status = doneFiles.length === allFiles.length && allFiles.length > 0
-      ? 'DONE  ' : doneFiles.length > 0 ? 'PARTIAL' : 'PENDING'
+    const status =
+      doneFiles.length === allFiles.length && allFiles.length > 0
+        ? 'DONE  '
+        : doneFiles.length > 0
+          ? 'PARTIAL'
+          : 'PENDING'
 
     console.log(`  [${cat.toUpperCase()}] ${CATEGORY_LABELS[cat]}`)
-    console.log(`       ${bar} ${doneFiles.length}/${allFiles.length} files  |  ${chunks.toLocaleString()} chunks  |  ${status}`)
+    console.log(
+      `       ${bar} ${doneFiles.length}/${allFiles.length} files  |  ${chunks.toLocaleString()} chunks  |  ${status}`
+    )
 
     if (pendingFiles.length > 0 && process.argv.includes('--detail')) {
       for (const f of pendingFiles) {

@@ -1,14 +1,17 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
+import { execFile } from 'child_process'
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { execFile } from 'child_process'
 import { promisify } from 'util'
+
 import * as dotenv from 'dotenv'
-import { chunkText } from './chunker.js'
-import { OllamaEmbedder } from './embedder.js'
+
 import { PgVectorStore } from '../storage/pgvector.store.js'
 import type { IngestionResult, MedicalCategory } from '../types.js'
+
+import { chunkText } from './chunker.js'
+import { OllamaEmbedder } from './embedder.js'
 
 dotenv.config()
 
@@ -16,10 +19,21 @@ const execFileAsync = promisify(execFile)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PDF_EXTRACT_PY = path.join(__dirname, 'pdf_extract.py')
 
-const LIBRARY_PATH = process.env.MEDICAL_LIBRARY_PATH
-  || path.join(process.cwd(), '../../library/medical')
+const LIBRARY_PATH =
+  process.env.MEDICAL_LIBRARY_PATH || path.join(process.cwd(), '../../library/medical')
 
 const VALID_CATEGORIES: MedicalCategory[] = ['gen', 'int', 'pha', 'ped', 'obg', 'bas']
+
+function getExecErrorMessage(error: unknown): string {
+  if (typeof error === 'object' && error !== null && 'stderr' in error) {
+    const stderr = (error as { stderr?: unknown }).stderr
+    if (typeof stderr === 'string' && stderr.length > 0) {
+      return stderr
+    }
+  }
+
+  return error instanceof Error ? error.message : String(error)
+}
 
 async function extractPdf(filePath: string): Promise<string> {
   try {
@@ -27,17 +41,15 @@ async function extractPdf(filePath: string): Promise<string> {
       maxBuffer: 50 * 1024 * 1024,
     })
     return stdout
-  } catch (err: any) {
-    const msg = err?.stderr || String(err)
+  } catch (err: unknown) {
+    const msg = getExecErrorMessage(err)
     throw new Error(`PDF extraction failed for ${path.basename(filePath)}: ${msg}`)
   }
 }
 
 function detectCategory(filename: string): MedicalCategory {
   const prefix = filename.split('--')[0].toLowerCase()
-  return VALID_CATEGORIES.includes(prefix as MedicalCategory)
-    ? (prefix as MedicalCategory)
-    : 'gen'
+  return VALID_CATEGORIES.includes(prefix as MedicalCategory) ? (prefix as MedicalCategory) : 'gen'
 }
 
 export async function ingestFile(
@@ -84,11 +96,13 @@ export async function ingestFile(
   return { file: filename, chunks: chunks.length, embedded: chunks.length, stored, skipped: false }
 }
 
-export async function ingestLibrary(options: {
-  libraryPath?: string
-  categories?: MedicalCategory[]
-  limit?: number
-} = {}): Promise<void> {
+export async function ingestLibrary(
+  options: {
+    libraryPath?: string
+    categories?: MedicalCategory[]
+    limit?: number
+  } = {}
+): Promise<void> {
   const libPath = options.libraryPath || LIBRARY_PATH
   const store = new PgVectorStore()
   const embedder = new OllamaEmbedder()
@@ -102,7 +116,9 @@ export async function ingestLibrary(options: {
 
   const available = await embedder.isAvailable()
   if (!available) {
-    throw new Error('Ollama not reachable or nomic-embed-text not pulled. Run: ollama pull nomic-embed-text')
+    throw new Error(
+      'Ollama not reachable or nomic-embed-text not pulled. Run: ollama pull nomic-embed-text'
+    )
   }
 
   await store.initialize()
@@ -114,7 +130,7 @@ export async function ingestLibrary(options: {
   for (const cat of selectedCats) {
     const subdir = path.join(libPath, cat)
     if (!fs.existsSync(subdir)) continue
-    const pdfs = fs.readdirSync(subdir).filter(f => f.endsWith('.pdf'))
+    const pdfs = fs.readdirSync(subdir).filter((f) => f.endsWith('.pdf'))
     for (const f of pdfs) {
       allFiles.push({ filename: f, filePath: path.join(subdir, f) })
     }
@@ -123,7 +139,9 @@ export async function ingestLibrary(options: {
   const files = options.limit ? allFiles.slice(0, options.limit) : allFiles
   console.log(`Processing ${files.length} PDF files...\n`)
 
-  let skipped = 0, failed = 0, total = 0
+  let skipped = 0,
+    failed = 0,
+    total = 0
 
   for (const [i, { filename, filePath }] of files.entries()) {
     process.stdout.write(`[${i + 1}/${files.length}] ${filename.substring(0, 55)}... `)
@@ -151,13 +169,19 @@ export async function ingestLibrary(options: {
 
 // CLI entry
 if (process.argv[1] && process.argv[1].includes('pipeline')) {
-  const categories = process.argv.includes('--pha') ? ['pha' as MedicalCategory]
-    : process.argv.includes('--gen') ? ['gen' as MedicalCategory]
-    : process.argv.includes('--int') ? ['int' as MedicalCategory]
-    : process.argv.includes('--ped') ? ['ped' as MedicalCategory]
-    : process.argv.includes('--obg') ? ['obg' as MedicalCategory]
-    : process.argv.includes('--bas') ? ['bas' as MedicalCategory]
-    : undefined
+  const categories = process.argv.includes('--pha')
+    ? ['pha' as MedicalCategory]
+    : process.argv.includes('--gen')
+      ? ['gen' as MedicalCategory]
+      : process.argv.includes('--int')
+        ? ['int' as MedicalCategory]
+        : process.argv.includes('--ped')
+          ? ['ped' as MedicalCategory]
+          : process.argv.includes('--obg')
+            ? ['obg' as MedicalCategory]
+            : process.argv.includes('--bas')
+              ? ['bas' as MedicalCategory]
+              : undefined
 
   ingestLibrary({ categories }).catch(console.error)
 }

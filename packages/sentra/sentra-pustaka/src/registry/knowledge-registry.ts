@@ -1,6 +1,10 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as fs from 'fs'
 import * as path from 'path'
+
+import { createEligibleForEmbeddingExport } from './eligibility-exporter'
+import { readKnowledgeRegistry } from './registry-reader'
+import { buildRegistrySummary } from './registry-summary'
 import type {
   KnowledgeRegistry,
   KnowledgeSourceRegistryEntry,
@@ -8,10 +12,7 @@ import type {
   RegistrySummary,
 } from './registry-types'
 import { mapQualityToRegistryStatus } from './registry-types'
-import { readKnowledgeRegistry } from './registry-reader'
 import { writeKnowledgeRegistry, writeRegistryExport } from './registry-writer'
-import { buildRegistrySummary } from './registry-summary'
-import { createEligibleForEmbeddingExport } from './eligibility-exporter'
 
 interface IngestionSummaryResult {
   filePath: string
@@ -84,7 +85,8 @@ export async function updateKnowledgeRegistry(params: {
   )
 
   for (const result of processedResults) {
-    const hash = result.sourceHash!
+    if (!result.sourceHash) continue
+    const hash = result.sourceHash
     const existing = existingByHash.get(hash)
 
     const canonicalPath = result.artifactPaths?.canonicalPath
@@ -98,9 +100,7 @@ export async function updateKnowledgeRegistry(params: {
       }
     }
 
-    const qualityStatus = sanitizeQualityStatus(
-      canonical?.qualityReport.status ?? result.status
-    )
+    const qualityStatus = sanitizeQualityStatus(canonical?.qualityReport.status ?? result.status)
 
     const registryStatus =
       existing?.registry_status === 'approved_for_embedding' && !params.force
