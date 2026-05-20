@@ -3,6 +3,7 @@ import { z } from 'zod'
 
 import type { MessageInbox } from '../inbox.js'
 import type { AgentRegistry } from '../registry.js'
+import type { SseManager } from '../sse-manager.js'
 import { AgentStatusSchema } from '../types.js'
 
 import { handleBroadcast } from './broadcast.js'
@@ -21,7 +22,12 @@ export {
   handleReceiveMessages,
 }
 
-export function createTools(mcp: McpServer, registry: AgentRegistry, inbox: MessageInbox): void {
+export function createTools(
+  mcp: McpServer,
+  registry: AgentRegistry,
+  inbox: MessageInbox,
+  sseManager?: SseManager
+): void {
   mcp.tool(
     'register_agent',
     'Register this agent with UNICOM Hub',
@@ -40,7 +46,7 @@ export function createTools(mcp: McpServer, registry: AgentRegistry, inbox: Mess
       id: z.string().describe('Agent id to update'),
       status: AgentStatusSchema.describe('idle | streaming | busy'),
     },
-    (p) => handleUpdateStatus(registry, inbox, p)
+    (p) => handleUpdateStatus(registry, inbox, p, sseManager)
   )
 
   mcp.tool(
@@ -52,7 +58,7 @@ export function createTools(mcp: McpServer, registry: AgentRegistry, inbox: Mess
       content: z.string().describe('Message body (markdown ok)'),
       replyTo: z.string().optional().describe('Optional: id of message being replied to'),
     },
-    (p) => handleSendMessage(registry, inbox, p)
+    (p) => handleSendMessage(registry, inbox, p, sseManager)
   )
 
   mcp.tool(
@@ -62,7 +68,7 @@ export function createTools(mcp: McpServer, registry: AgentRegistry, inbox: Mess
       from: z.string().describe('Sender agent id'),
       content: z.string().describe('Message body'),
     },
-    (p) => handleBroadcast(registry, inbox, p)
+    (p) => handleBroadcast(registry, inbox, p, sseManager)
   )
 
   mcp.tool('list_agents', 'List all agents with live status', {}, () => handleListAgents(registry))
