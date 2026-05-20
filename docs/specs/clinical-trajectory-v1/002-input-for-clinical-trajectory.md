@@ -1,3 +1,9 @@
+---
+type: clinical-trajectory-source
+status: active
+owner: Sentra AI
+---
+
 **1. Time-series vitals**
 
 - timestamp observasi

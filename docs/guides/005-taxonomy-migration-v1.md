@@ -400,7 +400,7 @@ Create formal architecture memory before touching folder structure.
 ## Required Files
 
 ```txt
-docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-HANDOFF.md
+docs/guides/005-package-taxonomy-migration.md
 docs/adr/000X-package-taxonomy-and-boundary-model.md
 ```
 
@@ -814,7 +814,7 @@ apps/**/AGENTS.md
 docs/dev/*
 docs/governance/*
 docs/architecture/*
-docs/templates/HANDOFF.md
+docs/templates/001-handoff.md
 tooling/generators/*
 .agents/skills/*
 ```
@@ -904,13 +904,13 @@ The group-folder package check must return no `package.json` files at the group 
 Claude must produce:
 
 ```txt
-docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-EXECUTION-REPORT.md
+.agent/reports/ABYSS-REPO-STRUCTURE-001-EXECUTION-REPORT.md
 ```
 
 Codex must produce:
 
 ```txt
-docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-VERIFICATION-REPORT.md
+.agent/reports/ABYSS-REPO-STRUCTURE-001-VERIFICATION-REPORT.md
 ```
 
 ## Execution Report Must Include
@@ -1000,7 +1000,7 @@ Each commit message should include trailers:
 Agent: Claude
 Reviewer: Codex
 Phase: ABYSS-REPO-STRUCTURE-001
-Handoff: docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-HANDOFF.md
+Handoff: docs/guides/005-package-taxonomy-migration.md
 ```
 
 ---
@@ -1113,4 +1113,3 @@ HANDOFF gives intent.
 Codex crosscheck gives safety.
 Chief GO gives authority.
 ```
-

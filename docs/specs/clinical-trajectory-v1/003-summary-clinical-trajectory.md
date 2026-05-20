@@ -1,3 +1,9 @@
+---
+type: clinical-trajectory-source
+status: active
+owner: Sentra AI
+---
+
 # Pemodelan Trajektori Klinis Untuk Input Yang Belum Terspesifikasi
 
 ## Ringkasan Eksekutif
