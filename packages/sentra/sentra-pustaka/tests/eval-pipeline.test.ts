@@ -106,6 +106,7 @@ describe('runRetrievalEvalPipeline', () => {
     })
 
     expect(summary.write_mode).toBe('dry_run')
+    expect(summary.mode_disclaimer).toContain('DRY_RUN')
     expect(mockQuery).not.toHaveBeenCalled()
 
     const runDir = path.join(outputDir, 'runs', summary.retrieval_eval_run_id)
@@ -278,6 +279,6 @@ describe('runRetrievalEvalPipeline', () => {
       fs.readFileSync(path.join(runDir, 'recommendations.json'), 'utf-8'),
     )
     expect(recommendations.length).toBeGreaterThan(0)
-    expect(recommendations[0].type).toMatch(/INFO|WARNING|ACTION/)
+    expect(recommendations[0].type).toBe('INFO')
   })
 })

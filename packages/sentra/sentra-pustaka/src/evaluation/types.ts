@@ -94,6 +94,7 @@ export interface RetrievalEvalSummary {
   failed_queries: number
   avg_similarity: number
   aadi_readiness: AadiReadiness
+  mode_disclaimer: string | null
   write_mode: EvalWriteMode
   status: EvalRunStatus
 }
