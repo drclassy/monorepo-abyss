@@ -6,18 +6,26 @@ import { SseManager } from '../src/sse-manager.js'
 
 function makeMockRes() {
   const written: string[] = []
-  return {
+  const listeners: Record<string, Array<() => void>> = {}
+  const res = {
     writeHead: vi.fn(),
     write: vi.fn((chunk: string) => {
       written.push(chunk)
       return true
     }),
-    end: vi.fn(),
-    on: vi.fn(),
+    end: vi.fn(() => {
+      res.writableEnded = true
+      for (const cb of listeners['close'] ?? []) cb()
+    }),
+    on: vi.fn((event: string, cb: () => void) => {
+      if (!listeners[event]) listeners[event] = []
+      listeners[event].push(cb)
+    }),
     writableEnded: false,
     headersSent: false,
     _written: written,
   } as unknown as http.ServerResponse & { _written: string[] }
+  return res
 }
 
 describe('SseManager', () => {
@@ -90,5 +98,38 @@ describe('SseManager', () => {
     manager.connect('claude-code', res2)
     expect(res1.end).toHaveBeenCalled()
     expect(manager.isConnected('claude-code')).toBe(true)
+  })
+
+  it('client-initiated close removes agent from connection map', () => {
+    const res = makeMockRes()
+    manager.connect('claude-code', res)
+    expect(manager.isConnected('claude-code')).toBe(true)
+    // simulate client dropping connection
+    res.end()
+    expect(manager.isConnected('claude-code')).toBe(false)
+  })
+
+  it('keepalive ping is emitted to all connected agents', () => {
+    vi.useFakeTimers()
+    // Create a fresh manager under fake timers so its setInterval is controlled
+    const timerManager = new SseManager()
+    const res = makeMockRes()
+    timerManager.connect('claude-code', res)
+    vi.advanceTimersByTime(15_000)
+    timerManager.dispose()
+    vi.useRealTimers()
+    expect(res._written.join('')).toContain('event: ping')
+  })
+
+  it('dispose() ends all connections and clears the map', () => {
+    const resA = makeMockRes()
+    const resB = makeMockRes()
+    manager.connect('a', resA)
+    manager.connect('b', resB)
+    manager.dispose()
+    expect(resA.end).toHaveBeenCalled()
+    expect(resB.end).toHaveBeenCalled()
+    expect(manager.isConnected('a')).toBe(false)
+    expect(manager.isConnected('b')).toBe(false)
   })
 })

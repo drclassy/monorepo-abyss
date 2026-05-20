@@ -8,10 +8,13 @@ export class SseManager {
 
   constructor() {
     this.keepaliveTimer = setInterval(() => {
-      for (const [, res] of this.connections) {
-        res.write('event: ping\ndata: {}\n\n')
+      for (const res of Array.from(this.connections.values())) {
+        if (!res.writableEnded) {
+          res.write('event: ping\ndata: {}\n\n')
+        }
       }
     }, KEEPALIVE_INTERVAL_MS)
+    this.keepaliveTimer.unref()
   }
 
   connect(agentId: string, res: http.ServerResponse): void {
@@ -52,7 +55,7 @@ export class SseManager {
   }
 
   broadcast(event: string, data: unknown, excludeId?: string): void {
-    for (const [agentId] of this.connections) {
+    for (const agentId of Array.from(this.connections.keys())) {
       if (agentId !== excludeId) {
         this.push(agentId, event, data)
       }
