@@ -30,3 +30,5 @@ export {
   DEFAULT_EMBEDDING_DIMENSIONS,
 } from './embedding-provider'
 export type { EmbeddingOptions, CircuitBreaker, RetryOptions } from './embedding-provider'
+export { OpenAISearchBackend } from './openai-search-backend'
+export type { SearchBackend } from './openai-search-backend'
