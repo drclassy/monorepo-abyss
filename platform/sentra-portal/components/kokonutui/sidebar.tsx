@@ -1,8 +1,5 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
 import {
   BarChart2,
   Receipt,
@@ -18,11 +15,14 @@ import {
   HelpCircle,
   Menu,
   Home,
-  LucideIcon
-} from "lucide-react"
+  type LucideIcon,
+} from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
 
 export default function Sidebar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)        
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   function handleNavigation() {
     setIsMobileMenuOpen(false)
@@ -56,13 +56,13 @@ export default function Sidebar() {
         className="lg:hidden fixed top-4 left-4 z-[70] p-2 rounded-lg bg-white dark:bg-[#0F0F12] shadow-md"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       >
-        <Menu className="h-5 w-5 text-gray-600 dark:text-gray-300" />    
+        <Menu className="h-5 w-5 text-gray-600 dark:text-gray-300" />
       </button>
       <nav
         className={`
                 fixed inset-y-0 left-0 z-[70] w-64 bg-white dark:bg-[#0F0F12] transform transition-transform duration-200 ease-in-out
                 lg:translate-x-0 lg:static lg:w-64 border-r border-gray-200 dark:border-[#1F1F23]
-                ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
+                ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
             `}
       >
         <div className="h-full flex flex-col">

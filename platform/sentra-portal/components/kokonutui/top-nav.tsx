@@ -1,11 +1,18 @@
-"use client"
+'use client'
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import Image from "next/image"
-import { Bell, ChevronRight } from "lucide-react"
-import Profile01 from "./profile-01"
-import Link from "next/link"
-import { ThemeToggle } from "../theme-toggle"
+import { Bell, ChevronRight } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+
+import { ThemeToggle } from '../theme-toggle'
+
+import Profile01 from './profile-01'
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 interface BreadcrumbItem {
   label: string
@@ -15,8 +22,8 @@ interface BreadcrumbItem {
 export default function TopNav() {
   const avatarSrc = '/avatars/abyss-doctor.png'
   const breadcrumbs: BreadcrumbItem[] = [
-    { label: "kokonutUI", href: "#" },
-    { label: "dashboard", href: "#" },
+    { label: 'kokonutUI', href: '#' },
+    { label: 'dashboard', href: '#' },
   ]
 
   return (
@@ -24,7 +31,9 @@ export default function TopNav() {
       <div className="font-medium text-sm hidden sm:flex items-center space-x-1 truncate max-w-[300px]">
         {breadcrumbs.map((item, index) => (
           <div key={item.label} className="flex items-center">
-            {index > 0 && <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 mx-1" />}
+            {index > 0 && (
+              <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 mx-1" />
+            )}
             {item.href ? (
               <Link
                 href={item.href}
