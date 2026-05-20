@@ -12,12 +12,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onStartupFinished",
-    "onCommand:classyHandbook.openMenu",
-    "onCommand:classyHandbook.openClassy",
-    "onCommand:classyHandbook.openCommands",
-    "onCommand:classyHandbook.openCursor",
-    "onCommand:classyHandbook.openCline2026"
+    "onStartupFinished"
   ],
   "main": "./extension.js",
   "contributes": {

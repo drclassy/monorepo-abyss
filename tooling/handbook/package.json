@@ -2,7 +2,7 @@
   "name": "classy-handbook-launcher",
   "displayName": "Classy Handbook Launcher",
   "description": "Status bar launcher for Classy handbook documents",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "publisher": "sentra-local",
   "icon": "codex.png",
   "engines": {
@@ -12,35 +12,25 @@
     "Other"
   ],
   "activationEvents": [
-    "onStartupFinished",
-    "onCommand:classyHandbook.openPalette",
-    "onCommand:classyHandbook.openClassy",
-    "onCommand:classyHandbook.openCommands",
-    "onCommand:classyHandbook.openCursor",
-    "onCommand:classyHandbook.openCline2026"
+    "onStartupFinished"
   ],
-  "main": "./extension.js",
+  "main": "./dist/extension.js",
+  "scripts": {
+    "compile": "node esbuild.mjs",
+    "package": "node esbuild.mjs && vsce package --no-dependencies",
+    "vscode:prepublish": "node esbuild.mjs"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.4.0"
+  },
   "contributes": {
     "commands": [
       {
         "command": "classyHandbook.openPalette",
         "title": "Classy Handbook: Open Palette"
-      },
-      {
-        "command": "classyHandbook.openClassy",
-        "title": "Classy Handbook: Open classy.html"
-      },
-      {
-        "command": "classyHandbook.openCommands",
-        "title": "Classy Handbook: Open classy-commands.html"
-      },
-      {
-        "command": "classyHandbook.openCursor",
-        "title": "Classy Handbook: Open classy-cursor.html"
-      },
-      {
-        "command": "classyHandbook.openCline2026",
-        "title": "Classy Handbook: Open classy-cline-2026.html"
       }
     ]
   }

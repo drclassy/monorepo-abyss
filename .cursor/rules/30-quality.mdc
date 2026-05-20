@@ -1,0 +1,64 @@
+---
+description: "Quality, TypeScript, tests, monorepo conventions, verification, and gold-standard references."
+globs:
+  - "**/*.ts"
+  - "**/*.tsx"
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.mjs"
+  - "**/*.cjs"
+  - "**/*.md"
+  - "**/*.{test,spec}.{ts,tsx}"
+  - "**/__tests__/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Quality Rules
+
+`AGENTS.md` is authoritative. This file summarizes Cursor-facing quality rules.
+
+## Monorepo Conventions
+
+- Use `pnpm` from the monorepo root.
+- Use `pnpm --filter <package-name> <script>` for scoped package checks.
+- Use workspace dependencies for internal packages.
+- Do not create new packages or top-level folders without explicit approval.
+- Prefer editing existing files over adding new files.
+
+## TypeScript
+
+- Avoid `any`, `as any`, `@ts-ignore`, and `@ts-nocheck` unless explicitly justified.
+- Use `unknown` plus narrowing for uncertain inputs.
+- Keep public types readable and named.
+- Runtime inputs need validation at boundaries.
+
+## Testing
+
+- Use the same test runner and style as the package being edited.
+- Mock external I/O, not safety-critical validation.
+- Use synthetic fixtures only.
+- Never fabricate test results or claim a check passed without evidence.
+
+## Verification
+
+- For targeted changes, run the relevant scoped test/typecheck/build command.
+- For broad changes, run the global Codex verifier.
+- If a check fails, classify it as code issue, environment issue, or pre-existing blocker.
+
+## Commit And Review
+
+- Commit messages use Conventional Commits in English.
+- Do not include PHI, secrets, credentials, or patient identifiers in commits, logs, or PR text.
+- Review findings should prioritize correctness, security, regression risk, and missing tests.
+
+## Gold-Standard References
+
+Use concrete files in chat when asking Cursor to follow a pattern.
+
+- API/auth: `@packages/sentra/sentra-bentara`
+- FHIR validation: `@packages/sentra/sentra-sandi`
+- Shared types: `@packages/shared/shared-types`
+- Database: `@packages/platform/database`
+- UI: `@packages/shared/sentra-ui`
+- Design tokens: `@packages/shared/design-token`
+- Root config: `@eslint.config.mjs`, `@turbo.json`, `@pnpm-workspace.yaml`

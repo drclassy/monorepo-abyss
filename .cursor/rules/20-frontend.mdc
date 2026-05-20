@@ -1,0 +1,44 @@
+---
+description: "Frontend, React, Next.js, Tailwind, Sentra UI, and design-token rules."
+globs:
+  - "**/*.tsx"
+  - "**/*.jsx"
+  - "**/components/**/*.{tsx,jsx}"
+  - "apps/**/*.{ts,tsx,jsx}"
+alwaysApply: false
+---
+
+# Frontend Rules
+
+`AGENTS.md` and nearest app-level instructions are authoritative.
+
+## Stack
+
+- Prefer the target app's existing framework version and conventions.
+- For Next.js work, use App Router patterns unless the app already proves otherwise.
+- Use React and TypeScript patterns already present in the target app.
+
+## UI Structure
+
+- Follow local folder naming and component patterns.
+- Keep components focused; extract subcomponents only when it reduces real complexity.
+- Preserve accessibility: semantic HTML, labels, keyboard behavior, and visible focus.
+- Do not put real PHI or patient identifiers in UI examples, screenshots, fixtures, or stories.
+
+## Design Tokens
+
+- Use existing app or package design tokens before adding literals.
+- Avoid hardcoded color literals in component files unless the app explicitly allows it.
+- If a new token is required, define it in the token source and update usage in the same task.
+
+## State And Data
+
+- Prefer server data flow and URL state where the app already uses it.
+- Avoid adding Redux/Zustand or new UI dependencies without explicit approval.
+- Do not use `useEffect` for initial data fetching when the app has server-side patterns available.
+
+## Reference Patterns
+
+- Shared UI: `@packages/shared/sentra-ui`
+- Design tokens: `@packages/shared/design-token`
+- App-specific patterns: nearest files in the same app.

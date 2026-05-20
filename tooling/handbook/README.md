@@ -1,37 +1,42 @@
 # Classy Handbook Launcher
 
-Extension lokal untuk Cursor/VS Code:
+VS Code extension untuk membuka handbook Classy langsung dari command palette
+atau status bar.
 
-- Menambah tombol status bar `Classy Docs` dengan ikon buku `(book)`
-- Menampilkan **QuickPick palette** yang **otomatis mendeteksi semua file
-  `.html` di `docs/handbook/`**
-- Tidak ada daftar hardcoded — file baru otomatis muncul di palette
-- Membuka dokumen di editor panel menggunakan Simple Browser
-- Membutuhkan workspace `abyss-monorepo` terbuka agar path handbook bisa
-  di-resolve
+## Fitur
 
-## Command Baru
+- **Status bar button** `$(book) Classy Docs` — selalu terlihat di bawah VS Code
+- **Command palette** → `Classy Handbook: Open Palette` — QuickPick dengan semua
+  dokumen
+- **Dynamic discovery** — otomatis menemukan semua `.html` di `docs/handbook/`
+- **Simple Browser** — dokumen terbuka di panel VS Code, tidak di browser
+  eksternal
 
-| Command                        | Fungsi                                          |
-| ------------------------------ | ----------------------------------------------- |
-| `classyHandbook.openPalette`   | Buka QuickPick semua dokumen handbook (default) |
-| `classyHandbook.openClassy`    | Buka `classy.html` langsung                     |
-| `classyHandbook.openCommands`  | Buka `classy-commands.html` langsung            |
-| `classyHandbook.openCursor`    | Buka `classy-cursor.html` langsung              |
-| `classyHandbook.openCline2026` | Buka `classycline-2026.html` langsung           |
+## Instalasi
 
-## Installasi
+1. Build VSIX (lihat bagian Build di bawah)
+2. Buka VS Code → Extensions (`Ctrl+Shift+X`)
+3. Klik ikon `···` → **Install from VSIX...**
+4. Pilih `classy-handbook-launcher-0.2.0.vsix`
+5. Buka workspace `abyss-monorepo`
 
-1. Buka Extensions panel di VS Code / Cursor
-2. Klik `...` → **Install from VSIX...**
-3. Pilih file `classy-handbook-launcher-0.1.0.vsix`
-4. Reload window
-
-## Build VSIX
+## Build
 
 ```powershell
-cd tooling\handbook
-node build_vsix.js
+cd tooling/handbook
+pnpm install
+pnpm package
 ```
 
-Hasil: `classy-handbook-launcher-0.1.0.vsix`
+Menghasilkan `classy-handbook-launcher-0.2.0.vsix`.
+
+## Penggunaan
+
+- Klik tombol **$(book) Classy Docs** di status bar, atau
+- Buka command palette (`Ctrl+Shift+P`) → ketik `Classy Handbook`
+
+## Requirement
+
+- VS Code ^1.90.0
+- Workspace `abyss-monorepo` harus terbuka (extension membaca dari
+  `docs/handbook/`)

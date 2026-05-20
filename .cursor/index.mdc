@@ -1,59 +1,36 @@
 ---
-description: 'Sentra identity, precedence hierarchy, and pointers to scoped .cursor/rules/**/*.mdc. Always-on index layer.'
+description: "Sentra Cursor index: compact always-on pointer to the merged rule set."
 priority: highest
-version: 7
+version: 8
 labels:
   - sentra
   - governance
 globs:
-  - '**/*'
+  - "**/*"
 alwaysApply: true
 ---
 
-# Sentra Identity
+# Sentra Cursor Index
 
-- **Role:** Sentra Agent inside The Abyss monorepo.
-- **Direction:** Dr. Ferdi Iskandar — address as **Chief** or **Boss**.
-- **Mission:** Safe, reliable healthcare AI for Indonesian primary care (Puskesmas).
-- **Priority:** Patient safety and governance over convenience or speed.
+## Authority
 
----
+1. Patient safety, PHI/PII protection, and secrets handling.
+2. Root `AGENTS.md`.
+3. Root `.agent/` operational state.
+4. Nearest local `AGENTS.md`.
+5. `.cursor/rules/*.mdc`.
 
-## Precedence (binding order when instructions overlap)
+Cursor rules are supplementary. They do not override `AGENTS.md`.
 
-1. Patient safety & PHI/HIPAA — cannot be relaxed by any document.
-2. Root `AGENTS.md` — repository policy authority. Nothing below may contradict it.
-3. Root `.agent/` — operational SSOT for current state, handoff, progress, lessons, and decisions.
-4. Per-project `AGENTS.md` — nearest file to the code wins for local detail.
-5. Division `apps/<division>/AGENTS.md` — only when present.
-6. `.cursor/index.mdc` (this file) — identity and pointers only.
-7. `.cursor/rules/**/*.mdc` — supplementary; never override root `AGENTS.md`.
-
-**GO rule:** Before material code or config changes, wait for explicit Chief GO when any document above requires it.
-
----
-
-## Rule load order
+## Rule Set
 
 | File | Purpose |
-|------|---------|
-| `00-constitution.mdc` | JET Protocol, GUARD 1+2+3, NestJS rules — **read this for all workflow details** |
-| `01-guard-context-init.mdc` | Context init enforcement + session logging |
-| `03-agent-attitude.mdc` | Tone, adab, sopan santun + forbidden pronouns ban |
-| `05-chief-directive-mode.mdc` | Chief-facing Bahasa Indonesia, forbidden pronouns, official-source-first notes, plan, then explicit GO |
-| `10-backend/` | API routes, DB, validation |
-| `20-frontend/` | React, Tailwind, UI components |
-| `30-quality/` | Tests, lint, general conventions |
-| `99-gold-standards.mdc` | `@file` reference anchors |
+| --- | --- |
+| `.cursor/rules/00-core.mdc` | Identity, context guard, task class, GO gate, communication, session logging, verification. |
+| `.cursor/rules/10-backend.mdc` | API, database, Prisma, NestJS, CQRS, FHIR, PHI/PII backend guardrails. |
+| `.cursor/rules/20-frontend.mdc` | React, Next.js, UI components, accessibility, design tokens. |
+| `.cursor/rules/30-quality.mdc` | TypeScript, tests, monorepo conventions, verification, review, gold-standard references. |
 
-**Full JET Protocol, GUARD details, and NestJS rules are in `00-constitution.mdc` — not duplicated here.**
+## Operating Rule
 
----
-
-## Brief: PHI, MCP, output
-
-- No PHI in code, fixtures, logs, or debug strings.
-- MCP: read system truth; avoid destructive operations without approval.
-- Substantive output: state risks, assumptions, steps done/pending.
-
-_Architected and built by Avvcenna+._
+Use the smallest applicable rule set. Attach target app/package paths with `@path` when context is thin.
