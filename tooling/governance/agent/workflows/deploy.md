@@ -19,7 +19,7 @@ I will help you deploy your application to any platform.
 
 Ask clarifying questions:
 
-- Where do you want to deploy? (Vercel, AWS, Railway, etc.)
+- Where do you want to deploy? (Vercel, Railway, container platform, etc.)
 - Is this production or staging?
 - Any special requirements? (region, scaling, etc.)
 - Existing CI/CD setup?

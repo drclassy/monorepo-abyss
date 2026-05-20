@@ -1,0 +1,138 @@
+<h2>Section 3 — Implementation, Difficulty & Success Odds</h2>
+<p class="subtitle">File structure · Dependencies · Per-component risk assessment</p>
+
+<!-- File structure -->
+<div class="section">
+  <h3>📁 Location di Monorepo: <code>packages/platform/unicom/</code></h3>
+  <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0">
+    <div style="color:#64748b;margin-bottom:0.5rem">// Mengikuti pola packages/platform/langflow-client/ dan document-ingestion/</div>
+    <div style="line-height:1.9">
+      <span style="color:#fbbf24">packages/platform/unicom/</span><br>
+      <span style="color:#64748b">├── </span><span style="color:#e2e8f0">package.json</span><span style="color:#475569">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(@the-abyss/unicom)</span><br>
+      <span style="color:#64748b">├── </span><span style="color:#e2e8f0">tsconfig.json</span><br>
+      <span style="color:#64748b">├── </span><span style="color:#fbbf24">src/</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; ├── </span><span style="color:#93c5fd">server.ts</span><span style="color:#475569">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← MCP server entry, SSE transport</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; ├── </span><span style="color:#93c5fd">registry.ts</span><span style="color:#475569">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← in-memory agent Map&lt;id, AgentEntry&gt;</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; ├── </span><span style="color:#93c5fd">router.ts</span><span style="color:#475569">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← route msg to target | broadcast</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; ├── </span><span style="color:#93c5fd">types.ts</span><span style="color:#475569">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← AgentEntry, UNICOMMessage (Zod)</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; ├── </span><span style="color:#fbbf24">tools/</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; │&nbsp;&nbsp; ├── </span><span style="color:#6ee7b7">register-agent.ts</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; │&nbsp;&nbsp; ├── </span><span style="color:#6ee7b7">update-status.ts</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; │&nbsp;&nbsp; ├── </span><span style="color:#6ee7b7">send-message.ts</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; │&nbsp;&nbsp; ├── </span><span style="color:#6ee7b7">broadcast.ts</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; │&nbsp;&nbsp; └── </span><span style="color:#6ee7b7">list-agents.ts</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; └── </span><span style="color:#fbbf24">resources/</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── </span><span style="color:#6ee7b7">agents-resource.ts</span><span style="color:#475569">&nbsp;← unicom://agents live view</span><br>
+      <span style="color:#64748b">├── </span><span style="color:#fbbf24">bin/</span><br>
+      <span style="color:#64748b">│&nbsp;&nbsp; └── </span><span style="color:#e2e8f0">unicom.ts</span><span style="color:#475569">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← npx unicom start --port 59849</span><br>
+      <span style="color:#64748b">└── </span><span style="color:#e2e8f0">README.md</span>
+    </div>
+  </div>
+</div>
+
+<!-- Dependencies -->
+<div class="section">
+  <h3>📦 Dependencies Baru</h3>
+  <div style="background:#0f1117;border-radius:8px;padding:0.75rem 1rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0">
+    <div style="display:grid;grid-template-columns:auto auto 1fr;gap:0.15rem 1rem;line-height:2">
+      <span style="color:#6ee7b7">NEW</span><span style="color:#fbbf24">@modelcontextprotocol/sdk</span><span style="color:#64748b">MCP TypeScript SDK — core protocol</span>
+      <span style="color:#93c5fd">existing</span><span style="color:#e2e8f0">zod</span><span style="color:#64748b">sudah ada di monorepo — untuk type schemas</span>
+      <span style="color:#93c5fd">existing</span><span style="color:#e2e8f0">typescript</span><span style="color:#64748b">sudah ada — no new TS dep</span>
+    </div>
+    <div style="margin-top:0.5rem;color:#475569;font-size:0.65rem">Hanya 1 new production dependency. Minimal footprint.</div>
+  </div>
+</div>
+
+<!-- Difficulty per component -->
+<div class="section">
+  <h3>⚡ Difficulty per Komponen</h3>
+  <div style="background:#0f1117;border-radius:8px;padding:1rem;font-size:0.78rem">
+    <div style="display:grid;grid-template-columns:1fr auto auto;gap:0.5rem 1rem;align-items:center">
+
+      <span style="color:#e2e8f0">MCP Server core setup</span>
+      <div style="display:flex;gap:2px">${'<span style="background:#10b981;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(2)}${'<span style="background:#1e293b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(8)}</div>
+      <span style="color:#6ee7b7;font-size:0.72rem">2/10 Easy</span>
+
+      <span style="color:#e2e8f0">In-memory registry (Map)</span>
+      <div style="display:flex;gap:2px">${'<span style="background:#10b981;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(1)}${'<span style="background:#1e293b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(9)}</div>
+      <span style="color:#6ee7b7;font-size:0.72rem">1/10 Trivial</span>
+
+      <span style="color:#e2e8f0">Claude Code integration (.mcp.json)</span>
+      <div style="display:flex;gap:2px">${'<span style="background:#10b981;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(1)}${'<span style="background:#1e293b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(9)}</div>
+      <span style="color:#6ee7b7;font-size:0.72rem">1/10 Config only</span>
+
+      <span style="color:#e2e8f0">Roocode integration (MCP settings)</span>
+      <div style="display:flex;gap:2px">${'<span style="background:#10b981;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(2)}${'<span style="background:#1e293b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(8)}</div>
+      <span style="color:#6ee7b7;font-size:0.72rem">2/10 Config only</span>
+
+      <span style="color:#e2e8f0">SSE streaming & status push</span>
+      <div style="display:flex;gap:2px">${'<span style="background:#f59e0b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(5)}${'<span style="background:#1e293b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(5)}</div>
+      <span style="color:#fbbf24;font-size:0.72rem">5/10 Medium</span>
+
+      <span style="color:#e2e8f0">Codex CLI integration <span style="color:#f87171;font-size:0.65rem">(⚠ unknown MCP support)</span></span>
+      <div style="display:flex;gap:2px">${'<span style="background:#f59e0b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(6)}${'<span style="background:#1e293b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(4)}</div>
+      <span style="color:#fbbf24;font-size:0.72rem">6/10 Medium</span>
+
+    </div>
+
+    <div style="margin-top:0.75rem;border-top:1px solid #1e293b;padding-top:0.75rem;display:grid;grid-template-columns:1fr auto auto;gap:0.35rem 1rem;align-items:center">
+      <span style="color:#e2e8f0;font-weight:bold">OVERALL (dev/POC phase)</span>
+      <div style="display:flex;gap:2px">${'<span style="background:#f59e0b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(4)}${'<span style="background:#1e293b;width:14px;height:8px;border-radius:2px;display:inline-block"></span>'.repeat(6)}</div>
+      <span style="color:#fbbf24;font-size:0.72rem">4/10 Medium-Low</span>
+    </div>
+  </div>
+</div>
+
+<!-- Chances of success -->
+<div class="section">
+  <h3>🎯 Chances of Success</h3>
+  <div style="background:#0f1117;border-radius:8px;padding:1rem;font-size:0.78rem">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:0.5rem 1.5rem;align-items:center;margin-bottom:0.75rem">
+
+      <div>
+        <div style="color:#e2e8f0">Claude Code ↔ UNICOM bekerja</div>
+        <div style="color:#64748b;font-size:0.65rem">Native MCP support, .mcp.json sudah ada</div>
+      </div>
+      <span style="color:#6ee7b7;font-weight:bold;font-size:0.9rem">95%</span>
+
+      <div>
+        <div style="color:#e2e8f0">Roocode ↔ UNICOM bekerja</div>
+        <div style="color:#64748b;font-size:0.65rem">Roocode v3 punya built-in MCP client</div>
+      </div>
+      <span style="color:#6ee7b7;font-weight:bold;font-size:0.9rem">85%</span>
+
+      <div>
+        <div style="color:#e2e8f0">Codex CLI ↔ UNICOM via MCP</div>
+        <div style="color:#64748b;font-size:0.65rem">Belum confirmed Codex CLI support MCP</div>
+      </div>
+      <span style="color:#fbbf24;font-weight:bold;font-size:0.9rem">60%</span>
+
+      <div>
+        <div style="color:#e2e8f0">Codex CLI via HTTP fallback</div>
+        <div style="color:#64748b;font-size:0.65rem">Jika MCP tidak support, tambah REST endpoint ke Hub</div>
+      </div>
+      <span style="color:#6ee7b7;font-weight:bold;font-size:0.9rem">90%</span>
+
+      <div>
+        <div style="color:#e2e8f0">Status indicator (connected/streaming/idle)</div>
+        <div style="color:#64748b;font-size:0.65rem">Straightforward dengan MCP notifications</div>
+      </div>
+      <span style="color:#6ee7b7;font-weight:bold;font-size:0.9rem">85%</span>
+
+    </div>
+    <div style="border-top:1px solid #1e293b;padding-top:0.75rem;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="color:#e2e8f0;font-weight:bold;font-size:0.85rem">OVERALL POC SUCCESS (dev phase)</div>
+        <div style="color:#64748b;font-size:0.65rem">Claude Code + Roocode fully working · Codex via HTTP fallback</div>
+      </div>
+      <span style="color:#6ee7b7;font-weight:bold;font-size:1.4rem">~85%</span>
+    </div>
+  </div>
+
+  <div style="background:#1c1917;border:1px solid #292524;border-radius:6px;padding:0.75rem;margin-top:0.75rem;font-size:0.75rem">
+    <div style="color:#fbbf24;font-weight:bold;margin-bottom:0.3rem">⚠️ Satu-satunya Risk yang Perlu Dimitigasi</div>
+    <div style="color:#94a3b8">Codex CLI mungkin tidak support MCP natively. <strong style="color:#e2e8f0">Mitigasi:</strong> tambahkan HTTP REST endpoint sederhana ke UNICOM Hub (<code>POST /send</code>, <code>GET /agents</code>) — Codex bisa hit ini via shell command <code>curl</code> atau generated script.</div>
+  </div>
+</div>
+
+<p style="text-align:center;color:#64748b;font-size:0.82rem;margin-top:0.75rem">Section 3 lengkap. Lanjut ke Section 4 — Testing & Verification, atau langsung approve untuk tulis design doc?</p>

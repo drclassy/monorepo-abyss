@@ -1,0 +1,80 @@
+<h2>UNICOM Hub — Arsitektur MCP Server</h2>
+<p class="subtitle">Desain untuk development phase · Human-in-the-loop · Cursor IDE extensions</p>
+
+<div style="background:#0f1117;border-radius:12px;padding:1.5rem;font-family:monospace;font-size:0.75rem;color:#e2e8f0;margin-bottom:1.25rem">
+
+  <!-- Chief -->
+  <div style="text-align:center;margin-bottom:0.75rem">
+    <span style="background:#f59e0b;color:#000;padding:5px 16px;border-radius:6px;font-weight:bold">👤 Chief (You)</span>
+    <div style="color:#64748b;font-size:0.65rem;margin-top:0.2rem">instruksi eksplisit memulai komunikasi</div>
+  </div>
+
+  <!-- Arrow down -->
+  <div style="text-align:center;color:#475569;margin:0.3rem 0">↓ natural language instruction</div>
+
+  <!-- Cursor IDE box -->
+  <div style="border:1px dashed #334155;border-radius:8px;padding:1rem;margin-bottom:0.5rem">
+    <div style="color:#64748b;font-size:0.65rem;margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em">Cursor IDE — Extension Host</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-bottom:0.75rem">
+      <div style="border:1px solid #f59e0b;border-radius:6px;padding:0.5rem;text-align:center">
+        <div style="color:#fbbf24;font-size:0.7rem;font-weight:bold">Codex CLI</div>
+        <div style="color:#64748b;font-size:0.6rem">OpenAI ext</div>
+        <div style="color:#6ee7b7;font-size:0.6rem;margin-top:0.2rem">MCP client</div>
+      </div>
+      <div style="border:1px solid #3b82f6;border-radius:6px;padding:0.5rem;text-align:center">
+        <div style="color:#93c5fd;font-size:0.7rem;font-weight:bold">Claude Code</div>
+        <div style="color:#64748b;font-size:0.6rem">Anthropic ext</div>
+        <div style="color:#6ee7b7;font-size:0.6rem;margin-top:0.2rem">MCP client ✅ native</div>
+      </div>
+      <div style="border:1px solid #8b5cf6;border-radius:6px;padding:0.5rem;text-align:center">
+        <div style="color:#a78bfa;font-size:0.7rem;font-weight:bold">Roocode</div>
+        <div style="color:#64748b;font-size:0.6rem">Open-source ext</div>
+        <div style="color:#6ee7b7;font-size:0.6rem;margin-top:0.2rem">MCP client ✅ native</div>
+      </div>
+    </div>
+
+    <!-- Arrows to hub -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;color:#475569;font-size:0.9rem;margin-bottom:0.5rem">
+      <div>↕ JSON-RPC 2.0</div>
+      <div>↕ SSE streaming</div>
+      <div>↕ JSON-RPC 2.0</div>
+    </div>
+
+    <!-- UNICOM Hub -->
+    <div style="background:#1e1b4b;border:2px solid #8b5cf6;border-radius:8px;padding:0.75rem;text-align:center">
+      <div style="color:#a78bfa;font-weight:bold;font-size:0.85rem">🛰️ UNICOM Hub</div>
+      <div style="color:#64748b;font-size:0.6rem">MCP Server · packages/platform/unicom/</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.4rem;margin-top:0.6rem">
+        <div style="background:#2d1f63;border-radius:4px;padding:3px;font-size:0.6rem;color:#c4b5fd">register_agent()</div>
+        <div style="background:#2d1f63;border-radius:4px;padding:3px;font-size:0.6rem;color:#c4b5fd">send_message()</div>
+        <div style="background:#2d1f63;border-radius:4px;padding:3px;font-size:0.6rem;color:#c4b5fd">broadcast()</div>
+        <div style="background:#2d1f63;border-radius:4px;padding:3px;font-size:0.6rem;color:#c4b5fd">list_agents()</div>
+      </div>
+      <div style="margin-top:0.5rem;font-size:0.6rem;color:#475569">In-memory message queue · Agent registry · SSE push</div>
+    </div>
+
+  </div>
+
+  <!-- Optional: Abyss services -->
+  <div style="text-align:center;color:#475569;font-size:0.65rem;margin-top:0.25rem">
+    ↕ (opsional — fase 2) HTTP/Kafka → Abyss Microservices (orchestrator, sentra-assist, sentra-pustaka)
+  </div>
+
+</div>
+
+<!-- Flow example -->
+<div class="section">
+  <h3>Contoh Flow: Chief → Codex → UNICOM → Claude Code</h3>
+  <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0">
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:0.2rem 0.75rem;line-height:1.8">
+      <span style="color:#f59e0b">1.</span><span>Chief → Codex: <span style="color:#fcd34d">"Ask Claude Code to review src/foo.ts"</span></span>
+      <span style="color:#f59e0b">2.</span><span>Codex → UNICOM: <span style="color:#6ee7b7">send_message({to: "claude-code", content: "Review src/foo.ts"})</span></span>
+      <span style="color:#f59e0b">3.</span><span>UNICOM → Claude Code: <span style="color:#93c5fd">SSE push (message delivered real-time)</span></span>
+      <span style="color:#f59e0b">4.</span><span>Claude Code processes, then: <span style="color:#6ee7b7">send_message({to: "codex", content: "Review: function ok, suggest X"})</span></span>
+      <span style="color:#f59e0b">5.</span><span>UNICOM → Codex: <span style="color:#fbbf24">response delivered, Codex shows Chief the result</span></span>
+    </div>
+  </div>
+</div>
+
+<p style="text-align:center;color:#64748b;font-size:0.82rem;margin-top:0.75rem">Apakah arsitektur ini sesuai dengan visi Chief? Ketik di terminal.</p>

@@ -156,4 +156,4 @@ If Nx is introduced, add tags (`scope:sentra`, `scope:platform`, etc.) and const
 | design-token | `packages/shared/design-token` | `@the-abyss/design-token` |
 | config-eslint | `packages/tooling/config-eslint` | `@the-abyss/config-eslint` |
 | config-typescript | `packages/tooling/config-typescript` | `@the-abyss/config-typescript` |
-| integration-bridge | `packages/integration-bridge` *(flat, excluded)* | `@the-abyss/integration-bridge` |
+| integration | `packages/integration` *(flat, excluded)* | `@the-abyss/integration-bridge` |

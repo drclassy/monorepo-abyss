@@ -1,0 +1,87 @@
+<h2>Bagaimana agent-agent akan berbicara melalui UNICOM Hub?</h2>
+<p class="subtitle">Pola komunikasi ini menentukan protokol dan teknologi yang tepat</p>
+
+<div class="cards" style="grid-template-columns: repeat(3, 1fr);">
+
+  <div class="card" data-choice="request-response" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f1117;padding:1.2rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0;min-height:150px;display:flex;align-items:center;justify-content:center">
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem">
+          <span style="background:#3b82f6;padding:3px 8px;border-radius:4px">LLM Agent A</span>
+          <span style="background:#8b5cf6;padding:3px 8px;border-radius:4px">HUB</span>
+          <span style="background:#10b981;padding:3px 8px;border-radius:4px">Service B</span>
+        </div>
+        <div style="color:#64748b;font-size:0.68rem;text-align:left;line-height:1.8">
+          <div>A → HUB: <span style="color:#93c5fd">"diagnose patient X"</span></div>
+          <div style="padding-left:1rem">HUB → B: <span style="color:#6ee7b7">route request</span></div>
+          <div style="padding-left:2rem">B → HUB: <span style="color:#a78bfa">"ICD-10: J18.9"</span></div>
+          <div>HUB → A: <span style="color:#fbbf24">deliver response</span></div>
+        </div>
+        <div style="margin-top:0.5rem;text-align:center;color:#f59e0b;font-size:0.7rem">⏱ Synchronous · HTTP/gRPC</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Request / Response</h3>
+      <p>Agent A kirim request, tunggu jawaban dari Agent B via Hub. Seperti API call biasa, tapi dimediasi UNICOM.</p>
+      <div style="margin-top:0.5rem;font-size:0.8rem;color:#64748b">
+        ✅ Paling familiar &nbsp;&nbsp; ✅ Mudah di-debug<br>
+        ⚠️ Blocking saat menunggu &nbsp;&nbsp; ⚠️ Timeout management
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="pubsub" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f1117;padding:1.2rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0;min-height:150px;display:flex;align-items:center;justify-content:center">
+      <div style="width:100%">
+        <div style="text-align:center;margin-bottom:0.4rem">
+          <span style="background:#8b5cf6;padding:3px 10px;border-radius:4px">HUB (topic router)</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;font-size:0.68rem">
+          <div style="color:#93c5fd">📢 A publishes:<br><span style="color:#6ee7b7">"rme.updated"</span></div>
+          <div style="color:#fbbf24">📥 B subscribes to:<br><span style="color:#6ee7b7">"rme.*"</span></div>
+          <div style="color:#f87171">📥 C subscribes to:<br><span style="color:#6ee7b7">"rme.*"</span></div>
+          <div style="color:#a78bfa">📥 D subscribes to:<br><span style="color:#6ee7b7">"rme.*"</span></div>
+        </div>
+        <div style="margin-top:0.5rem;text-align:center;color:#f59e0b;font-size:0.7rem">⚡ Async · Kafka/Redis/NATS</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Pub / Sub Events</h3>
+      <p>Agent publish event ke topic, agent lain yang subscribe otomatis terima. Tidak ada yang nunggu — fire and forget.</p>
+      <div style="margin-top:0.5rem;font-size:0.8rem;color:#64748b">
+        ✅ Non-blocking &nbsp;&nbsp; ✅ Kafka sudah ada!<br>
+        ⚠️ Harder to trace &nbsp;&nbsp; ⚠️ No guaranteed reply
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="streaming-chat" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f1117;padding:1.2rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0;min-height:150px;display:flex;align-items:center;justify-content:center">
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem">
+          <span style="background:#3b82f6;padding:3px 8px;border-radius:4px">LLM A</span>
+          <span style="background:#8b5cf6;padding:3px 8px;border-radius:4px">HUB</span>
+          <span style="background:#10b981;padding:3px 8px;border-radius:4px">LLM B</span>
+        </div>
+        <div style="color:#64748b;font-size:0.68rem;text-align:left;line-height:1.6">
+          <div>A ⟷ HUB ⟷ B: <span style="color:#6ee7b7">persistent WebSocket</span></div>
+          <div style="color:#93c5fd;padding-left:0.5rem">A: "Pasien ini kemungkinan..."</div>
+          <div style="color:#fbbf24;padding-left:0.5rem">B: "Saya setuju, tambahan..."</div>
+          <div style="color:#f87171;padding-left:0.5rem">A: "Tapi ada kontraindikasi..."</div>
+        </div>
+        <div style="margin-top:0.5rem;text-align:center;color:#f59e0b;font-size:0.7rem">🔄 Bidirectional · WebSocket/SSE</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Streaming / Live Dialogue</h3>
+      <p>Agents berbicara secara real-time melalui Hub — seperti multi-agent conversation. Cocok untuk LLM yang "berdiskusi".</p>
+      <div style="margin-top:0.5rem;font-size:0.8rem;color:#64748b">
+        ✅ Real-time &nbsp;&nbsp; ✅ Natural untuk LLM agents<br>
+        ⚠️ Complex state mgmt &nbsp;&nbsp; ⚠️ Memory intensive
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align:center;margin-top:1rem;color:#64748b;font-size:0.85rem">Atau pilih lebih dari satu jika skenario berbeda membutuhkan pola berbeda</p>

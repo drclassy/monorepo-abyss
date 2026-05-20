@@ -42,7 +42,7 @@ and this project adheres to
 - Infrastructure as Code:
   - Docker multi-stage builds
   - Docker Compose for local development
-  - Terraform AWS configuration
+  - Terraform legacy environment scaffolds
   - ArgoCD application template
 - Documentation:
   - HANDOFF.md template
@@ -60,7 +60,9 @@ and this project adheres to
 
 ### Removed
 
-- `@the-abyss/ai-core` — retired legacy chatbot/orchestration package; runtime ownership moved back to active domain packages and SYMPHONY-centered architecture
+- `@the-abyss/ai-core` — retired legacy chatbot/orchestration package; runtime
+  ownership moved back to active domain packages and SYMPHONY-centered
+  architecture
 
 ### Fixed
 

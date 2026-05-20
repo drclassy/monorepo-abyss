@@ -1,0 +1,84 @@
+<h2>Section 2 — Message Protocol & Agent Status</h2>
+<p class="subtitle">Struktur data yang mengalir melalui UNICOM Hub</p>
+
+<!-- Agent Status -->
+<div class="section">
+  <h3>Agent Status Lifecycle</h3>
+  <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0;margin-bottom:0.75rem">
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:0.75rem">
+      <span style="background:#334155;padding:4px 10px;border-radius:4px;color:#94a3b8">disconnected</span>
+      <span style="color:#475569">→</span>
+      <span style="background:#065f46;padding:4px 10px;border-radius:4px;color:#6ee7b7">● connected</span>
+      <span style="color:#475569">→</span>
+      <span style="background:#1e3a5f;padding:4px 10px;border-radius:4px;color:#93c5fd">◎ idle</span>
+      <span style="color:#475569">⇄</span>
+      <span style="background:#2d1f63;padding:4px 10px;border-radius:4px;color:#a78bfa">⟳ streaming</span>
+      <span style="color:#475569">⇄</span>
+      <span style="background:#3b1f1f;padding:4px 10px;border-radius:4px;color:#fca5a5">⚙ busy</span>
+    </div>
+    <div style="color:#475569;text-align:center;font-size:0.65rem">Status otomatis di-broadcast ke semua agents ketika berubah</div>
+  </div>
+
+  <!-- AgentEntry type -->
+  <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0">
+    <div style="color:#64748b;margin-bottom:0.4rem">// AgentEntry — disimpan di in-memory registry Hub</div>
+    <div style="color:#e2e8f0">
+      <span style="color:#93c5fd">interface</span> <span style="color:#fbbf24">AgentEntry</span> {<br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">id</span>: <span style="color:#f87171">string</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569">// "claude-code" | "roocode" | "codex"</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">displayName</span>: <span style="color:#f87171">string</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569">// "Claude Code 1.x"</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">capabilities</span>: <span style="color:#f87171">string</span>[]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569">// ["code-review", "file-edit", "search"]</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">status</span>: <span style="color:#f87171">"connected"</span> | <span style="color:#f87171">"idle"</span> | <span style="color:#f87171">"streaming"</span> | <span style="color:#f87171">"busy"</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">connectedAt</span>: <span style="color:#f87171">number</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569">// unix timestamp</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">lastSeen</span>: <span style="color:#f87171">number</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569">// heartbeat timestamp</span><br>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Message type -->
+<div class="section">
+  <h3>Pesan yang Mengalir Antar-Agent</h3>
+  <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0">
+    <div style="color:#64748b;margin-bottom:0.4rem">// UNICOMMessage — setiap pesan yang diroute Hub</div>
+    <div>
+      <span style="color:#93c5fd">interface</span> <span style="color:#fbbf24">UNICOMMessage</span> {<br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">id</span>: <span style="color:#f87171">string</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569">// UUID v4</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">from</span>: <span style="color:#f87171">string</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569">// sender agent id</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">to</span>: <span style="color:#f87171">string</span> | <span style="color:#f87171">"broadcast"</span>&nbsp;&nbsp;&nbsp;<span style="color:#475569">// target agent or all</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">content</span>: <span style="color:#f87171">string</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569">// message body (markdown ok)</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">type</span>: <span style="color:#f87171">"message"</span> | <span style="color:#f87171">"status_update"</span> | <span style="color:#f87171">"ack"</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">replyTo</span>?: <span style="color:#f87171">string</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#475569">// thread reference (optional)</span><br>
+      &nbsp;&nbsp;<span style="color:#6ee7b7">timestamp</span>: <span style="color:#f87171">number</span><br>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- 5 MCP tools -->
+<div class="section">
+  <h3>MCP Tools yang Diekspos (5 tools, +1 dari sebelumnya)</h3>
+  <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.71rem;color:#e2e8f0">
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:0.15rem 1rem;line-height:2">
+      <span style="color:#fbbf24">register_agent</span><span style="color:#94a3b8">(id, displayName, capabilities[]) → AgentEntry</span>
+      <span style="color:#fbbf24">update_status</span><span style="color:#94a3b8">(id, status: "idle"|"streaming"|"busy") → broadcast status_update</span>
+      <span style="color:#fbbf24">send_message</span><span style="color:#94a3b8">(to, content, replyTo?) → UNICOMMessage (SSE push to target)</span>
+      <span style="color:#fbbf24">broadcast</span><span style="color:#94a3b8">(content) → UNICOMMessage (SSE push to all)</span>
+      <span style="color:#fbbf24">list_agents</span><span style="color:#94a3b8">() → AgentEntry[] with live status</span>
+    </div>
+  </div>
+</div>
+
+<!-- Status indicator panel mockup -->
+<div class="section">
+  <h3>Mockup: UNICOM Status Panel (bisa di MCP resource atau CLI)</h3>
+  <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.75rem;color:#e2e8f0;border:1px solid #1e293b">
+    <div style="color:#475569;font-size:0.65rem;margin-bottom:0.5rem">unicom://agents — live view via list_agents()</div>
+    <div style="display:grid;grid-template-columns:auto auto 1fr auto;gap:0.2rem 1rem;align-items:center">
+      <span style="color:#6ee7b7">●</span><span style="color:#fbbf24">codex</span><span style="color:#64748b">OpenAI Codex CLI</span><span style="color:#6ee7b7">connected</span>
+      <span style="color:#a78bfa">⟳</span><span style="color:#93c5fd">claude-code</span><span style="color:#64748b">Claude Code 1.x</span><span style="color:#a78bfa">streaming</span>
+      <span style="color:#fbbf24">◎</span><span style="color:#a78bfa">roocode</span><span style="color:#64748b">Roocode v3</span><span style="color:#fbbf24">idle</span>
+    </div>
+  </div>
+</div>
+
+<p style="text-align:center;color:#64748b;font-size:0.82rem;margin-top:0.75rem">Apakah Section 2 sudah oke? Lanjut ke Section 3 — Implementation Location & File Structure?</p>

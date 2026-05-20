@@ -1,0 +1,84 @@
+<h2>Ketika Chief bilang "DIRECT" — topologi mana yang dimaksud?</h2>
+<p class="subtitle">Ini menentukan apakah kita butuh broker, registry, atau service mesh</p>
+
+<div class="cards" style="grid-template-columns: repeat(3, 1fr);">
+
+  <div class="card" data-choice="hub-spoke" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f1117;padding:1.5rem;font-family:monospace;font-size:0.75rem;color:#e2e8f0;min-height:160px;display:flex;align-items:center;justify-content:center">
+      <div style="text-align:center">
+        <div style="display:flex;gap:2rem;align-items:center;justify-content:center;margin-bottom:0.5rem">
+          <span style="background:#3b82f6;padding:4px 8px;border-radius:4px">Agent A</span>
+          <span style="background:#3b82f6;padding:4px 8px;border-radius:4px">Agent B</span>
+        </div>
+        <div style="display:flex;justify-content:center;gap:0.5rem;margin:0.25rem 0">
+          <span style="color:#64748b">↓ &nbsp;&nbsp;&nbsp;&nbsp;↓</span>
+        </div>
+        <div style="background:#8b5cf6;padding:6px 14px;border-radius:6px;margin:0.25rem auto;display:inline-block;font-weight:bold">UNICOM HUB</div>
+        <div style="display:flex;justify-content:center;gap:0.5rem;margin:0.25rem 0">
+          <span style="color:#64748b">↑ &nbsp;&nbsp;&nbsp;&nbsp;↑</span>
+        </div>
+        <div style="display:flex;gap:2rem;align-items:center;justify-content:center;margin-top:0.25rem">
+          <span style="background:#3b82f6;padding:4px 8px;border-radius:4px">Agent C</span>
+          <span style="background:#3b82f6;padding:4px 8px;border-radius:4px">Agent D</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Hub &amp; Spoke</h3>
+      <p>Semua agent bicara melalui UNICOM Hub terpusat. Hub menjadi router, registry, dan message broker sekaligus.</p>
+      <div style="margin-top:0.5rem;font-size:0.8rem;color:#64748b">
+        ✅ Mudah dimonitor &nbsp;&nbsp; ✅ Security terpusat<br>
+        ⚠️ Single point of failure &nbsp;&nbsp; ⚠️ Latency +1 hop
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="mesh" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f1117;padding:1.5rem;font-family:monospace;font-size:0.75rem;color:#e2e8f0;min-height:160px;display:flex;align-items:center;justify-content:center">
+      <div style="text-align:center;position:relative">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 3rem">
+          <span style="background:#10b981;padding:4px 8px;border-radius:4px">Agent A</span>
+          <span style="background:#10b981;padding:4px 8px;border-radius:4px">Agent B</span>
+          <span style="background:#10b981;padding:4px 8px;border-radius:4px">Agent C</span>
+          <span style="background:#10b981;padding:4px 8px;border-radius:4px">Agent D</span>
+        </div>
+        <div style="font-size:1.5rem;margin-top:0.5rem;color:#6ee7b7">⟺ ⟺ ⟺</div>
+        <div style="font-size:0.7rem;color:#64748b;margin-top:0.25rem">tiap agent kenal semua agent lain</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Full Mesh (P2P)</h3>
+      <p>Setiap agent bisa langsung kontak agent lain tanpa perantara. Agent punya address book berisi semua agent yang terdaftar.</p>
+      <div style="margin-top:0.5rem;font-size:0.8rem;color:#64748b">
+        ✅ Benar-benar "DIRECT" &nbsp;&nbsp; ✅ Latensi minimum<br>
+        ⚠️ Kompleks scaling &nbsp;&nbsp; ⚠️ Sulit di-debug
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="registry-direct" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f1117;padding:1.5rem;font-family:monospace;font-size:0.75rem;color:#e2e8f0;min-height:160px;display:flex;align-items:center;justify-content:center">
+      <div style="text-align:center">
+        <div style="background:#f59e0b;padding:4px 12px;border-radius:4px;display:inline-block;margin-bottom:0.75rem">📋 Registry (lookup only)</div>
+        <div style="font-size:0.7rem;color:#64748b;margin-bottom:0.5rem">"di mana Agent B?" → dapat address</div>
+        <div style="display:flex;gap:2rem;justify-content:center">
+          <span style="background:#3b82f6;padding:4px 8px;border-radius:4px">Agent A</span>
+          <span style="color:#f59e0b;font-size:1.2rem">⟷</span>
+          <span style="background:#3b82f6;padding:4px 8px;border-radius:4px">Agent B</span>
+        </div>
+        <div style="font-size:0.7rem;color:#6ee7b7;margin-top:0.5rem">↑ komunikasi langsung setelah lookup</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Registry + Direct Call (Recommended)</h3>
+      <p>Registry ringan hanya untuk "siapa ada di mana", tapi pesan dikirim langsung agent-ke-agent tanpa proxy.</p>
+      <div style="margin-top:0.5rem;font-size:0.8rem;color:#64748b">
+        ✅ Direct tapi terorganisir &nbsp;&nbsp; ✅ Scalable<br>
+        ✅ Mudah debug &nbsp;&nbsp; ⚠️ Perlu maintain registry
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align:center;margin-top:1rem;color:#64748b;font-size:0.85rem">Klik untuk pilih — atau ketik jawaban di terminal</p>
