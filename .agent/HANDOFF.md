@@ -3,15 +3,15 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-21 (session: UNICOM SSE v2 implementation complete — all 5 tasks done)
+Last updated: 2026-05-21 (session: UNICOM code quality review fixes committed)
 
 ## Snapshot
 
 - Repo: `D:\Devops\abyss-monorepo`
 - Branch: `refactor/ABYSS-REPO-STRUCTURE-002-corporate-ferdiiskandar`
-- HEAD: `073207f`
-- Active work: UNICOM Hub SSE v2 — IMPLEMENTATION COMPLETE
-- Mode: DONE — all 5 tasks implemented, tested, committed. Next: final review atau lanjut ke RAG Phase 1.
+- HEAD: `0874a98`
+- Active work: UNICOM Hub SSE v2 — CODE QUALITY FIXES COMPLETE
+- Mode: DONE — implementation complete + review fixes committed. Next: finishing branch atau lanjut ke RAG Phase 1.
 
 ## UNICOM Hub — SSE v2 Implementation Complete (2026-05-21)
 
@@ -39,10 +39,27 @@ Last updated: 2026-05-21 (session: UNICOM SSE v2 implementation complete — all
 - CREATE: `src/sse-manager.ts`, `src/feed.ts`, `tests/sse-manager.test.ts`, `tests/server-sse.test.ts`
 - MODIFY: `src/router.ts`, `src/server.ts`, `src/index.ts`, `src/tools/*.ts`, `tests/router.test.ts`, `tests/server.test.ts`
 
+**Code Quality Review Fixes (commit `0874a98`):**
+- `readBody()` error handling + `setEncoding('utf8')` — prevent request hangs
+- `/mcp` JSON parse error guard — 400 response instead of crash
+- SSE connection limit (`MAX_SSE_CONNECTIONS=100`) — DoS protection
+- Sender validation on `POST /send` — 403 for unregistered agents
+- New `POST /register` endpoint — HTTP client can register agents
+- Initial SSE `:connected` event — confirms stream is live
+- `broadcast()` single-pass iteration — O(n) instead of O(2n)
+- `deliver()` signature cleanup — removed redundant type parameter
+
+**Verification after fixes:**
+- 49/49 tests pass (8 test files, +2 new tests)
+- `pnpm typecheck` clean
+- `pnpm build` sukses
+- Smoke test: `curl /health` → `{"status":"ok","agents":0,"sseConnected":0}`
+
 **Endpoints:**
 - `GET /subscribe/:agentId` — SSE stream untuk real-time push
 - `POST /send` — kirim pesan (dual-path: SSE jika online, inbox jika offline)
 - `POST /receive` — drain inbox untuk agent offline
+- `POST /register` — register agent via HTTP
 - `GET /health` — status + SSE connected count
 - `GET /stats` — agents, SSE, inbox depths, recent feed
 - `GET /agents` — list agents dengan SSE status per agent
