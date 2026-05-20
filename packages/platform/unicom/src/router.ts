@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 
 import type { MessageInbox } from './inbox.js'
 import type { AgentRegistry } from './registry.js'
+import type { SseManager } from './sse-manager.js'
 import type { UNICOMMessage } from './types.js'
 
 export function routeMessage(
@@ -11,7 +12,8 @@ export function routeMessage(
   to: string,
   content: string,
   replyTo?: string,
-  type: UNICOMMessage['type'] = 'message'
+  type: UNICOMMessage['type'] = 'message',
+  sseManager?: SseManager
 ): UNICOMMessage {
   const message: UNICOMMessage = {
     id: randomUUID(),
@@ -26,11 +28,19 @@ export function routeMessage(
   if (to === 'broadcast') {
     for (const agent of registry.list()) {
       if (agent.id !== from) {
-        inbox.enqueue(agent.id, message)
+        if (sseManager?.isConnected(agent.id)) {
+          sseManager.push(agent.id, type, message)
+        } else {
+          inbox.enqueue(agent.id, message)
+        }
       }
     }
   } else {
-    inbox.enqueue(to, message)
+    if (sseManager?.isConnected(to)) {
+      sseManager.push(to, type, message)
+    } else {
+      inbox.enqueue(to, message)
+    }
   }
 
   return message
