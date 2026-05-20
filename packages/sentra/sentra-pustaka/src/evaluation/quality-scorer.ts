@@ -141,3 +141,82 @@ function determineAadiReadiness(input: ReadinessInput): {
     readiness_reason: `Only ${Math.round(passRate * 100)}% queries passed (threshold: 80%). Knowledge corpus insufficient or similarity scores too low.`,
   }
 }
+
+interface EvalResult {
+  vector_id: string
+  is_approved: boolean
+  rank: number
+  score: number
+}
+
+interface QueryRankingEvalResult {
+  query_id: string
+  results: EvalResult[]
+}
+
+export interface RankingMetrics {
+  recallAtK: Record<string, number>
+  mrr: number
+  map: number
+}
+
+export function computeRankingMetrics(
+  queryResults: QueryRankingEvalResult[],
+  kValues: number[] = [1, 3, 5],
+): RankingMetrics {
+  if (queryResults.length === 0) {
+    return {
+      recallAtK: Object.fromEntries(kValues.map((k) => [`recall@${k}`, 0])),
+      mrr: 0,
+      map: 0,
+    }
+  }
+
+  const recallTotals = new Map<number, number>(kValues.map((k) => [k, 0]))
+  let reciprocalRankTotal = 0
+  let averagePrecisionTotal = 0
+
+  for (const queryResult of queryResults) {
+    const relevant = queryResult.results.filter((result) => result.is_approved)
+    const relevantCount = relevant.length
+
+    for (const k of kValues) {
+      if (relevantCount === 0) {
+        continue
+      }
+
+      const relevantWithinK = queryResult.results
+        .slice(0, k)
+        .filter((result) => result.is_approved).length
+
+      recallTotals.set(k, (recallTotals.get(k) ?? 0) + relevantWithinK / relevantCount)
+    }
+
+    const firstRelevantIndex = queryResult.results.findIndex((result) => result.is_approved)
+    if (firstRelevantIndex >= 0) {
+      reciprocalRankTotal += 1 / (firstRelevantIndex + 1)
+    }
+
+    if (relevantCount > 0) {
+      let hitCount = 0
+      let precisionSum = 0
+
+      queryResult.results.forEach((result, index) => {
+        if (result.is_approved) {
+          hitCount++
+          precisionSum += hitCount / (index + 1)
+        }
+      })
+
+      averagePrecisionTotal += precisionSum / relevantCount
+    }
+  }
+
+  return {
+    recallAtK: Object.fromEntries(
+      kValues.map((k) => [`recall@${k}`, (recallTotals.get(k) ?? 0) / queryResults.length]),
+    ),
+    mrr: reciprocalRankTotal / queryResults.length,
+    map: averagePrecisionTotal / queryResults.length,
+  }
+}
