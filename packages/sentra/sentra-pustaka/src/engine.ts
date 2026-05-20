@@ -56,7 +56,7 @@ export class SentraRAGEngine {
     this.guard.audit(`Query: ${cleanQuestion.substring(0, 50)}...`)
 
     let context = ''
-    let source = 'local' as const
+    let source: RAGQueryResult['source'] = 'local'
     const chunks: RAGQueryResult['chunks'] = []
 
     try {
