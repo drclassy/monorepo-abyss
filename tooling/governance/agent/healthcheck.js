@@ -207,18 +207,30 @@ function checkRootCodexHooksEnabled() {
   if (!content) {
     return {
       file: ROOT_CODEX_CONFIG,
+      pass: existsSync(ROOT_HOOKS_JSON),
+      rule: 'Root .codex config policy',
+      detail: existsSync(ROOT_HOOKS_JSON)
+        ? undefined
+        : 'Missing .codex/hooks.json for repo-level Codex enforcement',
+    }
+  }
+
+  const usesDeprecatedAlias = /\bcodex_hooks\s*=/.test(content)
+  const hasFeaturesSection = /\[features\]/.test(content)
+  if (!hasFeaturesSection) {
+    return {
+      file: ROOT_CODEX_CONFIG,
       pass: false,
-      rule: 'Root .codex config',
-      detail: 'Missing .codex/config.toml project layer',
+      rule: 'Root .codex config policy',
+      detail: 'Project config is present but missing [features] section',
     }
   }
 
   const hasHooksEnabled = /\[features\][\s\S]*?\bhooks\s*=\s*true\b/.test(content)
-  const usesDeprecatedAlias = /\bcodex_hooks\s*=/.test(content)
   return {
     file: ROOT_CODEX_CONFIG,
     pass: hasHooksEnabled && !usesDeprecatedAlias,
-    rule: 'Root .codex hooks enabled',
+    rule: 'Root .codex config policy',
     detail: !hasHooksEnabled
       ? 'Project config does not explicitly enable [features].hooks = true'
       : usesDeprecatedAlias
