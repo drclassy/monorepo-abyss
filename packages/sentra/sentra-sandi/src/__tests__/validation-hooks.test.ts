@@ -5,8 +5,8 @@
  * Pin behavior so future promotion (moving structural validation out of
  * symphony interop) cannot accidentally widen this surface into reasoning.
  *
- * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
- * Plan: docs/superpowers/plans/2026-04-29-fhir-engine-resource-validation-implementation.md (Task 5)
+ * Spec: docs/specs/aadi-v2/011-2026-04-29-fhir-engine-modernization-spec.md
+ * Plan: docs/guides/implementation-plans/008-2026-04-29-fhir-engine-resource-validation-implementation.md (Task 5)
  */
 import { describe, expect, it } from 'vitest'
 
@@ -121,11 +121,6 @@ describe('validateSupportedResource', () => {
     }
     const result = validateSupportedResource(patient)
     // Result shape stays bounded: only valid/errors/warnings/resourceType.
-    expect(Object.keys(result).sort()).toEqual([
-      'errors',
-      'resourceType',
-      'valid',
-      'warnings',
-    ])
+    expect(Object.keys(result).sort()).toEqual(['errors', 'resourceType', 'valid', 'warnings'])
   })
 })

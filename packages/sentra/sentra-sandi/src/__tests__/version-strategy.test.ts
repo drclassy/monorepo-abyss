@@ -3,8 +3,8 @@
  * Pin the FHIR version-strategy posture so that bumping target version,
  * current shape, or phase is a deliberate review-gated change.
  *
- * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
- * Plan Task 5: docs/superpowers/plans/2026-04-29-fhir-engine-modernization-implementation.md
+ * Spec: docs/specs/aadi-v2/011-2026-04-29-fhir-engine-modernization-spec.md
+ * Plan Task 5: docs/guides/implementation-plans/007-2026-04-29-fhir-engine-modernization-implementation.md
  */
 import { describe, expect, it } from 'vitest'
 

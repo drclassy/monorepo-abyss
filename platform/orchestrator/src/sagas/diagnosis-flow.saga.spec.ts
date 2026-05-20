@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { DiagnosisFlowSaga, type DiagnosisInput } from './diagnosis-flow.saga'
 import type { KafkaService } from '../kafka/kafka.service'
+
+import { DiagnosisFlowSaga, type DiagnosisInput } from './diagnosis-flow.saga'
 
 function makeKafka(): KafkaService {
   return {
@@ -39,7 +40,7 @@ describe('DiagnosisFlowSaga (orchestrator → SYMPHONY handoff)', () => {
           temperatureC: 39.1,
           spo2: 92,
         },
-      }),
+      })
     )
 
     expect(result.symphony).toBeDefined()
@@ -51,7 +52,9 @@ describe('DiagnosisFlowSaga (orchestrator → SYMPHONY handoff)', () => {
   it('emits CDSS_QUERY kafka event before invoking SYMPHONY', async () => {
     await saga.execute(baseInput({ symptoms: ['demam'] }))
     const calls = (kafka.emit as ReturnType<typeof vi.fn>).mock.calls
-    const events = calls.map(call => call[1] as { event?: string }).map(payload => payload?.event)
+    const events = calls
+      .map((call) => call[1] as { event?: string })
+      .map((payload) => payload?.event)
     expect(events).toContain('CDSS_QUERY')
     expect(events.indexOf('CDSS_QUERY')).toBeLessThan(events.indexOf('AI_PROCESSING'))
   })
@@ -61,7 +64,7 @@ describe('DiagnosisFlowSaga (orchestrator → SYMPHONY handoff)', () => {
       baseInput({
         organizationId: 'org-secret-xyz',
         symptoms: ['demam'],
-      }),
+      })
     )
     expect(JSON.stringify(result.symphony)).not.toContain('org-secret-xyz')
   })
@@ -79,7 +82,7 @@ describe('DiagnosisFlowSaga (orchestrator → SYMPHONY handoff)', () => {
       baseInput({
         symptoms: ['demam tinggi sesak napas'],
         vitalSigns: { heartRate: 118, respiratoryRate: 26, spo2: 92 },
-      }),
+      })
     )
     expect(result.symphony.alerts).toBeDefined()
     expect(result.symphony.trajectory).toBeDefined()
@@ -92,14 +95,14 @@ describe('DiagnosisFlowSaga (orchestrator → SYMPHONY handoff)', () => {
         requestId: 'req-determ',
         symptoms: ['demam'],
         vitalSigns: { heartRate: 100 },
-      }),
+      })
     )
     const b = await saga.execute(
       baseInput({
         requestId: 'req-determ',
         symptoms: ['demam'],
         vitalSigns: { heartRate: 100 },
-      }),
+      })
     )
     expect(a.symphony.metadata.contractVersion).toBe(b.symphony.metadata.contractVersion)
     expect(a.symphony.clinicalDisposition).toBe(b.symphony.clinicalDisposition)
@@ -124,16 +127,19 @@ describe('DiagnosisFlowSaga (orchestrator → SYMPHONY handoff)', () => {
           symptoms: ['SECRET-PATIENT-NARRATIVE: demam tinggi sesak napas'],
           vitalSigns: { heartRate: 118 },
           requestId: 'req-dlq-test',
-        }),
-      ),
+        })
+      )
     ).rejects.toThrow()
 
     const calls = (failingKafka.emit as ReturnType<typeof vi.fn>).mock.calls
-    const dlqCall = calls.find(call => call[0] === 'diagnosis-dlq')
+    const dlqCall = calls.find((call) => call[0] === 'diagnosis-dlq')
     expect(dlqCall).toBeDefined()
-    const dlqPayload = dlqCall![1] as Record<string, unknown>
+    if (!dlqCall) {
+      throw new Error('Expected diagnosis-dlq call to be emitted')
+    }
+    const dlqPayload = dlqCall[1] as Record<string, unknown>
     expect(Object.keys(dlqPayload).sort()).toEqual(
-      ['errorName', 'errorType', 'requestId', 'step', 'timestamp'].sort(),
+      ['errorName', 'errorType', 'requestId', 'step', 'timestamp'].sort()
     )
     expect(dlqPayload.requestId).toBe('req-dlq-test')
 

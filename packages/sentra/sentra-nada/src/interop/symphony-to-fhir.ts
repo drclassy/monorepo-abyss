@@ -3,6 +3,7 @@ import {
   mapValidatedAadiV2Bundle,
   type AadiV2FhirBundle as SymphonyFhirBundle,
 } from '@sentra/sandi'
+
 import type { SymphonyResult } from '../contracts'
 
 import { projectSymphonyResultToFhirBundle } from './fhir-bundle-projection'
@@ -18,8 +19,6 @@ export type {
   AadiV2FhirRiskAssessment as SymphonyFhirRiskAssessment,
 } from '@sentra/sandi'
 
-export function mapSymphonyResultToFhirBundle(
-  result: SymphonyResult,
-): SymphonyFhirBundle {
+export function mapSymphonyResultToFhirBundle(result: SymphonyResult): SymphonyFhirBundle {
   return mapValidatedAadiV2Bundle(projectSymphonyResultToFhirBundle(result))
 }

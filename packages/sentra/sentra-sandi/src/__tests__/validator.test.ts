@@ -7,8 +7,8 @@
  *   Supported : Patient, Observation, Condition, RiskAssessment, DiagnosticReport
  *   Deferred  : (none — all three deferred families promoted in Tasks 2–4)
  *
- * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
- * Plan Task 4: docs/superpowers/plans/2026-04-29-fhir-engine-modernization-implementation.md
+ * Spec: docs/specs/aadi-v2/011-2026-04-29-fhir-engine-modernization-spec.md
+ * Plan Task 4: docs/guides/implementation-plans/007-2026-04-29-fhir-engine-modernization-implementation.md
  */
 import { describe, expect, it } from 'vitest'
 
@@ -219,7 +219,13 @@ describe('FhirValidator support matrix', () => {
         id: 'dr-supported-1',
         status: 'final',
         code: {
-          coding: [{ system: 'http://loinc.org', code: '24323-8', display: 'Comprehensive metabolic 2000 panel' }],
+          coding: [
+            {
+              system: 'http://loinc.org',
+              code: '24323-8',
+              display: 'Comprehensive metabolic 2000 panel',
+            },
+          ],
         },
       }
       const result = new FhirValidator().validate(report)
@@ -235,10 +241,7 @@ describe('FhirValidator support matrix', () => {
         code: { coding: [{ system: 'sys', code: 'X' }] },
         subject: { reference: 'Patient/p-1' },
         effectiveDateTime: '2026-04-29T00:00:00.000Z',
-        result: [
-          { reference: 'Observation/obs-1' },
-          { reference: 'Observation/obs-2' },
-        ],
+        result: [{ reference: 'Observation/obs-1' }, { reference: 'Observation/obs-2' }],
         conclusion: 'Within reference range.',
       }
       const result = new FhirValidator().validate(report)
@@ -324,7 +327,7 @@ describe('FhirValidator support matrix', () => {
 
     it('supported and deferred sets do not overlap', () => {
       const overlap = SUPPORTED_RESOURCE_TYPES.filter((t) =>
-        (DEFERRED_RESOURCE_TYPES as readonly string[]).includes(t),
+        (DEFERRED_RESOURCE_TYPES as readonly string[]).includes(t)
       )
       expect(overlap).toHaveLength(0)
     })

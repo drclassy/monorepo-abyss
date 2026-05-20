@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common'
-import { SagaRepository, StepLog } from './saga.repository'
 
-export interface SagaStep<TInput = any, TOutput = any> {
+import { type SagaJson, type SagaRepository } from './saga.repository'
+
+export interface SagaStep<TInput = unknown, TOutput = unknown> {
   name: string
   invoke: (input: TInput) => Promise<TOutput>
   compensate?: (input: TInput, error: Error) => Promise<void>
 }
 
 @Injectable()
-export abstract class BaseSaga<TInitialInput = any, TFinalOutput = any> {
+export abstract class BaseSaga<TInitialInput = unknown, TFinalOutput = unknown> {
   protected steps: SagaStep[] = []
   protected executionId?: string
   protected repository?: SagaRepository
@@ -19,13 +20,13 @@ export abstract class BaseSaga<TInitialInput = any, TFinalOutput = any> {
   }
 
   addStep<TIn, TOut>(step: SagaStep<TIn, TOut>): this {
-    this.steps.push(step)
+    this.steps.push(step as SagaStep)
     return this
   }
 
   async execute(initialInput: TInitialInput): Promise<TFinalOutput> {
     const executedSteps: SagaStep[] = []
-    let currentInput = initialInput
+    let currentInput: unknown = initialInput
 
     for (let i = 0; i < this.steps.length; i++) {
       const step = this.steps[i]
@@ -38,7 +39,7 @@ export abstract class BaseSaga<TInitialInput = any, TFinalOutput = any> {
         const result = await step.invoke(currentInput)
 
         // Log step completion
-        await this.logStepComplete(i, step.name, result)
+        await this.logStepComplete(i, step.name, result as SagaJson)
 
         executedSteps.push(step)
         currentInput = result
@@ -63,7 +64,7 @@ export abstract class BaseSaga<TInitialInput = any, TFinalOutput = any> {
     })
   }
 
-  private async logStepComplete(index: number, name: string, output: any): Promise<void> {
+  private async logStepComplete(index: number, name: string, output: SagaJson): Promise<void> {
     if (!this.executionId || !this.repository) return
 
     await this.repository.updateStep(this.executionId, index, {
@@ -87,8 +88,8 @@ export abstract class BaseSaga<TInitialInput = any, TFinalOutput = any> {
 
   private async runCompensation(
     executedSteps: SagaStep[],
-    initialInput: any,
-    error: any
+    initialInput: TInitialInput,
+    error: Error
   ): Promise<void> {
     for (const step of executedSteps.reverse()) {
       if (step.compensate) {

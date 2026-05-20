@@ -6,7 +6,7 @@
  * It exists so consumers and future contributors can read, in one place, the
  * package's honest version posture instead of inferring it from prose.
  *
- * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
+ * Spec: docs/specs/aadi-v2/011-2026-04-29-fhir-engine-modernization-spec.md
  */
 
 /** The FHIR version this package is modernizing toward. */

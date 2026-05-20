@@ -13,8 +13,8 @@
  *   - reinterpret clinical meaning, severity, or disposition
  *   - re-score the patient
  *
- * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
- * Plan: docs/superpowers/plans/2026-04-29-fhir-engine-resource-validation-implementation.md (Task 5)
+ * Spec: docs/specs/aadi-v2/011-2026-04-29-fhir-engine-modernization-spec.md
+ * Plan: docs/guides/implementation-plans/008-2026-04-29-fhir-engine-resource-validation-implementation.md (Task 5)
  */
 import {
   SUPPORTED_RESOURCE_TYPES,

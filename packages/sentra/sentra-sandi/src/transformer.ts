@@ -10,7 +10,7 @@ import type { FhirResource } from './types'
  *
  * Why it still exists: the surface is preserved during modernization so the
  * package can later be promoted into a real validation/normalization layer
- * (see docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md).
+ * (see docs/specs/aadi-v2/011-2026-04-29-fhir-engine-modernization-spec.md).
  *
  * AADI V2 interop mapping authority remains in `@sentra/nada`. Do not
  * reintroduce reasoning-driven mapping here.
@@ -27,7 +27,7 @@ export class FhirTransformer {
     throw new Error(
       'FhirTransformer.toInternal() is not implemented. This package does not own ' +
         'FHIR-to-internal-domain mapping; map from SymphonyResult or from validated ' +
-        'resources directly.',
+        'resources directly.'
     )
   }
 
@@ -41,7 +41,7 @@ export class FhirTransformer {
   toFhir<T extends FhirResource>(_data: Record<string, unknown>): T {
     throw new Error(
       'FhirTransformer.toFhir() is not implemented. AADI V2 interop bundle/CDS ' +
-        'mapping authority remains in @sentra/nada.',
+        'mapping authority remains in @sentra/nada.'
     )
   }
 
@@ -55,7 +55,7 @@ export class FhirTransformer {
   normalize(_resource: FhirResource): FhirResource {
     throw new Error(
       'FhirTransformer.normalize() is not implemented. Multi-version FHIR ' +
-        'normalization is out of scope for the current modernization baseline.',
+        'normalization is out of scope for the current modernization baseline.'
     )
   }
 }

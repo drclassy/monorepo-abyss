@@ -6,17 +6,12 @@
  * documentation claims. These tests will be re-asserted (or rewritten with
  * stronger expectations) by Tasks 3–6 of the modernization plan.
  *
- * Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
- * Plan: docs/superpowers/plans/2026-04-29-fhir-engine-modernization-implementation.md
+ * Spec: docs/specs/aadi-v2/011-2026-04-29-fhir-engine-modernization-spec.md
+ * Plan: docs/guides/implementation-plans/007-2026-04-29-fhir-engine-modernization-implementation.md
  */
 import { describe, expect, it } from 'vitest'
 
-import {
-  FhirTransformer,
-  FhirValidator,
-  type FhirObservation,
-  type FhirPatient,
-} from '../index'
+import { FhirTransformer, FhirValidator, type FhirObservation, type FhirPatient } from '../index'
 
 describe('fhir-engine modernization baseline', () => {
   describe('validator support matrix (locked surface)', () => {

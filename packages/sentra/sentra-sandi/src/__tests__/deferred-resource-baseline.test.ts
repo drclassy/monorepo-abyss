@@ -8,7 +8,7 @@
  * regression — adding a new deferred resource must update both
  * DEFERRED_RESOURCE_TYPES and these assertions.
  *
- * Plan: docs/superpowers/plans/2026-04-29-fhir-engine-resource-validation-implementation.md
+ * Plan: docs/guides/implementation-plans/008-2026-04-29-fhir-engine-resource-validation-implementation.md
  */
 import { describe, expect, it } from 'vitest'
 

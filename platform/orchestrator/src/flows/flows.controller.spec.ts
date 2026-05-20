@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+
 import { FlowsController } from './flows.controller'
-import { FlowsService } from './flows.service'
+import { type FlowsService } from './flows.service'
 
 describe('FlowsController', () => {
   let controller: FlowsController

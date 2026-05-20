@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
 import { KafkaService } from './kafka.service'
 
 const sendMock = vi.fn().mockResolvedValue(undefined)

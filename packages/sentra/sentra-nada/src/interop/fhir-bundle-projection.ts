@@ -6,6 +6,7 @@ import type {
   AadiV2FhirObservation,
   AadiV2FhirRiskAssessment,
 } from '@sentra/sandi'
+
 import type {
   SymphonyAlert,
   SymphonyDiagnosticHypothesis,
@@ -18,7 +19,7 @@ const TRAFFIC_LIGHT_SYSTEM = 'urn:symphony:traffic-light' as const
 const ALERT_SEVERITY_SYSTEM = 'urn:symphony:alert-severity' as const
 
 function categoryToVerificationStatus(
-  category: SymphonyDiagnosticHypothesis['category'],
+  category: SymphonyDiagnosticHypothesis['category']
 ): AadiV2FhirCondition['verificationStatus'] {
   switch (category) {
     case 'working':
@@ -31,9 +32,7 @@ function categoryToVerificationStatus(
   }
 }
 
-function hypothesisToCondition(
-  hypothesis: SymphonyDiagnosticHypothesis,
-): AadiV2FhirCondition {
+function hypothesisToCondition(hypothesis: SymphonyDiagnosticHypothesis): AadiV2FhirCondition {
   return {
     resourceType: 'Condition',
     id: `cond-${hypothesis.rank}`,
@@ -54,7 +53,7 @@ function hypothesisToCondition(
 }
 
 function trafficLightToRiskAssessment(
-  trafficLight: SymphonyTrafficLightOutput,
+  trafficLight: SymphonyTrafficLightOutput
 ): AadiV2FhirRiskAssessment {
   return {
     resourceType: 'RiskAssessment',
@@ -75,9 +74,7 @@ function trafficLightToRiskAssessment(
   }
 }
 
-function rationaleToDiagnosticReport(
-  rationale: readonly string[],
-): AadiV2FhirDiagnosticReport {
+function rationaleToDiagnosticReport(rationale: readonly string[]): AadiV2FhirDiagnosticReport {
   return {
     resourceType: 'DiagnosticReport',
     id: 'report-rationale',
@@ -104,7 +101,7 @@ function alertToObservation(alert: SymphonyAlert): AadiV2FhirObservation {
 }
 
 export function projectSymphonyResultToFhirBundle(
-  result: SymphonyResult,
+  result: SymphonyResult
 ): AadiV2FhirBundleProjection {
   const entries = [
     ...(result.nativeHypotheses ?? []).map(hypothesisToCondition),
@@ -113,7 +110,7 @@ export function projectSymphonyResultToFhirBundle(
       ? [rationaleToDiagnosticReport(result.metadata.rationale)]
       : []),
     ...result.alerts
-      .filter(alert => alert.severity === 'critical' || alert.severity === 'high')
+      .filter((alert) => alert.severity === 'critical' || alert.severity === 'high')
       .map(alertToObservation),
   ]
 

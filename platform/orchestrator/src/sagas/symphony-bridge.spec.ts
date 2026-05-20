@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import { assessSymphonyInput } from '@sentra/nada'
+import { describe, expect, it } from 'vitest'
 
 import {
   mapDiagnosisInputToSymphonyInput,
@@ -37,7 +37,7 @@ describe('mapDiagnosisInputToSymphonyInput', () => {
   it('joins symptoms into chiefComplaint when present', () => {
     const result = mapDiagnosisInputToSymphonyInput(
       baseInput({ symptoms: ['demam', 'sesak napas'] }),
-      frozenNow,
+      frozenNow
     )
     expect(result.chiefComplaint).toBe('demam; sesak napas')
   })
@@ -52,7 +52,7 @@ describe('mapDiagnosisInputToSymphonyInput', () => {
           spo2: 92,
         },
       }),
-      frozenNow,
+      frozenNow
     )
     expect(result.vitals).toHaveLength(1)
     expect(result.vitals[0]).toEqual({
@@ -73,7 +73,7 @@ describe('mapDiagnosisInputToSymphonyInput', () => {
           spo2: Number.NaN,
         },
       }),
-      frozenNow,
+      frozenNow
     )
     expect(result.vitals).toEqual([{ observedAt: FROZEN_NOW, heartRate: 80 }])
   })
@@ -83,7 +83,7 @@ describe('mapDiagnosisInputToSymphonyInput', () => {
       baseInput({
         vitalSigns: { irrelevant: 1 },
       }),
-      frozenNow,
+      frozenNow
     )
     expect(result.vitals).toEqual([])
   })
@@ -91,7 +91,7 @@ describe('mapDiagnosisInputToSymphonyInput', () => {
   it('respects an explicit requestedAt override', () => {
     const result = mapDiagnosisInputToSymphonyInput(
       baseInput({ requestedAt: '2025-01-01T00:00:00.000Z' }),
-      frozenNow,
+      frozenNow
     )
     expect(result.metadata.requestedAt).toBe('2025-01-01T00:00:00.000Z')
   })
@@ -99,7 +99,7 @@ describe('mapDiagnosisInputToSymphonyInput', () => {
   it('does not leak organizationId into Symphony input', () => {
     const result = mapDiagnosisInputToSymphonyInput(
       baseInput({ organizationId: 'org-secret-xyz' }),
-      frozenNow,
+      frozenNow
     )
     expect(JSON.stringify(result)).not.toContain('org-secret-xyz')
   })
@@ -110,7 +110,7 @@ describe('mapDiagnosisInputToSymphonyInput', () => {
       vitalSigns: { heartRate: 100 },
     })
     expect(mapDiagnosisInputToSymphonyInput(input, frozenNow)).toEqual(
-      mapDiagnosisInputToSymphonyInput(input, frozenNow),
+      mapDiagnosisInputToSymphonyInput(input, frozenNow)
     )
   })
 })
@@ -129,8 +129,8 @@ describe('mapSymphonyResultToCdssResult', () => {
             spo2: 92,
           },
         }),
-        frozenNow,
-      ),
+        frozenNow
+      )
     )
     const cdss = mapSymphonyResultToCdssResult(result)
     expect(cdss.symphony).toBe(result)
@@ -142,9 +142,7 @@ describe('mapSymphonyResultToCdssResult', () => {
   })
 
   it('returns empty primary and zero confidence when no native hypotheses are produced', () => {
-    const result = assessSymphonyInput(
-      mapDiagnosisInputToSymphonyInput(baseInput(), frozenNow),
-    )
+    const result = assessSymphonyInput(mapDiagnosisInputToSymphonyInput(baseInput(), frozenNow))
     const cdss = mapSymphonyResultToCdssResult(result)
     expect(cdss.primaryDiagnosis).toEqual([])
     expect(cdss.differentials).toEqual([])

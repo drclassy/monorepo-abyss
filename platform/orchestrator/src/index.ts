@@ -35,7 +35,7 @@ export async function runFlow(request: RunFlowRequest): Promise<RunFlowResponse>
       input_value: JSON.stringify(request.input),
       input_type: 'chat',
       output_type: 'chat',
-      tweaks: request.input as Record<string, any>,
+      tweaks: request.input as Record<string, unknown>,
     }
 
     const { output, metadata } = await client.runFlow(request.flowId, flowInput)
@@ -60,7 +60,11 @@ export async function runFlow(request: RunFlowRequest): Promise<RunFlowResponse>
 /**
  * Execute flow in shadow mode (A/B testing)
  */
-export async function runFlowShadow(primaryFlowId: string, shadowFlowId: string, input: Record<string, unknown>) {
+export async function runFlowShadow(
+  primaryFlowId: string,
+  shadowFlowId: string,
+  input: Record<string, unknown>
+) {
   const [primary, shadow] = await Promise.all([
     runFlow({ flowId: primaryFlowId, input }),
     runFlow({ flowId: shadowFlowId, input, options: { shadow: true } }),

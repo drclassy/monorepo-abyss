@@ -6,8 +6,8 @@
  * with a clear message rather than pretending a cast-only no-op is a real
  * transformation. See:
  *
- * - Spec: docs/superpowers/specs/2026-04-29-fhir-engine-modernization-spec.md
- * - Plan Task 3: docs/superpowers/plans/2026-04-29-fhir-engine-modernization-implementation.md
+ * - Spec: docs/specs/aadi-v2/011-2026-04-29-fhir-engine-modernization-spec.md
+ * - Plan Task 3: docs/guides/implementation-plans/007-2026-04-29-fhir-engine-modernization-implementation.md
  */
 import { describe, expect, it } from 'vitest'
 
@@ -21,10 +21,10 @@ describe('FhirTransformer (honesty pass)', () => {
     expect(() => transformer.toInternal(patient)).toThrow(/FHIR-to-internal/i)
   })
 
-  it('toFhir() throws with an explicit not-implemented message and points to symphony', () => {
+  it('toFhir() throws with an explicit not-implemented message and points to @sentra/nada', () => {
     const transformer = new FhirTransformer()
     expect(() => transformer.toFhir({ resourceType: 'Patient' })).toThrow(/not implemented/i)
-    expect(() => transformer.toFhir({ resourceType: 'Patient' })).toThrow(/@the-abyss\/symphony/)
+    expect(() => transformer.toFhir({ resourceType: 'Patient' })).toThrow(/@sentra\/nada/)
   })
 
   it('normalize() throws — multi-version normalization is out of scope', () => {
