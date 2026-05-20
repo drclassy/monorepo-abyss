@@ -24,6 +24,7 @@ export type {
 } from './types.js'
 
 export { runPdfDryRunIngestion } from './ingestion/pdf-batch-runner.js'
+export { ingestHarvestedLiterature } from './ingestion/literature-connector.js'
 export type {
   DryRunDocumentStatus,
   DryRunDocumentResult,
