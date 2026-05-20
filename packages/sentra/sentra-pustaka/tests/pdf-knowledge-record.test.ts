@@ -63,6 +63,7 @@ describe('buildPdfKnowledgeDatabaseRecord', () => {
       parser_provider: 'liteparse',
       ocr_confidence: 0.96,
       registry_status: 'approved_for_embedding',
+      approval_status: 'approved_for_embedding',
       ingestion_status: 'ready',
     })
     expect(record.embeddedChunk).toMatchObject({
@@ -105,6 +106,24 @@ describe('buildPdfKnowledgeDatabaseRecord', () => {
     })
     expect(record.embeddedChunk.page_number).toBe(0)
     expect(record.embeddedChunk.ocr_confidence).toBeNull()
+  })
+
+  it('keeps document_title undefined when neither source nor chunk provides one', () => {
+    const record = buildPdfKnowledgeDatabaseRecord({
+      source: makeRegistryEntry({ document_title: undefined }),
+      chunk: {
+        content: 'Untitled chunk.',
+        metadata: {
+          source_hash: 'source-hash-abc',
+        },
+      },
+      chunkIndex: 0,
+      embeddingModel: 'nomic-embed-text',
+      embeddingDimensions: 768,
+      embeddedAt: '2026-05-20T01:00:00.000Z',
+    })
+
+    expect(record.metadata.document_title).toBeUndefined()
   })
 
   it('keeps vector IDs stable for repeated PDF knowledge records', () => {
