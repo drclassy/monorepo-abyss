@@ -10,6 +10,5 @@ packages:
   - 'packages/integration'
   - 'platform/**'
   - 'tooling/**'
-  - '!tooling/handbook-statusbar-vsix'
   - '!tooling/kilo/worktrees/**'
   - 'apps/community/classy-transformer/website'

@@ -1,0 +1,50 @@
+{
+  "name": "sentra-prompt",
+  "displayName": "Sentra Prompt",
+  "description": "VS Code extension for turning free-form requests into reusable implementation mission prompts",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "publisher": "sentra-local",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "prompt",
+    "mission",
+    "clipboard",
+    "productivity",
+    "vscode-extension"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:sentraPrompt.generateMission"
+  ],
+  "main": "./dist/extension.js",
+  "scripts": {
+    "build": "pnpm run compile",
+    "compile": "node ./esbuild.mjs",
+    "clean": "node -e \"for (const dir of ['dist']) { require('node:fs').rmSync(dir, { recursive: true, force: true }); }\"",
+    "package": "pnpm run compile && pnpm exec vsce package --no-dependencies --out ./dist/sentra-prompt.vsix",
+    "typecheck": "tsc -p ./tsconfig.json",
+    "vscode:prepublish": "pnpm run compile"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.4.0"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "sentraPrompt.generateMission",
+        "title": "Sentra Prompt: Generate Mission Prompt"
+      }
+    ]
+  }
+}

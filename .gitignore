@@ -247,7 +247,8 @@ gha-creds-*.json
 # ---- ROGUE AI & IDE ARTIFACTS ----
 .obsidian/
 conductor/
-tooling/handbook-statusbar-vsix/*.vsix
+tooling/handbook/*.vsix
+tooling/prompt-engine/*.vsix
 
 # Kimi Proxy (BYOK)
 kimi_proxy.py
