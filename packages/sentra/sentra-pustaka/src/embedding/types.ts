@@ -9,7 +9,11 @@ import type { VectorStoreDatabaseClient } from '@sentra/cermin'
 
 export type EmbeddingWriteMode = 'dry_run' | 'write'
 
-export type EmbeddingRunStatus = 'completed' | 'completed_with_failures' | 'failed'
+export type EmbeddingRunStatus =
+  | 'completed'
+  | 'completed_with_failures'
+  | 'partial_success'
+  | 'failed'
 
 // ─── Skip / Failure reasons ───────────────────────────────────────────────────
 
@@ -50,6 +54,9 @@ export interface EmbeddingRunSummary {
   total_candidates: number
   embedded_documents: number
   embedded_chunks: number
+  chunks_attempted: number
+  chunks_succeeded: number
+  chunks_failed: number
   skipped_documents: number
   failed_documents: number
   vector_store_provider: string
@@ -98,4 +105,6 @@ export interface ApprovedEmbeddingPipelineParams {
   embeddingDimensions?: number
   /** Injected database adapter. Required for write mode; ignored in dry-run. */
   databaseClient?: VectorStoreDatabaseClient
+  concurrency?: number
+  batchSize?: number
 }

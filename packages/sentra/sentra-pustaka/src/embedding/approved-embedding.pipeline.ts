@@ -4,9 +4,11 @@ import path from 'path'
 
 import {
   createVectorStore,
+  getEmbeddingBatch,
   DEFAULT_EMBEDDING_MODEL,
   DEFAULT_EMBEDDING_DIMENSIONS,
 } from '@sentra/cermin'
+import type { PreEmbeddedRecord } from '@sentra/cermin'
 
 import { buildPdfKnowledgeDatabaseRecord } from '../knowledge/pdf-knowledge-record.js'
 
@@ -94,6 +96,8 @@ export async function runApprovedEmbeddingPipeline(
     embeddingModel = DEFAULT_EMBEDDING_MODEL,
     embeddingDimensions = DEFAULT_EMBEDDING_DIMENSIONS,
     databaseClient,
+    concurrency = 8,
+    batchSize = 100,
   } = params
 
   const runId = buildEmbeddingRunId()
@@ -113,6 +117,9 @@ export async function runApprovedEmbeddingPipeline(
   let embeddedDocuments = 0
   let skippedDocuments = skipped.length
   let failedDocuments = 0
+  let chunksAttempted = 0
+  let chunksSucceeded = 0
+  let chunksFailed = 0
   let totalAttemptedWrites = 0
   let totalSuccessfulWrites = 0
   let totalFailedWrites = 0
@@ -151,45 +158,86 @@ export async function runApprovedEmbeddingPipeline(
     }
 
     let docEmbeddingFailed = false
-
-    for (let idx = 0; idx < chunks.length; idx++) {
-      const chunk = chunks[idx]
-      const knowledgeRecord = buildPdfKnowledgeDatabaseRecord({
+    const knowledgeRecords = chunks.map((chunk, idx) =>
+      buildPdfKnowledgeDatabaseRecord({
         source: entry,
         chunk,
         chunkIndex: idx,
         embeddingModel,
         embeddingDimensions,
-      })
+      }),
+    )
 
-      // Attempt vector write (write mode only)
-      if (writeMode === 'write' && vectorStore) {
-        totalAttemptedWrites++
-        try {
-          await vectorStore.upsertById(
-            knowledgeRecord.vectorId,
-            knowledgeRecord.content,
-            knowledgeRecord.metadata
-          )
-          upsertedVectorIds.push(knowledgeRecord.vectorId)
-          totalSuccessfulWrites++
-        } catch (err) {
+    chunksAttempted += knowledgeRecords.length
+
+    if (writeMode === 'write' && vectorStore) {
+      let embeddings: number[][]
+      try {
+        embeddings = await getEmbeddingBatch(
+          knowledgeRecords.map((record) => record.content),
+          {
+            model: embeddingModel,
+          },
+          concurrency,
+        )
+      } catch (err) {
+        for (const knowledgeRecord of knowledgeRecords) {
           failures.push({
             source_hash,
             chunk_id: knowledgeRecord.chunkId,
-            stage: 'vector_write',
-            error_code: 'VECTOR_WRITE_FAILED',
+            stage: 'embedding',
+            error_code: 'EMBEDDING_BATCH_FAILED',
             message: sanitizeErrorMessage(err),
           })
           failedVectorIds.push(knowledgeRecord.vectorId)
-          totalFailedWrites++
-          docEmbeddingFailed = true
-          continue
         }
+        chunksFailed += knowledgeRecords.length
+        failedDocuments++
+        continue
       }
 
-      // Record embedded chunk (both modes)
-      embeddedChunks.push(knowledgeRecord.embeddedChunk)
+      const preEmbedded: PreEmbeddedRecord[] = knowledgeRecords.map((record, index) => ({
+        id: record.vectorId,
+        content: record.content,
+        embedding: embeddings[index],
+        metadata: record.metadata,
+      }))
+
+      for (let start = 0; start < preEmbedded.length; start += batchSize) {
+        const batch = preEmbedded.slice(start, start + batchSize)
+        totalAttemptedWrites += batch.length
+
+        try {
+          await vectorStore.upsertByIdBatch(batch)
+          totalSuccessfulWrites += batch.length
+          chunksSucceeded += batch.length
+
+          for (const record of knowledgeRecords.slice(start, start + batch.length)) {
+            upsertedVectorIds.push(record.vectorId)
+            embeddedChunks.push(record.embeddedChunk)
+          }
+        } catch (err) {
+          totalFailedWrites += batch.length
+          chunksFailed += batch.length
+          docEmbeddingFailed = true
+
+          for (const record of knowledgeRecords.slice(start, start + batch.length)) {
+            failures.push({
+              source_hash,
+              chunk_id: record.chunkId,
+              stage: 'vector_write',
+              error_code: 'VECTOR_WRITE_FAILED',
+              message: sanitizeErrorMessage(err),
+            })
+            failedVectorIds.push(record.vectorId)
+          }
+        }
+      }
+    } else {
+      for (const knowledgeRecord of knowledgeRecords) {
+        embeddedChunks.push(knowledgeRecord.embeddedChunk)
+      }
+      chunksSucceeded += knowledgeRecords.length
     }
 
     if (docEmbeddingFailed) {
@@ -204,7 +252,9 @@ export async function runApprovedEmbeddingPipeline(
   const status =
     failures.length === 0
       ? 'completed'
-      : embeddedDocuments === 0 && approved.length > 0
+      : chunksSucceeded > 0 && chunksFailed > 0
+        ? 'partial_success'
+        : embeddedDocuments === 0 && approved.length > 0
         ? 'failed'
         : 'completed_with_failures'
 
@@ -218,6 +268,9 @@ export async function runApprovedEmbeddingPipeline(
     total_candidates: approved.length + skipped.filter((s) => s.reason !== 'empty_chunks').length,
     embedded_documents: embeddedDocuments,
     embedded_chunks: embeddedChunks.length,
+    chunks_attempted: chunksAttempted,
+    chunks_succeeded: chunksSucceeded,
+    chunks_failed: chunksFailed,
     skipped_documents: skippedDocuments,
     failed_documents: failedDocuments,
     vector_store_provider: writeMode === 'write' ? 'local-pgvector' : 'dry_run_no_write',
