@@ -1,10 +1,15 @@
-import { Client } from '@notionhq/client'
-import { LinearClient } from '@linear/sdk'
 import { access, readFile } from 'node:fs/promises'
 import * as path from 'path'
+
+import { LinearClient } from '@linear/sdk'
+import { Client } from '@notionhq/client'
 import dotenv from 'dotenv'
 
 dotenv.config()
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : String(error)
+}
 
 /**
  * Integration bridge between the Abyss monorepo and external project management tools.
@@ -97,8 +102,8 @@ export class AbyssIntegrationBridge {
         })
         console.log(`✅ Created new Notion page for session.`)
       }
-    } catch (error: any) {
-      console.error('❌ Failed to sync to Notion:', error.message)
+    } catch (error) {
+      console.error('❌ Failed to sync to Notion:', getErrorMessage(error))
     }
   }
 
@@ -120,8 +125,8 @@ export class AbyssIntegrationBridge {
         // await issue.update({ stateId: '...' })
         console.log(`✅ Linear ticket updated (simulated).`)
       }
-    } catch (error: any) {
-      console.error('❌ Failed to sync to Linear:', error.message)
+    } catch (error) {
+      console.error('❌ Failed to sync to Linear:', getErrorMessage(error))
     }
   }
 }

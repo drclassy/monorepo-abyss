@@ -7,7 +7,7 @@ packages:
   - 'packages/shared/*'
   - 'packages/shared/design-token/packages/*'
   - 'packages/tooling/*'
-  - 'packages/integration-bridge'
+  - 'packages/integration'
   - 'platform/**'
   - 'tooling/**'
   - '!tooling/handbook-statusbar-vsix'
