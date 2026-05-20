@@ -65,12 +65,34 @@ describe('GET /agents', () => {
   })
 })
 
+describe('GET /stats', () => {
+  it('returns sseEnabled and recentFeed array', async () => {
+    const { status, body } = await get('/stats')
+    expect(status).toBe(200)
+    const parsed = JSON.parse(body) as { sseEnabled: boolean; recentFeed: unknown[] }
+    expect(parsed.sseEnabled).toBe(true)
+    expect(Array.isArray(parsed.recentFeed)).toBe(true)
+  })
+})
+
 describe('POST /send', () => {
   it('returns 200 and a routed UNICOMMessage', async () => {
     const payload = JSON.stringify({ from: 'test', to: 'broadcast', content: 'hello' })
     const { status, body } = await post('/send', payload)
     expect(status).toBe(200)
     expect(JSON.parse(body).from).toBe('test')
+  })
+
+  it('records message in /stats recentFeed without content', async () => {
+    const payload = JSON.stringify({ from: 'a', to: 'b', content: 'secret-body' })
+    await post('/send', payload)
+    const { body } = await get('/stats')
+    const stats = JSON.parse(body) as {
+      recentFeed: Array<{ from: string; to: string; content?: string }>
+    }
+    expect(stats.recentFeed[0]?.from).toBe('a')
+    expect(stats.recentFeed[0]?.to).toBe('b')
+    expect(stats.recentFeed[0]).not.toHaveProperty('content')
   })
 
   it('returns 400 for malformed JSON', async () => {

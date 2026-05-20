@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
+import { recordFeedMessage } from './feed.js'
 import type { MessageInbox } from './inbox.js'
 import type { AgentRegistry } from './registry.js'
 import type { SseManager } from './sse-manager.js'
@@ -58,6 +59,8 @@ export function routeMessage(
   } else {
     deliver(to, message, type, inbox, sseManager)
   }
+
+  recordFeedMessage(message)
 
   return message
 }

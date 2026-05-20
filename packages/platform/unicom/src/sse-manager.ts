@@ -67,6 +67,10 @@ export class SseManager {
     return res !== undefined && !res.writableEnded
   }
 
+  connectedIds(): string[] {
+    return Array.from(this.connections.keys()).filter((agentId) => this.isConnected(agentId))
+  }
+
   dispose(): void {
     clearInterval(this.keepaliveTimer)
     for (const [, res] of this.connections) {

@@ -18,4 +18,12 @@ export class MessageInbox {
   clear(agentId: string): void {
     this.queues.delete(agentId)
   }
+
+  getQueueDepths(): Record<string, number> {
+    const depths: Record<string, number> = {}
+    for (const [agentId, queue] of this.queues) {
+      depths[agentId] = queue.length
+    }
+    return depths
+  }
 }
