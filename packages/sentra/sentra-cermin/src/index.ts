@@ -20,12 +20,13 @@ export { EmbeddingCircuitOpenError } from './types'
 export { createCitationEvidenceViews } from './citations'
 export type { ConsumableGroundedCitation, CitationEvidenceView } from './citations'
 
-/** Embedding options for local Ollama — use when constructing VectorStoreConfig. */
-export type { EmbeddingOptions } from './embedding-provider'
-
 /** Low-level embedding function — use when you need raw vectors without a DB write. */
 export {
   getEmbedding,
+  getEmbeddingBatch,
+  getEmbeddingWithRetry,
+  createCircuitBreaker,
   DEFAULT_EMBEDDING_MODEL,
   DEFAULT_EMBEDDING_DIMENSIONS,
 } from './embedding-provider'
+export type { EmbeddingOptions, CircuitBreaker, RetryOptions } from './embedding-provider'

@@ -1,11 +1,5 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-/**
- * Local Ollama Embedding Provider
- *
- * Default: `nomic-embed-text` via the local Ollama HTTP API.
- * This keeps vector-store provider-neutral and removes the legacy Google path.
- */
-// ─── Constants ────────────────────────────────────────────────────────────────
+import { EmbeddingCircuitOpenError } from './types'
 
 export const DEFAULT_EMBEDDING_MODEL = 'nomic-embed-text'
 export const DEFAULT_EMBEDDING_DIMENSIONS = 768
@@ -15,16 +9,52 @@ export interface EmbeddingOptions {
   ollamaBaseUrl?: string
 }
 
-// ─── Core function ────────────────────────────────────────────────────────────
+export interface RetryOptions {
+  maxRetries?: number
+  baseDelayMs?: number
+  circuitBreaker?: CircuitBreaker
+}
 
-/**
- * Generates a dense embedding vector via local Ollama.
- *
- * @param text     - Input text to embed
- * @param options  - Optional overrides for model and Ollama base URL
- * @returns        - Float array of length 768
- */
-export async function getEmbedding(
+export interface CircuitBreaker {
+  consecutiveFailures: number
+  windowStart: Date | null
+  readonly threshold: number
+  readonly windowMs: number
+}
+
+export function createCircuitBreaker(threshold = 5, windowMs = 60_000): CircuitBreaker {
+  return { consecutiveFailures: 0, windowStart: null, threshold, windowMs }
+}
+
+function recordSuccess(breaker: CircuitBreaker): void {
+  breaker.consecutiveFailures = 0
+  breaker.windowStart = null
+}
+
+function recordFailure(breaker: CircuitBreaker): void {
+  const now = new Date()
+  if (!breaker.windowStart) {
+    breaker.windowStart = now
+  }
+
+  if (now.getTime() - breaker.windowStart.getTime() > breaker.windowMs) {
+    breaker.consecutiveFailures = 0
+    breaker.windowStart = now
+  }
+
+  breaker.consecutiveFailures++
+}
+
+function isOpen(breaker: CircuitBreaker): boolean {
+  if (breaker.consecutiveFailures >= breaker.threshold && breaker.windowStart) {
+    const now = new Date()
+    return now.getTime() - breaker.windowStart.getTime() <= breaker.windowMs
+  }
+
+  return false
+}
+
+async function fetchEmbedding(
   text: string,
   options: EmbeddingOptions = {},
 ): Promise<number[]> {
@@ -59,4 +89,80 @@ export async function getEmbedding(
   }
 
   return values
+}
+
+export async function getEmbeddingWithRetry(
+  text: string,
+  options: EmbeddingOptions = {},
+  retry: RetryOptions = {},
+): Promise<number[]> {
+  const { maxRetries = 3, baseDelayMs = 500, circuitBreaker } = retry
+
+  if (circuitBreaker && isOpen(circuitBreaker)) {
+    throw new EmbeddingCircuitOpenError(
+      circuitBreaker.consecutiveFailures,
+      circuitBreaker.windowStart!,
+    )
+  }
+
+  let lastError: unknown
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const embedding = await fetchEmbedding(text, options)
+      if (circuitBreaker) {
+        recordSuccess(circuitBreaker)
+      }
+      return embedding
+    } catch (error) {
+      lastError = error
+      if (circuitBreaker) {
+        recordFailure(circuitBreaker)
+      }
+
+      if (attempt < maxRetries) {
+        await new Promise((resolve) => setTimeout(resolve, baseDelayMs * Math.pow(2, attempt)))
+      }
+    }
+  }
+
+  throw lastError
+}
+
+export async function getEmbeddingBatch(
+  texts: string[],
+  options: EmbeddingOptions = {},
+  concurrency = 8,
+  retry: RetryOptions = {},
+): Promise<number[][]> {
+  const results: number[][] = new Array(texts.length)
+  let nextIndex = 0
+
+  async function worker(): Promise<void> {
+    while (nextIndex < texts.length) {
+      const currentIndex = nextIndex++
+      results[currentIndex] = await getEmbeddingWithRetry(texts[currentIndex], options, retry)
+    }
+  }
+
+  const workers = Array.from(
+    { length: Math.min(concurrency, texts.length) },
+    () => worker(),
+  )
+  await Promise.all(workers)
+  return results
+}
+
+/**
+ * Generates a dense embedding vector via local Ollama.
+ *
+ * @param text     - Input text to embed
+ * @param options  - Optional overrides for model and Ollama base URL
+ * @returns        - Float array of length 768
+ */
+export async function getEmbedding(
+  text: string,
+  options: EmbeddingOptions = {},
+): Promise<number[]> {
+  return getEmbeddingWithRetry(text, options, { maxRetries: 0 })
 }
