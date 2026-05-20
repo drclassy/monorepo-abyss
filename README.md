@@ -19,14 +19,14 @@
 <td valign="top">
 
 The Abyss is the current engineering workspace for Sentra's healthcare,
-academic, community, corporate, platform, and prototype products. It contains
-active applications, shared AI engines, shared data and design packages,
-tooling, infrastructure definitions, governance rules, and LangFlow flow
-definitions in a single pnpm workspace.
+academic, community, corporate, and platform products. It contains active
+applications, shared AI engines, shared data and design packages, tooling,
+infrastructure definitions, governance rules, and LangFlow flow definitions in a
+single pnpm workspace.
 
 This README is reality-first. It reflects the repository as it exists now in
 `pnpm-workspace.yaml` and the actual folder tree. It is not a historical
-brochure, and it does not hide prototype, legacy, or under-retirement surfaces.
+brochure, and it does not hide legacy, partial, or under-retirement surfaces.
 
 </td>
 </tr>
@@ -40,6 +40,30 @@ brochure, and it does not hide prototype, legacy, or under-retirement surfaces.
 - Repository rules and architecture: [`AGENTS.md`](AGENTS.md)
 - Current docs index: [`docs/README.md`](docs/README.md)
 - Current agent handoff surface: [`.agent/HANDOFF.md`](.agent/HANDOFF.md)
+- Current executive repo snapshot:
+  [`SENTRA_CURRENT_STATE.md`](SENTRA_CURRENT_STATE.md)
+- Current audit baseline:
+  [`ABYSS_CURRENT_STATUS_REPORT.md`](ABYSS_CURRENT_STATUS_REPORT.md)
+
+---
+
+## Current status
+
+Current verified baseline from the latest audit:
+
+- Root `pnpm typecheck -- --pretty false`: `PASS`
+- Root `pnpm build`: `PASS`
+- Root `pnpm test`: `FAIL`
+  - current blocker: `@the-abyss/unicom` test startup fails with
+    `getaddrinfo ENOENT localhost`
+
+Important repository state:
+
+- `pnpm build` currently sees 37 active workspace packages.
+- Workspace truth is still split between `pnpm-workspace.yaml`, `.gitignore`,
+  and some documentation surfaces.
+- `packages/integration` exists on disk, while workspace-path alignment around
+  `packages/integration-bridge` is still under review.
 
 ---
 
@@ -60,17 +84,17 @@ brochure, and it does not hide prototype, legacy, or under-retirement surfaces.
 
 ## Current stack
 
-| Layer               | Current stack                                                                     |
-| ------------------- | --------------------------------------------------------------------------------- |
-| Runtime             | Node >= 22, pnpm 9.15.0, Turborepo 2.x                                            |
-| Frontend            | Next.js 15/16, React 18/19, Tailwind CSS 3/4                                      |
-| Backend             | NestJS 11, Next.js route handlers, Node/TypeScript services                       |
-| Database            | PostgreSQL via Prisma in `packages/platform/database`                             |
-| AI orchestration    | LangFlow + local-first inference + OpenAI + Anthropic + DeepSeek                  |
-| Retrieval           | pgvector + local embeddings + `@sentra/pustaka` + `@sentra/cermin` |
-| Messaging and cache | Kafka, Zookeeper, Redis                                                           |
-| Infra               | Docker, Docker Compose, ArgoCD, Terraform legacy modules under retirement         |
-| Testing             | Vitest, Playwright, selected legacy Jest surfaces                                 |
+| Layer               | Current stack                                                             |
+| ------------------- | ------------------------------------------------------------------------- |
+| Runtime             | Node >= 22, pnpm 9.15.0, Turborepo 2.x                                    |
+| Frontend            | Next.js 15/16, React 18/19, Tailwind CSS 3/4                              |
+| Backend             | NestJS 11, Next.js route handlers, Node/TypeScript services               |
+| Database            | PostgreSQL via Prisma in `packages/platform/database`                     |
+| AI orchestration    | LangFlow + local-first inference + OpenAI + Anthropic + DeepSeek          |
+| Retrieval           | pgvector + local embeddings + `@sentra/pustaka` + `@sentra/cermin`        |
+| Messaging and cache | Kafka, Zookeeper, Redis                                                   |
+| Infra               | Docker, Docker Compose, ArgoCD, Terraform legacy modules under retirement |
+| Testing             | Vitest, Playwright, selected legacy Jest surfaces                         |
 
 ---
 
@@ -102,14 +126,13 @@ brochure, and it does not hide prototype, legacy, or under-retirement surfaces.
 
 #### Healthcare
 
-| Workspace                      | Path                                         | Role                                                                                                    |
-| ------------------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `aby-dashboard`                | `apps/healthcare/aby-dashboard`              | Healthcare dashboard application surface.                                                               |
-| `@classy/intelligenceboard`    | `apps/healthcare/intelligenceboard`          | Clinical AI dashboard with CDSS, telemedicine, trajectory intelligence, EMR bridge, and voice surfaces. |
-| `@the-abyss/puskesmas-website` | `apps/healthcare/primary-healthcare/website` | Public-facing primary healthcare website surface.                                                       |
-| `@the-abyss/referralink`       | `apps/healthcare/referralink`                | Referral and routing surface with diagnosis API, semantic cache, and memory-service helpers.            |
-| `@the-abyss/sentra-assist`     | `apps/healthcare/sentra-assist`              | Browser extension for CDSS, Iskandar diagnosis, emergency detection, and workflow automation.           |
-| `@the-abyss/sentra-main`       | `apps/healthcare/sentra-main`                | Sentra marketing and public main site.                                                                  |
+| Workspace                      | Path                                         | Role                                                                                                             |
+| ------------------------------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `@classy/intelligenceboard`    | `apps/healthcare/intelligenceboard`          | Clinical AI dashboard with CDSS, telemedicine, trajectory intelligence, EMR bridge, and voice surfaces.          |
+| `@the-abyss/puskesmas-website` | `apps/healthcare/primary-healthcare/website` | Public-facing primary healthcare website surface present on disk but not in the current root `pnpm build` scope. |
+| `@the-abyss/referralink`       | `apps/healthcare/referralink`                | Referral and routing surface with diagnosis API, semantic cache, and memory-service helpers.                     |
+| `@the-abyss/sentra-assist`     | `apps/healthcare/sentra-assist`              | Browser extension for CDSS, Iskandar diagnosis, emergency detection, and workflow automation.                    |
+| `@the-abyss/sentra-main`       | `apps/healthcare/sentra-main`                | Sentra marketing and public main site.                                                                           |
 
 Additional healthcare sub-surface:
 
@@ -118,11 +141,8 @@ Additional healthcare sub-surface:
 
 #### Prototype
 
-| Surface                        | Path                               | Role                                                                 |
-| ------------------------------ | ---------------------------------- | -------------------------------------------------------------------- |
-| `@the-abyss/edge-ai-prototype` | `apps/prototype/edge-ai-prototype` | Edge AI experimentation workspace.                                   |
-| `ghost-protocol`               | `apps/prototype/ghost-protocol`    | Prototype or specification surface without its own package manifest. |
-| `ghost-protocols`              | `apps/prototype/ghost-protocols`   | Prototype or specification surface without its own package manifest. |
+No active prototype package path is currently confirmed in this checkout.
+Historical or design-era prototype references may still appear in older docs.
 
 ### Platform
 
@@ -135,24 +155,24 @@ Additional healthcare sub-surface:
 
 ## Shared engines and packages
 
-| Package                           | Path                            | Role                                                                                                                       |
-| --------------------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `@the-abyss/clinical-references`  | `packages/clinical/clinical-references`  | Shared clinical reference types and structured clinical data surfaces.                                                     |
-| `@the-abyss/config-eslint`        | `packages/tooling/config-eslint`        | Shared ESLint flat-config presets and repo lint boundaries.                                                                |
-| `@the-abyss/config-typescript`    | `packages/tooling/config-typescript`    | Shared TypeScript configuration presets across workspaces.                                                                 |
-| `@the-abyss/database`             | `packages/platform/database`             | Prisma client, schema, and shared database access layer.                                                                   |
-| `@the-abyss/design-token`         | `packages/shared/design-token`         | Sentra design tokens for color, borders, typography, and spacing.                                                          |
-| `@the-abyss/document-ingestion`   | `packages/platform/document-ingestion`   | Canonical document ingestion surface with parsing, OCR-quality reporting, normalization, and source hashing.               |
-| `@sentra/sandi`          | `packages/sentra/sentra-sandi`          | FHIR validation, normalization, bundle projection, and interoperability engine.                                            |
-| `@the-abyss/integration-bridge`   | `packages/integration-bridge`   | Bridge layer for external integrations such as Notion and Linear.                                                          |
-| `@sentra/bentara`  | `packages/sentra/sentra-bentara`  | GO-gate and access-control enforcement surface.                                                                            |
-| `@the-abyss/langflow-client`      | `packages/platform/langflow-client`      | TypeScript client for LangFlow API integration and flow execution.                                                         |
-| `@the-abyss/literature-harvester` | `packages/platform/literature-harvester` | Open-access literature harvesting and collection tooling.                                                                  |
-| `@sentra/pustaka`           | `packages/sentra/sentra-pustaka`           | Sentra RAG engine for local-first medical knowledge retrieval, ingestion, evaluation, and pgvector-backed evidence lookup. |
-| `@the-abyss/ui`                   | `packages/shared/sentra-ui`            | Shared Sentra UI component layer.                                                                                          |
-| `@the-abyss/shared-types`         | `packages/shared/shared-types`         | Cross-workspace TypeScript contracts and shared domain types.                                                              |
-| `@sentra/nada`             | `packages/sentra/sentra-nada`             | Clinical reasoning and orchestration layer with FHIR and CDS Hooks interoperability.                                       |
-| `@sentra/cermin`         | `packages/sentra/sentra-cermin`         | Embedding-provider, ingest, and vector-store support utilities for retrieval workflows.                                    |
+| Package                           | Path                                     | Role                                                                                                                                                             |
+| --------------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@the-abyss/clinical-references`  | `packages/clinical/clinical-references`  | Shared clinical reference types and structured clinical data surfaces.                                                                                           |
+| `@the-abyss/config-eslint`        | `packages/tooling/config-eslint`         | Shared ESLint flat-config presets and repo lint boundaries.                                                                                                      |
+| `@the-abyss/config-typescript`    | `packages/tooling/config-typescript`     | Shared TypeScript configuration presets across workspaces.                                                                                                       |
+| `@the-abyss/database`             | `packages/platform/database`             | Prisma client, schema, and shared database access layer.                                                                                                         |
+| `@the-abyss/design-token`         | `packages/shared/design-token`           | Sentra design tokens for color, borders, typography, and spacing.                                                                                                |
+| `@the-abyss/document-ingestion`   | `packages/platform/document-ingestion`   | Canonical document ingestion surface with parsing, OCR-quality reporting, normalization, and source hashing.                                                     |
+| `@sentra/sandi`                   | `packages/sentra/sentra-sandi`           | FHIR validation, normalization, bundle projection, and interoperability engine.                                                                                  |
+| `@the-abyss/integration-bridge`   | `packages/integration`                   | Bridge layer for external integrations such as Notion and Linear. Current on-disk path is `packages/integration`; workspace-path alignment remains under review. |
+| `@sentra/bentara`                 | `packages/sentra/sentra-bentara`         | GO-gate and access-control enforcement surface.                                                                                                                  |
+| `@the-abyss/langflow-client`      | `packages/platform/langflow-client`      | TypeScript client for LangFlow API integration and flow execution.                                                                                               |
+| `@the-abyss/literature-harvester` | `packages/platform/literature-harvester` | Open-access literature harvesting and collection tooling.                                                                                                        |
+| `@sentra/pustaka`                 | `packages/sentra/sentra-pustaka`         | Sentra RAG engine for local-first medical knowledge retrieval, ingestion, evaluation, and pgvector-backed evidence lookup.                                       |
+| `@the-abyss/ui`                   | `packages/shared/sentra-ui`              | Shared Sentra UI component layer.                                                                                                                                |
+| `@the-abyss/shared-types`         | `packages/shared/shared-types`           | Cross-workspace TypeScript contracts and shared domain types.                                                                                                    |
+| `@sentra/nada`                    | `packages/sentra/sentra-nada`            | Clinical reasoning and orchestration layer with FHIR and CDS Hooks interoperability.                                                                             |
+| `@sentra/cermin`                  | `packages/sentra/sentra-cermin`          | Embedding-provider, ingest, and vector-store support utilities for retrieval workflows.                                                                          |
 
 ### Engine focus
 
@@ -178,7 +198,8 @@ Allowed package locations:
 - `packages/shared/*` for low-level primitives
 - `packages/tooling/*` for developer and build tooling
 
-If classification is unclear, stop and request Chief decision before creating a package.
+If classification is unclear, stop and request Chief decision before creating a
+package.
 
 ### AI capability map
 
@@ -186,12 +207,12 @@ If classification is unclear, stop and request Chief decision before creating a 
 
 | Surface                         | Current capability                                                                                                                                                            |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@sentra/pustaka`         | Canonical local-first RAG runtime for PDF ingest, chunking, embedding, pgvector writes, retrieval, registry tracking, supersession, and retrieval evaluation artifacts.       |
-| `@sentra/nada`           | Clinical reasoning engine for assessment, clinical-pattern processing, confidence scoring, trajectory logic, safety gates, and interoperability export to FHIR and CDS Hooks. |
-| `@sentra/cermin`       | Retrieval-side embedding and vector helper surface used to support local semantic search and document ingest helpers.                                                         |
+| `@sentra/pustaka`               | Canonical local-first RAG runtime for PDF ingest, chunking, embedding, pgvector writes, retrieval, registry tracking, supersession, and retrieval evaluation artifacts.       |
+| `@sentra/nada`                  | Clinical reasoning engine for assessment, clinical-pattern processing, confidence scoring, trajectory logic, safety gates, and interoperability export to FHIR and CDS Hooks. |
+| `@sentra/cermin`                | Retrieval-side embedding and vector helper surface used to support local semantic search and document ingest helpers.                                                         |
 | `@the-abyss/document-ingestion` | Canonical document front door with parser providers, OCR quality checks, markdown normalization, canonical document rendering, and source hashing.                            |
 | `@the-abyss/langflow-client`    | Programmatic LangFlow API client for orchestrated flow execution from TypeScript runtimes.                                                                                    |
-| `@sentra/sandi`        | Clinical interoperability layer for FHIR bundle generation, transformation, validation hooks, and version strategy.                                                           |
+| `@sentra/sandi`                 | Clinical interoperability layer for FHIR bundle generation, transformation, validation hooks, and version strategy.                                                           |
 
 #### Healthcare AI applications
 
@@ -201,7 +222,7 @@ If classification is unclear, stop and request Chief decision before creating a 
 | `@the-abyss/sentra-assist`  | Iskandar diagnosis engine, emergency detector, ICD and RAG support, bridge/platform API clients, sidepanel CDSS widgets, and workflow automation for browser-assisted care. |
 | `@the-abyss/referralink`    | Referral routing plus diagnosis endpoint, embedding-driven semantic cache, and memory-service helpers for contextual operations.                                            |
 
-#### Community and prototype AI surfaces
+#### Community AI surfaces
 
 | Surface                            | Current capability                                                                                                                  |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -209,8 +230,6 @@ If classification is unclear, stop and request Chief decision before creating a 
 | `@the-abyss/classy-memory`         | Community memory runtime with TypeScript and Python engine surfaces for extraction, consolidation, scheduling, and session logging. |
 | `apps/academic/clinical-simulator` | Academic simulation surface for AI-assisted clinical-case training.                                                                 |
 | `apps/academic/evaluation-engine`  | Evaluation backend for competency and assessment workflows.                                                                         |
-| `apps/prototype/edge-ai-prototype` | Edge-AI experiment surface.                                                                                                         |
-| `apps/prototype/ghost-protocols`   | Prototype and specification surface for experimental AI protocol work.                                                              |
 
 ---
 
@@ -229,11 +248,11 @@ If classification is unclear, stop and request Chief decision before creating a 
 | Surface               | Purpose                                                                     |
 | --------------------- | --------------------------------------------------------------------------- |
 | `AGENTS.md`           | Repository-wide single source of truth for agent behavior and architecture. |
+| `.agent/README.md`    | Active SSOT entrypoint and reading order.                                   |
 | `.agent/CONTEXT.md`   | Architecture and runtime context.                                           |
 | `.agent/PROGRESS.md`  | Current progress state.                                                     |
 | `.agent/HANDOFF.md`   | Active execution handoff and task plan.                                     |
 | `.agent/DECISIONS.md` | Architectural decisions and superseding directives.                         |
-| `.agent/LESSONS.md`   | Durable mistakes-to-avoid memory.                                           |
 | `.cursor/rules/`      | Shared Cursor behavior rules that are intentionally tracked.                |
 
 Local-only operational notes:
@@ -277,15 +296,17 @@ The current infrastructure folder explicitly supports these local facilities:
 
 ## Documentation surfaces
 
-| Surface       | Path               | Role                                                                         |
-| ------------- | ------------------ | ---------------------------------------------------------------------------- |
-| `adr`         | `docs/adr`         | Architectural decision records.                                              |
-| `archive`     | `docs/archive`     | Historical docs that remain preserved but are not primary active docs.       |
-| `blueprint`   | `docs/blueprint`   | Blueprint and structure guidance.                                            |
-| `guides`      | `docs/guides`      | Active guides and onboarding references.                                     |
-| `specs`       | `docs/specs`       | Current specifications and system-level contracts.                           |
-| `superpowers` | `docs/superpowers` | Supplemental execution artifacts and planning surfaces retained in the repo. |
-| `templates`   | `docs/templates`   | Reusable documentation templates.                                            |
+| Surface                  | Path                                | Role                                                              |
+| ------------------------ | ----------------------------------- | ----------------------------------------------------------------- |
+| `adr`                    | `docs/adr`                          | Architectural decision records.                                   |
+| `blueprint`              | `docs/blueprint`                    | Blueprint and structure guidance.                                 |
+| `guides`                 | `docs/guides`                       | Active guides and onboarding references.                          |
+| `handbook`               | `docs/handbook`                     | Active local handbook pages used by launcher tooling.             |
+| `legal`                  | `docs/legal`                        | Reusable legal document templates.                                |
+| `specs`                  | `docs/specs`                        | Current specifications and system-level contracts.                |
+| `implementation-plans`   | `docs/guides/implementation-plans`  | Active implementation plans retained for code-linked workstreams. |
+| `clinical-trajectory-v1` | `docs/specs/clinical-trajectory-v1` | Clinical Trajectory source documents retained as product context. |
+| `templates`              | `docs/templates`                    | Reusable documentation templates.                                 |
 
 Primary docs entrypoint:
 

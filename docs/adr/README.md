@@ -1,52 +1,28 @@
-# Architecture Decision Records
+# ADR index
 
-This directory contains all Architecture Decision Records (ADRs) for The Abyss monorepo.
+This directory contains the active Architecture Decision Records for the ABYSS monorepo.
 
----
+Untuk baseline status repo, lihat `README.md` dan `SENTRA_CURRENT_STATE.md`
+terlebih dahulu sebelum membaca keputusan arsitektur satu per satu.
 
-## 📋 ADR TEMPLATE
+## Current ADRs
 
-```markdown
-# ADR-[NUMBER]: [Title]
+- `0001-monorepo-strategy.md`
+- `0002-pnpm-over-npm-yarn.md`
+- `0003-turborepo-pipeline.md`
+- `0004-domain-boundaries.md`
+- `0005-agent-governance.md`
+- `0006-typescript-strict.md`
+- `0007-pharmacology-locus-decision.md`
+- `0008-package-taxonomy-and-boundary-model.md`
+- `0009-corporate-ferdiiskandar-config-preset-adoption.md`
 
-## Status
-[Proposed | Accepted | Deprecated | Superseded]
+## Rule
 
-## Context
-[What is the issue that we're seeing?]
+Keep this index aligned with the actual files in `docs/adr/`. For status,
+date, and decision details, read each ADR directly.
 
-## Decision
-[What is the change that we're proposing and/or doing?]
+## Related
 
-## Consequences
-[What becomes easier or more difficult to do because of this change?]
-
-## Alternatives Considered
-[What other approaches did we consider?]
-
-## References
-[Links to related documents, issues, PRs]
-```
-
----
-
-## 📁 ADR INDEX
-
-| Number | Title | Status | Date |
-|--------|-------|--------|------|
-| 001 | Monorepo with pnpm + Turbo | Accepted | 2026-03-30 |
-| 002 | Classy Workflow Integration | Accepted | 2026-03-30 |
-| 003 | Langflow for AI Orchestration | Accepted | 2026-03-30 |
-| 004 | Modular Monolith Architecture | Accepted | 2026-03-30 |
-| 005 | GO-Gate CI/CD Protocol | Accepted | 2026-03-30 |
-
----
-
-## 🔗 Related
-
-- [.agent/](../../.agent/) - Agent sessions and handoffs
-- [Templates](../templates/) - Document templates
-
----
-
-© 2026 Sentra AI
+- `../../.agent/` for agent sessions and handoffs
+- `../templates/` for reusable document templates

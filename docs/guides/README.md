@@ -2,12 +2,17 @@
 
 These guides are the active operator-facing entry points for the repo.
 
+For repo-wide status, start at `README.md` and `SENTRA_CURRENT_STATE.md` before drilling into task-specific guides.
+
 ## Current guides
 
-- `docs/guides/getting-started.md` for first-time onboarding.
-- `docs/guides/workspace-setup.md` for workspace commands and package targeting.
-- `docs/guides/code-quality.md` for lint, format, and TypeScript expectations.
-- `docs/guides/aadiv2.md` for the current AADI V2 maturity and positioning summary.
+- `docs/guides/001-getting-started.md` for first-time onboarding.
+- `docs/guides/002-workspace-setup.md` for workspace commands and package targeting.
+- `docs/guides/003-code-quality.md` for lint, format, and TypeScript expectations.
+- `docs/guides/004-aadi-v2.md` for the current AADI V2 maturity and positioning summary.
+- `docs/guides/005-taxonomy-migration-v1.md` for package taxonomy and boundary migration guidance.
+- `docs/guides/006-cursor-audit.md` for the retained Cursor audit and repo-operations notes.
+- `docs/guides/implementation-plans/` for numbered implementation plans still used as execution references.
 
 ## Writing rules
 
