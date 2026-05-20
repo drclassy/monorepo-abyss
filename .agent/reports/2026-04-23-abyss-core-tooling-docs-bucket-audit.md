@@ -18,11 +18,11 @@ dipisahkan dengan explicit file list:
 - `docs/cursor/`
 - `docs/handbook/`
 - `docs/research/`
-- `docs/superpowers/plans/2026-04-20-clear-cursor-history.md`
-- `docs/superpowers/plans/2026-04-20-cursor-cleanup.md`
-- `docs/superpowers/plans/2026-04-20-god-mode-optimization.md`
-- `docs/superpowers/specs/2026-04-19-classy-rebranding-design.md`
-- `docs/superpowers/specs/2026-04-20-cursor-cleanup-design.md`
+- `docs/guides/implementation-plans/001-2026-04-20-clear-cursor-history.md`
+- `docs/guides/implementation-plans/002-2026-04-20-cursor-cleanup.md`
+- `docs/guides/implementation-plans/003-2026-04-20-god-mode-optimization.md`
+- `docs/specs/aadi-v2/001-2026-04-19-classy-rebranding-design.md`
+- `docs/specs/aadi-v2/002-2026-04-20-cursor-cleanup-design.md`
 - `mcp.json.example`
 - `tooling/governance/`
 - `tooling/scripts/run-autoskills.ps1`

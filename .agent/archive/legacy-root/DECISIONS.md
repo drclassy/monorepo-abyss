@@ -381,7 +381,7 @@ The three lines in [2026-04-21] beginning with `**Decision:** .claude/ at monore
 **Consequences:** Future retrieval or grounding work must target `sentra-rag`, `vector-store`, or other explicitly active packages. `vertex-rag` must not be recreated unless Chief opens a new architecture decision that explicitly reverses this retirement.
 
 ### [2026-05-01] ClinicalTrajectory v1 — contract-first consumer-rendering layer (no engine)
-**Context:** Two consumer apps (Intelligenceboard + Sentra Assist) were rendering trajectory views from divergent local types (`TrajectoryAnalysis` with `'declining'`/7-level momentum, missing labs/symptoms/treatments). The CT v1 specs (`docs/specs/ct_spec_v_1.md`, `docs/specs/clinical-trajectory-v1-specification.md`) called for one shared rendering contract — not a new engine and not a replacement for SYMPHONY.
+**Context:** Two consumer apps (Intelligenceboard + Sentra Assist) were rendering trajectory views from divergent local types (`TrajectoryAnalysis` with `'declining'`/7-level momentum, missing labs/symptoms/treatments). The CT v1 specs (`docs/specs/004-ct-spec-v1.md`, `docs/specs/003-clinical-trajectory-v1-specification.md`) called for one shared rendering contract — not a new engine and not a replacement for SYMPHONY.
 **Decision:**
 1. Land `ClinicalTrajectoryV1` as a single shared-types contract file at `packages/shared/shared-types/src/clinical-trajectory.ts` (no pre-split into `.types/.fixtures/.review`). The file holds 9 discriminator unions, the `ClinicalTrajectoryV1` interface, an envelope linking to SYMPHONY (`linkedReasoning.authority: 'SYMPHONY'`), a review-note hook, and 3 fixtures: `mockImprovingTrajectory`, `mockWorseningRespiratoryTrajectory`, `mockSparseDataTrajectory`.
 2. Use **fixtures-only** as the v1 data source. Reject the `TrajectoryAnalysis → ClinicalTrajectoryV1` adapter path because (a) semantic mismatch (`'declining'` vs `'worsening'`, 7-level vs 3-level momentum), (b) missing data domains (labs/symptoms/treatments not in TrajectoryAnalysis) — adapter would emit a half-empty CT, which violates the spec's "missingness must be visible, no false confidence" rule.
@@ -396,7 +396,7 @@ The three lines in [2026-04-21] beginning with `**Decision:** .claude/ at monore
 - Live data wiring (adapter from real engine output to CT v1) is a separate v2 lane. It must address the semantic and domain gaps explicitly before being merged.
 - CT v1 must not leak into orchestrator, flows, or document-ingestion. The boundary guard is a recurring check.
 - The 3 fixtures are the spec's acceptance contract; future CT v1 changes must keep them passing or formally update the contract via a new ADR.
-- Source of truth: session log entry "ClinicalTrajectory v1 contract + consumer rendering landed (2026-05-01)" in `.agent/sessions/2026-05-01.md`; brief in `.agent/HANDOFF.md`; specs in `docs/specs/ct_spec_v_1.md` and `docs/specs/clinical-trajectory-v1-specification.md`.
+- Source of truth: session log entry "ClinicalTrajectory v1 contract + consumer rendering landed (2026-05-01)" in `.agent/sessions/2026-05-01.md`; brief in `.agent/HANDOFF.md`; specs in `docs/specs/004-ct-spec-v1.md` and `docs/specs/003-clinical-trajectory-v1-specification.md`.
 
 ### [2026-05-01] GitHub Actions — vendor-clean reusable CI stack
 **Context:** Gemini/Vertex/GCP workflows removed; monorepo needs an understandable, fork-safe, mostly-automatic Actions architecture without Google-hosted AI.
