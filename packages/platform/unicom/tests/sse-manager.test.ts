@@ -78,7 +78,7 @@ describe('SseManager', () => {
     manager.connect('b', resB)
     manager.connect('c', resC)
     manager.broadcast('message', { content: 'hi all' }, 'a')
-    expect(resA._written).toHaveLength(0)
+    expect(resA._written.join('')).not.toContain('hi all')
     expect(resB._written.join('')).toContain('hi all')
     expect(resC._written.join('')).toContain('hi all')
   })

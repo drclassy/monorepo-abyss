@@ -30,6 +30,8 @@ export class SseManager {
       'Access-Control-Allow-Origin': '*',
     })
 
+    res.write(':connected\n\n')
+
     this.connections.set(agentId, res)
 
     res.on('close', () => {
@@ -55,9 +57,10 @@ export class SseManager {
   }
 
   broadcast(event: string, data: unknown, excludeId?: string): void {
-    for (const agentId of Array.from(this.connections.keys())) {
-      if (agentId !== excludeId) {
-        this.push(agentId, event, data)
+    const payload = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`
+    for (const [agentId, res] of this.connections) {
+      if (agentId !== excludeId && !res.writableEnded) {
+        res.write(payload)
       }
     }
   }

@@ -75,8 +75,24 @@ describe('GET /stats', () => {
   })
 })
 
+describe('POST /register', () => {
+  it('returns 200 and an AgentEntry', async () => {
+    const payload = JSON.stringify({
+      id: 'reg-test',
+      displayName: 'Test Agent',
+      capabilities: ['chat'],
+    })
+    const { status, body } = await post('/register', payload)
+    expect(status).toBe(200)
+    const entry = JSON.parse(body)
+    expect(entry.id).toBe('reg-test')
+    expect(entry.displayName).toBe('Test Agent')
+  })
+})
+
 describe('POST /send', () => {
   it('returns 200 and a routed UNICOMMessage', async () => {
+    await post('/register', JSON.stringify({ id: 'test', displayName: 'Test', capabilities: [] }))
     const payload = JSON.stringify({ from: 'test', to: 'broadcast', content: 'hello' })
     const { status, body } = await post('/send', payload)
     expect(status).toBe(200)
@@ -84,6 +100,8 @@ describe('POST /send', () => {
   })
 
   it('records message in /stats recentFeed without content', async () => {
+    await post('/register', JSON.stringify({ id: 'a', displayName: 'A', capabilities: [] }))
+    await post('/register', JSON.stringify({ id: 'b', displayName: 'B', capabilities: [] }))
     const payload = JSON.stringify({ from: 'a', to: 'b', content: 'secret-body' })
     await post('/send', payload)
     const { body } = await get('/stats')
@@ -98,5 +116,11 @@ describe('POST /send', () => {
   it('returns 400 for malformed JSON', async () => {
     const { status } = await post('/send', 'not-json')
     expect(status).toBe(400)
+  })
+
+  it('returns 403 for unregistered sender', async () => {
+    const payload = JSON.stringify({ from: 'unknown', to: 'broadcast', content: 'hello' })
+    const { status } = await post('/send', payload)
+    expect(status).toBe(403)
   })
 })

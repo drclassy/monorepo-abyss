@@ -15,13 +15,12 @@ export interface RouteOptions {
 function deliver(
   agentId: string,
   message: UNICOMMessage,
-  type: UNICOMMessage['type'],
   inbox: MessageInbox,
   sseManager?: SseManager
 ): void {
   if (sseManager?.isConnected(agentId)) {
     try {
-      const pushed = sseManager.push(agentId, type, message)
+      const pushed = sseManager.push(agentId, message.type, message)
       if (pushed) return
     } catch {
       // fall through to inbox on error
@@ -53,11 +52,11 @@ export function routeMessage(
   if (to === 'broadcast') {
     for (const agent of registry.list()) {
       if (agent.id !== from) {
-        deliver(agent.id, message, type, inbox, sseManager)
+        deliver(agent.id, message, inbox, sseManager)
       }
     }
   } else {
-    deliver(to, message, type, inbox, sseManager)
+    deliver(to, message, inbox, sseManager)
   }
 
   recordFeedMessage(message)

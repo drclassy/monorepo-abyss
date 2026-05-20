@@ -101,6 +101,10 @@ describe('SSE endpoint', () => {
   })
 
   it('delivers message in real-time via SSE', async () => {
+    // register agents first
+    await post('/register', JSON.stringify({ id: 'agent-a', displayName: 'A', capabilities: [] }))
+    await post('/register', JSON.stringify({ id: 'agent-b', displayName: 'B', capabilities: [] }))
+
     const { promise } = subscribeSSE('agent-b')
 
     // give SSE a moment to establish
@@ -118,6 +122,10 @@ describe('SSE endpoint', () => {
   })
 
   it('POST /receive returns inbox messages for offline agent', async () => {
+    // register agents first
+    await post('/register', JSON.stringify({ id: 'agent-a', displayName: 'A', capabilities: [] }))
+    await post('/register', JSON.stringify({ id: 'agent-c', displayName: 'C', capabilities: [] }))
+
     // send message to agent-c (no SSE connection)
     await post('/send', JSON.stringify({ from: 'agent-a', to: 'agent-c', content: 'offline msg' }))
 

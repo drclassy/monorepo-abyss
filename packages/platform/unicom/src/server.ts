@@ -12,13 +12,17 @@ import { routeMessage } from './router.js'
 import { createSseManager } from './sse-manager.js'
 import { createTools } from './tools/index.js'
 
+const MAX_SSE_CONNECTIONS = 100
+
 async function readBody(req: http.IncomingMessage): Promise<string> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     let body = ''
-    req.on('data', (chunk: Buffer) => {
-      body += chunk.toString()
+    req.setEncoding('utf8')
+    req.on('data', (chunk: string) => {
+      body += chunk
     })
     req.on('end', () => resolve(body))
+    req.on('error', reject)
   })
 }
 
@@ -57,14 +61,26 @@ export function createUnicomHttpServer(port: number): http.Server {
         res.end()
         return
       }
+      if (sseManager.connectedIds().length >= MAX_SSE_CONNECTIONS) {
+        res.writeHead(503, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'SSE connection limit reached' }))
+        return
+      }
       sseManager.connect(agentId, res)
       return
     }
 
     // MCP Streamable HTTP endpoint
     if (url === '/mcp' || url.startsWith('/mcp?')) {
-      const body = await readBody(req)
-      const parsedBody = body.trim() ? (JSON.parse(body) as Record<string, unknown>) : undefined
+      let parsedBody: Record<string, unknown> | undefined
+      try {
+        const body = await readBody(req)
+        parsedBody = body.trim() ? (JSON.parse(body) as Record<string, unknown>) : undefined
+      } catch {
+        res.writeHead(400, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'Invalid JSON body' }))
+        return
+      }
       const sessionIdHeader = req.headers['mcp-session-id'] as string | undefined
 
       if (sessionIdHeader && sessions.has(sessionIdHeader)) {
@@ -130,6 +146,24 @@ export function createUnicomHttpServer(port: number): http.Server {
       return
     }
 
+    if (url === '/register' && req.method === 'POST') {
+      const body = await readBody(req)
+      try {
+        const { id, displayName, capabilities } = JSON.parse(body) as {
+          id: string
+          displayName: string
+          capabilities?: string[]
+        }
+        const entry = registry.register(id, displayName, capabilities ?? [])
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(entry))
+      } catch {
+        res.writeHead(400, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'Invalid JSON body' }))
+      }
+      return
+    }
+
     if (url === '/send' && req.method === 'POST') {
       const body = await readBody(req)
       try {
@@ -138,6 +172,11 @@ export function createUnicomHttpServer(port: number): http.Server {
           to: string
           content: string
           replyTo?: string
+        }
+        if (!registry.list().some((a) => a.id === from)) {
+          res.writeHead(403, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: 'Sender not registered' }))
+          return
         }
         const msg = routeMessage(registry, inbox, from, to, content, { replyTo, sseManager })
         res.writeHead(200, { 'Content-Type': 'application/json' })
