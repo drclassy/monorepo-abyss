@@ -10,7 +10,11 @@ export type {
   QueryResult,
   VectorStoreConfig,
   VectorStoreDatabaseClient,
+  PreEmbeddedRecord,
 } from './types'
+
+/** Thrown when Ollama embedding fails too many times consecutively. */
+export { EmbeddingCircuitOpenError } from './types'
 
 /** Grounded citation consumption helpers for RAG evidence views. */
 export { createCitationEvidenceViews } from './citations'

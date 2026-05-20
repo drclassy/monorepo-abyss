@@ -72,3 +72,36 @@ export interface VectorStoreConfig {
    */
   ollamaBaseUrl?: string
 }
+
+// ─── Batch embedding types ────────────────────────────────────────────────────
+
+/**
+ * A chunk whose embedding has already been computed.
+ * Used by upsertByIdBatch() to accept pre-embedded records.
+ */
+export interface PreEmbeddedRecord {
+  id: string
+  content: string
+  embedding: number[]
+  metadata: Record<string, unknown>
+}
+
+// ─── Circuit breaker error ────────────────────────────────────────────────────
+
+/**
+ * Thrown when the embedding circuit breaker is open.
+ * Indicates consecutive Ollama failures exceeded the threshold.
+ */
+export class EmbeddingCircuitOpenError extends Error {
+  readonly consecutiveFailures: number
+  readonly windowStart: Date
+
+  constructor(consecutiveFailures: number, windowStart: Date) {
+    super(
+      `[cermin] Embedding circuit open after ${consecutiveFailures} consecutive failures since ${windowStart.toISOString()}. Wait before retrying.`
+    )
+    this.name = 'EmbeddingCircuitOpenError'
+    this.consecutiveFailures = consecutiveFailures
+    this.windowStart = windowStart
+  }
+}
