@@ -94,7 +94,7 @@ export function createUnicomHttpServer(port: number): http.Server {
           content: string
           replyTo?: string
         }
-        const msg = routeMessage(registry, inbox, from, to, content, replyTo)
+        const msg = routeMessage(registry, inbox, from, to, content, { replyTo })
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(msg))
       } catch {

@@ -12,14 +12,8 @@ export async function handleUpdateStatus(
   if (!updated) {
     return { content: [{ type: 'text', text: `Agent '${params.id}' not found` }] }
   }
-  routeMessage(
-    registry,
-    inbox,
-    'system',
-    'broadcast',
-    `${params.id} status: ${params.status}`,
-    undefined,
-    'status_update'
-  )
+  routeMessage(registry, inbox, 'system', 'broadcast', `${params.id} status: ${params.status}`, {
+    type: 'status_update',
+  })
   return { content: [{ type: 'text', text: JSON.stringify(updated) }] }
 }

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { MessageInbox } from '../src/inbox.js'
 import { AgentRegistry } from '../src/registry.js'
@@ -34,7 +34,7 @@ describe('routeMessage', () => {
     const registry = new AgentRegistry()
     const inbox = new MessageInbox()
     registry.register('b', 'B', [])
-    const msg = routeMessage(registry, inbox, 'a', 'b', 'reply', 'orig-id')
+    const msg = routeMessage(registry, inbox, 'a', 'b', 'reply', { replyTo: 'orig-id' })
     expect(msg.replyTo).toBe('orig-id')
   })
 
@@ -42,7 +42,7 @@ describe('routeMessage', () => {
     const registry = new AgentRegistry()
     const inbox = new MessageInbox()
     registry.register('b', 'B', [])
-    const msg = routeMessage(registry, inbox, 'system', 'b', 'online', undefined, 'status_update')
+    const msg = routeMessage(registry, inbox, 'system', 'b', 'online', { type: 'status_update' })
     expect(msg.type).toBe('status_update')
   })
 })
@@ -62,21 +62,13 @@ describe('routeMessage with SseManager', () => {
       },
     }
 
-    routeMessage(
-      registry,
-      inbox,
-      'codex',
-      'claude-code',
-      'hello',
-      undefined,
-      'message',
-      sseManager as unknown as SseManager
-    )
+    routeMessage(registry, inbox, 'codex', 'claude-code', 'hello', {
+      sseManager: sseManager as unknown as SseManager,
+    })
 
     expect(pushed).toHaveLength(1)
     expect(pushed[0].agentId).toBe('claude-code')
     expect(pushed[0].event).toBe('message')
-    // inbox must be empty — delivery was via SSE
     expect(inbox.drain('claude-code')).toHaveLength(0)
   })
 
@@ -90,16 +82,9 @@ describe('routeMessage with SseManager', () => {
       push: vi.fn(),
     }
 
-    routeMessage(
-      registry,
-      inbox,
-      'codex',
-      'claude-code',
-      'hello',
-      undefined,
-      'message',
-      sseManager as unknown as SseManager
-    )
+    routeMessage(registry, inbox, 'codex', 'claude-code', 'hello', {
+      sseManager: sseManager as unknown as SseManager,
+    })
 
     expect(sseManager.push).not.toHaveBeenCalled()
     expect(inbox.drain('claude-code')).toHaveLength(1)
@@ -121,19 +106,12 @@ describe('routeMessage with SseManager', () => {
       },
     }
 
-    routeMessage(
-      registry,
-      inbox,
-      'sender',
-      'broadcast',
-      'hi',
-      undefined,
-      'message',
-      sseManager as unknown as SseManager
-    )
+    routeMessage(registry, inbox, 'sender', 'broadcast', 'hi', {
+      sseManager: sseManager as unknown as SseManager,
+    })
 
     expect(pushed).toContain('agent-online')
     expect(inbox.drain('agent-offline')).toHaveLength(1)
-    expect(inbox.drain('sender')).toHaveLength(0) // sender excluded from broadcast
+    expect(inbox.drain('sender')).toHaveLength(0)
   })
 })

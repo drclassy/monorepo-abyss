@@ -5,16 +5,40 @@ import type { AgentRegistry } from './registry.js'
 import type { SseManager } from './sse-manager.js'
 import type { UNICOMMessage } from './types.js'
 
+export interface RouteOptions {
+  replyTo?: string
+  type?: UNICOMMessage['type']
+  sseManager?: SseManager
+}
+
+function deliver(
+  agentId: string,
+  message: UNICOMMessage,
+  type: UNICOMMessage['type'],
+  inbox: MessageInbox,
+  sseManager?: SseManager
+): void {
+  if (sseManager?.isConnected(agentId)) {
+    try {
+      const pushed = sseManager.push(agentId, type, message)
+      if (pushed) return
+    } catch {
+      // fall through to inbox on error
+    }
+  }
+  inbox.enqueue(agentId, message)
+}
+
 export function routeMessage(
   registry: AgentRegistry,
   inbox: MessageInbox,
   from: string,
   to: string,
   content: string,
-  replyTo?: string,
-  type: UNICOMMessage['type'] = 'message',
-  sseManager?: SseManager
+  options: RouteOptions = {}
 ): UNICOMMessage {
+  const { replyTo, type = 'message', sseManager } = options
+
   const message: UNICOMMessage = {
     id: randomUUID(),
     from,
@@ -28,19 +52,11 @@ export function routeMessage(
   if (to === 'broadcast') {
     for (const agent of registry.list()) {
       if (agent.id !== from) {
-        if (sseManager?.isConnected(agent.id)) {
-          sseManager.push(agent.id, type, message)
-        } else {
-          inbox.enqueue(agent.id, message)
-        }
+        deliver(agent.id, message, type, inbox, sseManager)
       }
     }
   } else {
-    if (sseManager?.isConnected(to)) {
-      sseManager.push(to, type, message)
-    } else {
-      inbox.enqueue(to, message)
-    }
+    deliver(to, message, type, inbox, sseManager)
   }
 
   return message
