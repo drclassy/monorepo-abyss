@@ -1,10 +1,14 @@
 import * as vscode from 'vscode'
 
 import { auditPrompt, type AuditResult } from './core/audit'
+import { composePrompt, type PromptMode } from './core/composer'
+import { getLightweightContext } from './core/context'
 import { appendPortalAuditLog, findMonorepoRoot } from './core/portal-audit-log'
+import { buildPromptEngineHtml } from './webview/prompt-engine-view'
 
 const AUDIT_PROMPT_COMMAND = 'sentraPrompt.auditCodexPrompt'
 const LEGACY_GENERATE_MISSION_COMMAND = 'sentraPrompt.generateMission'
+const OPEN_PROMPT_ENGINE_COMMAND = 'sentraPrompt.openPromptEngine'
 const STATUS_BAR_TEXT = '$(shield-check) Sentra Prompt'
 
 function escapeHtml(value: string): string {
@@ -338,6 +342,84 @@ async function runPromptAudit(editor: vscode.TextEditor): Promise<void> {
   })
 }
 
+function openPromptEnginePanel(context: vscode.ExtensionContext): void {
+  const promptContext = getLightweightContext()
+  let activeMode: PromptMode = 'implement'
+  let latestPrompt = ''
+
+  const panel = vscode.window.createWebviewPanel(
+    'sentraPromptEngine',
+    'Sentra Prompt Engine',
+    vscode.ViewColumn.Beside,
+    { enableScripts: true }
+  )
+
+  panel.webview.html = buildPromptEngineHtml({
+    ...promptContext,
+    mode: activeMode,
+    composed: null,
+  })
+
+  const messageListener = panel.webview.onDidReceiveMessage(
+    async (message: {
+      type?: string
+      mode?: PromptMode
+      rawInput?: string
+      finalPrompt?: string
+    }) => {
+      if (!message?.type) return
+
+      if (message.type === 'compose') {
+        const rawInput = message.rawInput?.trim() ?? ''
+        if (!rawInput) {
+          await panel.webview.postMessage({
+            type: 'warning',
+            message: 'Textarea masih kosong. Tulis request dulu.',
+          })
+          return
+        }
+
+        activeMode = message.mode ?? 'implement'
+        const currentContext = getLightweightContext()
+        const result = composePrompt({
+          mode: activeMode,
+          rawInput,
+          context: currentContext,
+        })
+
+        latestPrompt = result.finalPrompt
+        await panel.webview.postMessage({
+          type: 'composeResult',
+          finalPrompt: result.finalPrompt,
+          modeLabel: result.modeLabel,
+        })
+        return
+      }
+
+      if (message.type === 'copy') {
+        const finalPrompt = message.finalPrompt?.trim() || latestPrompt
+        if (!finalPrompt) {
+          await panel.webview.postMessage({
+            type: 'warning',
+            message: 'Belum ada hasil compose untuk di-copy.',
+          })
+          return
+        }
+
+        latestPrompt = finalPrompt
+        await vscode.env.clipboard.writeText(finalPrompt)
+        await panel.webview.postMessage({ type: 'copied' })
+      }
+    }
+  )
+
+  panel.onDidDispose(() => {
+    messageListener.dispose()
+  })
+
+  context.subscriptions.push(panel)
+}
+
 export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.commands.registerCommand(AUDIT_PROMPT_COMMAND, async () => {
@@ -363,6 +445,12 @@ export function activate(context: vscode.ExtensionContext): void {
         'Sentra Prompt now audits selected Codex prompts. Running the new audit flow.'
       )
       await runPromptAudit(editor)
+    })
+  )
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(OPEN_PROMPT_ENGINE_COMMAND, async () => {
+      openPromptEnginePanel(context)
     })
   )
 
