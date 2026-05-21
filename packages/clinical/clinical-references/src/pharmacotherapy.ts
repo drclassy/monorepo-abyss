@@ -6,9 +6,10 @@ import {
 } from './contracts'
 
 function buildPlaceholderCandidate(
-  input: ClinicalReferencePharmacotherapyInput,
+  input: ClinicalReferencePharmacotherapyInput
 ): ClinicalReferenceMedicationCandidate {
-  const clinicalGoal = input.clinicalGoal?.trim() || input.diagnosisLabel?.trim() || 'unspecified_condition'
+  const clinicalGoal =
+    input.clinicalGoal?.trim() || input.diagnosisLabel?.trim() || 'unspecified_condition'
 
   return {
     medicationName: 'pending-reference-selection',
@@ -19,7 +20,7 @@ function buildPlaceholderCandidate(
 }
 
 export function resolvePharmacotherapyPlan(
-  input: ClinicalReferencePharmacotherapyInput,
+  input: ClinicalReferencePharmacotherapyInput
 ): ClinicalReferencePharmacotherapyResult {
   return {
     status: 'not_configured',

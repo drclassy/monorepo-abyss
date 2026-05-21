@@ -1,10 +1,6 @@
 export type ClinicalReferenceStatus = 'configured' | 'not_configured'
 
-export type ClinicalReferenceDomain =
-  | 'ddi'
-  | 'dosage'
-  | 'epidemiology'
-  | 'pharmacotherapy'
+export type ClinicalReferenceDomain = 'ddi' | 'dosage' | 'epidemiology' | 'pharmacotherapy'
 
 export interface ClinicalReferenceProvenance {
   domain: ClinicalReferenceDomain

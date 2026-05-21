@@ -31,7 +31,8 @@ function buildRecordFileName(record: LiteratureRecord): string {
 
 async function downloadText(fetchImpl: FetchLike, url: string): Promise<string> {
   const response = await fetchImpl(url)
-  if (!response.ok) throw new Error(`Download failed (${response.status}): ${await response.text()}`)
+  if (!response.ok)
+    throw new Error(`Download failed (${response.status}): ${await response.text()}`)
   return response.text()
 }
 
@@ -78,7 +79,9 @@ export class LiteratureHarvester {
     }
 
     const deduped = dedupeRecords(records)
-    const filtered = searchOptions.openAccessOnly ? deduped.filter((record) => record.openAccess || Boolean(record.fullTextUrl)) : deduped
+    const filtered = searchOptions.openAccessOnly
+      ? deduped.filter((record) => record.openAccess || Boolean(record.fullTextUrl))
+      : deduped
     return sortRecords(filtered).slice(0, searchOptions.limit ?? this.limit)
   }
 

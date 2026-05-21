@@ -5,7 +5,7 @@ import * as clinicalReferences from '../index'
 describe('@the-abyss/clinical-references scaffold', () => {
   it('exports the expected public stub surface', () => {
     expect(clinicalReferences.CLINICAL_REFERENCES_PROVENANCE.ddi.sourceName).toBe(
-      'pending-license-review',
+      'pending-license-review'
     )
     expect(typeof clinicalReferences.checkDrugInteractions).toBe('function')
     expect(typeof clinicalReferences.resolveDosageRecommendation).toBe('function')

@@ -17,16 +17,18 @@ export function toChunkerInput(document: CanonicalDocument): ChunkerInput[] {
 
   return document.pages
     .filter((page) => page.text.trim().length > 0)
-    .map((page): ChunkerInput => ({
-      content: page.text,
-      metadata: {
-        source_hash: document.sourceHash,
-        page_number: page.pageNumber,
-        parser_provider: page.parserProvider,
-        ocr_confidence: page.ocrConfidence,
-        document_version: document.documentVersion,
-        document_title: document.documentTitle,
-        ingestion_status: document.qualityReport.status,
-      },
-    }))
+    .map(
+      (page): ChunkerInput => ({
+        content: page.text,
+        metadata: {
+          source_hash: document.sourceHash,
+          page_number: page.pageNumber,
+          parser_provider: page.parserProvider,
+          ocr_confidence: page.ocrConfidence,
+          document_version: document.documentVersion,
+          document_title: document.documentTitle,
+          ingestion_status: document.qualityReport.status,
+        },
+      })
+    )
 }

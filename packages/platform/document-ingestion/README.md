@@ -3,6 +3,7 @@
 Local-first PDF OCR ingestion layer for The Abyss knowledge base.
 
 Converts raw PDF documents into structured, traceable, RAG-ready artifacts:
+
 - Canonical JSON (with page-level metadata)
 - Markdown (with frontmatter + page boundary markers)
 - OCR quality report (blocks corrupted content from reaching the RAG pipeline)
@@ -42,16 +43,18 @@ const { canonical, markdown, chunks } = await ingestDocument({
 })
 
 console.log(canonical.qualityReport.status) // 'ready' | 'needs_review' | 'failed'
-console.log(chunks.length)                   // page count
+console.log(chunks.length) // page count
 ```
 
 ## Scope Boundaries
 
 This package:
+
 - **Only** prepares parsed output for the existing chunker or ingestion pipeline
 - Does **not** generate embeddings
 - Does **not** write to any vector database
-- Does **not** call external OCR services (Google Document AI, PaddleOCR, SATUSEHAT)
+- Does **not** call external OCR services (Google Document AI, PaddleOCR,
+  SATUSEHAT)
 - Does **not** contain clinical diagnosis logic
 
 ## Commands
@@ -66,5 +69,6 @@ pnpm --filter @the-abyss/document-ingestion typecheck
 
 - Never log raw document text
 - Never log PHI
-- Only log: source hash, page count, parser provider, ingestion status, quality warnings
+- Only log: source hash, page count, parser provider, ingestion status, quality
+  warnings
 - Any cloud OCR fallback requires a separate task and separate GO-Gate approval

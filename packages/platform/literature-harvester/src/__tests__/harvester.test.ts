@@ -10,7 +10,6 @@ import { LiteratureHarvester } from '../harvester.js'
 import type { FetchLike } from '../types.js'
 import { dedupeRecords, slugify } from '../utils.js'
 
-
 function createMockFetch(): FetchLike {
   return vi.fn(async (input: RequestInfo | URL) => {
     const url = typeof input === 'string' ? input : input.toString()
@@ -109,7 +108,10 @@ describe('literature harvester', () => {
     expect(result.records[0]?.status).toBe('downloaded')
     expect(result.records[0]?.contentPath).toBeDefined()
 
-    const manifest = JSON.parse(await readFile(result.manifestPath, 'utf8')) as { query: string; counts: { downloaded: number } }
+    const manifest = JSON.parse(await readFile(result.manifestPath, 'utf8')) as {
+      query: string
+      counts: { downloaded: number }
+    }
     expect(manifest.query).toBe('heart failure')
     expect(manifest.counts.downloaded).toBe(1)
 

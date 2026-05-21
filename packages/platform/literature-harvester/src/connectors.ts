@@ -13,7 +13,10 @@ function toQueryString(params: Record<string, string | undefined>): string {
   return searchParams.toString()
 }
 
-function filterByYear(records: LiteratureRecord[], options: LiteratureSearchOptions): LiteratureRecord[] {
+function filterByYear(
+  records: LiteratureRecord[],
+  options: LiteratureSearchOptions
+): LiteratureRecord[] {
   return records.filter((record) => {
     if (options.yearFrom && (record.publishedYear ?? 0) < options.yearFrom) return false
     if (options.yearTo && (record.publishedYear ?? 0) > options.yearTo) return false
@@ -44,7 +47,10 @@ function getArticleId(
   return articleIds?.find((item) => item.idtype?.toLowerCase() === idtype.toLowerCase())?.value
 }
 
-export function buildEuropePmcSearchUrl(query: string, options: LiteratureSearchOptions = {}): string {
+export function buildEuropePmcSearchUrl(
+  query: string,
+  options: LiteratureSearchOptions = {}
+): string {
   const search = options.openAccessOnly === false ? query : `${query} OPEN_ACCESS:Y`
   const qs = toQueryString({
     query: search,
@@ -63,7 +69,8 @@ export async function searchEuropePmc(
   fetchImpl: FetchLike = fetch
 ): Promise<LiteratureRecord[]> {
   const response = await fetchImpl(buildEuropePmcSearchUrl(query, options))
-  if (!response.ok) throw new Error(`Europe PMC search failed (${response.status}): ${await response.text()}`)
+  if (!response.ok)
+    throw new Error(`Europe PMC search failed (${response.status}): ${await response.text()}`)
 
   const data = (await response.json()) as {
     resultList?: {
@@ -72,7 +79,10 @@ export async function searchEuropePmc(
   }
 
   const records = (data.resultList?.result ?? []).map((hit) => {
-    const pmcid = pickString(hit.pmcid, typeof hit.id === 'string' && hit.id.startsWith('PMC') ? hit.id : undefined)
+    const pmcid = pickString(
+      hit.pmcid,
+      typeof hit.id === 'string' && hit.id.startsWith('PMC') ? hit.id : undefined
+    )
     const doi = pickString(hit.doi)
     const title = pickString(hit.title) ?? 'Untitled article'
 
@@ -88,9 +98,20 @@ export async function searchEuropePmc(
       publishedYear: normalizeYear(hit.pubYear ?? hit.firstPublicationDate),
       authors: normalizeAuthors(hit.authorString),
       license: pickString(hit.license),
-      openAccess: String(hit.isOpenAccess ?? '').toUpperCase() === 'Y' || Boolean(pmcid) || Boolean(hit.license),
-      url: pickString(hit.webUrl) ?? (pmcid ? `https://pmc.ncbi.nlm.nih.gov/articles/${pmcid}/` : doi ? `https://doi.org/${doi}` : undefined),
-      fullTextUrl: pmcid ? `${EUROPE_PMC_BASE}/${encodeURIComponent(pmcid)}/fullTextXML` : undefined,
+      openAccess:
+        String(hit.isOpenAccess ?? '').toUpperCase() === 'Y' ||
+        Boolean(pmcid) ||
+        Boolean(hit.license),
+      url:
+        pickString(hit.webUrl) ??
+        (pmcid
+          ? `https://pmc.ncbi.nlm.nih.gov/articles/${pmcid}/`
+          : doi
+            ? `https://doi.org/${doi}`
+            : undefined),
+      fullTextUrl: pmcid
+        ? `${EUROPE_PMC_BASE}/${encodeURIComponent(pmcid)}/fullTextXML`
+        : undefined,
       score: safeNumber(hit.score),
     } satisfies LiteratureRecord
   })
@@ -115,7 +136,10 @@ export async function searchPubMed(
   fetchImpl: FetchLike = fetch
 ): Promise<LiteratureRecord[]> {
   const searchResponse = await fetchImpl(buildPubMedSearchUrl(query, options))
-  if (!searchResponse.ok) throw new Error(`PubMed search failed (${searchResponse.status}): ${await searchResponse.text()}`)
+  if (!searchResponse.ok)
+    throw new Error(
+      `PubMed search failed (${searchResponse.status}): ${await searchResponse.text()}`
+    )
 
   const searchData = (await searchResponse.json()) as {
     esearchresult?: {
@@ -133,7 +157,10 @@ export async function searchPubMed(
     email: options.email,
   })}`
   const summaryResponse = await fetchImpl(summaryUrl)
-  if (!summaryResponse.ok) throw new Error(`PubMed summary failed (${summaryResponse.status}): ${await summaryResponse.text()}`)
+  if (!summaryResponse.ok)
+    throw new Error(
+      `PubMed summary failed (${summaryResponse.status}): ${await summaryResponse.text()}`
+    )
 
   const summaryData = (await summaryResponse.json()) as {
     result?: Record<string, unknown>
@@ -146,7 +173,9 @@ export async function searchPubMed(
     const item = result[pmid] as Record<string, unknown> | undefined
     if (!item) continue
 
-    const articleIds = Array.isArray(item.articleids) ? (item.articleids as Array<{ idtype?: string; value?: string }>) : undefined
+    const articleIds = Array.isArray(item.articleids)
+      ? (item.articleids as Array<{ idtype?: string; value?: string }>)
+      : undefined
     const pmcid = getArticleId(articleIds, 'pmc') ?? getArticleId(articleIds, 'pmcid')
     const doi = getArticleId(articleIds, 'doi')
     const title = pickString(item.title) ?? 'Untitled article'
@@ -165,7 +194,9 @@ export async function searchPubMed(
       authors: author ? [author] : undefined,
       openAccess: Boolean(pmcid),
       url: `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`,
-      fullTextUrl: pmcid ? `${EUROPE_PMC_BASE}/${encodeURIComponent(pmcid)}/fullTextXML` : undefined,
+      fullTextUrl: pmcid
+        ? `${EUROPE_PMC_BASE}/${encodeURIComponent(pmcid)}/fullTextXML`
+        : undefined,
       score: safeNumber(item.score),
     })
   }
@@ -173,7 +204,10 @@ export async function searchPubMed(
   return filterByYear(records, options)
 }
 
-export function buildCrossrefSearchUrl(query: string, options: LiteratureSearchOptions = {}): string {
+export function buildCrossrefSearchUrl(
+  query: string,
+  options: LiteratureSearchOptions = {}
+): string {
   const qs = toQueryString({
     query,
     rows: String(options.limit ?? 20),
@@ -187,7 +221,8 @@ export async function searchCrossref(
   fetchImpl: FetchLike = fetch
 ): Promise<LiteratureRecord[]> {
   const response = await fetchImpl(buildCrossrefSearchUrl(query, options))
-  if (!response.ok) throw new Error(`Crossref search failed (${response.status}): ${await response.text()}`)
+  if (!response.ok)
+    throw new Error(`Crossref search failed (${response.status}): ${await response.text()}`)
 
   const data = (await response.json()) as {
     message?: {
@@ -210,9 +245,10 @@ export async function searchCrossref(
           .filter(Boolean)
       : undefined
 
-    const issued = (item['published-print'] as Record<string, unknown> | undefined)
-      ?? (item['published-online'] as Record<string, unknown> | undefined)
-      ?? (item.issued as Record<string, unknown> | undefined)
+    const issued =
+      (item['published-print'] as Record<string, unknown> | undefined) ??
+      (item['published-online'] as Record<string, unknown> | undefined) ??
+      (item.issued as Record<string, unknown> | undefined)
     const dateParts = Array.isArray(issued?.['date-parts'])
       ? (issued?.['date-parts'] as Array<Array<number | string>>)
       : undefined
@@ -228,7 +264,11 @@ export async function searchCrossref(
       title,
       abstract: pickString(item.abstract),
       doi,
-      journal: pickString(Array.isArray(item['container-title']) ? item['container-title'][0] : item['container-title']),
+      journal: pickString(
+        Array.isArray(item['container-title'])
+          ? item['container-title'][0]
+          : item['container-title']
+      ),
       publishedYear: normalizeYear(year),
       authors,
       license,
