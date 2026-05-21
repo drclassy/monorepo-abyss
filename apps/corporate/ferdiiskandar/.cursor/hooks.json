@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "postToolUse": [
+      {
+        "command": "node apps/corporate/ferdiiskandar/.cursor/hooks/post-tool-use-diagnostics-reminder.mjs",
+        "matcher": "Write|StrReplace|ApplyPatch"
+      }
+    ]
+  }
+}

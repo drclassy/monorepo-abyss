@@ -79,6 +79,18 @@
 **Trigger:** ANY task involving: shared packages, database schema, RAG/vector store, migration, or cross-app data flow.
 **Reference:** CONTEXT.md § Healthcare Apps — Complete Landscape (added 2026-04-19).
 
+### [2026-05-07] .agent root must separate live state from archives and references
+**Mistake:** Root `.agent/` mixed active startup files with historical ledgers and bulky reference documents, while an older lesson claimed the root could contain only the five core files plus sessions. The result was contradictory structure rules and noisy startup context.
+**New rule:** Root `.agent/` is reserved for live operational state: `CONTEXT.md`, `PROGRESS.md`, `HANDOFF.md`, `LESSONS.md`, `DECISIONS.md`, `SESSION_STATE.md`, and support directories such as `sessions/`, `archive/`, `references/`, and tightly-scoped operational folders when needed. Historical ledgers belong in `archive/`. Non-startup reference material belongs in `references/`.
+**Trigger:** Any `.agent/` cleanup, SSOT refactor, or new governance document creation.
+**Supersedes:** The 2026-04-10 lesson that root `.agent/` must contain only the standard five files plus `sessions/`.
+
+### [2026-05-07] Cross-agent authority and cloud direction must stay synchronized
+**Mistake:** Codex, Claude, and Cursor layers drifted apart: some files still treated `AGENTS.md` as the operational SSOT, some still pointed to old `V:\class-sentra\...` paths, and some quality notes still implied Vertex/GCP was the active cloud target.
+**New rule:** Keep cross-agent governance aligned on three points: `AGENTS.md` = repository policy authority, `.agent/` = operational SSOT, and Google Cloud / Vertex AI / Gemini are legacy surfaces unless a newer decision explicitly reactivates them.
+**Trigger:** Any edit to `CLAUDE.md`, `.cursor/*`, `.codex/*`, or root governance docs.
+**Supersedes:** Any older lesson text implying `AGENTS.md` and `CLAUDE.md` jointly act as the operational SSOT, or that Vertex AI remains the active future direction.
+
 ### [2026-04-19] LIMIT in raw SQL must use explicit ::int cast
 **Mistake:** `LIMIT $2` in `$queryRawUnsafe` without `::int` cast. Prisma may bind JavaScript numbers as float8 depending on version, causing PostgreSQL to reject LIMIT with type mismatch error at runtime.
 **New rule:** Always use `LIMIT $N::int` in any raw SQL query. Never rely on implicit type coercion for LIMIT/OFFSET parameters.

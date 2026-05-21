@@ -1,0 +1,39 @@
+---
+description: >-
+  Architecture and ownership boundaries for Ferdiiskandar app changes, including
+  imports, shared packages, AI/provider boundaries, and product/infrastructure separation.
+globs:
+  - "app/**/*"
+  - "components/**/*"
+  - "lib/**/*"
+  - "scripts/**/*"
+  - "tests/**/*"
+  - "next.config.*"
+  - "package.json"
+alwaysApply: false
+---
+
+# Architecture Boundaries
+
+Before editing source files, identify:
+
+- owning module or package
+- public interface or route contract involved
+- import direction
+- whether the change belongs in UI, product logic, API, shared types, scripts, or tests
+- risk of circular dependency or hidden cross-layer coupling
+
+## Rules
+
+- Preserve existing architecture unless Chief explicitly asks for structural change.
+- Prefer typed contracts and explicit adapters over direct cross-module access.
+- Keep UI composition separate from API/provider logic.
+- Keep OCR, RAG, diagnosis, database writes, and external integrations separate unless the task explicitly connects them.
+- Do not rename packages, folders, routes, public APIs, or shared contracts unless requested.
+- Do not add dependencies unless necessary and approved or clearly required by the task.
+
+## App Facts To Re-Verify
+
+- Package name should be checked from `package.json`.
+- Next.js, React, Node, TypeScript, and test versions should be checked from local files before acting.
+- `@the-abyss/design-token` may be consumed through CSS imports, so dependency scans can need app-specific interpretation.

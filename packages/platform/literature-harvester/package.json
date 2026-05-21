@@ -1,0 +1,24 @@
+{
+  "name": "@the-abyss/literature-harvester",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "harvest": "tsx src/cli.ts",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "node -e \"for (const dir of ['.turbo','node_modules','dist']) { require('node:fs').rmSync(dir, { recursive: true, force: true }); }\""
+  },
+  "devDependencies": {
+    "@the-abyss/config-eslint": "workspace:*",
+    "@the-abyss/config-typescript": "workspace:*",
+    "@types/node": "22.19.19",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3",
+    "vitest": "2.1.9"
+  },
+  "sentra:tier": "private-product"
+}

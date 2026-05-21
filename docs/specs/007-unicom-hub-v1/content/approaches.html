@@ -1,0 +1,150 @@
+<h2>3 Pendekatan untuk Agent UNICOM di Cursor IDE</h2>
+<p class="subtitle">Semua extension berjalan dalam satu IDE — bagaimana mereka bisa saling berkomunikasi?</p>
+
+<div class="cards" style="grid-template-columns: 1fr; gap: 1rem;">
+
+  <!-- Approach 1: MCP Server -->
+  <div class="card" data-choice="mcp-hub" onclick="toggleSelect(this)">
+    <div class="card-body" style="padding:1.25rem">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.5rem">
+        <div>
+          <h3 style="margin:0">A — UNICOM sebagai MCP Server ⭐ Recommended</h3>
+          <p style="margin:0.25rem 0 0.75rem 0;color:#64748b">Model Context Protocol — bahasa native Claude Code &amp; Roocode</p>
+        </div>
+        <span style="background:#10b981;color:#fff;font-size:0.7rem;padding:3px 8px;border-radius:9999px;white-space:nowrap">Termudah · Paling Native</span>
+      </div>
+      <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0;margin-bottom:0.75rem">
+        <div style="color:#64748b;margin-bottom:0.5rem">// .mcp.json (sudah ada di repo!)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:0.75rem">
+          <div style="border:1px solid #3b82f6;border-radius:4px;padding:0.4rem;text-align:center">
+            <div style="color:#93c5fd;font-size:0.65rem">Claude Code ext</div>
+            <div style="color:#64748b;font-size:0.6rem">↕ MCP client</div>
+          </div>
+          <div style="border:1px solid #8b5cf6;border-radius:4px;padding:0.4rem;text-align:center">
+            <div style="color:#a78bfa;font-size:0.65rem">Roocode ext</div>
+            <div style="color:#64748b;font-size:0.6rem">↕ MCP client</div>
+          </div>
+          <div style="border:1px solid #f59e0b;border-radius:4px;padding:0.4rem;text-align:center">
+            <div style="color:#fbbf24;font-size:0.65rem">Codex ext</div>
+            <div style="color:#64748b;font-size:0.6rem">↕ HTTP/tool call</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin:0.3rem 0">
+          <span style="background:#8b5cf6;padding:4px 14px;border-radius:4px;font-weight:bold">UNICOM MCP Server</span>
+        </div>
+        <div style="color:#64748b;font-size:0.65rem;text-align:center;margin-top:0.35rem">
+          tools: send_to(agent, msg) · broadcast(msg) · list_agents()
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <div>
+          <div style="color:#10b981;font-size:0.78rem;font-weight:600;margin-bottom:0.3rem">✅ Keunggulan</div>
+          <ul style="margin:0;padding-left:1rem;font-size:0.78rem;color:#94a3b8;line-height:1.6">
+            <li>Claude Code &amp; Roocode sudah support MCP native</li>
+            <li><code>.mcp.json</code> sudah ada di repo</li>
+            <li>No new dependency — pakai JSON-RPC 2.0</li>
+            <li>Human-in-the-loop by design</li>
+          </ul>
+        </div>
+        <div>
+          <div style="color:#f87171;font-size:0.78rem;font-weight:600;margin-bottom:0.3rem">⚠️ Batasan</div>
+          <ul style="margin:0;padding-left:1rem;font-size:0.78rem;color:#94a3b8;line-height:1.6">
+            <li>Codex belum pasti support MCP</li>
+            <li>Perlu build custom MCP server (tapi kecil)</li>
+            <li>MCP default = request/response, bukan push</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach 2: WebSocket Hub -->
+  <div class="card" data-choice="websocket-hub" onclick="toggleSelect(this)">
+    <div class="card-body" style="padding:1.25rem">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.5rem">
+        <div>
+          <h3 style="margin:0">B — UNICOM sebagai Local WebSocket Hub</h3>
+          <p style="margin:0.25rem 0 0.75rem 0;color:#64748b">Node.js + socket.io — sudah ada di orchestrator, true streaming</p>
+        </div>
+        <span style="background:#3b82f6;color:#fff;font-size:0.7rem;padding:3px 8px;border-radius:9999px;white-space:nowrap">True Streaming · Lebih Kompleks</span>
+      </div>
+      <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0;margin-bottom:0.75rem">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:0.5rem">
+          <div style="border:1px solid #3b82f6;border-radius:4px;padding:0.4rem;text-align:center;font-size:0.65rem">Claude Code<br><span style="color:#64748b">ws://localhost:PORT</span></div>
+          <div style="border:1px solid #8b5cf6;border-radius:4px;padding:0.4rem;text-align:center;font-size:0.65rem">Roocode<br><span style="color:#64748b">ws://localhost:PORT</span></div>
+          <div style="border:1px solid #f59e0b;border-radius:4px;padding:0.4rem;text-align:center;font-size:0.65rem">Codex<br><span style="color:#64748b">ws://localhost:PORT</span></div>
+        </div>
+        <div style="text-align:center;margin:0.25rem 0">⟷ persistent connections ⟷</div>
+        <div style="text-align:center">
+          <span style="background:#3b82f6;padding:4px 14px;border-radius:4px;font-weight:bold">UNICOM Hub (socket.io)</span>
+        </div>
+        <div style="color:#64748b;font-size:0.65rem;text-align:center;margin-top:0.35rem">
+          rooms: "broadcast" · "agent:claude" · "agent:roocode"
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <div>
+          <div style="color:#10b981;font-size:0.78rem;font-weight:600;margin-bottom:0.3rem">✅ Keunggulan</div>
+          <ul style="margin:0;padding-left:1rem;font-size:0.78rem;color:#94a3b8;line-height:1.6">
+            <li>Benar-benar real-time streaming</li>
+            <li>socket.io sudah di orchestrator deps</li>
+            <li>Agnostic — ANY agent bisa connect</li>
+          </ul>
+        </div>
+        <div>
+          <div style="color:#f87171;font-size:0.78rem;font-weight:600;margin-bottom:0.3rem">⚠️ Batasan</div>
+          <ul style="margin:0;padding-left:1rem;font-size:0.78rem;color:#94a3b8;line-height:1.6">
+            <li>Extension harus bisa buka WebSocket</li>
+            <li>Perlu bridge layer per extension</li>
+            <li>State management lebih rumit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach 3: VS Code Extension API -->
+  <div class="card" data-choice="vscode-api" onclick="toggleSelect(this)">
+    <div class="card-body" style="padding:1.25rem">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.5rem">
+        <div>
+          <h3 style="margin:0">C — UNICOM sebagai VS Code Extension Host</h3>
+          <p style="margin:0.25rem 0 0.75rem 0;color:#64748b">VS Code Extension API — paling native di Cursor, tapi paling terbatas</p>
+        </div>
+        <span style="background:#64748b;color:#fff;font-size:0.7rem;padding:3px 8px;border-radius:9999px;white-space:nowrap">Paling Native · Tapi Terbatas</span>
+      </div>
+      <div style="background:#0f1117;border-radius:8px;padding:1rem;font-family:monospace;font-size:0.72rem;color:#e2e8f0;margin-bottom:0.75rem">
+        <div style="text-align:center;margin-bottom:0.5rem">
+          <span style="background:#6b7280;padding:4px 12px;border-radius:4px">Cursor Extension Host Process</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:0.5rem">
+          <div style="border:1px solid #3b82f6;border-radius:4px;padding:0.4rem;text-align:center;font-size:0.65rem">Claude Code<br><span style="color:#64748b">executeCommand()</span></div>
+          <div style="border:1px solid #8b5cf6;border-radius:4px;padding:0.4rem;text-align:center;font-size:0.65rem">Roocode<br><span style="color:#64748b">ext.exports.api</span></div>
+          <div style="border:1px solid #f59e0b;border-radius:4px;padding:0.4rem;text-align:center;font-size:0.65rem">Codex<br><span style="color:#64748b">tergantung API-nya</span></div>
+        </div>
+        <div style="color:#6ee7b7;font-size:0.65rem;text-align:center">vscode.commands.registerCommand("unicom.send", ...)</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <div>
+          <div style="color:#10b981;font-size:0.78rem;font-weight:600;margin-bottom:0.3rem">✅ Keunggulan</div>
+          <ul style="margin:0;padding-left:1rem;font-size:0.78rem;color:#94a3b8;line-height:1.6">
+            <li>Zero network overhead</li>
+            <li>Cursor/VS Code native</li>
+            <li>No server to manage</li>
+          </ul>
+        </div>
+        <div>
+          <div style="color:#f87171;font-size:0.78rem;font-weight:600;margin-bottom:0.3rem">⚠️ Batasan</div>
+          <ul style="margin:0;padding-left:1rem;font-size:0.78rem;color:#94a3b8;line-height:1.6">
+            <li>Claude Code ext API mungkin tidak exposed</li>
+            <li>Codex / OpenAI ext mungkin closed</li>
+            <li>Tidak bisa lintas mesin / remote</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align:center;margin-top:1rem;color:#64748b;font-size:0.85rem">Pilih satu — atau ketik di terminal</p>

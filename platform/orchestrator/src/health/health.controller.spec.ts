@@ -2,6 +2,7 @@ import { HealthCheckService } from '@nestjs/terminus'
 import { Test } from '@nestjs/testing'
 import 'reflect-metadata'
 import { describe, expect, it, vi } from 'vitest'
+
 import { HealthController } from './health.controller'
 import { HealthModule } from './health.module'
 

@@ -1,9 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { KafkaService } from '../kafka/kafka.service'
-import { SagaRepository } from '../sagas/saga.repository'
-import { FlowExecutionDto } from '../common/dto/flow-execution.dto'
-import { DiagnosisFlowSaga } from '../sagas/diagnosis-flow.saga'
-import { ReferralFlowSaga } from '../sagas/referral-flow.saga'
+
+import { type FlowExecutionDto } from '../common/dto/flow-execution.dto'
+import { type KafkaService } from '../kafka/kafka.service'
+import { type DiagnosisFlowSaga, type DiagnosisInput } from '../sagas/diagnosis-flow.saga'
+import { type ReferralFlowSaga, type ReferralInput } from '../sagas/referral-flow.saga'
+import { type SagaRepository } from '../sagas/saga.repository'
+
+type FlowRunResult = {
+  executionId: string
+} & Record<string, unknown>
 
 @Injectable()
 export class FlowsService {
@@ -14,7 +19,7 @@ export class FlowsService {
     private readonly referralSaga: ReferralFlowSaga
   ) {}
 
-  async runFlow(flowId: string, data: FlowExecutionDto) {
+  async runFlow(flowId: string, data: FlowExecutionDto): Promise<FlowRunResult> {
     console.log(`[Orchestrator] Running flow: ${flowId} for org: ${data.organizationId}`)
 
     // Create saga execution record for tracking
@@ -36,7 +41,7 @@ export class FlowsService {
             ...data.input,
             organizationId: data.organizationId,
             requestId: `req-${Date.now()}`,
-          } as any)
+          } as unknown as DiagnosisInput)
           break
 
         case 'referral-flow':
@@ -46,7 +51,7 @@ export class FlowsService {
             ...data.input,
             sourceOrganizationId: data.organizationId,
             referralId: `ref-${Date.now()}`,
-          } as any)
+          } as unknown as ReferralInput)
           break
 
         default:
@@ -78,7 +83,7 @@ export class FlowsService {
       return {
         executionId: execution.id,
         ...(typeof result === 'object' && result !== null ? result : {}),
-      } as any
+      }
     } catch (error) {
       // Mark execution as failed
       await this.sagaRepository.failExecution(execution.id, (error as Error).message)

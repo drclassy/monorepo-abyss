@@ -1,218 +1,68 @@
-# CONTEXT.md — The Abyss (Monorepo Root)
-<!-- Static. Update only when stack or architecture changes. -->
-<!-- Last updated: 2026-04-19 · Major revision: Full healthcare landscape audit -->
+# CONTEXT - ABYSS Monorepo Identity
 
----
+Update rarely. This file answers: what is this repo, what matters, and what
+must not be casually changed.
 
-## Project Identity
+## Project
 
-| Field | Value |
-|-------|-------|
-| Name | The Abyss |
-| Type | AI-native Turborepo monorepo (polyrepo hybrid) |
-| Author | Dr. Ferdi Iskandar (Classy) |
-| Email | ferdi@sentra.ai |
-| License | UNLICENSED (private) |
-| Engine | Node ≥22, pnpm ≥9 |
-| Build | Turborepo v2 |
-| Root path | D:\Devop\abyss-monorepo\ |
+- Name: Sentra / ABYSS Monorepo
+- Root: `D:\Devops\abyss-monorepo`
+- Owner: Dr. Ferdi Iskandar
+- Package manager: `pnpm`
+- Runtime baseline: Windows 11, PowerShell 7, Node.js 22+, TypeScript, Turborepo
+- Posture: production-oriented, even when parts are still prototype
 
----
+## Authority
 
-## ⚠️ CRITICAL ARCHITECTURE NOTE — Read Before Acting
+- `AGENTS.md` = public repo rulebook.
+- `.agent/` = operational SSOT for current state and continuity.
+- `tooling/governance/` = executable governance checks and agent tooling.
+- Chat/product memory is not repo SSOT.
 
-This is a **polyrepo embedded in a monorepo shell**.
+## Repository Shape
 
-Each healthcare app is an **independent repository** with its own:
-- `.git` directory
-- `package.json` + `pnpm-lock.yaml`
-- `node_modules`
-- Database schema + migrations (if applicable)
-- Deployment config (Railway or Vercel)
+Keep work inside the existing structure:
 
-**The monorepo shell provides:** shared `packages/`, `flows/`, `infrastructure/`, `conductor/`, and Turborepo build orchestration.
+- `apps/` - applications
+- `packages/sentra/` - proprietary Sentra capabilities and crown jewels
+- `packages/platform/` - platform runtime and infrastructure services
+- `packages/clinical/` - clinical knowledge and safety substrate
+- `packages/shared/` - reusable shared primitives
+- `packages/tooling/` - internal developer/build tooling packages
+- `platform/` - platform applications and orchestrators
+- `infrastructure/` - deployment assets
+- `flows/` - LangFlow definitions
+- `docs/` - human-readable project documentation
+- `tooling/` - repo tooling and governance
 
-**The monorepo shell does NOT provide:** a single shared database. Every app that has a database owns it exclusively.
+Do not create a new top-level domain without Chief approval.
 
-Any agent that assumes `packages/database` is the database for all apps is WRONG.
-Always check each app's own `prisma/` folder before touching any database concern.
+## Protected Areas
 
-Current session direction: Google Cloud, Vertex AI, and Gemini are being exited from
-the monorepo. Do not treat "migration to Vertex AI" as the active target.
+- `.agent/` must not be deleted, cleaned, reset, or treated as junk.
+- `packages/sentra/**` is crown-jewel territory. Diagnose first; edit only with
+  explicit approval and the smallest safe change.
+- Do not expose or modify secrets, `.env` values, tokens, credentials, PHI, or
+  patient data.
+- Do not run migrations, change database schemas, touch auth, or change
+  deployment config without explicit scope.
 
----
+## Current Technical Facts
 
-## Healthcare Apps — Complete Landscape
+- The stabilization chain has passed root build blockers.
+- Prisma client generation for orchestrator was made explicit because Turbo
+  cache could leave Prisma exports stale.
+- DAF website standalone output is now opt-in for Windows local verification.
+- Root typecheck still has remaining review items under `packages/sentra/**`.
+- Root governance and agent SSOT cleanup are active work.
 
-### `intelligenceboard`
-| Field | Value |
-|-------|-------|
-| Path | `apps/healthcare/intelligenceboard/` |
-| Package name | `@classy/intelligenceboard` |
-| Type | Next.js 16 server app (custom Express server via server.ts) |
-| Deploy | Railway (`railway.toml`) |
-| Database | Own Neon PostgreSQL via Prisma — **12 migrations active as of 2026-04** |
-| Prisma path | `apps/healthcare/intelligenceboard/prisma/schema.prisma` |
-| AI providers | `@google/genai`, `@google/generative-ai` (legacy; removal in progress) |
-| Purpose | Clinical Intelligence Dashboard: telemedicine, CDSS, consult logs, screening audit, vital records |
-| RAG status | `KnowledgeBase` model to be added here (Prisma migration pending — see DECISIONS.md) |
-| Status | **PRODUCTION ACTIVE** |
+## Historical Notes
 
-### `sentra-assist`
-| Field | Value |
-|-------|-------|
-| Path | `apps/healthcare/sentra-assist/` |
-| Package name | `@the-abyss/sentra-assist` |
-| Type | **Browser Extension** (WXT framework — NOT a NestJS/REST app) |
-| Deploy | Chrome Web Store / Firefox Add-ons |
-| Database | None — browser extension cannot connect to databases |
-| AI providers | `@google-cloud/vertexai` (legacy; removal in progress) |
-| Purpose | Clinical decision support overlay inside ePuskesmas EMR |
-| RAG access | Via API call to intelligenceboard — never direct DB |
-| Status | Active development |
+Previous `.agent` root files and static references are preserved under:
 
-### `referralink`
-| Field | Value |
-|-------|-------|
-| Path | `apps/healthcare/referralink/` |
-| Package name | `@the-abyss/referralink` |
-| Type | React SPA (Vite) |
-| Deploy | Vercel (`vercel.json`) |
-| Database | Own Neon via `@neondatabase/serverless` + `@vercel/postgres` |
-| Vector store | `@upstash/vector` — already has independent RAG (migration to shared package: future task) |
-| AI providers | OpenAI |
-| Purpose | Patient referral routing with semantic matching |
-| Status | Active on Vercel |
+- `.agent/archive/legacy-root/`
+- `.agent/archive/references/`
 
-### `sentra-main`
-| Field | Value |
-|-------|-------|
-| Path | `apps/healthcare/sentra-main/` |
-| Package name | `@the-abyss/sentra-main` |
-| Type | Next.js 16 (marketing website) |
-| Deploy | TBD |
-| Database | None |
-| Purpose | Marketing website — sentrahai.com |
-| Status | Active |
+Use them for history, not as active instructions.
 
-### `primary-healthcare`
-| Field | Value |
-|-------|-------|
-| Path | `apps/healthcare/primary-healthcare/` |
-| Type | Static website + JSON data files |
-| Database | None (local JSON: ICD-10, penyakit puskesmas) |
-| Purpose | Primary healthcare reference data and website |
-| Status | Active |
-
----
-
-## Platform Apps
-
-### `orchestrator`
-| Field | Value |
-|-------|-------|
-| Path | `apps/platform/orchestrator/` |
-| Type | NestJS (CQRS mandatory) |
-| Purpose | SAGA engine, multi-agent coordination |
-
-### `sentra-portal`
-| Field | Value |
-|-------|-------|
-| Path | `apps/platform/sentra-portal/` |
-| Type | Next.js |
-| Database | Own — has `.git` and own node_modules |
-| Purpose | Clinical dashboard |
-
----
-
-## Shared Packages — Actual State
-
-| Package | Path | Purpose | Notes |
-|---------|------|---------|-------|
-| `database` | `packages/database/` | Prisma schema for platform apps | ⚠️ NOT used by healthcare apps — each has own schema |
-| `vector-store` | `packages/vector-store/` | pgvector RAG with pluggable embedding provider | Refactored to dependency injection — injectable Prisma client |
-| `design-token` | `packages/design-token/` | UI token system | |
-| `shared-types` | `packages/shared-types/` | Cross-app TypeScript types | |
-
----
-
-## Shared Package Strategy — `vector-store`
-
-**Vision:** Every healthcare product uses `@the-abyss/vector-store` for RAG.
-
-**Architecture:** Dependency injection — `VectorStore` accepts any Prisma client from the caller.
-Each server-side app brings its own Prisma client.
-Browser extensions and SPAs access RAG via API (never direct DB).
-
-```
-@the-abyss/vector-store
-  ↓ used directly (server-side)
-intelligenceboard         → injects its own prismaClient
-                          → owns KnowledgeBase table
-
-  ↓ future migration
-referralink               → currently @upstash/vector → migrate to vector-store (future task)
-
-  ↓ via API only (no direct DB)
-sentra-assist             → calls intelligenceboard RAG endpoint
-sentra-main               → calls intelligenceboard RAG endpoint (if needed)
-```
-
-**KnowledgeBase table location:** `intelligenceboard` Prisma schema — single source of truth for medical RAG. Not in `packages/database`.
-
----
-
-## AI Provider Map
-
-| App | Current Provider | Target Provider | Notes |
-|-----|-----------------|-----------------|-------|
-| intelligenceboard | Gemini REST API | Local-first runtime / provider-neutral fallback | Google exit in progress |
-| sentra-assist | `@google-cloud/vertexai` | Local-first runtime / provider-neutral fallback | Google exit in progress |
-| referralink | OpenAI | TBD | Out of scope for current sprint |
-| packages/vector-store | Provider-neutral abstraction | — | Vertex provider scheduled for removal |
-
----
-
-## Database Map
-
-| App | Database | Prisma? | Migrations? | Location |
-|-----|----------|---------|-------------|----------|
-| intelligenceboard | Neon PostgreSQL | ✅ | ✅ 12 migrations | `apps/healthcare/intelligenceboard/prisma/` |
-| referralink | Neon (serverless) + Vercel Postgres | ❌ raw SQL | N/A | Direct queries in `database/` |
-| packages/database | Neon PostgreSQL | ✅ | ❌ never migrated | Platform-level only |
-| sentra-assist | None | ❌ | — | Browser extension |
-| sentra-main | None | ❌ | — | Marketing site |
-| primary-healthcare | None | ❌ | — | JSON files only |
-
----
-
-## CI/CD Pipeline
-
-GitHub Actions: `.github/workflows/ci.yml`
-Sequence: verify → build → test → lint → security → flows
-Security scan mandatory before any healthcare PR merge.
-
----
-
-## Deployment Map
-
-| App | Platform | Config file |
-|-----|----------|-------------|
-| intelligenceboard | Railway | `railway.toml` |
-| referralink | Vercel | `vercel.json` |
-| sentra-assist | Browser Store | WXT build |
-| platform/orchestrator | TBD | — |
-| platform/sentra-portal | TBD | — |
-
----
-
-## Hard Constraints
-
-- `terraform apply` — Chief only, never agent-executed
-- PHI/PII — absolute prohibition in logs, commits, fixtures, test data
-- Security scan — must pass before any healthcare PR
-- JET Protocol J5 — hard gate, no execution before explicit "GO"
-- Session logs — `.agent/sessions/` must be updated every session
-- Database operations — each app uses its OWN Prisma client. Never cross-inject.
-- `packages/database` — platform-level only, not for healthcare apps
-- KnowledgeBase (RAG) — lives in intelligenceboard schema, not packages/database
+Last updated: 2026-05-16

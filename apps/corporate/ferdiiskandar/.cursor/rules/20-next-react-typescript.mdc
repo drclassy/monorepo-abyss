@@ -1,0 +1,51 @@
+---
+description: >-
+  Next.js, React, TypeScript, and test conventions for app/source edits in this
+  project.
+globs:
+  - "app/**/*.{ts,tsx}"
+  - "components/**/*.{ts,tsx}"
+  - "lib/**/*.{ts,tsx}"
+  - "tests/**/*.{ts,tsx}"
+  - "next.config.*"
+  - "tsconfig.json"
+alwaysApply: false
+---
+
+# Next.js, React, and TypeScript
+
+Use the existing app patterns first.
+
+## TypeScript
+
+- Keep strict typing.
+- Use explicit types for public APIs, exported functions, route payloads, and test fixtures.
+- Preserve `@/*` import behavior from `tsconfig.json`.
+- Do not weaken TypeScript config to make a local error disappear.
+
+## React and Next.js
+
+- Preserve App Router conventions.
+- Keep components small and responsibility-focused.
+- Avoid unnecessary global state.
+- Do not introduce client components unless interactivity requires it.
+- When touching route metadata, layout, or server/client boundaries, verify with `pnpm typecheck`.
+
+## Tests
+
+- Prefer focused tests that fail before and pass after the change.
+- Use existing Vitest and Testing Library patterns.
+- Do not reshape the full test suite for a narrow behavior change.
+
+## Common Verification
+
+Run the narrowest meaningful checks:
+
+```powershell
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+For production build, check whether `next dev` is still running if the runtime guard blocks `.next`.

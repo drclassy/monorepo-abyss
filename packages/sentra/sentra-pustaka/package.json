@@ -1,0 +1,42 @@
+{
+  "name": "@sentra/pustaka",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sentra RAG Engine — Local-first medical knowledge retrieval with pgvector + Ollama",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf .turbo node_modules dist",
+    "status": "npx tsx src/status.ts",
+    "ingest": "npx tsx src/ingestion/pipeline.ts",
+    "ingest:pha": "npx tsx src/ingestion/pipeline.ts --pha",
+    "ingest:gen": "npx tsx src/ingestion/pipeline.ts --gen",
+    "ingest:pdf": "npx tsx src/cli/ingest-pdf.ts",
+    "registry:update": "npx tsx src/cli/registry-update.ts",
+    "registry:list": "npx tsx src/cli/registry-update.ts list",
+    "embed:approved": "npx tsx src/cli/embed-approved.ts",
+    "eval:retrieval": "npx tsx src/cli/eval-retrieval.ts",
+    "query": "npx tsx src/query.ts"
+  },
+  "dependencies": {
+    "@the-abyss/document-ingestion": "workspace:*",
+    "@sentra/cermin": "workspace:*",
+    "dotenv": "^16.6.1",
+    "pdf-parse": "^1.1.4",
+    "pg": "^8.20.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@the-abyss/config-eslint": "workspace:*",
+    "@the-abyss/config-typescript": "workspace:*",
+    "@types/node": "22.19.19",
+    "@types/pdf-parse": "1.1.5",
+    "@types/pg": "8.20.0",
+    "tsx": "4.21.0",
+    "vitest": "2.1.9"
+  },
+  "sentra:tier": "crown-jewel"
+}

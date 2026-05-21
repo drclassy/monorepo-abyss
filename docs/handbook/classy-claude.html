@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classy — Codex Skills Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Sentra Brand Tokens v1.0 ── */
+:root {
+  /* Primary monochrome */
+  --black:    #000000;   /* sentraBlack */
+  --white:    #FDFDFD;   /* sentraWhite */
+  --graphite: #111318;   /* graphiteCore */
+  --slate:    #2B2F38;   /* clinicalSlate */
+  --silver:   #A0A0A2;   /* neuralSilver */
+
+  /* Digital accents — 10% usage ratio */
+  --cyan:     #00D4FF;   /* sentraCyan   — active state, AI signal, copy success */
+  --violet:   #6D5DFC;   /* aiViolet     — CTA accent, button hover */
+  --green:    #12B981;   /* successGreen */
+  --amber:    #F59E0B;   /* warningAmber */
+  --red:      #EF4444;   /* criticalRed  */
+
+  /* Layout */
+  --r-lg: 16px; --r-md: 12px; --r-sm: 8px; --r-pill: 999px;
+  --shadow: 0 20px 50px rgba(0,0,0,0.28);
+  --b: 1px solid var(--slate);
+
+  /* Typography */
+  --f-disp: 'Space Grotesk','Inter','IBM Plex Sans',Arial,sans-serif;
+  --f-body: 'Inter','IBM Plex Sans',Arial,sans-serif;
+  --f-mono: 'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--f-body);background:var(--black);color:var(--white);line-height:1.7;padding:28px 20px 60px}
+.container{max-width:1100px;margin:0 auto}
+
+h1{font-family:var(--f-disp);font-size:2rem;font-weight:700;letter-spacing:-1px;margin-bottom:6px}
+.sub{font-family:var(--f-mono);font-size:.7rem;color:var(--silver);text-transform:uppercase;letter-spacing:2px;margin-bottom:28px}
+
+.sec{margin-bottom:40px}
+.sec h2{
+  font-family:var(--f-disp);font-size:1.2rem;font-weight:600;
+  margin-bottom:6px;padding-bottom:6px;padding-left:10px;
+  border-bottom:var(--b);
+  border-left:2px solid var(--cyan); /* sentraCyan — AI signal accent */
+}
+.sec .desc{font-size:.82rem;color:rgba(253,253,253,.7);margin-bottom:14px;padding-left:12px}
+
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{text-align:left;padding:8px 12px;font-family:var(--f-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--silver);border-bottom:var(--b);background:var(--graphite)}
+td{padding:8px 12px;border-bottom:1px solid rgba(43,47,56,.3);color:rgba(253,253,253,.78)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-family:var(--f-mono);color:var(--white);font-weight:600;white-space:nowrap;font-size:.78rem}
+td:nth-child(2){color:rgba(253,253,253,.7)}
+td:nth-child(3){color:rgba(160,160,162,.6);font-size:.74rem;font-family:var(--f-mono)}
+
+.badge{
+  display:inline-block;padding:1px 8px;border-radius:var(--r-pill);
+  font-family:var(--f-mono);font-size:.6rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.4px;
+  border:var(--b);color:var(--silver)
+}
+.badge-core{border-color:rgba(0,212,255,.4);color:rgba(0,212,255,.8)}
+.badge-review{border-color:rgba(109,93,252,.4);color:rgba(109,93,252,.8)}
+.badge-push{border-color:rgba(160,160,162,.3);color:var(--silver)}
+.badge-design{border-color:rgba(109,93,252,.3);color:rgba(109,93,252,.7)}
+.badge-health{border-color:rgba(18,185,129,.3);color:rgba(18,185,129,.8)}
+.badge-error{border-color:rgba(239,68,68,.3);color:rgba(239,68,68,.8)}
+
+.cmd-actions{display:flex;gap:8px;flex-wrap:wrap}
+.copy-btn{
+  appearance:none;border:var(--b);background:transparent;
+  color:var(--white);font-family:var(--f-mono);font-size:.68rem;
+  padding:6px 10px;border-radius:var(--r-sm);cursor:pointer;
+  transition:background .18s ease,border-color .18s ease,color .18s ease
+}
+.copy-btn:hover{
+  background:rgba(109,93,252,.12); /* aiViolet tint */
+  border-color:var(--violet);
+  color:var(--violet)
+}
+.copy-btn.copied{
+  background:rgba(0,212,255,.10); /* sentraCyan tint */
+  border-color:var(--cyan);
+  color:var(--cyan)
+}
+
+footer{margin-top:48px;padding-top:18px;border-top:var(--b);display:flex;align-items:center;justify-content:center;gap:10px}
+footer img{display:block;width:18px;height:18px;opacity:.5}
+footer p{font-size:.7rem;color:rgba(160,160,162,.45)}
+
+@media(max-width:700px){table{font-size:.72rem}td:first-child{font-size:.68rem}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Classy — Codex Skills Reference</h1>
+<div class="sub">Abyss Monorepo · Codex Workflow · 2026</div>
+
+<!-- 01 Core Workflow -->
+<div class="sec">
+<h2>01 · Core Workflow</h2>
+<div class="desc">Urutan default eksekusi Classy — selalu mulai dari sini.</div>
+<table>
+<thead><tr><th>Skill</th><th>Fungsi</th><th>Kategori</th></tr></thead>
+<tbody>
+<tr>
+  <td>$classy-using</td>
+  <td>Reset ke baseline Classy — pilih mode yang tepat sebelum mulai, atau saat eksekusi mulai menyimpang</td>
+  <td><span class="badge badge-core">Core</span></td>
+</tr>
+<tr>
+  <td>$classy-brainstorming</td>
+  <td>Frame masalah sebelum menyelesaikannya — clarify tujuan nyata, surface constraints, timbang 2-3 pendekatan</td>
+  <td><span class="badge badge-core">Core</span></td>
+</tr>
+<tr>
+  <td>$classy-plan</td>
+  <td>Ubah arah yang sudah disepakati menjadi rencana implementasi terurut, executable, dengan rollback</td>
+  <td><span class="badge badge-core">Core</span></td>
+</tr>
+<tr>
+  <td>$classy-implement</td>
+  <td>Eksekusi plan dalam delta kecil yang reviewable — verifikasi dekat setiap perubahan</td>
+  <td><span class="badge badge-core">Core</span></td>
+</tr>
+<tr>
+  <td>$classy-verify</td>
+  <td>Hasilkan bukti konkret bahwa perubahan bekerja — test, build, typecheck, lint, smoke run</td>
+  <td><span class="badge badge-core">Core</span></td>
+</tr>
+<tr>
+  <td>$classy-finish</td>
+  <td>Tutup task secara jujur — state readiness, list cleanup, nama handoff items, berikan sinyal READY</td>
+  <td><span class="badge badge-core">Core</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- 02 Review & Kolaborasi -->
+<div class="sec">
+<h2>02 · Review &amp; Kolaborasi</h2>
+<div class="desc">Proses feedback masuk dan paket hasil kerja untuk review eksternal.</div>
+<table>
+<thead><tr><th>Skill</th><th>Fungsi</th><th>Kategori</th></tr></thead>
+<tbody>
+<tr>
+  <td>$classy-review-in</td>
+  <td>Proses feedback review masuk secara kritis — evaluasi teknis tiap item, push-back saat reviewer salah</td>
+  <td><span class="badge badge-review">Review</span></td>
+</tr>
+<tr>
+  <td>$classy-review-out</td>
+  <td>Paket hasil kerja terverifikasi untuk review eksternal — PR description, demo summary, high signal-to-noise</td>
+  <td><span class="badge badge-review">Review</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- 03 Push Readiness -->
+<div class="sec">
+<h2>03 · Push Readiness</h2>
+<div class="desc">Persiapan sebelum push ke GitHub — secret audit, hygiene, dan readiness report.</div>
+<table>
+<thead><tr><th>Skill</th><th>Fungsi</th><th>Kategori</th></tr></thead>
+<tbody>
+<tr>
+  <td>$classy-push</td>
+  <td>Siapkan repo untuk push GitHub yang profesional — secret checks, repo hygiene, GO / NO-GO report</td>
+  <td><span class="badge badge-push">Push</span></td>
+</tr>
+<tr>
+  <td>$classy-preppush</td>
+  <td>Push-readiness review sebelum mengirim perubahan penting ke GitHub — 15 required checks</td>
+  <td><span class="badge badge-push">Push</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- 04 Design & Build -->
+<div class="sec">
+<h2>04 · Design &amp; Build</h2>
+<div class="desc">Tools untuk UI, browser automation, dan PDF handling.</div>
+<table>
+<thead><tr><th>Skill</th><th>Fungsi</th><th>Kategori</th></tr></thead>
+<tbody>
+<tr>
+  <td>$classy-design</td>
+  <td>Build komponen Sentra Healthcare production-ready — Clinical Aura design system, dark premium, neumorphism</td>
+  <td><span class="badge badge-design">Design</span></td>
+</tr>
+<tr>
+  <td>$classy-playwright</td>
+  <td>Browser automation CLI — navigasi, form, screenshot, scraping, testing web app, Electron desktop</td>
+  <td><span class="badge badge-design">Build</span></td>
+</tr>
+<tr>
+  <td>$classy-pdf</td>
+  <td>PDF handling — read, extract, parse, dan generate dokumen PDF dalam pipeline agent</td>
+  <td><span class="badge badge-design">Build</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- 05 Code Health -->
+<div class="sec">
+<h2>05 · Code Health</h2>
+<div class="desc">Simplifikasi, cleanup, audit, dan modernisasi codebase.</div>
+<table>
+<thead><tr><th>Skill</th><th>Fungsi</th><th>Kategori</th></tr></thead>
+<tbody>
+<tr>
+  <td>$classy-simplify</td>
+  <td>Sederhanakan plan, arsitektur, dokumen, atau workflow kompleks menjadi next action yang jelas</td>
+  <td><span class="badge badge-health">Health</span></td>
+</tr>
+<tr>
+  <td>$classy-cleanup</td>
+  <td>Audit-first review file orphan, stale, duplikat, atau generated — tanpa menghapus apapun dulu</td>
+  <td><span class="badge badge-health">Health</span></td>
+</tr>
+<tr>
+  <td>$classy-audit</td>
+  <td>Audit-only review state repo, struktur, risk, atau readiness sebelum membuat perubahan apapun</td>
+  <td><span class="badge badge-health">Health</span></td>
+</tr>
+<tr>
+  <td>$classy-html-to-modern-stack</td>
+  <td>Konversi HTML template ke Next.js 16 + React 19 + Radix UI — pixel-perfect, tanpa mengubah visual</td>
+  <td><span class="badge badge-health">Health</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- 06 Error Handling -->
+<div class="sec">
+<h2>06 · Error Handling</h2>
+<div class="desc">Recovery strategy untuk AI agent failures dan agentic system fault tolerance.</div>
+<table>
+<thead><tr><th>Skill</th><th>Fungsi</th><th>Kategori</th></tr></thead>
+<tbody>
+<tr>
+  <td>$classy-agent-error</td>
+  <td>Diagnose, handle, dan prevent recurring AI agent failures — Reflection Pattern, Ralph Loop, Circuit Breaker</td>
+  <td><span class="badge badge-error">Error</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- 07 Quick Reference -->
+<div class="sec">
+<h2>07 · Quick Reference</h2>
+<div class="desc">Copy commands dan prompts langsung ke Codex. Hover = violet (CTA), Copied = cyan (active).</div>
+<table>
+<thead><tr><th>Skill</th><th>Kapan dipakai</th><th>Actions</th></tr></thead>
+<tbody>
+<tr>
+  <td>$classy-using</td>
+  <td>Task baru dimulai atau drift terdeteksi.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-using">Copy</button>
+    <button class="copy-btn" data-copy="$classy-using&#10;&#10;Reset ke baseline Classy dan pilih skill berikutnya yang tepat.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-brainstorming</td>
+  <td>Scope tidak jelas, banyak pilihan path.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-brainstorming">Copy</button>
+    <button class="copy-btn" data-copy="$classy-brainstorming&#10;&#10;Frame masalah ini, surface constraints, dan rekomendasikan satu arah.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-plan</td>
+  <td>Arah sudah disepakati, butuh sequencing.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-plan">Copy</button>
+    <button class="copy-btn" data-copy="$classy-plan&#10;&#10;Tulis implementation plan terurut dengan verification checkpoint dan scope boundaries.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-implement</td>
+  <td>Plan sudah disetujui, saatnya eksekusi.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-implement">Copy</button>
+    <button class="copy-btn" data-copy="$classy-implement&#10;&#10;Eksekusi delta terkecil yang menyelesaikan step ini, lalu verifikasi.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-verify</td>
+  <td>Butuh bukti sebelum klaim selesai.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-verify">Copy</button>
+    <button class="copy-btn" data-copy="$classy-verify&#10;&#10;Jalankan verifikasi terkuat yang tersedia dan laporkan hasilnya.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-finish</td>
+  <td>Implementasi dan verifikasi sudah selesai.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-finish">Copy</button>
+    <button class="copy-btn" data-copy="$classy-finish&#10;&#10;Tutup task dengan evidence, scope yang berubah, dan sinyal readiness.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-review-in</td>
+  <td>Ada PR comments atau feedback eksternal masuk.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-review-in">Copy</button>
+    <button class="copy-btn" data-copy="$classy-review-in&#10;&#10;Evaluasi tiap feedback item secara teknis, decide ACCEPT / DEFER / PUSH-BACK.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-review-out</td>
+  <td>Siap kirim PR atau minta review eksternal.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-review-out">Copy</button>
+    <button class="copy-btn" data-copy="$classy-review-out&#10;&#10;Paket perubahan ini untuk review — summary, risks, gaps, dan reviewer focus areas.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-push</td>
+  <td>Mau push ke GitHub, perlu repo hygiene dulu.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-push">Copy</button>
+    <button class="copy-btn" data-copy="$classy-push&#10;&#10;Audit repo untuk GitHub push — secret scan, hygiene, GO / NO-GO.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-preppush</td>
+  <td>Review readiness sebelum push penting.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-preppush">Copy</button>
+    <button class="copy-btn" data-copy="$classy-preppush&#10;&#10;Jalankan semua 15 required checks dan hasilkan push readiness report.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-design</td>
+  <td>Buat UI komponen Sentra / Clinical Aura.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-design">Copy</button>
+    <button class="copy-btn" data-copy="$classy-design&#10;&#10;Buat komponen ini mengikuti Sentra Clinical Aura design system.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-simplify</td>
+  <td>Plan atau arsitektur terlalu kompleks.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-simplify">Copy</button>
+    <button class="copy-btn" data-copy="$classy-simplify&#10;&#10;Sederhanakan ini menjadi 3-5 bagian dan satu next step yang jelas.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-audit</td>
+  <td>Perlu memahami state repo sebelum mengubah apapun.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-audit">Copy</button>
+    <button class="copy-btn" data-copy="$classy-audit&#10;&#10;Audit area ini — struktur, risk, dan readiness, tanpa mengubah apapun.">Copy + Prompt</button>
+  </div></td>
+</tr>
+<tr>
+  <td>$classy-agent-error</td>
+  <td>Agent mengalami recurring failure atau stuck.</td>
+  <td><div class="cmd-actions">
+    <button class="copy-btn" data-copy="$classy-agent-error">Copy</button>
+    <button class="copy-btn" data-copy="$classy-agent-error&#10;&#10;Diagnose failure ini — kategorikan, apply recovery strategy yang tepat.">Copy + Prompt</button>
+  </div></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<footer>
+  <img src="./logos/sentra-icon.svg" alt="Sentra AI">
+  <p>Sentra Artificial Intelligence 2026 · Codex Skills · Space Grotesk · Inter · JetBrains Mono</p>
+</footer>
+
+</div>
+<script>
+const copyButtons = document.querySelectorAll('.copy-btn');
+
+async function copyText(button) {
+  const text = button.getAttribute('data-copy') || '';
+  const originalLabel = button.textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    button.textContent = 'Copied';
+    button.classList.add('copied');
+    window.setTimeout(() => {
+      button.textContent = originalLabel;
+      button.classList.remove('copied');
+    }, 1200);
+  } catch {
+    button.textContent = 'Failed';
+    window.setTimeout(() => {
+      button.textContent = originalLabel;
+    }, 1200);
+  }
+}
+
+copyButtons.forEach((button) => {
+  button.addEventListener('click', () => copyText(button));
+});
+</script>
+</body>
+</html>

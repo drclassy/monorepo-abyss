@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v7 — content.tsx + variants (approved direction)</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #EE2737;
+      --bg: #0a0a0b;
+      --card: #0f0f12;
+      --border: #1f1f23;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: #fafafa;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .shell { display: flex; min-height: 100vh; }
+    .side {
+      width: 200px;
+      background: #111113;
+      border-right: 1px solid var(--border);
+      padding: 16px 12px;
+      flex-shrink: 0;
+    }
+    .side .brand { font-size: 14px; font-weight: 600; padding: 8px 10px; }
+    .side a {
+      display: block;
+      padding: 8px 10px;
+      color: var(--accent);
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .top {
+      height: 48px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: #71717a;
+    }
+    .variants { display: flex; gap: 8px; align-items: center; }
+    .variants span { font-size: 13px; margin-right: 4px; }
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+    .dot.on { border-color: #fafafa; box-shadow: 0 0 0 1px #27272a; }
+    .content { max-width: 1200px; margin: 0 auto; padding: 24px; width: 100%; }
+    .head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 16px;
+    }
+    .head h1 { font-size: 22px; font-weight: 600; }
+    .next {
+      font-size: 13px;
+      color: #a1a1aa;
+      margin-top: 6px;
+      max-width: 640px;
+    }
+    .next strong { color: var(--accent); font-weight: 500; }
+    .btn {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #161618;
+      color: #fafafa;
+      cursor: pointer;
+    }
+    .space-y > * + * { margin-top: 24px; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #71717a;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+    .section-title svg { width: 16px; height: 16px; }
+    .item-title { font-size: 15px; font-weight: 500; color: #d4d4d8; }
+    .item-sub { font-size: 13px; font-weight: 500; color: #71717a; }
+    .item-accent { font-size: 13px; font-weight: 500; color: var(--accent); }
+    .op-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(24, 24, 27, 0.5);
+      border: 1px solid #27272a;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .op-row:last-child { margin-bottom: 0; }
+    .op-row:hover { border-color: color-mix(in srgb, var(--accent) 40%, #3f3f46); }
+    .status-btn {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #18181b;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: #e4e4e7;
+      border: 1px solid #d4d4d8;
+      flex-shrink: 0;
+    }
+    .status-btn.warn { background: #422006; color: #fbbf24; border-color: #713f12; }
+    .status-btn.crit { background: #450a0a; color: #fca5a5; border-color: #7f1d1d; }
+    .api-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #27272a;
+    }
+    .api-row:last-child { border-bottom: none; }
+    .api-through {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #71717a;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .stat-box {
+      padding: 16px;
+      border-radius: 8px;
+      background: rgba(24, 24, 27, 0.5);
+      border: 1px solid #27272a;
+    }
+    .stat-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: #71717a;
+    }
+    .stat-value {
+      font-size: 21px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th {
+      font-size: 13px;
+      font-weight: 500;
+      color: #71717a;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #27272a;
+    }
+    td {
+      padding: 16px 8px 16px 0;
+      border-bottom: 1px solid #27272a;
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    .td-center { text-align: center; }
+    .td-right { text-align: right; }
+    .open-btn {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 4px;
+      background: #e4e4e7;
+      color: #18181b;
+      border: none;
+      opacity: 0;
+      cursor: pointer;
+    }
+    tr:hover .open-btn { opacity: 1; }
+    .tag {
+      font-size: 11px;
+      color: #52525b;
+      margin-top: 16px;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      .grid-2, .stat-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="brand">PORTAL</div>
+      <a href="#">Dashboard</a>
+    </aside>
+    <div class="main">
+      <div class="top">
+        <span>Mission control</span>
+        <div class="variants">
+          <span>Accent</span>
+          <button type="button" class="dot on" data-v="red" style="background:#EE2737" title="Signal"></button>
+          <button type="button" class="dot" data-v="cyan" style="background:#00D4FF" title="Sentra"></button>
+          <button type="button" class="dot" data-v="violet" style="background:#A855F7" title="Pulse"></button>
+          <button type="button" class="dot" data-v="emerald" style="background:#10B981" title="Clinical"></button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="head">
+          <div>
+            <h1>Mission control</h1>
+            <p class="next"><strong>Next:</strong> wire UNICOM health into summary API · refresh 30s</p>
+          </div>
+          <button type="button" class="btn">Refresh</button>
+        </div>
+
+        <div class="space-y">
+          <div class="grid-2">
+            <div class="card">
+              <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+                Monorepo systems
+              </h2>
+              <div class="op-row"><div><h4 class="item-title">Agent SSOT</h4><p class="item-accent">0.3h · HANDOFF</p></div><span class="status-btn">Fresh</span></div>
+              <div class="op-row"><div><h4 class="item-title">Abyss CLI</h4><p class="item-accent">2 RISK · main</p></div><span class="status-btn crit">Risk</span></div>
+              <div class="op-row"><div><h4 class="item-title">Knowledge</h4><p class="item-accent">eval gate open</p></div><span class="status-btn warn">Watch</span></div>
+              <div class="op-row"><div><h4 class="item-title">UNICOM</h4><p class="item-accent">3 agents</p></div><span class="status-btn warn">Degraded</span></div>
+              <div class="op-row"><div><h4 class="item-title">Context</h4><p class="item-accent">handbook local</p></div><span class="status-btn">Local</span></div>
+              <div class="op-row"><div><h4 class="item-title">Prompt</h4><p class="item-accent">audit tail</p></div><span class="status-btn">Pass</span></div>
+            </div>
+            <div class="card">
+              <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                Integration gates
+              </h2>
+              <div class="api-row"><div><h4 class="item-title">Verify gate</h4><p class="item-accent">142ms</p></div><span class="api-through">Pass</span></div>
+              <div class="api-row"><div><h4 class="item-title">UNICOM /health</h4><p class="item-accent">28ms</p></div><span class="api-through">Degraded</span></div>
+              <div class="api-row"><div><h4 class="item-title">Knowledge registry</h4><p class="item-accent">5ms index</p></div><span class="api-through">Watch</span></div>
+              <div class="api-row"><div><h4 class="item-title">SSOT sync</h4><p class="item-accent">Ollama path</p></div><span class="api-through">Active</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+              Summary capacity
+            </h2>
+            <div class="stat-grid">
+              <div class="stat-box"><span class="stat-label">SSOT age</span><span class="stat-value">0.3h</span><p class="item-accent" style="margin-top:4px">HANDOFF</p></div>
+              <div class="stat-box"><span class="stat-label">UNICOM</span><span class="stat-value">3</span><p class="item-accent" style="margin-top:4px">agents</p></div>
+              <div class="stat-box"><span class="stat-label">Dirty risk</span><span class="stat-value">2</span><p class="item-accent" style="margin-top:4px">paths</p></div>
+              <div class="stat-box"><span class="stat-label">Verify</span><span class="stat-value">OK</span><p class="item-accent" style="margin-top:4px">gate</p></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              Recent activity
+            </h2>
+            <table>
+              <thead>
+                <tr><th>Source</th><th>Task</th><th class="td-center">Age</th><th class="td-right">State</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="item-title">Agent SSOT</td>
+                  <td class="item-sub">Next: wire UNICOM health to summary API</td>
+                  <td class="item-accent td-center">now</td>
+                  <td class="td-right"><button type="button" class="open-btn">Open</button></td>
+                </tr>
+                <tr>
+                  <td class="item-title">Abyss CLI</td>
+                  <td class="item-sub">Classify 2 dirty RISK paths</td>
+                  <td class="item-accent td-center">2m</td>
+                  <td class="td-right"><button type="button" class="open-btn">Open</button></td>
+                </tr>
+                <tr>
+                  <td class="item-title">Knowledge</td>
+                  <td class="item-sub">Registry readiness not_ready</td>
+                  <td class="item-accent td-center">1h</td>
+                  <td class="td-right"><button type="button" class="open-btn">Open</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="tag">v7 · v4/content.tsx only · no Letta · 6 systems once · yes → React</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    const accents = { red: '#EE2737', cyan: '#00D4FF', violet: '#A855F7', emerald: '#10B981' };
+    document.querySelectorAll('.dot').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.dot').forEach((d) => d.classList.remove('on'));
+        btn.classList.add('on');
+        document.documentElement.style.setProperty('--accent', accents[btn.dataset.v]);
+      });
+    });
+  </script>
+</body>
+</html>

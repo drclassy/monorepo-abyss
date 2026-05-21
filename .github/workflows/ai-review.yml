@@ -1,0 +1,21 @@
+# Extension slot for optional future PR review automation.
+# Disabled by design: no Gemini, Vertex, GCP WIF, or Google-hosted AI actions.
+# Chief may replace this with a neutral provider-specific workflow after explicit approval.
+name: AI Review Placeholder
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  placeholder:
+    name: AI Review / disabled slot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reserved for future neutral review lane
+        run: |
+          echo "This workflow intentionally performs no AI calls."
+          echo "Use branch protection + required checks (CI, Security Scan, Doc Guard) for merge safety."
+          echo "To enable a future lane: add a new job here with explicit credentials and vendor-neutral tooling only."

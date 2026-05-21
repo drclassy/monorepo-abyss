@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classy — Cursor Best Practices (2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#000000;--white:#FDFDFD;--graphite:#111318;--slate:#2B2F38;--silver:#A0A0A2;
+  --f-disp:'Space Grotesk','Inter','IBM Plex Sans',Arial,sans-serif;
+  --f-body:'Inter','IBM Plex Sans',Arial,sans-serif;
+  --f-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+  --r-lg:16px;--r-md:12px;--r-sm:8px;--r-pill:999px;
+  --b:1px solid var(--slate);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f-body);background:var(--black);color:var(--white);line-height:1.7;padding:20px;max-width:1200px;margin:0 auto;-webkit-font-smoothing:antialiased}
+
+header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:var(--b)}
+header .logo{font-family:var(--f-disp);font-size:1.2rem;font-weight:700;letter-spacing:-.03em;color:var(--white)}
+header .logo em{color:var(--silver);font-style:normal}
+header .tag{font-family:var(--f-mono);font-size:.65rem;color:var(--silver);text-transform:uppercase;letter-spacing:1px}
+header .ver{margin-left:auto;font-family:var(--f-mono);font-size:.65rem;color:var(--silver)}
+
+.tabs{display:flex;flex-wrap:wrap;gap:2px;margin-bottom:20px;border-bottom:var(--b)}
+.tab{padding:8px 14px;font-family:var(--f-mono);font-size:.7rem;color:var(--silver);cursor:pointer;border:1px solid transparent;border-bottom:none;border-radius:6px 6px 0 0;text-transform:uppercase;letter-spacing:.5px;transition:all .15s}
+.tab:hover{color:var(--white);background:rgba(255,255,255,.03)}
+.tab.active{color:var(--white);border-color:var(--slate);background:var(--graphite);border-bottom-color:var(--graphite);margin-bottom:-1px}
+
+.section{display:none;margin-bottom:32px}
+.section.active{display:block}
+.label{font-family:var(--f-mono);font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--silver);margin-bottom:12px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid-1{grid-template-columns:1fr}
+
+.card{background:var(--graphite);border:var(--b);border-radius:var(--r-md);padding:14px 16px;transition:border-color .2s}
+.card:hover{border-color:rgba(160,160,162,.35)}
+.card-title{font-family:var(--f-disp);font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card-title .icon{font-family:var(--f-mono);font-size:.7rem;color:var(--silver);flex-shrink:0}
+.card-body{font-size:.78rem;color:rgba(253,253,253,.75);line-height:1.6}
+
+.kv{display:flex;gap:8px;padding:3px 0;font-size:.76rem}
+.kv-k{font-family:var(--f-mono);color:var(--white);flex-shrink:0;min-width:70px;font-size:.68rem}
+.kv-v{color:rgba(253,253,253,.72)}
+
+.do-dont{margin-top:8px;padding-top:8px;border-top:1px solid rgba(43,47,56,.4);font-size:.72rem}
+.do{color:rgba(253,253,253,.65);margin-bottom:4px}
+.do::before{content:"+ ";color:var(--silver)}
+.dont{color:rgba(160,160,162,.5)}
+.dont::before{content:"- ";color:rgba(160,160,162,.4)}
+
+.cmd{font-family:var(--f-mono);font-size:.7rem;color:var(--silver);background:rgba(255,255,255,.04);padding:1px 6px;border-radius:3px;display:inline-block}
+.hi{color:var(--white);font-weight:500}
+.red{color:rgba(253,253,253,.5)}
+
+.ref-list{margin-top:8px}
+.ref-list a{display:block;font-family:var(--f-mono);font-size:.68rem;color:var(--silver);text-decoration:none;padding:2px 0;transition:color .15s}
+.ref-list a:hover{color:var(--white)}
+
+footer{display:flex;justify-content:space-between;margin-top:40px;padding-top:14px;border-top:var(--b);font-family:var(--f-mono);font-size:.62rem;color:rgba(160,160,162,.4)}
+
+code{font-family:var(--f-mono);font-size:.68rem;color:rgba(253,253,253,.8);background:rgba(255,255,255,.04);padding:8px 12px;border-radius:4px;display:block;margin-top:6px;border:1px solid rgba(43,47,56,.3);overflow-x:auto}
+.y{color:var(--silver)}.g{color:rgba(253,253,253,.7)}.d{color:rgba(160,160,162,.5)}
+
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Classy<em>.</em></div>
+  <div class="tag">CURSOR — BEST PRACTICES</div>
+  <div class="ver">MEI 2026</div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" data-tab="rules" onclick="switchTab('rules')">Rules</div>
+  <div class="tab" data-tab="context" onclick="switchTab('context')">Context</div>
+  <div class="tab" data-tab="mcp" onclick="switchTab('mcp')">MCP</div>
+  <div class="tab" data-tab="skills" onclick="switchTab('skills')">Skills</div>
+  <div class="tab" data-tab="agent" onclick="switchTab('agent')">Agent</div>
+  <div class="tab" data-tab="hooks" onclick="switchTab('hooks')">Hooks</div>
+  <div class="tab" data-tab="workflow" onclick="switchTab('workflow')">Workflow</div>
+  <div class="tab" data-tab="refs" onclick="switchTab('refs')">Rujukan</div>
+</div>
+
+<!-- TAB: RULES -->
+<div class="section active" id="tab-rules">
+  <div class="label">Rules &amp; Hierarki (cursor.com/docs)</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-title"><span class="icon">1</span> Hierarki &amp; Benturan</div>
+      <div class="card-body">
+        Urutan: <span class="hi">Team Rules</span> - <span class="hi">Project Rules</span> (<span class="cmd">.cursor/rules/</span>) - <span class="hi">User Rules</span> (Settings). Konflik: sumber lebih tinggi biasanya menang. File legacy <span class="cmd">.cursorrules</span> masih didukung; disarankan migrasi ke <span class="cmd">.cursor/rules/*.mdc</span> agar dipecah per domain dengan metadata aktivasi.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">2</span> Empat Mode Aktivasi</div>
+      <div class="card-body">
+        <div class="kv"><span class="kv-k">Always</span><span class="kv-v"><span class="cmd">alwaysApply: true</span> - selalu dimasukkan konteks.</span></div>
+        <div class="kv"><span class="kv-k">Per file</span><span class="kv-v"><span class="cmd">globs</span> - otomatis saat file cocok.</span></div>
+        <div class="kv"><span class="kv-k">Agent</span><span class="kv-v"><span class="cmd">description</span> - Agent memutuskan relevansi.</span></div>
+        <div class="kv"><span class="kv-k">Manual</span><span class="kv-v">Tanpa globs + tanpa always - hanya <span class="cmd">@nama-rule</span>.</span></div>
+        <div class="do-dont">
+          <div class="do">Satu rule = satu concern; deskripsi jelas untuk mode Agent</div>
+          <div class="dont">Megarule ratusan baris tanpa glob</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">3</span> AGENTS.md vs .mdc</div>
+      <div class="card-body">
+        <span class="cmd">AGENTS.md</span> di root (atau subfolder): Markdown polos, cocok untuk kontrak singkat tim. <span class="cmd">.cursor/rules/*.mdc</span>: frontmatter YAML + isi. Perintah: <span class="cmd">/create-rule</span> dari Agent untuk scaffold.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">4</span> Team / Enterprise</div>
+      <div class="card-body">Admin dapat memaksa rule organisasi dari dashboard Cursor. Team Rules bisa teks bebas + opsi glob; pastikan di dokumentasi versi Cursor yang dipakai tim.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: CONTEXT -->
+<div class="section" id="tab-context">
+  <div class="label">Context, @, Indexing</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-title"><span class="icon">@</span> Referensi Konteks</div>
+      <div class="card-body">Gunakan <span class="cmd">@file</span>, <span class="cmd">@folder</span>, simbol codebase/docs sesuai UI Cursor. Hindari menarik folder besar yang tidak relevan -- hemat token.</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">!</span> .cursorignore</div>
+      <div class="card-body">Sintaks seperti <span class="cmd">.gitignore</span>. Membatasi akses fitur AI (Tab, Agent, @) dan indexing semantic. <span class="red">Batasan: terminal Agent dan tool MCP tidak dijamin terblokir oleh .cursorignore.</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">~</span> .cursorindexingignore</div>
+      <div class="card-body">Hanya mengecualikan dari indexing / codebase search; file bisa tetap dibaca Agent bila diminta eksplisit. Cocok untuk generated besar.</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">*</span> Index &amp; Monorepo</div>
+      <div class="card-body">Refresh: <span class="hi">Settings > Features > Codebase Indexing</span>. Opsional: <span class="hi">Hierarchical Cursor Ignore</span> untuk parent directory di monorepo besar.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: MCP -->
+<div class="section" id="tab-mcp">
+  <div class="label">Model Context Protocol</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-title"><span class="icon">M</span> Konfigurasi</div>
+      <div class="card-body">
+        <span class="cmd">.cursor/mcp.json</span> - per proyek. <span class="cmd">~/.cursor/mcp.json</span> - global. Cursor mendukung variabel di field <span class="cmd">command</span>, <span class="cmd">args</span>, <span class="cmd">env</span>, <span class="cmd">url</span>, <span class="cmd">headers</span>.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">T</span> Transport &amp; Kemampuan</div>
+      <div class="card-body"><span class="hi">stdio</span> (proses lokal) dan <span class="hi">HTTP/streamable</span> untuk server remote. Protokol: <span class="hi">Tools</span>, <span class="hi">Prompts</span>, <span class="hi">Resources</span>.</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">A</span> Pakai Aman di Agent</div>
+      <div class="card-body">Default: Agent minta persetujuan sebelum MCP tool. <span class="hi">Auto-run</span> bisa diaktifkan dengan hati-hati via <span class="cmd">~/.cursor/permissions.json</span>. OAuth: marketplace / plugin.</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">+</span> Praktik</div>
+      <div class="card-body"><div class="do">Pasang dari Marketplace; uji di project kecil dulu</div><div class="dont">JSON mcp.json rusak memutus seluruh server</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: SKILLS -->
+<div class="section" id="tab-skills">
+  <div class="label">Agent Skills (SKILL.md)</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-title"><span class="icon">S</span> Lokasi Discovery</div>
+      <div class="card-body">Proyek: <span class="cmd">.cursor/skills/</span>, <span class="cmd">.agents/skills/</span>. Global: <span class="cmd">~/.cursor/skills/</span>, <span class="cmd">~/.agents/skills/</span>. Juga memuat dari <span class="cmd">.claude/skills/</span>, <span class="cmd">.codex/skills/</span>.</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">F</span> Frontmatter Wajib</div>
+      <div class="card-body"><span class="cmd">name</span> - identifikator. <span class="cmd">description</span> - kapan skill dipakai. Opsional: <span class="cmd">disable-model-invocation: true</span> - hanya lewat perintah manual.</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">R</span> Rules vs Skills</div>
+      <div class="card-body"><div class="kv"><span class="kv-k">Rules</span><span class="kv-v">Konvensi ringkas, sering always/glob.</span></div><div class="kv"><span class="kv-k">Skills</span><span class="kv-v">Workflow multi-langkah; konteks penuh saat relevan.</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">M</span> Migrasi</div>
+      <div class="card-body"><span class="cmd">/create-skill</span> - wizard skill baru. <span class="cmd">/migrate-to-skills</span> (Cursor 2.4+): konversi rule Apply Intelligently ke skill.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: AGENT -->
+<div class="section" id="tab-agent">
+  <div class="label">Agent, Plan, Izin</div>
+  <div class="grid">
+    <div class="card"><div class="card-title"><span class="icon">P</span> Plan Mode</div><div class="card-body">Untuk refactor besar atau banyak file: aktifkan perencanaan sebelum eksekusi agar langkah terlihat dan bisa dikoreksi awal.</div></div>
+    <div class="card"><div class="card-title"><span class="icon">!</span> Persetujuan &amp; Auto-run</div><div class="card-body">Tinjau diff sebelum menyetujui. Auto-run cocok hanya untuk workspace terpercaya dan tool set sempit.</div></div>
+    <div class="card"><div class="card-title"><span class="icon">E</span> Extension API (MCP)</div><div class="card-body">Registrasi server MCP programatis via <span class="cmd">vscode.cursor.mcp.registerServer()</span>.</div></div>
+    <div class="card"><div class="card-title"><span class="icon">+</span> Checklist</div><div class="card-body"><div class="do">Rule terpisah + skill untuk prosedur berulang</div><div class="dont">Menyimpan secret di rule/skill yang di-commit</div></div></div>
+  </div>
+</div>
+
+<!-- TAB: HOOKS -->
+<div class="section" id="tab-hooks">
+  <div class="label">Hooks (Agent Lifecycle)</div>
+  <div class="grid">
+    <div class="card"><div class="card-title"><span class="icon">H</span> Lokasi File</div><div class="card-body">Proyek: <span class="cmd">.cursor/hooks.json</span>. User: <span class="cmd">~/.cursor/hooks.json</span>. Cursor memuat ulang saat file disimpan.</div></div>
+    <div class="card"><div class="card-title"><span class="icon">C</span> Bentuk Minimal</div><div class="card-body"><span class="cmd">version: 1</span>, daftar event ke array definisi hook dengan <span class="cmd">command</span>, <span class="cmd">matcher</span>, timeout.</div></div>
+    <div class="card"><div class="card-title"><span class="icon">E</span> Event Agent vs Tab</div><div class="card-body">Agent: <span class="cmd">sessionStart/End</span>, <span class="cmd">preToolUse</span>, <span class="cmd">postToolUse</span>, <span class="cmd">beforeShellExecution</span>, dll. Tab: <span class="cmd">beforeTabFileRead</span>, <span class="cmd">afterTabFileEdit</span>.</div></div>
+    <div class="card"><div class="card-title"><span class="icon">+</span> Praktik</div><div class="card-body"><div class="do">Skrip executable + matcher untuk batasi ke tool spesifik</div><div class="dont">Hook sebagai satu-satunya lapisan keamanan</div></div></div>
+  </div>
+</div>
+
+<!-- TAB: WORKFLOW -->
+<div class="section" id="tab-workflow">
+  <div class="label">Urutan Workflow Cursor — Best Practice 2026</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-title"><span class="icon">1</span> Setup Awal (sekali doang)</div>
+      <div class="card-body">
+        Install Cursor, login Anysphere, aktifkan <span class="hi">Privacy Mode</span> di <span class="cmd">Settings &gt; Privacy</span>. Pilih default model (Opus 4.7 untuk reasoning, Sonnet 4.6 untuk speed). Set theme + font Nerd Font.
+        <div class="do-dont">
+          <div class="do">Privacy Mode ON sebelum buka repo healthcare</div>
+          <div class="dont">Auto-update Cursor saat sedang ada session aktif</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">2</span> Project Init &amp; Rules</div>
+      <div class="card-body">
+        Buka repo. Paste <span class="hi">User Rules</span> global (<span class="cmd">~/.cursor/USER_RULES.md</span>) ke <span class="cmd">Settings &gt; Rules</span>. Pastikan <span class="cmd">.cursor/rules/*.mdc</span> repo ke-load otomatis. Konflik: User Rules + Project Rules digabung — taruh language lock di global.
+        <div class="do-dont">
+          <div class="do">Numerik prefix (00-, 10-, 20-) untuk load order</div>
+          <div class="dont">Megarule 500+ baris tanpa glob</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">3</span> Context Hygiene</div>
+      <div class="card-body">
+        Set <span class="cmd">.cursorignore</span> (block AI access penuh) + <span class="cmd">.cursorindexingignore</span> (skip index, masih bisa @ref). Trigger <span class="hi">Codebase Indexing</span> sampai 100%. Untuk monorepo besar: aktifkan <span class="hi">Hierarchical Cursor Ignore</span>.
+        <div class="do-dont">
+          <div class="do">Exclude apps yang tidak aktif untuk fokus model</div>
+          <div class="dont">Indeks <span class="cmd">node_modules</span> atau <span class="cmd">.next</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">4</span> MCP &amp; Plugins</div>
+      <div class="card-body">
+        Edit <span class="cmd">.mcp.json</span> repo dan <span class="cmd">~/.cursor/mcp.json</span> global. Pasang minimal: <span class="hi">context7</span> (docs lookup), <span class="hi">github</span> (issue/PR). Pakai env var untuk PAT/secret — bukan plain text. Aktifkan plugin Marketplace yang relevan saja.
+        <div class="do-dont">
+          <div class="do">PAT via <span class="cmd">${'$'}{GITHUB_PERSONAL_ACCESS_TOKEN}</span> env var</div>
+          <div class="dont">Commit <span class="cmd">.mcp.json</span> berisi token plain</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">5</span> Skills, Commands, Notepads</div>
+      <div class="card-body">
+        Bootstrap reusable: <span class="cmd">.cursor/skills/</span> (workflow multi-langkah), <span class="cmd">.cursor/commands/</span> (slash command custom), <span class="cmd">.cursor/notepads/</span> (template untuk @notepad). Pakai <span class="cmd">/create-skill</span> wizard untuk scaffold.
+        <div class="do-dont">
+          <div class="do">Satu skill = satu tugas spesifik</div>
+          <div class="dont">Hapal command — pakai dropdown / palette</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">6</span> Daily Loop — Plan &gt; Compose &gt; Diff</div>
+      <div class="card-body">
+        Mulai task: <span class="hi">Plan Mode</span> dulu untuk multi-file refactor. Composer: pakai <span class="cmd">@codebase</span> awal, lalu <span class="cmd">@filename</span> spesifik. Setiap diff: review sebelum accept. Loop &gt; 3 turn buntu? Restart conversation dengan ringkasan baru.
+        <div class="do-dont">
+          <div class="do">Plan Mode untuk Class B/C work</div>
+          <div class="dont">Auto-accept all tanpa baca diff</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">7</span> Pre-Commit Gate</div>
+      <div class="card-body">
+        <span class="cmd">husky</span> + <span class="cmd">lint-staged</span> jalan otomatis sebelum commit: secret scan (PAT, API key), PHI scan (NIK, BPJS, phone), lint-fix file staged saja. Bypass darurat: <span class="cmd">--no-verify</span> (tidak direkomendasikan).
+        <code>FAQ bootstrap:
+pnpm install --package-import-method=copy
+git config core.hooksPath .husky/_
+pnpm exec lint-staged --version</code>
+        <div class="do-dont">
+          <div class="do">Di volume <span class="cmd">V:</span>, pakai <span class="cmd">--package-import-method=copy</span> bila install gagal karena reflink / copy-on-write</div>
+          <div class="do">Kalau hook tidak terpanggil, cek <span class="cmd">git config core.hooksPath</span> harus menunjuk ke <span class="cmd">.husky/_</span></div>
+          <div class="do">Test fixture pakai data synthetic (NIK <span class="cmd">0000...</span>)</div>
+          <div class="dont">Commit <span class="cmd">.env</span> walau gitignored sekalipun</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">8</span> Self-Review &amp; Healthcare Check</div>
+      <div class="card-body">
+        Sebelum PR: panggil <span class="cmd">/healthcare-review</span> (PHI + audit + FHIR + auth). Run <span class="cmd">pnpm security:primary-healthcare</span>. Pakai <span class="hi">code-reviewer</span> sub-agent untuk diff review independen. Gate: critical 0, warning &lt; 3.
+        <div class="do-dont">
+          <div class="do">Sub-agent review sebelum minta human review</div>
+          <div class="dont">Skip healthcare-review untuk endpoint patient data</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">9</span> Handoff &amp; Memory Update</div>
+      <div class="card-body">
+        Tulis session log <span class="cmd">.agent/sessions/YYYY-MM-DD.md</span>. Update <span class="cmd">.agent/HANDOFF.md</span> + <span class="cmd">PROGRESS.md</span>. Commit dengan trailer: <span class="cmd">Agent: Claude · Phase: Execution · Handoff: &lt;id&gt;</span>. Tutup window — hot exit preserve state.
+        <div class="do-dont">
+          <div class="do">Conventional Commits + scope (healthcare/orchestrator/dll)</div>
+          <div class="dont">Force push ke main / branch protected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">+</span> Loop Mingguan</div>
+      <div class="card-body">
+        Audit <span class="cmd">.cursor/rules/</span> — hapus rule deprecated. Update <span class="cmd">.agent/DECISIONS.md</span> dari incident minggu lalu. Rotasi PAT &amp; secret. Cek update Cursor + plugin (manual mode supaya tidak surprise). Backup config ke private dotfiles repo.
+        <div class="do-dont">
+          <div class="do">Rotasi PAT minimal tiap 90 hari</div>
+          <div class="dont">Auto-update saat sedang ada session aktif</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: REFS -->
+<div class="section" id="tab-refs">
+  <div class="label">Sumber Resmi &amp; Handbook Classy</div>
+  <div class="grid grid-1">
+    <div class="card">
+      <div class="card-title"><span class="icon">-></span> Dokumentasi Cursor</div>
+      <div class="card-body">
+        Disusun dari topik umum dokumentasi Cursor 2026. Verifikasi di situs resmi.
+        <div class="ref-list">
+          <a href="https://cursor.com/docs/context/rules" target="_blank" rel="noopener">cursor.com/docs/context/rules</a>
+          <a href="https://cursor.com/docs/mcp" target="_blank" rel="noopener">cursor.com/docs/mcp</a>
+          <a href="https://cursor.com/docs/skills" target="_blank" rel="noopener">cursor.com/docs/skills</a>
+          <a href="https://cursor.com/docs/hooks" target="_blank" rel="noopener">cursor.com/docs/hooks</a>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">@</span> Handbook Lokal</div>
+      <div class="card-body">
+        <span class="cmd">classy.html</span> — workflow utama.<br>
+        <span class="cmd">classy-commands.html</span> — referensi perintah.<br>
+        <span class="cmd">classy-openrouter.html</span> — tips gabungan Claude Code x Cursor.
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>docs/handbook/classy-cursor.html</span>
+  <span>Sentra Artificial Intelligence 2026</span>
+</footer>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t.getAttribute('data-tab')===id)})
+  document.querySelectorAll('.section').forEach(function(s){s.classList.toggle('active',s.id==='tab-'+id)})
+}
+</script>
+
+</body>
+</html>

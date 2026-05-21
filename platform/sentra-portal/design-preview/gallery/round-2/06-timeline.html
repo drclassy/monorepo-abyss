@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>06 Timeline</title>
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: #e2e8f0; padding: 40px 20px; min-height: 100vh; }
+    h1 { font-size: 16px; color: #94a3b8; margin-bottom: 40px; }
+    .track { position: relative; height: 4px; background: #334155; margin: 0 40px 60px; }
+    .track::before { content: ''; position: absolute; left: 0; right: 0; top: -30px; height: 60px; }
+    .node { position: absolute; top: -8px; transform: translateX(-50%); text-align: center; width: 80px; }
+    .dot { width: 20px; height: 20px; border-radius: 50%; margin: 0 auto 8px; border: 3px solid #0f172a; }
+    .dot.ok { background: #22c55e; }
+    .dot.warn { background: #eab308; }
+    .dot.bad { background: #ef4444; }
+    .lbl { font-size: 11px; font-weight: 600; }
+    .sub { font-size: 10px; color: #64748b; margin-top: 2px; }
+    .n1 { left: 5%; } .n2 { left: 22%; } .n3 { left: 39%; } .n4 { left: 56%; } .n5 { left: 73%; } .n6 { left: 90%; }
+    .now { margin-top: 80px; padding: 16px; background: #1e293b; border-radius: 8px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>PORTAL · pipeline timeline</h1>
+  <div class="track">
+    <div class="node n1"><div class="dot ok"></div><div class="lbl">SSOT</div><div class="sub">0.3h</div></div>
+    <div class="node n2"><div class="dot bad"></div><div class="lbl">CLI</div><div class="sub">2 risk</div></div>
+    <div class="node n3"><div class="dot warn"></div><div class="lbl">Knowledge</div><div class="sub">watch</div></div>
+    <div class="node n4"><div class="dot warn"></div><div class="lbl">UNICOM</div><div class="sub">0</div></div>
+    <div class="node n5"><div class="dot ok"></div><div class="lbl">Context</div><div class="sub">local</div></div>
+    <div class="node n6"><div class="dot ok"></div><div class="lbl">Prompt</div><div class="sub">pass</div></div>
+  </div>
+  <p class="now"><strong>Now:</strong> Wire UNICOM /health into summary API</p>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PORTAL 10 — radial hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      background: #09090b;
+      color: #fafafa;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .hub {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 24px 0;
+    }
+    .center {
+      position: absolute;
+      inset: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid #00d4ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #111318;
+    }
+    .center strong { font-size: 13px; color: #00d4ff; }
+    .center span { font-size: 11px; color: #8b919c; margin-top: 4px; }
+    .node {
+      position: absolute;
+      width: 88px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #27272a;
+      background: #111113;
+      font-size: 11px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .node b { display: block; font-size: 12px; margin-bottom: 2px; }
+    .n1 { top: 0; left: 50%; transform: translateX(-50%); }
+    .n2 { top: 18%; right: 0; }
+    .n3 { bottom: 18%; right: 0; }
+    .n4 { bottom: 0; left: 50%; transform: translateX(-50%); }
+    .n5 { bottom: 18%; left: 0; }
+    .n6 { top: 18%; left: 0; }
+    h1 { font-size: 18px; font-weight: 600; }
+    .sub { font-size: 13px; color: #71717a; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Mission control</h1>
+  <p class="sub">10 · radial hub · click node for detail</p>
+  <div class="hub">
+    <div class="center"><strong>PORTAL</strong><span>live 30s</span></div>
+    <button type="button" class="node n1"><b>SSOT</b>fresh</button>
+    <button type="button" class="node n2"><b>CLI</b>risk</button>
+    <button type="button" class="node n3"><b>Knowledge</b>watch</button>
+    <button type="button" class="node n4"><b>UNICOM</b>3</button>
+    <button type="button" class="node n5"><b>Context</b>local</button>
+    <button type="button" class="node n6"><b>Prompt</b>pass</button>
+  </div>
+  <p style="font-size:13px;color:#a1a1aa;max-width:28ch;text-align:center">next: wire UNICOM /health into summary API</p>
+</body>
+</html>

@@ -1,0 +1,56 @@
+---
+description: "Backend, API, database, Prisma, NestJS, CQRS, and healthcare validation rules."
+globs:
+  - "**/app/api/**/*.{ts,tsx}"
+  - "**/route.ts"
+  - "**/route.tsx"
+  - "apps/**/api/**/*.{ts,tsx}"
+  - "packages/**/prisma/**/*"
+  - "**/schema.prisma"
+  - "platform/orchestrator/**/*.ts"
+  - "packages/platform/**/*.{ts,tsx}"
+  - "packages/sentra/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Backend Rules
+
+`AGENTS.md` is authoritative. This file only keeps Cursor-specific backend reminders.
+
+## API And Route Handlers
+
+- Contract-first: reuse existing shared types and schemas before defining new shapes.
+- Validate runtime input with the package's established validator.
+- Return stable error semantics; do not swallow errors.
+- Do not log PHI, raw patient identifiers, secrets, or credentials.
+- Public API changes require compatibility impact analysis.
+
+## Database And Prisma
+
+- Database work goes through the established database package or local package pattern.
+- Review migrations for destructive operations.
+- Use synthetic data only in seeds, fixtures, tests, and examples.
+- Do not run `terraform apply` or `terraform destroy`.
+- After schema changes, run the relevant generate/migrate/typecheck commands.
+
+## NestJS / CQRS
+
+- Controllers stay thin.
+- Services contain business logic and are injectable.
+- DTOs use validation decorators or the package's established schema pattern.
+- CQRS flows separate commands from queries.
+- Saga compensation paths must be explicit and testable.
+
+## Healthcare Guard
+
+- PHI/PII fields must not leak through responses, logs, fixtures, screenshots, or examples.
+- FHIR/clinical validation must use established Sentra packages, not ad hoc copies.
+- Role and resource authorization must be explicit for patient-data endpoints.
+
+## Reference Patterns
+
+- Auth/API key validation: `@packages/sentra/sentra-bentara`
+- FHIR validation: `@packages/sentra/sentra-sandi`
+- Shared contracts: `@packages/shared/shared-types`
+- Database patterns: `@packages/platform/database`
+- Orchestrator saga patterns: `@platform/orchestrator`

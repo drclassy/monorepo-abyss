@@ -1,10 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { NotFoundException } from '@nestjs/common'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+
+import { type KafkaService } from '../kafka/kafka.service'
+import { type DiagnosisFlowSaga } from '../sagas/diagnosis-flow.saga'
+import { type ReferralFlowSaga } from '../sagas/referral-flow.saga'
+import { type SagaRepository } from '../sagas/saga.repository'
+
 import { FlowsService } from './flows.service'
-import { KafkaService } from '../kafka/kafka.service'
-import { SagaRepository } from '../sagas/saga.repository'
-import { DiagnosisFlowSaga } from '../sagas/diagnosis-flow.saga'
-import { ReferralFlowSaga } from '../sagas/referral-flow.saga'
 
 describe('FlowsService', () => {
   let service: FlowsService
@@ -159,13 +161,13 @@ describe('FlowsService', () => {
 
   describe('getExecutionStatus', () => {
     it('should return execution by ID', async () => {
-      const mockExecution = {
+      const mockExecution: NonNullable<Awaited<ReturnType<SagaRepository['getExecution']>>> = {
         id: 'exec-123',
         flowId: 'test-flow',
         status: 'COMPLETED',
-      }
+      } as NonNullable<Awaited<ReturnType<SagaRepository['getExecution']>>>
 
-      vi.mocked(sagaRepository.getExecution).mockResolvedValue(mockExecution as any)
+      vi.mocked(sagaRepository.getExecution).mockResolvedValue(mockExecution)
 
       const result = await service.getExecutionStatus('exec-123')
 

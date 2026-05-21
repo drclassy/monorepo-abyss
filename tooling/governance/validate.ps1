@@ -21,7 +21,7 @@
 
 .EXAMPLE
     # Validate from a specific project
-    ../../../tooling/governance/validate.ps1 -path D:\Devop\abyss-monorepo\apps\healthcare\sentra-assist
+    ../../../tooling/governance/validate.ps1 -path V:\sentra-artificial-intelligence\abyss-monorepo\apps\healthcare\sentra-assist
 
 .EXAMPLE
     # Run only lockfile check

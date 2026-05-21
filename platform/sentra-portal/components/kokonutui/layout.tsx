@@ -1,37 +1,52 @@
-"use client"
+'use client'
 
-import type { ReactNode } from "react"
-import Sidebar from "./sidebar"
-import TopNav from "./top-nav"
-import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
+import { usePathname } from 'next/navigation'
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
+
+import Sidebar from './sidebar'
+import TopNav from './top-nav'
 
 interface LayoutProps {
   children: ReactNode
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const pathname = usePathname()
+  const missionHome = pathname === '/dashboard'
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
   if (!mounted) {
-    return null
+    return (
+      <div className="flex h-screen items-center justify-center bg-zinc-950">
+        <p className="text-sm text-zinc-500">Loading PORTAL…</p>
+      </div>
+    )
   }
 
   return (
-    <div className={`flex h-screen ${theme === "dark" ? "dark" : ""}`}>
+    <div className="portal-letta dark flex h-screen bg-zinc-950 text-zinc-100">
       <Sidebar />
-      <div className="w-full flex flex-1 flex-col">
-        <header className="h-16 border-b border-gray-200 dark:border-[#1F1F23]">
-          <TopNav />
-        </header>
-        <main className="flex-1 overflow-auto p-6 bg-white dark:bg-[#0F0F12]">{children}</main>
+      <div className="flex w-full min-w-0 flex-1 flex-col">
+        {!missionHome ? (
+          <header>
+            <TopNav />
+          </header>
+        ) : null}
+        <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          {missionHome ? (
+            <div className="min-h-0 flex-1">{children}</div>
+          ) : (
+            <div className="mx-auto w-full max-w-[1000px] flex-1 overflow-auto px-6 py-8 lg:px-8">
+              {children}
+            </div>
+          )}
+        </main>
       </div>
     </div>
   )
 }
-

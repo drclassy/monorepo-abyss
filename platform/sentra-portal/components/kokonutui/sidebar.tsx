@@ -1,176 +1,101 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import {
-  BarChart2,
-  Receipt,
-  Building2,
-  CreditCard,
-  Folder,
-  Wallet,
-  Users2,
-  Shield,
-  MessagesSquare,
-  Video,
-  Settings,
-  HelpCircle,
-  Menu,
-  Home,
-  LucideIcon
-} from "lucide-react"
+import { SentraMark } from '@sentra/ui'
+import { BarChart2, HelpCircle, LayoutDashboard, Menu, Settings } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+
+import { cn } from '@/lib/utils'
+
+const T_NAV = 'text-[13px] font-medium leading-5 text-zinc-400'
 
 export default function Sidebar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)        
-
-  function handleNavigation() {
-    setIsMobileMenuOpen(false)
-  }
-
-  function NavItem({
-    href,
-    icon: Icon,
-    children,
-  }: {
-    href: string
-    icon: LucideIcon
-    children: React.ReactNode
-  }) {
-    return (
-      <Link
-        href={href}
-        onClick={handleNavigation}
-        className="flex items-center px-3 py-2 text-sm rounded-md transition-colors text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1F1F23]"
-      >
-        <Icon className="h-4 w-4 mr-3 flex-shrink-0" />
-        {children}
-      </Link>
-    )
-  }
+  const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+  const onDashboard = pathname === '/dashboard'
 
   return (
     <>
       <button
         type="button"
-        className="lg:hidden fixed top-4 left-4 z-[70] p-2 rounded-lg bg-white dark:bg-[#0F0F12] shadow-md"
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="fixed left-4 top-4 z-[70] rounded-md bg-zinc-800 p-2 lg:hidden"
+        onClick={() => setOpen(!open)}
       >
-        <Menu className="h-5 w-5 text-gray-600 dark:text-gray-300" />    
+        <Menu className="h-4 w-4 text-zinc-200" />
       </button>
       <nav
-        className={`
-                fixed inset-y-0 left-0 z-[70] w-64 bg-white dark:bg-[#0F0F12] transform transition-transform duration-200 ease-in-out
-                lg:translate-x-0 lg:static lg:w-64 border-r border-gray-200 dark:border-[#1F1F23]
-                ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
-            `}
+        className={cn(
+          'fixed inset-y-0 left-0 z-[70] w-[200px] border-r border-[#1F1F23] bg-[#111113] transition-transform lg:static lg:translate-x-0',
+          open ? 'translate-x-0' : '-translate-x-full'
+        )}
       >
-        <div className="h-full flex flex-col">
+        <div className="flex h-full flex-col">
           <Link
             href="/dashboard"
-            className="h-16 px-6 flex items-center border-b border-gray-200 dark:border-[#1F1F23]"
+            className="flex h-14 items-center gap-2 border-b border-[#1F1F23] px-4"
+            onClick={() => setOpen(false)}
           >
-            <div className="flex items-center gap-3">
-              <Image
-                src="https://kokonutui.com/logo.svg"
-                alt="Acme"
-                width={32}
-                height={32}
-                className="flex-shrink-0 hidden dark:block"
-              />
-              <Image
-                src="https://kokonutui.com/logo-black.svg"
-                alt="Acme"
-                width={32}
-                height={32}
-                className="flex-shrink-0 block dark:hidden"
-              />
-              <span className="text-lg font-semibold hover:cursor-pointer text-gray-900 dark:text-white">
-                Abyss Portal
-              </span>
-            </div>
+            <SentraMark tone="light" width={24} height={24} />
+            <span className="text-sm font-semibold text-white">PORTAL</span>
           </Link>
-
-          <div className="flex-1 overflow-y-auto py-4 px-4">
-            <div className="space-y-6">
-              <div>
-                <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                  Overview
-                </div>
-                <div className="space-y-1">
-                  <NavItem href="/dashboard" icon={Home}>
-                    Main Dashboard
-                  </NavItem>
-                  <NavItem href="/dashboard/ecosystem" icon={BarChart2}>
-                    Ecosystem Intelligence
-                  </NavItem>
-                  <NavItem href="#" icon={Building2}>
-                    Organization
-                  </NavItem>
-                  <NavItem href="#" icon={Folder}>
-                    Projects
-                  </NavItem>
-                </div>
-              </div>
-
-              <div>
-                <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                  Finance
-                </div>
-                <div className="space-y-1">
-                  <NavItem href="#" icon={Wallet}>
-                    Transactions
-                  </NavItem>
-                  <NavItem href="#" icon={Receipt}>
-                    Invoices
-                  </NavItem>
-                  <NavItem href="#" icon={CreditCard}>
-                    Payments
-                  </NavItem>
-                </div>
-              </div>
-
-              <div>
-                <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                  Team
-                </div>
-                <div className="space-y-1">
-                  <NavItem href="#" icon={Users2}>
-                    Members
-                  </NavItem>
-                  <NavItem href="#" icon={Shield}>
-                    Permissions
-                  </NavItem>
-                  <NavItem href="#" icon={MessagesSquare}>
-                    Chat
-                  </NavItem>
-                  <NavItem href="#" icon={Video}>
-                    Meetings
-                  </NavItem>
-                </div>
-              </div>
-            </div>
+          <div className="flex-1 p-3">
+            <Link
+              href="/dashboard"
+              onClick={() => setOpen(false)}
+              className={cn(
+                'flex items-center gap-2 rounded-md px-3 py-2',
+                T_NAV,
+                onDashboard ? 'bg-zinc-800/80 text-zinc-100' : 'hover:bg-zinc-800/50'
+              )}
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Link>
+            <Link
+              href="/dashboard/ecosystem"
+              onClick={() => setOpen(false)}
+              className={cn(
+                'mt-1 flex items-center gap-2 rounded-md px-3 py-2 hover:bg-zinc-800/50',
+                T_NAV
+              )}
+            >
+              <BarChart2 className="h-4 w-4" />
+              Legacy view
+            </Link>
           </div>
-
-          <div className="px-4 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
-            <div className="space-y-1">
-              <NavItem href="#" icon={Settings}>
-                Settings
-              </NavItem>
-              <NavItem href="#" icon={HelpCircle}>
-                Help
-              </NavItem>
-            </div>
+          <div className="space-y-1 border-t border-[#1F1F23] p-3">
+            <span
+              className={cn(
+                'flex items-center gap-2 px-3 py-2 cursor-not-allowed opacity-50',
+                T_NAV
+              )}
+              aria-disabled="true"
+            >
+              <Settings className="h-4 w-4" />
+              Settings
+              <span className="ml-auto text-[10px] text-zinc-600">soon</span>
+            </span>
+            <span
+              className={cn(
+                'flex items-center gap-2 px-3 py-2 cursor-not-allowed opacity-50',
+                T_NAV
+              )}
+              aria-disabled="true"
+            >
+              <HelpCircle className="h-4 w-4" />
+              Help
+              <span className="ml-auto text-[10px] text-zinc-600">soon</span>
+            </span>
           </div>
         </div>
       </nav>
-
-      {isMobileMenuOpen && (
+      {open ? (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-[65] lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
+          className="fixed inset-0 z-[65] bg-black/60 lg:hidden"
+          onClick={() => setOpen(false)}
         />
-      )}
+      ) : null}
     </>
   )
 }

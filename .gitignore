@@ -57,9 +57,11 @@ prompts/private/
 .roo/
 .windsurf/
 .codex/
+.husky/_/
 
 # ---- DEPENDENCIES ----
 node_modules/
+node_modules.bak-recovered/
 .pnp
 .pnp.js
 .pnpm-store/
@@ -78,6 +80,9 @@ out/
 .cache/
 .parcel-cache/
 .vercel/
+**/__pycache__/
+*.py[cod]
+*$py.class
 *.tsbuildinfo
 .eslintcache
 .stylelintcache
@@ -166,41 +171,58 @@ flows/.langflow/
 .mcp.json
 docs/superpowers/
 
-# ---- LOCAL AGENT OPERATIONS (KEEP ON DISK, DO NOT PUSH) ----
-.agent/**
-.agent/sessions/
-.agent/reports/
-.agent/workflows/
-.agent/01_PANDUAN_PENGUMPULAN_BAHAN_SENTRA_CDSS_v1.md
-.agent/CURATION_TASKS.md
-.agent/MASTER_CONTEXT_2026-04-19.md
-.agent/MASTER_SITREP.md
-.agent/PROGRESS.archive.md
+# ---- AGENT OPERATIONAL SSOT ----
+# .agent/ is protected operational state, not cache or junk.
+# Track the curated SSOT. Only generated local helper output stays ignored.
+.agent/reports/ssot-suggestions/
+.agent/reports/digest/
 
 # ---- POLYREPO SPLIT — apps/ MIGRATED TO SEPARATE REPOS ----
 # apps/ is excluded from abyss-core. Each app lives in its own repo.
-# See .agent/ARCHITECTURE.md §8 for the polyrepo plan.
+# See .agent/references/ARCHITECTURE.md §8 for the polyrepo plan.
 apps/
+!apps/
+apps/*
+!apps/corporate/
+apps/corporate/*
+!apps/corporate/ferdiiskandar/
+!apps/corporate/ferdiiskandar/**
+apps/corporate/ferdiiskandar/.abyss-backup/
+apps/corporate/ferdiiskandar/.git.bak-standalone/
+apps/corporate/ferdiiskandar/.editorconfig
+apps/corporate/ferdiiskandar/.gitattributes
+apps/corporate/ferdiiskandar/.github/
+apps/corporate/ferdiiskandar/.gitignore
+apps/corporate/ferdiiskandar/.prettierrc
+apps/corporate/ferdiiskandar/AGENTS.md
+apps/corporate/ferdiiskandar/CHANGELOG.md
+apps/corporate/ferdiiskandar/CODE_OF_CONDUCT.md
+apps/corporate/ferdiiskandar/COMMIT_CONVENTION.md
+apps/corporate/ferdiiskandar/CONTRIBUTING.md
+apps/corporate/ferdiiskandar/LICENSE
+apps/corporate/ferdiiskandar/REVIEW_REPORT.md
+apps/corporate/ferdiiskandar/SECURITY.md
+apps/corporate/ferdiiskandar/docs/architecture.md
+apps/corporate/ferdiiskandar/docs/superpowers/
+apps/corporate/ferdiiskandar/pnpm-lock.yaml
 
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
 # Git evaluates .gitignore top-down; trailing negations override earlier rules.
 # KEPT: core `.agent/` governance memory + `CLAUDE.md` (Claude Code project instructions)
 !.agent/
-!.agent/ARCHITECTURE.md
-!.agent/CONTEXT.md
-!.agent/DECISIONS.md
-!.agent/FEATURE.md
-!.agent/HANDOFF.md
-!.agent/LESSONS.md
-!.agent/PROGRESS.md
-!.agent/PROTOCOL.md
-!.agent/SESSION_STATE.md
-!.agent/scripts/
-!.agent/scripts/**
+!.agent/**
 !.agent/hooks/
 !.agent/hooks/**
+!.codex/
+.codex/*
+!.codex/hooks.json
 !pnpm-lock.yaml
+apps/corporate/ferdiiskandar/pnpm-lock.yaml
+!.claude/
+.claude/**
+!.claude/commands/
+!.claude/commands/class-postcode.md
 
 # KEPT: Cursor project rules, subagents, hooks — team parity (cursor.com/docs)
 !.cursor/README.md
@@ -215,8 +237,24 @@ apps/
 !.cursor/hooks/after-edit.mjs
 !.cursor/hooks/autofix-loop.mjs
 .cursor/hooks/edit-log.txt
+.cursor/hooks/session-log.txt
 
 gha-creds-*.json
 
 # Secrets Vault
 .secrets/
+
+# ---- ROGUE AI & IDE ARTIFACTS ----
+.obsidian/
+conductor/
+tooling/handbook/*.vsix
+tooling/prompt-engine/*.vsix
+
+# Kimi Proxy (BYOK)
+kimi_proxy.py
+start_kimi_proxy.bat
+start_zencoder_with_kimi.bat
+kimi_proxy_https.py
+setup_hosts_kimi.ps1
+kimi_proxy.crt
+kimi_proxy.key

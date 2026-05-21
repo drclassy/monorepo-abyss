@@ -1,0 +1,95 @@
+#!/usr/bin/env sh
+
+# ╔════════════════════════════════════════════════════════════╗
+# ║  Sentra Pre-Commit Hook — Healthcare Compliance Gate      ║
+# ║  Order: secret scan → PHI scan → lint-staged              ║
+# ║  Block commit kalau ada finding critical                  ║
+# ╚════════════════════════════════════════════════════════════╝
+
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ts|tsx|js|jsx|mjs|md|json|yml|yaml|env)$' || true)
+
+if [ -z "$STAGED_FILES" ]; then
+  echo "✓ No staged files to scan."
+  exit 0
+fi
+
+echo "🔍 Sentra Pre-Commit Gate — scanning $(echo "$STAGED_FILES" | wc -l) staged files..."
+
+# ─────────────────────────────────────────────────────────────
+# 1. SECRET SCAN — block kalau detect API keys, tokens, passwords
+# ─────────────────────────────────────────────────────────────
+SECRET_PATTERNS='(api[_-]?key|secret|password|passwd|token|bearer)["\047 ]*[:=]["\047 ]*[A-Za-z0-9+/]{16,}'
+GH_PAT_PATTERN='ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{60,}'
+AWS_KEY_PATTERN='AKIA[0-9A-Z]{16}'
+PRIVATE_KEY_PATTERN='-----BEGIN (RSA |EC |OPENSSH |)PRIVATE KEY-----'
+ANTHROPIC_KEY_PATTERN='sk-ant-[A-Za-z0-9_-]{40,}'
+OPENAI_KEY_PATTERN='sk-[A-Za-z0-9]{20,}'
+
+SECRET_HITS=""
+for FILE in $STAGED_FILES; do
+  if [ ! -f "$REPO_ROOT/$FILE" ]; then continue; fi
+
+  HIT=$(grep -nIE "$GH_PAT_PATTERN|$AWS_KEY_PATTERN|$PRIVATE_KEY_PATTERN|$ANTHROPIC_KEY_PATTERN|$OPENAI_KEY_PATTERN" "$REPO_ROOT/$FILE" 2>/dev/null || true)
+  if [ -n "$HIT" ]; then
+    SECRET_HITS="$SECRET_HITS\n[$FILE]\n$HIT\n"
+  fi
+done
+
+if [ -n "$SECRET_HITS" ]; then
+  echo "🛑 SECRET DETECTED — commit blocked"
+  printf "%b" "$SECRET_HITS"
+  echo ""
+  echo "Action: Hapus secret dari file, pakai env var atau secret manager."
+  echo "Bypass darurat (TIDAK direkomendasikan): git commit --no-verify"
+  exit 1
+fi
+
+# ─────────────────────────────────────────────────────────────
+# 2. PHI/PII SCAN — block kalau detect raw patient data
+# ─────────────────────────────────────────────────────────────
+# NIK 16 digit format (e.g., "3201xxxxxxxxxxxx")
+NIK_PATTERN='[\"\047]32[0-9]{14}[\"\047]|[\"\047]33[0-9]{14}[\"\047]|[\"\047]35[0-9]{14}[\"\047]|[\"\047]36[0-9]{14}[\"\047]'
+# BPJS card number 13 digit
+BPJS_PATTERN='[\"\047]00[0-9]{11}[\"\047]'
+# Indonesian phone format dengan country code
+RAW_PHONE_PATTERN='[\"\047]\+62[0-9]{9,12}[\"\047]|[\"\047]08[0-9]{8,11}[\"\047]'
+
+PHI_HITS=""
+for FILE in $STAGED_FILES; do
+  if [ ! -f "$REPO_ROOT/$FILE" ]; then continue; fi
+  # Skip test fixture file dengan nama jelas synthetic
+  case "$FILE" in
+    *fixture*|*synthetic*|*mock*|*test*|*spec*|*\.example|*example\.*) continue ;;
+  esac
+
+  HIT=$(grep -nIE "$NIK_PATTERN|$BPJS_PATTERN|$RAW_PHONE_PATTERN" "$REPO_ROOT/$FILE" 2>/dev/null || true)
+  if [ -n "$HIT" ]; then
+    PHI_HITS="$PHI_HITS\n[$FILE]\n$HIT\n"
+  fi
+done
+
+if [ -n "$PHI_HITS" ]; then
+  echo "🏥 POTENTIAL PHI DETECTED — commit blocked"
+  printf "%b" "$PHI_HITS"
+  echo ""
+  echo "Action:"
+  echo "  - Kalau ini test fixture, pindahkan ke file dengan nama 'fixture' / 'synthetic' / 'mock'"
+  echo "  - Kalau ini real PHI, ganti dengan dummy ('0000000000000000') sebelum commit"
+  echo "  - Kalau false positive, rename file atau adjust pattern di .husky/pre-commit"
+  echo "Bypass darurat: git commit --no-verify"
+  exit 1
+fi
+
+echo "✓ Secret scan: clean"
+echo "✓ PHI scan: clean"
+
+# ─────────────────────────────────────────────────────────────
+# 3. LINT-STAGED — auto-fix lint pada file staged saja
+# ─────────────────────────────────────────────────────────────
+echo "🎨 Running lint-staged on staged files..."
+pnpm exec lint-staged
+
+echo "✓ Pre-commit gate passed — commit proceeding"

@@ -1,6 +1,6 @@
 # CLAUDE.md — The Abyss Monorepo
 
-# Location: D:\Devop\abyss-monorepo\CLAUDE.md
+# Location: D:\Devops\abyss-monorepo\CLAUDE.md
 
 # Scope: Claude Code CLI entry point — applies to all Claude Code sessions in this monorepo
 
@@ -8,101 +8,125 @@
 
 ## Entry Point
 
-You are operating inside The Abyss — an AI-native Turborepo monorepo owned by
-Dr. Ferdi Iskandar (Classy). This file is your entry point. AGENTS.md is the
-supreme authority. When this file conflicts with AGENTS.md, AGENTS.md wins.
+This file is the Claude Code entry point for The Abyss monorepo. `AGENTS.md` is
+the repository policy authority. `.agent/` is the operational SSOT. When this
+file conflicts with `AGENTS.md`, `AGENTS.md` wins.
 
 ---
 
-## GUARD 1: Mandatory Context Initialization
+## Language Lock
 
-CRITICAL: Read the entire `.agent/` folder before performing any task. Assume
-context window resets at any moment. All state lives in `.agent/`.
+Forbidden pronouns in Chief-facing prose:
 
-Read in this exact order:
+```text
+gue   gua   elu   lo   lu   kamu   anda
+```
 
-1. `.agent/CONTEXT.md` — Architecture and stack
-2. `.agent/PROGRESS.md` — Current state of work
-3. `.agent/HANDOFF.md` — Active plan and session instructions
-4. `.agent/LESSONS.md` — Previously made mistakes to avoid
-5. `.agent/DECISIONS.md` — Prior architectural decisions
+Use `Chief` or `Boss` for direct address. Use `saya` or rewrite the sentence to
+avoid self-reference.
 
-After reading all five files, output:
+This rule applies to:
+
+- chat replies
+- commit messages
+- code comments
+- docs and PR text
+- subagent prompts
+
+---
+
+## Mandatory Context Guard
+
+Before non-trivial work:
+
+1. Read root `AGENTS.md`.
+2. Resolve the nearest `.agent/` for the active scope.
+3. Read `README.md`.
+4. Read `HANDOFF.md`.
+5. Open `CONTEXT.md` when touching repo boundaries, protected areas, or
+   crown-jewel code.
+6. Open `PROGRESS.md` when milestone state matters.
+7. Open `DECISIONS.md` when a prior rule, lesson, or durable choice matters.
+
+Nearest `.agent/` means:
+
+- use the current subfolder's `.agent/` if it exists
+- otherwise walk upward to the nearest ancestor `.agent/`
+- root repo `.agent/` is the fallback if no closer scope exists
+
+Do not treat these as active SSOT unless Chief explicitly asks for historical
+context:
+
+- `.agent/DIGEST.md`
+- `.agent/LESSONS.md`
+- `.agent/SESSION_STATE.md`
+
+If a required active SSOT file is missing, stop and report it.
+
+After loading the required context, output:
 
 > ✅ CONTEXT LOADED: [architecture state] · PROGRESS: [work state] · ACTIVE
-> TASK: [session goal] · KNOWN RISKS: [relevant lessons]
+> TASK: [session goal] · KNOWN RISKS: [relevant decisions]
 
-Do not proceed until Chief confirms.
+Do not wait for a redundant confirmation after read-only context loading.
+Continue unless the task is high-risk or blocked by policy.
 
 ---
 
-## JET Workflow Protocol
+## Risk Gate
 
-Every non-trivial task follows JET, but depth depends on Task Classification
-(AGENTS.md §2.1).
+Use the same repo task classes as `AGENTS.md`:
 
-| Phase | Name                                             | Gate           |
-| ----- | ------------------------------------------------ | -------------- |
-| J1    | Context — scan `.agent/`, repo, env vars         | Auto           |
-| J2    | Validate — check `.cursor/rules/` + `AGENTS.md`  | Auto           |
-| J3    | Diagnose — document findings in `HANDOFF.md`     | Auto           |
-| J4    | Plan — write step-by-step plan + rollback        | Auto           |
-| J5    | Risk Gate — classify task (A/B/C)                | Risk-based     |
-| J6    | Execute — verifiable diffs only                  | Post-planning  |
-| J7    | Verify — 100% tests pass or rollback             | Post-execution |
-| J8    | Docs — update `.agent/` (sessions/ + HANDOFF.md) | Post-verify    |
-| J9    | Commit — include Agent/Phase/Handoff trailer     | Post-docs      |
+- Class A: read-only, explanation, tiny typo, safe scan
+- Class B: normal code/config/doc change with bounded verification
+- Class C: auth, database schema, deployment, infra, PHI, destructive action,
+  paid service, or large restructure
 
-### Task Classification Quick Reference
-
-Before any task, classify it:
-
-| Class | Risk     | Examples                     | GO Required?              |
-| ----- | -------- | ---------------------------- | ------------------------- |
-| **A** | Minimal  | Read file, grep, typo fix    | ❌ No — auto-execute      |
-| **B** | Standard | Component, API, bug fix      | ⚠️ Check SESSION_STATE.md |
-| **C** | High     | DB migration, terraform, PHI | ✅ Yes — hard J5 gate     |
-
-**Quick Heuristic:**
-
-- Hanya baca? → **Class A** → Execute langsung, log 1 line
-- Tulis code normal? → **Class B** → Plan di HANDOFF, execute, verify
-- Sentuh DB/infra/PHI? → **Class C** → Full JET, tunggu Chief "GO"
+Class C requires explicit Chief approval before execution.
 
 ---
 
 ## Absolute Prohibitions
 
-- `terraform apply` — Chief only
-- PHI/PII in any log, commit, fixture, or test data
-- `rm -rf`, `git reset --hard`, or any force-delete without explicit approval
-- Creating new repositories without direct current-session instruction
-- Autonomous database migrations, drops, or truncations
-- Pushing to remote branches without explicit approval
-- Skipping J5
+- `terraform apply` or `terraform destroy`
+- PHI/PII in logs, commits, fixtures, or examples
+- `rm -rf`, `git reset --hard`, `git clean -f*`, or force-delete without
+  approval
+- autonomous database migrations, drops, or truncations
+- pushing to remote without explicit approval
+- treating `.agent/` as cache, junk, or disposable temp data
 
 ---
 
-## NestJS Standards (Quick Reference)
+## Continuity Rules
 
-Full rules in AGENTS.md §5. Summary:
+After meaningful work:
 
-- Module structure: `module/`, `controller/`, `service/`, `dto/`, `entities/`
-- Validation via `class-validator` only — no plain interfaces
-- Business logic in services only — controllers handle HTTP exclusively
-- All DB operations via `packages/database` — no direct ORM calls in app code
-- Healthcare endpoints require `@ApiOperation` Swagger decorator
-- CQRS mandatory for `apps/platform/orchestrator/`
-- PHI/PII fields require `@Exclude()` decorator
+- update `.agent/HANDOFF.md` when current status, blocker, or next action
+  changed
+- update `.agent/PROGRESS.md` when milestone state changed
+- update `.agent/DECISIONS.md` only for durable decisions or repeated mistakes
 
----
-
-## Session Log Protocol
-
-Every session that modifies code must update both:
-
-1. `.agent/sessions/YYYY-MM-DD.md` — agent memory and audit trail
+`.agent/sessions/YYYY-MM-DD.md` is useful audit history, but it is not
+sufficient on its own for active handoff continuity.
 
 ---
 
-_Last updated: April 2026_
+## Verification
+
+Use the narrowest meaningful verification first. For broad repo work, prefer:
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.codex\scripts\verify-local.ps1"
+```
+
+If verification fails, report:
+
+- failing command
+- root cause
+- whether the failure is related or unrelated
+- smallest safe next action
+
+---
+
+Last updated: 2026-05-20

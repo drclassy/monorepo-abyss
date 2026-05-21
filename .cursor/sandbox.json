@@ -1,3 +1,22 @@
 {
-  "additionalReadwritePaths": ["**"]
+  "additionalReadwritePaths": [
+    ".agent/**",
+    ".agents/**",
+    ".codex/**",
+    ".cursor/**",
+    ".github/**",
+    ".husky/**",
+    ".vscode/**",
+    "apps/**",
+    "docs/**",
+    "flows/**",
+    "infrastructure/**",
+    "packages/clinical/**",
+    "packages/platform/**",
+    "packages/shared/**",
+    "packages/tooling/**",
+    "platform/**",
+    "scripts/**",
+    "tooling/**"
+  ]
 }

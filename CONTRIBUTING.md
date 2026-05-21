@@ -186,7 +186,8 @@ All PRs must pass:
 
 - [README.md](README.md) — Project overview
 - [.agents/AGENTS.md](.agents/AGENTS.md) — Agent steering
-- [docs/templates/HANDOFF.md](docs/templates/HANDOFF.md) — HANDOFF template
+- [docs/templates/001-handoff.md](docs/templates/001-handoff.md) — HANDOFF
+  template
 - [CHANGELOG.md](CHANGELOG.md) — Version history
 
 ---

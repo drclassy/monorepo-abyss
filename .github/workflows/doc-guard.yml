@@ -14,8 +14,14 @@ on:
   pull_request:
     branches: [main, develop]
 
-jobs:
+permissions:
+  contents: read
 
+concurrency:
+  group: doc-guard-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
   # ── JOB 1: Doc Completeness ────────────────────────────────
   doc-completeness:
     name: 📋 Doc Completeness

@@ -17,22 +17,22 @@ inventing new types.
 
 ## Packages in this workspace
 
-| Package / folder      | Role                                           |
-| --------------------- | ---------------------------------------------- |
-| `config-eslint/`      | Shared ESLint config                           |
-| `config-typescript/`  | Shared TypeScript config                       |
-| `database/`           | `@the-abyss/database` (Prisma)                 |
-| `design-token/`       | Design tokens                                  |
-| `literature-harvester/` | `@the-abyss/literature-harvester`           |
-| `fhir-engine/`        | `@the-abyss/fhir-engine` (compliance-critical) |
-| `integration-bridge/` | `@the-abyss/integration-bridge`                |
-| `sentra-ui/`          | `@the-abyss/sentra-ui`                         |
-| `shared-types/`       | `@the-abyss/shared-types` (contract layer)     |
-| `vector-store/`       | `@the-abyss/vector-store`                      |
+| Package / folder        | Role                                           |
+| ----------------------- | ---------------------------------------------- |
+| `config-eslint/`        | Shared ESLint config                           |
+| `config-typescript/`    | Shared TypeScript config                       |
+| `database/`             | `@the-abyss/database` (Prisma)                 |
+| `design-token/`         | Design tokens                                  |
+| `literature-harvester/` | `@the-abyss/literature-harvester`              |
+| `fhir-engine/`          | `@the-abyss/fhir-engine` (compliance-critical) |
+| `integration/`          | `@the-abyss/integration-bridge`                |
+| `sentra-ui/`            | `@the-abyss/sentra-ui`                         |
+| `shared-types/`         | `@the-abyss/shared-types` (contract layer)     |
+| `vector-store/`         | `@the-abyss/vector-store`                      |
 
 Root [`AGENTS.md`](../AGENTS.md) §4 also names packages such as
-`langflow-client`, `iskandar-gatekeeper`, and `literature-harvester` — keep
-them listed here whenever those folders exist in `packages/`.
+`langflow-client`, `iskandar-gatekeeper`, and `literature-harvester` — keep them
+listed here whenever those folders exist in `packages/`.
 
 ---
 

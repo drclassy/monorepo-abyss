@@ -1,83 +1,130 @@
+# Scheduled + branch security: blocking npm audit; Snyk/Trivy/TruffleHog informational where noted.
 name: Security Scan
 
 on:
   push:
     branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
   schedule:
-    - cron: '0 0 * * 1' # Weekly on Monday
+    - cron: '0 0 * * 1' # Weekly Monday UTC
+
+permissions:
+  contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
   NODE_VERSION: '22'
-  PNPM_VERSION: '9'
+  PNPM_VERSION: '9.15.0'
 
 jobs:
-  dependency-audit:
-    name: Dependency Audit
+  dependency-audit-blocking:
+    name: Security Scan / dependency audit (blocking)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
 
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run npm audit
+      - name: npm audit (high or above fails the job)
         run: npm audit --audit-level=high
-        continue-on-error: true
 
-      - name: Run Snyk Test
-        uses: snyk/actions/node@9cf6ca713d71123d2d229cc3d7f145b96ea3c518 # master
+  dependency-advisories-snyk:
+    name: Security Scan / Snyk (informational)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Snyk test (optional token)
+        uses: snyk/actions/node@master
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   secret-scan:
-    name: Secret Detection
+    name: Security Scan / secret detection
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: TruffleHog Secret Scan
-        if: github.event.before != '' && github.event.before != github.sha
-        uses: trufflesecurity/trufflehog@d86254ee022cc6533192c5601c143a42706c1004 # main
+      - name: TruffleHog (pull_request diff)
+        if: github.event_name == 'pull_request'
+        uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: ${{ github.event.before || github.event.pull_request.base.sha }}
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
+          extra_args: --only-verified
+
+      - name: TruffleHog (push diff)
+        if: github.event_name == 'push' && github.event.before != '' && github.event.before != github.sha
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.before }}
           head: ${{ github.sha }}
           extra_args: --only-verified
+
+      - name: TruffleHog (push — no prior SHA, filesystem)
+        if: github.event_name == 'push' && (github.event.before == '' || github.event.before == github.sha)
+        uses: trufflesecurity/trufflehog@main
         continue-on-error: true
+        with:
+          path: ./
+          extra_args: --only-verified
+
+      - name: TruffleHog (schedule — filesystem)
+        if: github.event_name == 'schedule'
+        uses: trufflesecurity/trufflehog@main
+        continue-on-error: true
+        with:
+          path: ./
+          extra_args: --only-verified
 
   container-scan:
-    name: Container Vulnerability Scan
+    name: Security Scan / container (informational)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     if: github.event_name == 'push'
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@v4
 
-      - name: Build Docker Image
-        run: |
-          docker build -f infrastructure/docker/Dockerfile -t abyss-scan:${{ github.sha }} .
+      - name: Build Docker image
+        run: docker build -f infrastructure/docker/Dockerfile -t abyss-scan:${{ github.sha }} .
         continue-on-error: true
 
-      - name: Run Trivy Scan
-        uses: aquasecurity/trivy-action@314ff8b43182423b84c50b1670b0e10f858f2d98 # master
+      - name: Trivy scan
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'abyss-scan:${{ github.sha }}'
           format: 'table'

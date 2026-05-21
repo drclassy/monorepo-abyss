@@ -1,0 +1,24 @@
+{
+  "name": "@the-abyss/design-token",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Compatibility wrapper for the official Sentra 2026 design token system",
+  "type": "module",
+  "main": "./packages/design-token/sentra-brand-tokens.json",
+  "exports": {
+    ".": "./packages/design-token/src/index.ts",
+    "./tokens": "./packages/design-token/src/tokens.ts",
+    "./tokens.json": "./packages/design-token/sentra-brand-tokens.json",
+    "./tokens.css": "./packages/design-token/src/css/sentra-vars.css",
+    "./css": "./packages/design-token/src/css/sentra-vars.css",
+    "./ferdi-editorial.css": "./packages/design-token/src/css/sentra-vars.css",
+    "./assets/*": "./packages/design-token/assets/*"
+  },
+  "files": [
+    "packages/design-token"
+  ],
+  "scripts": {
+    "typecheck": "pnpm --recursive typecheck"
+  },
+  "sentra:tier": "shell"
+}

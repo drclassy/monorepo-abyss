@@ -8,7 +8,7 @@
     "start": "tsx src/cli.ts",
     "build": "tsc --noEmit",
     "lint": "eslint src/",
-    "test": "vitest run",
+    "test": "vitest run --api.host 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "clean": "node -e \"for (const dir of ['.turbo','node_modules','dist']) { require('node:fs').rmSync(dir, { recursive: true, force: true }); }\""
   },

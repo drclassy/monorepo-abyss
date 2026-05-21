@@ -1,4 +1,4 @@
-import { SentraRAGEngine } from '@the-abyss/sentra-rag'
+import { SentraRAGEngine } from '@sentra/pustaka'
 
 async function main(): Promise<void> {
   const query = process.argv.slice(2).join(' ').trim()

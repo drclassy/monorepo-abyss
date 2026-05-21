@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v14 — zero chrome grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 14px;
+      background: #050506;
+      color: #fafafa;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .head {
+      height: 48px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-bottom: 1px solid #27272a;
+    }
+    .head .t { font-size: 14px; font-weight: 600; }
+    .head .s { font-size: 14px; color: #71717a; margin-left: 12px; font-weight: 400; }
+    .grid-wrap { flex: 1; min-height: 0; padding: 16px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 12px;
+      height: 100%;
+    }
+    @media (min-width: 768px) {
+      .grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+    }
+    .cell {
+      border: 1px solid #27272a;
+      border-radius: 12px;
+      background: rgba(24, 24, 27, 0.5);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+    }
+    .cell:hover { border-color: rgba(0, 212, 255, 0.4); }
+    .cell-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .cell h2 { font-size: 16px; font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; }
+    .dot.ok { background: #34d399; }
+    .dot.warn { background: #fbbf24; }
+    .dot.bad { background: #f87171; }
+    .metric { font-size: 28px; font-weight: 600; color: #00d4ff; margin-top: 12px; }
+    .hint { font-size: 12px; color: #71717a; margin-top: 4px; }
+    .foot {
+      flex-shrink: 0;
+      border-top: 1px solid #27272a;
+      padding: 12px 20px;
+    }
+    .foot label { font-size: 12px; color: #71717a; }
+    .foot p { font-size: 14px; font-weight: 500; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <header class="head">
+    <div><span class="t">PORTAL</span><span class="s">Mission control</span></div>
+    <button type="button" style="font-size:12px;padding:6px 12px;border-radius:6px;border:1px solid #3f3f46;background:#111;color:#ccc">Refresh</button>
+  </header>
+  <div class="grid-wrap">
+    <div class="grid">
+      <button type="button" class="cell"><div class="cell-top"><h2>Agent SSOT</h2><span class="dot ok"></span></div><div><p class="metric">0.3h</p><p class="hint">HANDOFF · PROGRESS</p></div></button>
+      <button type="button" class="cell"><div class="cell-top"><h2>Abyss CLI</h2><span class="dot bad"></span></div><div><p class="metric">2</p><p class="hint">dirty · verify</p></div></button>
+      <button type="button" class="cell"><div class="cell-top"><h2>Knowledge</h2><span class="dot warn"></span></div><div><p class="metric" style="font-size:20px">not ready</p><p class="hint">registry · eval</p></div></button>
+      <button type="button" class="cell"><div class="cell-top"><h2>UNICOM</h2><span class="dot warn"></span></div><div><p class="metric">3</p><p class="hint">agents · hub</p></div></button>
+      <button type="button" class="cell"><div class="cell-top"><h2>Context</h2><span class="dot ok"></span></div><div><p class="metric" style="font-size:20px">local</p><p class="hint">handbook</p></div></button>
+      <button type="button" class="cell"><div class="cell-top"><h2>Prompt</h2><span class="dot ok"></span></div><div><p class="metric" style="font-size:20px">pass</p><p class="hint">audit</p></div></button>
+    </div>
+  </div>
+  <footer class="foot">
+    <label>Next action</label>
+    <p>Wire UNICOM /health into summary API</p>
+  </footer>
+</body>
+</html>
