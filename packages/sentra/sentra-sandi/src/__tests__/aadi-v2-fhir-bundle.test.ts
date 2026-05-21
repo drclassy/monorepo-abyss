@@ -1,13 +1,10 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { describe, expect, it } from 'vitest'
 
-import {
-  mapValidatedAadiV2Bundle,
-  type AadiV2FhirBundleProjection,
-} from '../index'
+import { mapValidatedAadiV2Bundle, type AadiV2FhirBundleProjection } from '../index'
 
 function baseProjection(
-  overrides: Partial<AadiV2FhirBundleProjection> = {},
+  overrides: Partial<AadiV2FhirBundleProjection> = {}
 ): AadiV2FhirBundleProjection {
   return {
     contractVersion: '0.8.0',
@@ -72,7 +69,7 @@ describe('mapValidatedAadiV2Bundle', () => {
 
     expect(bundle.resourceType).toBe('Bundle')
     expect(bundle.type).toBe('collection')
-    expect(bundle.entry.map(item => item.resource.resourceType)).toEqual([
+    expect(bundle.entry.map((item) => item.resource.resourceType)).toEqual([
       'Condition',
       'RiskAssessment',
       'DiagnosticReport',
@@ -87,7 +84,7 @@ describe('mapValidatedAadiV2Bundle', () => {
       baseProjection({
         contractVersion: '0.9.0',
         generatedAt: '2026-04-29T15:15:00.000Z',
-      }),
+      })
     )
 
     expect(bundle.meta).toEqual({
@@ -106,8 +103,8 @@ describe('mapValidatedAadiV2Bundle', () => {
               id: 'nested-bundle',
             } as never,
           ],
-        }),
-      ),
+        })
+      )
     ).toThrow(/Unsupported AADI V2 bundle resource type: Bundle/)
   })
 

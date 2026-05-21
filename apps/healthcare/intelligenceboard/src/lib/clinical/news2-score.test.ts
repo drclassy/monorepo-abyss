@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+
 import type { ClinicalTrajectoryVitalPoint } from '@the-abyss/shared-types'
+
 import { computeNEWS2 } from './news2-score'
 
 // Minimal vital builder — source is irrelevant for score computation

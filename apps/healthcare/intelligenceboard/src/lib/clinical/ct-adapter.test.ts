@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+
 import { legacyIBToCtV1, legacyIBToCtV1Envelope } from './ct-adapter'
 import type { GCSEvent } from './gcs-scorer'
 import type { LabEvent } from './lab-event-scorer'

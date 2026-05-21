@@ -35,12 +35,11 @@ const ALLOWED_VITAL_KEYS = [
 
 export function mapDiagnosisInputToSymphonyInput(
   input: DiagnosisSagaInput,
-  now: () => string = () => new Date().toISOString(),
+  now: () => string = () => new Date().toISOString()
 ): SymphonyAssessmentInput {
   const requestedAt = input.requestedAt ?? now()
   const vitalsSnapshot = buildVitalsSnapshot(input.vitalSigns, requestedAt)
-  const chiefComplaint =
-    input.symptoms.length > 0 ? input.symptoms.join('; ') : undefined
+  const chiefComplaint = input.symptoms.length > 0 ? input.symptoms.join('; ') : undefined
 
   return {
     metadata: {
@@ -57,9 +56,7 @@ export function mapDiagnosisInputToSymphonyInput(
   }
 }
 
-export function mapSymphonyResultToCdssResult(
-  result: SymphonyResult,
-): DiagnosisCdssResult {
+export function mapSymphonyResultToCdssResult(result: SymphonyResult): DiagnosisCdssResult {
   const hypotheses = result.nativeHypotheses ?? []
   const top = hypotheses[0]
   const primary = top ? [top.diagnosisName] : []
@@ -80,7 +77,7 @@ export function mapSymphonyResultToCdssResult(
 
 function buildVitalsSnapshot(
   vitalSigns: Record<string, number> | undefined,
-  observedAt: string,
+  observedAt: string
 ): SymphonyVitalsInput | undefined {
   if (!vitalSigns) return undefined
   const snapshot: SymphonyVitalsInput = { observedAt }

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+
 import { classifyNeurologicDecline, buildGCSTimeline } from './gcs-scorer'
 import type { GCSEvent } from './gcs-scorer'
 

@@ -1,16 +1,3 @@
-import type { AVPULevel } from '../vitals/unified-vitals'
-import type {
-  MomentumAnalysis,
-  TrajectoryAnalysis,
-  VisitRecord,
-} from './trajectory-analyzer'
-import { computeNEWS2 } from './news2-score'
-import type { TreatmentEvent } from './treatment-response-scorer'
-import { aggregateResponsiveness, buildTreatmentTimeline } from './treatment-response-scorer'
-import type { LabEvent } from './lab-event-scorer'
-import { buildLabsTimeline, classifyInfectiousSurge } from './lab-event-scorer'
-import type { GCSEvent } from './gcs-scorer'
-import { buildGCSTimeline, classifyNeurologicDecline } from './gcs-scorer'
 import type {
   ClinicalConsciousnessLevel,
   ClinicalInstabilityPattern,
@@ -30,6 +17,21 @@ import type {
   ClinicalTrajectoryVitalPoint,
   ClinicalTreatmentResponsiveness,
 } from '@the-abyss/shared-types'
+
+import type { AVPULevel } from '../vitals/unified-vitals'
+
+import type { GCSEvent } from './gcs-scorer'
+import { buildGCSTimeline, classifyNeurologicDecline } from './gcs-scorer'
+import type { LabEvent } from './lab-event-scorer'
+import { buildLabsTimeline, classifyInfectiousSurge } from './lab-event-scorer'
+import { computeNEWS2 } from './news2-score'
+import type {
+  MomentumAnalysis,
+  TrajectoryAnalysis,
+  VisitRecord,
+} from './trajectory-analyzer'
+import type { TreatmentEvent } from './treatment-response-scorer'
+import { aggregateResponsiveness, buildTreatmentTimeline } from './treatment-response-scorer'
 
 function mapAVPU(avpu: AVPULevel | undefined): ClinicalConsciousnessLevel {
   switch (avpu) {

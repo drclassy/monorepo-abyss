@@ -36,4 +36,4 @@ function handleResponse<T>(res: ApiResponse<T>): T { ... }
 | **API Keys**          | `ApiKey`                                                                 |
 | **Response wrappers** | `ApiResponse`, `ApiError`, `PaginatedResponse`, `PaginationParams`       |
 | **Handoffs**          | `Handoff`, `HandoffStatus`, `HandoffApproval`                            |
-| **Config**            | `ClassyWorkflowConfig`                                                 |
+| **Config**            | `ClassyWorkflowConfig`                                                   |

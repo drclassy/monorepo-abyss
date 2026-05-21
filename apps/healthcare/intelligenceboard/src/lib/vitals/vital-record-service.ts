@@ -14,10 +14,13 @@
 import 'server-only'
 
 import type { Result } from '@abyss/types'
+
+import type { VitalRecord, VitalRecordSource } from '../../../prisma/generated/prisma'
+
+import type { TriageVitalSigns } from './unified-vitals'
+
 import type { NEWS2RiskLevel } from '@/lib/cdss/news2'
 import { prisma } from '@/lib/prisma'
-import type { VitalRecord, VitalRecordSource } from '../../../prisma/generated/prisma'
-import type { TriageVitalSigns } from './unified-vitals'
 
 export {
   buildPatientIdentifierFromRM,

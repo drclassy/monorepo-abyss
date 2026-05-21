@@ -71,14 +71,12 @@ function assertBundleResourceType(resourceType: AadiV2FhirBundleResource['resour
   if (!canValidateResourceType(resourceType)) {
     throw new Error(
       `Unsupported AADI V2 bundle resource type: ${resourceType}. ` +
-        'The current fhir-engine support matrix does not validate this resource family.',
+        'The current fhir-engine support matrix does not validate this resource family.'
     )
   }
 }
 
-function toBundleEntry(
-  resource: AadiV2FhirBundleResource,
-): { resource: AadiV2FhirBundleResource } {
+function toBundleEntry(resource: AadiV2FhirBundleResource): { resource: AadiV2FhirBundleResource } {
   assertBundleResourceType(resource.resourceType)
 
   switch (resource.resourceType) {
@@ -99,9 +97,7 @@ function toBundleEntry(
  * - it does not expand terminology or resolve profiles
  * - it only assembles a deterministic Bundle from supported resource families
  */
-export function mapValidatedAadiV2Bundle(
-  projection: AadiV2FhirBundleProjection,
-): AadiV2FhirBundle {
+export function mapValidatedAadiV2Bundle(projection: AadiV2FhirBundleProjection): AadiV2FhirBundle {
   return {
     resourceType: 'Bundle',
     type: 'collection',
