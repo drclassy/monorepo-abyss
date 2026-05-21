@@ -3,6 +3,20 @@
 Append-only for durable choices and repeated lessons. Add new entries at the
 top. Older full ledgers are preserved in `.agent/archive/legacy-root/`.
 
+## 2026-05-21 - PORTAL UI: 10-design gallery on rebuild; v17 built
+
+Decision: When Chief says **NO** to a PORTAL Mission Control mock, the agent
+must rebuild from zero and present **10** distinct HTML designs in
+`platform/sentra-portal/design-preview/gallery/` (index at `gallery/index.html`),
+not a single tease mock. Chief picks one (e.g. `yes #05`) before Next.js work.
+
+Approved implementation: **v17** — tabs (6 systems once) + focus pane + next
+action rail; no Kokonut/Letta sidebar on `/dashboard`; live `/api/portal/summary`.
+
+Reason: Chief ordered build and rejected repeated single generic pivots.
+
+Status: Active. Gallery and `design-preview/PROTOCOL.md` document the rule.
+
 ## 2026-05-21 - UNICOM Hub v2: SSE Subscribe, not polling
 
 Decision: UNICOM Hub menggunakan SSE (Server-Sent Events) push untuk real-time
