@@ -250,6 +250,21 @@ conductor/
 tooling/handbook/*.vsix
 tooling/prompt-engine/*.vsix
 
+# ---- RE-IGNORE GENERATED LOCAL AGENT / CURSOR ARTIFACTS ----
+# Curated SSOT files stay tracked, but these generated/noisy outputs remain local-only
+# unless explicitly force-added for a one-off archival reason.
+.agent/DIGEST.md
+.agent/reports/ssot-daily/*.md
+.agent/reports/ssot-daily/*-backup/
+.agent/reports/ssot-suggestions/
+.agent/sessions/2026-05-16.md
+.agent/sessions/2026-05-17.md
+.agent/sessions/2026-05-18.md
+.agent/sessions/2026-05-19.md
+.agent/sessions/2026-05-20.md
+.agent/sessions/2026-05-21.md
+.cursor/rules/kluster-code-verify.mdc
+
 # Kimi Proxy (BYOK)
 kimi_proxy.py
 start_kimi_proxy.bat
