@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>02 Newspaper</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: 'Source Sans 3', sans-serif; background: #f5f0e8; color: #1a1a1a; padding: 32px 24px; }
+    .mast { font-family: 'Libre Baskerville', serif; font-size: 42px; border-bottom: 4px double #1a1a1a; padding-bottom: 8px; }
+    .date { font-size: 13px; margin: 8px 0 24px; color: #555; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    h2 { font-family: 'Libre Baskerville', serif; font-size: 18px; margin-bottom: 12px; }
+    .item { border-top: 1px solid #ccc; padding: 10px 0; display: flex; justify-content: space-between; }
+    .lead { grid-column: 1 / -1; background: #1a1a1a; color: #f5f0e8; padding: 16px; margin-top: 20px; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <div class="mast">The PORTAL Tribune</div>
+  <p class="date">Mission control · Thursday edition</p>
+  <div class="cols">
+    <div>
+      <h2>Continuity</h2>
+      <div class="item"><span>Agent SSOT</span><strong>Fresh 0.3h</strong></div>
+      <div class="item"><span>Context</span><strong>Local</strong></div>
+      <div class="item"><span>Prompt</span><strong>Pass</strong></div>
+    </div>
+    <div>
+      <h2>Operations</h2>
+      <div class="item"><span>Abyss CLI</span><strong style="color:#b91c1c">2 risk</strong></div>
+      <div class="item"><span>Knowledge</span><strong>not ready</strong></div>
+      <div class="item"><span>UNICOM</span><strong>degraded</strong></div>
+    </div>
+  </div>
+  <p class="lead"><strong>Next:</strong> Wire UNICOM /health into summary API</p>
+</body>
+</html>

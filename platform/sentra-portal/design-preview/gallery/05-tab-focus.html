@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v17</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 14px;
+      background: #111318;
+      color: #fdfdfd;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid #2a2f3a;
+      flex-shrink: 0;
+    }
+    .tabs {
+      display: flex;
+      gap: 2px;
+      overflow-x: auto;
+      padding: 0 8px;
+      border-bottom: 1px solid #2a2f3a;
+      flex-shrink: 0;
+    }
+    .tab {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 14px;
+      border: none;
+      background: transparent;
+      color: #8b919c;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+    }
+    .tab.on { color: #fdfdfd; border-bottom-color: #00d4ff; }
+    .tab .dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .dot.ok { background: #34d399; }
+    .dot.warn { background: #fbbf24; }
+    .dot.bad { background: #f87171; }
+    .focus {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      text-align: center;
+      min-height: 0;
+    }
+    .focus h2 { font-size: 32px; font-weight: 600; }
+    .focus .st { font-size: 14px; margin-top: 8px; color: #00d4ff; }
+    .focus .facts {
+      margin-top: 28px;
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .fact .l { font-size: 12px; color: #8b919c; }
+    .fact .v { font-size: 18px; font-weight: 600; margin-top: 4px; }
+    .focus button {
+      margin-top: 32px;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      background: #00d4ff;
+      color: #111318;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .rail {
+      flex-shrink: 0;
+      border-top: 1px solid #2a2f3a;
+      padding: 12px 16px;
+    }
+    .rail label { font-size: 12px; color: #8b919c; }
+    .rail p { font-size: 14px; font-weight: 500; margin-top: 4px; }
+    .tag { font-size: 11px; color: #52525b; text-align: center; padding: 8px; }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <span style="font-weight:600">PORTAL</span>
+    <button type="button" style="font-size:12px;background:#1e2229;border:1px solid #2a2f3a;color:#ccc;padding:6px 12px;border-radius:6px">Refresh</button>
+  </div>
+  <div class="tabs">
+    <button type="button" class="tab on"><span class="dot ok"></span>SSOT</button>
+    <button type="button" class="tab"><span class="dot bad"></span>CLI</button>
+    <button type="button" class="tab"><span class="dot warn"></span>Knowledge</button>
+    <button type="button" class="tab"><span class="dot warn"></span>UNICOM</button>
+    <button type="button" class="tab"><span class="dot ok"></span>Context</button>
+    <button type="button" class="tab"><span class="dot ok"></span>Prompt</button>
+  </div>
+  <div class="focus">
+    <h2>Agent SSOT</h2>
+    <p class="st">Fresh · 0.3h since HANDOFF</p>
+    <div class="facts">
+      <div class="fact"><div class="l">HANDOFF</div><div class="v">current</div></div>
+      <div class="fact"><div class="l">Sync</div><div class="v">active</div></div>
+      <div class="fact"><div class="l">Scope</div><div class="v">.agent</div></div>
+    </div>
+    <button type="button">Open detail</button>
+  </div>
+  <div class="rail">
+    <label>Next action</label>
+    <p>Wire UNICOM /health into summary API</p>
+  </div>
+  <p class="tag">v17 · tabs + focus pane · yes / no</p>
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const data = {
+      SSOT: { title: 'Agent SSOT', st: 'Fresh · 0.3h since HANDOFF', facts: [['HANDOFF','current'],['Sync','active'],['Scope','.agent']] },
+      CLI: { title: 'Abyss CLI', st: 'Risk · 2 dirty paths', facts: [['Branch','main'],['Risk','2'],['Verify','pass']] },
+      Knowledge: { title: 'Knowledge', st: 'Watch · not ready', facts: [['Registry','open'],['Eval','pending'],['Gate','watch']] },
+      UNICOM: { title: 'UNICOM', st: 'Degraded · 3 agents', facts: [['Agents','3'],['SSE','hub'],['Health','degraded']] },
+      Context: { title: 'Context', st: 'Local · handbook', facts: [['Tool','local'],['Engine','html'],['Mode','offline']] },
+      Prompt: { title: 'Prompt', st: 'Pass · verify ok', facts: [['Audit','pass'],['Ext','vscode'],['Tail','ok']] },
+    };
+    const focus = document.querySelector('.focus');
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      tabs.forEach((x) => x.classList.remove('on'));
+      t.classList.add('on');
+      const key = t.textContent.trim().replace('SSOT','SSOT').includes('CLI') ? 'CLI' : t.textContent.trim().includes('Knowledge') ? 'Knowledge' : t.textContent.trim().includes('UNICOM') ? 'UNICOM' : t.textContent.trim().includes('Context') ? 'Context' : t.textContent.trim().includes('Prompt') ? 'Prompt' : 'SSOT';
+      const d = data[key] || data.SSOT;
+      focus.querySelector('h2').textContent = d.title;
+      focus.querySelector('.st').textContent = d.st;
+      const facts = focus.querySelector('.facts');
+      facts.innerHTML = d.facts.map(([l,v]) => `<div class="fact"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
+    }));
+  </script>
+</body>
+</html>

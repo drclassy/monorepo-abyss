@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>08 Split log</title>
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    body { font-family: ui-monospace, monospace; font-size: 12px; height: 100vh; display: grid; grid-template-columns: 1.2fr 0.8fr; }
+    .log { background: #0d0d0d; color: #8a8; padding: 12px; overflow: auto; border-right: 1px solid #333; }
+    .log .line { margin-bottom: 4px; }
+    .log .t { color: #555; }
+    .log .e { color: #f88; }
+    .log .i { color: #8cf; }
+    .side { background: #161616; color: #ddd; padding: 16px; font-family: system-ui, sans-serif; }
+    .side h1 { font-size: 16px; margin-bottom: 16px; }
+    .pill { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; margin-bottom: 20px; background: #333; }
+    .sys { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #333; }
+    .sys b { display: block; font-size: 13px; margin-bottom: 4px; }
+    .sys span { color: #888; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="log">
+    <div class="line"><span class="t">00:49:01</span> <span class="i">[summary]</span> ssot 0.3h ok</div>
+    <div class="line"><span class="t">00:49:01</span> <span class="e">[ops]</span> dirty risk=2 branch=main</div>
+    <div class="line"><span class="t">00:49:02</span> <span class="i">[rag]</span> readiness not_ready</div>
+    <div class="line"><span class="t">00:49:02</span> <span class="e">[unicom]</span> hub unreachable</div>
+    <div class="line"><span class="t">00:49:03</span> <span class="i">[context]</span> handbook ok</div>
+    <div class="line"><span class="t">00:49:03</span> <span class="i">[prompt]</span> audit pass</div>
+    <div class="line"><span class="t">00:49:15</span> <span class="i">[handoff]</span> next: wire unicom health</div>
+  </div>
+  <aside class="side">
+    <h1>PORTAL</h1>
+    <span class="pill">LIVE 30s</span>
+    <div class="sys"><b>SSOT</b><span>Fresh · HANDOFF</span></div>
+    <div class="sys"><b>CLI</b><span>2 risk paths</span></div>
+    <div class="sys"><b>Knowledge</b><span>registry watch</span></div>
+    <div class="sys"><b>UNICOM</b><span>0 agents</span></div>
+    <div class="sys"><b>Context</b><span>local</span></div>
+    <div class="sys"><b>Prompt</b><span>pass</span></div>
+  </aside>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>03 CRT</title>
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      background: #001100;
+      color: #33ff33;
+      height: 100vh;
+      padding: 20px;
+      text-shadow: 0 0 8px #33ff33;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+      pointer-events: none;
+    }
+    pre { line-height: 1.5; }
+    .blink { animation: b 1s step-end infinite; }
+    @keyframes b { 50% { opacity: 0; } }
+  </style>
+</head>
+<body>
+  <pre>
+╔══════════════════════════════════════╗
+║  PORTAL MISSION CONTROL  [LIVE 30s]  ║
+╚══════════════════════════════════════╝
+
+ SSOT .............. [OK]    0.3h HANDOFF
+ CLI ............... [!!]    2 RISK PATHS
+ KNOWLEDGE ......... [??]    NOT_READY
+ UNICOM ............ [??]    0 AGENTS
+ CONTEXT ........... [OK]    LOCAL
+ PROMPT ............ [OK]    VERIFY
+
+<span class="blink">></span> NEXT: wire UNICOM /health into summary API
+  </pre>
+</body>
+</html>

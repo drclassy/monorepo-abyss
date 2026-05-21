@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL Mission Control — Design v3</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 14px;
+      background: #09090b;
+      color: #fafafa;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    .eyebrow {
+      font-size: 11px;
+      color: #71717a;
+      margin-bottom: 6px;
+    }
+    .page-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .space-y { display: flex; flex-direction: column; gap: 24px; }
+
+    /* KokonutUI ecosystem grid — same skeleton, PORTAL data */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: #0f0f12;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #1f1f23;
+    }
+    .card-primary {
+      border: 2px solid rgba(168, 85, 247, 0.25);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .icon-purple { color: #a855f7; }
+    .icon-emerald { color: #10b981; }
+    .icon-blue { color: #3b82f6; }
+    .icon-amber { color: #f59e0b; }
+
+    .card-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #9ca3af;
+    }
+    .card-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 8px;
+      /* sentence case — no uppercase shout */
+    }
+    .val-purple { color: #a855f7; }
+    .val-emerald { color: #10b981; }
+    .val-blue { color: #3b82f6; }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Inline ecosystem-list style — 6 PORTAL systems */
+    .capacity {
+      background: rgba(39, 39, 42, 0.5);
+      border: 1px solid #27272a;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .capacity-top {
+      padding: 16px;
+      border-bottom: 1px solid #27272a;
+    }
+    .capacity-top p { font-size: 12px; color: #a1a1aa; }
+    .capacity-top h3 { font-size: 22px; font-weight: 600; margin-top: 4px; }
+
+    .capacity-body { padding: 12px; }
+    .capacity-body h4 {
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #e4e4e7;
+    }
+
+    .sys-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+    }
+    .sys-row:hover { background: rgba(63, 63, 70, 0.4); }
+
+    .sys-left { min-width: 0; }
+    .sys-title { font-size: 14px; font-weight: 500; color: #fafafa; }
+    .sys-desc { font-size: 11px; color: #71717a; margin-top: 2px; }
+
+    .sys-status {
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-left: 12px;
+    }
+    .st-ok { color: #10b981; }
+    .st-warn { color: #f59e0b; }
+    .st-crit { color: #ef4444; }
+
+    /* Right: gates queue — NOT Kate skillset */
+    .gate-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(39, 39, 42, 0.35);
+      border: 1px solid #27272a;
+      margin-bottom: 12px;
+    }
+    .gate-row:last-child { margin-bottom: 0; }
+    .gate-title { font-size: 14px; font-weight: 500; }
+    .gate-sub { font-size: 10px; color: #71717a; margin-top: 2px; }
+
+    .chip {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .chip-ok { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+    .chip-warn { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+    .chip-crit { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+    .next-box {
+      padding: 14px;
+      border-radius: 8px;
+      background: rgba(39, 39, 42, 0.5);
+      border: 1px solid #3f3f46;
+      margin-bottom: 16px;
+    }
+    .next-box label { font-size: 11px; color: #a1a1aa; }
+    .next-box p { font-size: 13px; margin-top: 6px; line-height: 1.45; color: #d4d4d8; }
+
+    .tag-v3 {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 10px;
+      color: #52525b;
+      background: #18181b;
+      border: 1px solid #27272a;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Design v3 · ecosystem layout · PORTAL data only</p>
+    <h1 class="page-title">Mission control</h1>
+
+    <div class="space-y">
+      <!-- Row 1: same 3-up as dashboard-ecosystem.tsx -->
+      <div class="grid-3">
+        <div class="card card-primary">
+          <div class="card-head">
+            <svg class="icon icon-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            <h3 class="card-label">Agent SSOT</h3>
+          </div>
+          <p class="card-value val-purple">12h fresh</p>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <svg class="icon icon-emerald" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <h3 class="card-label">UNICOM hub</h3>
+          </div>
+          <p class="card-value val-emerald">3 agents</p>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <svg class="icon icon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <h3 class="card-label">Ops &amp; verify</h3>
+          </div>
+          <p class="card-value val-blue">2 risk</p>
+        </div>
+      </div>
+
+      <!-- Row 2: two columns -->
+      <div class="grid-2">
+        <div class="card">
+          <h2 class="section-title">
+            <svg class="icon icon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+            Monorepo systems
+          </h2>
+          <div class="capacity">
+            <div class="capacity-top">
+              <p>PORTAL monitoring scope</p>
+              <h3>6 command centers</h3>
+            </div>
+            <div class="capacity-body">
+              <h4>Domains</h4>
+              <button type="button" class="sys-row">
+                <div class="sys-left">
+                  <div class="sys-title">Agent SSOT</div>
+                  <div class="sys-desc">HANDOFF · PROGRESS · ssot-daily</div>
+                </div>
+                <span class="sys-status st-ok">fresh</span>
+              </button>
+              <button type="button" class="sys-row">
+                <div class="sys-left">
+                  <div class="sys-title">Abyss CLI ops</div>
+                  <div class="sys-desc">Branch · dirty · verify gate</div>
+                </div>
+                <span class="sys-status st-crit">2 risk</span>
+              </button>
+              <button type="button" class="sys-row">
+                <div class="sys-left">
+                  <div class="sys-title">Sentra RAG</div>
+                  <div class="sys-desc">Registry · eval · AADI</div>
+                </div>
+                <span class="sys-status st-warn">not ready</span>
+              </button>
+              <button type="button" class="sys-row">
+                <div class="sys-left">
+                  <div class="sys-title">UNICOM hub</div>
+                  <div class="sys-desc">Registry · SSE</div>
+                </div>
+                <span class="sys-status st-warn">degraded</span>
+              </button>
+              <button type="button" class="sys-row">
+                <div class="sys-left">
+                  <div class="sys-title">Context capsule</div>
+                  <div class="sys-desc">Handbook local tool</div>
+                </div>
+                <span class="sys-status st-ok">local</span>
+              </button>
+              <button type="button" class="sys-row">
+                <div class="sys-left">
+                  <div class="sys-title">Sentra prompt</div>
+                  <div class="sys-desc">Extension audit</div>
+                </div>
+                <span class="sys-status st-ok">pass</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">
+            <svg class="icon icon-amber" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Live gates
+          </h2>
+          <div class="next-box">
+            <label>Next action (HANDOFF)</label>
+            <p>Wire portal summary to UNICOM health; keep .agent read-only until schema GO.</p>
+          </div>
+          <div class="gate-row">
+            <div>
+              <div class="gate-title">Verify gate</div>
+              <div class="gate-sub">build · typecheck · test</div>
+            </div>
+            <span class="chip chip-ok">pass</span>
+          </div>
+          <div class="gate-row">
+            <div>
+              <div class="gate-title">Dirty RISK paths</div>
+              <div class="gate-sub">abyss classification</div>
+            </div>
+            <span class="chip chip-crit">2</span>
+          </div>
+          <div class="gate-row">
+            <div>
+              <div class="gate-title">RAG readiness</div>
+              <div class="gate-sub">registry + eval</div>
+            </div>
+            <span class="chip chip-warn">not_ready</span>
+          </div>
+          <div class="gate-row">
+            <div>
+              <div class="gate-title">UNICOM SSE</div>
+              <div class="gate-sub">hub localhost</div>
+            </div>
+            <span class="chip chip-warn">degraded</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tag-v3">mission-control-v3.html</div>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v11 — dashboard-ecosystem fidelity</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --accent: #00d4ff; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.43;
+      background: #0a0a0b;
+      color: #fafafa;
+    }
+    .shell { display: flex; min-height: 100vh; }
+    .side {
+      width: 200px;
+      background: #111113;
+      border-right: 1px solid #1f1f23;
+      padding: 16px 12px;
+      flex-shrink: 0;
+    }
+    .side .brand { font-size: 14px; font-weight: 600; padding: 8px 10px; }
+    .side a { display: block; padding: 8px 10px; color: var(--accent); font-weight: 500; text-decoration: none; }
+    .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .top {
+      height: 48px;
+      border-bottom: 1px solid #1f1f23;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 14px;
+      color: #71717a;
+    }
+    .variants { display: flex; gap: 8px; align-items: center; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+    .dot.on { border-color: #fff; }
+    .content {
+      padding: 24px;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .space-y { display: flex; flex-direction: column; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .card {
+      background: #0f0f12;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #1f1f23;
+    }
+    .card-focus { border: 2px solid color-mix(in srgb, var(--accent) 35%, #1f1f23); }
+    .card-head { display: flex; align-items: center; gap: 12px; }
+    .card-head svg { width: 20px; height: 20px; color: var(--accent); }
+    .card-label { font-size: 14px; font-weight: 500; color: #9ca3af; }
+    .card-value {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 8px;
+      color: var(--accent);
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fafafa;
+    }
+    .section-title svg { width: 16px; height: 16px; color: var(--accent); }
+    .op-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(39, 39, 42, 0.35);
+      border: 1px solid #27272a;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .op-row:last-child { margin-bottom: 0; }
+    .op-row:hover { border-color: color-mix(in srgb, var(--accent) 40%, #3f3f46); }
+    .op-title { font-size: 14px; font-weight: 500; }
+    .op-sub { font-size: 12px; color: var(--accent); margin-top: 2px; }
+    .pill {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--accent);
+    }
+    .pill.warn { background: rgba(251, 191, 36, 0.12); color: #fbbf24; }
+    .pill.bad { background: rgba(238, 39, 55, 0.12); color: #ee2737; }
+    .queue-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(39, 39, 42, 0.35);
+      border: 1px solid #27272a;
+      margin-bottom: 10px;
+    }
+    .queue-row:last-child { margin-bottom: 0; }
+    .next {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #3f3f46;
+      background: rgba(39, 39, 42, 0.5);
+      margin-bottom: 14px;
+    }
+    .next label { font-size: 12px; color: #a1a1aa; }
+    .next p { font-size: 14px; margin-top: 6px; color: #d4d4d8; }
+    .foot { font-size: 12px; color: #52525b; text-align: center; margin-top: 8px; }
+    @media (max-width: 900px) {
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="brand">PORTAL</div>
+      <a href="#">Dashboard</a>
+    </aside>
+    <div class="main">
+      <header class="top">
+        <span>Mission control · live 30s</span>
+        <div class="variants">
+          <span>Accent</span>
+          <button type="button" class="dot on" data-a="#00d4ff" style="background:#00d4ff"></button>
+          <button type="button" class="dot" data-a="#EE2737" style="background:#EE2737"></button>
+          <button type="button" class="dot" data-a="#A855F7" style="background:#A855F7"></button>
+          <button type="button" class="dot" data-a="#10B981" style="background:#10B981"></button>
+        </div>
+      </header>
+      <div class="content">
+        <div class="space-y">
+          <div class="grid-3">
+            <div class="card card-focus">
+              <div class="card-head">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                <h3 class="card-label">Agent SSOT</h3>
+              </div>
+              <p class="card-value">0.3h fresh</p>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <h3 class="card-label">UNICOM hub</h3>
+              </div>
+              <p class="card-value">3 agents</p>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <h3 class="card-label">Ops &amp; verify</h3>
+              </div>
+              <p class="card-value">2 risk</p>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+                Monorepo systems
+              </h2>
+              <div class="op-row"><div><div class="op-title">Agent SSOT</div><div class="op-sub">HANDOFF · PROGRESS</div></div><span class="pill">Fresh</span></div>
+              <div class="op-row"><div><div class="op-title">Abyss CLI</div><div class="op-sub">main · dirty tree</div></div><span class="pill bad">2 risk</span></div>
+              <div class="op-row"><div><div class="op-title">Knowledge</div><div class="op-sub">registry · eval</div></div><span class="pill warn">Watch</span></div>
+              <div class="op-row"><div><div class="op-title">UNICOM</div><div class="op-sub">SSE · registry</div></div><span class="pill warn">Degraded</span></div>
+              <div class="op-row"><div><div class="op-title">Context</div><div class="op-sub">local handbook</div></div><span class="pill">Local</span></div>
+              <div class="op-row"><div><div class="op-title">Prompt</div><div class="op-sub">audit tail</div></div><span class="pill">Pass</span></div>
+            </div>
+
+            <div class="card">
+              <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                Action queue
+              </h2>
+              <div class="next">
+                <label>Next action</label>
+                <p>Wire UNICOM /health into summary API.</p>
+              </div>
+              <div class="queue-row"><div><div class="op-title">Verify gate</div><div class="op-sub" style="color:#71717a">build · typecheck · test</div></div><span class="pill">Pass</span></div>
+              <div class="queue-row"><div><div class="op-title">Dirty paths</div><div class="op-sub" style="color:#71717a">abyss RISK</div></div><span class="pill bad">2</span></div>
+              <div class="queue-row"><div><div class="op-title">Knowledge registry</div><div class="op-sub" style="color:#71717a">eval gate</div></div><span class="pill warn">Not ready</span></div>
+              <div class="queue-row"><div><div class="op-title">UNICOM SSE</div><div class="op-sub" style="color:#71717a">hub health</div></div><span class="pill warn">Degraded</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="foot">v11 · dashboard-ecosystem.tsx skeleton · portal shell · one accent · yes → React</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((d) => d.addEventListener('click', () => {
+      dots.forEach((x) => x.classList.remove('on'));
+      d.classList.add('on');
+      document.documentElement.style.setProperty('--accent', d.dataset.a);
+    }));
+  </script>
+</body>
+</html>

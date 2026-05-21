@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>05 File shelf</title>
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; background: #f0f0f0; height: 100vh; display: flex; }
+    .tree { width: 280px; background: #e8e8e8; border-right: 1px solid #ccc; padding: 12px 0; }
+    .tree .root { padding: 8px 16px; font-weight: 600; }
+    .row { padding: 6px 16px 6px 28px; display: flex; justify-content: space-between; cursor: pointer; }
+    .row:hover { background: #d0e8ff; }
+    .row.sel { background: #cce4f7; }
+    .main { flex: 1; padding: 24px; background: #fff; }
+    .main h1 { font-size: 20px; font-weight: 600; }
+    .meta { color: #666; margin-top: 8px; font-size: 14px; }
+    .props { margin-top: 24px; border: 1px solid #ddd; }
+    .props div { display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid #eee; }
+    .props div:last-child { border: none; }
+    .props span { padding: 8px 12px; }
+    .props span:first-child { background: #f9f9f9; color: #555; }
+  </style>
+</head>
+<body>
+  <aside class="tree">
+    <div class="root">📁 monorepo systems</div>
+    <div class="row sel"><span>📄 agent-ssot</span><span style="color:green">●</span></div>
+    <div class="row"><span>📄 abyss-cli</span><span style="color:red">●</span></div>
+    <div class="row"><span>📄 knowledge</span><span style="color:orange">●</span></div>
+    <div class="row"><span>📄 unicom</span><span style="color:orange">●</span></div>
+    <div class="row"><span>📄 context</span><span style="color:green">●</span></div>
+    <div class="row"><span>📄 prompt</span><span style="color:green">●</span></div>
+  </aside>
+  <main class="main">
+    <h1>agent-ssot</h1>
+    <p class="meta">HANDOFF · PROGRESS · ssot-daily</p>
+    <div class="props">
+      <div><span>Status</span><span>Fresh</span></div>
+      <div><span>Age</span><span>0.3 hours</span></div>
+      <div><span>Next</span><span>Wire UNICOM /health</span></div>
+    </div>
+  </main>
+</body>
+</html>

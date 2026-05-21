@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL Dashboard — v5 (scratch)</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      background: #0a0a0b;
+      color: #fafafa;
+      padding: 32px 24px;
+    }
+    .wrap { max-width: 1000px; margin: 0 auto; }
+    h1 { font-size: 22px; font-weight: 600; line-height: 1.3; }
+    .sub { font-size: 13px; color: #71717a; margin-top: 4px; }
+    .space > * + * { margin-top: 24px; }
+
+    .card {
+      background: #0f0f12;
+      border: 1px solid #1f1f23;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .sec {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #71717a;
+      margin-bottom: 16px;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .hero {
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 120px;
+      background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      cursor: pointer;
+    }
+    .hero h3 { font-size: 15px; font-weight: 600; margin-top: 12px; }
+    .hero p { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 6px; }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      background: rgba(24,24,27,0.5);
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .row:last-child { margin-bottom: 0; }
+    .row:hover { border-color: #52525b; }
+    .name { font-size: 15px; font-weight: 500; color: #e4e4e7; }
+    .meta { font-size: 13px; color: #ee2737; margin-top: 2px; }
+    .pill {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 5px 10px;
+      border-radius: 6px;
+      background: #27272a;
+      color: #a1a1aa;
+    }
+    .pill.ok { background: #052e16; color: #4ade80; }
+    .pill.warn { background: #422006; color: #fbbf24; }
+
+    .stat {
+      padding: 14px;
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      background: rgba(24,24,27,0.5);
+    }
+    .stat label { font-size: 13px; color: #71717a; display: block; }
+    .stat strong { font-size: 21px; font-weight: 700; display: block; margin-top: 4px; }
+    .stat span { font-size: 13px; color: #ee2737; margin-top: 4px; display: block; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: 13px;
+      font-weight: 500;
+      color: #71717a;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #27272a;
+    }
+    td {
+      padding: 14px 8px 14px 0;
+      border-bottom: 1px solid #27272a;
+      font-size: 13px;
+      color: #a1a1aa;
+    }
+    td strong { color: #e4e4e7; font-weight: 500; }
+    .tag { font-size: 13px; color: #52525b; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Mission control</h1>
+      <p class="sub">PORTAL · one screen · each system once · v5 scratch</p>
+    </header>
+
+    <div class="space" style="margin-top: 24px">
+      <!-- Letta-style entry: 3 focus cards only (no RAG card — Knowledge lives in grid below) -->
+      <div class="grid-3">
+        <div class="hero">
+          <div class="pill ok">Live</div>
+          <h3>Agent SSOT</h3>
+          <p>0.3h · HANDOFF</p>
+        </div>
+        <div class="hero">
+          <h3>Abyss CLI</h3>
+          <p>2 risk · verify pass</p>
+        </div>
+        <div class="hero">
+          <h3>UNICOM</h3>
+          <p>3 agents · degraded</p>
+        </div>
+      </div>
+
+      <!-- v4 body: 2 columns — 6 systems ONCE -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="sec">Monorepo systems</div>
+          <div class="row"><div><div class="name">Agent SSOT</div><div class="meta">0.3h since HANDOFF</div></div><span class="pill ok">Fresh</span></div>
+          <div class="row"><div><div class="name">Abyss CLI</div><div class="meta">2 RISK paths</div></div><span class="pill warn">Risk</span></div>
+          <div class="row"><div><div class="name">Knowledge</div><div class="meta">eval gate</div></div><span class="pill warn">Not ready</span></div>
+          <div class="row"><div><div class="name">UNICOM</div><div class="meta">3 agents</div></div><span class="pill warn">Degraded</span></div>
+          <div class="row"><div><div class="name">Context</div><div class="meta">handbook local</div></div><span class="pill ok">Local</span></div>
+          <div class="row"><div><div class="name">Prompt</div><div class="meta">audit log</div></div><span class="pill ok">Pass</span></div>
+        </div>
+        <div class="card">
+          <div class="sec">Gates</div>
+          <div class="row"><div><div class="name">Verify</div><div class="meta">build · typecheck · test</div></div><span class="pill ok">Pass</span></div>
+          <div class="row"><div><div class="name">UNICOM health</div><div class="meta">/health 28ms</div></div><span class="pill warn">Degraded</span></div>
+          <div class="row"><div><div class="name">Knowledge registry</div><div class="meta">readiness</div></div><span class="pill warn">Not ready</span></div>
+          <div class="row"><div><div class="name">SSOT sync</div><div class="meta">HANDOFF</div></div><span class="pill ok">Active</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sec">Summary</div>
+        <div class="grid-4">
+          <div class="stat"><label>SSOT age</label><strong>0.3h</strong><span>HANDOFF</span></div>
+          <div class="stat"><label>UNICOM</label><strong>3</strong><span>agents</span></div>
+          <div class="stat"><label>Risk</label><strong>2</strong><span>files</span></div>
+          <div class="stat"><label>Verify</label><strong>pass</strong><span>gate</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sec">Activity</div>
+        <table>
+          <thead><tr><th>Source</th><th>Task</th><th>Age</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SSOT</strong></td><td>Next action from HANDOFF</td><td style="color:#ee2737">now</td></tr>
+            <tr><td><strong>Ops</strong></td><td>2 dirty RISK paths</td><td>live</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="tag">mission-control-v5.html — approve this layout → then code. No React change until Chief says yes.</p>
+  </div>
+</body>
+</html>

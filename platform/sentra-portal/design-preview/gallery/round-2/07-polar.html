@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>07 Polar</title>
+  <style>
+    * { margin: 0; }
+    body { font-family: system-ui, sans-serif; background: #020617; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    h1 { font-size: 14px; color: #64748b; margin-bottom: 24px; }
+    svg { width: 360px; height: 360px; }
+    text { font-size: 11px; fill: #94a3b8; }
+    .hub { fill: #0ea5e9; font-size: 13px; font-weight: bold; fill: #fff; }
+    .legend { margin-top: 20px; font-size: 12px; color: #64748b; }
+  </style>
+</head>
+<body>
+  <h1>PORTAL · polar map</h1>
+  <svg viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="70" fill="none" stroke="#1e293b" stroke-width="2"/>
+    <circle cx="100" cy="100" r="40" fill="#0f172a" stroke="#0ea5e9" stroke-width="2"/>
+    <text x="100" y="104" text-anchor="middle" class="hub">PORTAL</text>
+    <circle cx="100" cy="35" r="6" fill="#22c55e"/><text x="100" y="22" text-anchor="middle">SSOT</text>
+    <circle cx="156" cy="55" r="6" fill="#ef4444"/><text x="168" y="58">CLI</text>
+    <circle cx="165" cy="100" r="6" fill="#eab308"/><text x="175" y="104">KN</text>
+    <circle cx="156" cy="145" r="6" fill="#eab308"/><text x="168" y="150">UNI</text>
+    <circle cx="100" cy="165" r="6" fill="#22c55e"/><text x="100" y="182" text-anchor="middle">CTX</text>
+    <circle cx="44" cy="145" r="6" fill="#22c55e"/><text x="28" y="150">PRM</text>
+  </svg>
+  <p class="legend">Click node → detail (in app)</p>
+</body>
+</html>
