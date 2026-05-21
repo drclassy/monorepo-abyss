@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'vitest'
 import type { QueryResult } from '@sentra/cermin'
-import type { KnowledgeSourceRegistryEntry } from '../src/registry/registry-types'
+import { describe, it, expect } from 'vitest'
+
 import { validateEvidence, buildRegistryMap } from '../src/evaluation/evidence-validator'
+import type { KnowledgeSourceRegistryEntry } from '../src/registry/registry-types'
 
 function makeApprovedEntry(sourceHash: string): KnowledgeSourceRegistryEntry {
   return {
@@ -20,7 +21,9 @@ function makeApprovedEntry(sourceHash: string): KnowledgeSourceRegistryEntry {
   }
 }
 
-function makeQueryResult(overrides: Partial<QueryResult & { metadata: Record<string, unknown> }> = {}): QueryResult {
+function makeQueryResult(
+  overrides: Partial<QueryResult & { metadata: Record<string, unknown> }> = {}
+): QueryResult {
   return {
     id: 'kb:abc123:v1:p001:c0001',
     content: 'Clinical guideline text — not logged',

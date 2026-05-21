@@ -1,7 +1,11 @@
 import { describe, it, expect } from 'vitest'
+
 import { buildRegistrySummary } from '../src/registry/registry-summary'
 import { mapQualityToRegistryStatus } from '../src/registry/registry-types'
-import type { KnowledgeRegistry, KnowledgeSourceRegistryEntry } from '../src/registry/registry-types'
+import type {
+  KnowledgeRegistry,
+  KnowledgeSourceRegistryEntry,
+} from '../src/registry/registry-types'
 
 function makeEntry(
   hash: string,

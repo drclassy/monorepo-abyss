@@ -1,7 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { markSuperseded } from '../src/registry/supersession'
+
 import { createEligibleForEmbeddingExport } from '../src/registry/eligibility-exporter'
-import type { KnowledgeRegistry, KnowledgeSourceRegistryEntry } from '../src/registry/registry-types'
+import type {
+  KnowledgeRegistry,
+  KnowledgeSourceRegistryEntry,
+} from '../src/registry/registry-types'
+import { markSuperseded } from '../src/registry/supersession'
 
 function makeEntry(
   hash: string,
@@ -31,7 +35,11 @@ function makeRegistry(entries: KnowledgeSourceRegistryEntry[]): KnowledgeRegistr
 describe('markSuperseded', () => {
   it('marks old document as superseded', () => {
     const registry = makeRegistry([makeEntry('old-hash'), makeEntry('new-hash')])
-    const updated = markSuperseded({ registry, oldSourceHash: 'old-hash', newSourceHash: 'new-hash' })
+    const updated = markSuperseded({
+      registry,
+      oldSourceHash: 'old-hash',
+      newSourceHash: 'new-hash',
+    })
 
     const old = updated.entries.find((e) => e.source_hash === 'old-hash')
     expect(old).toBeDefined()
@@ -41,7 +49,11 @@ describe('markSuperseded', () => {
 
   it('links new document with supersedes containing old hash', () => {
     const registry = makeRegistry([makeEntry('old-hash'), makeEntry('new-hash')])
-    const updated = markSuperseded({ registry, oldSourceHash: 'old-hash', newSourceHash: 'new-hash' })
+    const updated = markSuperseded({
+      registry,
+      oldSourceHash: 'old-hash',
+      newSourceHash: 'new-hash',
+    })
 
     const newDoc = updated.entries.find((e) => e.source_hash === 'new-hash')
     expect(newDoc).toBeDefined()

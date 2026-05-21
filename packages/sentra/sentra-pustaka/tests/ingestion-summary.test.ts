@@ -1,14 +1,16 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import * as fs from 'fs'
-import * as path from 'path'
 import * as os from 'os'
+import * as path from 'path'
+
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+
+import type { DryRunDocumentResult } from '../src/ingestion/dry-run-types'
 import {
   createSummaryHeader,
   finalizeSummary,
   sanitizeError,
   writeSummary,
 } from '../src/ingestion/ingestion-summary'
-import type { DryRunDocumentResult } from '../src/ingestion/dry-run-types'
 
 let tmpDir: string
 
@@ -26,7 +28,11 @@ function makeResult(status: DryRunDocumentResult['status']): DryRunDocumentResul
 
 describe('createSummaryHeader', () => {
   it('creates summary with zeros and ISO startedAt', () => {
-    const summary = createSummaryHeader({ inputDir: '/in', outputDir: '/out', totalDiscoveredPdfs: 5 })
+    const summary = createSummaryHeader({
+      inputDir: '/in',
+      outputDir: '/out',
+      totalDiscoveredPdfs: 5,
+    })
 
     expect(summary.totalDiscoveredPdfs).toBe(5)
     expect(summary.processedCount).toBe(0)
@@ -38,7 +44,11 @@ describe('createSummaryHeader', () => {
 
 describe('finalizeSummary', () => {
   it('counts statuses correctly', () => {
-    const header = createSummaryHeader({ inputDir: '/in', outputDir: '/out', totalDiscoveredPdfs: 6 })
+    const header = createSummaryHeader({
+      inputDir: '/in',
+      outputDir: '/out',
+      totalDiscoveredPdfs: 6,
+    })
     const results: DryRunDocumentResult[] = [
       makeResult('ready'),
       makeResult('ready'),
@@ -58,7 +68,11 @@ describe('finalizeSummary', () => {
   })
 
   it('returns zero counts when all documents are skipped', () => {
-    const header = createSummaryHeader({ inputDir: '/in', outputDir: '/out', totalDiscoveredPdfs: 2 })
+    const header = createSummaryHeader({
+      inputDir: '/in',
+      outputDir: '/out',
+      totalDiscoveredPdfs: 2,
+    })
     const results = [makeResult('skipped_duplicate'), makeResult('skipped_duplicate')]
 
     const finalized = finalizeSummary(header, results)
@@ -69,7 +83,11 @@ describe('finalizeSummary', () => {
   })
 
   it('includes per-document results in finalized summary', () => {
-    const header = createSummaryHeader({ inputDir: '/in', outputDir: '/out', totalDiscoveredPdfs: 1 })
+    const header = createSummaryHeader({
+      inputDir: '/in',
+      outputDir: '/out',
+      totalDiscoveredPdfs: 1,
+    })
     const result: DryRunDocumentResult = {
       filePath: '/tmp/test.pdf',
       status: 'ready',
@@ -96,7 +114,11 @@ describe('sanitizeError', () => {
 
 describe('writeSummary', () => {
   it('writes ingestion-summary.json to outputDir', () => {
-    const header = createSummaryHeader({ inputDir: '/in', outputDir: tmpDir, totalDiscoveredPdfs: 0 })
+    const header = createSummaryHeader({
+      inputDir: '/in',
+      outputDir: tmpDir,
+      totalDiscoveredPdfs: 0,
+    })
     const finalized = finalizeSummary(header, [])
 
     const summaryPath = writeSummary(finalized, tmpDir)
@@ -107,7 +129,11 @@ describe('writeSummary', () => {
   })
 
   it('sanitizes error fields in written JSON (no stack traces)', () => {
-    const header = createSummaryHeader({ inputDir: '/in', outputDir: tmpDir, totalDiscoveredPdfs: 1 })
+    const header = createSummaryHeader({
+      inputDir: '/in',
+      outputDir: tmpDir,
+      totalDiscoveredPdfs: 1,
+    })
     const result: DryRunDocumentResult = {
       filePath: '/tmp/test.pdf',
       status: 'failed',
@@ -117,9 +143,7 @@ describe('writeSummary', () => {
     const finalized = finalizeSummary(header, [result])
     writeSummary(finalized, tmpDir)
 
-    const parsed = JSON.parse(
-      fs.readFileSync(path.join(tmpDir, 'ingestion-summary.json'), 'utf8')
-    )
+    const parsed = JSON.parse(fs.readFileSync(path.join(tmpDir, 'ingestion-summary.json'), 'utf8'))
     expect(parsed.results[0].error).not.toContain('Object.<anonymous>')
     expect(parsed.results[0].error?.length).toBeLessThanOrEqual(200)
   })

@@ -4,29 +4,20 @@
     "query_text": "What is the first-line antibiotic for community-acquired pneumonia?",
     "top_k": 5,
     "min_similarity": 0.5,
-    "expected_topics": [
-      "pneumonia",
-      "antibiotic"
-    ]
+    "expected_topics": ["pneumonia", "antibiotic"]
   },
   {
     "query_id": "q002",
     "query_text": "How to manage hypertension in diabetic patients?",
     "top_k": 5,
     "min_similarity": 0.5,
-    "expected_topics": [
-      "hypertension",
-      "diabetes"
-    ]
+    "expected_topics": ["hypertension", "diabetes"]
   },
   {
     "query_id": "q003",
     "query_text": "What are the diagnostic criteria for sepsis?",
     "top_k": 5,
     "min_similarity": 0.5,
-    "expected_topics": [
-      "sepsis",
-      "diagnosis"
-    ]
+    "expected_topics": ["sepsis", "diagnosis"]
   }
 ]

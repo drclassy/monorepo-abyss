@@ -22,7 +22,7 @@ export class OllamaEmbedder {
     })
 
     if (!res.ok) throw new Error(`Ollama embed failed: ${res.status} ${await res.text()}`)
-    const data = await res.json() as { embedding: number[] }
+    const data = (await res.json()) as { embedding: number[] }
     return data.embedding
   }
 
@@ -30,10 +30,12 @@ export class OllamaEmbedder {
     const results: number[][] = []
     for (let i = 0; i < texts.length; i += concurrency) {
       const batch = texts.slice(i, i + concurrency)
-      const embeddings = await Promise.all(batch.map(t => this.embed(t)))
+      const embeddings = await Promise.all(batch.map((t) => this.embed(t)))
       results.push(...embeddings)
       if (i + concurrency < texts.length) {
-        process.stdout.write(`  embedding ${Math.min(i + concurrency, texts.length)}/${texts.length}\r`)
+        process.stdout.write(
+          `  embedding ${Math.min(i + concurrency, texts.length)}/${texts.length}\r`
+        )
       }
     }
     return results
@@ -43,8 +45,8 @@ export class OllamaEmbedder {
     try {
       const res = await fetch(`${this.baseUrl}/api/tags`)
       if (!res.ok) return false
-      const data = await res.json() as { models: Array<{ name: string }> }
-      return data.models.some(m => m.name.startsWith(this.model.split(':')[0]))
+      const data = (await res.json()) as { models: Array<{ name: string }> }
+      return data.models.some((m) => m.name.startsWith(this.model.split(':')[0]))
     } catch {
       return false
     }

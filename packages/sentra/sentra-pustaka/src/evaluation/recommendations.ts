@@ -1,9 +1,5 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-import type {
-  QueryEvalResult,
-  EvidenceQualityReport,
-  Recommendation,
-} from './types.js'
+import type { QueryEvalResult, EvidenceQualityReport, Recommendation } from './types.js'
 
 /**
  * Generates actionable recommendations based on evaluation results.
@@ -14,7 +10,7 @@ import type {
  */
 export function generateRecommendations(
   queryResults: QueryEvalResult[],
-  qualityReport: EvidenceQualityReport,
+  qualityReport: EvidenceQualityReport
 ): Recommendation[] {
   const recommendations: Recommendation[] = []
 
@@ -46,7 +42,8 @@ export function generateRecommendations(
         type: 'ACTION',
         message: `Evidence from source ${hash} was retrieved but is not approved_for_embedding in the current registry.`,
         source_hash: hash,
-        action: 'Investigate whether this document has been superseded or had its approval revoked. Re-run embed:approved to clean up stale vectors.',
+        action:
+          'Investigate whether this document has been superseded or had its approval revoked. Re-run embed:approved to clean up stale vectors.',
       })
     }
   }
@@ -56,7 +53,8 @@ export function generateRecommendations(
     recommendations.push({
       type: 'ACTION',
       message: `${qualityReport.untraceable_evidence} retrieved chunk(s) are missing required traceability fields (source_hash, document_version, page_number, or vector_id).`,
-      action: 'These chunks may have been embedded outside the ABYSS-RAG pipeline. Remove and re-embed through the approved pipeline.',
+      action:
+        'These chunks may have been embedded outside the ABYSS-RAG pipeline. Remove and re-embed through the approved pipeline.',
     })
   }
 
@@ -65,7 +63,8 @@ export function generateRecommendations(
     recommendations.push({
       type: 'WARNING',
       message: `${qualityReport.failed_queries} query/queries failed during evaluation.`,
-      action: 'Check failed-queries.json for error details. Verify DATABASE_URL and the currently configured embedding/runtime dependencies.',
+      action:
+        'Check failed-queries.json for error details. Verify DATABASE_URL and the currently configured embedding/runtime dependencies.',
     })
   }
 
@@ -79,7 +78,9 @@ export function generateRecommendations(
   }
 
   // Queries with no approved results
-  const emptyApprovalQueries = queryResults.filter((r) => r.approved_results === 0 && r.results_returned > 0)
+  const emptyApprovalQueries = queryResults.filter(
+    (r) => r.approved_results === 0 && r.results_returned > 0
+  )
   if (emptyApprovalQueries.length > 0) {
     recommendations.push({
       type: 'ACTION',

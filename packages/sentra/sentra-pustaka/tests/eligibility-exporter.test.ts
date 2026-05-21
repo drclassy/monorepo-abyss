@@ -1,6 +1,10 @@
 import { describe, it, expect } from 'vitest'
+
 import { createEligibleForEmbeddingExport } from '../src/registry/eligibility-exporter'
-import type { KnowledgeRegistry, KnowledgeSourceRegistryEntry } from '../src/registry/registry-types'
+import type {
+  KnowledgeRegistry,
+  KnowledgeSourceRegistryEntry,
+} from '../src/registry/registry-types'
 
 function makeEntry(
   hash: string,
@@ -69,9 +73,7 @@ describe('createEligibleForEmbeddingExport', () => {
   })
 
   it('excludes archived entries', () => {
-    const registry = makeRegistry([
-      makeEntry('archived-doc', 'archived', 'ready', '/chunks.json'),
-    ])
+    const registry = makeRegistry([makeEntry('archived-doc', 'archived', 'ready', '/chunks.json')])
 
     const result = createEligibleForEmbeddingExport(registry)
     expect(result).toHaveLength(0)

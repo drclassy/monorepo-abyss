@@ -16,7 +16,7 @@ export function buildVectorId(
   sourceHash: string,
   documentVersion: string,
   pageNumber: number,
-  chunkIndex: number,
+  chunkIndex: number
 ): string {
   const versionTag = documentVersion.startsWith('v') ? documentVersion : `v${documentVersion}`
   const pageTag = String(pageNumber).padStart(3, '0')
@@ -30,11 +30,7 @@ export function buildVectorId(
  *
  * Shape: <source_hash>:p<page_padded3>:c<chunk_padded4>
  */
-export function buildChunkId(
-  sourceHash: string,
-  pageNumber: number,
-  chunkIndex: number,
-): string {
+export function buildChunkId(sourceHash: string, pageNumber: number, chunkIndex: number): string {
   const pageTag = String(pageNumber).padStart(3, '0')
   const chunkTag = String(chunkIndex + 1).padStart(4, '0')
   return `${sourceHash}:p${pageTag}:c${chunkTag}`

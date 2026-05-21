@@ -1,16 +1,12 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-import type {
-  QueryEvalResult,
-  EvidenceQualityReport,
-  AadiReadiness,
-} from './types.js'
+import type { QueryEvalResult, EvidenceQualityReport, AadiReadiness } from './types.js'
 
 /**
  * Aggregates evidence quality metrics across all query evaluation results.
  */
 export function scoreEvidenceQuality(
   queryResults: QueryEvalResult[],
-  failedQueryCount: number,
+  failedQueryCount: number
 ): EvidenceQualityReport {
   if (queryResults.length === 0 && failedQueryCount === 0) {
     return {

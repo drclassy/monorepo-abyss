@@ -9,7 +9,10 @@ export class GuardEngine {
     let clean = text
     clean = clean.replace(/\d{16}/g, '[NIK_REDACTED]')
     clean = clean.replace(/08\d{8,11}/g, '[PHONE_REDACTED]')
-    clean = clean.replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, '[EMAIL_REDACTED]')
+    clean = clean.replace(
+      /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+      '[EMAIL_REDACTED]'
+    )
     return clean
   }
 

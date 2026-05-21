@@ -1,9 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import * as fs from 'fs'
-import * as path from 'path'
 import * as os from 'os'
-import { writeKnowledgeArtifacts } from '../src/ingestion/artifact-writer'
+import * as path from 'path'
+
 import type { CanonicalDocument } from '@the-abyss/document-ingestion'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+
+import { writeKnowledgeArtifacts } from '../src/ingestion/artifact-writer'
 
 let tmpDir: string
 
