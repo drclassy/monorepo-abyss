@@ -184,7 +184,7 @@ describe('SYMPHONY pattern engine — integration: multi-pattern sort', () => {
   it('returns all three matches sorted critical → high → warning', () => {
     const result = evaluateSymphonyPatterns(
       INTEGRATION_SNAPSHOT,
-      [FIXTURE_GAMMA, FIXTURE_BETA, FIXTURE_ALPHA]  // intentionally shuffled
+      [FIXTURE_GAMMA, FIXTURE_BETA, FIXTURE_ALPHA] // intentionally shuffled
     )
     expect(result).toHaveLength(3)
     expect(result[0].pattern.severity).toBe('critical')
@@ -193,10 +193,11 @@ describe('SYMPHONY pattern engine — integration: multi-pattern sort', () => {
   })
 
   it('confidence ordering within each severity level is preserved', () => {
-    const result = evaluateSymphonyPatterns(
-      INTEGRATION_SNAPSHOT,
-      [FIXTURE_GAMMA, FIXTURE_BETA, FIXTURE_ALPHA]
-    )
+    const result = evaluateSymphonyPatterns(INTEGRATION_SNAPSHOT, [
+      FIXTURE_GAMMA,
+      FIXTURE_BETA,
+      FIXTURE_ALPHA,
+    ])
     // critical(ALPHA, 0.9) > high(BETA, ~0.84) > warning(GAMMA, 0.25)
     expect(result[0].confidence).toBeGreaterThan(result[1].confidence)
     expect(result[1].confidence).toBeGreaterThan(result[2].confidence)

@@ -91,7 +91,7 @@ function clamp01(value: number): number {
 }
 
 function hasValidationFlag(candidate: SymphonyHybridDiagnosisCandidate, type: string): boolean {
-  return candidate.validationFlags?.some(flag => flag.type === type) ?? false
+  return candidate.validationFlags?.some((flag) => flag.type === type) ?? false
 }
 
 function contextText(input: SymphonyHybridDecisionInput): string {
@@ -120,27 +120,29 @@ function candidateText(candidate: SymphonyHybridDiagnosisCandidate): string {
 function textHasMeaningfulOverlap(source: string, target: string): boolean {
   const tokens = normalizeText(source)
     .split(' ')
-    .filter(token => token.length >= 4 && !GENERIC_RED_FLAG_TOKENS.has(token))
+    .filter((token) => token.length >= 4 && !GENERIC_RED_FLAG_TOKENS.has(token))
 
   if (tokens.length === 0) return false
 
-  const overlapCount = tokens.filter(token => target.includes(token)).length
+  const overlapCount = tokens.filter((token) => target.includes(token)).length
   return overlapCount >= Math.min(2, tokens.length)
 }
 
 function textHasAnyMeaningfulOverlap(source: string, target: string): boolean {
   const tokens = normalizeText(source)
     .split(' ')
-    .filter(token => token.length >= 4 && !GENERIC_RED_FLAG_TOKENS.has(token))
+    .filter((token) => token.length >= 4 && !GENERIC_RED_FLAG_TOKENS.has(token))
 
-  return tokens.some(token => target.includes(token))
+  return tokens.some((token) => target.includes(token))
 }
 
 function explainsChiefComplaint(
   input: SymphonyHybridDecisionInput,
   candidate: SymphonyHybridDiagnosisCandidate
 ): boolean {
-  const complaint = normalizeText([input.chiefComplaint ?? '', input.additionalComplaint ?? ''].join(' '))
+  const complaint = normalizeText(
+    [input.chiefComplaint ?? '', input.additionalComplaint ?? ''].join(' ')
+  )
   if (!complaint) return false
   return textHasAnyMeaningfulOverlap(complaint, candidateText(candidate))
 }
@@ -155,7 +157,7 @@ function redFlagMatchesContext(
   const currentContextText = contextText(input)
   if (!currentContextText) return false
 
-  return redFlags.some(flag => {
+  return redFlags.some((flag) => {
     const normalizedFlag = normalizeText(flag)
     if (!normalizedFlag) return false
     if (currentContextText.includes(normalizedFlag)) return true
@@ -169,7 +171,7 @@ function isDangerSignal(
 ): boolean {
   if ((candidate.redFlags?.length ?? 0) > 0) return true
   if (
-    (candidate.recommendedActions ?? []).some(action =>
+    (candidate.recommendedActions ?? []).some((action) =>
       /rujuk|segera|emergensi|igd|stabilisasi/i.test(action)
     )
   ) {
@@ -222,7 +224,10 @@ function scoreCandidate(
   if (hasValidationFlag(candidate, 'sex_implausible')) score -= 0.25
   if (hasValidationFlag(candidate, 'pregnancy_implausible')) score -= 0.3
   if (hasValidationFlag(candidate, 'allergy_conflict')) score -= 0.15
-  if (hasValidationFlag(candidate, 'icd_not_found') || hasValidationFlag(candidate, 'missing_icd')) {
+  if (
+    hasValidationFlag(candidate, 'icd_not_found') ||
+    hasValidationFlag(candidate, 'missing_icd')
+  ) {
     score -= 0.45
   }
 
@@ -267,10 +272,10 @@ function orderScoredCandidates(scored: ScoredCandidate[]): ScoredCandidate[] {
     right.deterministicScore - left.deterministicScore
 
   return [
-    ...scored.filter(item => item.decisionCategory === 'recommended').sort(byScore),
-    ...scored.filter(item => item.decisionCategory === 'review').sort(byScore),
-    ...scored.filter(item => item.decisionCategory === 'must_not_miss').sort(byScore),
-    ...scored.filter(item => item.decisionCategory === 'deferred').sort(byScore),
+    ...scored.filter((item) => item.decisionCategory === 'recommended').sort(byScore),
+    ...scored.filter((item) => item.decisionCategory === 'review').sort(byScore),
+    ...scored.filter((item) => item.decisionCategory === 'must_not_miss').sort(byScore),
+    ...scored.filter((item) => item.decisionCategory === 'deferred').sort(byScore),
   ].slice(0, 5)
 }
 
@@ -314,7 +319,9 @@ function buildNextBestQuestions(
   }
 
   if (counts.recommended === 0) {
-    questions.add('Konfirmasi diagnosis kerja dengan pemeriksaan fisik dan data penunjang yang relevan.')
+    questions.add(
+      'Konfirmasi diagnosis kerja dengan pemeriksaan fisik dan data penunjang yang relevan.'
+    )
   }
 
   return [...questions].slice(0, 5)
@@ -339,7 +346,7 @@ function toSuggestion(scored: ScoredCandidate, rank: number): SymphonyDiagnosisS
       `deterministic_score:${scored.deterministicScore}`,
       `rag_verified:${candidate.ragVerified === true}`,
       `danger_signal:${scored.dangerSignal}`,
-      ...((candidate.validationFlags ?? []).map(flag => `validation_flag:${flag.type}`)),
+      ...(candidate.validationFlags ?? []).map((flag) => `validation_flag:${flag.type}`),
     ],
     mustNotMiss: scored.decisionCategory === 'must_not_miss',
   }
@@ -349,21 +356,21 @@ export function applySymphonyHybridDecisioning(
   input: SymphonyHybridDecisionInput
 ): SymphonyHybridDecisionResult {
   const scored = input.candidates
-    .filter(candidate => candidate.icd10Code.trim() && candidate.diagnosisName.trim())
-    .map(candidate => scoreCandidate(input, candidate))
+    .filter((candidate) => candidate.icd10Code.trim() && candidate.diagnosisName.trim())
+    .map((candidate) => scoreCandidate(input, candidate))
   const ordered = orderScoredCandidates(scored)
 
   const counts = {
-    recommended: scored.filter(item => item.decisionCategory === 'recommended').length,
-    review: scored.filter(item => item.decisionCategory === 'review').length,
-    mustNotMiss: scored.filter(item => item.decisionCategory === 'must_not_miss').length,
-    deferred: scored.filter(item => item.decisionCategory === 'deferred').length,
+    recommended: scored.filter((item) => item.decisionCategory === 'recommended').length,
+    review: scored.filter((item) => item.decisionCategory === 'review').length,
+    mustNotMiss: scored.filter((item) => item.decisionCategory === 'must_not_miss').length,
+    deferred: scored.filter((item) => item.decisionCategory === 'deferred').length,
   }
   const nextBestQuestions = buildNextBestQuestions(input, ordered, counts)
   const requiresMoreData =
     counts.recommended === 0 ||
     nextBestQuestions.length > 0 ||
-    scored.every(item => (item.candidate.missingInformation?.length ?? 0) > 0)
+    scored.every((item) => (item.candidate.missingInformation?.length ?? 0) > 0)
 
   return {
     suggestions: ordered.map((item, index) => toSuggestion(item, index + 1)),

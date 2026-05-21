@@ -25,9 +25,7 @@ import {
 
 const REQUESTED_AT = '2026-04-19T10:00:00.000Z'
 
-function baseAssessment(
-  overrides: Partial<SymphonyAssessmentInput> = {}
-): SymphonyAssessmentInput {
+function baseAssessment(overrides: Partial<SymphonyAssessmentInput> = {}): SymphonyAssessmentInput {
   return {
     metadata: {
       requestId: 'test-request',

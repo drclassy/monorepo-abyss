@@ -19,7 +19,9 @@ function alert(
   }
 }
 
-export function evaluateSymphonyVitalAlerts(vitals: SymphonyVitalsInput | undefined): SymphonyAlert[] {
+export function evaluateSymphonyVitalAlerts(
+  vitals: SymphonyVitalsInput | undefined
+): SymphonyAlert[] {
   if (!vitals) return []
 
   const triggeredAt = vitals.observedAt
@@ -88,7 +90,10 @@ export function evaluateSymphonyVitalAlerts(vitals: SymphonyVitalsInput | undefi
         'symphony-vitals-severe-tachycardia',
         'high',
         `Takikardia berat - HR ${vitals.heartRate} bpm`,
-        [`Denyut jantung ${vitals.heartRate} bpm >140.`, 'Cari syok, hipoksia, demam, nyeri, atau dehidrasi.'],
+        [
+          `Denyut jantung ${vitals.heartRate} bpm >140.`,
+          'Cari syok, hipoksia, demam, nyeri, atau dehidrasi.',
+        ],
         triggeredAt
       )
     )
@@ -100,7 +105,10 @@ export function evaluateSymphonyVitalAlerts(vitals: SymphonyVitalsInput | undefi
         'symphony-vitals-severe-bradycardia',
         'high',
         `Bradikardia berat - HR ${vitals.heartRate} bpm`,
-        [`Denyut jantung ${vitals.heartRate} bpm <45.`, 'Evaluasi perfusi, EKG, obat, dan hipotermia.'],
+        [
+          `Denyut jantung ${vitals.heartRate} bpm <45.`,
+          'Evaluasi perfusi, EKG, obat, dan hipotermia.',
+        ],
         triggeredAt
       )
     )
@@ -124,7 +132,10 @@ export function evaluateSymphonyVitalAlerts(vitals: SymphonyVitalsInput | undefi
         'symphony-vitals-hypothermia',
         'high',
         `Hipotermia - ${vitals.temperatureC}C`,
-        [`Suhu ${vitals.temperatureC}C <35.`, 'Evaluasi sepsis, paparan dingin, dan gangguan metabolik.'],
+        [
+          `Suhu ${vitals.temperatureC}C <35.`,
+          'Evaluasi sepsis, paparan dingin, dan gangguan metabolik.',
+        ],
         triggeredAt
       )
     )

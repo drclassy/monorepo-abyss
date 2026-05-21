@@ -14,7 +14,7 @@ import {
 function fixture(
   id: string,
   description: string,
-  input: SymphonyAssessmentInput,
+  input: SymphonyAssessmentInput
 ): SymphonyAadiV2ParityFixtureCase {
   return { id, description, input }
 }
@@ -38,7 +38,7 @@ describe('verifySymphonyAadiV2Parity', () => {
   it('returns pass verdict for canonical AADI V2 parity fixtures', () => {
     const report = runSymphonyAadiV2ParityFixtures()
     expect(report.verdict).toBe('pass')
-    expect(report.gates.every(gate => gate.passed)).toBe(true)
+    expect(report.gates.every((gate) => gate.passed)).toBe(true)
     expect(report.totalFixtures).toBe(SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES.length)
   })
 
@@ -54,7 +54,7 @@ describe('verifySymphonyAadiV2Parity', () => {
 
   it('emits all four parity gates deterministically', () => {
     const report = runSymphonyAadiV2ParityFixtures()
-    const gateIds = report.gates.map(gate => gate.id)
+    const gateIds = report.gates.map((gate) => gate.id)
     expect(gateIds).toEqual([
       'AADIV2_PARITY_GATE_A_NO_LOW_AGREEMENT',
       'AADIV2_PARITY_GATE_B_NO_UNSAFE_ESCALATION_DOWNGRADE',
@@ -90,13 +90,8 @@ describe('verifySymphonyAadiV2Parity', () => {
 
 describe('buildSymphonyAadiV2ParityObservation', () => {
   it('parses old/new escalation and disposition from shadowComparison notes', () => {
-    const result = assessSymphonyInput(
-      SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES[1].input,
-    )
-    const observation = buildSymphonyAadiV2ParityObservation(
-      'febrile-test',
-      result,
-    )
+    const result = assessSymphonyInput(SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES[1].input)
+    const observation = buildSymphonyAadiV2ParityObservation('febrile-test', result)
     expect(observation.id).toBe('febrile-test')
     expect(observation.shadowComparison).toBeDefined()
     expect(observation.newClinicalDisposition).toBeDefined()

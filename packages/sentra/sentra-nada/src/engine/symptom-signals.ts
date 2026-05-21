@@ -17,7 +17,11 @@ export type {
   SymphonySymptomSignalResult,
 } from '@the-abyss/shared-types'
 
-import type { SymphonySymptomSignal, SymphonySymptomSignalInput, SymphonySymptomSignalResult } from '@the-abyss/shared-types'
+import type {
+  SymphonySymptomSignal,
+  SymphonySymptomSignalInput,
+  SymphonySymptomSignalResult,
+} from '@the-abyss/shared-types'
 
 const NEGATION_PREFIXES = ['tidak ada', 'tidak', 'tanpa', 'bukan', 'belum']
 const NEGATION_WINDOW_TOKENS = 3
@@ -105,14 +109,7 @@ const MATCHERS: SignalMatcher[] = [
   },
   {
     signal: 'rash_or_angioedema',
-    keywords: [
-      'bengkak muka',
-      'kulit bentol',
-      'angioedema',
-      'urtikaria',
-      'ruam',
-      'gatal',
-    ],
+    keywords: ['bengkak muka', 'kulit bentol', 'angioedema', 'urtikaria', 'ruam', 'gatal'],
   },
   {
     signal: 'allergen_exposure',

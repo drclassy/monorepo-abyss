@@ -21,13 +21,11 @@ export interface SymphonyShadowComparisonInput {
 }
 
 export function compareSymphonyShadowPaths(
-  input: SymphonyShadowComparisonInput,
+  input: SymphonyShadowComparisonInput
 ): SymphonyShadowComparison {
   const oldPathAvailable =
-    input.hybridSuggestions.length > 0 ||
-    input.oldTrafficLightLevel !== undefined
-  const newPathAvailable =
-    !input.newPathFailed && input.nativeHypotheses.length > 0
+    input.hybridSuggestions.length > 0 || input.oldTrafficLightLevel !== undefined
+  const newPathAvailable = !input.newPathFailed && input.nativeHypotheses.length > 0
 
   const oldTopIcd = input.hybridSuggestions[0]?.icd10Code ?? null
   const newTopIcd = input.nativeHypotheses[0]?.icd10Code ?? null
@@ -37,9 +35,9 @@ export function compareSymphonyShadowPaths(
   const newLevel = input.newTrafficLightLevel ?? null
   const escalationChanged = oldLevel !== newLevel
 
-  const hasCriticalAlert = input.alerts.some(alert => alert.severity === 'critical')
+  const hasCriticalAlert = input.alerts.some((alert) => alert.severity === 'critical')
   const oldArbiterReview = input.hybridSuggestions.some(
-    suggestion => suggestion.mustNotMiss === true,
+    (suggestion) => suggestion.mustNotMiss === true
   )
   const oldClinicalDisposition = determineSymphonyClinicalDisposition({
     nativeHypothesisCount: input.hybridSuggestions.length,
@@ -47,8 +45,7 @@ export function compareSymphonyShadowPaths(
     usedFallback: false,
     arbiterRequiresReview: oldArbiterReview,
   })
-  const clinicalDispositionChanged =
-    oldClinicalDisposition !== input.newClinicalDisposition
+  const clinicalDispositionChanged = oldClinicalDisposition !== input.newClinicalDisposition
 
   let agreementLevel: SymphonyShadowComparison['agreementLevel']
   if (!oldPathAvailable || !newPathAvailable) {

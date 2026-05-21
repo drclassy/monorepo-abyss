@@ -15,12 +15,16 @@ const EXPECTED_CP_IDS = Array.from({ length: 70 }, (_, index) => {
 
 describe('Assist clinical-pattern parity adapter', () => {
   it('publishes one canonical parity definition for every Assist CP-001 through CP-070 pattern', () => {
-    const ids = ASSIST_PATTERN_PARITY_DEFINITIONS.map(pattern => pattern.id)
+    const ids = ASSIST_PATTERN_PARITY_DEFINITIONS.map((pattern) => pattern.id)
 
     expect(ids).toEqual(EXPECTED_CP_IDS)
     expect(new Set(ids).size).toBe(70)
     expect(ASSIST_PATTERN_PARITY_DEFINITIONS).toHaveLength(70)
-    expect(ASSIST_PATTERN_PARITY_DEFINITIONS.every(pattern => pattern.sourceFile.endsWith('clinical-patterns.ts'))).toBe(true)
+    expect(
+      ASSIST_PATTERN_PARITY_DEFINITIONS.every((pattern) =>
+        pattern.sourceFile.endsWith('clinical-patterns.ts')
+      )
+    ).toBe(true)
   })
 
   it('preserves representative Assist clinical intent metadata without evaluating browser-only inputs', () => {
@@ -85,14 +89,14 @@ describe('Assist clinical-pattern parity adapter', () => {
   })
 
   it('publishes per-CP parity fixtures and proves every fixture maps to a Symphony alert', () => {
-    const fixtureIds = ASSIST_PATTERN_PARITY_FIXTURE_CASES.map(fixture => fixture.patternId)
+    const fixtureIds = ASSIST_PATTERN_PARITY_FIXTURE_CASES.map((fixture) => fixture.patternId)
     const results = runAssistPatternParityFixtures({ triggeredAt: '2026-04-19T16:30:00.000Z' })
 
     expect(fixtureIds).toEqual(EXPECTED_CP_IDS)
     expect(results).toHaveLength(70)
-    expect(results.every(result => result.passed)).toBe(true)
-    expect(results.flatMap(result => result.mismatches)).toEqual([])
-    expect(results.map(result => result.alert.id)).toContain('assist-cp-001')
-    expect(results.map(result => result.alert.id)).toContain('assist-cp-070')
+    expect(results.every((result) => result.passed)).toBe(true)
+    expect(results.flatMap((result) => result.mismatches)).toEqual([])
+    expect(results.map((result) => result.alert.id)).toContain('assist-cp-001')
+    expect(results.map((result) => result.alert.id)).toContain('assist-cp-070')
   })
 })

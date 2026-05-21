@@ -60,7 +60,7 @@ const CLINICAL_DISPOSITION_RANK: Record<SymphonyClinicalDisposition, number> = {
 }
 
 function parseNote(notes: readonly string[], prefix: string): string | null {
-  const found = notes.find(note => note.startsWith(prefix))
+  const found = notes.find((note) => note.startsWith(prefix))
   if (!found) return null
   return found.slice(prefix.length)
 }
@@ -70,9 +70,7 @@ function parseTrafficLightLevel(value: string | null): SymphonyTrafficLightLevel
   return null
 }
 
-function parseClinicalDisposition(
-  value: string | null,
-): SymphonyClinicalDisposition | null {
+function parseClinicalDisposition(value: string | null): SymphonyClinicalDisposition | null {
   if (
     value === 'ok' ||
     value === 'requires_review' ||
@@ -86,7 +84,7 @@ function parseClinicalDisposition(
 
 export function buildSymphonyAadiV2ParityObservation(
   id: string,
-  result: SymphonyResult,
+  result: SymphonyResult
 ): SymphonyAadiV2ParityObservation {
   const shadow = result.shadowComparison ?? {
     oldPathAvailable: false,
@@ -97,17 +95,12 @@ export function buildSymphonyAadiV2ParityObservation(
     clinicalDispositionChanged: false,
     notes: [],
   }
-  const oldTrafficLightLevel = parseTrafficLightLevel(
-    parseNote(shadow.notes, 'old_escalation:'),
-  )
-  const newTrafficLightLevel = parseTrafficLightLevel(
-    parseNote(shadow.notes, 'new_escalation:'),
-  )
+  const oldTrafficLightLevel = parseTrafficLightLevel(parseNote(shadow.notes, 'old_escalation:'))
+  const newTrafficLightLevel = parseTrafficLightLevel(parseNote(shadow.notes, 'new_escalation:'))
   const oldClinicalDisposition = parseClinicalDisposition(
-    parseNote(shadow.notes, 'old_disposition:'),
+    parseNote(shadow.notes, 'old_disposition:')
   )
-  const pipelineFailed =
-    parseNote(shadow.notes, 'new_path_failed:') === '1'
+  const pipelineFailed = parseNote(shadow.notes, 'new_path_failed:') === '1'
   return {
     id,
     shadowComparison: shadow,
@@ -119,9 +112,7 @@ export function buildSymphonyAadiV2ParityObservation(
   }
 }
 
-function isUnsafeEscalationDowngrade(
-  observation: SymphonyAadiV2ParityObservation,
-): boolean {
+function isUnsafeEscalationDowngrade(observation: SymphonyAadiV2ParityObservation): boolean {
   if (!observation.oldTrafficLightLevel || !observation.newTrafficLightLevel) {
     return false
   }
@@ -131,9 +122,7 @@ function isUnsafeEscalationDowngrade(
   )
 }
 
-function isUnsafeDispositionDowngrade(
-  observation: SymphonyAadiV2ParityObservation,
-): boolean {
+function isUnsafeDispositionDowngrade(observation: SymphonyAadiV2ParityObservation): boolean {
   if (observation.oldClinicalDisposition === null) return false
   return (
     CLINICAL_DISPOSITION_RANK[observation.oldClinicalDisposition] === 2 &&
@@ -142,13 +131,10 @@ function isUnsafeDispositionDowngrade(
 }
 
 export function verifySymphonyAadiV2Parity(
-  fixtures: readonly SymphonyAadiV2ParityFixtureCase[],
+  fixtures: readonly SymphonyAadiV2ParityFixtureCase[]
 ): SymphonyAadiV2ParityReport {
-  const observations = fixtures.map(fixture =>
-    buildSymphonyAadiV2ParityObservation(
-      fixture.id,
-      assessSymphonyInput(fixture.input),
-    ),
+  const observations = fixtures.map((fixture) =>
+    buildSymphonyAadiV2ParityObservation(fixture.id, assessSymphonyInput(fixture.input))
   )
 
   const agreementHistogram: SymphonyAadiV2ParityReport['agreementHistogram'] = {
@@ -165,7 +151,7 @@ export function verifySymphonyAadiV2Parity(
   let pipelineFailureCount = 0
   let comparableCount = 0
 
-  observations.forEach(observation => {
+  observations.forEach((observation) => {
     agreementHistogram[observation.shadowComparison.agreementLevel] += 1
     if (observation.shadowComparison.agreementLevel !== 'not_comparable') {
       comparableCount += 1
@@ -221,9 +207,7 @@ export function verifySymphonyAadiV2Parity(
     },
   ]
 
-  const verdict: SymphonyAadiV2ParityReport['verdict'] = gates.every(
-    gate => gate.passed,
-  )
+  const verdict: SymphonyAadiV2ParityReport['verdict'] = gates.every((gate) => gate.passed)
     ? 'pass'
     : 'fail'
 
@@ -243,142 +227,141 @@ export function verifySymphonyAadiV2Parity(
   }
 }
 
-export const SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES: SymphonyAadiV2ParityFixtureCase[] =
-  [
-    {
-      id: 'baseline-empty-input',
-      description:
-        'Empty vitals + no chief complaint — both paths produce nothing; expected not_comparable.',
-      input: {
-        metadata: {
-          requestId: 'aadi-v2-parity-empty',
-          requestedAt: '2026-04-27T10:00:00.000Z',
-          caller: 'dashboard',
-        },
-        patientContext: {
-          encounterId: 'encounter-empty',
-          patientRef: 'patient-empty',
-          ageYears: 40,
-          sexAtBirth: 'female',
-        },
-        vitals: [],
+export const SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES: SymphonyAadiV2ParityFixtureCase[] = [
+  {
+    id: 'baseline-empty-input',
+    description:
+      'Empty vitals + no chief complaint — both paths produce nothing; expected not_comparable.',
+    input: {
+      metadata: {
+        requestId: 'aadi-v2-parity-empty',
+        requestedAt: '2026-04-27T10:00:00.000Z',
+        caller: 'dashboard',
       },
-    },
-    {
-      id: 'febrile-dyspnea-presentation',
-      description:
-        'Febrile dyspnea with elevated NEWS2 — exercises pneumonia/sepsis pack against hybrid path.',
-      input: {
-        metadata: {
-          requestId: 'aadi-v2-parity-febrile',
-          requestedAt: '2026-04-27T10:05:00.000Z',
-          caller: 'dashboard',
-        },
-        patientContext: {
-          encounterId: 'encounter-febrile',
-          patientRef: 'patient-febrile',
-          ageYears: 62,
-          sexAtBirth: 'male',
-        },
-        chiefComplaint: 'demam tinggi dan sesak napas berat sejak kemarin',
-        vitals: [
-          {
-            observedAt: '2026-04-27T09:55:00.000Z',
-            heartRate: 122,
-            respiratoryRate: 28,
-            systolicBp: 102,
-            diastolicBp: 64,
-            temperatureC: 39.2,
-            spo2: 90,
-            consciousness: 'alert',
-          },
-        ],
+      patientContext: {
+        encounterId: 'encounter-empty',
+        patientRef: 'patient-empty',
+        ageYears: 40,
+        sexAtBirth: 'female',
       },
+      vitals: [],
     },
-    {
-      id: 'hypertensive-presentation',
-      description:
-        'Stage-2 hypertension presentation — exercises htn-crisis pack and old/new disposition divergence.',
-      input: {
-        metadata: {
-          requestId: 'aadi-v2-parity-htn',
-          requestedAt: '2026-04-27T10:10:00.000Z',
-          caller: 'dashboard',
-        },
-        patientContext: {
-          encounterId: 'encounter-htn',
-          patientRef: 'patient-htn',
-          ageYears: 58,
-          sexAtBirth: 'male',
-        },
-        chiefComplaint: 'sakit kepala dan tekanan darah tinggi',
-        vitals: [
-          {
-            observedAt: '2026-04-27T09:50:00.000Z',
-            heartRate: 92,
-            respiratoryRate: 18,
-            systolicBp: 188,
-            diastolicBp: 118,
-            temperatureC: 36.8,
-            spo2: 97,
-            consciousness: 'alert',
-          },
-          {
-            observedAt: '2026-04-27T10:00:00.000Z',
-            heartRate: 95,
-            respiratoryRate: 18,
-            systolicBp: 192,
-            diastolicBp: 120,
-            temperatureC: 36.9,
-            spo2: 97,
-            consciousness: 'alert',
-          },
-        ],
+  },
+  {
+    id: 'febrile-dyspnea-presentation',
+    description:
+      'Febrile dyspnea with elevated NEWS2 — exercises pneumonia/sepsis pack against hybrid path.',
+    input: {
+      metadata: {
+        requestId: 'aadi-v2-parity-febrile',
+        requestedAt: '2026-04-27T10:05:00.000Z',
+        caller: 'dashboard',
       },
-    },
-    {
-      id: 'sepsis-presentation-with-hybrid-candidate',
-      description:
-        'Sepsis presentation with explicit hybrid diagnosis candidate — exercises agreement pathway when both paths converge.',
-      input: {
-        metadata: {
-          requestId: 'aadi-v2-parity-sepsis',
-          requestedAt: '2026-04-27T10:15:00.000Z',
-          caller: 'dashboard',
-        },
-        patientContext: {
-          encounterId: 'encounter-sepsis',
-          patientRef: 'patient-sepsis',
-          ageYears: 70,
-          sexAtBirth: 'female',
-        },
-        chiefComplaint: 'demam tinggi dan kelemahan, kemungkinan infeksi',
-        vitals: [
-          {
-            observedAt: '2026-04-27T10:00:00.000Z',
-            heartRate: 130,
-            respiratoryRate: 26,
-            systolicBp: 88,
-            diastolicBp: 56,
-            temperatureC: 39.4,
-            spo2: 92,
-            consciousness: 'alert',
-          },
-        ],
-        diagnosisCandidates: [
-          {
-            icd10Code: 'A41.9',
-            diagnosisName: 'Sepsis, unspecified organism',
-            confidence: 0.74,
-            keyReasons: ['Demam tinggi, takikardia, hipotensi'],
-          },
-        ],
+      patientContext: {
+        encounterId: 'encounter-febrile',
+        patientRef: 'patient-febrile',
+        ageYears: 62,
+        sexAtBirth: 'male',
       },
+      chiefComplaint: 'demam tinggi dan sesak napas berat sejak kemarin',
+      vitals: [
+        {
+          observedAt: '2026-04-27T09:55:00.000Z',
+          heartRate: 122,
+          respiratoryRate: 28,
+          systolicBp: 102,
+          diastolicBp: 64,
+          temperatureC: 39.2,
+          spo2: 90,
+          consciousness: 'alert',
+        },
+      ],
     },
-  ]
+  },
+  {
+    id: 'hypertensive-presentation',
+    description:
+      'Stage-2 hypertension presentation — exercises htn-crisis pack and old/new disposition divergence.',
+    input: {
+      metadata: {
+        requestId: 'aadi-v2-parity-htn',
+        requestedAt: '2026-04-27T10:10:00.000Z',
+        caller: 'dashboard',
+      },
+      patientContext: {
+        encounterId: 'encounter-htn',
+        patientRef: 'patient-htn',
+        ageYears: 58,
+        sexAtBirth: 'male',
+      },
+      chiefComplaint: 'sakit kepala dan tekanan darah tinggi',
+      vitals: [
+        {
+          observedAt: '2026-04-27T09:50:00.000Z',
+          heartRate: 92,
+          respiratoryRate: 18,
+          systolicBp: 188,
+          diastolicBp: 118,
+          temperatureC: 36.8,
+          spo2: 97,
+          consciousness: 'alert',
+        },
+        {
+          observedAt: '2026-04-27T10:00:00.000Z',
+          heartRate: 95,
+          respiratoryRate: 18,
+          systolicBp: 192,
+          diastolicBp: 120,
+          temperatureC: 36.9,
+          spo2: 97,
+          consciousness: 'alert',
+        },
+      ],
+    },
+  },
+  {
+    id: 'sepsis-presentation-with-hybrid-candidate',
+    description:
+      'Sepsis presentation with explicit hybrid diagnosis candidate — exercises agreement pathway when both paths converge.',
+    input: {
+      metadata: {
+        requestId: 'aadi-v2-parity-sepsis',
+        requestedAt: '2026-04-27T10:15:00.000Z',
+        caller: 'dashboard',
+      },
+      patientContext: {
+        encounterId: 'encounter-sepsis',
+        patientRef: 'patient-sepsis',
+        ageYears: 70,
+        sexAtBirth: 'female',
+      },
+      chiefComplaint: 'demam tinggi dan kelemahan, kemungkinan infeksi',
+      vitals: [
+        {
+          observedAt: '2026-04-27T10:00:00.000Z',
+          heartRate: 130,
+          respiratoryRate: 26,
+          systolicBp: 88,
+          diastolicBp: 56,
+          temperatureC: 39.4,
+          spo2: 92,
+          consciousness: 'alert',
+        },
+      ],
+      diagnosisCandidates: [
+        {
+          icd10Code: 'A41.9',
+          diagnosisName: 'Sepsis, unspecified organism',
+          confidence: 0.74,
+          keyReasons: ['Demam tinggi, takikardia, hipotensi'],
+        },
+      ],
+    },
+  },
+]
 
 export function runSymphonyAadiV2ParityFixtures(
-  fixtures: readonly SymphonyAadiV2ParityFixtureCase[] = SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES,
+  fixtures: readonly SymphonyAadiV2ParityFixtureCase[] = SYMPHONY_AADI_V2_PARITY_FIXTURE_CASES
 ): SymphonyAadiV2ParityReport {
   return verifySymphonyAadiV2Parity(fixtures)
 }

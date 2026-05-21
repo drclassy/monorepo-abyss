@@ -31,9 +31,7 @@ const DIAGNOSIS_PACKS: readonly SymphonyDiagnosisPack[] = [
     supportKeys: ['symptom_fever', 'screening_gate_count', 'trajectory_direction'],
     weakenKeys: [],
     mustNotMiss: true,
-    nextBestQuestions: [
-      'Apakah ada sumber infeksi yang jelas atau penurunan perfusi?',
-    ],
+    nextBestQuestions: ['Apakah ada sumber infeksi yang jelas atau penurunan perfusi?'],
   },
   {
     id: 'pack-htn-crisis',
@@ -43,9 +41,7 @@ const DIAGNOSIS_PACKS: readonly SymphonyDiagnosisPack[] = [
     supportKeys: ['htn_severity', 'trajectory_direction'],
     weakenKeys: [],
     mustNotMiss: true,
-    nextBestQuestions: [
-      'Apakah ada nyeri dada, defisit neurologis, atau gangguan penglihatan?',
-    ],
+    nextBestQuestions: ['Apakah ada nyeri dada, defisit neurologis, atau gangguan penglihatan?'],
   },
 ] as const
 

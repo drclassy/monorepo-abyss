@@ -41,7 +41,7 @@ const CARDIOMETABOLIC_TYPES = new Set(['HT', 'DM', 'HF', 'CHD', 'STROKE'])
 
 function escalate(
   current: SymphonyTrafficLightLevel,
-  target: SymphonyTrafficLightLevel,
+  target: SymphonyTrafficLightLevel
 ): SymphonyTrafficLightLevel {
   return LEVEL_ORDER[target] > LEVEL_ORDER[current] ? target : current
 }
@@ -56,25 +56,23 @@ function getReferralRequired(alert: SymphonyAlert): boolean {
 
 function getAcutePresentationSignal(
   alerts: readonly SymphonyAlert[],
-  diagnosisSuggestions: readonly SymphonyDiagnosisSuggestion[],
+  diagnosisSuggestions: readonly SymphonyDiagnosisSuggestion[]
 ): boolean {
   const hasAcuteAlert = alerts.some(
-    alert => alert.severity === 'critical' || alert.severity === 'high',
+    (alert) => alert.severity === 'critical' || alert.severity === 'high'
   )
-  const hasMustNotMiss = diagnosisSuggestions.some(suggestion => suggestion.mustNotMiss)
+  const hasMustNotMiss = diagnosisSuggestions.some((suggestion) => suggestion.mustNotMiss)
 
   return hasAcuteAlert || hasMustNotMiss
 }
 
 function getMaxDdiSeverity(
-  ddiResult: ClinicalReferenceDdiCheckResult | undefined,
+  ddiResult: ClinicalReferenceDdiCheckResult | undefined
 ): ClinicalReferenceDdiSeverity | null {
   if (!ddiResult || ddiResult.interactions.length === 0) return null
 
   return ddiResult.interactions.reduce<ClinicalReferenceDdiSeverity>((current, interaction) => {
-    return DDI_ORDER[interaction.severity] > DDI_ORDER[current]
-      ? interaction.severity
-      : current
+    return DDI_ORDER[interaction.severity] > DDI_ORDER[current] ? interaction.severity : current
   }, 'unknown')
 }
 
@@ -87,7 +85,7 @@ function normalizeIcdPrefix(value: string): string | null {
 }
 
 export function classifySymphonyTrafficLight(
-  input: SymphonyTrafficLightInput,
+  input: SymphonyTrafficLightInput
 ): SymphonyTrafficLightOutput {
   let level: SymphonyTrafficLightLevel = 'GREEN'
   const reasons: string[] = []
@@ -99,7 +97,8 @@ export function classifySymphonyTrafficLight(
   const maxDdiSeverity = getMaxDdiSeverity(input.ddiResult)
 
   const hasKnowledgeBaseRedFlags = input.alerts.some(
-    alert => alert.source === 'pattern' || alert.source === 'safety_gate' || alert.source === 'composite',
+    (alert) =>
+      alert.source === 'pattern' || alert.source === 'safety_gate' || alert.source === 'composite'
   )
   if (hasKnowledgeBaseRedFlags) {
     level = escalate(level, 'YELLOW')
@@ -116,7 +115,7 @@ export function classifySymphonyTrafficLight(
 
   const hasReferralCriteria =
     input.alerts.some(getReferralRequired) ||
-    input.diagnosisSuggestions.some(suggestion => suggestion.mustNotMiss)
+    input.diagnosisSuggestions.some((suggestion) => suggestion.mustNotMiss)
   if (hasReferralCriteria) {
     level = escalate(level, 'YELLOW')
     overrideApplied = true
@@ -183,25 +182,25 @@ export function classifySymphonyTrafficLight(
   gateResults.push({
     rule: 'Rule 6: DDI Severity',
     triggered: ddiCritical,
-    detail: maxDdiSeverity ? `Maximum DDI severity: ${maxDdiSeverity}` : 'No DDI interaction supplied',
+    detail: maxDdiSeverity
+      ? `Maximum DDI severity: ${maxDdiSeverity}`
+      : 'No DDI interaction supplied',
   })
 
   const cardiometabolicCluster = new Set(
     input.diagnosisSuggestions
-      .map(suggestion => classifySymphonyChronicDisease(suggestion.icd10Code))
+      .map((suggestion) => classifySymphonyChronicDisease(suggestion.icd10Code))
       .filter(
         (classification): classification is NonNullable<typeof classification> =>
-          classification !== null && CARDIOMETABOLIC_TYPES.has(classification.type),
+          classification !== null && CARDIOMETABOLIC_TYPES.has(classification.type)
       )
-      .map(classification => classification.type),
+      .map((classification) => classification.type)
   )
   const hasCardiometabolicCluster = cardiometabolicCluster.size >= 2
   if (hasCardiometabolicCluster) {
     level = escalate(level, 'YELLOW')
     overrideApplied = true
-    reasons.push(
-      `Cluster kardiometabolik: ${[...cardiometabolicCluster].join(', ')}.`,
-    )
+    reasons.push(`Cluster kardiometabolik: ${[...cardiometabolicCluster].join(', ')}.`)
   }
   gateResults.push({
     rule: 'Rule 7: Cardiometabolic Cluster',
@@ -214,11 +213,11 @@ export function classifySymphonyTrafficLight(
   const chronicPrefixes = new Set(
     (input.chronicDiseases ?? [])
       .map(normalizeIcdPrefix)
-      .filter((value): value is string => value !== null),
+      .filter((value): value is string => value !== null)
   )
   const acuteOnChronic =
     chronicPrefixes.size > 0 &&
-    input.diagnosisSuggestions.some(suggestion => {
+    input.diagnosisSuggestions.some((suggestion) => {
       const prefix = normalizeIcdPrefix(suggestion.icd10Code)
       return prefix !== null && chronicPrefixes.has(prefix)
     }) &&
@@ -246,7 +245,7 @@ export function classifySymphonyTrafficLight(
 
 export function trafficLightToSymphonyAlert(
   trafficLight: SymphonyTrafficLightOutput,
-  triggeredAt = new Date().toISOString(),
+  triggeredAt = new Date().toISOString()
 ): SymphonyAlert | null {
   if (trafficLight.level === 'GREEN') return null
 
@@ -260,8 +259,8 @@ export function trafficLightToSymphonyAlert(
     reasoning: [
       trafficLight.reason,
       ...trafficLight.gateResults
-        .filter(result => result.triggered)
-        .map(result => `${result.rule}: ${result.detail}`),
+        .filter((result) => result.triggered)
+        .map((result) => `${result.rule}: ${result.detail}`),
     ],
     source: 'safety_gate',
     acknowledged: false,

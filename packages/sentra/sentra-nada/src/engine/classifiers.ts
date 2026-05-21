@@ -25,7 +25,12 @@ export type SymphonyHypertensionType =
   | 'HTN_URGENCY'
   | 'HTN_EMERGENCY'
 
-export type SymphonyHypertensionSeverity = 'normal' | 'prehypertension' | 'stage1' | 'stage2' | 'crisis'
+export type SymphonyHypertensionSeverity =
+  | 'normal'
+  | 'prehypertension'
+  | 'stage1'
+  | 'stage2'
+  | 'crisis'
 
 export interface SymphonyHmodRedFlags {
   chestPain: boolean
@@ -102,10 +107,10 @@ export function finalizeSymphonyBloodPressure(
 
   const sorted = [...readings]
   const lastThree = sorted.slice(-3)
-  const maxSbp = Math.max(...lastThree.map(reading => reading.sbp))
-  const minSbp = Math.min(...lastThree.map(reading => reading.sbp))
-  const maxDbp = Math.max(...lastThree.map(reading => reading.dbp))
-  const minDbp = Math.min(...lastThree.map(reading => reading.dbp))
+  const maxSbp = Math.max(...lastThree.map((reading) => reading.sbp))
+  const minSbp = Math.min(...lastThree.map((reading) => reading.sbp))
+  const maxDbp = Math.max(...lastThree.map((reading) => reading.dbp))
+  const minDbp = Math.min(...lastThree.map((reading) => reading.dbp))
 
   let measurementQuality: SymphonyBpMeasurementSession['measurementQuality'] = 'good'
   if (maxSbp - minSbp > 10 || maxDbp - minDbp > 10) {
@@ -156,7 +161,10 @@ export function classifySymphonyHypertensionType(
   if (bp.sbp >= SYMPHONY_BP_THRESHOLDS.STAGE1.sbp || bp.dbp >= SYMPHONY_BP_THRESHOLDS.STAGE1.dbp) {
     return 'PRIMARY_HTN'
   }
-  if (bp.sbp >= SYMPHONY_BP_THRESHOLDS.PREHYPERTENSION.sbp || bp.dbp >= SYMPHONY_BP_THRESHOLDS.PREHYPERTENSION.dbp) {
+  if (
+    bp.sbp >= SYMPHONY_BP_THRESHOLDS.PREHYPERTENSION.sbp ||
+    bp.dbp >= SYMPHONY_BP_THRESHOLDS.PREHYPERTENSION.dbp
+  ) {
     return 'PREHYPERTENSION'
   }
   return 'NORMAL'
@@ -174,7 +182,10 @@ export function getSymphonyHypertensionSeverity(
   if (bp.sbp >= SYMPHONY_BP_THRESHOLDS.STAGE1.sbp || bp.dbp >= SYMPHONY_BP_THRESHOLDS.STAGE1.dbp) {
     return 'stage1'
   }
-  if (bp.sbp >= SYMPHONY_BP_THRESHOLDS.PREHYPERTENSION.sbp || bp.dbp >= SYMPHONY_BP_THRESHOLDS.PREHYPERTENSION.dbp) {
+  if (
+    bp.sbp >= SYMPHONY_BP_THRESHOLDS.PREHYPERTENSION.sbp ||
+    bp.dbp >= SYMPHONY_BP_THRESHOLDS.PREHYPERTENSION.dbp
+  ) {
     return 'prehypertension'
   }
   return 'normal'
@@ -705,13 +716,18 @@ export function getSymphonyBestGcsTotal(
  * fallback (e.g. ?? 'A') wherever a non-optional SymphonyAvpuLevel is needed.
  */
 export function normalizeSymphonyConsciousnessToAvpu(
-  consciousness: SymphonyConsciousnessLevel | undefined,
+  consciousness: SymphonyConsciousnessLevel | undefined
 ): SymphonyAvpuLevel | undefined {
   switch (consciousness) {
-    case 'alert': return 'A'
-    case 'voice': return 'V'
-    case 'pain': return 'P'
-    case 'unresponsive': return 'U'
-    default: return undefined
+    case 'alert':
+      return 'A'
+    case 'voice':
+      return 'V'
+    case 'pain':
+      return 'P'
+    case 'unresponsive':
+      return 'U'
+    default:
+      return undefined
   }
 }

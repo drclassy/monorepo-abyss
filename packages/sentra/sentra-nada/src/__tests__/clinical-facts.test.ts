@@ -1,10 +1,7 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { describe, expect, it } from 'vitest'
 
-import {
-  buildSymphonyClinicalFacts,
-  type SymphonyAssessmentInput,
-} from '../index'
+import { buildSymphonyClinicalFacts, type SymphonyAssessmentInput } from '../index'
 
 describe('buildSymphonyClinicalFacts', () => {
   it('reuses symptom, snapshot-pattern, classifier, anaphylaxis, and trajectory signals', () => {
@@ -48,7 +45,7 @@ describe('buildSymphonyClinicalFacts', () => {
     }
 
     const result = buildSymphonyClinicalFacts(input)
-    const keys = result.facts.map(item => item.key)
+    const keys = result.facts.map((item) => item.key)
 
     expect(keys).toContain('symptom_fever')
     expect(keys).toContain('symptom_dyspnea')
@@ -63,9 +60,27 @@ describe('buildSymphonyClinicalFacts', () => {
   describe('snapshot consciousness fidelity (avpuManual)', () => {
     function makeInput(consciousness: string | undefined): SymphonyAssessmentInput {
       return {
-        metadata: { requestId: 'avpu-test', requestedAt: '2026-04-28T00:00:00.000Z', caller: 'system' },
-        patientContext: { encounterId: 'enc-x', patientRef: 'pat-x', ageYears: 40, sexAtBirth: 'male', pregnancyStatus: 'not_applicable' },
-        vitals: [{ observedAt: '2026-04-28T00:00:00.000Z', systolicBp: 120, diastolicBp: 80, heartRate: 72, consciousness: consciousness as never }],
+        metadata: {
+          requestId: 'avpu-test',
+          requestedAt: '2026-04-28T00:00:00.000Z',
+          caller: 'system',
+        },
+        patientContext: {
+          encounterId: 'enc-x',
+          patientRef: 'pat-x',
+          ageYears: 40,
+          sexAtBirth: 'male',
+          pregnancyStatus: 'not_applicable',
+        },
+        vitals: [
+          {
+            observedAt: '2026-04-28T00:00:00.000Z',
+            systolicBp: 120,
+            diastolicBp: 80,
+            heartRate: 72,
+            consciousness: consciousness as never,
+          },
+        ],
       }
     }
 

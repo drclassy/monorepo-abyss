@@ -67,13 +67,12 @@ function checkDengueShockPattern(
 ): SymphonyEarlyWarningMatch | null {
   if (!/dengue|dbd|demam berdarah|trombosit|peteki/i.test(text)) return null
 
-  const tempDropping = v.temperatureC !== undefined && v.temperatureC >= 35.5 && v.temperatureC <= 37.5
+  const tempDropping =
+    v.temperatureC !== undefined && v.temperatureC >= 35.5 && v.temperatureC <= 37.5
   const tachycardia = v.heartRate !== undefined && v.heartRate > 100
   const hypotension = v.systolicBp !== undefined && v.systolicBp < 100
   const narrowPulsePressure =
-    v.systolicBp !== undefined &&
-    v.diastolicBp !== undefined &&
-    v.systolicBp - v.diastolicBp <= 20
+    v.systolicBp !== undefined && v.diastolicBp !== undefined && v.systolicBp - v.diastolicBp <= 20
 
   if (tempDropping && tachycardia && (hypotension || narrowPulsePressure)) {
     return match(
@@ -93,7 +92,7 @@ function checkDengueShockPattern(
       ].filter(Boolean),
       ['A91'],
       '2-6 jam sebelum syok dengue manifest',
-      'WHO dengue warning-sign pathway; Dashboard parity pattern.',
+      'WHO dengue warning-sign pathway; Dashboard parity pattern.'
     )
   }
 
@@ -107,7 +106,7 @@ function checkDengueShockPattern(
       [`Suhu turun ke ${v.temperatureC}C`, `Takikardia ${v.heartRate} bpm`, 'Konteks dengue'],
       ['A91'],
       '6-12 jam sebelum kemungkinan syok',
-      'WHO dengue warning-sign pathway; Dashboard parity pattern.',
+      'WHO dengue warning-sign pathway; Dashboard parity pattern.'
     )
   }
 
@@ -140,7 +139,7 @@ function checkSepsisPattern(
       [...qsofaCriteria, `qSOFA skor: ${qsofaCriteria.length}/3`],
       ['A41.9', 'R65.1'],
       'Sepsis mungkin sudah berlangsung - tindakan segera',
-      'Sepsis-3 qSOFA bedside criteria; Dashboard parity pattern.',
+      'Sepsis-3 qSOFA bedside criteria; Dashboard parity pattern.'
     )
   }
 
@@ -166,7 +165,7 @@ function checkSepsisPattern(
       [...sirsCriteria, `SIRS skor: ${sirsCriteria.length}/3`],
       ['A41.9', 'R65.0'],
       '5-48 jam sebelum sepsis berat jika tidak ditangani',
-      'SIRS criteria; Dashboard parity pattern.',
+      'SIRS criteria; Dashboard parity pattern.'
     )
   }
 
@@ -180,7 +179,7 @@ function checkSepsisPattern(
       [...sirsCriteria, `NEWS2 aggregate: ${input.news2.aggregateScore}`],
       ['R65.0'],
       'Observasi - cari sumber infeksi',
-      'SIRS criteria and NEWS2 aggregate risk; Dashboard parity pattern.',
+      'SIRS criteria and NEWS2 aggregate risk; Dashboard parity pattern.'
     )
   }
 
@@ -207,7 +206,7 @@ function checkRespiratoryDeterioration(
       [`RR ${v.respiratoryRate}/menit`, `SpO2 ${v.spo2}% <94`, `HR ${v.heartRate} bpm`],
       ['J96.0', 'J45', 'J18'],
       'Menit hingga jam sebelum gagal napas total',
-      'Respiratory deterioration pathway; Dashboard parity pattern.',
+      'Respiratory deterioration pathway; Dashboard parity pattern.'
     )
   }
 
@@ -226,7 +225,7 @@ function checkRespiratoryDeterioration(
       ].filter(Boolean),
       ['J45', 'J18', 'J06'],
       'Jam sebelum deteriorasi signifikan',
-      'Respiratory deterioration pathway; Dashboard parity pattern.',
+      'Respiratory deterioration pathway; Dashboard parity pattern.'
     )
   }
 
@@ -255,7 +254,7 @@ function checkCardiovascularPattern(
       ['Nyeri dada', `HR ${v.heartRate} bpm`, `Sistolik ${v.systolicBp} mmHg`],
       ['I21', 'I20'],
       'Menit - kegawatan kardiovaskular',
-      'ACS emergency pattern; Dashboard parity pattern.',
+      'ACS emergency pattern; Dashboard parity pattern.'
     )
   }
 
@@ -269,7 +268,7 @@ function checkCardiovascularPattern(
       ['Nyeri dada', `Sistolik ${v.systolicBp} mmHg`, `HR ${v.heartRate} bpm`],
       ['I20', 'I21'],
       'Menit hingga jam',
-      'ACS emergency pattern; Dashboard parity pattern.',
+      'ACS emergency pattern; Dashboard parity pattern.'
     )
   }
 
@@ -280,10 +279,14 @@ function checkCardiovascularPattern(
       lowSpO2 ? 'critical' : 'high',
       'Deteriorasi gagal jantung - sesak + takipnea + takikardia',
       'Posisi semi-Fowler, oksigen bila perlu, terapi sesuai protokol, dan rujuk.',
-      [`RR ${v.respiratoryRate}/menit`, `HR ${v.heartRate} bpm`, lowSpO2 ? `SpO2 ${v.spo2}%` : ''].filter(Boolean),
+      [
+        `RR ${v.respiratoryRate}/menit`,
+        `HR ${v.heartRate} bpm`,
+        lowSpO2 ? `SpO2 ${v.spo2}%` : '',
+      ].filter(Boolean),
       ['I50'],
       'Jam sebelum edema paru akut',
-      'Heart failure deterioration pattern; Dashboard parity pattern.',
+      'Heart failure deterioration pattern; Dashboard parity pattern.'
     )
   }
 
@@ -306,7 +309,9 @@ function checkPreeclampsiaPattern(
   const severeDiastolic = v.diastolicBp !== undefined && v.diastolicBp >= 110
   const hypertension = v.systolicBp !== undefined && v.systolicBp >= 140
   const diastolicHigh = v.diastolicBp !== undefined && v.diastolicBp >= 90
-  const neuroSymptoms = /sakit kepala|pandangan kabur|mata berkunang|kejang|nyeri ulu hati/i.test(text)
+  const neuroSymptoms = /sakit kepala|pandangan kabur|mata berkunang|kejang|nyeri ulu hati/i.test(
+    text
+  )
 
   if ((severeHypertension || severeDiastolic) && neuroSymptoms) {
     return match(
@@ -322,7 +327,7 @@ function checkPreeclampsiaPattern(
       ].filter(Boolean),
       ['O14.1', 'O15'],
       'Menit hingga jam sebelum eklampsia',
-      'Obstetric emergency pathway; Dashboard parity pattern.',
+      'Obstetric emergency pathway; Dashboard parity pattern.'
     )
   }
 
@@ -339,7 +344,7 @@ function checkPreeclampsiaPattern(
       ].filter(Boolean),
       ['O14.0', 'O13'],
       'Hari hingga minggu jika tidak ditangani',
-      'Obstetric warning pathway; Dashboard parity pattern.',
+      'Obstetric warning pathway; Dashboard parity pattern.'
     )
   }
 
@@ -376,7 +381,7 @@ export function earlyWarningsToSymphonyAlerts(
   matches: SymphonyEarlyWarningMatch[],
   triggeredAt: string
 ): SymphonyAlert[] {
-  return matches.map(match => ({
+  return matches.map((match) => ({
     id: `symphony-pattern-${match.patternId.toLowerCase().replaceAll('_', '-')}`,
     severity: match.severity,
     title: match.patternName,

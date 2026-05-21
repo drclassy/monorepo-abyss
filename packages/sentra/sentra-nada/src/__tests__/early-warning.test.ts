@@ -102,7 +102,7 @@ describe('SYMPHONY early-warning parity slice', () => {
 
     const result = assessSymphonyInput(input)
 
-    expect(result.alerts.some(alert => alert.id === 'symphony-pattern-acs-shock')).toBe(true)
-    expect(result.alerts.some(alert => alert.source === 'pattern')).toBe(true)
+    expect(result.alerts.some((alert) => alert.id === 'symphony-pattern-acs-shock')).toBe(true)
+    expect(result.alerts.some((alert) => alert.source === 'pattern')).toBe(true)
   })
 })

@@ -22,7 +22,11 @@ import {
   type AssistPatternParityCriterion,
 } from '../adapters/assist-patterns-parity'
 import { evaluateClinicalPatterns } from '../engine/clinical-patterns'
-import type { SymphonyClinicalSnapshot, SymphonySymptomContext, SymphonySymptomSignalResult } from '../index'
+import type {
+  SymphonyClinicalSnapshot,
+  SymphonySymptomContext,
+  SymphonySymptomSignalResult,
+} from '../index'
 
 // ---------------------------------------------------------------------------
 // Trigger snapshot builder
@@ -70,7 +74,9 @@ function buildTriggerSnapshot(def: AssistPatternParityDefinition): SymphonyClini
   // patient.physiology cast to object so isOlderAdult resolves
   const patient: SymphonyClinicalSnapshot['patient'] = {
     age: 78,
-    physiology: { isOlderAdult: true } as unknown as SymphonyClinicalSnapshot['patient']['physiology'],
+    physiology: {
+      isOlderAdult: true,
+    } as unknown as SymphonyClinicalSnapshot['patient']['physiology'],
     avpuManual: 'P' as const,
     supplementalO2: true,
     painScore: 9,
@@ -115,21 +121,30 @@ function buildTriggerSnapshot(def: AssistPatternParityDefinition): SymphonyClini
       if (op === 'gte') vitals.sbp = Math.max(vitals.sbp, value as number)
       if (op === 'gt') vitals.sbp = (value as number) + 1
       if (op === 'lt') vitals.sbp = (value as number) - 1
-      if (op === 'between') { const [lo, hi] = value as [number, number]; vitals.sbp = Math.round((lo + hi) / 2) }
+      if (op === 'between') {
+        const [lo, hi] = value as [number, number]
+        vitals.sbp = Math.round((lo + hi) / 2)
+      }
     }
     if (field === 'vitals.hr') {
       if (op === 'gte') vitals.hr = Math.max(vitals.hr, value as number)
       if (op === 'lte') vitals.hr = Math.min(vitals.hr, value as number)
       if (op === 'gt') vitals.hr = (value as number) + 1
       if (op === 'lt') vitals.hr = (value as number) - 1
-      if (op === 'between') { const [lo, hi] = value as [number, number]; vitals.hr = Math.round((lo + hi) / 2) }
+      if (op === 'between') {
+        const [lo, hi] = value as [number, number]
+        vitals.hr = Math.round((lo + hi) / 2)
+      }
     }
     if (field === 'vitals.rr') {
       if (op === 'gte') vitals.rr = Math.max(vitals.rr, value as number)
       if (op === 'lte') vitals.rr = Math.min(vitals.rr, value as number)
       if (op === 'gt') vitals.rr = (value as number) + 1
       if (op === 'lt') vitals.rr = (value as number) - 1
-      if (op === 'between') { const [lo, hi] = value as [number, number]; vitals.rr = Math.round((lo + hi) / 2) }
+      if (op === 'between') {
+        const [lo, hi] = value as [number, number]
+        vitals.rr = Math.round((lo + hi) / 2)
+      }
     }
     if (field === 'vitals.spo2') {
       if (op === 'lte') vitals.spo2 = Math.min(vitals.spo2, value as number)
@@ -185,7 +200,10 @@ function buildTriggerSnapshot(def: AssistPatternParityDefinition): SymphonyClini
       if (op === 'lte') patient.age = value as number
       if (op === 'gte') patient.age = Math.max(patient.age, value as number)
       if (op === 'gt') patient.age = (value as number) + 1
-      if (op === 'between') { const [lo, hi] = value as [number, number]; patient.age = Math.round((lo + hi) / 2) }
+      if (op === 'between') {
+        const [lo, hi] = value as [number, number]
+        patient.age = Math.round((lo + hi) / 2)
+      }
     }
   }
 
@@ -205,13 +223,13 @@ function buildTriggerSnapshot(def: AssistPatternParityDefinition): SymphonyClini
 
 describe('clinical-patterns parity — representative CPs per gate', () => {
   function parityCheck(patternId: string) {
-    const def = ASSIST_PATTERN_PARITY_DEFINITIONS.find(d => d.id === patternId)
+    const def = ASSIST_PATTERN_PARITY_DEFINITIONS.find((d) => d.id === patternId)
     if (!def) throw new Error(`Pattern ${patternId} not found in ASSIST_PATTERN_PARITY_DEFINITIONS`)
 
     const snapshot = buildTriggerSnapshot(def)
     const alerts = evaluateClinicalPatterns(snapshot)
     const expected = { id: assistPatternAlertId(def.id), severity: def.severity, title: def.title }
-    const found = alerts.find(a => a.id === expected.id)
+    const found = alerts.find((a) => a.id === expected.id)
 
     return { found, expected }
   }
@@ -246,7 +264,7 @@ describe('clinical-patterns parity — all 70 CPs', () => {
       const alerts = evaluateClinicalPatterns(snapshot, undefined, FIXED_TS)
       const adapterAlert = adaptAssistPatternToSymphonyAlert(def, { triggeredAt: FIXED_TS })
 
-      const found = alerts.find(a => a.id === adapterAlert.id)
+      const found = alerts.find((a) => a.id === adapterAlert.id)
       expect(found).toBeDefined()
       if (!found) throw new Error(`Missing alert for ${def.id}`)
 

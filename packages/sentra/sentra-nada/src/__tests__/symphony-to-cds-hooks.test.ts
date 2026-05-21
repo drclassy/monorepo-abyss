@@ -46,7 +46,7 @@ function baseResult(overrides: Partial<SymphonyResult> = {}): SymphonyResult {
 function hypothesis(
   rank: number,
   icd10Code: string,
-  category: SymphonyDiagnosticHypothesis['category'] = 'working',
+  category: SymphonyDiagnosticHypothesis['category'] = 'working'
 ): SymphonyDiagnosticHypothesis {
   return {
     id: `hyp-${rank}`,
@@ -73,7 +73,7 @@ function criticalAlert(id: string): SymphonyAlert {
 }
 
 function shadow(
-  agreementLevel: SymphonyShadowComparison['agreementLevel'],
+  agreementLevel: SymphonyShadowComparison['agreementLevel']
 ): SymphonyShadowComparison {
   return {
     oldPathAvailable: true,
@@ -94,41 +94,41 @@ describe('mapSymphonyResultToCdsHooksResponse', () => {
 
   it('emits a critical-indicator card per critical alert', () => {
     const response = mapSymphonyResultToCdsHooksResponse(
-      baseResult({ alerts: [criticalAlert('alert-a'), criticalAlert('alert-b')] }),
+      baseResult({ alerts: [criticalAlert('alert-a'), criticalAlert('alert-b')] })
     )
-    const criticalCards = response.cards.filter(card => card.indicator === 'critical')
+    const criticalCards = response.cards.filter((card) => card.indicator === 'critical')
     expect(criticalCards).toHaveLength(2)
   })
 
   it('emits a warning card when a must_not_miss native hypothesis is present', () => {
     const response = mapSymphonyResultToCdsHooksResponse(
-      baseResult({ nativeHypotheses: [hypothesis(1, 'A41.9', 'must_not_miss')] }),
+      baseResult({ nativeHypotheses: [hypothesis(1, 'A41.9', 'must_not_miss')] })
     )
-    const warningCards = response.cards.filter(card => card.indicator === 'warning')
+    const warningCards = response.cards.filter((card) => card.indicator === 'warning')
     expect(warningCards.length).toBeGreaterThan(0)
   })
 
   it('emits an info card for top hypothesis when no must_not_miss is present', () => {
     const response = mapSymphonyResultToCdsHooksResponse(
-      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9', 'working')] }),
+      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9', 'working')] })
     )
-    const infoCards = response.cards.filter(card => card.indicator === 'info')
+    const infoCards = response.cards.filter((card) => card.indicator === 'info')
     expect(infoCards.length).toBeGreaterThan(0)
   })
 
   it('emits a warning card when clinicalDisposition is requires_review', () => {
     const response = mapSymphonyResultToCdsHooksResponse(
-      baseResult({ clinicalDisposition: 'requires_review' }),
+      baseResult({ clinicalDisposition: 'requires_review' })
     )
-    const warningCards = response.cards.filter(card => card.indicator === 'warning')
+    const warningCards = response.cards.filter((card) => card.indicator === 'warning')
     expect(warningCards.length).toBeGreaterThan(0)
   })
 
   it('emits a warning card when shadowComparison.agreementLevel is low', () => {
     const response = mapSymphonyResultToCdsHooksResponse(
-      baseResult({ shadowComparison: shadow('low') }),
+      baseResult({ shadowComparison: shadow('low') })
     )
-    const warningCards = response.cards.filter(card => card.indicator === 'warning')
+    const warningCards = response.cards.filter((card) => card.indicator === 'warning')
     expect(warningCards.length).toBeGreaterThan(0)
   })
 
@@ -139,9 +139,9 @@ describe('mapSymphonyResultToCdsHooksResponse', () => {
         nativeHypotheses: [hypothesis(1, 'A41.9', 'must_not_miss')],
         clinicalDisposition: 'requires_review',
         shadowComparison: shadow('low'),
-      }),
+      })
     )
-    const indicators = response.cards.map(card => card.indicator)
+    const indicators = response.cards.map((card) => card.indicator)
     expect(indicators[0]).toBe('critical')
     expect(indicators).toContain('warning')
   })
@@ -153,7 +153,7 @@ describe('mapSymphonyResultToCdsHooksResponse', () => {
         nativeHypotheses: [hypothesis(1, 'A41.9', 'must_not_miss')],
         clinicalDisposition: 'requires_review',
         shadowComparison: shadow('low'),
-      }),
+      })
     )
 
     expect(response.cards.length).toBeGreaterThan(0)
@@ -169,7 +169,10 @@ describe('mapSymphonyResultToCdsHooksResponse', () => {
     expect(Object.keys(response)).toEqual(['cards'])
     expect(Array.isArray(response.cards)).toBe(true)
 
-    const source = readFileSync(new URL('../interop/symphony-to-cds-hooks.ts', import.meta.url), 'utf8')
+    const source = readFileSync(
+      new URL('../interop/symphony-to-cds-hooks.ts', import.meta.url),
+      'utf8'
+    )
     expect(source).not.toContain('fhir-engine')
   })
 
@@ -178,7 +181,7 @@ describe('mapSymphonyResultToCdsHooksResponse', () => {
       baseResult({
         nativeHypotheses: [hypothesis(1, 'J18.9')],
         alerts: [criticalAlert('alert-1')],
-      }),
+      })
     )
     const json = JSON.stringify(response)
     expect(json.toLowerCase()).not.toContain('demam')
@@ -187,7 +190,7 @@ describe('mapSymphonyResultToCdsHooksResponse', () => {
 
   it('does NOT leak patientRef or encounterId into card summary or detail', () => {
     const response = mapSymphonyResultToCdsHooksResponse(
-      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9')] }),
+      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9')] })
     )
     const json = JSON.stringify(response)
     expect(json).not.toContain('pat-secret-67890')
@@ -202,7 +205,7 @@ describe('mapSymphonyResultToCdsHooksResponse', () => {
       shadowComparison: shadow('low'),
     })
     expect(mapSymphonyResultToCdsHooksResponse(input)).toEqual(
-      mapSymphonyResultToCdsHooksResponse(input),
+      mapSymphonyResultToCdsHooksResponse(input)
     )
   })
 })

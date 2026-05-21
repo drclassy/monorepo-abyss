@@ -181,7 +181,7 @@ function encounterAverage(
   if (!baseline) return undefined
   return average(
     baseline.measurements
-      .map(measurement => measurement[key])
+      .map((measurement) => measurement[key])
       .filter((value): value is number => typeof value === 'number' && Number.isFinite(value))
   )
 }
@@ -192,7 +192,7 @@ function encounterPulsePressureAverage(
   if (!baseline) return undefined
   return average(
     baseline.measurements
-      .map(measurement => {
+      .map((measurement) => {
         if (!finitePositive(measurement.systolicBp) || !finitePositive(measurement.diastolicBp)) {
           return undefined
         }
@@ -235,9 +235,11 @@ function buildDerivedMetrics(
   const encounterSbpBaseline = encounterAverage(input.encounterBaseline, 'systolicBp')
   const encounterPulseBaseline = encounterPulsePressureAverage(input.encounterBaseline)
   const personalHrBaseline =
-    input.personalBaseline?.params.heartRate?.mean ?? input.personalBaseline?.params.heartRate?.median
+    input.personalBaseline?.params.heartRate?.mean ??
+    input.personalBaseline?.params.heartRate?.median
   const personalSbpBaseline =
-    input.personalBaseline?.params.systolicBp?.mean ?? input.personalBaseline?.params.systolicBp?.median
+    input.personalBaseline?.params.systolicBp?.mean ??
+    input.personalBaseline?.params.systolicBp?.median
 
   return {
     map,
@@ -292,36 +294,36 @@ function isAltered(consciousness: SymphonyVitalsInput['consciousness']): boolean
 function hasRespiratorySigns(signs: SymphonyCompositeStructuredSigns | undefined): boolean {
   return Boolean(
     signs?.respiratoryDistress?.accessoryMuscleUse ||
-      signs?.respiratoryDistress?.retractions ||
-      signs?.respiratoryDistress?.unableToSpeakFullSentences ||
-      signs?.respiratoryDistress?.cyanosis ||
-      signs?.respiratoryDistress?.distressObserved
+    signs?.respiratoryDistress?.retractions ||
+    signs?.respiratoryDistress?.unableToSpeakFullSentences ||
+    signs?.respiratoryDistress?.cyanosis ||
+    signs?.respiratoryDistress?.distressObserved
   )
 }
 
 function hasPerfusionSigns(signs: SymphonyCompositeStructuredSigns | undefined): boolean {
   return Boolean(
     signs?.perfusionShock?.dizziness ||
-      signs?.perfusionShock?.presyncope ||
-      signs?.perfusionShock?.syncope ||
-      signs?.perfusionShock?.weakness ||
-      signs?.perfusionShock?.clammySkin ||
-      signs?.perfusionShock?.coldExtremities ||
-      signs?.perfusionShock?.oliguria
+    signs?.perfusionShock?.presyncope ||
+    signs?.perfusionShock?.syncope ||
+    signs?.perfusionShock?.weakness ||
+    signs?.perfusionShock?.clammySkin ||
+    signs?.perfusionShock?.coldExtremities ||
+    signs?.perfusionShock?.oliguria
   )
 }
 
 function hasNeuroSigns(signs: SymphonyCompositeStructuredSigns | undefined): boolean {
   return Boolean(
     signs?.hmod?.neurologicalDeficit ||
-      signs?.hmod?.visionChanges ||
-      signs?.hmod?.severeHeadache ||
-      signs?.hmod?.alteredMentalStatus
+    signs?.hmod?.visionChanges ||
+    signs?.hmod?.severeHeadache ||
+    signs?.hmod?.alteredMentalStatus
   )
 }
 
 function appendIfUnique(alerts: SymphonyCompositeAlert[], alert: SymphonyCompositeAlert): void {
-  if (alerts.some(existing => existing.id === alert.id)) return
+  if (alerts.some((existing) => existing.id === alert.id)) return
   alerts.push(alert)
 }
 
@@ -366,35 +368,62 @@ function scoreWeighted(
       ? null
       : {
           parameter: 'respiratory_rate',
-          score: current.respiratoryRate <= 8 || current.respiratoryRate >= 25 ? 3 : current.respiratoryRate > 20 ? 2 : 0,
+          score:
+            current.respiratoryRate <= 8 || current.respiratoryRate >= 25
+              ? 3
+              : current.respiratoryRate > 20
+                ? 2
+                : 0,
           reason: `RR ${current.respiratoryRate}/menit`,
         },
     current.spo2 === undefined
       ? null
       : {
           parameter: 'spo2',
-          score: hasCOPD && current.spo2 >= 88 && current.spo2 <= 92 ? 0 : current.spo2 <= 91 ? 3 : current.spo2 <= 95 ? 2 : 0,
+          score:
+            hasCOPD && current.spo2 >= 88 && current.spo2 <= 92
+              ? 0
+              : current.spo2 <= 91
+                ? 3
+                : current.spo2 <= 95
+                  ? 2
+                  : 0,
           reason: `SpO2 ${current.spo2}%`,
         },
     current.heartRate === undefined
       ? null
       : {
           parameter: 'heart_rate',
-          score: current.heartRate <= 40 || current.heartRate > 130 ? 3 : current.heartRate > 90 || current.heartRate <= 50 ? 2 : 0,
+          score:
+            current.heartRate <= 40 || current.heartRate > 130
+              ? 3
+              : current.heartRate > 90 || current.heartRate <= 50
+                ? 2
+                : 0,
           reason: `HR ${current.heartRate} bpm`,
         },
     current.systolicBp === undefined
       ? null
       : {
           parameter: 'systolic_bp',
-          score: current.systolicBp <= 90 || current.systolicBp > 220 ? 3 : current.systolicBp <= 110 ? 2 : 0,
+          score:
+            current.systolicBp <= 90 || current.systolicBp > 220
+              ? 3
+              : current.systolicBp <= 110
+                ? 2
+                : 0,
           reason: `SBP ${current.systolicBp} mmHg`,
         },
     current.temperatureC === undefined
       ? null
       : {
           parameter: 'temperature',
-          score: current.temperatureC < 35 || current.temperatureC > 39.1 ? 3 : current.temperatureC < 36.1 || current.temperatureC > 38 ? 2 : 0,
+          score:
+            current.temperatureC < 35 || current.temperatureC > 39.1
+              ? 3
+              : current.temperatureC < 36.1 || current.temperatureC > 38
+                ? 2
+                : 0,
           reason: `Suhu ${current.temperatureC}C`,
         },
     current.consciousness === undefined
@@ -432,11 +461,15 @@ function buildDataCompleteness(
 
   return {
     requiredSignalsPresent: current
-      ? required.filter(key => current[key] !== undefined).map(key => String(key))
+      ? required.filter((key) => current[key] !== undefined).map((key) => String(key))
       : [],
-    missingSignals: current ? required.filter(key => current[key] === undefined).map(key => String(key)) : required.map(String),
+    missingSignals: current
+      ? required.filter((key) => current[key] === undefined).map((key) => String(key))
+      : required.map(String),
     encounterTrendAvailable: Boolean(input.encounterBaseline?.measurements.length),
-    personalBaselineAvailable: Boolean(input.personalBaseline?.params && Object.keys(input.personalBaseline.params).length),
+    personalBaselineAvailable: Boolean(
+      input.personalBaseline?.params && Object.keys(input.personalBaseline.params).length
+    ),
   }
 }
 
@@ -485,14 +518,17 @@ export function evaluateSymphonyCompositeDeterioration(
         severity: severePerfusion ? 'critical' : 'high',
         confidence: severePerfusion ? 'high' : 'medium',
         title: 'SUSPECTED SEPSIS / SHOCK',
-        summary: 'Kombinasi shock index tinggi, demam, dan takipnea mengarah ke deteriorasi sepsis/shock.',
+        summary:
+          'Kombinasi shock index tinggi, demam, dan takipnea mengarah ke deteriorasi sepsis/shock.',
         rationale: 'Composite pattern menggabungkan sirkulasi, inflamasi, respirasi, dan perfusi.',
         evidence: [
           `Shock Index ${derived.shockIndex} >0.9`,
           `Suhu ${current.temperatureC}C >38.1`,
           `RR ${current.respiratoryRate}/menit >20`,
           ...(derived.map !== undefined && derived.map < 65 ? [`MAP ${derived.map} mmHg <65`] : []),
-          ...((current.capillaryRefillSec ?? 0) > 3 ? [`CRT ${current.capillaryRefillSec} detik >3`] : []),
+          ...((current.capillaryRefillSec ?? 0) > 3
+            ? [`CRT ${current.capillaryRefillSec} detik >3`]
+            : []),
         ],
         recommendedActions: [
           'Evaluasi perfusi dan sumber infeksi segera.',
@@ -577,7 +613,8 @@ export function evaluateSymphonyCompositeDeterioration(
         severity: neuroSigns || isAltered(current.consciousness) ? 'critical' : 'high',
         confidence: neuroSigns || isAltered(current.consciousness) ? 'high' : 'medium',
         title: "CUSHING'S TRIAD WARNING",
-        summary: 'Hipertensi, bradikardia, dan pulse pressure lebar mengarah ke risiko neuro/intrakranial.',
+        summary:
+          'Hipertensi, bradikardia, dan pulse pressure lebar mengarah ke risiko neuro/intrakranial.',
         rationale: 'Kombinasi ini lebih berisiko daripada hipertensi terisolasi.',
         evidence: [
           `SBP ${current.systolicBp} mmHg >180`,
@@ -637,7 +674,9 @@ export function evaluateSymphonyCompositeDeterioration(
         summary: 'Perfusi memburuk, tetapi baseline HR belum cukup untuk konfirmasi.',
         rationale: 'Silent bleed composite memerlukan delta HR terhadap baseline.',
         evidence: [`Pulse Pressure ${derived.pulsePressure} mmHg <30`],
-        recommendedActions: ['Ulangi HR/BP serial dan nilai CRT, akral, presinkop, serta oliguria.'],
+        recommendedActions: [
+          'Ulangi HR/BP serial dan nilai CRT, akral, presinkop, serta oliguria.',
+        ],
         triggeredAt,
       })
     )
@@ -659,7 +698,7 @@ function severityToSymphony(severity: SymphonyCompositeAlertSeverity): SymphonyA
 export function compositeDeteriorationToSymphonyAlerts(
   result: SymphonyCompositeDeteriorationResult
 ): SymphonyAlert[] {
-  return [...result.compositeAlerts, ...result.watchers].map(alert => ({
+  return [...result.compositeAlerts, ...result.watchers].map((alert) => ({
     id: `symphony-${alert.id}`,
     severity: severityToSymphony(alert.severity),
     title: alert.title,

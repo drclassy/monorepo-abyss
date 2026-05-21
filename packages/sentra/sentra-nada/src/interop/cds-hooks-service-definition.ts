@@ -7,8 +7,7 @@ import {
   type SymphonyCdsServiceDefinition,
 } from './cds-hooks-contract'
 
-const SERVICE_DESCRIPTION =
-  'Deterministic CDS Hooks card surface for AADI V2 review signals.'
+const SERVICE_DESCRIPTION = 'Deterministic CDS Hooks card surface for AADI V2 review signals.'
 
 export function getSymphonyCdsHookContextContract(): SymphonyCdsHookContextContract {
   return {
@@ -24,6 +23,6 @@ export function getSymphonyCdsServiceDefinition(): SymphonyCdsServiceDefinition 
     hook: 'patient-view',
     title: SYMPHONY_CDS_SOURCE_LABEL,
     description: SERVICE_DESCRIPTION,
-    prefetch: SYMPHONY_CDS_PREFETCH_ASSUMPTIONS.map(assumption => ({ ...assumption })),
+    prefetch: SYMPHONY_CDS_PREFETCH_ASSUMPTIONS.map((assumption) => ({ ...assumption })),
   }
 }

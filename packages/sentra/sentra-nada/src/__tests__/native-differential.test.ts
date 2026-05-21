@@ -22,12 +22,12 @@ const baseFebrileRespiratoryFacts: SymphonyClinicalFact[] = [
 describe('getSymphonyDiagnosisPacks', () => {
   it('exposes exactly the canonical Phase 1 pack set (pneumonia, sepsis, htn-crisis)', () => {
     const packs = getSymphonyDiagnosisPacks()
-    const ids = packs.map(item => item.id).sort()
+    const ids = packs.map((item) => item.id).sort()
     expect(ids).toEqual(['pack-htn-crisis', 'pack-pneumonia', 'pack-sepsis'])
   })
 
   it('does not include any Indonesia-specific or deferred packs in Phase 1', () => {
-    const ids = getSymphonyDiagnosisPacks().map(item => item.id)
+    const ids = getSymphonyDiagnosisPacks().map((item) => item.id)
     expect(ids).not.toContain('pack-dengue')
     expect(ids).not.toContain('pack-tb')
     expect(ids).not.toContain('pack-preeclampsia')
@@ -59,7 +59,7 @@ describe('buildSymphonyNativeDifferential', () => {
       packs: getSymphonyDiagnosisPacks(),
     })
 
-    const sepsis = result.hypotheses.find(item => item.icd10Code === 'A41.9')
+    const sepsis = result.hypotheses.find((item) => item.icd10Code === 'A41.9')
     expect(sepsis).toBeDefined()
     expect(sepsis?.category).toBe('must_not_miss')
   })
@@ -80,7 +80,7 @@ describe('buildSymphonyNativeDifferential', () => {
       packs: getSymphonyDiagnosisPacks(),
     })
 
-    const htn = result.hypotheses.find(item => item.icd10Code === 'I10')
+    const htn = result.hypotheses.find((item) => item.icd10Code === 'I10')
     expect(htn).toBeDefined()
     expect(htn?.category).toBe('must_not_miss')
   })
@@ -97,8 +97,8 @@ describe('buildSymphonyNativeDifferential', () => {
     expect(Array.isArray(top?.evidence.weakens)).toBe(true)
     expect(Array.isArray(top?.evidence.missing)).toBe(true)
     expect(top?.evidence.nextBestQuestions.length).toBeGreaterThan(0)
-    expect(top?.evidenceRefs.some(ref => ref.startsWith('pack:'))).toBe(true)
-    expect(top?.evidenceRefs.some(ref => ref.startsWith('syndrome:'))).toBe(true)
+    expect(top?.evidenceRefs.some((ref) => ref.startsWith('pack:'))).toBe(true)
+    expect(top?.evidenceRefs.some((ref) => ref.startsWith('syndrome:'))).toBe(true)
   })
 
   it('produces deterministic output: same input yields identical hypotheses', () => {

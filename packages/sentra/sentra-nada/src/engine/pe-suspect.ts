@@ -18,11 +18,7 @@
  * non-specific presentations into critical alerts.
  */
 
-import type {
-  SymphonyAlert,
-  SymphonyPregnancyStatus,
-  SymphonyVitalsInput,
-} from '../contracts'
+import type { SymphonyAlert, SymphonyPregnancyStatus, SymphonyVitalsInput } from '../contracts'
 
 export interface SymphonyPeSuspectInput {
   latestVitals?: SymphonyVitalsInput
@@ -78,11 +74,7 @@ const UNILATERAL_LEG_PATTERNS: RegExp[] = [
   /tungkai\s+(kiri|kanan|sebelah)\s+bengkak/i,
 ]
 
-const HEMOPTYSIS_PATTERNS: RegExp[] = [
-  /batuk\s+darah/i,
-  /hemoptysis/i,
-  /hemoptisis/i,
-]
+const HEMOPTYSIS_PATTERNS: RegExp[] = [/batuk\s+darah/i, /hemoptysis/i, /hemoptisis/i]
 
 const IMMOBILIZATION_PATTERNS: RegExp[] = [
   /\bbedrest\b/i,
@@ -126,9 +118,7 @@ function combinedHistoryText(input: SymphonyPeSuspectInput): string {
 
 // ── Detector ──────────────────────────────────────────────────────────────────
 
-export function detectSymphonyPeSuspect(
-  input: SymphonyPeSuspectInput
-): SymphonyPeSuspectResult {
+export function detectSymphonyPeSuspect(input: SymphonyPeSuspectInput): SymphonyPeSuspectResult {
   const criteria: SymphonyPeSuspectCriterion[] = []
   const vitals = input.latestVitals
   const complaintText = combinedComplaintText(input)

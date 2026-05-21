@@ -8,18 +8,12 @@ import {
   buildShadowCards,
   buildTopHypothesisCards,
 } from './cds-hooks-card-policy'
-import type {
-  SymphonyCdsHookCard,
-  SymphonyCdsHookResponse,
-} from './cds-hooks-contract'
+import type { SymphonyCdsHookCard, SymphonyCdsHookResponse } from './cds-hooks-contract'
 
-export type {
-  SymphonyCdsHookCard,
-  SymphonyCdsHookResponse,
-} from './cds-hooks-contract'
+export type { SymphonyCdsHookCard, SymphonyCdsHookResponse } from './cds-hooks-contract'
 
 export function mapSymphonyResultToCdsHooksResponse(
-  result: SymphonyResult,
+  result: SymphonyResult
 ): SymphonyCdsHookResponse {
   const cards: SymphonyCdsHookCard[] = [
     ...buildCriticalAlertCards(result),

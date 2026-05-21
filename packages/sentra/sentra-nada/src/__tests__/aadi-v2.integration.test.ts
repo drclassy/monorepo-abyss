@@ -1,10 +1,7 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { describe, expect, it } from 'vitest'
 
-import {
-  assessSymphonyInput,
-  type SymphonyAssessmentInput,
-} from '../index'
+import { assessSymphonyInput, type SymphonyAssessmentInput } from '../index'
 
 function baseInput(overrides: Partial<SymphonyAssessmentInput> = {}): SymphonyAssessmentInput {
   return {
@@ -41,7 +38,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
             consciousness: 'alert',
           },
         ],
-      }),
+      })
     )
 
     expect(result.clinicalFacts).toBeDefined()
@@ -68,7 +65,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
           },
         ],
         chiefComplaint: 'demam dan sesak napas',
-      }),
+      })
     )
 
     expect(result.diagnosisSuggestions.length).toBeGreaterThan(0)
@@ -91,12 +88,12 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
             consciousness: 'voice',
           },
         ],
-      }),
+      })
     )
 
-    const criticalAlerts = result.alerts.filter(a => a.severity === 'critical')
+    const criticalAlerts = result.alerts.filter((a) => a.severity === 'critical')
     expect(criticalAlerts.length).toBeGreaterThan(0)
-    criticalAlerts.forEach(alert => {
+    criticalAlerts.forEach((alert) => {
       expect(alert.severity).toBe('critical')
     })
   })
@@ -117,7 +114,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
             consciousness: 'alert',
           },
         ],
-      }),
+      })
     )
 
     if ((result.nativeHypotheses?.length ?? 0) > 0) {
@@ -141,7 +138,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
             consciousness: 'alert',
           },
         ],
-      }),
+      })
     )
 
     const rationaleJoined = result.metadata.rationale.join(' ')
@@ -154,7 +151,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
     const result = assessSymphonyInput(
       baseInput({
         chiefComplaint: 'demam dan sesak napas',
-      }),
+      })
     )
 
     const hintsJoined = result.quality.auditHints.join(' ')
@@ -169,7 +166,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
     const result = assessSymphonyInput(
       baseInput({
         chiefComplaint: 'demam dan sesak napas',
-      }),
+      })
     )
 
     expect(result.metadata.status).toBe('ready')
@@ -196,7 +193,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
             consciousness: 'alert',
           },
         ],
-      }),
+      })
     )
 
     expect(result.alerts).toBeDefined()
@@ -208,12 +205,14 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
     const result = assessSymphonyInput(
       baseInput({
         chiefComplaint: 'demam dan sesak napas',
-      }),
+      })
     )
 
     const hintsJoined = result.quality.auditHints.join(' ')
     expect(hintsJoined).toContain('aadiv2_failure_reason:none')
-    expect(result.quality.safetyFlags).not.toContain(expect.stringContaining('aadiv2_pipeline_failure'))
+    expect(result.quality.safetyFlags).not.toContain(
+      expect.stringContaining('aadiv2_pipeline_failure')
+    )
   })
 
   it('exposes native_compat_suggestion_count audit hint reflecting bridge cardinality (Task 7 patch: native→trafficLight bridge)', () => {
@@ -232,7 +231,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
             consciousness: 'alert',
           },
         ],
-      }),
+      })
     )
 
     const hintsJoined = result.quality.auditHints.join(' ')
@@ -258,7 +257,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
             consciousness: 'alert',
           },
         ],
-      }),
+      })
     )
 
     expect(result.diagnosisSuggestions).toHaveLength(0)
@@ -278,10 +277,10 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
             confidence: 0.6,
           },
         ],
-      }),
+      })
     )
 
-    result.diagnosisSuggestions.forEach(suggestion => {
+    result.diagnosisSuggestions.forEach((suggestion) => {
       expect(suggestion.id.startsWith('native:')).toBe(false)
     })
   })
@@ -302,13 +301,11 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
             consciousness: 'alert',
           },
         ],
-      }),
+      })
     )
 
     expect(result.shadowComparison).toBeDefined()
-    expect(result.shadowComparison?.agreementLevel).toMatch(
-      /^(high|partial|low|not_comparable)$/,
-    )
+    expect(result.shadowComparison?.agreementLevel).toMatch(/^(high|partial|low|not_comparable)$/)
     expect(typeof result.shadowComparison?.topDiagnosisChanged).toBe('boolean')
     expect(typeof result.shadowComparison?.escalationChanged).toBe('boolean')
     expect(typeof result.shadowComparison?.clinicalDispositionChanged).toBe('boolean')
@@ -326,7 +323,7 @@ describe('AADI V2 integration into assessSymphonyInput', () => {
     const result = assessSymphonyInput(
       baseInput({
         chiefComplaint: 'demam dan sesak napas',
-      }),
+      })
     )
     const hintsJoined = result.quality.auditHints.join(' ')
     expect(hintsJoined).toMatch(/shadow_agreement:(high|partial|low|not_comparable)/)

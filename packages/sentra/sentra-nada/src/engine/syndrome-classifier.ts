@@ -14,15 +14,15 @@ export interface SymphonySyndromeMatch {
 
 function findFact(
   facts: readonly SymphonyClinicalFact[],
-  key: string,
+  key: string
 ): SymphonyClinicalFact | undefined {
-  return facts.find(item => item.key === key)
+  return facts.find((item) => item.key === key)
 }
 
 function hasFact(
   facts: readonly SymphonyClinicalFact[],
   key: string,
-  predicate?: (value: string | number | boolean) => boolean,
+  predicate?: (value: string | number | boolean) => boolean
 ): boolean {
   const found = findFact(facts, key)
   if (!found) return false
@@ -30,12 +30,12 @@ function hasFact(
 }
 
 export function classifySymphonySyndromes(
-  facts: readonly SymphonyClinicalFact[],
+  facts: readonly SymphonyClinicalFact[]
 ): SymphonySyndromeMatch[] {
   const matches: SymphonySyndromeMatch[] = []
 
-  const fever = hasFact(facts, 'symptom_fever', value => value === true)
-  const dyspnea = hasFact(facts, 'symptom_dyspnea', value => value === true)
+  const fever = hasFact(facts, 'symptom_fever', (value) => value === true)
+  const dyspnea = hasFact(facts, 'symptom_dyspnea', (value) => value === true)
 
   if (fever && dyspnea) {
     matches.push({
@@ -53,13 +53,7 @@ export function classifySymphonySyndromes(
     })
   }
 
-  if (
-    hasFact(
-      facts,
-      'htn_severity',
-      value => value === 'stage2' || value === 'crisis',
-    )
-  ) {
+  if (hasFact(facts, 'htn_severity', (value) => value === 'stage2' || value === 'crisis')) {
     matches.push({
       id: 'acute_cardiometabolic_syndrome',
       confidence: 0.71,

@@ -72,7 +72,10 @@ function resolveField(snapshot: SymphonyClinicalSnapshot, field: string): unknow
 // Source citation: pattern-engine.ts:80-113
 // ---------------------------------------------------------------------------
 
-function evaluateCriterion(snapshot: SymphonyClinicalSnapshot, criterion: SymphonyCriterion): boolean {
+function evaluateCriterion(
+  snapshot: SymphonyClinicalSnapshot,
+  criterion: SymphonyCriterion
+): boolean {
   const value = resolveField(snapshot, criterion.field)
   if (value === undefined || value === null) return false
 
@@ -112,7 +115,10 @@ function evaluateCriterion(snapshot: SymphonyClinicalSnapshot, criterion: Sympho
 // Source citation: pattern-engine.ts:122-128
 // ---------------------------------------------------------------------------
 
-function hasRequiredVitals(snapshot: SymphonyClinicalSnapshot, pattern: SymphonyEvaluablePattern): boolean {
+function hasRequiredVitals(
+  snapshot: SymphonyClinicalSnapshot,
+  pattern: SymphonyEvaluablePattern
+): boolean {
   if (!pattern.requiresVitals || pattern.requiresVitals.length === 0) return true
   return pattern.requiresVitals.every((field) => {
     const val = resolveField(snapshot, `vitals.${field}`)
@@ -126,7 +132,10 @@ function hasRequiredVitals(snapshot: SymphonyClinicalSnapshot, pattern: Symphony
 // Formula: base × weight × (0.8 + 0.2 × ratio), clamped [0.0, 1.0]
 // ---------------------------------------------------------------------------
 
-function calculateConfidence(pattern: SymphonyEvaluablePattern, score?: SymphonyScoreResult): number {
+function calculateConfidence(
+  pattern: SymphonyEvaluablePattern,
+  score?: SymphonyScoreResult
+): number {
   const tierBase: Record<SymphonyPatternTier, number> = { A: 0.9, B: 0.7, C: 0.5 }
   let confidence = tierBase[pattern.tier]
 
@@ -154,7 +163,9 @@ function calculateConfidence(pattern: SymphonyEvaluablePattern, score?: Symphony
  * @param options  - Optional tier filter
  * @returns Matched patterns sorted by severity (critical first), confidence descending
  */
-export function evaluateSymphonyPatterns<P extends SymphonyEvaluablePattern = SymphonyClinicalPattern>(
+export function evaluateSymphonyPatterns<
+  P extends SymphonyEvaluablePattern = SymphonyClinicalPattern,
+>(
   snapshot: SymphonyClinicalSnapshot,
   patterns: readonly P[],
   options?: SymphonyPatternEvaluationOptions

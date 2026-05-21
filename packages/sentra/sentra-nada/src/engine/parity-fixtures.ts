@@ -58,7 +58,7 @@ export interface SymphonyParityFixtureResult {
 }
 
 function auditValue(result: SymphonyResult, prefix: string): string | null {
-  const match = result.quality.auditHints.find(hint => hint.startsWith(prefix))
+  const match = result.quality.auditHints.find((hint) => hint.startsWith(prefix))
   return match?.slice(prefix.length) ?? null
 }
 
@@ -78,10 +78,12 @@ function snapshotResult(
   return {
     news2Score: numberAuditValue(result, 'news2_score:'),
     news2Risk: auditValue(result, 'news2_risk:'),
-    alertIds: alerts.map(alert => alert.id).sort(),
-    alertSources: [...new Set(alerts.map(alert => alert.source))].sort(),
-    criticalAlertCount: alerts.filter(alert => alert.severity === 'critical').length,
-    diagnosisCategories: result.diagnosisSuggestions.map(suggestion => suggestion.decisionCategory),
+    alertIds: alerts.map((alert) => alert.id).sort(),
+    alertSources: [...new Set(alerts.map((alert) => alert.source))].sort(),
+    criticalAlertCount: alerts.filter((alert) => alert.severity === 'critical').length,
+    diagnosisCategories: result.diagnosisSuggestions.map(
+      (suggestion) => suggestion.decisionCategory
+    ),
     trajectoryDirection: result.trajectory.direction,
     trajectoryMomentum: result.trajectory.momentum,
     auditHints: [...result.quality.auditHints].sort(),
@@ -89,7 +91,7 @@ function snapshotResult(
 }
 
 function includesAll(actual: string[], expected: string[]): string[] {
-  return expected.filter(item => !actual.includes(item))
+  return expected.filter((item) => !actual.includes(item))
 }
 
 function compareSnapshot(
@@ -156,7 +158,6 @@ function compareSnapshot(
 
   return mismatches
 }
-
 
 const CP_ROUTE_OBSERVED_AT = '2026-04-19T13:00:00.000Z'
 
@@ -267,7 +268,8 @@ function buildAssistPatternRouteFixture(
       if (value !== null) ageYears = value
     }
     if (criterion.field === 'patient.physiology.isOlderAdult') ageYears = Math.max(ageYears, 72)
-    if (criterion.field === 'patient.avpuManual' && criterion.op === 'neq') vitals.consciousness = 'voice'
+    if (criterion.field === 'patient.avpuManual' && criterion.op === 'neq')
+      vitals.consciousness = 'voice'
     if (criterion.field === 'patient.supplementalO2') vitals.oxygenSupplement = true
     if (criterion.field === 'history.knownCOPD') {
       hasCOPD = true
@@ -282,7 +284,8 @@ function buildAssistPatternRouteFixture(
     if (criterion.field === 'symptoms.allergenExposure') allergies.add('alergen tidak spesifik')
   }
 
-  if (pregnancyStatus === 'not_applicable' && sexAtBirth === 'female') pregnancyStatus = 'not_pregnant'
+  if (pregnancyStatus === 'not_applicable' && sexAtBirth === 'female')
+    pregnancyStatus = 'not_pregnant'
 
   return {
     id: `${pattern.id.toLowerCase()}-route`,
@@ -321,7 +324,8 @@ const ASSIST_PATTERN_ROUTE_PARITY_FIXTURE_CASES: SymphonyParityFixtureCase[] =
 export const SYMPHONY_PARITY_FIXTURE_CASES: SymphonyParityFixtureCase[] = [
   {
     id: 'adult-sepsis-respiratory-route',
-    description: 'Adult respiratory/sepsis bedside route with qSOFA, NEWS2 high risk, and respiratory gates.',
+    description:
+      'Adult respiratory/sepsis bedside route with qSOFA, NEWS2 high risk, and respiratory gates.',
     input: {
       metadata: {
         requestId: 'fixture-adult-sepsis-respiratory',
@@ -365,7 +369,8 @@ export const SYMPHONY_PARITY_FIXTURE_CASES: SymphonyParityFixtureCase[] = [
   },
   {
     id: 'obstetric-glucose-route',
-    description: 'Pregnant patient route with severe hypertension, tachycardia, and severe hypoglycemia.',
+    description:
+      'Pregnant patient route with severe hypertension, tachycardia, and severe hypoglycemia.',
     input: {
       metadata: {
         requestId: 'fixture-obstetric-glucose',
@@ -429,7 +434,8 @@ export const SYMPHONY_PARITY_FIXTURE_CASES: SymphonyParityFixtureCase[] = [
         },
       ],
       chiefComplaint: 'Nyeri dada pleuritik mendadak disertai sesak napas',
-      additionalComplaint: 'Batuk berdarah dan bengkak tungkai kanan, tirah baring 5 hari pasca operasi',
+      additionalComplaint:
+        'Batuk berdarah dan bengkak tungkai kanan, tirah baring 5 hari pasca operasi',
     },
     expected: {
       requiredAlertIds: ['SYMPHONY_PE_SUSPECT'],
@@ -477,7 +483,8 @@ export const SYMPHONY_PARITY_FIXTURE_CASES: SymphonyParityFixtureCase[] = [
   },
   {
     id: 'trajectory-diagnosis-route',
-    description: 'Multi-visit route with worsening trajectory and grounded hybrid diagnosis suggestions.',
+    description:
+      'Multi-visit route with worsening trajectory and grounded hybrid diagnosis suggestions.',
     input: {
       metadata: {
         requestId: 'fixture-trajectory-diagnosis',
