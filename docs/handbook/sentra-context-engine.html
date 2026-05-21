@@ -1389,11 +1389,7 @@ Next step:
     };
 
     function formatCompactNumber(value) {
-      if (value >= 1000) {
-        return `${(value / 1000).toFixed(1).replace(/\.0$/, '')}k`;
-      }
-
-      return String(value);
+      return new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
     }
 
     function savePreferences() {

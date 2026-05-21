@@ -297,15 +297,12 @@ async function runPromptAudit(editor: vscode.TextEditor): Promise<void> {
   )
 
   panel.webview.html = buildWebviewHtml(result, selectedText)
-  panel.webview.onDidReceiveMessage(async (message: { type?: string }) => {
-    if (!message?.type) return
-
-    if (message.type === 'applyRewrite') {
+  const messageHandlers: Record<string, () => Promise<void>> = {
+    async applyRewrite() {
       if (!result.suggestedRewrite?.prompt) {
         void vscode.window.showInformationMessage('No suggested rewrite is needed for this prompt.')
         return
       }
-
       const success = await replaceSelectionInEditor(
         editor,
         selection,
@@ -316,24 +313,28 @@ async function runPromptAudit(editor: vscode.TextEditor): Promise<void> {
       } else {
         void vscode.window.showWarningMessage('Could not replace the selection.')
       }
-      return
-    }
-
-    if (message.type === 'copyRewrite') {
+    },
+    async copyRewrite() {
       if (!result.suggestedRewrite?.prompt) {
         void vscode.window.showInformationMessage('No suggested rewrite is needed for this prompt.')
         return
       }
-
       await vscode.env.clipboard.writeText(result.suggestedRewrite.prompt)
       void vscode.window.showInformationMessage('Suggested rewrite copied.')
-      return
-    }
-
-    if (message.type === 'copySummary') {
+    },
+    async copySummary() {
       await vscode.env.clipboard.writeText(result.auditSummary)
       void vscode.window.showInformationMessage('Audit summary copied.')
-    }
+    },
+  }
+
+  const messageListener = panel.webview.onDidReceiveMessage(async (message: { type?: string }) => {
+    if (!message?.type) return
+    const handler = messageHandlers[message.type]
+    if (handler) await handler()
+  })
+  panel.onDidDispose(() => {
+    messageListener.dispose()
   })
 }
 

@@ -69,7 +69,9 @@ function createEvidence(lines: string[], patterns: RegExp[]): string[] {
 
 function collectSignals(lines: string[], manualInstruction = '') {
   const loweredLines = lines.map((line) => line.toLowerCase())
-  const joined = [...loweredLines, manualInstruction.toLowerCase()].join('\n')
+  const joined = (
+    manualInstruction ? [...loweredLines, manualInstruction.toLowerCase()] : loweredLines
+  ).join('\n')
 
   return {
     hasRole: /\b(?:you are|act as|coding agent|assistant)\b/.test(joined),

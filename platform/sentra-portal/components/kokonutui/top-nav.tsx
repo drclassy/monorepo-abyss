@@ -15,7 +15,7 @@ export default function TopNav() {
   const avatarSrc = '/avatars/abyss-doctor.png'
 
   return (
-    <nav className="flex h-12 items-center justify-end gap-4 border-b border-[#1F1F23] bg-[#0a0a0b] px-5">
+    <nav className="flex h-12 items-center justify-end gap-4 border-b border-zinc-900 bg-zinc-950 px-5">
       <span className="text-[13px] text-zinc-500">Local dev</span>
       <button
         type="button"

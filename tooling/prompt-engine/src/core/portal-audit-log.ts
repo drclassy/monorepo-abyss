@@ -11,15 +11,22 @@ export interface PortalAuditLogEntry {
   findings: Array<{ title: string; severity: string }>
 }
 
+const _rootCache = new Map<string, string | null>()
+
 export function findMonorepoRoot(startPath?: string): string | null {
   if (!startPath) return null
 
-  let dir = path.dirname(path.resolve(startPath))
+  const resolvedDir = path.dirname(path.resolve(startPath))
+  const cached = _rootCache.get(resolvedDir)
+  if (cached !== undefined) return cached
+
+  let dir = resolvedDir
 
   for (let i = 0; i < 14; i += 1) {
     const hasWorkspace = fs.existsSync(path.join(dir, 'pnpm-workspace.yaml'))
     const hasAgents = fs.existsSync(path.join(dir, 'AGENTS.md'))
     if (hasWorkspace && hasAgents) {
+      _rootCache.set(resolvedDir, dir)
       return dir
     }
     const parent = path.dirname(dir)
@@ -27,6 +34,7 @@ export function findMonorepoRoot(startPath?: string): string | null {
     dir = parent
   }
 
+  _rootCache.set(resolvedDir, null)
   return null
 }
 

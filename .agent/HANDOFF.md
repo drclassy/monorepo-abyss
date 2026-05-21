@@ -3,15 +3,35 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-21 (session: UNICOM code quality review fixes committed)
+Last updated: 2026-05-21 (session: post-review code-review skill fixes committed)
 
 ## Snapshot
 
 - Repo: `D:\Devops\abyss-monorepo`
 - Branch: `refactor/ABYSS-REPO-STRUCTURE-002-corporate-ferdiiskandar`
-- HEAD: `0874a98`
-- Active work: UNICOM Hub SSE v2 — CODE QUALITY FIXES COMPLETE
-- Mode: DONE — implementation complete + review fixes committed. Next: finishing branch atau lanjut ke RAG Phase 1.
+- HEAD: `98ee717` → pending new commit (code-review skill fixes)
+- Active work: Post-review `/code-review` fixes applied (HIGH Disposable leak, MEDIUM cache, MINOR bg token, LOW guards+dispatch)
+- Mode: COMPLETE — full review cycle done + post-review quality pass done.
+- Next: Proceed to RAG Enhancement Phase 1 (Pipeline Hardening) per PROGRESS.md, OR use finishing-a-development-branch skill.
+
+## Post-Review Code-Review Skill Fixes (2026-05-21)
+
+`/code-review` high-effort (3 subagents: Reuse, Quality, Efficiency) reviewed commits `8bfc968` + `98ee717`. Findings applied:
+
+| Finding | File | Fix |
+|---|---|---|
+| HIGH — Disposable leak | `extension.ts:300` | Capture `messageListener`, dispose on `panel.onDidDispose` |
+| NOTABLE — dispatch table | `extension.ts:303-337` | 3 if-chains → `messageHandlers` Record dispatch |
+| MEDIUM — uncached root walk | `portal-audit-log.ts:14` | Module-level `_rootCache Map` caches up to 28 existsSync calls |
+| MINOR — hardcoded bg token | `top-nav.tsx:18` | `bg-[#0a0a0b]` + `border-[#1F1F23]` → `bg-zinc-950` + `border-zinc-900` |
+| LOW — empty string toLowerCase | `audit.ts:72` | Guard: only spread + toLowerCase when `manualInstruction` is truthy |
+| LOW — hand-rolled compact fmt | `sentra-context-engine.html:1391` | `formatCompactNumber` → `Intl.NumberFormat(notation:'compact')` |
+
+Skipped (deferred):
+- `findMonorepoRoot` triple-copy (cross-package, needs coordination)
+- `audit.ts` declarative rules (7× pattern, risky behavior-parity refactor)
+- `layout.tsx` missionHome consolidation (false positive — checks serve different purposes)
+- `/dashboard` shared constant (cross-file, out of scope)
 
 ## UNICOM Hub — SSE v2 Implementation Complete (2026-05-21)
 
