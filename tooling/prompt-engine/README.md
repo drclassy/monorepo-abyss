@@ -5,6 +5,13 @@ lebih bisa diverifikasi, dan lebih selaras dengan praktik prompt agent modern.
 
 ## What it does
 
+- Membuka webview `Sentra Prompt Engine` langsung di Cursor atau VS Code
+- Membiarkan Chief menulis satu request bebas di textarea besar
+- Menyediakan quick mode `Implement`, `Review`, `Debug`, `Plan`, atau `Verify`
+- Menambahkan lightweight IDE context seperti repo name, workspace path, active
+  file, dan core rule source
+- Menyusun final prompt siap pakai langsung dari dalam editor
+- Meng-copy hasil prompt dengan satu klik
 - Membaca prompt yang sedang dipilih di editor
 - Mengaudit prompt terhadap rubric Codex-native
 - Menilai instruction hierarchy, task clarity, tool usage, verification, safety,
@@ -15,6 +22,7 @@ lebih bisa diverifikasi, dan lebih selaras dengan praktik prompt agent modern.
 
 ## Commands
 
+- `Sentra Prompt: Open Prompt Engine`
 - `Sentra Prompt: Audit Codex Prompt`
 - `Sentra Prompt: Generate Mission Prompt (Legacy Alias)`
 
@@ -47,6 +55,17 @@ test monorepo penuh.
 5. Jalankan `pnpm package`
 6. Ambil file `dist/sentra-prompt.vsix`
 7. Install dari VSIX di Cursor atau VS Code
+
+## Manual smoke path for Prompt Engine
+
+1. Jalankan `pnpm typecheck`
+2. Jalankan `pnpm test`
+3. Jalankan `pnpm package`
+4. Install VSIX di Cursor atau VS Code
+5. Jalankan `Sentra Prompt: Open Prompt Engine`
+6. Pilih mode, tulis request, lalu klik `Compose`
+7. Pastikan preview `Final Prompt` terisi
+8. Klik `Copy`, lalu paste ke scratch file untuk memastikan clipboard berhasil
 
 ## Manual testing
 

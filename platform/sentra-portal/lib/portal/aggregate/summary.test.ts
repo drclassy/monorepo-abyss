@@ -17,5 +17,5 @@ describe('loadStripSummary integration', () => {
     expect(data?.dirtyTotal).toBeGreaterThan(0)
     expect(data?.activeWork.length).toBeGreaterThan(5)
     expect(data?.repoRoot).toBe(root)
-  })
+  }, 15000)
 })

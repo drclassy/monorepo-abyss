@@ -67,6 +67,12 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
   - `ea7b8ff` `refactor(tooling): promote prompt engine and retire legacy handbook`
   - `17b404a` `build(workspace): refresh pnpm lockfile`
   - `a6a6fb9` `test(tooling): avoid localhost-only literature worker checks`
+- `tooling/prompt-engine` now includes the new `Sentra Prompt Engine` webview
+  composer flow with lightweight repo context, deterministic prompt assembly,
+  and README/test/build coverage.
+- Root verification is green again after fixing the root `package.json`
+  conflict state and making `platform/sentra-portal` summary integration test
+  tolerate parallel Turbo runtime via an explicit timeout.
 - `.agent` conversion to SSOT is ready for migration commit planning once the
   active files and archive/report/session preservation files are reviewed
   together.

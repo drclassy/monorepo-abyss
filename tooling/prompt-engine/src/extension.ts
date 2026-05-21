@@ -272,6 +272,7 @@ async function runPromptAudit(editor: vscode.TextEditor): Promise<void> {
   }
 
   const selectedText = editor.document.getText(selection)
+  const auditedDocumentVersion = editor.document.version
   const result = auditPrompt({
     selectedText,
     activeFilePath: editor.document.uri.fsPath,
@@ -307,6 +308,18 @@ async function runPromptAudit(editor: vscode.TextEditor): Promise<void> {
         void vscode.window.showInformationMessage('No suggested rewrite is needed for this prompt.')
         return
       }
+
+      const currentSelectedText = editor.document.getText(selection)
+      if (
+        editor.document.version !== auditedDocumentVersion ||
+        currentSelectedText !== selectedText
+      ) {
+        void vscode.window.showWarningMessage(
+          'The document changed after the audit opened. Re-run Sentra Prompt audit before applying the rewrite.'
+        )
+        return
+      }
+
       const success = await replaceSelectionInEditor(
         editor,
         selection,
