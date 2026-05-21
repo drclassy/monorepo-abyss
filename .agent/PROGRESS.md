@@ -76,6 +76,9 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 - `.agent` conversion to SSOT is ready for migration commit planning once the
   active files and archive/report/session preservation files are reviewed
   together.
+- **MERGE COMPLETE:** Branch `refactor/ABYSS-REPO-STRUCTURE-002-corporate-ferdiiskandar`
+  merged into `master` (commit `e3868a5`, 2026-05-21). 12 conflicts resolved,
+  8 ESLint errors fixed, branch deleted. Repo is on `master` and green.
 
 ## UNICOM Hub
 
