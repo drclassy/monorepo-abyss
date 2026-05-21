@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sentra Context Capsule</title>
+  <title>SENTRA CONTEXT CAPSULE</title>
   <style>
     :root {
       --bg: #0d0d0d;
@@ -636,6 +636,75 @@
       display: none !important;
     }
 
+    .product-subtitle {
+      margin-top: 8px;
+      color: var(--text-muted);
+      font: 700 0.88rem/1.3 var(--font-mono);
+      letter-spacing: 0.06em;
+    }
+
+    .composer-preview-panel {
+      margin-top: 14px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: var(--panel-muted);
+      padding: 14px 16px;
+    }
+
+    .composer-preview-panel > summary {
+      list-style: none;
+    }
+
+    .composer-preview-panel > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .composer-preview-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .composer-preview-summary::after {
+      content: "+";
+      font-size: 1.2rem;
+      line-height: 1;
+      color: var(--text-muted);
+      transition: transform 120ms ease;
+    }
+
+    .composer-preview-panel[open] .composer-preview-summary::after {
+      transform: rotate(45deg);
+    }
+
+    .composer-wrap-step4 {
+      margin-top: 12px;
+    }
+
+    .composer-wrap-step4 textarea {
+      min-height: 200px;
+    }
+
+    .token-estimate {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    .copy-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
     @media (max-width: 920px) {
       .hero-top,
       .section-head,
@@ -675,8 +744,9 @@
   <main class="shell">
     <section class="hero" aria-labelledby="page-title">
       <div class="eyebrow">Sentra Local Context Utility</div>
-      <h1 id="page-title">Agent first. Daily Capsule by default. Options only if needed.</h1>
-      <p class="lede" style="margin-top: 12px;">First-time path: choose the agent, keep the default Daily Capsule as the main context path, open options only for extra context, then copy clean markdown from this single offline HTML file.</p>
+      <h1 id="page-title">SENTRA CONTEXT CAPSULE</h1>
+      <p class="product-subtitle">v0.1 · Local AI Agent Briefing Tool</p>
+      <p class="lede" style="margin-top: 12px;">Agent first. Daily Capsule by default. Options only if needed. Choose the agent, keep the default Daily Capsule as the main context path, open options only for extra context, then copy clean markdown from this single offline HTML file.</p>
 
       <div class="hero-top">
         <div>
@@ -808,20 +878,7 @@
                 <div>
                   <h2 id="composer-title">Raw markdown composer</h2>
                 </div>
-                <p class="lede">Markdown stays live as state changes. If clipboard permissions fail, this remains the manual copy fallback inside the same offline file.</p>
-              </div>
-
-              <div class="composer-wrap">
-                <div class="composer-label-row">
-                  <label for="composer">Composer</label>
-                  <span class="subtle-note">If clipboard access fails, manually select this textarea and copy.</span>
-                </div>
-                <textarea
-                  id="composer"
-                  readonly
-                  aria-label="Sentra context capsule composer"
-                  placeholder="Choose a role, adjust the capsule if needed, then copy the generated markdown."
-                ></textarea>
+                <p class="lede">The live composer lives in Step 4 below. Use block toggles here to customize the capsule, then preview and copy from the final action section.</p>
               </div>
             </section>
           </div>
@@ -840,6 +897,25 @@
 
       <div id="status-banner" class="status-banner" aria-live="polite">Choose one role before copying. Daily Capsule is already loaded.</div>
 
+      <details class="composer-preview-panel" id="composer-preview-panel">
+        <summary class="composer-preview-summary">
+          <span>Preview markdown capsule</span>
+          <span id="token-estimate" class="token-estimate subtle-note">—</span>
+        </summary>
+        <div class="composer-wrap composer-wrap-step4">
+          <div class="composer-label-row">
+            <label for="composer">Composer</label>
+            <span class="subtle-note">If clipboard access fails, manually select this textarea and copy.</span>
+          </div>
+          <textarea
+            id="composer"
+            readonly
+            aria-label="Sentra context capsule composer"
+            placeholder="Choose a role, adjust the capsule if needed, then copy the generated markdown."
+          ></textarea>
+        </div>
+      </details>
+
       <div class="actions-row" style="margin-top: 14px;">
         <p class="subtle-note">Accessibility baseline: real buttons, visible focus states, <code>aria-pressed</code>, live status messaging, non-color state markers, offline behavior, and a raw markdown fallback inside the options step.</p>
         <div class="action-group">
@@ -852,10 +928,11 @@
   </main>
 
   <script>
+    // === REFRESH ZONE: edit below when updating context ===
     const METADATA = {
-      lastScanLabel: '2026-05-19 18:33 WIB',
-      lastScanIso: '2026-05-19T18:33:00+07:00',
-      generatedBy: 'Claude Code',
+      lastScanLabel: '2026-05-21 12:00 WIB',
+      lastScanIso: '2026-05-21T12:00:00+07:00',
+      generatedBy: 'Cursor Agent',
       projectRoot: 'd:\\Devops\\abyss-monorepo'
     };
 
@@ -882,21 +959,27 @@ Start with clear problems, build practical systems, verify every step.`,
         id: 'current-phase-status',
         title: 'Current Phase Status',
         shortDescription: 'Execution state, gate posture, and current delivery focus.',
-        content: `ABYSS Monorepo — Current Status
+        content: `ABYSS Monorepo — Current Status (2026-05-21)
 
-Mode: small, scoped changes only.
-Current work: repo stabilization and SSOT simplification.
+Repo: D:\\Devops\\abyss-monorepo
+Branch: refactor/ABYSS-REPO-STRUCTURE-002-corporate-ferdiiskandar
+HEAD: f9daf5c (fix unicom exports + package.json dist paths)
 
-Fresh local signals from operational SSOT:
-- Root build: passing in recent handoff snapshot.
-- Root typecheck: passing in recent handoff snapshot.
-- Focus area: small, reviewable fixes only.
+Mode: READY — small, scoped changes only.
+
+Completed:
+- UNICOM Hub (@the-abyss/unicom) — all 11 tasks, 29/29 tests, typecheck clean, binary smoke-tested
+- Root build, typecheck, test, and verify-local.ps1 all passing
+
+Active / pending:
+- RAG Enhancement plan ready for Codex execution (Phase 1 → 2 → 3 mandatory order)
+- Key packages: @sentra/pustaka, @sentra/cermin, @the-abyss/document-ingestion
 
 Current execution focus:
-Implement narrowly scoped improvements while preserving continuity and avoiding unrelated repo churn.
+Execute RAG plan phases in order, or narrowly scoped improvements preserving SSOT continuity.
 
 Note:
-Refresh this block when current handoff status materially changes.`,
+Refresh this block when .agent/HANDOFF.md materially changes.`,
         defaultOrder: 2
       },
       {
@@ -1246,6 +1329,10 @@ Never:
         blockIds: ['project-identity', 'current-phase-status', 'rules-and-standards', 'risk-capsule', 'verification-capsule']
       }
     ];
+    // === END REFRESH ZONE ===
+
+    const STORAGE_KEY = 'sentra-context-capsule-v1';
+    const COMPOSER_HEADER = '# SENTRA CONTEXT CAPSULE';
 
     const DAILY_CAPSULE_BLOCK_IDS = ['current-phase-status', 'tech-stack', 'codebase-map', 'rules-and-standards', 'risk-capsule', 'verification-capsule'];
     const MAIN_ADD_ON_IDS = ['project-identity', 'design-system'];
@@ -1297,8 +1384,77 @@ Next step:
       metaLastScan: document.getElementById('meta-last-scan'),
       metaGeneratedBy: document.getElementById('meta-generated-by'),
       metaProjectRoot: document.getElementById('meta-project-root'),
-      freshnessWarning: document.getElementById('freshness-warning')
+      freshnessWarning: document.getElementById('freshness-warning'),
+      tokenEstimate: document.getElementById('token-estimate')
     };
+
+    function formatCompactNumber(value) {
+      if (value >= 1000) {
+        return `${(value / 1000).toFixed(1).replace(/\.0$/, '')}k`;
+      }
+
+      return String(value);
+    }
+
+    function savePreferences() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          selectedRoleId: state.selectedRoleId,
+          selectedBlockIds: Array.from(state.selectedBlockIds),
+          activePresetId: state.activePresetId
+        }));
+      } catch (error) {
+        console.warn('Unable to save preferences', error);
+      }
+    }
+
+    function loadPreferences() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          return;
+        }
+
+        const data = JSON.parse(raw);
+        if (Array.isArray(data.selectedBlockIds) && data.selectedBlockIds.length > 0) {
+          state.selectedBlockIds = new Set(data.selectedBlockIds);
+        }
+
+        if (typeof data.selectedRoleId === 'string') {
+          state.selectedRoleId = data.selectedRoleId;
+        }
+
+        if (typeof data.activePresetId === 'string') {
+          state.activePresetId = data.activePresetId;
+        }
+
+        syncPresetSelection();
+      } catch (error) {
+        console.warn('Unable to load preferences', error);
+      }
+    }
+
+    function clearPreferences() {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (error) {
+        console.warn('Unable to clear preferences', error);
+      }
+    }
+
+    function updateTokenEstimate() {
+      if (!elements.composer || !elements.tokenEstimate) return;
+      const text = elements.composer.value;
+      const chars = text.length;
+      const tokens = Math.ceil(chars / 4);
+
+      if (!text.trim()) {
+        elements.tokenEstimate.textContent = '—';
+        return;
+      }
+
+      elements.tokenEstimate.textContent = `~${formatCompactNumber(chars)} chars · ~${formatCompactNumber(tokens)} tokens (est.)`;
+    }
 
     function formatLocalTimestamp(date) {
       const year = date.getFullYear();
@@ -1561,7 +1717,7 @@ Next step:
       }
 
       const lines = [
-        '# SENTRA CONTEXT CAPSULE',
+        COMPOSER_HEADER,
         '',
         `Generated for: ${selectedRole ? selectedRole.label : 'Pending role selection'}`,
         `Generated at: ${formatLocalTimestamp(new Date())}`,
@@ -1601,6 +1757,8 @@ Next step:
     function updateComposer() {
       elements.composer.value = buildComposerText();
       updateSummary();
+      updateTokenEstimate();
+      savePreferences();
     }
 
     function toggleBlock(id) {
@@ -1667,6 +1825,7 @@ Next step:
       state.selectedBlockIds = new Set();
       state.selectedRoleId = '';
       state.activePresetId = '';
+      clearPreferences();
       renderRoles();
       renderAddOns();
       renderPresets();
@@ -1748,10 +1907,19 @@ Next step:
         warningText = '[WARN] Last scan timestamp unavailable.';
       } else {
         const ageMs = Date.now() - parsed.getTime();
+        const ageHours = Math.floor(ageMs / (60 * 60 * 1000));
+        const ageDays = Math.floor(ageMs / (24 * 60 * 60 * 1000));
+
         if (ageMs > 24 * 60 * 60 * 1000) {
           statusText = 'Stale';
           statusClass = 'stale';
           warningText = '[WARN] Context may be stale. Ask Claude Code to update context engine.';
+        }
+
+        if (ageDays >= 1) {
+          elements.metaLastScan.textContent = `${METADATA.lastScanLabel} (${ageDays} day${ageDays === 1 ? '' : 's'} ago)`;
+        } else if (ageHours >= 1) {
+          elements.metaLastScan.textContent = `${METADATA.lastScanLabel} (${ageHours} hour${ageHours === 1 ? '' : 's'} ago)`;
         }
       }
 
@@ -1768,6 +1936,7 @@ Next step:
     }
 
     function init() {
+      loadPreferences();
       renderDailyDefaultList();
       renderRoles();
       renderAddOns();
