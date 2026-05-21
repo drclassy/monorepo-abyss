@@ -6,9 +6,8 @@ import { ThemeProvider } from '@/components/theme-provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'KokonutUI Dashboard',
-  description: 'A modern dashboard with theme switching',
-  generator: 'v0.app',
+  title: 'PORTAL — Sentra Mission Control',
+  description: 'Monorepo mission control: SSOT, RAG, UNICOM, Prompt, and Abyss CLI ops',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

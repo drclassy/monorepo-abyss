@@ -1,11 +1,5 @@
-import Content from "./content"
-import Layout from "./layout"
+import MissionControlDashboard from '@/components/portal/mission-control-dashboard'
 
 export default function Dashboard() {
-  return (
-    <Layout>
-      <Content />
-    </Layout>
-  )
+  return <MissionControlDashboard />
 }
-
