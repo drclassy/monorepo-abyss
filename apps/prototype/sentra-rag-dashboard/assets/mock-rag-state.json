@@ -1,0 +1,21 @@
+{
+  "prototype": "sentra-rag-dashboard",
+  "status": "scaffolded",
+  "phase": "task-1",
+  "brandAssets": {
+    "logo": "assets/sentra-logo-horizontal-light.svg",
+    "favicon": "assets/sentra-favicon.svg"
+  },
+  "readiness": {
+    "folderStructure": true,
+    "baselineFiles": true,
+    "brandingCopied": true,
+    "readmeAdded": true
+  },
+  "stats": {
+    "documents": 0,
+    "indexed": 0,
+    "alerts": 0
+  },
+  "nextStep": "Task 2 will define dashboard information architecture and interaction details."
+}
