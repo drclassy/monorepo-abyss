@@ -1,6 +1,11 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { getEmbedding, DEFAULT_EMBEDDING_MODEL } from './embedding-provider'
-import type { QueryResult, VectorStoreConfig, VectorStoreDatabaseClient } from './types'
+import type {
+  PreEmbeddedRecord,
+  QueryResult,
+  VectorStoreConfig,
+  VectorStoreDatabaseClient,
+} from './types'
 
 // ─── VectorStore ──────────────────────────────────────────────────────────────
 
@@ -28,6 +33,34 @@ export class VectorStore {
     }
 
     return this.config.database
+  }
+
+  /**
+   * Ensures the caller-owned KnowledgeBase storage exists before writes/queries.
+   * Safe to call repeatedly.
+   */
+  async ensureSchema(): Promise<void> {
+    const db = this.database()
+
+    await db.$executeRawUnsafe(`CREATE EXTENSION IF NOT EXISTS vector`)
+    await db.$executeRawUnsafe(
+      `CREATE TABLE IF NOT EXISTS "KnowledgeBase" (
+         id TEXT PRIMARY KEY,
+         content TEXT NOT NULL,
+         embedding vector(768),
+         metadata JSONB,
+         "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+         "updatedAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+       )`,
+    )
+    await db.$executeRawUnsafe(
+      `CREATE INDEX IF NOT EXISTS "KnowledgeBase_embedding_idx"
+         ON "KnowledgeBase" USING hnsw (embedding vector_cosine_ops)`,
+    )
+    await db.$executeRawUnsafe(
+      `CREATE INDEX IF NOT EXISTS "KnowledgeBase_updatedAt_idx"
+         ON "KnowledgeBase" ("updatedAt")`,
+    )
   }
 
   // ─── Upsert ─────────────────────────────────────────────────────────────────
@@ -66,6 +99,46 @@ export class VectorStore {
       content,
       embeddingLiteral,
       JSON.stringify(metadata)
+    )
+  }
+
+  /**
+   * Accepts pre-embedded records and writes them in one SQL upsert batch.
+   *
+   * Caller is responsible for chunking very large batches to stay within
+   * PostgreSQL parameter limits.
+   */
+  async upsertByIdBatch(records: PreEmbeddedRecord[]): Promise<void> {
+    if (records.length === 0) {
+      throw new Error('[vector-store] upsertByIdBatch called with empty records array')
+    }
+
+    const db = this.database()
+    const valueClauses: string[] = []
+    const params: unknown[] = []
+
+    records.forEach((record, index) => {
+      const base = index * 4
+      valueClauses.push(
+        `($${base + 1}, $${base + 2}, $${base + 3}::vector, $${base + 4}::jsonb, NOW())`,
+      )
+      params.push(
+        record.id,
+        record.content,
+        `[${record.embedding.join(',')}]`,
+        JSON.stringify(record.metadata),
+      )
+    })
+
+    await db.$executeRawUnsafe(
+      `INSERT INTO "KnowledgeBase" (id, content, embedding, metadata, "updatedAt")
+       VALUES ${valueClauses.join(', ')}
+       ON CONFLICT (id) DO UPDATE SET
+         content = EXCLUDED.content,
+         embedding = EXCLUDED.embedding,
+         metadata = EXCLUDED.metadata,
+         "updatedAt" = NOW()`,
+      ...params,
     )
   }
 

@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest'
 
-import { scoreEvidenceQuality } from '../src/evaluation/quality-scorer'
+import {
+  computeRankingMetrics,
+  scoreEvidenceQuality,
+} from '../src/evaluation/quality-scorer'
 import type { QueryEvalResult } from '../src/evaluation/types'
 
 function makePassedResult(queryId: string, approvedCount = 3): QueryEvalResult {
@@ -117,5 +120,51 @@ describe('scoreEvidenceQuality', () => {
 
     expect(report.total_queries).toBe(3)
     expect(report.failed_queries).toBe(2)
+  })
+})
+
+const makeRankingResult = (isApproved: boolean[]) => ({
+  query_id: 'q1',
+  results: isApproved.map((approved, rank) => ({
+    vector_id: `v${rank}`,
+    is_approved: approved,
+    rank: rank + 1,
+    score: 1 - rank * 0.1,
+  })),
+})
+
+describe('computeRankingMetrics', () => {
+  it('computes MRR=1.0 when first result is approved', () => {
+    const metrics = computeRankingMetrics([makeRankingResult([true, false, false])])
+    expect(metrics.mrr).toBeCloseTo(1)
+  })
+
+  it('computes MRR=0.5 when second result is first approved', () => {
+    const metrics = computeRankingMetrics([makeRankingResult([false, true, false])])
+    expect(metrics.mrr).toBeCloseTo(0.5)
+  })
+
+  it('computes MRR=0 when no approved result exists', () => {
+    const metrics = computeRankingMetrics([makeRankingResult([false, false, false])])
+    expect(metrics.mrr).toBeCloseTo(0)
+  })
+
+  it('computes Recall@1 and Recall@5', () => {
+    const metrics = computeRankingMetrics([makeRankingResult([true, false, false, false, false])])
+    expect(metrics.recallAtK['recall@1']).toBeCloseTo(1)
+    expect(metrics.recallAtK['recall@5']).toBeCloseTo(1)
+  })
+
+  it('averages MRR across multiple queries', () => {
+    const metrics = computeRankingMetrics([
+      makeRankingResult([true, false]),
+      makeRankingResult([false, true]),
+    ])
+    expect(metrics.mrr).toBeCloseTo(0.75)
+  })
+
+  it('computes MAP across multiple relevant results', () => {
+    const metrics = computeRankingMetrics([makeRankingResult([true, false, true])])
+    expect(metrics.map).toBeCloseTo((1 + 2 / 3) / 2)
   })
 })

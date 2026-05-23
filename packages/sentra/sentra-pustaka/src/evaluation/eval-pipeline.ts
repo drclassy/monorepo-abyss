@@ -11,6 +11,7 @@ import { loadEvalQueries } from './query-loader.js'
 import { generateRecommendations } from './recommendations.js'
 import { runEvalQuery } from './retrieval-runner.js'
 import type {
+  EvidenceQualityReport,
   RetrievalEvalPipelineParams,
   RetrievalEvalSummary,
   QueryEvalResult,
@@ -77,6 +78,7 @@ export async function runRetrievalEvalPipeline(
       database: databaseClient,
       embeddingModel,
     })
+    await vectorStore.ensureSchema()
 
     for (const query of queries) {
       try {
@@ -108,10 +110,37 @@ export async function runRetrievalEvalPipeline(
   }
 
   // 4. Score quality
-  const qualityReport = scoreEvidenceQuality(queryResults, failedQueries.length)
+  const qualityReport: EvidenceQualityReport =
+    writeMode === 'eval'
+      ? scoreEvidenceQuality(queryResults, failedQueries.length)
+      : {
+          total_queries: queries.length,
+          total_results: 0,
+          approved_evidence: 0,
+          flagged_evidence: 0,
+          untraceable_evidence: 0,
+          passed_queries: 0,
+          failed_queries: failedQueries.length,
+          avg_similarity_score: 0,
+          min_similarity_score: 0,
+          max_similarity_score: 0,
+          traceability_completeness: 1,
+          approval_rate: 0,
+          aadi_readiness: 'not_ready',
+          readiness_reason: 'Dry run only: no vector queries executed.',
+        }
 
   // 5. Generate recommendations
-  const recommendations = generateRecommendations(queryResults, qualityReport)
+  const recommendations =
+    writeMode === 'eval'
+      ? generateRecommendations(queryResults, qualityReport)
+      : [
+          {
+            type: 'INFO' as const,
+            message: 'DRY_RUN: No vector queries executed. Results are structural placeholders only.',
+            action: 'Run with writeMode=eval and a database client to generate retrieval quality metrics.',
+          },
+        ]
 
   // 6. Build summary
   const completedAt = new Date().toISOString()
@@ -135,6 +164,10 @@ export async function runRetrievalEvalPipeline(
     failed_queries: failedQueries.length,
     avg_similarity: qualityReport.avg_similarity_score,
     aadi_readiness: qualityReport.aadi_readiness,
+    mode_disclaimer:
+      writeMode !== 'eval'
+        ? 'DRY_RUN: No vector queries executed. Results are structural placeholders only.'
+        : null,
     write_mode: writeMode,
     status,
   }

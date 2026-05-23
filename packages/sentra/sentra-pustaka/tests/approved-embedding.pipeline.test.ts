@@ -10,10 +10,27 @@ import type { KnowledgeRegistry } from '../src/registry/registry-types'
 // ─── Mock vector-store ────────────────────────────────────────────────────────
 // vi.mock is hoisted by vitest at runtime regardless of declaration position.
 
-const mockUpsertById = vi.fn().mockResolvedValue(undefined)
+const {
+  mockUpsertById,
+  mockUpsertByIdBatch,
+  mockGetEmbeddingBatch,
+  mockEnsureSchema,
+} = vi.hoisted(() => ({
+  mockUpsertById: vi.fn().mockResolvedValue(undefined),
+  mockUpsertByIdBatch: vi.fn().mockResolvedValue(undefined),
+  mockGetEmbeddingBatch: vi.fn(async (texts: string[]) =>
+    texts.map(() => Array(768).fill(0.1)),
+  ),
+  mockEnsureSchema: vi.fn().mockResolvedValue(undefined),
+}))
 
 vi.mock('@sentra/cermin', () => ({
-  createVectorStore: vi.fn(() => ({ upsertById: mockUpsertById })),
+  createVectorStore: vi.fn(() => ({
+    ensureSchema: mockEnsureSchema,
+    upsertById: mockUpsertById,
+    upsertByIdBatch: mockUpsertByIdBatch,
+  })),
+  getEmbeddingBatch: mockGetEmbeddingBatch,
   DEFAULT_EMBEDDING_MODEL: 'text-embedding-004',
   DEFAULT_EMBEDDING_DIMENSIONS: 768,
 }))
@@ -114,6 +131,14 @@ describe('runApprovedEmbeddingPipeline', () => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'rag-004-test-'))
     mockUpsertById.mockReset()
     mockUpsertById.mockResolvedValue(undefined)
+    mockUpsertByIdBatch.mockReset()
+    mockUpsertByIdBatch.mockResolvedValue(undefined)
+    mockGetEmbeddingBatch.mockReset()
+    mockEnsureSchema.mockReset()
+    mockEnsureSchema.mockResolvedValue(undefined)
+    mockGetEmbeddingBatch.mockImplementation(async (texts: string[]) =>
+      texts.map(() => Array(768).fill(0.1)),
+    )
   })
 
   afterEach(() => {
@@ -151,8 +176,12 @@ describe('runApprovedEmbeddingPipeline', () => {
     expect(summary.write_mode).toBe('dry_run')
     expect(summary.embedded_documents).toBe(1)
     expect(summary.embedded_chunks).toBe(2)
+    expect(summary.chunks_attempted).toBe(2)
+    expect(summary.chunks_succeeded).toBe(2)
+    expect(summary.chunks_failed).toBe(0)
     expect(summary.failed_documents).toBe(0)
     expect(mockUpsertById).not.toHaveBeenCalled()
+    expect(mockUpsertByIdBatch).not.toHaveBeenCalled()
 
     // Check artifact files exist
     const runDir = path.join(outputDir, 'runs', summary.embedding_run_id)
@@ -302,7 +331,7 @@ describe('runApprovedEmbeddingPipeline', () => {
     expect(failures[0].source_hash).toBe(hash)
   })
 
-  it('write mode calls upsertById for each chunk', async () => {
+  it('write mode embeds in batch and calls upsertByIdBatch', async () => {
     const hash = 'writemodehash'
     const entry = {
       source_hash: hash,
@@ -334,9 +363,14 @@ describe('runApprovedEmbeddingPipeline', () => {
       outputDir,
       writeMode: 'write',
       databaseClient: mockDbClient,
+      concurrency: 4,
+      batchSize: 100,
     })
 
-    expect(mockUpsertById).toHaveBeenCalledTimes(2)
+    expect(mockEnsureSchema).toHaveBeenCalledTimes(1)
+    expect(mockGetEmbeddingBatch).toHaveBeenCalledTimes(1)
+    expect(mockUpsertByIdBatch).toHaveBeenCalledTimes(1)
+    expect(mockUpsertById).not.toHaveBeenCalled()
   })
 
   it('duplicate run produces same vector IDs (idempotency)', async () => {
@@ -441,5 +475,44 @@ describe('runApprovedEmbeddingPipeline', () => {
     expect(summary.embedded_documents).toBe(1)
     expect(summary.failed_documents).toBe(1)
     expect(summary.status).toBe('completed_with_failures')
+  })
+
+  it('splits writes into multiple SQL batches when batchSize is smaller than chunk count', async () => {
+    const hash = 'batched-doc'
+    const entry = {
+      source_hash: hash,
+      document_id: 'doc-batch',
+      document_version: 'v1',
+      parser_provider: 'liteparse',
+      page_count: 2,
+      chunk_count: 2,
+      quality_status: 'ready' as const,
+      registry_status: 'approved_for_embedding' as const,
+      created_at: new Date().toISOString(),
+      registered_at: new Date().toISOString(),
+      artifact_paths: {},
+      warnings: [],
+    }
+
+    const { registryDir, artifactsDir, outputDir } = setupTestDirs(
+      tmpDir,
+      [hash],
+      [entry],
+      { [hash]: makeChunks(hash) },
+    )
+
+    await runApprovedEmbeddingPipeline({
+      registryDir,
+      artifactsDir,
+      outputDir,
+      writeMode: 'write',
+      databaseClient: {
+        $executeRawUnsafe: vi.fn(),
+        $queryRawUnsafe: vi.fn(),
+      },
+      batchSize: 1,
+    })
+
+    expect(mockUpsertByIdBatch).toHaveBeenCalledTimes(2)
   })
 })

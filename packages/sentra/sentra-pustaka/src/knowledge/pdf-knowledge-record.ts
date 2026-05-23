@@ -57,7 +57,7 @@ export function buildPdfKnowledgeDatabaseRecord(
     source_hash: sourceHash,
     document_id: source.document_id,
     document_version: documentVersion,
-    document_title: source.document_title ?? chunk.metadata.document_title ?? '',
+    document_title: source.document_title ?? chunk.metadata.document_title ?? undefined,
     document_type: source.document_type,
     chunk_id: chunkId,
     vector_id: vectorId,
@@ -65,6 +65,7 @@ export function buildPdfKnowledgeDatabaseRecord(
     parser_provider: parserProvider,
     ocr_confidence: ocrConfidence,
     registry_status: 'approved_for_embedding',
+    approval_status: source.registry_status,
     ingestion_status: chunk.metadata.ingestion_status ?? source.quality_status,
     content_hash: contentHash,
   }

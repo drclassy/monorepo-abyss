@@ -11,9 +11,10 @@ import type { KnowledgeRegistry } from '../src/registry/registry-types'
 // ─── Mock vector-store ────────────────────────────────────────────────────────
 
 const mockQuery = vi.fn()
+const mockEnsureSchema = vi.fn()
 
 vi.mock('@sentra/cermin', () => ({
-  createVectorStore: vi.fn(() => ({ query: mockQuery })),
+  createVectorStore: vi.fn(() => ({ ensureSchema: mockEnsureSchema, query: mockQuery })),
   DEFAULT_EMBEDDING_MODEL: 'text-embedding-004',
   DEFAULT_EMBEDDING_DIMENSIONS: 768,
 }))
@@ -92,6 +93,8 @@ describe('runRetrievalEvalPipeline', () => {
   beforeEach(() => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'rag-005-test-'))
     mockQuery.mockReset()
+    mockEnsureSchema.mockReset()
+    mockEnsureSchema.mockResolvedValue(undefined)
   })
 
   afterEach(() => {
@@ -114,6 +117,7 @@ describe('runRetrievalEvalPipeline', () => {
     })
 
     expect(summary.write_mode).toBe('dry_run')
+    expect(summary.mode_disclaimer).toContain('DRY_RUN')
     expect(mockQuery).not.toHaveBeenCalled()
 
     const runDir = path.join(outputDir, 'runs', summary.retrieval_eval_run_id)
@@ -152,6 +156,7 @@ describe('runRetrievalEvalPipeline', () => {
       databaseClient: mockDbClient,
     })
 
+    expect(mockEnsureSchema).toHaveBeenCalledTimes(1)
     expect(mockQuery).toHaveBeenCalledTimes(2)
     expect(summary.total_queries).toBe(2)
     expect(summary.passed_queries).toBeGreaterThanOrEqual(0)
@@ -286,6 +291,6 @@ describe('runRetrievalEvalPipeline', () => {
       fs.readFileSync(path.join(runDir, 'recommendations.json'), 'utf-8')
     )
     expect(recommendations.length).toBeGreaterThan(0)
-    expect(recommendations[0].type).toMatch(/INFO|WARNING|ACTION/)
+    expect(recommendations[0].type).toBe('INFO')
   })
 })

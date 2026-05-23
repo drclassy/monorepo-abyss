@@ -1,4 +1,4 @@
-export type ParserProviderName = 'liteparse'
+export type ParserProviderName = 'liteparse' | 'jats-xml'
 
 export type DocumentType = 'digital_pdf' | 'scanned_pdf' | 'hybrid_pdf' | 'unknown'
 
