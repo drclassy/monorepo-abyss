@@ -1,20 +1,17 @@
 # Sentra RAG Dashboard Prototype
 
-## Purpose
+Standalone prototype dashboard for the Sentra medical library RAG flow.
 
-This folder is the standalone starter scaffold for the Sentra RAG dashboard prototype.
-Task 1 only establishes the local prototype folder, placeholder files, and copied brand assets.
+## Purpose
+- show `library/medical` readiness in simple operator language
+- validate dashboard UX before building a real app
 
 ## Preview
-
-The prototype currently provides scaffold-level placeholders only.
-Dashboard UI, runtime behavior, and richer mock data are intentionally deferred to later tasks.
-
-## Local Preview
+Open `index.html` directly in a browser, or run:
 
 ```powershell
 cd D:\Devops\abyss-monorepo\apps\prototype\sentra-rag-dashboard
 python -m http.server 4173
 ```
 
-Then open `http://localhost:4173`.
+Then visit `http://localhost:4173`.
