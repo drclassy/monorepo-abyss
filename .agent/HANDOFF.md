@@ -3,16 +3,31 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-21 (session: merge ABYSS-REPO-STRUCTURE-002 into master — COMPLETE)
+Last updated: 2026-05-23 (session: RAG worktree recovery integrated into clean branch)
 
 ## Snapshot
 
 - Repo: `D:\Devops\abyss-monorepo`
-- Branch: `master`
-- HEAD: `e3868a5` — merge commit integrating refactor/ABYSS-REPO-STRUCTURE-002-corporate-ferdiiskandar
-- Active work: NONE — feature branch merged and deleted.
-- Mode: COMPLETE — full refactor + review cycle + merge done.
-- Next: Proceed to RAG Enhancement Phase 1 (Pipeline Hardening) per PROGRESS.md.
+- Branch: `integration/rag-recovery`
+- HEAD: current branch tip after clean RAG recovery integration and verification finalization
+- Active work: RAG recovery complete on clean integration branch; root `master` worktree remains intentionally untouched because it still carries unrelated `tooling/prompt-engine` changes.
+- Mode: READY FOR MAINLINE FAST-FORWARD once the dirty root `master` worktree is isolated or cleaned by Chief.
+- Next: Fast-forward `master` to this branch tip from a clean `master` checkout when the prompt-engine working tree no longer blocks branch movement.
+
+## RAG Recovery Integration (2026-05-23)
+
+- Source recovery branch: `feat/rag-enhancement-execution`
+- Recovery commits preserved:
+  - `9825ca3` `chore(repo): ignore ferdiiskandar local build artifacts`
+  - `e850d10` `feat(rag): recover stranded worktree changes`
+  - `3c4b580` `merge(master): sync latest mainline into rag enhancement branch`
+- Clean integration branch merge commit: `4e9c01d` `merge(rag): integrate feat/rag-enhancement-execution`
+- Recovered scope includes:
+  - RAG pipeline hardening across `@sentra/cermin`, `@sentra/pustaka`, and `@the-abyss/document-ingestion`
+  - local app Git noise fix for `apps/corporate/ferdiiskandar/{node_modules,.next,.turbo}`
+  - stranded RAG test/script files such as `packages/sentra/sentra-pustaka/tests/local.engine.test.ts` and `tooling/scripts/rag/sentra-rag-terminal.ps1`
+- Important operational note:
+  - `master` itself was not advanced in-place because `D:\Devops\abyss-monorepo` is the active `master` worktree and still has unrelated local modifications under `tooling/prompt-engine/**`. Advancing that branch ref now would contaminate the root worktree state.
 
 ## Post-Review Code-Review Skill Fixes (2026-05-21)
 

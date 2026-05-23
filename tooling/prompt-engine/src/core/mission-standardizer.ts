@@ -406,7 +406,7 @@ function buildMissionTitle(mode: MissionMode): string {
 }
 
 export function standardizeMissionRequest(
-  rawInput: string,
+  _rawInput: string,
   context: LightweightContext,
   classification: MissionIntentClassification
 ): StandardizedMission {
