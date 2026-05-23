@@ -74,8 +74,7 @@ describe('SYMPHONY symptom signals', () => {
 
   it('detects chest_pain from multi-token variants', () => {
     expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'nyeri dada menjalar ke lengan kiri' })
-        .signals
+      detectSymphonySymptomSignals({ chiefComplaint: 'nyeri dada menjalar ke lengan kiri' }).signals
     ).toContain('chest_pain')
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'sakit dada sejak 1 jam' }).signals
@@ -116,9 +115,9 @@ describe('SYMPHONY symptom signals', () => {
   })
 
   it('detects seizure from kejang variants', () => {
-    expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'kejang 10 menit' }).signals
-    ).toContain('seizure')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'kejang 10 menit' }).signals).toContain(
+      'seizure'
+    )
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'kejang demam berulang' }).signals
     ).toContain('seizure')
@@ -131,9 +130,9 @@ describe('SYMPHONY symptom signals', () => {
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'pasien bingung dan disorientasi' }).signals
     ).toContain('altered_consciousness')
-    expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'delirium akut' }).signals
-    ).toContain('altered_consciousness')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'delirium akut' }).signals).toContain(
+      'altered_consciousness'
+    )
   })
 
   it('detects altered_consciousness from "tidak sadar" without negation stripping', () => {
@@ -148,27 +147,27 @@ describe('SYMPHONY symptom signals', () => {
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'perdarahan hebat dari hidung' }).signals
     ).toContain('bleeding')
-    expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'gusi berdarah' }).signals
-    ).toContain('bleeding')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'gusi berdarah' }).signals).toContain(
+      'bleeding'
+    )
     expect(detectSymphonySymptomSignals({ chiefComplaint: 'mimisan' }).signals).toContain(
       'bleeding'
     )
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'BAB hitam sejak 3 hari' }).signals
     ).toContain('bleeding')
-    expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'melena berulang' }).signals
-    ).toContain('bleeding')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'melena berulang' }).signals).toContain(
+      'bleeding'
+    )
   })
 
   it('detects pallor from pucat and anemis', () => {
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'wajah pucat, konjungtiva pucat' }).signals
     ).toContain('pallor')
-    expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'tampak anemis' }).signals
-    ).toContain('pallor')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'tampak anemis' }).signals).toContain(
+      'pallor'
+    )
   })
 
   it('detects weakness from lemas, lemah, letih', () => {
@@ -178,9 +177,9 @@ describe('SYMPHONY symptom signals', () => {
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'lemah tidak bertenaga' }).signals
     ).toContain('weakness')
-    expect(detectSymphonySymptomSignals({ chiefComplaint: 'letih terus menerus' }).signals).toContain(
-      'weakness'
-    )
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'letih terus menerus' }).signals
+    ).toContain('weakness')
   })
 
   it('detects dizziness from pusing berputar and vertigo', () => {
@@ -199,9 +198,9 @@ describe('SYMPHONY symptom signals', () => {
   })
 
   it('detects syncope from pingsan and mau pingsan', () => {
-    expect(detectSymphonySymptomSignals({ chiefComplaint: 'pingsan 2 kali hari ini' }).signals).toContain(
-      'syncope'
-    )
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'pingsan 2 kali hari ini' }).signals
+    ).toContain('syncope')
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'merasa mau pingsan saat berdiri' }).signals
     ).toContain('syncope')
@@ -240,27 +239,27 @@ describe('SYMPHONY symptom signals', () => {
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'ruam kemerahan di seluruh tubuh' }).signals
     ).toContain('rash_or_angioedema')
-    expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'urtikaria akut' }).signals
-    ).toContain('rash_or_angioedema')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'urtikaria akut' }).signals).toContain(
+      'rash_or_angioedema'
+    )
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'bengkak muka dan bibir' }).signals
     ).toContain('rash_or_angioedema')
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'angioedema mendadak' }).signals
     ).toContain('rash_or_angioedema')
-    expect(detectSymphonySymptomSignals({ chiefComplaint: 'gatal seluruh tubuh' }).signals).toContain(
-      'rash_or_angioedema'
-    )
+    expect(
+      detectSymphonySymptomSignals({ chiefComplaint: 'gatal seluruh tubuh' }).signals
+    ).toContain('rash_or_angioedema')
   })
 
   it('detects abdominal_pain from nyeri perut variants', () => {
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'nyeri perut kanan atas' }).signals
     ).toContain('abdominal_pain')
-    expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'sakit perut kram' }).signals
-    ).toContain('abdominal_pain')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'sakit perut kram' }).signals).toContain(
+      'abdominal_pain'
+    )
     expect(detectSymphonySymptomSignals({ chiefComplaint: 'kolik bilier' }).signals).toContain(
       'abdominal_pain'
     )
@@ -273,9 +272,9 @@ describe('SYMPHONY symptom signals', () => {
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'napas dalam dan cepat' }).signals
     ).toContain('kussmaul_breathing')
-    expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'napas cepat dalam' }).signals
-    ).toContain('kussmaul_breathing')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'napas cepat dalam' }).signals).toContain(
+      'kussmaul_breathing'
+    )
   })
 
   it('detects polyuria from banyak kencing and poliuria', () => {
@@ -297,9 +296,9 @@ describe('SYMPHONY symptom signals', () => {
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'mulut mencong dan bicara pelo' }).signals
     ).toContain('neurologic_focal_deficit')
-    expect(
-      detectSymphonySymptomSignals({ chiefComplaint: 'FAST positif' }).signals
-    ).toContain('neurologic_focal_deficit')
+    expect(detectSymphonySymptomSignals({ chiefComplaint: 'FAST positif' }).signals).toContain(
+      'neurologic_focal_deficit'
+    )
     expect(
       detectSymphonySymptomSignals({ chiefComplaint: 'defisit neurologis fokal' }).signals
     ).toContain('neurologic_focal_deficit')

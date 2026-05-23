@@ -49,7 +49,7 @@ function pushFact(
   key: string,
   value: string | number | boolean,
   sourceRefs: string[],
-  confidence?: number,
+  confidence?: number
 ): void {
   facts.push({ key, value, sourceRefs, confidence })
 }
@@ -58,8 +58,9 @@ function latestVitals(vitals: SymphonyVitalsInput[]): SymphonyVitalsInput | unde
   return vitals.at(-1)
 }
 
-
-function toSnapshotGlucoseCategory(glucoseMgDl: number | undefined): SymphonyGlucoseCategory | undefined {
+function toSnapshotGlucoseCategory(
+  glucoseMgDl: number | undefined
+): SymphonyGlucoseCategory | undefined {
   if (glucoseMgDl === undefined) return undefined
   if (glucoseMgDl < 70) return 'hypoglycemic'
   if (glucoseMgDl >= 300) return 'severe_hyperglycemia'
@@ -68,7 +69,9 @@ function toSnapshotGlucoseCategory(glucoseMgDl: number | undefined): SymphonyGlu
   return 'normal'
 }
 
-function toSnapshotHtnSeverity(latest: SymphonyVitalsInput | undefined): SymphonyHtnSeverity | undefined {
+function toSnapshotHtnSeverity(
+  latest: SymphonyVitalsInput | undefined
+): SymphonyHtnSeverity | undefined {
   if (latest?.systolicBp === undefined || latest.diastolicBp === undefined) return undefined
   return getSymphonyHypertensionSeverity({
     sbp: latest.systolicBp,
@@ -84,7 +87,7 @@ function buildSnapshot(input: SymphonyAssessmentInput): SymphonyClinicalSnapshot
     medicalHistory: input.medicalHistory?.join(' '),
   })
   const chronicClasses = (input.chronicDiseases ?? [])
-    .map(code => classifySymphonyChronicDisease(code))
+    .map((code) => classifySymphonyChronicDisease(code))
     .filter((item): item is NonNullable<typeof item> => item !== null)
 
   return {
@@ -103,9 +106,7 @@ function buildSnapshot(input: SymphonyAssessmentInput): SymphonyClinicalSnapshot
           ? Math.round(latest.diastolicBp + (latest.systolicBp - latest.diastolicBp) / 3)
           : undefined,
       shockIndex:
-        latest?.systolicBp !== undefined &&
-        latest.heartRate !== undefined &&
-        latest.systolicBp > 0
+        latest?.systolicBp !== undefined && latest.heartRate !== undefined && latest.systolicBp > 0
           ? Number((latest.heartRate / latest.systolicBp).toFixed(2))
           : undefined,
       avpuLevel: normalizeSymphonyConsciousnessToAvpu(latest?.consciousness) ?? 'A',
@@ -132,16 +133,16 @@ function buildSnapshot(input: SymphonyAssessmentInput): SymphonyClinicalSnapshot
     },
     history: {
       bpHistory: input.vitals
-        .filter(item => item.systolicBp !== undefined && item.diastolicBp !== undefined)
-        .map(item => ({
+        .filter((item) => item.systolicBp !== undefined && item.diastolicBp !== undefined)
+        .map((item) => ({
           sbp: item.systolicBp as number,
           dbp: item.diastolicBp as number,
           timestamp: new Date(item.observedAt).getTime(),
         })),
-      knownHTN: chronicClasses.some(item => item.type === 'HT'),
-      knownDM: chronicClasses.some(item => item.type === 'DM'),
-      knownAsthma: chronicClasses.some(item => item.type === 'ASTHMA'),
-      knownCOPD: Boolean(input.hasCOPD) || chronicClasses.some(item => item.type === 'PPOK'),
+      knownHTN: chronicClasses.some((item) => item.type === 'HT'),
+      knownDM: chronicClasses.some((item) => item.type === 'DM'),
+      knownAsthma: chronicClasses.some((item) => item.type === 'ASTHMA'),
+      knownCOPD: Boolean(input.hasCOPD) || chronicClasses.some((item) => item.type === 'PPOK'),
       pregnancyStatus:
         input.patientContext.pregnancyStatus === 'pregnant'
           ? true
@@ -160,9 +161,10 @@ function buildSnapshot(input: SymphonyAssessmentInput): SymphonyClinicalSnapshot
           : (input.patientContext.ageYears ?? 0) >= 18
             ? 'adult'
             : 'child',
-      avpuManual: latest?.consciousness === 'unknown'
-        ? 'unknown'
-        : normalizeSymphonyConsciousnessToAvpu(latest?.consciousness) ?? 'A',
+      avpuManual:
+        latest?.consciousness === 'unknown'
+          ? 'unknown'
+          : (normalizeSymphonyConsciousnessToAvpu(latest?.consciousness) ?? 'A'),
       supplementalO2: latest?.oxygenSupplement ?? false,
       painScore: 0,
     },
@@ -171,7 +173,7 @@ function buildSnapshot(input: SymphonyAssessmentInput): SymphonyClinicalSnapshot
 }
 
 export function buildSymphonyClinicalFacts(
-  input: SymphonyAssessmentInput,
+  input: SymphonyAssessmentInput
 ): SymphonyClinicalFactsResult {
   const facts: SymphonyClinicalFact[] = []
   const latest = latestVitals(input.vitals)
@@ -222,7 +224,7 @@ export function buildSymphonyClinicalFacts(
   const patternAlerts = evaluateClinicalPatterns(
     snapshot,
     undefined,
-    latest?.observedAt ?? input.metadata.requestedAt,
+    latest?.observedAt ?? input.metadata.requestedAt
   )
 
   if (symptoms.signals.includes('fever')) {
@@ -233,9 +235,9 @@ export function buildSymphonyClinicalFacts(
   }
 
   const bpReadings = input.vitals
-    .filter(item => item.systolicBp !== undefined && item.diastolicBp !== undefined)
+    .filter((item) => item.systolicBp !== undefined && item.diastolicBp !== undefined)
     .slice(-3)
-    .map(item => ({
+    .map((item) => ({
       sbp: item.systolicBp as number,
       dbp: item.diastolicBp as number,
       timestamp: new Date(item.observedAt),
@@ -255,66 +257,24 @@ export function buildSymphonyClinicalFacts(
       gds: latest.glucoseMgDl,
       sampleType: 'capillary',
       hasClassicSymptoms:
-        symptoms.signals.includes('polyuria') ||
-        symptoms.signals.includes('kussmaul_breathing'),
+        symptoms.signals.includes('polyuria') || symptoms.signals.includes('kussmaul_breathing'),
     })
     pushFact(facts, 'glucose_category', glucose.category, ['classifiers'])
   }
 
-  pushFact(
-    facts,
-    'news2_risk',
-    news2.riskLevel,
-    ['news2'],
-  )
-  pushFact(
-    facts,
-    'screening_gate_count',
-    screeningAlerts.length,
-    ['screening-gates'],
-  )
-  pushFact(
-    facts,
-    'early_warning_count',
-    earlyWarnings.length,
-    ['early-warning'],
-  )
-  pushFact(
-    facts,
-    'pattern_alert_count',
-    patternAlerts.length,
-    ['clinical-patterns'],
-  )
-  pushFact(
-    facts,
-    'trajectory_direction',
-    trajectoryDirectionFromAnalysis(trajectory),
-    ['trajectory'],
-  )
-  pushFact(
-    facts,
-    'trajectory_momentum',
-    trajectoryMomentumFromAnalysis(trajectory),
-    ['trajectory'],
-  )
-  pushFact(
-    facts,
-    'composite_alert_count',
-    composite.compositeAlerts.length,
-    ['composite-deterioration'],
-  )
-  pushFact(
-    facts,
-    'pe_suspect',
-    pe.suspect,
-    ['pe-suspect'],
-  )
-  pushFact(
-    facts,
-    'anaphylaxis_suspect',
-    anaphylaxis.suspect,
-    ['anaphylaxis'],
-  )
+  pushFact(facts, 'news2_risk', news2.riskLevel, ['news2'])
+  pushFact(facts, 'screening_gate_count', screeningAlerts.length, ['screening-gates'])
+  pushFact(facts, 'early_warning_count', earlyWarnings.length, ['early-warning'])
+  pushFact(facts, 'pattern_alert_count', patternAlerts.length, ['clinical-patterns'])
+  pushFact(facts, 'trajectory_direction', trajectoryDirectionFromAnalysis(trajectory), [
+    'trajectory',
+  ])
+  pushFact(facts, 'trajectory_momentum', trajectoryMomentumFromAnalysis(trajectory), ['trajectory'])
+  pushFact(facts, 'composite_alert_count', composite.compositeAlerts.length, [
+    'composite-deterioration',
+  ])
+  pushFact(facts, 'pe_suspect', pe.suspect, ['pe-suspect'])
+  pushFact(facts, 'anaphylaxis_suspect', anaphylaxis.suspect, ['anaphylaxis'])
 
   return {
     facts,

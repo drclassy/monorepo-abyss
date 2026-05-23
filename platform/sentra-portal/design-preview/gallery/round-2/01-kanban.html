@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>01 Kanban</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; background: #1a1b26; color: #cdd6f4; height: 100vh; display: flex; flex-direction: column; }
+    header { padding: 10px 14px; background: #11111b; border-bottom: 1px solid #313244; font-weight: 600; }
+    .board { flex: 1; display: grid; grid-template-columns: repeat(6, minmax(120px, 1fr)); gap: 8px; padding: 10px; overflow-x: auto; }
+    .col { background: #181825; border-radius: 8px; border: 1px solid #313244; display: flex; flex-direction: column; min-width: 110px; }
+    .col-h { padding: 8px; font-weight: 600; border-bottom: 1px solid #313244; text-align: center; }
+    .card { margin: 8px; padding: 10px; background: #11111b; border-radius: 6px; border-left: 3px solid #89b4fa; flex: 1; }
+    .card.warn { border-left-color: #fab387; }
+    .card.bad { border-left-color: #f38ba8; }
+    .v { font-size: 18px; font-weight: 600; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <header>PORTAL · Kanban</header>
+  <div class="board">
+    <div class="col"><div class="col-h">SSOT</div><div class="card"><span>Fresh</span><div class="v">0.3h</div></div></div>
+    <div class="col"><div class="col-h">CLI</div><div class="card bad"><span>Risk</span><div class="v">2</div></div></div>
+    <div class="col"><div class="col-h">Knowledge</div><div class="card warn"><span>Watch</span><div class="v">—</div></div></div>
+    <div class="col"><div class="col-h">UNICOM</div><div class="card warn"><span>Down</span><div class="v">0</div></div></div>
+    <div class="col"><div class="col-h">Context</div><div class="card"><span>Local</span><div class="v">OK</div></div></div>
+    <div class="col"><div class="col-h">Prompt</div><div class="card"><span>Pass</span><div class="v">✓</div></div></div>
+  </div>
+</body>
+</html>

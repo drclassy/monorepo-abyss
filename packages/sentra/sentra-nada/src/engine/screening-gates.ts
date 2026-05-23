@@ -35,11 +35,51 @@ interface PediatricBand {
 }
 
 const PEDIATRIC_BANDS: PediatricBand[] = [
-  { minMonths: 0, maxMonths: 2, label: '0-2 bulan', sbpLow: 60, hrLow: 100, hrHigh: 180, rrHigh: 60 },
-  { minMonths: 3, maxMonths: 11, label: '3-11 bulan', sbpLow: 70, hrLow: 90, hrHigh: 170, rrHigh: 50 },
-  { minMonths: 12, maxMonths: 47, label: '1-3 tahun', sbpLow: 90, hrLow: 80, hrHigh: 125, rrHigh: 30 },
-  { minMonths: 48, maxMonths: 143, label: '4-11 tahun', sbpLow: 90, hrLow: 70, hrHigh: 115, rrHigh: 24 },
-  { minMonths: 144, maxMonths: 215, label: '12-17 tahun', sbpLow: 90, hrLow: 60, hrHigh: 110, rrHigh: 22 },
+  {
+    minMonths: 0,
+    maxMonths: 2,
+    label: '0-2 bulan',
+    sbpLow: 60,
+    hrLow: 100,
+    hrHigh: 180,
+    rrHigh: 60,
+  },
+  {
+    minMonths: 3,
+    maxMonths: 11,
+    label: '3-11 bulan',
+    sbpLow: 70,
+    hrLow: 90,
+    hrHigh: 170,
+    rrHigh: 50,
+  },
+  {
+    minMonths: 12,
+    maxMonths: 47,
+    label: '1-3 tahun',
+    sbpLow: 90,
+    hrLow: 80,
+    hrHigh: 125,
+    rrHigh: 30,
+  },
+  {
+    minMonths: 48,
+    maxMonths: 143,
+    label: '4-11 tahun',
+    sbpLow: 90,
+    hrLow: 70,
+    hrHigh: 115,
+    rrHigh: 24,
+  },
+  {
+    minMonths: 144,
+    maxMonths: 215,
+    label: '12-17 tahun',
+    sbpLow: 90,
+    hrLow: 60,
+    hrHigh: 110,
+    rrHigh: 22,
+  },
 ]
 
 const SEVERITY_RANK: Record<SymphonyAlert['severity'], number> = {
@@ -92,7 +132,7 @@ function resolveAgeMonths(input: SymphonyInstantScreeningInput): number | undefi
 
 function findPediatricBand(ageMonths: number | undefined): PediatricBand | undefined {
   if (ageMonths === undefined || ageMonths >= 216) return undefined
-  return PEDIATRIC_BANDS.find(band => ageMonths >= band.minMonths && ageMonths <= band.maxMonths)
+  return PEDIATRIC_BANDS.find((band) => ageMonths >= band.minMonths && ageMonths <= band.maxMonths)
 }
 
 function isPregnant(input: SymphonyInstantScreeningInput): boolean {
@@ -128,7 +168,10 @@ export function evaluateSymphonyInstantScreeningGates(
           'symphony-gate-glucose-hypoglycemia',
           'high',
           `Hipoglikemia - ${vitals.glucoseMgDl} mg/dL`,
-          [`Glukosa ${vitals.glucoseMgDl} mg/dL <70.`, 'Berikan koreksi glukosa sesuai protokol klinis.'],
+          [
+            `Glukosa ${vitals.glucoseMgDl} mg/dL <70.`,
+            'Berikan koreksi glukosa sesuai protokol klinis.',
+          ],
           triggeredAt
         )
       )
@@ -151,7 +194,10 @@ export function evaluateSymphonyInstantScreeningGates(
           'symphony-gate-glucose-hyperglycemia',
           'high',
           `Hiperglikemia - ${vitals.glucoseMgDl} mg/dL`,
-          [`Glukosa ${vitals.glucoseMgDl} mg/dL >=200.`, 'Korelasikan dengan gejala, keton, hidrasi, dan riwayat diabetes.'],
+          [
+            `Glukosa ${vitals.glucoseMgDl} mg/dL >=200.`,
+            'Korelasikan dengan gejala, keton, hidrasi, dan riwayat diabetes.',
+          ],
           triggeredAt
         )
       )
@@ -236,7 +282,10 @@ export function evaluateSymphonyInstantScreeningGates(
         'symphony-gate-respiratory-hypoxemia',
         'high',
         `Hipoksemia - SpO2 ${vitals.spo2}%`,
-        [`SpO2 ${vitals.spo2}% <94.`, 'Nilai kerja napas, oksigenasi, dan kebutuhan eskalasi klinis.'],
+        [
+          `SpO2 ${vitals.spo2}% <94.`,
+          'Nilai kerja napas, oksigenasi, dan kebutuhan eskalasi klinis.',
+        ],
         triggeredAt
       )
     )
@@ -263,7 +312,10 @@ export function evaluateSymphonyInstantScreeningGates(
         'symphony-gate-respiratory-depression',
         'critical',
         `Depresi napas - RR ${vitals.respiratoryRate}/menit`,
-        [`Frekuensi napas ${vitals.respiratoryRate}/menit <8.`, 'Siapkan airway support dan eskalasi emergensi.'],
+        [
+          `Frekuensi napas ${vitals.respiratoryRate}/menit <8.`,
+          'Siapkan airway support dan eskalasi emergensi.',
+        ],
         triggeredAt
       )
     )

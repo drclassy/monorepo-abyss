@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { MessageInbox } from '../src/inbox.js'
 import { AgentRegistry } from '../src/registry.js'
 import { routeMessage } from '../src/router.js'
+import type { SseManager } from '../src/sse-manager.js'
 
 describe('routeMessage', () => {
   it('delivers unicast message to target inbox', () => {
@@ -33,7 +34,7 @@ describe('routeMessage', () => {
     const registry = new AgentRegistry()
     const inbox = new MessageInbox()
     registry.register('b', 'B', [])
-    const msg = routeMessage(registry, inbox, 'a', 'b', 'reply', 'orig-id')
+    const msg = routeMessage(registry, inbox, 'a', 'b', 'reply', { replyTo: 'orig-id' })
     expect(msg.replyTo).toBe('orig-id')
   })
 
@@ -41,7 +42,76 @@ describe('routeMessage', () => {
     const registry = new AgentRegistry()
     const inbox = new MessageInbox()
     registry.register('b', 'B', [])
-    const msg = routeMessage(registry, inbox, 'system', 'b', 'online', undefined, 'status_update')
+    const msg = routeMessage(registry, inbox, 'system', 'b', 'online', { type: 'status_update' })
     expect(msg.type).toBe('status_update')
+  })
+})
+
+describe('routeMessage with SseManager', () => {
+  it('delivers unicast via SSE when agent is connected', () => {
+    const registry = new AgentRegistry()
+    const inbox = new MessageInbox()
+    registry.register('claude-code', 'Claude Code', [])
+
+    const pushed: Array<{ agentId: string; event: string; data: unknown }> = []
+    const sseManager = {
+      isConnected: (id: string) => id === 'claude-code',
+      push: (agentId: string, event: string, data: unknown) => {
+        pushed.push({ agentId, event, data })
+        return true
+      },
+    }
+
+    routeMessage(registry, inbox, 'codex', 'claude-code', 'hello', {
+      sseManager: sseManager as unknown as SseManager,
+    })
+
+    expect(pushed).toHaveLength(1)
+    expect(pushed[0].agentId).toBe('claude-code')
+    expect(pushed[0].event).toBe('message')
+    expect(inbox.drain('claude-code')).toHaveLength(0)
+  })
+
+  it('falls back to inbox when agent is offline', () => {
+    const registry = new AgentRegistry()
+    const inbox = new MessageInbox()
+    registry.register('claude-code', 'Claude Code', [])
+
+    const sseManager = {
+      isConnected: (_id: string) => false,
+      push: vi.fn(),
+    }
+
+    routeMessage(registry, inbox, 'codex', 'claude-code', 'hello', {
+      sseManager: sseManager as unknown as SseManager,
+    })
+
+    expect(sseManager.push).not.toHaveBeenCalled()
+    expect(inbox.drain('claude-code')).toHaveLength(1)
+  })
+
+  it('broadcast: SSE for online agents, inbox for offline', () => {
+    const registry = new AgentRegistry()
+    const inbox = new MessageInbox()
+    registry.register('agent-online', 'Online', [])
+    registry.register('agent-offline', 'Offline', [])
+    registry.register('sender', 'Sender', [])
+
+    const pushed: string[] = []
+    const sseManager = {
+      isConnected: (id: string) => id === 'agent-online',
+      push: (agentId: string) => {
+        pushed.push(agentId)
+        return true
+      },
+    }
+
+    routeMessage(registry, inbox, 'sender', 'broadcast', 'hi', {
+      sseManager: sseManager as unknown as SseManager,
+    })
+
+    expect(pushed).toContain('agent-online')
+    expect(inbox.drain('agent-offline')).toHaveLength(1)
+    expect(inbox.drain('sender')).toHaveLength(0)
   })
 })

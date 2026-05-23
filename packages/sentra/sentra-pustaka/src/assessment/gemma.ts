@@ -36,7 +36,7 @@ Jika referensi tidak relevan, gunakan pengetahuan medis umum namun tandai dengan
     })
 
     if (!res.ok) throw new Error(`Ollama generate failed: ${res.status}`)
-    const data = await res.json() as { response: string }
+    const data = (await res.json()) as { response: string }
     return data.response
   }
 
@@ -44,8 +44,8 @@ Jika referensi tidak relevan, gunakan pengetahuan medis umum namun tandai dengan
     try {
       const res = await fetch(`${this.baseUrl}/api/tags`)
       if (!res.ok) return false
-      const data = await res.json() as { models: Array<{ name: string }> }
-      return data.models.some(m => m.name.startsWith(this.model.split(':')[0]))
+      const data = (await res.json()) as { models: Array<{ name: string }> }
+      return data.models.some((m) => m.name.startsWith(this.model.split(':')[0]))
     } catch {
       return false
     }

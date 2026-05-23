@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import type { TrajectoryAnalysis, VisitRecord } from './trajectory-analyzer'
-import type { TreatmentEvent } from './treatment-response-scorer'
+
 import { legacyIBToCtV1, legacyIBToCtV1Envelope } from './ct-adapter'
 import type { GCSEvent } from './gcs-scorer'
+import type { LabEvent } from './lab-event-scorer'
+import type { TrajectoryAnalysis, VisitRecord } from './trajectory-analyzer'
+import type { TreatmentEvent } from './treatment-response-scorer'
 
 // ─── Fixture data ─────────────────────────────────────────────────────────────
 
@@ -253,8 +255,6 @@ test('treatmentResponsiveness reflects HR slope when treatments provided', () =>
 })
 
 // ─── Phase D: Lab / CRP layer ─────────────────────────────────────────────────
-
-import type { LabEvent } from './lab-event-scorer'
 
 const mockLabEvents: LabEvent[] = [
   {

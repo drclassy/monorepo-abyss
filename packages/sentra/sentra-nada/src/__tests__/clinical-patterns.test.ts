@@ -17,14 +17,8 @@
 
 import { describe, expect, it } from 'vitest'
 
-import {
-  SYMPHONY_ACTION_PROTOCOLS,
-  getSymphonyActionProtocol,
-} from '../engine/action-protocols'
-import {
-  SYMPHONY_CLINICAL_PATTERNS,
-  evaluateClinicalPatterns,
-} from '../engine/clinical-patterns'
+import { SYMPHONY_ACTION_PROTOCOLS, getSymphonyActionProtocol } from '../engine/action-protocols'
+import { SYMPHONY_CLINICAL_PATTERNS, evaluateClinicalPatterns } from '../engine/clinical-patterns'
 import type { SymphonyAlert, SymphonyClinicalSnapshot } from '../index'
 
 // ---------------------------------------------------------------------------
@@ -87,9 +81,9 @@ function makeQsofa2Snapshot(extraSymptoms?: SymptomFlags): SymphonyClinicalSnaps
 describe('SYMPHONY_CLINICAL_PATTERNS registry', () => {
   it('resolves every referenced action protocol ID', () => {
     const referenced = new Set(
-      SYMPHONY_CLINICAL_PATTERNS
-        .map(pattern => pattern.actionProtocolId)
-        .filter((value): value is NonNullable<typeof value> => value !== undefined)
+      SYMPHONY_CLINICAL_PATTERNS.map((pattern) => pattern.actionProtocolId).filter(
+        (value): value is NonNullable<typeof value> => value !== undefined
+      )
     )
 
     expect(SYMPHONY_ACTION_PROTOCOLS).toHaveLength(9)
@@ -118,10 +112,19 @@ describe('SYMPHONY_CLINICAL_PATTERNS registry', () => {
 
   it('all patterns have a valid gate', () => {
     const validGates = new Set([
-      'GATE_1_VITALS', 'GATE_2_HTN', 'GATE_3_GLUCOSE', 'GATE_4_OCCULT_SHOCK',
-      'GATE_5_SEPSIS', 'GATE_6_RESPIRATORY', 'GATE_7_PEDIATRIC', 'GATE_8_OBSTETRIC',
-      'GATE_9_PE', 'GATE_10_ANAPHYLAXIS',
-      'GATE_11_ACS', 'GATE_12_STROKE', 'GATE_13_ANEMIA_BLEED',
+      'GATE_1_VITALS',
+      'GATE_2_HTN',
+      'GATE_3_GLUCOSE',
+      'GATE_4_OCCULT_SHOCK',
+      'GATE_5_SEPSIS',
+      'GATE_6_RESPIRATORY',
+      'GATE_7_PEDIATRIC',
+      'GATE_8_OBSTETRIC',
+      'GATE_9_PE',
+      'GATE_10_ANAPHYLAXIS',
+      'GATE_11_ACS',
+      'GATE_12_STROKE',
+      'GATE_13_ANEMIA_BLEED',
     ])
     for (const pattern of SYMPHONY_CLINICAL_PATTERNS) {
       expect(validGates.has(pattern.gate)).toBe(true)
@@ -129,7 +132,7 @@ describe('SYMPHONY_CLINICAL_PATTERNS registry', () => {
   })
 
   it('has correct gate distribution for mapped gates', () => {
-    const sepsisPatterns = SYMPHONY_CLINICAL_PATTERNS.filter(p => p.gate === 'GATE_5_SEPSIS')
+    const sepsisPatterns = SYMPHONY_CLINICAL_PATTERNS.filter((p) => p.gate === 'GATE_5_SEPSIS')
     // GATE_SEPSIS_EARLY (20) + GATE_SEPTIC_SHOCK_HIGH (3) = 23
     expect(sepsisPatterns.length).toBe(23)
   })
@@ -162,11 +165,11 @@ describe('evaluateClinicalPatterns return type', () => {
 
   it('attaches canonical action protocol payload when pattern defines one', () => {
     const result = evaluateClinicalPatterns(makeQsofa2Snapshot())
-    const cp001 = result.find(alert => alert.id === 'assist-cp-001')
+    const cp001 = result.find((alert) => alert.id === 'assist-cp-001')
 
     expect(cp001?.actionProtocolId).toBe('PROTO_SEPSIS')
     expect(cp001?.actionProtocol?.id).toBe('PROTO_SEPSIS')
-    expect(cp001?.actionProtocol?.sections.some(section => section.key === 'C')).toBe(true)
+    expect(cp001?.actionProtocol?.sections.some((section) => section.key === 'C')).toBe(true)
   })
 })
 
@@ -189,7 +192,7 @@ describe('CP-001 qSOFA ≥2', () => {
   it('fires for RR=24 and SBP=95 (2 of 3 scored criteria)', () => {
     const snapshot = makeQsofa2Snapshot()
     const alerts = evaluateClinicalPatterns(snapshot)
-    const cp001 = alerts.find(a => a.id === 'assist-cp-001')
+    const cp001 = alerts.find((a) => a.id === 'assist-cp-001')
     expect(cp001).toBeDefined()
     if (!cp001) throw new Error('assist-cp-001 should exist')
     expect(cp001.severity).toBe('high')
@@ -204,7 +207,7 @@ describe('CP-001 qSOFA ≥2', () => {
       // RR=14 (normal), SBP=120 (normal) → only 1/3 qSOFA → below minScore:2
     }
     const alerts = evaluateClinicalPatterns(snapshot)
-    const cp001 = alerts.find(a => a.id === 'assist-cp-001')
+    const cp001 = alerts.find((a) => a.id === 'assist-cp-001')
     expect(cp001).toBeUndefined()
   })
 })
@@ -217,7 +220,7 @@ describe('CP-002 qSOFA ≥2 + suspected infection', () => {
   it('fires when infection flag is set and qSOFA ≥2', () => {
     const snapshot = makeQsofa2Snapshot({ suspectedInfection: true })
     const alerts = evaluateClinicalPatterns(snapshot)
-    const cp002 = alerts.find(a => a.id === 'assist-cp-002')
+    const cp002 = alerts.find((a) => a.id === 'assist-cp-002')
     expect(cp002).toBeDefined()
     if (!cp002) throw new Error('assist-cp-002 should exist')
     expect(cp002.severity).toBe('critical')
@@ -225,9 +228,9 @@ describe('CP-002 qSOFA ≥2 + suspected infection', () => {
 
   it('does not fire when infection flag is missing (even with qSOFA ≥2)', () => {
     // CP-002 has suspectedInfection as a REQUIRED criterion
-    const snapshot = makeQsofa2Snapshot()  // no infection flag
+    const snapshot = makeQsofa2Snapshot() // no infection flag
     const alerts = evaluateClinicalPatterns(snapshot)
-    const cp002 = alerts.find(a => a.id === 'assist-cp-002')
+    const cp002 = alerts.find((a) => a.id === 'assist-cp-002')
     expect(cp002).toBeUndefined()
   })
 })

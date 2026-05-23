@@ -1,7 +1,8 @@
 import 'server-only'
 
-import { prisma } from '@/lib/prisma'
 import type { Prisma } from '../../../prisma/generated/prisma'
+
+import { prisma } from '@/lib/prisma'
 
 export const CLINICAL_CASE_AUDIT_EVENTS = {
   CONSULT_RECEIVED: 'CONSULT_RECEIVED',

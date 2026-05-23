@@ -25,7 +25,9 @@ async function main() {
   if (result.chunks.length > 0) {
     console.log(`\nReferensi (${result.chunks.length} chunks):`)
     result.chunks.forEach((c, i) => {
-      console.log(`  [${i + 1}] ${c.sourceFile.split('/').pop()} — ${c.headingPath.join(' > ')} (${(c.similarity * 100).toFixed(0)}%)`)
+      console.log(
+        `  [${i + 1}] ${c.sourceFile.split('/').pop()} — ${c.headingPath.join(' > ')} (${(c.similarity * 100).toFixed(0)}%)`
+      )
     })
   }
 

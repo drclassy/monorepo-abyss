@@ -53,14 +53,19 @@ export function chunkText(text: string): Chunk[] {
       // Merge small chunks with heading as context
       const merged = `${path.join(' > ')}\n\n${section.content.trim()}`
       if (merged.trim().length > 20) {
-        chunks.push({ content: merged, headingPath: path, index: index++, tokenCount: estimateTokens(merged) })
+        chunks.push({
+          content: merged,
+          headingPath: path,
+          index: index++,
+          tokenCount: estimateTokens(merged),
+        })
       }
     } else if (tokens > MAX_TOKENS) {
       // Split by double newline first; if that yields no useful splits, fall back to line groups
-      let paragraphs = section.content.split(/\n\n+/).filter(p => p.trim().length > 20)
+      let paragraphs = section.content.split(/\n\n+/).filter((p) => p.trim().length > 20)
       if (paragraphs.length <= 1) {
         // No double newlines — PDF plain text. Group lines into token-sized chunks.
-        const lines = section.content.split('\n').filter(l => l.trim().length > 0)
+        const lines = section.content.split('\n').filter((l) => l.trim().length > 0)
         paragraphs = []
         let group: string[] = []
         let groupTokens = 0
@@ -85,7 +90,12 @@ export function chunkText(text: string): Chunk[] {
       for (const para of paragraphs) {
         const paraTokens = estimateTokens(para)
         if (bufTokens + paraTokens > MAX_TOKENS && bufTokens > MIN_TOKENS) {
-          chunks.push({ content: buffer.trim(), headingPath: path, index: index++, tokenCount: bufTokens })
+          chunks.push({
+            content: buffer.trim(),
+            headingPath: path,
+            index: index++,
+            tokenCount: bufTokens,
+          })
           buffer = prefix + para + '\n\n'
           bufTokens = estimateTokens(buffer)
         } else {
@@ -94,7 +104,12 @@ export function chunkText(text: string): Chunk[] {
         }
       }
       if (buffer.trim().length > 20) {
-        chunks.push({ content: buffer.trim(), headingPath: path, index: index++, tokenCount: estimateTokens(buffer) })
+        chunks.push({
+          content: buffer.trim(),
+          headingPath: path,
+          index: index++,
+          tokenCount: estimateTokens(buffer),
+        })
       }
     } else {
       const content = `${path.join(' > ')}\n\n${section.content.trim()}`

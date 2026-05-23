@@ -1,10 +1,15 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import * as fs from 'fs'
-import * as path from 'path'
 import * as os from 'os'
+import * as path from 'path'
+
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+
 import { readKnowledgeRegistry } from '../src/registry/registry-reader'
+import type {
+  KnowledgeRegistry,
+  KnowledgeSourceRegistryEntry,
+} from '../src/registry/registry-types'
 import { writeKnowledgeRegistry } from '../src/registry/registry-writer'
-import type { KnowledgeRegistry, KnowledgeSourceRegistryEntry } from '../src/registry/registry-types'
 
 let tmpDir: string
 

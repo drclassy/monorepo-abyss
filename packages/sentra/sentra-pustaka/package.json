@@ -24,19 +24,19 @@
   "dependencies": {
     "@the-abyss/document-ingestion": "workspace:*",
     "@sentra/cermin": "workspace:*",
-    "dotenv": "^16.4.5",
-    "pdf-parse": "^1.1.1",
-    "pg": "^8.13.0",
+    "dotenv": "^16.6.1",
+    "pdf-parse": "^1.1.4",
+    "pg": "^8.20.0",
     "zod": "^3.24.0"
   },
   "devDependencies": {
     "@the-abyss/config-eslint": "workspace:*",
     "@the-abyss/config-typescript": "workspace:*",
-    "@types/node": "^22.0.0",
-    "@types/pdf-parse": "^1.1.5",
-    "@types/pg": "^8.11.0",
-    "tsx": "^4.19.0",
-    "vitest": "^2.1.0"
+    "@types/node": "22.19.19",
+    "@types/pdf-parse": "1.1.5",
+    "@types/pg": "8.20.0",
+    "tsx": "4.21.0",
+    "vitest": "2.1.9"
   },
   "sentra:tier": "crown-jewel"
 }

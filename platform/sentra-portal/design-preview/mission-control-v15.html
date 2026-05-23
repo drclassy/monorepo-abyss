@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v15</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+      background: #fdfdfd;
+      color: #111318;
+      min-height: 100vh;
+      padding: 32px 20px 48px;
+    }
+    .wrap { max-width: 40rem; margin: 0 auto; }
+    .top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    h1 { font-size: 18px; font-weight: 600; }
+    .sub { font-size: 13px; color: #8b919c; margin-top: 4px; }
+    button {
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      cursor: pointer;
+    }
+    .panel {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 7.5rem 1fr 4.5rem;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid #f0f1f3;
+      cursor: pointer;
+      width: 100%;
+      border-left: none;
+      border-right: none;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      background: #fff;
+    }
+    .row:last-child { border-bottom: none; }
+    .row:hover { background: #f8fafc; }
+    .name { font-size: 14px; font-weight: 600; }
+    .track {
+      height: 6px;
+      border-radius: 3px;
+      background: #f0f1f3;
+      overflow: hidden;
+    }
+    .fill { height: 100%; border-radius: 3px; }
+    .fill.ok { width: 88%; background: #10b981; }
+    .fill.warn { width: 52%; background: #f59e0b; }
+    .fill.bad { width: 28%; background: #ee2737; }
+    .state { font-size: 13px; font-weight: 500; text-align: right; }
+    .state.ok { color: #059669; }
+    .state.warn { color: #d97706; }
+    .state.bad { color: #dc2626; }
+    .next {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border-left: 3px solid #00d4ff;
+      background: #f0fbff;
+    }
+    .next label { font-size: 12px; color: #8b919c; }
+    .next p { font-size: 14px; font-weight: 600; margin-top: 6px; }
+    .tag { margin-top: 16px; font-size: 12px; color: #8b919c; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Mission control</h1>
+        <p class="sub">PORTAL · live 30s</p>
+      </div>
+      <button type="button">Refresh</button>
+    </div>
+    <div class="panel">
+      <button type="button" class="row"><span class="name">Agent SSOT</span><span class="track"><span class="fill ok"></span></span><span class="state ok">Fresh</span></button>
+      <button type="button" class="row"><span class="name">Abyss CLI</span><span class="track"><span class="fill bad"></span></span><span class="state bad">Risk</span></button>
+      <button type="button" class="row"><span class="name">Knowledge</span><span class="track"><span class="fill warn"></span></span><span class="state warn">Watch</span></button>
+      <button type="button" class="row"><span class="name">UNICOM</span><span class="track"><span class="fill warn"></span></span><span class="state warn">Degraded</span></button>
+      <button type="button" class="row"><span class="name">Context</span><span class="track"><span class="fill ok"></span></span><span class="state ok">Local</span></button>
+      <button type="button" class="row"><span class="name">Prompt</span><span class="track"><span class="fill ok"></span></span><span class="state ok">Pass</span></button>
+    </div>
+    <div class="next">
+      <label>Next action</label>
+      <p>Wire UNICOM /health into summary API</p>
+    </div>
+    <p class="tag">v15 · health list · light · yes / no</p>
+  </div>
+</body>
+</html>

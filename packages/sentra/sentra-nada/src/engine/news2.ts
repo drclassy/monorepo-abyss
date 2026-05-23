@@ -48,8 +48,7 @@ function scoreSpO2Scale1(spo2: number | undefined): SymphonyNEWS2ParameterScore 
 }
 
 function scoreSpO2Scale2(spo2: number | undefined): SymphonyNEWS2ParameterScore {
-  if (spo2 === undefined)
-    return { parameter: 'spo2_scale2', value: undefined, score: 0, unit: '%' }
+  if (spo2 === undefined) return { parameter: 'spo2_scale2', value: undefined, score: 0, unit: '%' }
   let score = 0
   if (spo2 <= 83) score = 3
   else if (spo2 <= 85) score = 2
@@ -74,8 +73,7 @@ function scoreSystolic(systolic: number | undefined): SymphonyNEWS2ParameterScor
 }
 
 function scoreHeartRate(hr: number | undefined): SymphonyNEWS2ParameterScore {
-  if (hr === undefined)
-    return { parameter: 'heart_rate', value: undefined, score: 0, unit: 'bpm' }
+  if (hr === undefined) return { parameter: 'heart_rate', value: undefined, score: 0, unit: 'bpm' }
   let score = 0
   if (hr <= 40) score = 3
   else if (hr <= 50) score = 1
@@ -87,8 +85,7 @@ function scoreHeartRate(hr: number | undefined): SymphonyNEWS2ParameterScore {
 }
 
 function scoreTemperature(temp: number | undefined): SymphonyNEWS2ParameterScore {
-  if (temp === undefined)
-    return { parameter: 'temperature', value: undefined, score: 0, unit: 'C' }
+  if (temp === undefined) return { parameter: 'temperature', value: undefined, score: 0, unit: 'C' }
   let score = 0
   if (temp <= 35.0) score = 3
   else if (temp <= 36.0) score = 1
@@ -164,9 +161,7 @@ export function calculateSymphonyNEWS2(input: SymphonyNEWS2Input): SymphonyNEWS2
     }
   }
 
-  const spo2Score = input.hasCOPD
-    ? scoreSpO2Scale2(vitals.spo2)
-    : scoreSpO2Scale1(vitals.spo2)
+  const spo2Score = input.hasCOPD ? scoreSpO2Scale2(vitals.spo2) : scoreSpO2Scale1(vitals.spo2)
 
   const parameterScores = [
     scoreRespiratoryRate(vitals.respiratoryRate),
@@ -178,9 +173,9 @@ export function calculateSymphonyNEWS2(input: SymphonyNEWS2Input): SymphonyNEWS2
     scoreSupplementalO2(vitals.oxygenSupplement),
   ]
 
-  const scoreable = parameterScores.filter(parameter => parameter.value !== undefined)
+  const scoreable = parameterScores.filter((parameter) => parameter.value !== undefined)
   const aggregateScore = parameterScores.reduce((sum, parameter) => sum + parameter.score, 0)
-  const hasExtremeSingle = parameterScores.some(parameter => parameter.score === 3)
+  const hasExtremeSingle = parameterScores.some((parameter) => parameter.score === 3)
   const riskLevel = determineRiskLevel(aggregateScore, hasExtremeSingle)
 
   return {
@@ -203,8 +198,11 @@ export function news2ToSymphonyAlerts(
   const severity =
     result.riskLevel === 'high' ? 'critical' : result.riskLevel === 'medium' ? 'high' : 'warning'
   const abnormalParams = result.parameterScores
-    .filter(parameter => parameter.score > 0)
-    .map(parameter => `${parameter.parameter}: ${parameter.value} ${parameter.unit} (skor ${parameter.score})`)
+    .filter((parameter) => parameter.score > 0)
+    .map(
+      (parameter) =>
+        `${parameter.parameter}: ${parameter.value} ${parameter.unit} (skor ${parameter.score})`
+    )
 
   return [
     {

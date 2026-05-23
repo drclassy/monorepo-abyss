@@ -56,7 +56,7 @@ function isOpen(breaker: CircuitBreaker): boolean {
 
 async function fetchEmbedding(
   text: string,
-  options: EmbeddingOptions = {},
+  options: EmbeddingOptions = {}
 ): Promise<number[]> {
   const model = options.model ?? DEFAULT_EMBEDDING_MODEL
   const baseUrl = options.ollamaBaseUrl ?? process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434'
@@ -75,7 +75,7 @@ async function fetchEmbedding(
   if (!response.ok) {
     const errorBody = await response.text()
     throw new Error(
-      `[vector-store] Ollama embedding request failed (${response.status}): ${errorBody}`,
+      `[vector-store] Ollama embedding request failed (${response.status}): ${errorBody}`
     )
   }
 
@@ -83,9 +83,7 @@ async function fetchEmbedding(
   const values: number[] | undefined = data?.embedding
 
   if (!values || values.length === 0) {
-    throw new Error(
-      `[vector-store] Unexpected embedding response shape: ${JSON.stringify(data)}`,
-    )
+    throw new Error(`[vector-store] Unexpected embedding response shape: ${JSON.stringify(data)}`)
   }
 
   return values

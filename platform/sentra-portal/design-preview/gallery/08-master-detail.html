@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v10 — light master-detail</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --surface: #ffffff;
+      --line: #e5e7eb;
+      --text: #111318;
+      --muted: #6b7280;
+      --cyan: #00a8cc;
+      --ok: #059669;
+      --warn: #d97706;
+      --bad: #dc2626;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.43;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      height: 100vh;
+    }
+    .nav {
+      background: var(--surface);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      padding: 16px 0;
+    }
+    .nav-brand {
+      font-size: 15px;
+      font-weight: 600;
+      padding: 0 16px 16px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 8px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { background: #f9fafb; }
+    .nav-item.on {
+      background: #f0f9ff;
+      border-left-color: var(--cyan);
+    }
+    .nav-item .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot.ok { background: var(--ok); }
+    .dot.warn { background: var(--warn); }
+    .dot.bad { background: var(--bad); }
+    .nav-item .label {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav-item .state {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .nav-section {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      padding: 16px 16px 6px;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 20px 28px;
+    }
+    .main-h {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .main-h h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .main-h span {
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .btn {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      cursor: pointer;
+    }
+
+    .metrics {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 14px;
+      min-width: 100px;
+    }
+    .chip .lbl { font-size: 12px; color: var(--muted); }
+    .chip .val {
+      font-size: 14px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      margin-top: 2px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px;
+      flex: 1;
+      min-height: 0;
+    }
+    .panel h2 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .panel .lead {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      max-width: 52ch;
+    }
+    .next {
+      border-left: 3px solid var(--cyan);
+      padding-left: 12px;
+      margin-bottom: 20px;
+    }
+    .next .lbl { font-size: 12px; color: var(--muted); }
+    .next .msg { font-size: 14px; font-weight: 600; margin-top: 4px; }
+
+    .signals { list-style: none; }
+    .signals li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+    }
+    .signals li:first-child { border-top: none; padding-top: 0; }
+    .signals .when { font-size: 12px; color: var(--muted); flex-shrink: 0; }
+
+    .foot {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 800px) {
+      .shell { grid-template-columns: 1fr; height: auto; min-height: 100vh; }
+      .nav { border-right: none; border-bottom: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="nav" aria-label="Systems">
+      <div class="nav-brand">PORTAL</div>
+      <div class="nav-item on">
+        <span class="dot ok" aria-hidden="true"></span>
+        <span class="label">Overview</span>
+        <span class="state">Live</span>
+      </div>
+      <div class="nav-section">Systems</div>
+      <div class="nav-item">
+        <span class="dot ok"></span>
+        <span class="label">Agent SSOT</span>
+        <span class="state">Fresh</span>
+      </div>
+      <div class="nav-item">
+        <span class="dot bad"></span>
+        <span class="label">Abyss CLI</span>
+        <span class="state">Risk</span>
+      </div>
+      <div class="nav-item">
+        <span class="dot warn"></span>
+        <span class="label">Knowledge</span>
+        <span class="state">Watch</span>
+      </div>
+      <div class="nav-item">
+        <span class="dot warn"></span>
+        <span class="label">UNICOM</span>
+        <span class="state">Degraded</span>
+      </div>
+      <div class="nav-item">
+        <span class="dot ok"></span>
+        <span class="label">Context</span>
+        <span class="state">Local</span>
+      </div>
+      <div class="nav-item">
+        <span class="dot ok"></span>
+        <span class="label">Prompt</span>
+        <span class="state">Pass</span>
+      </div>
+    </nav>
+
+    <main class="main">
+      <header class="main-h">
+        <div>
+          <h1>Overview</h1>
+          <span>Summary · 30s refresh</span>
+        </div>
+        <button type="button" class="btn">Refresh</button>
+      </header>
+
+      <div class="metrics">
+        <div class="chip"><div class="lbl">SSOT</div><div class="val">0.3h</div></div>
+        <div class="chip"><div class="lbl">UNICOM</div><div class="val">3</div></div>
+        <div class="chip"><div class="lbl">Risk</div><div class="val">2</div></div>
+        <div class="chip"><div class="lbl">Knowledge</div><div class="val">not ready</div></div>
+        <div class="chip"><div class="lbl">Verify</div><div class="val">pass</div></div>
+      </div>
+
+      <section class="panel">
+        <h2>What needs attention</h2>
+        <p class="lead">Six systems live in the left rail — each appears once. This pane is summary only; open a system for detail in the app.</p>
+        <div class="next">
+          <div class="lbl">Next action</div>
+          <div class="msg">Wire UNICOM /health into summary API</div>
+        </div>
+        <ul class="signals">
+          <li><span>Abyss CLI — classify 2 dirty RISK paths</span><span class="when">2m</span></li>
+          <li><span>Knowledge — registry not_ready</span><span class="when">1h</span></li>
+          <li><span>Verify gate — last run pass</span><span class="when">today</span></li>
+        </ul>
+      </section>
+
+      <p class="foot">v10 · light · master-detail · systems once (left) · yes → React</p>
+    </main>
+  </div>
+</body>
+</html>

@@ -97,10 +97,10 @@ describe('SYMPHONY composite deterioration', () => {
       },
     })
 
-    expect(result.compositeAlerts.some(alert => alert.id === 'composite-respiratory-deterioration')).toBe(
-      false
-    )
-    expect(result.watchers.some(alert => alert.id === 'watcher-respiratory-deterioration')).toBe(
+    expect(
+      result.compositeAlerts.some((alert) => alert.id === 'composite-respiratory-deterioration')
+    ).toBe(false)
+    expect(result.watchers.some((alert) => alert.id === 'watcher-respiratory-deterioration')).toBe(
       true
     )
   })
@@ -198,9 +198,9 @@ describe('SYMPHONY composite deterioration', () => {
 
     const result = assessSymphonyInput(input)
 
-    expect(result.alerts.some(alert => alert.id === 'symphony-composite-sepsis-shock-pathway')).toBe(
-      true
-    )
+    expect(
+      result.alerts.some((alert) => alert.id === 'symphony-composite-sepsis-shock-pathway')
+    ).toBe(true)
     expect(result.quality.auditHints).toContain('composite_alert_count:1')
   })
 })

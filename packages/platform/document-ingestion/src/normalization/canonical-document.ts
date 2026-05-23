@@ -44,7 +44,7 @@ export function buildCanonicalDocument(input: BuildInput): CanonicalDocument {
 
 function buildQualityReport(
   pages: CanonicalPage[],
-  preflight: PdfPreflightResult,
+  preflight: PdfPreflightResult
 ): OcrQualityReport {
   const warnings: string[] = []
 
@@ -61,20 +61,16 @@ function buildQualityReport(
     }
   }
 
-  const failedPages = pages
-    .filter((p) => p.text.trim().length === 0)
-    .map((p) => p.pageNumber)
+  const failedPages = pages.filter((p) => p.text.trim().length === 0).map((p) => p.pageNumber)
 
   const emptyRatio = failedPages.length / pages.length
   if (emptyRatio > 0.2) {
     warnings.push(
-      `${Math.round(emptyRatio * 100)}% of pages are empty (${failedPages.length}/${pages.length})`,
+      `${Math.round(emptyRatio * 100)}% of pages are empty (${failedPages.length}/${pages.length})`
     )
   }
 
-  const confidenceValues = pages
-    .map((p) => p.ocrConfidence)
-    .filter((c): c is number => c !== null)
+  const confidenceValues = pages.map((p) => p.ocrConfidence).filter((c): c is number => c !== null)
 
   const averageOcrConfidence =
     confidenceValues.length > 0
@@ -87,7 +83,7 @@ function buildQualityReport(
 
   if (lowConfidencePages.length > 0) {
     warnings.push(
-      `${lowConfidencePages.length} page(s) have OCR confidence < 0.75: pages ${lowConfidencePages.join(', ')}`,
+      `${lowConfidencePages.length} page(s) have OCR confidence < 0.75: pages ${lowConfidencePages.join(', ')}`
     )
   }
 
@@ -104,7 +100,9 @@ function buildQualityReport(
     status = 'failed'
   } else if (
     lowConfidencePages.length > 0 ||
-    (preflight.documentType !== 'digital_pdf' && (averageOcrConfidence === null || (averageOcrConfidence !== null && averageOcrConfidence < 0.85))) ||
+    (preflight.documentType !== 'digital_pdf' &&
+      (averageOcrConfidence === null ||
+        (averageOcrConfidence !== null && averageOcrConfidence < 0.85))) ||
     emptyRatio > 0.2
   ) {
     status = 'needs_review'

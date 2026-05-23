@@ -9,7 +9,7 @@ export interface SymphonyDispositionInput {
 }
 
 export function determineSymphonyClinicalDisposition(
-  input: SymphonyDispositionInput,
+  input: SymphonyDispositionInput
 ): SymphonyClinicalDisposition {
   if (input.usedFallback) return 'degraded'
   if (input.nativeHypothesisCount === 0) return 'insufficient_data'

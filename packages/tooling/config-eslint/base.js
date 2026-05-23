@@ -107,14 +107,29 @@ export const boundaries = [
     },
   },
   {
-    files: ['packages/shared/**/*.ts', 'packages/shared/**/*.tsx', 'packages/shared/**/*.js', 'packages/shared/**/*.mjs'],
+    files: [
+      'packages/shared/**/*.ts',
+      'packages/shared/**/*.tsx',
+      'packages/shared/**/*.js',
+      'packages/shared/**/*.mjs',
+    ],
     rules: {
       'no-restricted-imports': [
         'error',
         {
           patterns: [
             {
-              group: ['@sentra/*', '@the-abyss/database', '@the-abyss/langflow-client', '@the-abyss/document-ingestion', '@the-abyss/literature-harvester', '@the-abyss/clinical-references', 'apps/*', '@/apps/*', '**/apps/**'],
+              group: [
+                '@sentra/*',
+                '@the-abyss/database',
+                '@the-abyss/langflow-client',
+                '@the-abyss/document-ingestion',
+                '@the-abyss/literature-harvester',
+                '@the-abyss/clinical-references',
+                'apps/*',
+                '@/apps/*',
+                '**/apps/**',
+              ],
               message:
                 'Shared packages may depend only on shared primitives, not sentra/platform/clinical packages or apps.',
             },
@@ -124,7 +139,12 @@ export const boundaries = [
     },
   },
   {
-    files: ['packages/platform/**/*.ts', 'packages/platform/**/*.tsx', 'packages/platform/**/*.js', 'packages/platform/**/*.mjs'],
+    files: [
+      'packages/platform/**/*.ts',
+      'packages/platform/**/*.tsx',
+      'packages/platform/**/*.js',
+      'packages/platform/**/*.mjs',
+    ],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -132,8 +152,7 @@ export const boundaries = [
           patterns: [
             {
               group: ['@sentra/*', 'apps/*', '@/apps/*', '**/apps/**'],
-              message:
-                'Platform packages must not import sentra crown-jewel packages or apps.',
+              message: 'Platform packages must not import sentra crown-jewel packages or apps.',
             },
           ],
         },
@@ -141,7 +160,12 @@ export const boundaries = [
     },
   },
   {
-    files: ['packages/clinical/**/*.ts', 'packages/clinical/**/*.tsx', 'packages/clinical/**/*.js', 'packages/clinical/**/*.mjs'],
+    files: [
+      'packages/clinical/**/*.ts',
+      'packages/clinical/**/*.tsx',
+      'packages/clinical/**/*.js',
+      'packages/clinical/**/*.mjs',
+    ],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -158,7 +182,12 @@ export const boundaries = [
     },
   },
   {
-    files: ['packages/sentra/**/*.ts', 'packages/sentra/**/*.tsx', 'packages/sentra/**/*.js', 'packages/sentra/**/*.mjs'],
+    files: [
+      'packages/sentra/**/*.ts',
+      'packages/sentra/**/*.tsx',
+      'packages/sentra/**/*.js',
+      'packages/sentra/**/*.mjs',
+    ],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -174,7 +203,16 @@ export const boundaries = [
     },
   },
   {
-    files: ['packages/platform/**/*.ts', 'packages/platform/**/*.tsx', 'packages/clinical/**/*.ts', 'packages/clinical/**/*.tsx', 'packages/sentra/**/*.ts', 'packages/sentra/**/*.tsx', 'apps/**/*.ts', 'apps/**/*.tsx'],
+    files: [
+      'packages/platform/**/*.ts',
+      'packages/platform/**/*.tsx',
+      'packages/clinical/**/*.ts',
+      'packages/clinical/**/*.tsx',
+      'packages/sentra/**/*.ts',
+      'packages/sentra/**/*.tsx',
+      'apps/**/*.ts',
+      'apps/**/*.tsx',
+    ],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -182,8 +220,7 @@ export const boundaries = [
           patterns: [
             {
               group: ['@the-abyss/config-eslint', '@the-abyss/config-typescript'],
-              message:
-                'Runtime packages and apps must not import tooling packages.',
+              message: 'Runtime packages and apps must not import tooling packages.',
             },
           ],
         },

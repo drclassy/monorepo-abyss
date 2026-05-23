@@ -35,12 +35,12 @@ Before acting: read CONTEXT.md → PROGRESS.md → this file → LESSONS.md → 
 - **Cursor settings (2026-04-30):** `.vscode/settings.json` adds monorepo watcher/search excludes; `docs/cursor/cursor-settings-profiles.md` documents Solo-Dev-Perf vs NonCoder-Simple user JSON blocks, baseline audit of Chief's User settings, and hook cost (keep `autofix-loop`, optional local-disable); `.cursorindexingignore`: typo `apps/coorporate/` fixed earlier; follow-up fix **`apps/orchestrator/` → `platform/orchestrator/`** so indexing exclude matches AGENTS.md layout.
 
 **Session addendum (2026-05-01):**
-- Handbook readability: wrapping anti-cutoff diterapkan pada `docs/handbook/index.html`, `docs/handbook/avcn-commands.html`, dan `docs/handbook/avcn-tips.html` supaya teks turun ke bawah saat kolom dipersempit.
-- Handbook index: `docs/handbook/index.html` ditambah quick links localhost (`127.0.0.1:8765`) untuk buka `avcn-cursor.html`, `avcn-tips.html`, `avcn-commands.html` dalam mode full render.
+- Handbook readability: wrapping anti-cutoff diterapkan pada `docs/handbook/classy.html`, `docs/handbook/avcn-commands.html`, dan `docs/handbook/avcn-tips.html` supaya teks turun ke bawah saat kolom dipersempit.
+- Handbook index: `docs/handbook/classy.html` ditambah quick links localhost (`127.0.0.1:8765`) untuk buka `avcn-cursor.html`, `avcn-tips.html`, `avcn-commands.html` dalam mode full render.
 - Handbook: `docs/handbook/avcn-cursor.html` — ringkasan best practice Cursor 2026 (Rules, Context/ignore, MCP, Skills, Agent, Hooks) + token Sentra; footer `avcn-tips.html` menaut ke halaman ini.
 - `ABYSS-REPO-STRUCTURE-001` package taxonomy mission now has Phase 7 artifacts at `docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-EXECUTION-REPORT.md` and `docs/sentratorium/sessions/ABYSS-REPO-STRUCTURE-001-VERIFICATION-REPORT.md`.
 - Phase 5 boundary enforcement was implemented in `packages/tooling/config-eslint/base.js`.
-- Phase 6 steering/docs were synced across `AGENTS.md`, `README.md`, `.agent/CONTEXT.md`, `.agent/ARCHITECTURE.md`, `docs/templates/HANDOFF.md`, and `docs/architecture/sentra-monorepo-diagram.md`.
+- Phase 6 steering/docs were synced across `AGENTS.md`, `README.md`, `.agent/CONTEXT.md`, `.agent/ARCHITECTURE.md`, `docs/templates/001-handoff.md`, and `docs/architecture/sentra-monorepo-diagram.md`.
 - Final validation commands were run; `pnpm install` passed, while `build`, `lint`, and `test` remained blocked by local module-resolution instability in the `.pnpm` tree rather than by taxonomy path drift.
 - `docs/handbook/avcn-commands.html` selesai diredesign agar patuh Sentra design token: memuat `sentra-tokens.css`, mengganti hardcoded color ke `var(--sentra-*)`, merapikan font Geist Mono lokal, dan menambahkan struktur semantik ringan (`main/section/h1/h2/th scope`).
 
@@ -233,11 +233,11 @@ implemented in code.
 
 Read in this order before proposing any CT architecture or implementation:
 
-1. `docs/task/Feature-Clinical Trajectory.md`
-2. `docs/task/Input for Clinical Trajectory.md`
-3. `docs/task/Summary Clinical Trajectory.md`
-4. `docs/specs/ct_spec_v_1.md`
-5. `docs/specs/clinical-trajectory-v1-specification.md`
+1. `docs/specs/clinical-trajectory/001-feature-clinical-trajectory.md`
+2. `docs/specs/clinical-trajectory/002-input-for-clinical-trajectory.md`
+3. `docs/specs/clinical-trajectory/003-summary-clinical-trajectory.md`
+4. `docs/specs/004-ct-spec-v1.md`
+5. `docs/specs/003-clinical-trajectory-v1-specification.md`
 6. `packages/shared/shared-types/src/clinical-trajectory.ts`
 7. `apps/healthcare/intelligenceboard/src/lib/clinical/trajectory-analyzer.ts`
 8. `apps/healthcare/intelligenceboard/src/lib/clinical/momentum-engine.ts`
@@ -245,13 +245,13 @@ Read in this order before proposing any CT architecture or implementation:
 10. `apps/healthcare/intelligenceboard/src/lib/clinical/personal-baseline.ts`
 11. `apps/healthcare/sentra-assist/lib/iskandar-diagnosis-engine/trajectory-analyzer.ts`
 
-### What `docs/task` actually means
+### What `docs/specs/clinical-trajectory` actually means
 
-- `docs/task/Feature-Clinical Trajectory.md` is the canonical taxonomy target:
+- `docs/specs/clinical-trajectory/001-feature-clinical-trajectory.md` is the canonical taxonomy target:
   **52 trajectories / 5 quadrants**.
-- `docs/task/Input for Clinical Trajectory.md` is the canonical input-output
+- `docs/specs/clinical-trajectory/002-input-for-clinical-trajectory.md` is the canonical input-output
   shape target for a future canonical CT engine.
-- `docs/task/Summary Clinical Trajectory.md` is the canonical modeling
+- `docs/specs/clinical-trajectory/003-summary-clinical-trajectory.md` is the canonical modeling
   architecture target: layered models, local fit/validation, no fantasy universal
   coefficients.
 
@@ -283,7 +283,7 @@ Read in this order before proposing any CT architecture or implementation:
 
 Produce a **coverage map**:
 
-1. `52 trajectory taxonomy from docs/task`
+1. `52 trajectory taxonomy from docs/specs/clinical-trajectory`
 2. `existing executable engine coverage in Intelligenceboard / Assist`
 3. `gap list: covered / partially covered / not represented`
 4. `canonicalization plan: how legacy outputs should be transformed into a real
@@ -331,7 +331,7 @@ What is not implemented now:
   5 quadrants** as first-class executable outputs.
 - No treatment-aware response engine, no workflow/operational trajectory
   engine, no lab-rich chronic progression engine, and no local-fit validation
-  stack as described in `docs/task/Summary Clinical Trajectory.md`.
+  stack as described in `docs/specs/clinical-trajectory/003-summary-clinical-trajectory.md`.
 
 Bottom line:
 
@@ -341,7 +341,7 @@ Bottom line:
 
 ### Source reality check on taxonomy
 
-- `docs/task/Feature-Clinical Trajectory.md` is the canonical target framing:
+- `docs/specs/clinical-trajectory/001-feature-clinical-trajectory.md` is the canonical target framing:
   **52 trajectories / 5 quadrants**.
 - The same file currently contains semantic drift inside the body: after the
   canonical `T-45` to `T-52` range, it continues with extra entries

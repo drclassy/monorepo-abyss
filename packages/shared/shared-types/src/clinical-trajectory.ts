@@ -30,11 +30,7 @@ export type ClinicalConsciousnessLevel = 'alert' | 'voice' | 'pain' | 'unrespons
 
 export type ClinicalTrajectorySeverityBand = 'low' | 'watch' | 'concerning' | 'critical' | 'unknown'
 
-export type ClinicalTrajectoryConfidence =
-  | 'high'
-  | 'moderate'
-  | 'low'
-  | 'insufficient_data'
+export type ClinicalTrajectoryConfidence = 'high' | 'moderate' | 'low' | 'insufficient_data'
 
 export type ClinicalTrajectoryCalculationBasis =
   | 'official_score'
@@ -307,7 +303,8 @@ export const mockImprovingTrajectory: ClinicalTrajectoryV1 = {
     confidence: 'moderate',
     summary: 'Observed trajectory is improving with response to supportive treatment.',
     evidenceRefs: ['vital-001', 'vital-002', 'derived-001'],
-    nextBestClinicalQuestion: 'Apakah sesak dan intoleransi aktivitas masih muncul saat mobilisasi?',
+    nextBestClinicalQuestion:
+      'Apakah sesak dan intoleransi aktivitas masih muncul saat mobilisasi?',
     nextBestClinicalCheck: 'Ulang vital signs dalam 4-6 jam dan evaluasi saturasi oksigen.',
     recommendedMonitoringCadence: 'monitoring rutin setiap shift',
   },
@@ -471,7 +468,8 @@ export const mockSparseDataTrajectory: ClinicalTrajectoryV1 = {
     confidence: 'insufficient_data',
     summary: 'Limited data available for safe longitudinal interpretation.',
     evidenceRefs: ['vital-201'],
-    nextBestClinicalQuestion: 'Data apa yang paling penting untuk melengkapi interpretasi trajectory?',
+    nextBestClinicalQuestion:
+      'Data apa yang paling penting untuk melengkapi interpretasi trajectory?',
     nextBestClinicalCheck: 'Tambahkan seri vital signs dan dokumentasi respons terapi.',
     recommendedMonitoringCadence: 'assessment ulang setelah data tambahan tersedia',
   },

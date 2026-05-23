@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>10 Blueprint</title>
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #0a1628;
+      color: #7eb8da;
+      min-height: 100vh;
+      padding: 24px;
+      background-image:
+        linear-gradient(rgba(126,184,218,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(126,184,218,0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .title { border: 1px dashed #7eb8da; padding: 8px 12px; display: inline-block; margin-bottom: 20px; }
+    .diagram { border: 1px solid #7eb8da; padding: 20px; position: relative; max-width: 700px; }
+    .box { border: 1px solid #7eb8da; padding: 10px; position: absolute; width: 140px; text-align: center; }
+    .b1 { top: 20px; left: 20px; }
+    .b2 { top: 20px; left: 180px; }
+    .b3 { top: 20px; left: 340px; }
+    .b4 { top: 20px; right: 20px; }
+    .b5 { bottom: 20px; left: 100px; }
+    .b6 { bottom: 20px; right: 100px; }
+    .core { top: 50%; left: 50%; transform: translate(-50%,-50%); width: 160px; background: rgba(126,184,218,0.1); }
+    .dim { font-size: 10px; color: #5a8aa8; margin-top: 4px; }
+    .spacer { height: 280px; }
+    .note { margin-top: 16px; font-size: 11px; border-left: 2px solid #7eb8da; padding-left: 10px; }
+  </style>
+</head>
+<body>
+  <div class="title">DWG-PORTAL-001 · MISSION CONTROL</div>
+  <div class="diagram">
+    <div class="spacer"></div>
+    <div class="box core">SUMMARY<br/>API<div class="dim">30s poll</div></div>
+    <div class="box b1">SSOT<div class="dim">0.3h</div></div>
+    <div class="box b2">CLI<div class="dim">RISK×2</div></div>
+    <div class="box b3">KNOWLEDGE<div class="dim">WATCH</div></div>
+    <div class="box b4">UNICOM<div class="dim">DEG</div></div>
+    <div class="box b5">CONTEXT</div>
+    <div class="box b6">PROMPT</div>
+  </div>
+  <p class="note">NOTE: Next action — wire UNICOM /health → /api/portal/summary</p>
+</body>
+</html>

@@ -1,7 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import fs from 'fs'
-import path from 'path'
 import os from 'os'
+import path from 'path'
+
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+
 import { loadApprovedCandidates } from '../src/embedding/registry-gate'
 import type { KnowledgeRegistry } from '../src/registry/registry-types'
 
@@ -74,7 +76,11 @@ describe('loadApprovedCandidates', () => {
     fs.writeFileSync(path.join(tmpDir, 'registry.json'), JSON.stringify(registry), 'utf-8')
 
     const eligible = [{ source_hash: 'ghost-hash', registry_status: 'approved_for_embedding' }]
-    fs.writeFileSync(path.join(tmpDir, 'eligible-for-embedding.json'), JSON.stringify(eligible), 'utf-8')
+    fs.writeFileSync(
+      path.join(tmpDir, 'eligible-for-embedding.json'),
+      JSON.stringify(eligible),
+      'utf-8'
+    )
 
     const result = loadApprovedCandidates(tmpDir)
     expect(result.approved).toHaveLength(0)
@@ -101,7 +107,11 @@ describe('loadApprovedCandidates', () => {
     fs.writeFileSync(path.join(tmpDir, 'registry.json'), JSON.stringify(registry), 'utf-8')
 
     const eligible = [{ source_hash: 'hash1', registry_status: 'ready_for_review' }]
-    fs.writeFileSync(path.join(tmpDir, 'eligible-for-embedding.json'), JSON.stringify(eligible), 'utf-8')
+    fs.writeFileSync(
+      path.join(tmpDir, 'eligible-for-embedding.json'),
+      JSON.stringify(eligible),
+      'utf-8'
+    )
 
     const result = loadApprovedCandidates(tmpDir)
     expect(result.approved).toHaveLength(0)
@@ -145,7 +155,11 @@ describe('loadApprovedCandidates', () => {
       { source_hash: 'approved1', registry_status: 'approved_for_embedding' },
       { source_hash: 'needs_review1', registry_status: 'needs_review' },
     ]
-    fs.writeFileSync(path.join(tmpDir, 'eligible-for-embedding.json'), JSON.stringify(eligible), 'utf-8')
+    fs.writeFileSync(
+      path.join(tmpDir, 'eligible-for-embedding.json'),
+      JSON.stringify(eligible),
+      'utf-8'
+    )
 
     const result = loadApprovedCandidates(tmpDir)
     expect(result.approved).toHaveLength(1)

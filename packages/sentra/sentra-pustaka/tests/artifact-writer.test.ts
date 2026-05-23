@@ -1,9 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import * as fs from 'fs'
-import * as path from 'path'
 import * as os from 'os'
-import { writeKnowledgeArtifacts } from '../src/ingestion/artifact-writer'
+import * as path from 'path'
+
 import type { CanonicalDocument } from '@the-abyss/document-ingestion'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+
+import { writeKnowledgeArtifacts } from '../src/ingestion/artifact-writer'
 
 let tmpDir: string
 
@@ -59,7 +61,7 @@ describe('writeKnowledgeArtifacts', () => {
     expect(fs.existsSync(result.markdownPath)).toBe(true)
     expect(fs.existsSync(result.qualityReportPath)).toBe(true)
     expect(result.chunksPath).toBeDefined()
-    expect(fs.existsSync(result.chunksPath!)).toBe(true)
+    expect(fs.existsSync(result.chunksPath as string)).toBe(true)
   })
 
   it('writes chunks.json when status is needs_review', async () => {
@@ -72,7 +74,7 @@ describe('writeKnowledgeArtifacts', () => {
     })
 
     expect(result.chunksPath).toBeDefined()
-    expect(fs.existsSync(result.chunksPath!)).toBe(true)
+    expect(fs.existsSync(result.chunksPath as string)).toBe(true)
   })
 
   it('does NOT write chunks.json when status is failed', async () => {

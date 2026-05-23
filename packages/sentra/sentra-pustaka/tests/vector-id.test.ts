@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { buildVectorId, buildChunkId, buildContentHash } from '../src/embedding/vector-id'
 
 describe('buildVectorId', () => {

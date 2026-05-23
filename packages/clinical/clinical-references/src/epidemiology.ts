@@ -33,7 +33,7 @@ const SYNTHETIC_PRIOR_FIXTURES: Record<string, readonly ClinicalReferencePriorWe
 }
 
 export function resolveEpidemiologyPriors(
-  context: ClinicalReferenceEpidemiologyContext,
+  context: ClinicalReferenceEpidemiologyContext
 ): ClinicalReferencePriorResult {
   const syndrome = context.syndrome.trim().toLowerCase()
   const priors = SYNTHETIC_PRIOR_FIXTURES[syndrome] ?? []

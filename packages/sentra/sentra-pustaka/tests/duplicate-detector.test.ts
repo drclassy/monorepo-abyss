@@ -1,7 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import * as fs from 'fs'
-import * as path from 'path'
 import * as os from 'os'
+import * as path from 'path'
+
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+
 import { isDuplicate } from '../src/ingestion/duplicate-detector'
 
 let tmpDir: string

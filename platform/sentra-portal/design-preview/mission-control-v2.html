@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL Mission Control — Design v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --surface: #ffffff;
+      --surface-2: #f9fafb;
+      --border: #e5e7eb;
+      --border-strong: #d1d5db;
+      --text: #111827;
+      --text-2: #4b5563;
+      --text-3: #9ca3af;
+      --accent: #0f766e;
+      --accent-soft: #ecfdf5;
+      --ok: #059669;
+      --warn: #d97706;
+      --crit: #dc2626;
+      --font: 'IBM Plex Sans', system-ui, sans-serif;
+      --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.45;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Full-width — no sidebar */
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.02em;
+    }
+
+    .logo-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .logo-text span {
+      font-size: 11px;
+      color: var(--text-3);
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-2);
+    }
+
+    .header-meta time {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-3);
+    }
+
+    .btn {
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Top: 5 KPI pills in one row */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      color: var(--text-3);
+      font-weight: 500;
+    }
+
+    .kpi-value {
+      font-size: 18px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      margin-top: 4px;
+      letter-spacing: -0.02em;
+    }
+
+    .pill {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: lowercase;
+      font-family: var(--mono);
+    }
+
+    .pill-ok { background: #d1fae5; color: var(--ok); }
+    .pill-warn { background: #fef3c7; color: var(--warn); }
+    .pill-crit { background: #fee2e2; color: var(--crit); }
+
+    /* Two columns — content.tsx style */
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-head h2 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .panel-head span {
+      font-size: 11px;
+      color: var(--text-3);
+    }
+
+    /* Left: systems as rows (not grid cards) */
+    .system-list {
+      list-style: none;
+    }
+
+    .system-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .system-row:last-child { border-bottom: none; }
+
+    .system-row:hover {
+      background: var(--surface-2);
+    }
+
+    .system-row:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    .system-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .system-id {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-3);
+      width: 28px;
+      flex-shrink: 0;
+    }
+
+    .system-info h3 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .system-info p {
+      font-size: 12px;
+      color: var(--text-2);
+      margin-top: 1px;
+    }
+
+    .system-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .system-metric {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .status-line {
+      font-size: 11px;
+      color: var(--text-3);
+      margin-top: 2px;
+    }
+
+    .status-line.ok { color: var(--ok); }
+    .status-line.warn { color: var(--warn); }
+    .status-line.crit { color: var(--crit); }
+
+    /* Right: queue + next action */
+    .next-block {
+      padding: 16px;
+      background: var(--accent-soft);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .next-block label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .next-block p {
+      font-size: 13px;
+      color: var(--text);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .queue-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .queue-item:last-child { border-bottom: none; }
+
+    .queue-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .queue-sub {
+      font-size: 12px;
+      color: var(--text-2);
+      margin-top: 2px;
+    }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: var(--mono);
+      white-space: nowrap;
+    }
+
+    .tag-ok { background: #d1fae5; color: var(--ok); }
+    .tag-warn { background: #fef3c7; color: var(--warn); }
+    .tag-crit { background: #fee2e2; color: var(--crit); }
+
+    .version-tag {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 10px;
+      font-family: var(--mono);
+      color: var(--text-3);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 800px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .columns { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="logo-row">
+        <div class="logo" aria-hidden="true">P</div>
+        <div class="logo-text">
+          <strong>PORTAL</strong>
+          <span>Mission control · v2</span>
+        </div>
+      </div>
+      <div class="header-meta">
+        <time>Updated 14:32 · 30s poll</time>
+        <button type="button" class="btn">Refresh</button>
+        <button type="button" class="btn btn-accent">Verify</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="kpi-row" aria-label="Summary metrics">
+        <div class="kpi">
+          <div class="kpi-label">SSOT</div>
+          <div class="kpi-value">12h</div>
+          <span class="pill pill-ok">ok</span>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">UNICOM</div>
+          <div class="kpi-value">3</div>
+          <span class="pill pill-warn">degraded</span>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Dirty risk</div>
+          <div class="kpi-value">2</div>
+          <span class="pill pill-crit">risk</span>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">RAG</div>
+          <div class="kpi-value">—</div>
+          <span class="pill pill-warn">not ready</span>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Verify</div>
+          <div class="kpi-value">pass</div>
+          <span class="pill pill-ok">clear</span>
+        </div>
+      </section>
+
+      <div class="columns">
+        <section class="panel" aria-label="Monorepo systems">
+          <div class="panel-head">
+            <h2>Systems</h2>
+            <span>6 domains · click row</span>
+          </div>
+          <ul class="system-list">
+            <li>
+              <button type="button" class="system-row" style="width:100%;border:none;background:transparent;text-align:inherit;font:inherit;color:inherit;">
+                <div class="system-left">
+                  <span class="system-id">01</span>
+                  <div class="system-info">
+                    <h3>Agent SSOT</h3>
+                    <p>HANDOFF · PROGRESS · ssot-daily</p>
+                  </div>
+                </div>
+                <div class="system-right">
+                  <div class="system-metric">12h</div>
+                  <div class="status-line ok">fresh</div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="system-row" style="width:100%;border:none;background:transparent;text-align:inherit;font:inherit;color:inherit;">
+                <div class="system-left">
+                  <span class="system-id">02</span>
+                  <div class="system-info">
+                    <h3>Abyss CLI ops</h3>
+                    <p>Branch · dirty tree · verify</p>
+                  </div>
+                </div>
+                <div class="system-right">
+                  <div class="system-metric">2</div>
+                  <div class="status-line crit">risk files</div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="system-row" style="width:100%;border:none;background:transparent;text-align:inherit;font:inherit;color:inherit;">
+                <div class="system-left">
+                  <span class="system-id">03</span>
+                  <div class="system-info">
+                    <h3>Sentra RAG</h3>
+                    <p>Registry · eval · AADI gate</p>
+                  </div>
+                </div>
+                <div class="system-right">
+                  <div class="system-metric">not_ready</div>
+                  <div class="status-line warn">watch</div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="system-row" style="width:100%;border:none;background:transparent;text-align:inherit;font:inherit;color:inherit;">
+                <div class="system-left">
+                  <span class="system-id">04</span>
+                  <div class="system-info">
+                    <h3>UNICOM hub</h3>
+                    <p>Agents · SSE health</p>
+                  </div>
+                </div>
+                <div class="system-right">
+                  <div class="system-metric">3 up</div>
+                  <div class="status-line warn">degraded</div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="system-row" style="width:100%;border:none;background:transparent;text-align:inherit;font:inherit;color:inherit;">
+                <div class="system-left">
+                  <span class="system-id">05</span>
+                  <div class="system-info">
+                    <h3>Context capsule</h3>
+                    <p>Handbook · local tool</p>
+                  </div>
+                </div>
+                <div class="system-right">
+                  <div class="system-metric">local</div>
+                  <div class="status-line ok">ready</div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="system-row" style="width:100%;border:none;background:transparent;text-align:inherit;font:inherit;color:inherit;">
+                <div class="system-left">
+                  <span class="system-id">06</span>
+                  <div class="system-info">
+                    <h3>Sentra prompt</h3>
+                    <p>Extension audit trail</p>
+                  </div>
+                </div>
+                <div class="system-right">
+                  <div class="system-metric">pass</div>
+                  <div class="status-line ok">clear</div>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </section>
+
+        <section class="panel" aria-label="Operations queue">
+          <div class="panel-head">
+            <h2>Operations</h2>
+            <span>from HANDOFF + gates</span>
+          </div>
+          <div class="next-block">
+            <label>Next action</label>
+            <p>Phase 2 UNICOM SSE: wire portal summary to hub health; keep .agent read-only until Chief GO on schema.</p>
+          </div>
+          <div class="queue-item">
+            <div>
+              <div class="queue-title">Verify gate</div>
+              <div class="queue-sub">typecheck · test · build cache</div>
+            </div>
+            <span class="tag tag-ok">pass</span>
+          </div>
+          <div class="queue-item">
+            <div>
+              <div class="queue-title">Dirty RISK classification</div>
+              <div class="queue-sub">2 paths need review before push</div>
+            </div>
+            <span class="tag tag-crit">2</span>
+          </div>
+          <div class="queue-item">
+            <div>
+              <div class="queue-title">RAG readiness</div>
+              <div class="queue-sub">registry + eval artifacts</div>
+            </div>
+            <span class="tag tag-warn">not_ready</span>
+          </div>
+          <div class="queue-item">
+            <div>
+              <div class="queue-title">UNICOM hub</div>
+              <div class="queue-sub">localhost agent registry</div>
+            </div>
+            <span class="tag tag-warn">degraded</span>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="version-tag">mission-control-v2.html</div>
+</body>
+</html>

@@ -225,9 +225,7 @@ function median(values: number[]): number | undefined {
   if (values.length === 0) return undefined
   const sorted = [...values].sort((left, right) => left - right)
   const midpoint = Math.floor(sorted.length / 2)
-  return sorted.length % 2 === 0
-    ? (sorted[midpoint - 1] + sorted[midpoint]) / 2
-    : sorted[midpoint]
+  return sorted.length % 2 === 0 ? (sorted[midpoint - 1] + sorted[midpoint]) / 2 : sorted[midpoint]
 }
 
 function standardDeviation(values: number[]): number {
@@ -244,8 +242,10 @@ function getValue(vitals: SymphonyVitalsInput, key: VitalKey): number | undefine
 
 function sortedVitals(vitals: SymphonyVitalsInput[]): SymphonyVitalsInput[] {
   return [...vitals]
-    .filter(item => VITAL_KEYS.some(key => getValue(item, key) !== undefined))
-    .sort((left, right) => new Date(left.observedAt).getTime() - new Date(right.observedAt).getTime())
+    .filter((item) => VITAL_KEYS.some((key) => getValue(item, key) !== undefined))
+    .sort(
+      (left, right) => new Date(left.observedAt).getTime() - new Date(right.observedAt).getTime()
+    )
     .slice(-5)
 }
 
@@ -318,8 +318,10 @@ function riskScore(risk: SymphonyTrajectoryRiskLevel): number {
 }
 
 function buildVitalTrends(vitals: SymphonyVitalsInput[]): SymphonyVitalTrend[] {
-  return VITAL_KEYS.map(key => {
-    const values = vitals.map(item => getValue(item, key)).filter((value): value is number => value !== undefined)
+  return VITAL_KEYS.map((key) => {
+    const values = vitals
+      .map((item) => getValue(item, key))
+      .filter((value): value is number => value !== undefined)
     const firstValue = values[0] ?? 0
     const lastValue = values[values.length - 1] ?? 0
     return {
@@ -387,7 +389,7 @@ function buildTrajectoryVolatility(
   burden: SymphonyEarlyWarningBurden,
   overallTrend: SymphonyTrajectoryAnalysis['overallTrend']
 ): SymphonyTrajectoryVolatility {
-  const active = trends.filter(trend => trend.values.length >= 2)
+  const active = trends.filter((trend) => trend.values.length >= 2)
   if (active.length === 0) return { volatilityIndex: 0, stabilityLabel: 'unstable' }
   const total = active.reduce(
     (acc, trend) => {
@@ -399,7 +401,9 @@ function buildTrajectoryVolatility(
     { cv: 0, signFlips: 0 }
   )
   const volatilityIndex = clamp(
-    round(total.cv / active.length + total.signFlips * 5 + Math.min(20, burden.totalBreachesLast5 * 2)),
+    round(
+      total.cv / active.length + total.signFlips * 5 + Math.min(20, burden.totalBreachesLast5 * 2)
+    ),
     0,
     100
   )
@@ -431,7 +435,10 @@ function buildAcuteRisk(latest: SymphonyVitalsInput | undefined): SymphonyAcuteA
   else if ((latest.systolicBp ?? 0) >= 140 || (latest.diastolicBp ?? 0) >= 90) hypertensive = 45
 
   let glycemic = 15
-  if ((latest.glucoseMgDl ?? 0) >= 400 || ((latest.glucoseMgDl ?? 0) > 0 && (latest.glucoseMgDl ?? 0) < 54)) {
+  if (
+    (latest.glucoseMgDl ?? 0) >= 400 ||
+    ((latest.glucoseMgDl ?? 0) > 0 && (latest.glucoseMgDl ?? 0) < 54)
+  ) {
     glycemic = 92
   } else if (
     (latest.glucoseMgDl ?? 0) >= 300 ||
@@ -448,7 +455,11 @@ function buildAcuteRisk(latest: SymphonyVitalsInput | undefined): SymphonyAcuteA
   if ((latest.heartRate ?? 0) > 100) sepsisLike += 20
   if ((latest.respiratoryRate ?? 0) >= 22) sepsisLike += 25
   if ((latest.systolicBp ?? 999) <= 100) sepsisLike += 20
-  if (latest.consciousness !== undefined && latest.consciousness !== 'alert' && latest.consciousness !== 'unknown') {
+  if (
+    latest.consciousness !== undefined &&
+    latest.consciousness !== 'alert' &&
+    latest.consciousness !== 'unknown'
+  ) {
     sepsisLike += 10
   }
 
@@ -456,14 +467,20 @@ function buildAcuteRisk(latest: SymphonyVitalsInput | undefined): SymphonyAcuteA
   if ((latest.systolicBp ?? 999) < 90) shock += 45
   else if ((latest.systolicBp ?? 999) <= 100) shock += 25
   if ((latest.heartRate ?? 0) > 120) shock += 20
-  if ((latest.respiratoryRate ?? 0) > 24 || ((latest.respiratoryRate ?? 0) > 0 && (latest.respiratoryRate ?? 0) < 10)) {
+  if (
+    (latest.respiratoryRate ?? 0) > 24 ||
+    ((latest.respiratoryRate ?? 0) > 0 && (latest.respiratoryRate ?? 0) < 10)
+  ) {
     shock += 18
   }
   if ((latest.temperatureC ?? 99) < 36) shock += 10
 
   let strokeAcs = 10
   if ((latest.systolicBp ?? 0) >= 180 || (latest.diastolicBp ?? 0) >= 120) strokeAcs += 32
-  if ((latest.heartRate ?? 0) > 120 || ((latest.heartRate ?? 0) > 0 && (latest.heartRate ?? 0) < 50)) {
+  if (
+    (latest.heartRate ?? 0) > 120 ||
+    ((latest.heartRate ?? 0) > 0 && (latest.heartRate ?? 0) < 50)
+  ) {
     strokeAcs += 10
   }
 
@@ -478,8 +495,11 @@ function buildAcuteRisk(latest: SymphonyVitalsInput | undefined): SymphonyAcuteA
 
 function velocityPerHour(vitals: SymphonyVitalsInput[], key: VitalKey): number {
   const points = vitals
-    .map(item => ({ value: getValue(item, key), timestamp: new Date(item.observedAt).getTime() }))
-    .filter((item): item is { value: number; timestamp: number } => item.value !== undefined && Number.isFinite(item.timestamp))
+    .map((item) => ({ value: getValue(item, key), timestamp: new Date(item.observedAt).getTime() }))
+    .filter(
+      (item): item is { value: number; timestamp: number } =>
+        item.value !== undefined && Number.isFinite(item.timestamp)
+    )
   if (points.length < 2) return 0
   const first = points[0]
   const last = points[points.length - 1]
@@ -489,8 +509,11 @@ function velocityPerHour(vitals: SymphonyVitalsInput[], key: VitalKey): number {
 
 function acceleration(vitals: SymphonyVitalsInput[], key: VitalKey): number {
   const points = vitals
-    .map(item => ({ value: getValue(item, key), timestamp: new Date(item.observedAt).getTime() }))
-    .filter((item): item is { value: number; timestamp: number } => item.value !== undefined && Number.isFinite(item.timestamp))
+    .map((item) => ({ value: getValue(item, key), timestamp: new Date(item.observedAt).getTime() }))
+    .filter(
+      (item): item is { value: number; timestamp: number } =>
+        item.value !== undefined && Number.isFinite(item.timestamp)
+    )
   if (points.length < 3) return 0
   const prevDelta = points[points.length - 2].value - points[points.length - 3].value
   const lastDelta = points[points.length - 1].value - points[points.length - 2].value
@@ -498,11 +521,13 @@ function acceleration(vitals: SymphonyVitalsInput[], key: VitalKey): number {
 }
 
 function getSeries(vitals: SymphonyVitalsInput[], key: VitalKey): number[] {
-  return vitals.map(item => getValue(item, key)).filter((value): value is number => value !== undefined)
+  return vitals
+    .map((item) => getValue(item, key))
+    .filter((value): value is number => value !== undefined)
 }
 
 function buildMomentumParams(vitals: SymphonyVitalsInput[]): SymphonyMomentumParam[] {
-  return VITAL_KEYS.map(parameter => {
+  return VITAL_KEYS.map((parameter) => {
     const values = getSeries(vitals, parameter)
     const velocity = velocityPerHour(vitals, parameter)
     return {
@@ -512,7 +537,7 @@ function buildMomentumParams(vitals: SymphonyVitalsInput[]): SymphonyMomentumPar
       acceleration: acceleration(vitals, parameter),
       worsening: isWorseningDirection(parameter, velocity),
     }
-  }).filter(param => param.values.length >= 2 && param.velocityPerHour !== 0)
+  }).filter((param) => param.values.length >= 2 && param.velocityPerHour !== 0)
 }
 
 function predictTimeToCritical(
@@ -547,7 +572,7 @@ function predictTimeToCritical(
     if (discriminant >= 0) {
       const t1 = (-b + Math.sqrt(discriminant)) / (2 * a)
       const t2 = (-b - Math.sqrt(discriminant)) / (2 * a)
-      const validRoots = [t1, t2].filter(root => root > 0 && root <= 168)
+      const validRoots = [t1, t2].filter((root) => root > 0 && root <= 168)
       if (validRoots.length > 0) {
         hoursAccelAdjusted = Math.min(...validRoots)
       }
@@ -580,20 +605,23 @@ function predictTimeToCritical(
 function buildTimeToCriticalDetail(
   params: SymphonyMomentumParam[]
 ): Partial<Record<VitalKey, SymphonyTimeToCriticalProjection>> {
-  return params.reduce<Partial<Record<VitalKey, SymphonyTimeToCriticalProjection>>>((acc, param) => {
-    const prediction = predictTimeToCritical(param)
-    if (prediction) {
-      acc[param.parameter] = prediction
-    }
-    return acc
-  }, {})
+  return params.reduce<Partial<Record<VitalKey, SymphonyTimeToCriticalProjection>>>(
+    (acc, param) => {
+      const prediction = predictTimeToCritical(param)
+      if (prediction) {
+        acc[param.parameter] = prediction
+      }
+      return acc
+    },
+    {}
+  )
 }
 
 export function detectSymphonyTreatmentResponse(
   params: SymphonyMomentumParam[]
 ): SymphonyTreatmentResponse {
   const worseningParam = params
-    .filter(param => param.worsening && param.values.length >= 4)
+    .filter((param) => param.worsening && param.values.length >= 4)
     .sort((left, right) => Math.abs(right.velocityPerHour) - Math.abs(left.velocityPerHour))[0]
 
   if (!worseningParam) {
@@ -665,7 +693,7 @@ export function detectSymphonyTreatmentResponse(
 }
 
 function detectConvergence(params: SymphonyMomentumParam[]): SymphonyConvergenceResult {
-  const worseningParams = params.filter(param => param.worsening).map(param => param.parameter)
+  const worseningParams = params.filter((param) => param.worsening).map((param) => param.parameter)
   const has = (key: VitalKey) => worseningParams.includes(key)
   let pattern: SymphonyConvergencePattern = 'none'
   if (has('temperatureC') && has('heartRate') && has('respiratoryRate')) pattern = 'sepsis_like'
@@ -700,10 +728,17 @@ function buildMomentum(vitals: SymphonyVitalsInput[]): SymphonyMomentumAnalysis 
   const params = buildMomentumParams(vitals)
   const convergence = detectConvergence(params)
   const worseningCount = convergence.convergenceScore
-  const acceleratingWorsening = params.filter(param => param.worsening && isWorseningDirection(param.parameter, param.acceleration)).length
-  const score = clamp(worseningCount * 18 + acceleratingWorsening * 8 + (convergence.pattern !== 'none' ? 20 : 0), 0, 100)
+  const acceleratingWorsening = params.filter(
+    (param) => param.worsening && isWorseningDirection(param.parameter, param.acceleration)
+  ).length
+  const score = clamp(
+    worseningCount * 18 + acceleratingWorsening * 8 + (convergence.pattern !== 'none' ? 20 : 0),
+    0,
+    100
+  )
   let level: SymphonyMomentumLevel = 'STABLE'
-  if (score >= 80 || (worseningCount >= 4 && convergence.pattern !== 'none')) level = 'CRITICAL_MOMENTUM'
+  if (score >= 80 || (worseningCount >= 4 && convergence.pattern !== 'none'))
+    level = 'CRITICAL_MOMENTUM'
   else if (convergence.pattern !== 'none' && worseningCount >= 3) level = 'CONVERGING'
   else if (acceleratingWorsening >= 2) level = 'ACCELERATING'
   else if (worseningCount >= 1) level = 'DRIFTING'
@@ -715,9 +750,7 @@ function buildMomentum(vitals: SymphonyVitalsInput[]): SymphonyMomentumAnalysis 
     params,
     convergence,
     narrative:
-      level === 'STABLE'
-        ? 'Momentum klinis stabil.'
-        : `${level}: ${convergence.narrative}`,
+      level === 'STABLE' ? 'Momentum klinis stabil.' : `${level}: ${convergence.narrative}`,
   }
 }
 
@@ -728,7 +761,9 @@ export function buildSymphonyPersonalBaseline(
   const sorted = sortedVitals(vitals)
   const params = VITAL_KEYS.reduce<Partial<Record<VitalKey, SymphonyPersonalBaselineParam>>>(
     (acc, key) => {
-      const values = sorted.map(item => getValue(item, key)).filter((value): value is number => value !== undefined)
+      const values = sorted
+        .map((item) => getValue(item, key))
+        .filter((value): value is number => value !== undefined)
       if (values.length < 2) return acc
       const mean = average(values)
       const med = median(values)
@@ -751,17 +786,20 @@ export function buildSymphonyPersonalBaseline(
   }
 }
 
-function deriveOverallTrend(trends: SymphonyVitalTrend[], visitCount: number): SymphonyTrajectoryAnalysis['overallTrend'] {
+function deriveOverallTrend(
+  trends: SymphonyVitalTrend[],
+  visitCount: number
+): SymphonyTrajectoryAnalysis['overallTrend'] {
   if (visitCount < 2) return 'insufficient_data'
-  const declining = trends.filter(trend => trend.trend === 'declining').length
-  const improving = trends.filter(trend => trend.trend === 'improving').length
+  const declining = trends.filter((trend) => trend.trend === 'declining').length
+  const improving = trends.filter((trend) => trend.trend === 'improving').length
   if (declining > improving) return 'declining'
   if (improving > declining) return 'improving'
   return 'stable'
 }
 
 function deriveOverallRisk(trends: SymphonyVitalTrend[]): SymphonyTrajectoryRiskLevel {
-  const risks = trends.map(trend => trend.risk)
+  const risks = trends.map((trend) => trend.risk)
   if (risks.includes('critical')) return 'critical'
   if (risks.includes('high')) return 'high'
   if (risks.includes('moderate')) return 'moderate'
@@ -776,7 +814,13 @@ function buildClinicalSafeOutput(
   missingData: string[]
 ): SymphonyClinicalSafeOutput {
   const riskTier: SymphonyTrajectoryRiskLevel =
-    state === 'critical' ? 'critical' : mortality.tier === 'high' || mortality.tier === 'very_high' ? 'high' : mortality.tier === 'moderate' ? 'moderate' : 'low'
+    state === 'critical'
+      ? 'critical'
+      : mortality.tier === 'high' || mortality.tier === 'very_high'
+        ? 'high'
+        : mortality.tier === 'moderate'
+          ? 'moderate'
+          : 'low'
   return {
     riskTier,
     confidence,
@@ -794,7 +838,9 @@ function buildClinicalSafeOutput(
   }
 }
 
-export function analyzeSymphonyTrajectory(vitals: SymphonyVitalsInput[]): SymphonyTrajectoryAnalysis {
+export function analyzeSymphonyTrajectory(
+  vitals: SymphonyVitalsInput[]
+): SymphonyTrajectoryAnalysis {
   const sorted = sortedVitals(vitals)
   const trends = buildVitalTrends(sorted)
   const overallTrend = deriveOverallTrend(trends, sorted.length)
@@ -818,8 +864,8 @@ export function analyzeSymphonyTrajectory(vitals: SymphonyVitalsInput[]): Sympho
   const acutePeak = Math.max(...Object.values(acuteRisk))
   const avgVitalRisk =
     trends.reduce((sum, trend) => sum + riskScore(trend.risk), 0) / Math.max(1, trends.length)
-  const decliningCount = trends.filter(trend => trend.trend === 'declining').length
-  const improvingCount = trends.filter(trend => trend.trend === 'improving').length
+  const decliningCount = trends.filter((trend) => trend.trend === 'declining').length
+  const improvingCount = trends.filter((trend) => trend.trend === 'improving').length
   const deteriorationScore = clamp(
     round(
       avgVitalRisk * 60 +
@@ -843,7 +889,9 @@ export function analyzeSymphonyTrajectory(vitals: SymphonyVitalsInput[]): Sympho
         acutePeak * 0.35 +
         Math.min(100, burden.totalBreachesLast5 * 20) * 0.15 +
         volatility.volatilityIndex * 0.15 +
-        (acuteRisk.sepsisLikeDeteriorationRisk >= 70 || acuteRisk.shockDecompensationRisk >= 70 ? 10 : 0)
+        (acuteRisk.sepsisLikeDeteriorationRisk >= 70 || acuteRisk.shockDecompensationRisk >= 70
+          ? 10
+          : 0)
     ),
     0,
     100
@@ -859,14 +907,26 @@ export function analyzeSymphonyTrajectory(vitals: SymphonyVitalsInput[]): Sympho
             ? 'moderate'
             : 'low',
     clinicalUrgencyTier:
-      mortalityScore >= 75 ? 'immediate' : mortalityScore >= 50 ? 'high' : mortalityScore >= 25 ? 'moderate' : 'low',
+      mortalityScore >= 75
+        ? 'immediate'
+        : mortalityScore >= 50
+          ? 'high'
+          : mortalityScore >= 25
+            ? 'moderate'
+            : 'low',
   }
   const missingData = sorted.length < 2 ? ['insufficient_history_lt2'] : []
   const confidence = round(clamp(sorted.length / 5, 0.1, 0.95), 2)
   const drivers = [
-    ...(acuteRisk.sepsisLikeDeteriorationRisk >= 70 ? ['Pola demam, takikardia, takipnea, dan tekanan darah rendah.'] : []),
-    ...(burden.totalBreachesLast5 > 0 ? [`Early-warning burden ${burden.totalBreachesLast5} event.`] : []),
-    ...(overallRisk === 'critical' ? ['Minimal satu parameter vital berada pada zona kritis.'] : []),
+    ...(acuteRisk.sepsisLikeDeteriorationRisk >= 70
+      ? ['Pola demam, takikardia, takipnea, dan tekanan darah rendah.']
+      : []),
+    ...(burden.totalBreachesLast5 > 0
+      ? [`Early-warning burden ${burden.totalBreachesLast5} event.`]
+      : []),
+    ...(overallRisk === 'critical'
+      ? ['Minimal satu parameter vital berada pada zona kritis.']
+      : []),
   ]
 
   const clinicalSafeOutput = buildClinicalSafeOutput(
@@ -903,7 +963,10 @@ export function analyzeSymphonyTrajectory(vitals: SymphonyVitalsInput[]): Sympho
 export function trajectoryDirectionFromAnalysis(
   analysis: SymphonyTrajectoryAnalysis
 ): SymphonyTrajectoryDirection {
-  if (analysis.globalDeterioration.state === 'critical' || analysis.globalDeterioration.state === 'deteriorating') {
+  if (
+    analysis.globalDeterioration.state === 'critical' ||
+    analysis.globalDeterioration.state === 'deteriorating'
+  ) {
     return 'worsening'
   }
   if (analysis.globalDeterioration.state === 'improving') return 'improving'
@@ -914,7 +977,11 @@ export function trajectoryDirectionFromAnalysis(
 export function trajectoryMomentumFromAnalysis(
   analysis: SymphonyTrajectoryAnalysis
 ): SymphonyTrajectoryMomentum {
-  if (analysis.momentum.level === 'CRITICAL_MOMENTUM' || analysis.momentum.level === 'CONVERGING' || analysis.momentum.level === 'ACCELERATING') {
+  if (
+    analysis.momentum.level === 'CRITICAL_MOMENTUM' ||
+    analysis.momentum.level === 'CONVERGING' ||
+    analysis.momentum.level === 'ACCELERATING'
+  ) {
     return 'rapid'
   }
   if (analysis.momentum.level === 'DRIFTING') return 'gradual'

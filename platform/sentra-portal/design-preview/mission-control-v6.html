@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v6 — Letta structure only</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      background: #0a0a0b;
+      color: #fafafa;
+    }
+    .shell { display: flex; min-height: 100vh; }
+    .side {
+      width: 200px;
+      background: #111113;
+      border-right: 1px solid #1f1f23;
+      padding: 16px 12px;
+      flex-shrink: 0;
+    }
+    .side .logo { font-size: 14px; font-weight: 600; padding: 8px; }
+    .side a {
+      display: block;
+      padding: 8px 10px;
+      color: #e86a5a;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .main { flex: 1; display: flex; flex-direction: column; }
+    .top {
+      height: 48px;
+      border-bottom: 1px solid #1f1f23;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 20px;
+      padding: 0 20px;
+      color: #71717a;
+      font-size: 13px;
+    }
+    .content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 28px 24px 40px;
+      width: 100%;
+    }
+    h1 { font-size: 26px; font-weight: 600; margin-bottom: 28px; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .card-hero {
+      border-radius: 12px;
+      padding: 20px;
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      border: 1px solid rgba(59,130,246,0.35);
+      min-height: 130px;
+    }
+    .card-hero .badge {
+      font-size: 13px;
+      background: rgba(255,255,255,0.15);
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .card-hero h2 { font-size: 15px; font-weight: 600; }
+    .card-hero p { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 8px; }
+
+    .panel {
+      background: #111113;
+      border: 1px solid #1f1f23;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .panel > h2 {
+      font-size: 15px;
+      font-weight: 600;
+      padding: 16px 20px;
+      border-bottom: 1px solid #1f1f23;
+    }
+    .tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 20px 0;
+      border-bottom: 1px solid #1f1f23;
+      flex-wrap: wrap;
+    }
+    .tab {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      color: #71717a;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+    }
+    .tab.on { background: #161618; color: #fafafa; }
+    .env {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #71717a;
+      padding-bottom: 8px;
+    }
+    .env code {
+      font-family: ui-monospace, monospace;
+      font-size: 13px;
+      background: #0a0a0b;
+      border: 1px solid #27272a;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: #a1a1aa;
+    }
+    .split { display: grid; grid-template-columns: 1fr 1fr; }
+    .left { padding: 20px; border-right: 1px solid #1f1f23; }
+    .left p { font-size: 13px; color: #a1a1aa; line-height: 1.55; }
+    .left a { color: #e86a5a; font-size: 13px; display: inline-block; margin-top: 16px; }
+    .right { padding: 16px; }
+    .right .lang { font-size: 13px; color: #71717a; margin-bottom: 8px; }
+    pre {
+      background: #161618;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 12px;
+      line-height: 1.55;
+      overflow-x: auto;
+      color: #d4d4d8;
+    }
+    .kw { color: #e5a84b; }
+    .str { color: #7ee787; }
+    .cm { color: #71717a; }
+    .tag { font-size: 13px; color: #52525b; margin-top: 20px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="logo">PORTAL</div>
+      <a href="#">Dashboard</a>
+    </aside>
+    <div class="main">
+      <div class="top">
+        <span>Docs</span>
+        <span>API</span>
+        <span>Local dev</span>
+      </div>
+      <div class="content">
+        <h1>Good morning, Chief 👋</h1>
+        <div class="cards">
+          <div class="card-hero">
+            <span class="badge">Live</span>
+            <h2>Agent SSOT</h2>
+            <p>0.3h fresh · HANDOFF</p>
+          </div>
+          <div class="card-hero">
+            <h2>Abyss CLI</h2>
+            <p>2 risk · verify pass</p>
+          </div>
+          <div class="card-hero">
+            <h2>UNICOM</h2>
+            <p>3 agents · degraded</p>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Get started with PORTAL</h2>
+          <div class="tabs">
+            <button class="tab on" type="button">Live summary</button>
+            <button class="tab" type="button">SSOT</button>
+            <button class="tab" type="button">Ops</button>
+            <div class="env">
+              <span>Env</span>
+              <code>PORTAL_REPO_ROOT=…</code>
+            </div>
+          </div>
+          <div class="split">
+            <div class="left">
+              <p>Poll <code style="color:#a1a1aa">/api/portal/summary</code> every 30 seconds. Open a hero card or use tabs for one domain — no duplicate lists on this page.</p>
+              <a href="#">Refresh summary →</a>
+            </div>
+            <div class="right">
+              <div class="lang">javascript</div>
+              <pre><span class="kw">const</span> res = <span class="kw">await</span> <span class="kw">fetch</span>(<span class="str">'/api/portal/summary'</span>);
+<span class="kw">const</span> { data } = <span class="kw">await</span> res.json();
+<span class="cm">// data.ssotFreshnessHours, unicomAgents, dirtyRisk</span></pre>
+            </div>
+          </div>
+        </div>
+        <p class="tag">v6 — Letta layout only · nothing below · NO until Chief says yes</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

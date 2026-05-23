@@ -1,9 +1,5 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-export type DryRunDocumentStatus =
-  | 'ready'
-  | 'needs_review'
-  | 'failed'
-  | 'skipped_duplicate'
+export type DryRunDocumentStatus = 'ready' | 'needs_review' | 'failed' | 'skipped_duplicate'
 
 export interface DryRunDocumentResult {
   filePath: string

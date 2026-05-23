@@ -18,6 +18,7 @@ real PDF files. This avoids:
 - Test fragility from external file changes
 
 If integration tests against real PDFs are ever needed:
+
 1. Create a separate integration test suite (e.g. `tests/integration/`)
 2. Use files that contain **only synthetic, non-PHI content**
 3. Get explicit Chief approval before adding any PDF to git
@@ -37,6 +38,7 @@ c.save()
 ```
 
 Store generated files here only if they are:
+
 - 100% synthetic
 - Verified to contain zero PHI
 - Committed with explicit Chief approval

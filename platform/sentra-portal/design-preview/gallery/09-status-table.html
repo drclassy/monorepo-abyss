@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v9 — Sentra workspace + status table</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --white: #fdfdfd;
+      --graphite: #111318;
+      --slate: #2a2f3a;
+      --silver: #8b919c;
+      --grid: #1e2229;
+      --cyan: #00d4ff;
+      --critical: #ee2737;
+      --ok: #34d399;
+      --warn: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.43;
+      background: #09090b;
+      color: var(--white);
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+    .page {
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+    .page-h {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .page-h h1 {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.33;
+    }
+    .page-h p {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--silver);
+      margin-top: 4px;
+    }
+    .btn {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--grid);
+      background: var(--graphite);
+      color: var(--silver);
+      cursor: pointer;
+    }
+    .btn:hover { color: var(--white); border-color: var(--slate); }
+
+    /* portal-design workspace */
+    .workspace {
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid var(--grid);
+      background: var(--graphite);
+    }
+    .metric-bar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-bottom: 1px solid var(--grid);
+      background: rgba(30, 34, 41, 0.6);
+    }
+    .metric-bar .cell {
+      padding: 10px 12px;
+      border-right: 1px solid var(--grid);
+    }
+    .metric-bar .cell:last-child { border-right: none; }
+    .lbl {
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.33;
+      color: var(--silver);
+    }
+    .val {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.43;
+      font-variant-numeric: tabular-nums;
+      margin-top: 2px;
+    }
+    .val.cyan { color: var(--cyan); }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 0 8px;
+      border-bottom: 1px solid var(--grid);
+      overflow-x: auto;
+    }
+    .tab {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--silver);
+      padding: 10px 12px;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .tab.on {
+      font-weight: 600;
+      color: var(--white);
+      border-bottom-color: var(--cyan);
+    }
+
+    .body-pad { padding: 12px 16px 16px; }
+
+    .next {
+      border-radius: 8px;
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      background: rgba(0, 212, 255, 0.06);
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .next .lbl { margin-bottom: 6px; }
+    .next .msg { font-size: 14px; font-weight: 600; color: var(--white); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    th {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--silver);
+      padding: 8px 8px 10px 0;
+      border-bottom: 1px solid var(--grid);
+    }
+    td {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--silver);
+      padding: 12px 8px 12px 0;
+      border-bottom: 1px solid rgba(30, 34, 41, 0.8);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    td.name {
+      font-weight: 600;
+      color: var(--white);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--cyan);
+    }
+    .badge.warn { background: rgba(251, 191, 36, 0.12); color: var(--warn); }
+    .badge.bad { background: rgba(238, 39, 55, 0.12); color: var(--critical); }
+    .badge.ok { background: rgba(52, 211, 153, 0.12); color: var(--ok); }
+    .open {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--cyan);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .open:hover { text-decoration: underline; }
+
+    .foot {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #52525b;
+      text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      .metric-bar { grid-template-columns: repeat(2, 1fr); }
+      .metric-bar .cell:nth-child(5) { grid-column: span 2; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="page-h">
+      <div>
+        <h1>Mission control</h1>
+        <p>Live summary · refresh 30s · PORTAL_REPO_ROOT</p>
+      </div>
+      <button type="button" class="btn">Refresh</button>
+    </header>
+
+    <div class="workspace">
+      <div class="metric-bar">
+        <div class="cell"><div class="lbl">SSOT</div><div class="val">0.3h</div></div>
+        <div class="cell"><div class="lbl">UNICOM</div><div class="val">3</div></div>
+        <div class="cell"><div class="lbl">Risk</div><div class="val cyan">2</div></div>
+        <div class="cell"><div class="lbl">Knowledge</div><div class="val">not ready</div></div>
+        <div class="cell"><div class="lbl">Verify</div><div class="val">pass</div></div>
+      </div>
+
+      <nav class="tabs" aria-label="Domains">
+        <button type="button" class="tab on">Overview</button>
+        <button type="button" class="tab">SSOT</button>
+        <button type="button" class="tab">Ops</button>
+        <button type="button" class="tab">Knowledge</button>
+        <button type="button" class="tab">UNICOM</button>
+        <button type="button" class="tab">Context</button>
+        <button type="button" class="tab">Prompt</button>
+      </nav>
+
+      <div class="body-pad">
+        <div class="next">
+          <div class="lbl">Next action</div>
+          <div class="msg">Wire UNICOM /health into summary API</div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>System</th>
+              <th>Status</th>
+              <th>Signal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name">Agent SSOT</td>
+              <td><span class="badge ok">Fresh</span></td>
+              <td>HANDOFF · 0.3h</td>
+              <td><button type="button" class="open">Open</button></td>
+            </tr>
+            <tr>
+              <td class="name">Abyss CLI</td>
+              <td><span class="badge bad">Risk</span></td>
+              <td>2 dirty paths · verify OK</td>
+              <td><button type="button" class="open">Open</button></td>
+            </tr>
+            <tr>
+              <td class="name">Knowledge</td>
+              <td><span class="badge warn">Watch</span></td>
+              <td>Registry not_ready</td>
+              <td><button type="button" class="open">Open</button></td>
+            </tr>
+            <tr>
+              <td class="name">UNICOM</td>
+              <td><span class="badge warn">Degraded</span></td>
+              <td>3 agents · hub</td>
+              <td><button type="button" class="open">Open</button></td>
+            </tr>
+            <tr>
+              <td class="name">Context</td>
+              <td><span class="badge ok">Local</span></td>
+              <td>Handbook capsule</td>
+              <td><button type="button" class="open">Open</button></td>
+            </tr>
+            <tr>
+              <td class="name">Prompt</td>
+              <td><span class="badge ok">Pass</span></td>
+              <td>Audit tail OK</td>
+              <td><button type="button" class="open">Open</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="foot">v9 · portal-design.ts scale (12/14/18px) · Sentra cyan · one table · tab = drill-down in app</p>
+  </div>
+</body>
+</html>

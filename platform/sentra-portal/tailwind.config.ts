@@ -1,14 +1,17 @@
-/* global module, require */
-/* eslint-disable @typescript-eslint/no-require-imports */
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import sentraTailwindPreset from '@sentra/design-token/tailwind'
+import type { Config } from 'tailwindcss'
+import tailwindcssAnimate from 'tailwindcss-animate'
+
+const config: Config = {
   darkMode: ['class'],
+  presets: [sentraTailwindPreset as unknown as Config],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
     '*.{js,ts,jsx,tsx,mdx}',
+    '../../packages/shared/design-token/packages/sentra-ui/src/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {
@@ -52,7 +55,14 @@ module.exports = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontFamily: {
+        sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
+        mono: ['IBM Plex Mono', 'ui-monospace', 'monospace'],
+        display: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
+      },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [tailwindcssAnimate],
 }
+
+export default config

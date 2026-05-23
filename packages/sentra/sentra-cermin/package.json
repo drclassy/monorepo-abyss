@@ -11,17 +11,17 @@
     "clean": "rm -rf .turbo node_modules dist"
   },
   "dependencies": {
-    "fs-extra": "^11.2.0",
+    "fs-extra": "^11.3.5",
     "pdf-parse": "^2.4.5",
     "zod": "^3.24.0"
   },
   "devDependencies": {
     "@the-abyss/config-eslint": "workspace:*",
     "@the-abyss/config-typescript": "workspace:*",
-    "@types/fs-extra": "^11.0.0",
-    "@types/node": "^22.0.0",
-    "@types/pdf-parse": "^1.1.5",
-    "vitest": "^2.1.0"
+    "@types/fs-extra": "11.0.4",
+    "@types/node": "22.19.19",
+    "@types/pdf-parse": "1.1.5",
+    "vitest": "2.1.9"
   },
   "sentra:tier": "crown-jewel"
 }

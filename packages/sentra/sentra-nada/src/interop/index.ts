@@ -16,9 +16,7 @@ export {
   getSymphonyCdsServiceDefinition,
 } from './cds-hooks-service-definition'
 
-export {
-  mapSymphonyResultToCdsHooksResponse,
-} from './symphony-to-cds-hooks'
+export { mapSymphonyResultToCdsHooksResponse } from './symphony-to-cds-hooks'
 
 export {
   SYMPHONY_CDS_CARD_SOURCE,

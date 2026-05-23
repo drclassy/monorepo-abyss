@@ -9,7 +9,9 @@ function normalizeMedicationName(value: string): string {
 }
 
 function buildCheckedPairs(activeMedications: readonly string[]): readonly string[] {
-  const normalized = [...new Set(activeMedications.map(normalizeMedicationName).filter(Boolean))].sort()
+  const normalized = [
+    ...new Set(activeMedications.map(normalizeMedicationName).filter(Boolean)),
+  ].sort()
   const pairs: string[] = []
 
   for (let index = 0; index < normalized.length; index += 1) {
@@ -24,7 +26,7 @@ function buildCheckedPairs(activeMedications: readonly string[]): readonly strin
 }
 
 export function checkDrugInteractions(
-  input: ClinicalReferenceDdiCheckInput,
+  input: ClinicalReferenceDdiCheckInput
 ): ClinicalReferenceDdiCheckResult {
   return {
     status: 'not_configured',

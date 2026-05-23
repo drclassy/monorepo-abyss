@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v13</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 14px;
+      background: #050506;
+      color: #fafafa;
+    }
+    .dock {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(5, 5, 6, 0.92);
+      border-bottom: 1px solid #1f1f23;
+      backdrop-filter: blur(8px);
+    }
+    .dock .brand { font-size: 14px; font-weight: 600; }
+    .dock .idx { font-size: 12px; color: #71717a; }
+    .rail {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 12px 16px 16px;
+      background: rgba(5, 5, 6, 0.94);
+      border-top: 1px solid #1f1f23;
+    }
+    .rail .next-lbl { font-size: 12px; color: #71717a; }
+    .rail .next-txt { font-size: 14px; font-weight: 600; margin-top: 4px; }
+    .dots {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      justify-content: center;
+    }
+    .dots i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3f3f46;
+    }
+    .dots i.on { background: #00d4ff; }
+
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 72px 24px 120px;
+      text-align: center;
+    }
+    .slide .status {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      border: 1px solid #27272a;
+    }
+    .slide .status.ok { color: #34d399; border-color: rgba(52,211,153,0.35); }
+    .slide .status.warn { color: #fbbf24; border-color: rgba(251,191,36,0.35); }
+    .slide .status.bad { color: #f87171; border-color: rgba(248,113,113,0.35); }
+    .slide h1 {
+      font-size: clamp(28px, 6vw, 40px);
+      font-weight: 600;
+      line-height: 1.15;
+    }
+    .slide .hint {
+      font-size: 14px;
+      color: #a1a1aa;
+      margin-top: 12px;
+      max-width: 28ch;
+    }
+    .slide .metric {
+      font-size: 56px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: #00d4ff;
+      margin-top: 28px;
+      line-height: 1;
+    }
+    .slide .sub {
+      font-size: 13px;
+      color: #71717a;
+      margin-top: 8px;
+    }
+    .slide button {
+      margin-top: 32px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid #3f3f46;
+      background: #111113;
+      color: #fafafa;
+      cursor: pointer;
+    }
+    .slide button:hover { border-color: #00d4ff; color: #00d4ff; }
+    .slide--intro { background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,212,255,0.08), transparent); }
+    .slide--intro h1 { font-size: 22px; }
+    .slide--intro p { color: #71717a; margin-top: 8px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header class="dock">
+    <span class="brand">PORTAL</span>
+    <span class="idx" id="idx">Overview</span>
+  </header>
+
+  <section class="slide slide--intro" data-label="Overview">
+    <p style="font-size:12px;color:#71717a;margin-bottom:12px">Scroll ↓ · one system per screen</p>
+    <h1>Mission control</h1>
+    <p>Live · 30s · six domains</p>
+    <p class="metric" style="font-size:32px;margin-top:24px">6</p>
+    <p class="sub">systems monitored</p>
+  </section>
+
+  <section class="slide" data-label="Agent SSOT">
+    <span class="status ok">Fresh</span>
+    <h1>Agent SSOT</h1>
+    <p class="hint">HANDOFF · PROGRESS · ssot-daily</p>
+    <p class="metric">0.3h</p>
+    <p class="sub">since HANDOFF touch</p>
+    <button type="button">Open detail</button>
+  </section>
+
+  <section class="slide" data-label="Abyss CLI">
+    <span class="status bad">Risk</span>
+    <h1>Abyss CLI</h1>
+    <p class="hint">Branch · dirty tree · verify</p>
+    <p class="metric">2</p>
+    <p class="sub">dirty RISK paths</p>
+    <button type="button">Open detail</button>
+  </section>
+
+  <section class="slide" data-label="Knowledge">
+    <span class="status warn">Watch</span>
+    <h1>Knowledge</h1>
+    <p class="hint">Registry · eval gate</p>
+    <p class="metric" style="font-size:28px">not ready</p>
+    <p class="sub">registry readiness</p>
+    <button type="button">Open detail</button>
+  </section>
+
+  <section class="slide" data-label="UNICOM">
+    <span class="status warn">Degraded</span>
+    <h1>UNICOM</h1>
+    <p class="hint">Hub · SSE · agents</p>
+    <p class="metric">3</p>
+    <p class="sub">agents registered</p>
+    <button type="button">Open detail</button>
+  </section>
+
+  <section class="slide" data-label="Context">
+    <span class="status ok">Local</span>
+    <h1>Context</h1>
+    <p class="hint">Handbook capsule · local</p>
+    <p class="metric" style="font-size:28px">OK</p>
+    <p class="sub">context engine</p>
+    <button type="button">Open detail</button>
+  </section>
+
+  <section class="slide" data-label="Prompt">
+    <span class="status ok">Pass</span>
+    <h1>Prompt</h1>
+    <p class="hint">Extension audit · tail</p>
+    <p class="metric" style="font-size:28px">pass</p>
+    <p class="sub">last audit</p>
+    <button type="button">Open detail</button>
+  </section>
+
+  <footer class="rail">
+    <div class="next-lbl">Next action</div>
+    <div class="next-txt">Wire UNICOM /health into summary API</div>
+    <div class="dots" aria-hidden="true">
+      <i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+  </footer>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const idx = document.getElementById('idx');
+    const dots = [...document.querySelectorAll('.dots i')];
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const i = slides.indexOf(e.target);
+        idx.textContent = e.target.dataset.label || 'Overview';
+        dots.forEach((d, j) => d.classList.toggle('on', j === i));
+      });
+    }, { threshold: 0.55 });
+    slides.forEach((s) => obs.observe(s));
+  </script>
+</body>
+</html>

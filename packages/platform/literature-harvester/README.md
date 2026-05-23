@@ -20,10 +20,10 @@ Default output:
 
 ## Exports
 
-| Export | Type | Description |
-| --- | --- | --- |
-| `LiteratureHarvester` | class | Search, dedupe, and harvest literature |
-| `harvestLiterature` | function | Convenience wrapper for one-off runs |
-| `searchEuropePmc` | function | Europe PMC search connector |
-| `searchPubMed` | function | PubMed search connector |
-| `searchCrossref` | function | Crossref search connector |
+| Export                | Type     | Description                            |
+| --------------------- | -------- | -------------------------------------- |
+| `LiteratureHarvester` | class    | Search, dedupe, and harvest literature |
+| `harvestLiterature`   | function | Convenience wrapper for one-off runs   |
+| `searchEuropePmc`     | function | Europe PMC search connector            |
+| `searchPubMed`        | function | PubMed search connector                |
+| `searchCrossref`      | function | Crossref search connector              |

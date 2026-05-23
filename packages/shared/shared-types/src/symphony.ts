@@ -4,11 +4,7 @@ export type SymphonyContractVersion = typeof SYMPHONY_CONTRACT_VERSION
 
 export type SymphonyEngineStatus = 'ready' | 'busy' | 'degraded' | 'offline'
 
-export type SymphonyDecisionCategory =
-  | 'recommended'
-  | 'review'
-  | 'must_not_miss'
-  | 'deferred'
+export type SymphonyDecisionCategory = 'recommended' | 'review' | 'must_not_miss' | 'deferred'
 
 export type SymphonyAlertSeverity = 'critical' | 'high' | 'warning' | 'info'
 
@@ -76,18 +72,9 @@ export type SymphonyConfidenceBand = 'high' | 'moderate' | 'low' | 'insufficient
 
 export type SymphonySexAtBirth = 'female' | 'male' | 'intersex' | 'unknown'
 
-export type SymphonyPregnancyStatus =
-  | 'pregnant'
-  | 'not_pregnant'
-  | 'unknown'
-  | 'not_applicable'
+export type SymphonyPregnancyStatus = 'pregnant' | 'not_pregnant' | 'unknown' | 'not_applicable'
 
-export type SymphonyConsciousnessLevel =
-  | 'alert'
-  | 'voice'
-  | 'pain'
-  | 'unresponsive'
-  | 'unknown'
+export type SymphonyConsciousnessLevel = 'alert' | 'voice' | 'pain' | 'unresponsive' | 'unknown'
 
 export type SymphonyTrajectoryDirection = 'improving' | 'stable' | 'worsening' | 'unknown'
 
@@ -396,8 +383,16 @@ export interface SymphonyClinicalSnapshot {
 
 /** 10 criterion operators. 'in' operator added from Assist source (not in FEATURE.md§737). */
 export type SymphonyCriterionOp =
-  | 'gte' | 'lte' | 'gt' | 'lt' | 'eq' | 'neq'
-  | 'between' | 'true' | 'false' | 'in'
+  | 'gte'
+  | 'lte'
+  | 'gt'
+  | 'lt'
+  | 'eq'
+  | 'neq'
+  | 'between'
+  | 'true'
+  | 'false'
+  | 'in'
 
 export interface SymphonyCriterion {
   field: string
@@ -437,7 +432,9 @@ export interface SymphonyClinicalPattern {
 /** Relaxed pattern type for internal or future extended registries beyond the canonical gate union. */
 export type SymphonyEvaluablePattern = Omit<SymphonyClinicalPattern, 'gate'> & { gate: string }
 
-export interface SymphonyPatternMatch<P extends SymphonyEvaluablePattern = SymphonyClinicalPattern> {
+export interface SymphonyPatternMatch<
+  P extends SymphonyEvaluablePattern = SymphonyClinicalPattern,
+> {
   pattern: P
   matchedCriteria: SymphonyCriterion[]
   score?: SymphonyScoreResult

@@ -19,7 +19,7 @@ function requireParityFixture(id: string): SymphonyParityFixtureCase {
 
 describe('SYMPHONY route parity fixtures', () => {
   it('publishes deterministic fixture cases for Dashboard and Assist parity checks', () => {
-    expect(SYMPHONY_PARITY_FIXTURE_CASES.slice(0, 5).map(fixture => fixture.id)).toEqual([
+    expect(SYMPHONY_PARITY_FIXTURE_CASES.slice(0, 5).map((fixture) => fixture.id)).toEqual([
       'adult-sepsis-respiratory-route',
       'obstetric-glucose-route',
       'pe-suspect-route',
@@ -30,11 +30,13 @@ describe('SYMPHONY route parity fixtures', () => {
   })
 
   it('publishes route-level coverage fixtures for CP-001 through CP-070', () => {
-    const cpFixtures = SYMPHONY_PARITY_FIXTURE_CASES.filter(fixture => /^cp-\d{3}-route$/.test(fixture.id))
+    const cpFixtures = SYMPHONY_PARITY_FIXTURE_CASES.filter((fixture) =>
+      /^cp-\d{3}-route$/.test(fixture.id)
+    )
 
     expect(cpFixtures).toHaveLength(70)
-    expect(cpFixtures.map(fixture => fixture.assistPatternId)).toEqual(
-      ASSIST_PATTERN_PARITY_FIXTURE_CASES.map(fixture => fixture.patternId)
+    expect(cpFixtures.map((fixture) => fixture.assistPatternId)).toEqual(
+      ASSIST_PATTERN_PARITY_FIXTURE_CASES.map((fixture) => fixture.patternId)
     )
     expect(cpFixtures[0]?.id).toBe('cp-001-route')
     expect(cpFixtures.at(-1)?.id).toBe('cp-070-route')
@@ -56,9 +58,9 @@ describe('SYMPHONY route parity fixtures', () => {
     const results = runSymphonyParityFixtures()
 
     expect(results).toHaveLength(75)
-    expect(results.every(result => result.passed)).toBe(true)
-    expect(results.flatMap(result => result.mismatches)).toEqual([])
-    const trajectory = results.find(r => r.id === 'trajectory-diagnosis-route')
+    expect(results.every((result) => result.passed)).toBe(true)
+    expect(results.flatMap((result) => result.mismatches)).toEqual([])
+    const trajectory = results.find((r) => r.id === 'trajectory-diagnosis-route')
     expect(trajectory?.snapshot.diagnosisCategories).toContain('recommended')
     expect(trajectory?.snapshot.trajectoryDirection).toBe('worsening')
   })

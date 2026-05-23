@@ -1,7 +1,7 @@
 # Abyss Orchestrator - Production Dockerfile
 # Optimized for Node 22 and PNPM Workspaces
 
-FROM node:22-alpine AS base
+FROM node:22-alpine@sha256:8ea2348b068a9544dae7317b4f3aafcdc032df1647bb7d768a05a5cad1a7683f AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN npm install -g pnpm

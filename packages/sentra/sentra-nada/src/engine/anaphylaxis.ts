@@ -18,10 +18,7 @@
  * Phase B when the 70-CP parity adapter defines pediatric shock cuts.
  */
 
-import type {
-  SymphonyAlert,
-  SymphonyVitalsInput,
-} from '../contracts'
+import type { SymphonyAlert, SymphonyVitalsInput } from '../contracts'
 
 export type SymphonyAnaphylaxisOrganSystem =
   | 'skin_mucosa'
@@ -116,10 +113,7 @@ function combineText(input: SymphonyAnaphylaxisInput): string {
   return [input.chiefComplaint ?? '', input.additionalComplaint ?? ''].join(' ')
 }
 
-function hasAllergenExposureByName(
-  text: string,
-  allergies: string[] | undefined
-): boolean {
+function hasAllergenExposureByName(text: string, allergies: string[] | undefined): boolean {
   if (!allergies || allergies.length === 0) return false
   const lowered = text.toLowerCase()
   return allergies.some((a) => a.trim().length > 0 && lowered.includes(a.trim().toLowerCase()))

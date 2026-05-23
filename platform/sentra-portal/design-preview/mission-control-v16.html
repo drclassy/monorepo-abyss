@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PORTAL v16</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #0c0c0c;
+      color: #c8c8c8;
+      font-family: 'IBM Plex Mono', ui-monospace, monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+    .term { max-width: 42rem; margin: 0 auto; }
+    .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .head .sans { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 600; color: #fafafa; }
+    .head button {
+      font-family: inherit;
+      font-size: 12px;
+      background: transparent;
+      border: 1px solid #333;
+      color: #888;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .line { color: #444; user-select: none; }
+    .row {
+      display: grid;
+      grid-template-columns: 10rem 5rem 1fr;
+      gap: 12px;
+      padding: 6px 0;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+      font: inherit;
+      width: 100%;
+      text-align: left;
+    }
+    .row:hover { color: #fff; }
+    .row:hover .val { color: #00d4ff; }
+    .sys { color: #aaa; }
+    .st.ok { color: #4ade80; }
+    .st.warn { color: #fbbf24; }
+    .st.bad { color: #f87171; }
+    .val { color: #888; }
+    .prompt { margin-top: 20px; color: #00d4ff; }
+    .prompt span { color: #666; }
+    .foot { margin-top: 24px; font-size: 11px; color: #555; text-align: center; font-family: 'IBM Plex Sans', sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="term">
+    <div class="head">
+      <span class="sans">portal mission-control</span>
+      <button type="button">refresh</button>
+    </div>
+    <p class="line">────────────────────────────────────────</p>
+    <button type="button" class="row"><span class="sys">agent-ssot</span><span class="st ok">fresh</span><span class="val">0.3h handoff</span></button>
+    <button type="button" class="row"><span class="sys">abyss-cli</span><span class="st bad">risk</span><span class="val">2 dirty paths</span></button>
+    <button type="button" class="row"><span class="sys">knowledge</span><span class="st warn">watch</span><span class="val">not_ready</span></button>
+    <button type="button" class="row"><span class="sys">unicom</span><span class="st warn">degraded</span><span class="val">3 agents</span></button>
+    <button type="button" class="row"><span class="sys">context</span><span class="st ok">local</span><span class="val">handbook</span></button>
+    <button type="button" class="row"><span class="sys">prompt</span><span class="st ok">pass</span><span class="val">verify ok</span></button>
+    <p class="line">────────────────────────────────────────</p>
+    <p class="prompt"><span>next&gt;</span> wire UNICOM /health into summary API</p>
+    <p class="foot">v16 · terminal · yes / no</p>
+  </div>
+</body>
+</html>

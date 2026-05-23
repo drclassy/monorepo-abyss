@@ -63,7 +63,6 @@ export class GuardEngine {
       'dob',
     )
     flag(/\b[A-Z]\d{2}(?:\.\d{1,4})?\b/g, 'icd10')
-
     return clean
   }
 

@@ -50,7 +50,7 @@ function baseResult(overrides: Partial<SymphonyResult> = {}): SymphonyResult {
 function hypothesis(
   rank: number,
   icd10Code: string,
-  category: SymphonyDiagnosticHypothesis['category'] = 'working',
+  category: SymphonyDiagnosticHypothesis['category'] = 'working'
 ): SymphonyDiagnosticHypothesis {
   return {
     id: `hyp-${rank}`,
@@ -77,7 +77,7 @@ function criticalAlert(id: string): SymphonyAlert {
 }
 
 function shadow(
-  agreementLevel: SymphonyShadowComparison['agreementLevel'],
+  agreementLevel: SymphonyShadowComparison['agreementLevel']
 ): SymphonyShadowComparison {
   return {
     oldPathAvailable: true,
@@ -93,30 +93,30 @@ function shadow(
 describe('cds-hooks card policy', () => {
   it('builds one critical card per critical alert', () => {
     const cards = buildCriticalAlertCards(
-      baseResult({ alerts: [criticalAlert('alert-a'), criticalAlert('alert-b')] }),
+      baseResult({ alerts: [criticalAlert('alert-a'), criticalAlert('alert-b')] })
     )
     expect(cards).toHaveLength(2)
-    expect(cards.map(card => card.indicator)).toEqual(['critical', 'critical'])
+    expect(cards.map((card) => card.indicator)).toEqual(['critical', 'critical'])
   })
 
   it('omits must-not-miss cards when no must_not_miss hypothesis is present', () => {
     const cards = buildMustNotMissCards(
-      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9', 'working')] }),
+      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9', 'working')] })
     )
     expect(cards).toEqual([])
   })
 
   it('suppresses top hypothesis card when top category is must_not_miss', () => {
     const cards = buildTopHypothesisCards(
-      baseResult({ nativeHypotheses: [hypothesis(1, 'A41.9', 'must_not_miss')] }),
+      baseResult({ nativeHypotheses: [hypothesis(1, 'A41.9', 'must_not_miss')] })
     )
     expect(cards).toEqual([])
   })
 
   it('emits a disposition card only when review is required', () => {
-    expect(buildDispositionCards(baseResult({ clinicalDisposition: 'requires_review' }))).toHaveLength(
-      1,
-    )
+    expect(
+      buildDispositionCards(baseResult({ clinicalDisposition: 'requires_review' }))
+    ).toHaveLength(1)
     expect(buildDispositionCards(baseResult({ clinicalDisposition: 'ok' }))).toEqual([])
   })
 

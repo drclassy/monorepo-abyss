@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+
 import type { ClinicalTrajectoryVitalPoint } from '@the-abyss/shared-types'
+
 import { computeNEWS2 } from './news2-score'
 
 // Minimal vital builder — source is irrelevant for score computation
@@ -123,31 +125,31 @@ test('mild deterioration: spo2=94, rr=22, sbp=105, hr=100, temp=37.8, alert → 
 test('Scale 2: spo2 84 scores lower than Scale 1 (84-85 → 2, not 3)', () => {
   const s1 = computeNEWS2(vital({ spo2: 84 }))
   const s2 = computeNEWS2(vital({ spo2: 84 }), { spo2Scale: 2 })
-  assert.ok(s2! < s1!, `expected Scale 2 < Scale 1, got s1=${s1} s2=${s2}`)
+  assert.ok((s2 as number) < (s1 as number), `expected Scale 2 < Scale 1, got s1=${s1} s2=${s2}`)
 })
 
 test('Scale 2: spo2 86 scores lower than Scale 1 (86-87 → 1, not 3)', () => {
   const s1 = computeNEWS2(vital({ spo2: 86 }))
   const s2 = computeNEWS2(vital({ spo2: 86 }), { spo2Scale: 2 })
-  assert.ok(s2! < s1!)
+  assert.ok((s2 as number) < (s1 as number))
 })
 
 test('Scale 2: spo2 88 in COPD target range → SpO2 score 0 (Scale 1 scores 3)', () => {
   const s1 = computeNEWS2(vital({ spo2: 88 }))
   const s2 = computeNEWS2(vital({ spo2: 88 }), { spo2Scale: 2 })
-  assert.ok(s2! < s1!)
+  assert.ok((s2 as number) < (s1 as number))
 })
 
 test('Scale 2: spo2 92 at target ceiling → SpO2 score 0 (Scale 1 scores 2)', () => {
   const s1 = computeNEWS2(vital({ spo2: 92 }))
   const s2 = computeNEWS2(vital({ spo2: 92 }), { spo2Scale: 2 })
-  assert.ok(s2! < s1!)
+  assert.ok((s2 as number) < (s1 as number))
 })
 
 test('Scale 2: spo2 93 on air → SpO2 score 0 (acceptable; Scale 1 scores 2)', () => {
   const s1 = computeNEWS2(vital({ spo2: 93 }))
   const s2 = computeNEWS2(vital({ spo2: 93 }), { spo2Scale: 2 })
-  assert.ok(s2! < s1!)
+  assert.ok((s2 as number) < (s1 as number))
 })
 
 test('Scale 2: spo2 97 fully normal → same score as Scale 1 (both 0)', () => {

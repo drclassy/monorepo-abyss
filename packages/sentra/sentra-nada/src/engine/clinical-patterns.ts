@@ -67,10 +67,6 @@ export function evaluateClinicalPatterns(
   options?: SymphonyPatternEvaluationOptions,
   triggeredAt?: string
 ): SymphonyAlert[] {
-  const matches = evaluateSymphonyPatterns(
-    snapshot,
-    SYMPHONY_CLINICAL_PATTERNS,
-    options
-  )
-  return matches.map(match => clinicalPatternMatchToSymphonyAlert(match, triggeredAt))
+  const matches = evaluateSymphonyPatterns(snapshot, SYMPHONY_CLINICAL_PATTERNS, options)
+  return matches.map((match) => clinicalPatternMatchToSymphonyAlert(match, triggeredAt))
 }

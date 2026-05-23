@@ -1,8 +1,5 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-import type {
-  SymphonyClinicalFact,
-  SymphonyDiagnosticHypothesis,
-} from '../contracts'
+import type { SymphonyClinicalFact, SymphonyDiagnosticHypothesis } from '../contracts'
 
 import type { SymphonyDiagnosisPack } from './diagnosis-packs'
 import type { SymphonySyndromeMatch } from './syndrome-classifier'
@@ -20,7 +17,7 @@ export interface SymphonyNativeDifferentialResult {
 type HypothesisCategory = SymphonyDiagnosticHypothesis['category']
 
 function hasFact(facts: readonly SymphonyClinicalFact[], key: string): boolean {
-  return facts.some(item => item.key === key)
+  return facts.some((item) => item.key === key)
 }
 
 function clampConfidence(raw: number): number {
@@ -37,16 +34,16 @@ function categorize(pack: SymphonyDiagnosisPack, confidence: number): Hypothesis
 }
 
 export function buildSymphonyNativeDifferential(
-  input: SymphonyNativeDifferentialInput,
+  input: SymphonyNativeDifferentialInput
 ): SymphonyNativeDifferentialResult {
-  const matchedSyndromeIds = new Set(input.syndromes.map(item => item.id))
+  const matchedSyndromeIds = new Set(input.syndromes.map((item) => item.id))
 
   const hypotheses = input.packs
-    .filter(pack => matchedSyndromeIds.has(pack.syndromeFamily))
-    .map(pack => {
-      const supports = pack.supportKeys.filter(key => hasFact(input.facts, key))
-      const weakens = pack.weakenKeys.filter(key => hasFact(input.facts, key))
-      const missing = pack.supportKeys.filter(key => !hasFact(input.facts, key))
+    .filter((pack) => matchedSyndromeIds.has(pack.syndromeFamily))
+    .map((pack) => {
+      const supports = pack.supportKeys.filter((key) => hasFact(input.facts, key))
+      const weakens = pack.weakenKeys.filter((key) => hasFact(input.facts, key))
+      const missing = pack.supportKeys.filter((key) => !hasFact(input.facts, key))
 
       const rawScore = 0.35 + supports.length * 0.16 - weakens.length * 0.08
       const confidence = clampConfidence(rawScore)

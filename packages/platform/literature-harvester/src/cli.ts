@@ -31,7 +31,9 @@ async function main() {
 
   const query = values.query ?? positionals.join(' ').trim()
   if (!query) {
-    console.error('Usage: pnpm --filter @the-abyss/literature-harvester harvest -- --query "heart failure"')
+    console.error(
+      'Usage: pnpm --filter @the-abyss/literature-harvester harvest -- --query "heart failure"'
+    )
     process.exitCode = 1
     return
   }

@@ -4,7 +4,7 @@
 services:
   # Abyss Database (PostgreSQL)
   abyss-database:
-    image: postgres:16-alpine
+    image: postgres:16-alpine@sha256:16bc17c64a573ef34162af9298258d1aec548232985b33ed7b1eac33ba35c229
     container_name: Abyss-Database
     restart: unless-stopped
     environment:
@@ -23,7 +23,7 @@ services:
 
   # Abyss Message Broker (Kafka via Confluent)
   abyss-zookeeper:
-    image: confluentinc/cp-zookeeper:7.5.0
+    image: confluentinc/cp-zookeeper:7.5.0@sha256:02f6c042bb9a7844382fc4cedc513a44585d8a5acae873fb9e510e3ca9dcabc6
     container_name: Abyss-Zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -32,7 +32,7 @@ services:
       - "2181:2181"
 
   abyss-kafka:
-    image: confluentinc/cp-kafka:7.5.0
+    image: confluentinc/cp-kafka:7.5.0@sha256:fbbb6fa11b258a88b83f54d4f0bddfcffbf2279f99d66a843486e3da7bdfbf41
     container_name: Abyss-Kafka
     ports:
       - "9092:9092"
@@ -48,7 +48,7 @@ services:
 
   # Abyss AI Engine (Langflow)
   abyss-ai-engine:
-    image: langflowai/langflow:latest
+    image: langflowai/langflow:latest@sha256:59b00513151c224090e2d062ba94b2b5ba7f9f46922d2704bdf1090b59424d81
     container_name: Abyss-AI-Engine
     restart: unless-stopped
     ports:
@@ -62,7 +62,7 @@ services:
 
   # Abyss Cache (Redis)
   abyss-cache:
-    image: redis:7-alpine
+    image: redis:7-alpine@sha256:6ab0b6e7381779332f97b8ca76193e45b0756f38d4c0dcda72dbb3c32061ab99
     container_name: Abyss-Cache
     restart: unless-stopped
     ports:

@@ -4,6 +4,8 @@ import { existsSync } from 'fs'
 import { mkdir, readdir, readFile, writeFile } from 'fs/promises'
 import { basename, join, relative, resolve } from 'path'
 
+import type { Prisma } from '../../../prisma/generated/prisma'
+
 import {
   appendClinicalCaseAuditEvent,
   CLINICAL_CASE_AUDIT_EVENTS,
@@ -19,7 +21,6 @@ import type {
   ClinicalReportPhysicalExam,
   ClinicalReportPlan,
 } from '@/lib/report/clinical-report'
-import type { Prisma } from '../../../prisma/generated/prisma'
 
 export const REPORTS_DIR = join(process.cwd(), 'runtime', 'clinical-reports')
 export const REPORTS_PDF_DIR = join(REPORTS_DIR, 'pdf')

@@ -13,7 +13,7 @@ function inferPopulation(input: ClinicalReferenceDosageInput): 'adult' | 'pediat
 }
 
 export function resolveDosageRecommendation(
-  input: ClinicalReferenceDosageInput,
+  input: ClinicalReferenceDosageInput
 ): ClinicalReferenceDosageResult {
   const medicationName = input.medicationName.trim().toLowerCase()
   const population = inferPopulation(input)

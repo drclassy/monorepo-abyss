@@ -3,6 +3,52 @@
 Append-only for durable choices and repeated lessons. Add new entries at the
 top. Older full ledgers are preserved in `.agent/archive/legacy-root/`.
 
+## 2026-05-21 - PORTAL UI: 10-design gallery on rebuild; v17 built
+
+Decision: When Chief says **NO** to a PORTAL Mission Control mock, the agent
+must rebuild from zero and present **10** distinct HTML designs in
+`platform/sentra-portal/design-preview/gallery/` (index at `gallery/index.html`),
+not a single tease mock. Chief picks one (e.g. `yes #05`) before Next.js work.
+
+Approved implementation: **v17** — tabs (6 systems once) + focus pane + next
+action rail; no Kokonut/Letta sidebar on `/dashboard`; live `/api/portal/summary`.
+
+Reason: Chief ordered build and rejected repeated single generic pivots.
+
+Status: Active. Gallery and `design-preview/PROTOCOL.md` document the rule.
+
+## 2026-05-21 - UNICOM Hub v2: SSE Subscribe, not polling
+
+Decision: UNICOM Hub menggunakan SSE (Server-Sent Events) push untuk real-time
+agent-to-agent communication, bukan polling (`receive_messages`).
+
+Reason: Instruksi Chief adalah "hub tempat para Agent bisa langsung berdiskusi".
+Polling membutuhkan Chief sebagai relay setiap pesan — agent tidak bisa diskusi
+autonom. SSE subscribe endpoint (`GET /subscribe/:agentId`) memungkinkan push
+real-time (<100ms) tanpa Chief intervention.
+
+Architecture:
+- Satu SSE stream per agent (`GET /subscribe/:agentId`)
+- Dual-path delivery: SSE push jika agent online, inbox enqueue jika offline
+- Keepalive ping 15 detik untuk mencegah timeout
+- Graceful disconnect pada eviction dan server close
+
+Status: Active. Implemented di `packages/platform/unicom`.
+
+## 2026-05-21 - Design token UI lint workflow stays as a template
+
+Decision: `packages/shared/design-token/github/workflows/ui-lint.yml` remains a
+template/reference workflow and is not treated as an active root GitHub Actions
+workflow.
+
+Reason: The file lives under the design-token package tree, not
+`.github/workflows/`. Its `token-sync` removal would change CI/CD delivery
+behavior, so it should not be cleaned up as ordinary dirty-tree noise without a
+separate governance decision.
+
+Status: Active. Hold current diff until Chief explicitly asks to archive,
+promote, or rewrite it.
+
 ## 2026-05-16 - Minimal `.agent/` SSOT adopted
 
 Decision: `.agent/` is knowledge only and uses five root files plus three
@@ -151,4 +197,4 @@ Status: Active.
 - Binary PDFs must be transferred as binary; text-mode corruption is not
   reversible.
 
-Last updated: 2026-05-20
+Last updated: 2026-05-21

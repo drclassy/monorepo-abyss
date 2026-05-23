@@ -1,10 +1,7 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import { describe, expect, it } from 'vitest'
 
-import {
-  composeSymphonyExplainability,
-  determineSymphonyClinicalDisposition,
-} from '../index'
+import { composeSymphonyExplainability, determineSymphonyClinicalDisposition } from '../index'
 
 describe('determineSymphonyClinicalDisposition', () => {
   it('marks requires_review when critical alerts coexist with coherent hypotheses', () => {
@@ -61,7 +58,7 @@ describe('determineSymphonyClinicalDisposition', () => {
       arbiterRequiresReview: true,
     }
     expect(determineSymphonyClinicalDisposition(input)).toBe(
-      determineSymphonyClinicalDisposition(input),
+      determineSymphonyClinicalDisposition(input)
     )
   })
 })
@@ -84,7 +81,7 @@ describe('composeSymphonyExplainability', () => {
       supportKeys: [],
       missingKeys: ['htn_severity'],
     })
-    expect(lines.some(line => line.includes('Faktor pendukung: tidak ada'))).toBe(true)
+    expect(lines.some((line) => line.includes('Faktor pendukung: tidak ada'))).toBe(true)
   })
 
   it('emits "tidak ada" placeholder when missing keys are empty', () => {
@@ -93,7 +90,7 @@ describe('composeSymphonyExplainability', () => {
       supportKeys: ['symptom_fever'],
       missingKeys: [],
     })
-    expect(lines.some(line => line.includes('Data yang masih dibutuhkan: tidak ada'))).toBe(true)
+    expect(lines.some((line) => line.includes('Data yang masih dibutuhkan: tidak ada'))).toBe(true)
   })
 
   it('omits weaken line when weakenKeys are not provided or empty', () => {
@@ -102,7 +99,7 @@ describe('composeSymphonyExplainability', () => {
       supportKeys: ['symptom_fever'],
       missingKeys: [],
     })
-    expect(lines.some(line => line.startsWith('Faktor pelemah'))).toBe(false)
+    expect(lines.some((line) => line.startsWith('Faktor pelemah'))).toBe(false)
   })
 
   it('includes weaken line when weakenKeys are non-empty', () => {
@@ -112,7 +109,7 @@ describe('composeSymphonyExplainability', () => {
       missingKeys: [],
       weakenKeys: ['symptom_chest_pain_pleuritic_absent'],
     })
-    expect(lines.some(line => line.startsWith('Faktor pelemah'))).toBe(true)
+    expect(lines.some((line) => line.startsWith('Faktor pelemah'))).toBe(true)
     expect(lines.join(' ')).toContain('symptom_chest_pain_pleuritic_absent')
   })
 
@@ -123,7 +120,7 @@ describe('composeSymphonyExplainability', () => {
       missingKeys: [],
       nextBestQuestions: [],
     })
-    expect(lines.some(line => line.startsWith('Pertanyaan klinis lanjutan'))).toBe(false)
+    expect(lines.some((line) => line.startsWith('Pertanyaan klinis lanjutan'))).toBe(false)
   })
 
   it('includes next-best-questions when provided', () => {
@@ -133,7 +130,7 @@ describe('composeSymphonyExplainability', () => {
       missingKeys: [],
       nextBestQuestions: ['Apakah ada batuk produktif atau ronki?'],
     })
-    expect(lines.some(line => line.startsWith('Pertanyaan klinis lanjutan'))).toBe(true)
+    expect(lines.some((line) => line.startsWith('Pertanyaan klinis lanjutan'))).toBe(true)
     expect(lines.join(' ')).toContain('batuk produktif')
   })
 
@@ -142,10 +139,7 @@ describe('composeSymphonyExplainability', () => {
       topDiagnosisName: 'Sepsis',
       supportKeys: ['symptom_fever'],
       missingKeys: [],
-      arbitrationReasons: [
-        'safety_critical_alert_present',
-        'native_must_not_miss_visible',
-      ],
+      arbitrationReasons: ['safety_critical_alert_present', 'native_must_not_miss_visible'],
     })
     const joined = lines.join(' ')
     expect(joined).toContain('Alert kritikal')
@@ -158,7 +152,7 @@ describe('composeSymphonyExplainability', () => {
       supportKeys: ['symptom_fever'],
       missingKeys: [],
     })
-    expect(lines.some(line => line.startsWith('Catatan arbiter'))).toBe(false)
+    expect(lines.some((line) => line.startsWith('Catatan arbiter'))).toBe(false)
   })
 
   it('produces deterministic output (same input → identical lines)', () => {
@@ -170,9 +164,7 @@ describe('composeSymphonyExplainability', () => {
       nextBestQuestions: ['Sumber infeksi?'],
       arbitrationReasons: ['safety_critical_alert_present'],
     }
-    expect(composeSymphonyExplainability(input)).toEqual(
-      composeSymphonyExplainability(input),
-    )
+    expect(composeSymphonyExplainability(input)).toEqual(composeSymphonyExplainability(input))
   })
 
   it('does not fabricate content when all evidence inputs are empty', () => {
@@ -183,6 +175,6 @@ describe('composeSymphonyExplainability', () => {
     })
     expect(lines).toHaveLength(3)
     expect(lines[0]).toContain('Unspecified')
-    expect(lines.some(line => line.includes('tidak ada'))).toBe(true)
+    expect(lines.some((line) => line.includes('tidak ada'))).toBe(true)
   })
 })

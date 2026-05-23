@@ -22,10 +22,7 @@ import {
 } from './composite-deterioration'
 import { determineSymphonyClinicalDisposition } from './confidence-engine'
 import { getSymphonyDiagnosisPacks } from './diagnosis-packs'
-import {
-  detectSymphonyEarlyWarningPatterns,
-  earlyWarningsToSymphonyAlerts,
-} from './early-warning'
+import { detectSymphonyEarlyWarningPatterns, earlyWarningsToSymphonyAlerts } from './early-warning'
 import { composeSymphonyExplainability } from './explainability'
 import {
   applySymphonyHybridDecisioning,
@@ -38,10 +35,7 @@ import { arbitrateSymphonyReasoning } from './reasoning-arbiter'
 import { evaluateSymphonyInstantScreeningGates } from './screening-gates'
 import { compareSymphonyShadowPaths } from './shadow-comparison'
 import { classifySymphonySyndromes } from './syndrome-classifier'
-import {
-  classifySymphonyTrafficLight,
-  trafficLightToSymphonyAlert,
-} from './traffic-light'
+import { classifySymphonyTrafficLight, trafficLightToSymphonyAlert } from './traffic-light'
 import {
   analyzeSymphonyTrajectory,
   buildSymphonyPersonalBaseline,
@@ -98,7 +92,7 @@ const NATIVE_CATEGORY_TO_DECISION: Record<
 }
 
 function nativeHypothesisToCompatibilitySuggestion(
-  hypothesis: SymphonyDiagnosticHypothesis,
+  hypothesis: SymphonyDiagnosticHypothesis
 ): SymphonyDiagnosisSuggestion {
   return {
     id: `native:${hypothesis.id}`,
@@ -219,13 +213,8 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
       syndromes,
       packs,
     })
-    const personalBaseline = buildSymphonyPersonalBaseline(
-      input.vitals,
-      input.metadata.requestedAt
-    )
-    const treatmentResponse = detectSymphonyTreatmentResponse(
-      trajectoryAnalysis.momentum.params
-    )
+    const personalBaseline = buildSymphonyPersonalBaseline(input.vitals, input.metadata.requestedAt)
+    const treatmentResponse = detectSymphonyTreatmentResponse(trajectoryAnalysis.momentum.params)
     const arbitration = arbitrateSymphonyReasoning({
       nativeHypotheses: differential.hypotheses,
       hybridSuggestions: hybridDecisioning.suggestions,
@@ -234,9 +223,7 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
       treatmentResponse,
       latestVitals,
     })
-    const hasCriticalAlert = alertsBeforeTrafficLight.some(
-      alert => alert.severity === 'critical'
-    )
+    const hasCriticalAlert = alertsBeforeTrafficLight.some((alert) => alert.severity === 'critical')
     const disposition = determineSymphonyClinicalDisposition({
       nativeHypothesisCount: arbitration.nativeHypotheses.length,
       hasCriticalAlert,
@@ -267,7 +254,7 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
   }
 
   const nativeCompatibilitySuggestions = aadiv2.nativeHypotheses.map(
-    nativeHypothesisToCompatibilitySuggestion,
+    nativeHypothesisToCompatibilitySuggestion
   )
   const trafficLightSuggestions: SymphonyDiagnosisSuggestion[] = [
     ...hybridDecisioning.suggestions,
@@ -293,7 +280,10 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
       })
     : undefined
   const trafficLightAlert = trafficLight
-    ? trafficLightToSymphonyAlert(trafficLight, latestVitals?.observedAt ?? input.metadata.requestedAt)
+    ? trafficLightToSymphonyAlert(
+        trafficLight,
+        latestVitals?.observedAt ?? input.metadata.requestedAt
+      )
     : null
 
   const shouldEvaluateOldTrafficLight =
@@ -345,11 +335,11 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     patientContext: input.patientContext,
     latestVitals,
     diagnosisSuggestions: hybridDecisioning.suggestions,
-    nativeHypotheses:
-      aadiv2.nativeHypotheses.length > 0 ? aadiv2.nativeHypotheses : undefined,
-    clinicalFacts:
-      aadiv2.clinicalFacts.length > 0 ? aadiv2.clinicalFacts : undefined,
-    alerts: trafficLightAlert ? [...alertsBeforeTrafficLight, trafficLightAlert] : alertsBeforeTrafficLight,
+    nativeHypotheses: aadiv2.nativeHypotheses.length > 0 ? aadiv2.nativeHypotheses : undefined,
+    clinicalFacts: aadiv2.clinicalFacts.length > 0 ? aadiv2.clinicalFacts : undefined,
+    alerts: trafficLightAlert
+      ? [...alertsBeforeTrafficLight, trafficLightAlert]
+      : alertsBeforeTrafficLight,
     trafficLight,
     shadowComparison,
     trajectory: {
@@ -366,9 +356,7 @@ export function assessSymphonyInput(input: SymphonyAssessmentInput): SymphonyRes
     quality: {
       completenessScore: 0,
       missingFields: [],
-      safetyFlags: aadiv2.pipelineFailed
-        ? [`aadiv2_pipeline_failure:${aadiv2.failureReason}`]
-        : [],
+      safetyFlags: aadiv2.pipelineFailed ? [`aadiv2_pipeline_failure:${aadiv2.failureReason}`] : [],
       auditHints: [
         input.metadata.requestId,
         input.metadata.caller,

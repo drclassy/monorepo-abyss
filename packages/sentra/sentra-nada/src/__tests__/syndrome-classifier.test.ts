@@ -11,7 +11,7 @@ describe('classifySymphonySyndromes', () => {
       { key: 'news2_risk', value: 'medium', sourceRefs: ['news2'] },
     ])
 
-    expect(result.map(item => item.id)).toContain('acute_respiratory_syndrome')
+    expect(result.map((item) => item.id)).toContain('acute_respiratory_syndrome')
   })
 
   it('maps fever-only evidence into acute febrile syndrome', () => {
@@ -19,7 +19,7 @@ describe('classifySymphonySyndromes', () => {
       { key: 'symptom_fever', value: true, sourceRefs: ['symptom-signals'] },
     ])
 
-    expect(result.map(item => item.id)).toContain('acute_febrile_syndrome')
+    expect(result.map((item) => item.id)).toContain('acute_febrile_syndrome')
   })
 
   it('maps severe pressure and chronic context into cardiometabolic syndrome', () => {
@@ -28,7 +28,7 @@ describe('classifySymphonySyndromes', () => {
       { key: 'trajectory_direction', value: 'worsening', sourceRefs: ['trajectory'] },
     ])
 
-    expect(result.map(item => item.id)).toContain('acute_cardiometabolic_syndrome')
+    expect(result.map((item) => item.id)).toContain('acute_cardiometabolic_syndrome')
   })
 
   it('produces deterministic output: same input yields identical result', () => {

@@ -29,8 +29,12 @@ describe('normalizeSymphonyConsciousnessToAvpu', () => {
   })
 
   it('is deterministic — same input returns same output on repeated calls', () => {
-    expect(normalizeSymphonyConsciousnessToAvpu('pain')).toBe(normalizeSymphonyConsciousnessToAvpu('pain'))
-    expect(normalizeSymphonyConsciousnessToAvpu('unknown')).toBe(normalizeSymphonyConsciousnessToAvpu('unknown'))
+    expect(normalizeSymphonyConsciousnessToAvpu('pain')).toBe(
+      normalizeSymphonyConsciousnessToAvpu('pain')
+    )
+    expect(normalizeSymphonyConsciousnessToAvpu('unknown')).toBe(
+      normalizeSymphonyConsciousnessToAvpu('unknown')
+    )
   })
 
   it('covers all four AVPU levels without overlap or gap', () => {

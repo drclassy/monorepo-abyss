@@ -88,8 +88,8 @@ describe('SYMPHONY hybrid CDSS decisioning', () => {
       },
     })
 
-    const sepsis = result.suggestions.find(suggestion => suggestion.icd10Code === 'A41.9')
-    const preeclampsia = result.suggestions.find(suggestion => suggestion.icd10Code === 'O14.9')
+    const sepsis = result.suggestions.find((suggestion) => suggestion.icd10Code === 'A41.9')
+    const preeclampsia = result.suggestions.find((suggestion) => suggestion.icd10Code === 'O14.9')
 
     expect(result.counts.mustNotMiss).toBe(1)
     expect(sepsis?.decisionCategory).toBe('must_not_miss')
@@ -234,8 +234,13 @@ describe('SYMPHONY hybrid CDSS decisioning', () => {
 
     expect(trafficLight.level).toBe('RED')
     expect(trafficLight.overrideApplied).toBe(true)
-    expect(trafficLight.gateResults.find(result => result.rule === 'Rule 6: DDI Severity')?.triggered).toBe(true)
-    expect(trafficLight.gateResults.find(result => result.rule === 'Rule 8: Acute-on-Chronic')?.triggered).toBe(true)
+    expect(
+      trafficLight.gateResults.find((result) => result.rule === 'Rule 6: DDI Severity')?.triggered
+    ).toBe(true)
+    expect(
+      trafficLight.gateResults.find((result) => result.rule === 'Rule 8: Acute-on-Chronic')
+        ?.triggered
+    ).toBe(true)
   })
 
   it('injects traffic-light output into assessment when diagnosis context is present', () => {
@@ -271,7 +276,7 @@ describe('SYMPHONY hybrid CDSS decisioning', () => {
     const result = assessSymphonyInput(input)
 
     expect(result.trafficLight?.level).toBe('RED')
-    expect(result.alerts.some(alert => alert.title.startsWith('Traffic Light'))).toBe(true)
+    expect(result.alerts.some((alert) => alert.title.startsWith('Traffic Light'))).toBe(true)
     expect(result.quality.auditHints).toContain('traffic_light:RED')
   })
 })

@@ -9,6 +9,6 @@
   "author": "Kate Voss",
   "license": "UNLICENSED",
   "dependencies": {
-    "electron": "^30.0.0"
+    "electron": "^30.5.1"
   }
 }

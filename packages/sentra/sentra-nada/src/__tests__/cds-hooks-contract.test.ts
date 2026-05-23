@@ -12,10 +12,7 @@ describe('cds-hooks contract', () => {
   it('declares only the approved hook context contract', () => {
     expect(SYMPHONY_CDS_HOOK_CONTEXT_CONTRACT.hook).toBe('patient-view')
     expect(SYMPHONY_CDS_HOOK_CONTEXT_CONTRACT.requiredFields).toEqual([])
-    expect(SYMPHONY_CDS_HOOK_CONTEXT_CONTRACT.optionalFields).toEqual([
-      'patientId',
-      'encounterId',
-    ])
+    expect(SYMPHONY_CDS_HOOK_CONTEXT_CONTRACT.optionalFields).toEqual(['patientId', 'encounterId'])
   })
 
   it('declares prefetch assumptions structurally and deterministically', () => {

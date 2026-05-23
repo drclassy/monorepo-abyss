@@ -1,9 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import fs from 'fs'
-import path from 'path'
 import os from 'os'
-import type { KnowledgeRegistry } from '../src/registry/registry-types'
+import path from 'path'
+
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+
+import { runRetrievalEvalPipeline } from '../src/evaluation/eval-pipeline'
 import type { EvalQuery } from '../src/evaluation/types'
+import type { KnowledgeRegistry } from '../src/registry/registry-types'
 
 // ─── Mock vector-store ────────────────────────────────────────────────────────
 
@@ -15,8 +18,6 @@ vi.mock('@sentra/cermin', () => ({
   DEFAULT_EMBEDDING_MODEL: 'text-embedding-004',
   DEFAULT_EMBEDDING_DIMENSIONS: 768,
 }))
-
-import { runRetrievalEvalPipeline } from '../src/evaluation/eval-pipeline'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -61,7 +62,11 @@ function makeApprovedQueryResult(sourceHash: string) {
   }
 }
 
-function setupDirs(tmpDir: string, registryEntries: KnowledgeRegistry['entries'], queries: EvalQuery[]) {
+function setupDirs(
+  tmpDir: string,
+  registryEntries: KnowledgeRegistry['entries'],
+  queries: EvalQuery[]
+) {
   const registryDir = path.join(tmpDir, 'registry')
   const embeddingArtifactsDir = path.join(tmpDir, 'embedding-artifacts')
   const queriesPath = path.join(tmpDir, 'queries.json')
@@ -71,7 +76,10 @@ function setupDirs(tmpDir: string, registryEntries: KnowledgeRegistry['entries']
   fs.mkdirSync(embeddingArtifactsDir, { recursive: true })
   fs.mkdirSync(outputDir, { recursive: true })
 
-  fs.writeFileSync(path.join(registryDir, 'registry.json'), JSON.stringify(makeRegistry(registryEntries)))
+  fs.writeFileSync(
+    path.join(registryDir, 'registry.json'),
+    JSON.stringify(makeRegistry(registryEntries))
+  )
   fs.writeFileSync(queriesPath, makeQueryFile(queries))
 
   return { registryDir, embeddingArtifactsDir, queriesPath, outputDir }
@@ -97,7 +105,7 @@ describe('runRetrievalEvalPipeline', () => {
     const { registryDir, embeddingArtifactsDir, queriesPath, outputDir } = setupDirs(
       tmpDir,
       [makeApprovedEntry('hash1')],
-      [{ query_id: 'q001', query_text: 'test query', top_k: 3 }],
+      [{ query_id: 'q001', query_text: 'test query', top_k: 3 }]
     )
 
     const summary = await runRetrievalEvalPipeline({
@@ -131,7 +139,7 @@ describe('runRetrievalEvalPipeline', () => {
       [
         { query_id: 'q001', query_text: 'first-line antibiotic for pneumonia', top_k: 3 },
         { query_id: 'q002', query_text: 'hypertension management in elderly', top_k: 3 },
-      ],
+      ]
     )
 
     const mockDbClient = {
@@ -179,7 +187,7 @@ describe('runRetrievalEvalPipeline', () => {
     const { registryDir, embeddingArtifactsDir, queriesPath, outputDir } = setupDirs(
       tmpDir,
       [supersededEntry],
-      [{ query_id: 'q001', query_text: 'test query', top_k: 3 }],
+      [{ query_id: 'q001', query_text: 'test query', top_k: 3 }]
     )
 
     const mockDbClient = {
@@ -198,7 +206,7 @@ describe('runRetrievalEvalPipeline', () => {
 
     const runDir = path.join(outputDir, 'runs', summary.retrieval_eval_run_id)
     const qualityReport = JSON.parse(
-      fs.readFileSync(path.join(runDir, 'evidence-quality-report.json'), 'utf-8'),
+      fs.readFileSync(path.join(runDir, 'evidence-quality-report.json'), 'utf-8')
     )
     expect(qualityReport.aadi_readiness).toBe('not_ready')
     expect(qualityReport.flagged_evidence).toBeGreaterThan(0)
@@ -207,8 +215,8 @@ describe('runRetrievalEvalPipeline', () => {
   it('failed query is recorded without stopping the batch', async () => {
     const hash = 'goodhash'
     mockQuery
-      .mockResolvedValueOnce([makeApprovedQueryResult(hash)])  // q001 succeeds
-      .mockRejectedValueOnce(new Error('connection timeout'))  // q002 fails
+      .mockResolvedValueOnce([makeApprovedQueryResult(hash)]) // q001 succeeds
+      .mockRejectedValueOnce(new Error('connection timeout')) // q002 fails
 
     const { registryDir, embeddingArtifactsDir, queriesPath, outputDir } = setupDirs(
       tmpDir,
@@ -216,7 +224,7 @@ describe('runRetrievalEvalPipeline', () => {
       [
         { query_id: 'q001', query_text: 'query one', top_k: 3 },
         { query_id: 'q002', query_text: 'query two', top_k: 3 },
-      ],
+      ]
     )
 
     const mockDbClient = {
@@ -238,7 +246,7 @@ describe('runRetrievalEvalPipeline', () => {
 
     const runDir = path.join(outputDir, 'runs', summary.retrieval_eval_run_id)
     const failedQueries = JSON.parse(
-      fs.readFileSync(path.join(runDir, 'failed-queries.json'), 'utf-8'),
+      fs.readFileSync(path.join(runDir, 'failed-queries.json'), 'utf-8')
     )
     expect(failedQueries[0].query_id).toBe('q002')
   })
@@ -247,7 +255,7 @@ describe('runRetrievalEvalPipeline', () => {
     const { registryDir, embeddingArtifactsDir, queriesPath, outputDir } = setupDirs(
       tmpDir,
       [],
-      [{ query_id: 'q001', query_text: 'test query' }],
+      [{ query_id: 'q001', query_text: 'test query' }]
     )
 
     const summary = await runRetrievalEvalPipeline({
@@ -267,7 +275,7 @@ describe('runRetrievalEvalPipeline', () => {
     const { registryDir, embeddingArtifactsDir, queriesPath, outputDir } = setupDirs(
       tmpDir,
       [],
-      [{ query_id: 'q001', query_text: 'test' }],
+      [{ query_id: 'q001', query_text: 'test' }]
     )
 
     const summary = await runRetrievalEvalPipeline({
@@ -280,7 +288,7 @@ describe('runRetrievalEvalPipeline', () => {
 
     const runDir = path.join(outputDir, 'runs', summary.retrieval_eval_run_id)
     const recommendations = JSON.parse(
-      fs.readFileSync(path.join(runDir, 'recommendations.json'), 'utf-8'),
+      fs.readFileSync(path.join(runDir, 'recommendations.json'), 'utf-8')
     )
     expect(recommendations.length).toBeGreaterThan(0)
     expect(recommendations[0].type).toBe('INFO')

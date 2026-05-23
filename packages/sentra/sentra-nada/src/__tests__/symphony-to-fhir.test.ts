@@ -44,7 +44,7 @@ function baseResult(overrides: Partial<SymphonyResult> = {}): SymphonyResult {
 function hypothesis(
   rank: number,
   icd10Code: string,
-  category: SymphonyDiagnosticHypothesis['category'] = 'working',
+  category: SymphonyDiagnosticHypothesis['category'] = 'working'
 ): SymphonyDiagnosticHypothesis {
   return {
     id: `hyp-${rank}`,
@@ -86,12 +86,12 @@ describe('mapSymphonyResultToFhirBundle', () => {
 
   it('maps single nativeHypothesis into one Condition resource with ICD-10 coding', () => {
     const bundle = mapSymphonyResultToFhirBundle(
-      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9')] }),
+      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9')] })
     )
-    const conditions = bundle.entry.filter(e => e.resource.resourceType === 'Condition')
+    const conditions = bundle.entry.filter((e) => e.resource.resourceType === 'Condition')
     expect(conditions).toHaveLength(1)
     const cond = conditions[0].resource as Extract<
-      typeof conditions[0]['resource'],
+      (typeof conditions)[0]['resource'],
       { resourceType: 'Condition' }
     >
     expect(cond.code.coding[0].system).toBe('http://hl7.org/fhir/sid/icd-10')
@@ -101,42 +101,32 @@ describe('mapSymphonyResultToFhirBundle', () => {
   it('maps multiple hypotheses preserving rank order', () => {
     const bundle = mapSymphonyResultToFhirBundle(
       baseResult({
-        nativeHypotheses: [
-          hypothesis(1, 'J18.9'),
-          hypothesis(2, 'A41.9'),
-          hypothesis(3, 'I10'),
-        ],
-      }),
+        nativeHypotheses: [hypothesis(1, 'J18.9'), hypothesis(2, 'A41.9'), hypothesis(3, 'I10')],
+      })
     )
     const conditions = bundle.entry
-      .filter(e => e.resource.resourceType === 'Condition')
-      .map(e => e.resource as Extract<typeof e.resource, { resourceType: 'Condition' }>)
-    expect(conditions.map(c => c.code.coding[0].code)).toEqual([
-      'J18.9',
-      'A41.9',
-      'I10',
-    ])
+      .filter((e) => e.resource.resourceType === 'Condition')
+      .map((e) => e.resource as Extract<typeof e.resource, { resourceType: 'Condition' }>)
+    expect(conditions.map((c) => c.code.coding[0].code)).toEqual(['J18.9', 'A41.9', 'I10'])
   })
 
   it('marks must_not_miss hypothesis with category=must_not_miss in Condition', () => {
     const bundle = mapSymphonyResultToFhirBundle(
-      baseResult({ nativeHypotheses: [hypothesis(1, 'A41.9', 'must_not_miss')] }),
+      baseResult({ nativeHypotheses: [hypothesis(1, 'A41.9', 'must_not_miss')] })
     )
     const cond = bundle.entry[0].resource as Extract<
-      typeof bundle.entry[0]['resource'],
+      (typeof bundle.entry)[0]['resource'],
       { resourceType: 'Condition' }
     >
     expect(cond.category).toBe('must_not_miss')
   })
 
   it('maps trafficLight=RED into RiskAssessment with qualitativeRisk RED', () => {
-    const bundle = mapSymphonyResultToFhirBundle(
-      baseResult({ trafficLight: trafficLight('RED') }),
-    )
-    const risks = bundle.entry.filter(e => e.resource.resourceType === 'RiskAssessment')
+    const bundle = mapSymphonyResultToFhirBundle(baseResult({ trafficLight: trafficLight('RED') }))
+    const risks = bundle.entry.filter((e) => e.resource.resourceType === 'RiskAssessment')
     expect(risks).toHaveLength(1)
     const risk = risks[0].resource as Extract<
-      typeof risks[0]['resource'],
+      (typeof risks)[0]['resource'],
       { resourceType: 'RiskAssessment' }
     >
     expect(risk.prediction[0].qualitativeRisk.coding[0].code).toBe('RED')
@@ -153,12 +143,12 @@ describe('mapSymphonyResultToFhirBundle', () => {
           confidenceBand: 'insufficient_data',
           rationale: ['Diagnosis utama saat ini: Pneumonia.', 'Faktor pendukung: tidak ada.'],
         },
-      }),
+      })
     )
-    const reports = bundle.entry.filter(e => e.resource.resourceType === 'DiagnosticReport')
+    const reports = bundle.entry.filter((e) => e.resource.resourceType === 'DiagnosticReport')
     expect(reports).toHaveLength(1)
     const report = reports[0].resource as Extract<
-      typeof reports[0]['resource'],
+      (typeof reports)[0]['resource'],
       { resourceType: 'DiagnosticReport' }
     >
     expect(report.conclusion).toContain('Pneumonia')
@@ -166,9 +156,9 @@ describe('mapSymphonyResultToFhirBundle', () => {
 
   it('maps critical alerts into Observation resources', () => {
     const bundle = mapSymphonyResultToFhirBundle(
-      baseResult({ alerts: [criticalAlert('alert-a'), criticalAlert('alert-b')] }),
+      baseResult({ alerts: [criticalAlert('alert-a'), criticalAlert('alert-b')] })
     )
-    const observations = bundle.entry.filter(e => e.resource.resourceType === 'Observation')
+    const observations = bundle.entry.filter((e) => e.resource.resourceType === 'Observation')
     expect(observations).toHaveLength(2)
   })
 
@@ -178,7 +168,7 @@ describe('mapSymphonyResultToFhirBundle', () => {
         nativeHypotheses: [hypothesis(1, 'J18.9')],
         alerts: [criticalAlert('alert-1')],
         trafficLight: trafficLight('YELLOW'),
-      }),
+      })
     )
     const json = JSON.stringify(bundle)
     expect(json.toLowerCase()).not.toContain('demam')
@@ -188,7 +178,7 @@ describe('mapSymphonyResultToFhirBundle', () => {
 
   it('does NOT leak patientRef or encounterId into any human-readable bundle field', () => {
     const bundle = mapSymphonyResultToFhirBundle(
-      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9')] }),
+      baseResult({ nativeHypotheses: [hypothesis(1, 'J18.9')] })
     )
     const json = JSON.stringify(bundle)
     expect(json).not.toContain('pat-secret-67890')
@@ -209,8 +199,6 @@ describe('mapSymphonyResultToFhirBundle', () => {
         rationale: ['Diagnosis utama saat ini: Pneumonia.'],
       },
     })
-    expect(mapSymphonyResultToFhirBundle(input)).toEqual(
-      mapSymphonyResultToFhirBundle(input),
-    )
+    expect(mapSymphonyResultToFhirBundle(input)).toEqual(mapSymphonyResultToFhirBundle(input))
   })
 })

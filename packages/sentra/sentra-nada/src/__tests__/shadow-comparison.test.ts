@@ -8,10 +8,7 @@ import {
   type SymphonyDiagnosticHypothesis,
 } from '../index'
 
-function hybrid(
-  icd10Code: string,
-  mustNotMiss = false,
-): SymphonyDiagnosisSuggestion {
+function hybrid(icd10Code: string, mustNotMiss = false): SymphonyDiagnosisSuggestion {
   return {
     id: `hybrid-${icd10Code}`,
     icd10Code,
@@ -26,7 +23,7 @@ function hybrid(
 
 function native(
   icd10Code: string,
-  category: SymphonyDiagnosticHypothesis['category'] = 'working',
+  category: SymphonyDiagnosticHypothesis['category'] = 'working'
 ): SymphonyDiagnosticHypothesis {
   return {
     id: `native-${icd10Code}`,
@@ -213,9 +210,7 @@ describe('compareSymphonyShadowPaths', () => {
       newClinicalDisposition: 'ok' as const,
       newPathFailed: false,
     }
-    expect(compareSymphonyShadowPaths(input)).toEqual(
-      compareSymphonyShadowPaths(input),
-    )
+    expect(compareSymphonyShadowPaths(input)).toEqual(compareSymphonyShadowPaths(input))
   })
 
   it('treats old path as available when only an old traffic-light evaluation is present', () => {

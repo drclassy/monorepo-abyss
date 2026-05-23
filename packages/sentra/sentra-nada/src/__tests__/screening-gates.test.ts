@@ -36,8 +36,8 @@ describe('SYMPHONY instant screening gates', () => {
       },
     })
 
-    expect(alerts.some(alert => alert.id === 'symphony-gate-shock-map-low')).toBe(true)
-    expect(alerts.some(alert => alert.id === 'symphony-gate-shock-index')).toBe(true)
+    expect(alerts.some((alert) => alert.id === 'symphony-gate-shock-map-low')).toBe(true)
+    expect(alerts.some((alert) => alert.id === 'symphony-gate-shock-index')).toBe(true)
   })
 
   it('detects qSOFA and respiratory gates with critical escalation semantics', () => {
@@ -59,11 +59,11 @@ describe('SYMPHONY instant screening gates', () => {
         gate: 'GATE_5_SEPSIS',
       })
     )
-    expect(alerts.some(alert => alert.id === 'symphony-gate-respiratory-tachypnea')).toBe(true)
-    expect(alerts.some(alert => alert.id === 'symphony-gate-respiratory-hypoxemia')).toBe(true)
-    expect(alerts.some(alert => alert.id === 'symphony-gate-respiratory-low-spo2-on-oxygen')).toBe(
-      true
-    )
+    expect(alerts.some((alert) => alert.id === 'symphony-gate-respiratory-tachypnea')).toBe(true)
+    expect(alerts.some((alert) => alert.id === 'symphony-gate-respiratory-hypoxemia')).toBe(true)
+    expect(
+      alerts.some((alert) => alert.id === 'symphony-gate-respiratory-low-spo2-on-oxygen')
+    ).toBe(true)
   })
 
   it('detects pediatric abnormal vital gates from age band', () => {
@@ -77,9 +77,9 @@ describe('SYMPHONY instant screening gates', () => {
       },
     })
 
-    expect(alerts.some(alert => alert.id === 'symphony-gate-pediatric-sbp-low')).toBe(true)
-    expect(alerts.some(alert => alert.id === 'symphony-gate-pediatric-hr')).toBe(true)
-    expect(alerts.some(alert => alert.id === 'symphony-gate-pediatric-rr')).toBe(true)
+    expect(alerts.some((alert) => alert.id === 'symphony-gate-pediatric-sbp-low')).toBe(true)
+    expect(alerts.some((alert) => alert.id === 'symphony-gate-pediatric-hr')).toBe(true)
+    expect(alerts.some((alert) => alert.id === 'symphony-gate-pediatric-rr')).toBe(true)
   })
 
   it('detects obstetric severe hypertension gate and injects it into assessment output', () => {
@@ -110,13 +110,13 @@ describe('SYMPHONY instant screening gates', () => {
     const result = assessSymphonyInput(input)
 
     expect(
-      result.alerts.some(alert => alert.id === 'symphony-gate-obstetric-severe-hypertension')
+      result.alerts.some((alert) => alert.id === 'symphony-gate-obstetric-severe-hypertension')
     ).toBe(true)
-    expect(result.alerts.some(alert => alert.id === 'symphony-gate-obstetric-tachycardia')).toBe(
+    expect(result.alerts.some((alert) => alert.id === 'symphony-gate-obstetric-tachycardia')).toBe(
       true
     )
     expect(
-      result.alerts.some(alert => alert.id === 'symphony-gate-glucose-severe-hypoglycemia')
+      result.alerts.some((alert) => alert.id === 'symphony-gate-glucose-severe-hypoglycemia')
     ).toBe(true)
   })
 })

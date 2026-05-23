@@ -183,7 +183,7 @@ describe('arbitrateSymphonyReasoning', () => {
       alerts: [],
     })
 
-    expect(result.nativeHypotheses.map(item => item.id)).toEqual([
+    expect(result.nativeHypotheses.map((item) => item.id)).toEqual([
       'native-pack-pneumonia',
       'native-pack-sepsis',
     ])

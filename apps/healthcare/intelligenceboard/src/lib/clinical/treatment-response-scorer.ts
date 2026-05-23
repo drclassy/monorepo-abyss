@@ -2,6 +2,7 @@ import type {
   ClinicalTrajectoryTreatmentPoint,
   ClinicalTreatmentResponsiveness,
 } from '@the-abyss/shared-types'
+
 import type { VisitRecord } from './trajectory-analyzer'
 
 export interface TreatmentEvent {

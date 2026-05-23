@@ -1,11 +1,14 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import fs from 'fs'
-import path from 'path'
 import os from 'os'
+import path from 'path'
+
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+
+import { runApprovedEmbeddingPipeline } from '../src/embedding/approved-embedding.pipeline'
 import type { KnowledgeRegistry } from '../src/registry/registry-types'
 
 // ─── Mock vector-store ────────────────────────────────────────────────────────
-// Must be declared before dynamic imports that depend on it.
+// vi.mock is hoisted by vitest at runtime regardless of declaration position.
 
 const {
   mockUpsertById,
@@ -31,8 +34,6 @@ vi.mock('@sentra/cermin', () => ({
   DEFAULT_EMBEDDING_MODEL: 'text-embedding-004',
   DEFAULT_EMBEDDING_DIMENSIONS: 768,
 }))
-
-import { runApprovedEmbeddingPipeline } from '../src/embedding/approved-embedding.pipeline'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -87,7 +88,7 @@ function setupTestDirs(
   tmpDir: string,
   approvedHashes: string[],
   allRegistryEntries: KnowledgeRegistry['entries'],
-  chunksPerHash: Record<string, TestChunk[]>,
+  chunksPerHash: Record<string, TestChunk[]>
 ) {
   const registryDir = path.join(tmpDir, 'registry')
   const artifactsDir = path.join(tmpDir, 'artifacts')
@@ -108,7 +109,7 @@ function setupTestDirs(
   fs.writeFileSync(
     path.join(registryDir, 'eligible-for-embedding.json'),
     JSON.stringify(eligible),
-    'utf-8',
+    'utf-8'
   )
 
   // Write chunks.json per hash
@@ -161,12 +162,9 @@ describe('runApprovedEmbeddingPipeline', () => {
       warnings: [],
     }
 
-    const { registryDir, artifactsDir, outputDir } = setupTestDirs(
-      tmpDir,
-      [hash],
-      [entry],
-      { [hash]: makeChunks(hash) },
-    )
+    const { registryDir, artifactsDir, outputDir } = setupTestDirs(tmpDir, [hash], [entry], {
+      [hash]: makeChunks(hash),
+    })
 
     const summary = await runApprovedEmbeddingPipeline({
       registryDir,
@@ -212,12 +210,9 @@ describe('runApprovedEmbeddingPipeline', () => {
       warnings: [],
     }
 
-    const { registryDir, artifactsDir, outputDir } = setupTestDirs(
-      tmpDir,
-      [hash],
-      [entry],
-      { [hash]: makeChunks(hash) },
-    )
+    const { registryDir, artifactsDir, outputDir } = setupTestDirs(tmpDir, [hash], [entry], {
+      [hash]: makeChunks(hash),
+    })
 
     const summary = await runApprovedEmbeddingPipeline({
       registryDir,
@@ -228,7 +223,7 @@ describe('runApprovedEmbeddingPipeline', () => {
 
     const runDir = path.join(outputDir, 'runs', summary.embedding_run_id)
     const writeReport = JSON.parse(
-      fs.readFileSync(path.join(runDir, 'vector-write-report.json'), 'utf-8'),
+      fs.readFileSync(path.join(runDir, 'vector-write-report.json'), 'utf-8')
     )
     expect(writeReport.attempted_writes).toBe(0)
     expect(writeReport.successful_writes).toBe(0)
@@ -277,7 +272,7 @@ describe('runApprovedEmbeddingPipeline', () => {
       {
         [approvedHash]: makeChunks(approvedHash),
         [reviewHash]: makeChunks(reviewHash),
-      },
+      }
     )
 
     const summary = await runApprovedEmbeddingPipeline({
@@ -317,7 +312,7 @@ describe('runApprovedEmbeddingPipeline', () => {
       tmpDir,
       [hash],
       [entry],
-      {}, // no chunks written
+      {} // no chunks written
     )
 
     const summary = await runApprovedEmbeddingPipeline({
@@ -353,12 +348,9 @@ describe('runApprovedEmbeddingPipeline', () => {
       warnings: [],
     }
 
-    const { registryDir, artifactsDir, outputDir } = setupTestDirs(
-      tmpDir,
-      [hash],
-      [entry],
-      { [hash]: makeChunks(hash) },
-    )
+    const { registryDir, artifactsDir, outputDir } = setupTestDirs(tmpDir, [hash], [entry], {
+      [hash]: makeChunks(hash),
+    })
 
     const mockDbClient = {
       $executeRawUnsafe: vi.fn(),
@@ -398,12 +390,9 @@ describe('runApprovedEmbeddingPipeline', () => {
       warnings: [],
     }
 
-    const { registryDir, artifactsDir, outputDir } = setupTestDirs(
-      tmpDir,
-      [hash],
-      [entry],
-      { [hash]: [makeChunks(hash)[0]] },
-    )
+    const { registryDir, artifactsDir, outputDir } = setupTestDirs(tmpDir, [hash], [entry], {
+      [hash]: [makeChunks(hash)[0]],
+    })
 
     const run1 = await runApprovedEmbeddingPipeline({
       registryDir,
@@ -473,7 +462,7 @@ describe('runApprovedEmbeddingPipeline', () => {
       tmpDir,
       [goodHash, badHash],
       entries,
-      { [goodHash]: makeChunks(goodHash) }, // badHash has no chunks → failure
+      { [goodHash]: makeChunks(goodHash) } // badHash has no chunks → failure
     )
 
     const summary = await runApprovedEmbeddingPipeline({
