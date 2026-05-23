@@ -1,7 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-const { composePrompt } = await import('../dist/core/composer.js')
+const { canWriteBackPromptSource, composePrompt, getPromptSourceLabel } =
+  await import('../dist/core/composer.js')
 
 test('builds an implement prompt with lightweight context', () => {
   const result = composePrompt({
@@ -15,10 +16,13 @@ test('builds an implement prompt with lightweight context', () => {
     },
   })
 
-  assert.match(result.finalPrompt, /Mode: Implement/i)
+  assert.match(result.finalPrompt, /# CODEX MISSION/i)
+  assert.match(result.finalPrompt, /## Mode/i)
+  assert.match(result.finalPrompt, /Implementation/i)
+  assert.match(result.finalPrompt, /## Scope/i)
+  assert.match(result.finalPrompt, /## Verification Commands/i)
   assert.match(result.finalPrompt, /abyss-monorepo/)
-  assert.match(result.finalPrompt, /Tambahkan tombol copy/)
-  assert.equal(result.modeLabel, 'Implement')
+  assert.equal(result.modeLabel, 'Implementation')
 })
 
 test('falls back safely when active file is missing', () => {
@@ -33,9 +37,9 @@ test('falls back safely when active file is missing', () => {
     },
   })
 
-  assert.match(result.finalPrompt, /Mode: Verify/i)
-  assert.match(result.finalPrompt, /Active file: none/i)
-  assert.match(result.finalPrompt, /Pastikan command baru/)
+  assert.match(result.finalPrompt, /Review \/ Read-Only Audit/i)
+  assert.match(result.finalPrompt, /Active area: read-only discovery/i)
+  assert.match(result.finalPrompt, /inspect repository structure for evidence only/i)
 })
 
 test('keeps output stable when workspace metadata is sparse', () => {
@@ -52,5 +56,21 @@ test('keeps output stable when workspace metadata is sparse', () => {
 
   assert.match(result.finalPrompt, /Repository: unknown/i)
   assert.match(result.finalPrompt, /Workspace: unknown/i)
-  assert.match(result.finalPrompt, /Core rule source: unknown/i)
+  assert.match(result.finalPrompt, /Rule source: unknown/i)
+  assert.match(result.finalPrompt, /## Non-Scope/i)
+  assert.match(result.finalPrompt, /## Stop Condition/i)
+})
+
+test('maps prompt source labels for the console surface', () => {
+  assert.equal(getPromptSourceLabel('selection'), 'Active Selection')
+  assert.equal(getPromptSourceLabel('document'), 'Current File')
+  assert.equal(getPromptSourceLabel('clipboard'), 'Clipboard')
+  assert.equal(getPromptSourceLabel('blank'), 'Blank Draft')
+})
+
+test('allows write-back only for editor-backed prompt sources', () => {
+  assert.equal(canWriteBackPromptSource('selection'), true)
+  assert.equal(canWriteBackPromptSource('document'), true)
+  assert.equal(canWriteBackPromptSource('clipboard'), false)
+  assert.equal(canWriteBackPromptSource('blank'), false)
 })

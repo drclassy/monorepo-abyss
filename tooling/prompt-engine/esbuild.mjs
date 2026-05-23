@@ -12,6 +12,8 @@ await esbuild.build({
     'src/core/audit.ts',
     'src/core/composer.ts',
     'src/core/context.ts',
+    'src/core/mission-renderer.ts',
+    'src/core/mission-standardizer.ts',
     'src/webview/prompt-engine-view.ts',
   ],
   bundle: true,
