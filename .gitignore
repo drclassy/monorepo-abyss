@@ -187,6 +187,9 @@ apps/*
 apps/corporate/*
 !apps/corporate/ferdiiskandar/
 !apps/corporate/ferdiiskandar/**
+apps/corporate/ferdiiskandar/node_modules/
+apps/corporate/ferdiiskandar/.next/
+apps/corporate/ferdiiskandar/.turbo/
 apps/corporate/ferdiiskandar/.abyss-backup/
 apps/corporate/ferdiiskandar/.git.bak-standalone/
 apps/corporate/ferdiiskandar/.editorconfig
