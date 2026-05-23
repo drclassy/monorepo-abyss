@@ -93,6 +93,24 @@ describe('VectorStore', () => {
     expect(executeRaw).toHaveBeenCalledWith('DELETE FROM "KnowledgeBase" WHERE id = $1', 'kb-1')
   })
 
+  it('ensureSchema provisions KnowledgeBase storage and indexes', async () => {
+    await store.ensureSchema()
+
+    expect(executeRaw).toHaveBeenNthCalledWith(1, 'CREATE EXTENSION IF NOT EXISTS vector')
+    expect(executeRaw).toHaveBeenNthCalledWith(
+      2,
+      expect.stringContaining('CREATE TABLE IF NOT EXISTS "KnowledgeBase"'),
+    )
+    expect(executeRaw).toHaveBeenNthCalledWith(
+      3,
+      expect.stringContaining('CREATE INDEX IF NOT EXISTS "KnowledgeBase_embedding_idx"'),
+    )
+    expect(executeRaw).toHaveBeenNthCalledWith(
+      4,
+      expect.stringContaining('CREATE INDEX IF NOT EXISTS "KnowledgeBase_updatedAt_idx"'),
+    )
+  })
+
   it('upsertById uses caller-supplied stable ID with ON CONFLICT upsert', async () => {
     const stableId = 'kb:abc123:v1:p001:c0001'
     await store.upsertById(stableId, 'clinical protocol text', { source: 'protocol.pdf' })

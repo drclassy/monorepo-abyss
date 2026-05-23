@@ -11,16 +11,19 @@ const {
   mockUpsertById,
   mockUpsertByIdBatch,
   mockGetEmbeddingBatch,
+  mockEnsureSchema,
 } = vi.hoisted(() => ({
   mockUpsertById: vi.fn().mockResolvedValue(undefined),
   mockUpsertByIdBatch: vi.fn().mockResolvedValue(undefined),
   mockGetEmbeddingBatch: vi.fn(async (texts: string[]) =>
     texts.map(() => Array(768).fill(0.1)),
   ),
+  mockEnsureSchema: vi.fn().mockResolvedValue(undefined),
 }))
 
 vi.mock('@sentra/cermin', () => ({
   createVectorStore: vi.fn(() => ({
+    ensureSchema: mockEnsureSchema,
     upsertById: mockUpsertById,
     upsertByIdBatch: mockUpsertByIdBatch,
   })),
@@ -130,6 +133,8 @@ describe('runApprovedEmbeddingPipeline', () => {
     mockUpsertByIdBatch.mockReset()
     mockUpsertByIdBatch.mockResolvedValue(undefined)
     mockGetEmbeddingBatch.mockReset()
+    mockEnsureSchema.mockReset()
+    mockEnsureSchema.mockResolvedValue(undefined)
     mockGetEmbeddingBatch.mockImplementation(async (texts: string[]) =>
       texts.map(() => Array(768).fill(0.1)),
     )
@@ -370,6 +375,7 @@ describe('runApprovedEmbeddingPipeline', () => {
       batchSize: 100,
     })
 
+    expect(mockEnsureSchema).toHaveBeenCalledTimes(1)
     expect(mockGetEmbeddingBatch).toHaveBeenCalledTimes(1)
     expect(mockUpsertByIdBatch).toHaveBeenCalledTimes(1)
     expect(mockUpsertById).not.toHaveBeenCalled()

@@ -133,6 +133,10 @@ export async function runApprovedEmbeddingPipeline(
         })
       : null
 
+  if (vectorStore) {
+    await vectorStore.ensureSchema()
+  }
+
   // 3. Process each approved document
   for (const entry of approved) {
     const { source_hash } = entry

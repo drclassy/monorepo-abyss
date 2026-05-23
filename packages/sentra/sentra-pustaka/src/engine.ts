@@ -1,13 +1,14 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
 import * as dotenv from 'dotenv'
+import { createVectorStore } from '@sentra/cermin'
+import { Pool } from 'pg'
 
 import { GemmaEngine } from './assessment/gemma.js'
 import { attachGroundedCitations } from './citation/query-result.js'
 import { GuardEngine } from './compliance/guard.js'
-import { OllamaEmbedder } from './ingestion/embedder.js'
+import { PgPoolVectorAdapter } from './embedding/pg-adapter.js'
 import { HybridBrainEngine } from './retrieval/hybrid.engine.js'
 import { LocalBrainEngine } from './retrieval/local.engine.js'
-import { PgVectorStore } from './storage/pgvector.store.js'
 import type { RAGQueryResult, SentraRAGConfig, MedicalCategory } from './types.js'
 
 dotenv.config()
@@ -34,7 +35,8 @@ export class SentraRAGEngine {
   private assessment: GemmaEngine
   private brain: HybridBrainEngine
   private guard: GuardEngine
-  private store: PgVectorStore
+  private pool: Pool
+  private localVectorStore: ReturnType<typeof createVectorStore>
 
   constructor(config: SentraRAGConfig = {}) {
     const ollamaUrl =
@@ -42,12 +44,20 @@ export class SentraRAGEngine {
     const genModel = config.generationModel ?? process.env.SENTRA_GEN_MODEL ?? 'gemma3:12b'
     const embedModel = config.embeddingModel ?? process.env.SENTRA_EMBED_MODEL ?? 'nomic-embed-text'
 
-    this.store = new PgVectorStore(config.pgConnectionString)
     this.assessment = new GemmaEngine(ollamaUrl, genModel)
     this.guard = new GuardEngine()
+    this.pool = new Pool({
+      connectionString: config.pgConnectionString ?? process.env.DATABASE_URL,
+    })
 
-    const embedder = new OllamaEmbedder(embedModel, ollamaUrl)
-    const local = new LocalBrainEngine(this.store, embedder)
+    const databaseClient = new PgPoolVectorAdapter(this.pool)
+    this.localVectorStore = createVectorStore({
+      database: databaseClient,
+      embeddingModel: embedModel,
+      ollamaBaseUrl: ollamaUrl,
+    })
+
+    const local = new LocalBrainEngine(this.localVectorStore)
     this.brain = new HybridBrainEngine(local, config.similarityThreshold ?? 2)
   }
 
@@ -98,14 +108,18 @@ export class SentraRAGEngine {
   }
 
   async initialize(): Promise<void> {
-    await this.store.initialize()
+    await this.localVectorStore.ensureSchema()
   }
 
   async stats() {
-    return this.store.stats()
+    const total = await this.pool.query(`SELECT COUNT(*) FROM "KnowledgeBase"`)
+    return {
+      total: parseInt(total.rows[0].count, 10),
+      byCategory: {},
+    }
   }
 
   async close(): Promise<void> {
-    await this.store.close()
+    await this.pool.end()
   }
 }

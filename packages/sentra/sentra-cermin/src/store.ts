@@ -35,6 +35,34 @@ export class VectorStore {
     return this.config.database
   }
 
+  /**
+   * Ensures the caller-owned KnowledgeBase storage exists before writes/queries.
+   * Safe to call repeatedly.
+   */
+  async ensureSchema(): Promise<void> {
+    const db = this.database()
+
+    await db.$executeRawUnsafe(`CREATE EXTENSION IF NOT EXISTS vector`)
+    await db.$executeRawUnsafe(
+      `CREATE TABLE IF NOT EXISTS "KnowledgeBase" (
+         id TEXT PRIMARY KEY,
+         content TEXT NOT NULL,
+         embedding vector(768),
+         metadata JSONB,
+         "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+         "updatedAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+       )`,
+    )
+    await db.$executeRawUnsafe(
+      `CREATE INDEX IF NOT EXISTS "KnowledgeBase_embedding_idx"
+         ON "KnowledgeBase" USING hnsw (embedding vector_cosine_ops)`,
+    )
+    await db.$executeRawUnsafe(
+      `CREATE INDEX IF NOT EXISTS "KnowledgeBase_updatedAt_idx"
+         ON "KnowledgeBase" ("updatedAt")`,
+    )
+  }
+
   // ─── Upsert ─────────────────────────────────────────────────────────────────
 
   /**

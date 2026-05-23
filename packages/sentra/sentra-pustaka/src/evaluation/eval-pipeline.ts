@@ -78,6 +78,7 @@ export async function runRetrievalEvalPipeline(
       database: databaseClient,
       embeddingModel,
     })
+    await vectorStore.ensureSchema()
 
     for (const query of queries) {
       try {

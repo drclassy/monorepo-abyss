@@ -1,0 +1,19 @@
+{
+  "embedding_run_id": "emb_20260521_060519",
+  "started_at": "2026-05-21T06:05:19.749Z",
+  "completed_at": "2026-05-21T06:05:19.750Z",
+  "registry_path": "data\\knowledge-registry\\registry.json",
+  "eligible_path": "data\\knowledge-registry\\eligible-for-embedding.json",
+  "total_candidates": 0,
+  "embedded_documents": 0,
+  "embedded_chunks": 0,
+  "chunks_attempted": 0,
+  "chunks_succeeded": 0,
+  "chunks_failed": 0,
+  "skipped_documents": 0,
+  "failed_documents": 0,
+  "vector_store_provider": "dry_run_no_write",
+  "embedding_provider": "dry_run_no_embedding",
+  "write_mode": "dry_run",
+  "status": "completed"
+}
