@@ -1,7 +1,15 @@
 import * as vscode from 'vscode'
 
 import { auditPrompt, type AuditResult } from './core/audit'
-import { composePrompt, type PromptMode } from './core/composer'
+import {
+  canWriteBackPromptSource,
+  composePrompt,
+  getPromptSourceLabel,
+  resolveAuditTarget,
+  type PromptConsoleView,
+  type PromptMode,
+  type PromptSourceKind,
+} from './core/composer'
 import { getLightweightContext } from './core/context'
 import { appendPortalAuditLog, findMonorepoRoot } from './core/portal-audit-log'
 import { buildPromptEngineHtml } from './webview/prompt-engine-view'
@@ -9,369 +17,365 @@ import { buildPromptEngineHtml } from './webview/prompt-engine-view'
 const AUDIT_PROMPT_COMMAND = 'sentraPrompt.auditCodexPrompt'
 const LEGACY_GENERATE_MISSION_COMMAND = 'sentraPrompt.generateMission'
 const OPEN_PROMPT_ENGINE_COMMAND = 'sentraPrompt.openPromptEngine'
+const SIDEBAR_VIEW_ID = 'sentraPrompt.home'
+const SIDEBAR_CONTAINER_COMMAND = 'workbench.view.extension.sentraPrompt'
 const STATUS_BAR_TEXT = '$(shield-check) Sentra Prompt'
 
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;')
+let promptConsolePanel: vscode.WebviewPanel | undefined
+
+interface WriteBackTarget {
+  documentUri: vscode.Uri
+  range: vscode.Range
+  originalText: string
+  documentVersion: number
 }
 
-function buildList(items: string[]): string {
-  if (items.length === 0) return '<li>None</li>'
-  return items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')
+interface PromptSourceState {
+  kind: PromptSourceKind
+  label: string
+  text: string
+  writeBackTarget?: WriteBackTarget
 }
 
-function buildFindings(findings: AuditResult['findings']): string {
-  if (findings.length === 0) return '<li>No major findings.</li>'
-
-  return findings
-    .map(
-      (finding) =>
-        `<li>[${escapeHtml(finding.severity.toUpperCase())}] ${escapeHtml(finding.title)}: ${escapeHtml(
-          finding.message
-        )}</li>`
-    )
-    .join('')
+interface AuditPanelState {
+  source: PromptSourceState
+  auditedText: string
+  result: AuditResult
 }
 
-function buildScoreCards(scores: AuditResult['dimensionScores']): string {
-  return Object.values(scores)
-    .map(
-      (dimension) => `
-        <article class="score-card">
-          <div>
-            <h3>${escapeHtml(dimension.title)}</h3>
-            <p>Status: <strong>${escapeHtml(dimension.status)}</strong></p>
-          </div>
-          <strong>${dimension.score}/${dimension.weight}</strong>
-        </article>
-      `
-    )
-    .join('')
+interface PromptEngineLaunchOptions {
+  initialView?: PromptConsoleView
+  initialSourceState?: PromptSourceState
+  initialNotice?: string
+  autoRunAudit?: boolean
 }
 
-function buildStatus(decision: AuditResult['decision']): { label: string; mode: string } {
+function getFullDocumentRange(document: vscode.TextDocument): vscode.Range {
+  return new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length))
+}
+
+function createBlankSourceState(): PromptSourceState {
+  return {
+    kind: 'blank',
+    label: getPromptSourceLabel('blank'),
+    text: '',
+  }
+}
+
+function createSelectionSourceState(editor: vscode.TextEditor): PromptSourceState {
+  const text = editor.document.getText(editor.selection)
+
+  return {
+    kind: 'selection',
+    label: getPromptSourceLabel('selection'),
+    text,
+    writeBackTarget: {
+      documentUri: editor.document.uri,
+      range: editor.selection,
+      originalText: text,
+      documentVersion: editor.document.version,
+    },
+  }
+}
+
+function createDocumentSourceState(editor: vscode.TextEditor): PromptSourceState {
+  const range = getFullDocumentRange(editor.document)
+  const text = editor.document.getText()
+
+  return {
+    kind: 'document',
+    label: getPromptSourceLabel('document'),
+    text,
+    writeBackTarget: {
+      documentUri: editor.document.uri,
+      range,
+      originalText: text,
+      documentVersion: editor.document.version,
+    },
+  }
+}
+
+function resolveInitialSourceState(editor: vscode.TextEditor | undefined): {
+  sourceState: PromptSourceState
+  notice: string
+} {
+  if (!editor) {
+    return {
+      sourceState: createBlankSourceState(),
+      notice: 'No active editor found. Start from a blank draft or load from clipboard.',
+    }
+  }
+
+  const auditTarget = resolveAuditTarget({
+    selectionText: editor.document.getText(editor.selection),
+    documentText: editor.document.getText(),
+  })
+
+  if (auditTarget.source === 'selection') {
+    return {
+      sourceState: createSelectionSourceState(editor),
+      notice: '',
+    }
+  }
+
+  if (auditTarget.source === 'document') {
+    return {
+      sourceState: createDocumentSourceState(editor),
+      notice: auditTarget.notice,
+    }
+  }
+
+  return {
+    sourceState: createBlankSourceState(),
+    notice: auditTarget.notice,
+  }
+}
+
+async function resolveExplicitSourceState(
+  sourceKind: PromptSourceKind,
+  editor: vscode.TextEditor | undefined
+): Promise<{ sourceState?: PromptSourceState; warning?: string }> {
+  if (sourceKind === 'clipboard') {
+    const text = await vscode.env.clipboard.readText()
+    if (!text.trim()) {
+      return { warning: 'Clipboard is empty. Copy a prompt draft first.' }
+    }
+
+    return {
+      sourceState: {
+        kind: 'clipboard',
+        label: getPromptSourceLabel('clipboard'),
+        text,
+      },
+    }
+  }
+
+  if (sourceKind === 'blank') {
+    return {
+      sourceState: createBlankSourceState(),
+    }
+  }
+
+  if (!editor) {
+    return { warning: 'Open an editor first if you want to load from selection or file.' }
+  }
+
+  if (sourceKind === 'selection') {
+    const text = editor.document.getText(editor.selection)
+    if (!text.trim()) {
+      return { warning: 'Select a prompt in the active editor first.' }
+    }
+
+    return {
+      sourceState: createSelectionSourceState(editor),
+    }
+  }
+
+  const text = editor.document.getText()
+  if (!text.trim()) {
+    return { warning: 'The current file is empty. Load another source or start blank.' }
+  }
+
+  return {
+    sourceState: createDocumentSourceState(editor),
+  }
+}
+
+async function postAuditSourceLoaded(
+  panel: vscode.WebviewPanel,
+  sourceState: PromptSourceState,
+  notice: string
+): Promise<void> {
+  await panel.webview.postMessage({
+    type: 'auditSourceLoaded',
+    sourceKind: sourceState.kind,
+    sourceLabel: sourceState.label,
+    sourceText: sourceState.text,
+    notice: notice || `Loaded ${sourceState.label.toLowerCase()} into the Prompt Console.`,
+  })
+}
+
+function buildDecisionStatus(decision: AuditResult['decision']): { label: string; mode: string } {
   if (decision === 'ready') return { label: 'Ready', mode: 'success' }
   if (decision === 'unsafe') return { label: 'Unsafe', mode: 'error' }
   return { label: 'Needs Work', mode: 'partial' }
 }
 
-function buildWebviewHtml(result: AuditResult, selectedText: string): string {
-  const status = buildStatus(result.decision)
-  const suggestedRewrite = result.suggestedRewrite?.prompt || 'No rewrite required.'
+async function postAuditResult(
+  panel: vscode.WebviewPanel,
+  promptText: string,
+  sourceState: PromptSourceState,
+  result: AuditResult
+): Promise<void> {
+  const decision = buildDecisionStatus(result.decision)
+  const canApplyRewrite =
+    Boolean(result.suggestedRewrite?.prompt) &&
+    canWriteBackPromptSource(sourceState.kind) &&
+    Boolean(sourceState.writeBackTarget) &&
+    promptText === sourceState.text
 
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sentra Prompt Prototype</title>
-  <style>
-    :root {
-      --bg: #f6f2e8;
-      --panel: #fffdf9;
-      --line: #ddd6c8;
-      --ink: #1f2937;
-      --muted: #6b7280;
-      --accent: #b45309;
-      --accent-soft: #ffedd5;
-      --success: #166534;
-      --success-soft: #dcfce7;
-      --warn: #92400e;
-      --warn-soft: #fef3c7;
-      --error: #991b1b;
-      --error-soft: #fee2e2;
-      --shadow: 0 16px 48px rgba(49, 33, 9, 0.08);
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Segoe UI", system-ui, sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(255, 237, 213, 0.85), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(219, 234, 254, 0.85), transparent 28%),
-        var(--bg);
-    }
-    .page { max-width: 1400px; margin: 0 auto; padding: 24px 18px 40px; }
-    .hero, .panel, .subpanel, .score-card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-    }
-    .hero { padding: 24px; margin-bottom: 18px; }
-    .eyebrow {
-      margin: 0 0 8px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      font-weight: 700;
-    }
-    .hero h1 { margin: 0; font-size: 32px; }
-    .lede { margin-top: 10px; max-width: 900px; color: var(--muted); line-height: 1.6; }
-    .workspace { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 18px; margin-top: 18px; }
-    .workspace-bottom { grid-template-columns: 0.95fr 1.05fr; }
-    .panel { padding: 20px; }
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-    .panel-header h2, .subpanel h3, .score-card h3 { margin: 0; }
-    .badge {
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      background: #e5e7eb;
-      color: #374151;
-    }
-    .badge[data-mode="partial"] { background: var(--warn-soft); color: var(--warn); }
-    .badge[data-mode="success"] { background: var(--success-soft); color: var(--success); }
-    .badge[data-mode="error"] { background: var(--error-soft); color: var(--error); }
-    .score-box { min-width: 120px; text-align: right; }
-    .score-box span { display: block; color: var(--muted); font-size: 12px; }
-    .score-box strong { font-size: 30px; }
-    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-    .subpanel { padding: 16px; }
-    .list { margin: 10px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.6; }
-    .actions { display: flex; gap: 12px; margin-top: 16px; }
-    button {
-      font: inherit;
-      border-radius: 999px;
-      padding: 10px 16px;
-      border: 1px solid transparent;
-      cursor: pointer;
-    }
-    .button-primary { background: var(--accent); color: #fff; }
-    .button-secondary { background: #fff; border-color: #d1d5db; color: var(--ink); }
-    .block-scores { display: grid; gap: 12px; }
-    .score-card {
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-    .score-card p { margin: 6px 0 0; color: var(--muted); }
-    .prompt-output {
-      margin: 0;
-      min-height: 440px;
-      padding: 18px;
-      border-radius: 18px;
-      background: #fafaf9;
-      border: 1px solid #e7e5e4;
-      white-space: pre-wrap;
-      line-height: 1.6;
-      overflow: auto;
-    }
-    @media (max-width: 1100px) {
-      .workspace, .workspace-bottom, .overview-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-  <main class="page">
-    <section class="hero">
-      <p class="eyebrow">Sentra Prompt Prototype</p>
-      <h1>Audit Codex Prompt</h1>
-      <p class="lede">Selection audited against Codex-native guidance for Cursor, verification discipline, and prompt safety.</p>
-    </section>
+  const rewriteStatus = canApplyRewrite
+    ? 'Rewrite is ready to apply back to the editor source.'
+    : canWriteBackPromptSource(sourceState.kind)
+      ? 'Copy the rewrite, or reload the source before applying it back to the editor.'
+      : 'This source is not editor-backed. Copy the rewrite manually if you want to reuse it.'
 
-    <section class="workspace">
-      <div class="panel">
-        <div class="panel-header">
-          <h2>Decision</h2>
-          <span class="badge" data-mode="${escapeHtml(status.mode)}">${escapeHtml(status.label)}</span>
-        </div>
-        <div class="score-box" style="text-align:left;margin-bottom:16px;">
-          <span>Total Score</span>
-          <strong>${result.totalScore}/100</strong>
-        </div>
-        <div class="overview-grid">
-          <div class="subpanel">
-            <h3>Summary</h3>
-            <p class="lede" style="margin:10px 0 0;max-width:none;">${escapeHtml(result.summary)}</p>
-          </div>
-          <div class="subpanel">
-            <h3>Recommended Actions</h3>
-            <ul class="list">${buildList(result.recommendedActions)}</ul>
-          </div>
-        </div>
-        <div class="subpanel">
-          <h3>Critical Findings</h3>
-          <ul class="list">${buildFindings(result.findings)}</ul>
-        </div>
-        <div class="actions">
-          <button id="applyRewrite" class="button button-primary" type="button">Apply Suggested Rewrite</button>
-          <button id="copyRewrite" class="button button-secondary" type="button">Copy Suggested Rewrite</button>
-          <button id="copySummary" class="button button-secondary" type="button">Copy Audit Summary</button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-header">
-          <h2>Suggested Rewrite</h2>
-        </div>
-        <pre class="prompt-output">${escapeHtml(suggestedRewrite)}</pre>
-      </div>
-    </section>
-
-    <section class="workspace workspace-bottom">
-      <div class="panel">
-        <div class="panel-header">
-          <h2>Dimension Scores</h2>
-        </div>
-        <div class="block-scores">${buildScoreCards(result.dimensionScores)}</div>
-      </div>
-      <div class="panel">
-        <div class="panel-header">
-          <h2>Selected Prompt</h2>
-        </div>
-        <pre class="prompt-output">${escapeHtml(selectedText)}</pre>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    const vscode = acquireVsCodeApi();
-    document.getElementById('applyRewrite').addEventListener('click', () => vscode.postMessage({ type: 'applyRewrite' }));
-    document.getElementById('copyRewrite').addEventListener('click', () => vscode.postMessage({ type: 'copyRewrite' }));
-    document.getElementById('copySummary').addEventListener('click', () => vscode.postMessage({ type: 'copySummary' }));
-  </script>
-</body>
-</html>`
-}
-
-async function replaceSelectionInEditor(
-  editor: vscode.TextEditor,
-  selection: vscode.Selection,
-  value: string
-): Promise<boolean> {
-  return editor.edit((editBuilder) => {
-    editBuilder.replace(selection, value)
+  await panel.webview.postMessage({
+    type: 'auditResult',
+    sourceKind: sourceState.kind,
+    sourceLabel: sourceState.label,
+    auditedText: promptText,
+    decisionLabel: decision.label,
+    decisionMode: decision.mode,
+    totalScore: result.totalScore,
+    summary: result.summary,
+    findings: result.findings.map(
+      (finding) => `[${finding.severity.toUpperCase()}] ${finding.title}: ${finding.message}`
+    ),
+    recommendedActions: result.recommendedActions,
+    suggestedRewrite: result.suggestedRewrite?.prompt ?? '',
+    statusMessage: `Audit complete for ${sourceState.label.toLowerCase()}.`,
+    rewriteStatus,
   })
 }
 
-async function runPromptAudit(editor: vscode.TextEditor): Promise<void> {
-  const selection = editor.selection
+function appendAuditLogIfPossible(sourceState: PromptSourceState, result: AuditResult): void {
+  const filePath = sourceState.writeBackTarget?.documentUri.fsPath
+  if (!filePath) return
 
-  if (selection.isEmpty) {
-    void vscode.window.showWarningMessage(
-      'Select a prompt in the editor first, then run Sentra Prompt audit.'
+  const repoRoot = findMonorepoRoot(filePath)
+  if (!repoRoot) return
+
+  try {
+    appendPortalAuditLog(repoRoot, result, filePath)
+  } catch (error) {
+    console.error(
+      '[prompt-engine] audit log append failed:',
+      error instanceof Error ? error.message : String(error)
     )
-    return
   }
+}
 
-  const selectedText = editor.document.getText(selection)
-  const auditedDocumentVersion = editor.document.version
-  const result = auditPrompt({
-    selectedText,
-    activeFilePath: editor.document.uri.fsPath,
-    languageId: editor.document.languageId,
-    manualInstruction: 'Official Sentra Codex prompt for Cursor',
-    timestamp: new Date().toISOString(),
-  })
-
-  const repoRoot = findMonorepoRoot(editor.document.uri.fsPath)
-  if (repoRoot) {
-    try {
-      appendPortalAuditLog(repoRoot, result, editor.document.uri.fsPath)
-    } catch (error) {
-      console.error(
-        '[prompt-engine] audit log append failed:',
-        error instanceof Error ? error.message : String(error)
-      )
-      // Portal log is best-effort; audit UI must still open
+async function applyRewriteToSource(auditState: AuditPanelState): Promise<{
+  ok: boolean
+  message: string
+}> {
+  if (!auditState.result.suggestedRewrite?.prompt) {
+    return {
+      ok: false,
+      message: 'No suggested rewrite is available yet.',
     }
   }
 
-  const panel = vscode.window.createWebviewPanel(
-    'sentraPromptAudit',
-    'Sentra Prompt Prototype',
-    vscode.ViewColumn.Beside,
-    { enableScripts: true }
-  )
-
-  panel.webview.html = buildWebviewHtml(result, selectedText)
-  const messageHandlers: Record<string, () => Promise<void>> = {
-    async applyRewrite() {
-      if (!result.suggestedRewrite?.prompt) {
-        void vscode.window.showInformationMessage('No suggested rewrite is needed for this prompt.')
-        return
-      }
-
-      const currentSelectedText = editor.document.getText(selection)
-      if (
-        editor.document.version !== auditedDocumentVersion ||
-        currentSelectedText !== selectedText
-      ) {
-        void vscode.window.showWarningMessage(
-          'The document changed after the audit opened. Re-run Sentra Prompt audit before applying the rewrite.'
-        )
-        return
-      }
-
-      const success = await replaceSelectionInEditor(
-        editor,
-        selection,
-        result.suggestedRewrite.prompt
-      )
-      if (success) {
-        void vscode.window.showInformationMessage('Selection replaced with the suggested rewrite.')
-      } else {
-        void vscode.window.showWarningMessage('Could not replace the selection.')
-      }
-    },
-    async copyRewrite() {
-      if (!result.suggestedRewrite?.prompt) {
-        void vscode.window.showInformationMessage('No suggested rewrite is needed for this prompt.')
-        return
-      }
-      await vscode.env.clipboard.writeText(result.suggestedRewrite.prompt)
-      void vscode.window.showInformationMessage('Suggested rewrite copied.')
-    },
-    async copySummary() {
-      await vscode.env.clipboard.writeText(result.auditSummary)
-      void vscode.window.showInformationMessage('Audit summary copied.')
-    },
+  if (!canWriteBackPromptSource(auditState.source.kind) || !auditState.source.writeBackTarget) {
+    return {
+      ok: false,
+      message: 'This audit source is not editor-backed. Copy the rewrite instead.',
+    }
   }
 
-  const messageListener = panel.webview.onDidReceiveMessage(async (message: { type?: string }) => {
-    if (!message?.type) return
-    const handler = messageHandlers[message.type]
-    if (handler) await handler()
-  })
-  panel.onDidDispose(() => {
-    messageListener.dispose()
+  if (auditState.auditedText !== auditState.source.text) {
+    return {
+      ok: false,
+      message:
+        'The audit draft no longer matches the loaded source. Reload the source first for a safe replace.',
+    }
+  }
+
+  const target = auditState.source.writeBackTarget
+  const document = await vscode.workspace.openTextDocument(target.documentUri)
+  const currentText = document.getText(target.range)
+
+  if (document.version !== target.documentVersion || currentText !== target.originalText) {
+    return {
+      ok: false,
+      message:
+        'The editor source changed after the audit was loaded. Reload the source before applying the rewrite.',
+    }
+  }
+
+  const edit = new vscode.WorkspaceEdit()
+  edit.replace(target.documentUri, target.range, auditState.result.suggestedRewrite.prompt)
+  const success = await vscode.workspace.applyEdit(edit)
+
+  if (!success) {
+    return {
+      ok: false,
+      message: 'Could not apply the rewrite to the editor source.',
+    }
+  }
+
+  return {
+    ok: true,
+    message: 'Rewrite applied to the editor source. Reload it before auditing again.',
+  }
+}
+
+async function launchAuditPanel(
+  context: vscode.ExtensionContext,
+  sourceState: PromptSourceState,
+  notice: string
+): Promise<void> {
+  await openPromptEnginePanel(context, {
+    initialView: 'audit',
+    initialSourceState: sourceState,
+    initialNotice: notice,
+    autoRunAudit: Boolean(sourceState.text.trim()),
   })
 }
 
-function openPromptEnginePanel(context: vscode.ExtensionContext): void {
+async function openPromptEnginePanel(
+  context: vscode.ExtensionContext,
+  options: PromptEngineLaunchOptions = {}
+): Promise<void> {
+  promptConsolePanel?.dispose()
+
   const promptContext = getLightweightContext()
   let activeMode: PromptMode = 'implement'
   let latestPrompt = ''
+  let activeSourceState = options.initialSourceState ?? createBlankSourceState()
+  let latestAuditState: AuditPanelState | null = null
 
   const panel = vscode.window.createWebviewPanel(
     'sentraPromptEngine',
-    'Sentra Prompt Engine',
+    'Sentra Prompt Console',
     vscode.ViewColumn.Beside,
     { enableScripts: true }
   )
+  promptConsolePanel = panel
 
   panel.webview.html = buildPromptEngineHtml({
     ...promptContext,
     mode: activeMode,
+    view: options.initialView ?? 'compose',
+    auditSourceKind: activeSourceState.kind,
+    auditSourceText: activeSourceState.text,
     composed: null,
+    surface: 'panel',
   })
+
+  if (activeSourceState.text || options.initialNotice) {
+    await postAuditSourceLoaded(panel, activeSourceState, options.initialNotice ?? '')
+  }
+
+  if (options.autoRunAudit && activeSourceState.text.trim()) {
+    const result = auditPrompt({
+      selectedText: activeSourceState.text,
+      activeFilePath:
+        activeSourceState.writeBackTarget?.documentUri.fsPath ?? promptContext.activeFilePath,
+      languageId: 'text',
+      manualInstruction: 'Official Sentra Codex prompt for Cursor',
+      timestamp: new Date().toISOString(),
+    })
+
+    latestAuditState = {
+      source: activeSourceState,
+      auditedText: activeSourceState.text,
+      result,
+    }
+    appendAuditLogIfPossible(activeSourceState, result)
+    await postAuditResult(panel, activeSourceState.text, activeSourceState, result)
+  }
 
   const messageListener = panel.webview.onDidReceiveMessage(
     async (message: {
@@ -379,6 +383,9 @@ function openPromptEnginePanel(context: vscode.ExtensionContext): void {
       mode?: PromptMode
       rawInput?: string
       finalPrompt?: string
+      sourceKind?: PromptSourceKind
+      promptText?: string
+      suggestedRewrite?: string
     }) => {
       if (!message?.type) return
 
@@ -386,7 +393,7 @@ function openPromptEnginePanel(context: vscode.ExtensionContext): void {
         const rawInput = message.rawInput?.trim() ?? ''
         if (!rawInput) {
           await panel.webview.postMessage({
-            type: 'warning',
+            type: 'composeWarning',
             message: 'Textarea masih kosong. Tulis request dulu.',
           })
           return
@@ -413,7 +420,7 @@ function openPromptEnginePanel(context: vscode.ExtensionContext): void {
         const finalPrompt = message.finalPrompt?.trim() || latestPrompt
         if (!finalPrompt) {
           await panel.webview.postMessage({
-            type: 'warning',
+            type: 'composeWarning',
             message: 'Belum ada hasil compose untuk di-copy.',
           })
           return
@@ -421,56 +428,259 @@ function openPromptEnginePanel(context: vscode.ExtensionContext): void {
 
         latestPrompt = finalPrompt
         await vscode.env.clipboard.writeText(finalPrompt)
-        await panel.webview.postMessage({ type: 'copied' })
+        await panel.webview.postMessage({ type: 'composeCopied' })
+        return
+      }
+
+      if (message.type === 'loadAuditSource') {
+        const sourceKind = message.sourceKind ?? 'selection'
+        const resolved = await resolveExplicitSourceState(
+          sourceKind,
+          vscode.window.activeTextEditor
+        )
+
+        if (!resolved.sourceState) {
+          await panel.webview.postMessage({
+            type: 'auditWarning',
+            message: resolved.warning ?? 'Could not load that source right now.',
+          })
+          return
+        }
+
+        activeSourceState = resolved.sourceState
+        latestAuditState = null
+        await postAuditSourceLoaded(
+          panel,
+          activeSourceState,
+          `Loaded ${activeSourceState.label.toLowerCase()} for audit.`
+        )
+        return
+      }
+
+      if (message.type === 'runAudit') {
+        const promptText = message.promptText ?? ''
+        if (!promptText.trim()) {
+          await panel.webview.postMessage({
+            type: 'auditWarning',
+            message: 'Audit draft is empty. Load a source or paste a prompt first.',
+          })
+          return
+        }
+
+        const sourceKind = message.sourceKind ?? activeSourceState.kind
+        activeSourceState = {
+          ...activeSourceState,
+          kind: sourceKind,
+          label: getPromptSourceLabel(sourceKind),
+        }
+
+        const result = auditPrompt({
+          selectedText: promptText,
+          activeFilePath:
+            activeSourceState.writeBackTarget?.documentUri.fsPath ?? promptContext.activeFilePath,
+          languageId: 'text',
+          manualInstruction: 'Official Sentra Codex prompt for Cursor',
+          timestamp: new Date().toISOString(),
+        })
+
+        latestAuditState = {
+          source: activeSourceState,
+          auditedText: promptText,
+          result,
+        }
+        appendAuditLogIfPossible(activeSourceState, result)
+        await postAuditResult(panel, promptText, activeSourceState, result)
+        return
+      }
+
+      if (message.type === 'copyAuditSummary') {
+        if (!latestAuditState) {
+          await panel.webview.postMessage({
+            type: 'auditWarning',
+            message: 'Run an audit first before copying the summary.',
+          })
+          return
+        }
+
+        await vscode.env.clipboard.writeText(latestAuditState.result.auditSummary)
+        await panel.webview.postMessage({ type: 'auditSummaryCopied' })
+        return
+      }
+
+      if (message.type === 'copyAuditRewrite') {
+        const suggestedRewrite =
+          message.suggestedRewrite?.trim() ||
+          latestAuditState?.result.suggestedRewrite?.prompt ||
+          ''
+        if (!suggestedRewrite) {
+          await panel.webview.postMessage({
+            type: 'auditWarning',
+            message: 'No suggested rewrite is available yet.',
+          })
+          return
+        }
+
+        await vscode.env.clipboard.writeText(suggestedRewrite)
+        await panel.webview.postMessage({ type: 'auditRewriteCopied' })
+        return
+      }
+
+      if (message.type === 'applyAuditRewrite') {
+        if (!latestAuditState) {
+          await panel.webview.postMessage({
+            type: 'auditWarning',
+            message: 'Run an audit first before applying a rewrite.',
+          })
+          return
+        }
+
+        const outcome = await applyRewriteToSource(latestAuditState)
+        if (!outcome.ok) {
+          await panel.webview.postMessage({
+            type: 'auditWarning',
+            message: outcome.message,
+          })
+          return
+        }
+
+        await panel.webview.postMessage({
+          type: 'auditRewriteApplied',
+          message: outcome.message,
+        })
       }
     }
   )
 
   panel.onDidDispose(() => {
+    if (promptConsolePanel === panel) {
+      promptConsolePanel = undefined
+    }
     messageListener.dispose()
   })
 
   context.subscriptions.push(panel)
 }
 
+class PromptHomeViewProvider implements vscode.WebviewViewProvider {
+  private view: vscode.WebviewView | undefined
+
+  constructor(private readonly context: vscode.ExtensionContext) {}
+
+  async resolveWebviewView(webviewView: vscode.WebviewView): Promise<void> {
+    this.view = webviewView
+    webviewView.webview.options = { enableScripts: true }
+
+    const messageListener = webviewView.webview.onDidReceiveMessage(
+      async (message: { type?: string }) => {
+        if (!message?.type) return
+
+        if (message.type === 'openFullConsole') {
+          const { sourceState, notice } = resolveInitialSourceState(vscode.window.activeTextEditor)
+          await openPromptEnginePanel(this.context, {
+            initialView: 'compose',
+            initialSourceState: sourceState,
+            initialNotice: notice,
+          })
+          return
+        }
+
+        if (message.type === 'auditActivePrompt') {
+          const { sourceState, notice } = resolveInitialSourceState(vscode.window.activeTextEditor)
+          await launchAuditPanel(this.context, sourceState, notice)
+          return
+        }
+
+        if (message.type === 'auditClipboard') {
+          const resolved = await resolveExplicitSourceState(
+            'clipboard',
+            vscode.window.activeTextEditor
+          )
+          if (!resolved.sourceState) {
+            void vscode.window.showWarningMessage(
+              resolved.warning ?? 'Clipboard is empty. Copy a prompt draft first.'
+            )
+            return
+          }
+
+          await launchAuditPanel(this.context, resolved.sourceState, 'Loaded clipboard for audit.')
+        }
+      }
+    )
+
+    this.context.subscriptions.push(messageListener)
+    await this.refresh()
+  }
+
+  async refresh(): Promise<void> {
+    if (!this.view) return
+
+    const promptContext = getLightweightContext()
+    const { sourceState } = resolveInitialSourceState(vscode.window.activeTextEditor)
+
+    this.view.webview.html = buildPromptEngineHtml({
+      ...promptContext,
+      mode: 'implement',
+      view: 'compose',
+      auditSourceKind: sourceState.kind,
+      auditSourceText: sourceState.text,
+      composed: null,
+      surface: 'sidebar',
+    })
+  }
+}
+
 export function activate(context: vscode.ExtensionContext): void {
+  const promptHomeViewProvider = new PromptHomeViewProvider(context)
+
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(SIDEBAR_VIEW_ID, promptHomeViewProvider)
+  )
+
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor(() => {
+      void promptHomeViewProvider.refresh()
+    })
+  )
+
+  context.subscriptions.push(
+    vscode.window.onDidChangeTextEditorSelection(() => {
+      void promptHomeViewProvider.refresh()
+    })
+  )
+
   context.subscriptions.push(
     vscode.commands.registerCommand(AUDIT_PROMPT_COMMAND, async () => {
-      const editor = vscode.window.activeTextEditor
-      if (!editor) {
-        void vscode.window.showWarningMessage('Open a text editor with a prompt selection first.')
-        return
-      }
-
-      await runPromptAudit(editor)
+      const { sourceState, notice } = resolveInitialSourceState(vscode.window.activeTextEditor)
+      await launchAuditPanel(context, sourceState, notice)
     })
   )
 
   context.subscriptions.push(
     vscode.commands.registerCommand(LEGACY_GENERATE_MISSION_COMMAND, async () => {
-      const editor = vscode.window.activeTextEditor
-      if (!editor) {
-        void vscode.window.showWarningMessage('Open a text editor with a prompt selection first.')
-        return
-      }
-
       void vscode.window.showInformationMessage(
-        'Sentra Prompt now audits selected Codex prompts. Running the new audit flow.'
+        'Sentra Prompt now opens the unified Prompt Console. Running the audit workflow there.'
       )
-      await runPromptAudit(editor)
+
+      const { sourceState, notice } = resolveInitialSourceState(vscode.window.activeTextEditor)
+      await launchAuditPanel(context, sourceState, notice)
     })
   )
 
   context.subscriptions.push(
     vscode.commands.registerCommand(OPEN_PROMPT_ENGINE_COMMAND, async () => {
-      openPromptEnginePanel(context)
+      const { sourceState, notice } = resolveInitialSourceState(vscode.window.activeTextEditor)
+      await openPromptEnginePanel(context, {
+        initialView: 'compose',
+        initialSourceState: sourceState,
+        initialNotice: notice,
+      })
     })
   )
 
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100)
   statusBarItem.text = STATUS_BAR_TEXT
-  statusBarItem.tooltip = 'Audit selected Codex prompt for Sentra in Cursor or VS Code'
-  statusBarItem.command = AUDIT_PROMPT_COMMAND
+  statusBarItem.tooltip = 'Open Sentra Prompt Home in the sidebar'
+  statusBarItem.command = SIDEBAR_CONTAINER_COMMAND
   statusBarItem.show()
 
   context.subscriptions.push(statusBarItem)

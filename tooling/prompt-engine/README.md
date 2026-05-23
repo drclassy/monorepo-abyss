@@ -5,6 +5,8 @@ lebih bisa diverifikasi, dan lebih selaras dengan praktik prompt agent modern.
 
 ## What it does
 
+- Menampilkan home `Sentra Prompt` langsung di sidebar IDE sebagai entry point
+  utama
 - Membuka webview `Sentra Prompt Engine` langsung di Cursor atau VS Code
 - Membiarkan Chief menulis satu request bebas di textarea besar
 - Menyediakan quick mode `Implement`, `Review`, `Debug`, `Plan`, atau `Verify`
@@ -26,8 +28,8 @@ lebih bisa diverifikasi, dan lebih selaras dengan praktik prompt agent modern.
 - `Sentra Prompt: Audit Codex Prompt`
 - `Sentra Prompt: Generate Mission Prompt (Legacy Alias)`
 
-Command alias lama tetap ada sementara agar workflow existing tidak langsung
-putus, tetapi behavior-nya sekarang diarahkan ke audit prompt resmi.
+Command tetap ada sebagai fallback dan shortcut, tetapi surface utama sekarang
+ada di sidebar `Sentra Prompt` dan tombol audit cepat di editor title.
 
 ## Local prerequisites
 
@@ -62,10 +64,12 @@ test monorepo penuh.
 2. Jalankan `pnpm test`
 3. Jalankan `pnpm package`
 4. Install VSIX di Cursor atau VS Code
-5. Jalankan `Sentra Prompt: Open Prompt Engine`
-6. Pilih mode, tulis request, lalu klik `Compose`
-7. Pastikan preview `Final Prompt` terisi
-8. Klik `Copy`, lalu paste ke scratch file untuk memastikan clipboard berhasil
+5. Buka sidebar `Sentra Prompt` dari Activity Bar
+6. Klik `Open Full Console` atau `Audit Active Prompt`
+7. Pastikan Prompt Console terbuka dengan context file aktif
+8. Untuk compose, pilih mode, tulis request, lalu klik `Compose`
+9. Pastikan preview `Final Prompt` terisi
+10. Klik `Copy`, lalu paste ke scratch file untuk memastikan clipboard berhasil
 
 ## Manual testing
 

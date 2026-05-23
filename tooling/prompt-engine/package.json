@@ -27,6 +27,7 @@
   ],
   "activationEvents": [
     "onStartupFinished",
+    "onView:sentraPrompt.home",
     "onCommand:sentraPrompt.auditCodexPrompt",
     "onCommand:sentraPrompt.generateMission",
     "onCommand:sentraPrompt.openPromptEngine"
@@ -48,6 +49,24 @@
     "typescript": "^5.4.0"
   },
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sentraPrompt",
+          "title": "Sentra Prompt",
+          "icon": "media/sentra-prompt.svg"
+        }
+      ]
+    },
+    "views": {
+      "sentraPrompt": [
+        {
+          "type": "webview",
+          "id": "sentraPrompt.home",
+          "name": "Prompt Home"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "sentraPrompt.auditCodexPrompt",
@@ -61,6 +80,15 @@
         "command": "sentraPrompt.openPromptEngine",
         "title": "Sentra Prompt: Open Prompt Engine"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "sentraPrompt.auditCodexPrompt",
+          "when": "editorTextFocus",
+          "group": "navigation"
+        }
+      ]
+    }
   }
 }
