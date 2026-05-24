@@ -67,6 +67,13 @@ AGENTS.md = public rulebook.
 Sebelum melanjutkan, wajib output:
 ✅ CONTEXT LOADED: [architecture state] · PROGRESS: [work state] · ACTIVE TASK: [session goal] · KNOWN RISKS: [relevant lessons]
 
+SOP HARD GATE:
+- For any non-trivial repository work, read the literal workspace `AGENTS.md` file first.
+- Then read `.agent/README.md` and `.agent/HANDOFF.md`.
+- Read `.agent/CONTEXT.md` before touching boundaries, protected areas, or crown-jewel code.
+- Auto-injected context is only a reminder; it is not proof that the files were read.
+- Do not give a final audit/verdict, edit files, clean, delete, or refactor before the literal preflight is complete.
+
 Every agent must verify .agent/ exists, load .agent/ state before substantive repo work, and never delete/move/clean/reset/treat .agent/ as cache or junk.
 
 ## README.md
