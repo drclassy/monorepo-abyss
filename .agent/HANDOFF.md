@@ -239,9 +239,10 @@ as part of the SSOT simplification.
   repeated `ssot-daily/*-backup/` folders, later small generated
   `ssot-daily/*.md` runs, `ssot-suggestions/`, and noisy session logs
   `2026-05-16.md` / `2026-05-17.md`.
-- `.codex/hooks.json` governance alignment updated for Codex 2026 hook coverage;
-  keep it under targeted review until one full real agent cycle confirms the
-  startup/edit/stop path behaves as intended.
+- Repo-local `.codex/` was backed up and removed under
+  `ABYSS-CODEX-LOCAL-DEPRECATION-001`; live governance references now need to
+  point to global Codex at `C:\Users\drclassy\.codex` plus repo authority in
+  `AGENTS.md`, `.agent/`, and `tooling/governance/agent/`.
 - `CLAUDE.md`, `.claude/settings.json`, `.cursor/rules/00-core.mdc`, `.roomodes`,
   and `.roo/rules-sentra-*/01-rules.md` were aligned to the same active SSOT
   read pattern. Runtime proof now exists for Codex and Claude Code; Cursor CLI
@@ -293,8 +294,9 @@ diff because parts of `apps/` are ignored by the current repo rules.
    - Governance healthcheck still reports stale references.
    - Treat as governance cleanup, not product rewrite.
 4. Re-run dirty tree classification after the hygiene commits.
-5. Verify the refreshed `.codex/hooks.json` path in one real agent cycle, then
-   decide whether it can leave HOLD status.
+5. Verify the post-deprecation governance path after live references are
+   migrated, without restoring repo-local `.codex/` unless a real blocker is
+   proven.
 6. Review `apps/corporate/ferdiiskandar/**` app import only after the dirty tree
    classification is refreshed.
 7. Keep untracked noisy `.agent` reports/sessions on HOLD unless Chief asks for
@@ -328,11 +330,11 @@ tree classification before picking the next cluster:
 git status --short
 git diff --stat
 git diff --name-status
-git ls-files --others --exclude-standard .cursor .codex
+git ls-files --others --exclude-standard .cursor
 ```
 
 Do not push yet. Do not touch `apps/corporate/ferdiiskandar/.env.local`,
-`node_modules.bak-recovered/**`, `.codex/hooks.json`, or
+`node_modules.bak-recovered/**`, restore repo-local `.codex/`, or touch
 `.cursor/rules/design.mdc` without a targeted mission.
 
 Verification before any next commit:

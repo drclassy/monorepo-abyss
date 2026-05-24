@@ -3,7 +3,7 @@
  * AGENTS.md Health Check — Monorepo Alignment Validator
  *
  * Scans all AGENTS.md files across the monorepo and verifies:
- *   0. Root Codex project-layer enforcement is active
+ *   0. Root governance tooling exists without requiring repo-local .codex
  *   1. Every file references root AGENTS.md as SSOT
  *   2. No "WAIT FOR GO" manual gate (must use risk-based classification)
  *   3. JET Protocol references point to root section 2 (not section 5)
@@ -24,9 +24,10 @@ const { join, relative } = require('node:path')
 
 const ROOT = process.cwd()
 const APPS_DIR = join(ROOT, 'apps')
-const ROOT_CODEX_DIR = join(ROOT, '.codex')
-const ROOT_CODEX_CONFIG = join(ROOT_CODEX_DIR, 'config.toml')
-const ROOT_HOOKS_JSON = join(ROOT_CODEX_DIR, 'hooks.json')
+const GOVERNANCE_HOOKS_DIR = join(ROOT, 'tooling', 'governance', 'agent', 'hooks')
+const SESSION_START_HOOK = join(GOVERNANCE_HOOKS_DIR, 'session-start.ps1')
+const POST_TOOL_USE_HOOK = join(GOVERNANCE_HOOKS_DIR, 'post-tool-use.ps1')
+const SESSION_STOP_HOOK = join(GOVERNANCE_HOOKS_DIR, 'session-stop.ps1')
 
 const REQUIRED_AGENT_FILES_V2 = [
   'README.md',
@@ -83,20 +84,6 @@ function isSubAppFile(file) {
   const content = readFileSync(file, 'utf-8')
   if (!content.includes('## 3. JET')) return false
   return true
-}
-
-function readRootCodexConfig() {
-  if (!existsSync(ROOT_CODEX_CONFIG)) return null
-  return readFileSync(ROOT_CODEX_CONFIG, 'utf-8')
-}
-
-function readRootHooksConfig() {
-  if (!existsSync(ROOT_HOOKS_JSON)) return null
-  try {
-    return JSON.parse(readFileSync(ROOT_HOOKS_JSON, 'utf-8'))
-  } catch {
-    return 'INVALID_JSON'
-  }
 }
 
 // ─── Checks ──────────────────────────────────────────────────────────────────
@@ -202,151 +189,47 @@ function checkNoRootContradictions(file, content) {
   }
 }
 
-function checkRootCodexHooksEnabled() {
-  const content = readRootCodexConfig()
-  if (!content) {
-    return {
-      file: ROOT_CODEX_CONFIG,
-      pass: existsSync(ROOT_HOOKS_JSON),
-      rule: 'Root .codex config policy',
-      detail: existsSync(ROOT_HOOKS_JSON)
-        ? undefined
-        : 'Missing .codex/hooks.json for repo-level Codex enforcement',
-    }
-  }
-
-  const usesDeprecatedAlias = /\bcodex_hooks\s*=/.test(content)
-  const hasFeaturesSection = /\[features\]/.test(content)
-  if (!hasFeaturesSection) {
-    return {
-      file: ROOT_CODEX_CONFIG,
-      pass: false,
-      rule: 'Root .codex config policy',
-      detail: 'Project config is present but missing [features] section',
-    }
-  }
-
-  const hasHooksEnabled = /\[features\][\s\S]*?\bhooks\s*=\s*true\b/.test(content)
+function checkGovernanceHooksDirectory() {
   return {
-    file: ROOT_CODEX_CONFIG,
-    pass: hasHooksEnabled && !usesDeprecatedAlias,
-    rule: 'Root .codex config policy',
-    detail: !hasHooksEnabled
-      ? 'Project config does not explicitly enable [features].hooks = true'
-      : usesDeprecatedAlias
-        ? 'Deprecated codex_hooks flag detected in project config'
-        : undefined,
-  }
-}
-
-function checkRootHooksJsonExists() {
-  return {
-    file: ROOT_HOOKS_JSON,
-    pass: existsSync(ROOT_HOOKS_JSON),
-    rule: 'Root hooks.json exists',
-    detail: existsSync(ROOT_HOOKS_JSON) ? undefined : 'Missing .codex/hooks.json',
-  }
-}
-
-function checkSessionStartHookCoverage() {
-  const config = readRootHooksConfig()
-  if (!config || config === 'INVALID_JSON') {
-    return {
-      file: ROOT_HOOKS_JSON,
-      pass: false,
-      rule: 'SessionStart SSOT hook',
-      detail: !config ? 'Missing .codex/hooks.json' : 'Invalid JSON in .codex/hooks.json',
-    }
-  }
-
-  const sessionHooks = config.hooks?.SessionStart ?? []
-  const hasCoverage = sessionHooks.some(
-    (entry) =>
-      typeof entry.matcher === 'string' &&
-      entry.matcher.includes('startup') &&
-      entry.matcher.includes('resume') &&
-      entry.matcher.includes('clear') &&
-      Array.isArray(entry.hooks) &&
-      entry.hooks.some(
-        (hook) =>
-          typeof hook.command === 'string' &&
-          hook.command.includes('tooling/governance/agent/hooks/session-start.ps1')
-      )
-  )
-
-  return {
-    file: ROOT_HOOKS_JSON,
-    pass: hasCoverage,
-    rule: 'SessionStart SSOT hook',
-    detail: hasCoverage
+    file: GOVERNANCE_HOOKS_DIR,
+    pass: existsSync(GOVERNANCE_HOOKS_DIR),
+    rule: 'Repo governance hooks directory',
+    detail: existsSync(GOVERNANCE_HOOKS_DIR)
       ? undefined
-      : 'SessionStart must cover startup|resume|clear and call session-start.ps1',
+      : 'Missing tooling/governance/agent/hooks directory',
   }
 }
 
-function checkPostToolUseEditCoverage() {
-  const config = readRootHooksConfig()
-  if (!config || config === 'INVALID_JSON') {
-    return {
-      file: ROOT_HOOKS_JSON,
-      pass: false,
-      rule: 'PostToolUse edit coverage',
-      detail: !config ? 'Missing .codex/hooks.json' : 'Invalid JSON in .codex/hooks.json',
-    }
-  }
-
-  const postHooks = config.hooks?.PostToolUse ?? []
-  const hasCoverage = postHooks.some(
-    (entry) =>
-      typeof entry.matcher === 'string' &&
-      entry.matcher.includes('apply_patch') &&
-      entry.matcher.includes('Edit') &&
-      entry.matcher.includes('Write') &&
-      Array.isArray(entry.hooks) &&
-      entry.hooks.some(
-        (hook) =>
-          typeof hook.command === 'string' &&
-          hook.command.includes('tooling/governance/agent/hooks/post-tool-use.ps1')
-      )
-  )
-
+function checkSessionStartHookExists() {
   return {
-    file: ROOT_HOOKS_JSON,
-    pass: hasCoverage,
-    rule: 'PostToolUse edit coverage',
-    detail: hasCoverage
+    file: SESSION_START_HOOK,
+    pass: existsSync(SESSION_START_HOOK),
+    rule: 'SessionStart governance script',
+    detail: existsSync(SESSION_START_HOOK)
       ? undefined
-      : 'PostToolUse must cover apply_patch/Edit/Write and call post-tool-use.ps1',
+      : 'Missing tooling/governance/agent/hooks/session-start.ps1',
   }
 }
 
-function checkStopContinuityHook() {
-  const config = readRootHooksConfig()
-  if (!config || config === 'INVALID_JSON') {
-    return {
-      file: ROOT_HOOKS_JSON,
-      pass: false,
-      rule: 'Stop continuity hook',
-      detail: !config ? 'Missing .codex/hooks.json' : 'Invalid JSON in .codex/hooks.json',
-    }
-  }
-
-  const stopHooks = config.hooks?.Stop ?? []
-  const hasCoverage = stopHooks.some(
-    (entry) =>
-      Array.isArray(entry.hooks) &&
-      entry.hooks.some(
-        (hook) =>
-          typeof hook.command === 'string' &&
-          hook.command.includes('tooling/governance/agent/hooks/session-stop.ps1')
-      )
-  )
-
+function checkPostToolUseHookExists() {
   return {
-    file: ROOT_HOOKS_JSON,
-    pass: hasCoverage,
-    rule: 'Stop continuity hook',
-    detail: hasCoverage ? undefined : 'Stop hook must call session-stop.ps1',
+    file: POST_TOOL_USE_HOOK,
+    pass: existsSync(POST_TOOL_USE_HOOK),
+    rule: 'PostToolUse governance script',
+    detail: existsSync(POST_TOOL_USE_HOOK)
+      ? undefined
+      : 'Missing tooling/governance/agent/hooks/post-tool-use.ps1',
+  }
+}
+
+function checkStopContinuityHookExists() {
+  return {
+    file: SESSION_STOP_HOOK,
+    pass: existsSync(SESSION_STOP_HOOK),
+    rule: 'Stop continuity governance script',
+    detail: existsSync(SESSION_STOP_HOOK)
+      ? undefined
+      : 'Missing tooling/governance/agent/hooks/session-stop.ps1',
   }
 }
 
@@ -362,11 +245,10 @@ const checks = [
 ]
 
 const rootChecks = [
-  checkRootCodexHooksEnabled,
-  checkRootHooksJsonExists,
-  checkSessionStartHookCoverage,
-  checkPostToolUseEditCoverage,
-  checkStopContinuityHook,
+  checkGovernanceHooksDirectory,
+  checkSessionStartHookExists,
+  checkPostToolUseHookExists,
+  checkStopContinuityHookExists,
 ]
 
 function main() {

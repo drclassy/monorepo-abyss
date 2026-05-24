@@ -3,6 +3,21 @@
 Append-only for durable choices and repeated lessons. Add new entries at the
 top. Older full ledgers are preserved in `.agent/archive/legacy-root/`.
 
+## 2026-05-25 - Repo-local `.codex/` is deprecated; global Codex is the runtime layer
+
+Decision: ABYSS no longer treats root `.codex/` as an active governance layer.
+Codex runtime config, scripts, and skills live globally at
+`C:\Users\drclassy\.codex`, while repo authority stays in `AGENTS.md`,
+`.agent/`, and `tooling/governance/agent/`.
+
+Reason: The tracked repo-local `.codex/` layer was removed under
+`ABYSS-CODEX-LOCAL-DEPRECATION-001`, and keeping live governance requirements
+pointed at a deleted project folder would create false failures and stale
+operator guidance.
+
+Status: Active. This supersedes the 2026-05-20 decision that made root
+`.codex/` the canonical SSOT enforcement path.
+
 ## 2026-05-21 - PORTAL UI: 10-design gallery on rebuild; v17 built
 
 Decision: When Chief says **NO** to a PORTAL Mission Control mock, the agent

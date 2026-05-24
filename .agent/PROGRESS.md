@@ -24,8 +24,8 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 - [x] .agent/ minimal SSOT shape adopted.
 - [x] .agent.bak records sorted into .agent/.
 - [x] Agent tooling moved to tooling/governance/agent/.
-- [x] Root `.codex/` project layer now explicitly enables hooks and reloads SSOT on `startup`, `resume`, and `clear`.
-- [x] Governance healthcheck now validates root `.codex/` hook coverage for SessionStart, PostToolUse edit logging, and Stop continuity.
+- [x] Repo-local `.codex/` governance layer has been deprecated and removed after external backup.
+- [x] Governance healthcheck now validates repo governance tooling without requiring root `.codex/`.
 - [x] Claude Code project entrypoint and hook settings now point to the active SSOT shape and governance tooling paths.
 - [x] Cursor core rule and Roo mode rules now use the same active SSOT read pattern as Codex.
 - [x] Claude Code runtime smoke run proved the aligned repo SSOT path operationally.

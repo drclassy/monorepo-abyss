@@ -98,7 +98,8 @@ Keep new work within the existing structure:
 - `docs/` - human-readable project documentation
 - `.agent/` - operational SSOT knowledge and handoff state
 - `tooling/governance/agent/` - agent hooks, scripts, and workflows
-- `.codex/` - Codex hooks and repo-specific Codex assets
+- `C:\Users\drclassy\.codex\` - global Codex config, scripts, and skills for
+  this workstation
 
 Do not create a new top-level domain or package location unless Chief approves
 it.
