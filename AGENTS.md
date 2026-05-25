@@ -1,181 +1,142 @@
-# AGENTS.md - ABYSS Monorepo
+# AGENTS.md — ABYSS Monorepo
 
-Repository-wide instructions for Codex, Cursor agents, Claude, and other AI
-coding tools.
+Last updated: 2026-05-25
 
 ## Purpose
 
-This is the production-oriented Sentra / ABYSS engineering monorepo. Work here
-must stay safe, small, typed, and reviewable. Use `pnpm`, not npm or yarn,
-unless a package explicitly proves otherwise.
+ABYSS is a production-oriented Sentra monorepo. This file is the root operating
+contract. `.agent/` is the active SSOT for continuity, handoff, and current
+state.
 
-## Operational SSOT
+Use `pnpm`, not `npm` or `yarn`, unless a package explicitly proves otherwise.
 
-`AGENTS.md` is the public rulebook. `.agent/` is the operational SSOT.
+## Instruction Authority
 
-Before any non-trivial repo work, agents must:
+Apply instructions in this order:
 
-1. Verify `.agent/` exists.
-2. Read `.agent/README.md`.
-3. Read `.agent/HANDOFF.md`, then `.agent/CONTEXT.md`, `.agent/PROGRESS.md`, and
-   `.agent/DECISIONS.md` as needed.
-4. Report `.agent/` status before continuing when continuity, handoff, or
-   protected-state risk is involved.
+1. Current user instruction
+2. Nearest local `AGENTS.override.md`, if present
+3. Nearest local `AGENTS.md`
+4. Root `AGENTS.md`
+5. Global Codex guidance in `C:\Users\drclassy\.codex\`
 
-Do not delete, move, clean, reset, ignore, or treat `.agent/` as cache/junk. Do
-not replace `.agent/` with `AGENTS.md`.
+Rules:
 
-## Operating Style
+- Read this file first for repo-wide work.
+- Read `.agent/README.md` and `.agent/HANDOFF.md` for active continuity.
+- Read `.agent/CONTEXT.md`, `.agent/DECISIONS.md`, and `.agent/PROGRESS.md` as
+  needed.
+- Do not replace `.agent/` with `AGENTS.md`.
+- Do not turn this file into a status report or session ledger.
 
-- Understand the relevant files before editing.
-- Summarize the exact plan before changes.
-- Make the smallest safe change that solves the task.
-- Prefer existing project patterns over new abstractions.
-- Keep boundaries clean between product logic, UI, infrastructure, database,
-  OCR/RAG, diagnosis/CDS, and external integrations.
-- Explain decisions briefly in Bahasa Indonesia unless code, logs, or comments
-  require English.
-- Do not rewrite, rename, move, delete, or restructure unrelated files.
-- Do not add dependencies, change build config, touch auth, database schema,
-  deployment config, or secrets without explicit approval.
+## Required Workflow
 
-## Documentation Lookup
+For every real task:
 
-Use Context7 only for framework, library, and API documentation lookup. Do not
-send any of the following to Context7 or any external lookup tool:
+1. Read SSOT.
+2. Read the relevant code, docs, tests, and config.
+3. Write brief notes before implementation.
+4. Make the smallest complete change.
+5. Run the smallest relevant verification.
+6. Recheck scope and diff.
+7. Report only after verification.
 
-- secrets, `.env` values, tokens, keys, credentials
-- private code
-- patient data or PHI
-- proprietary architecture details
-- internal business plans
+Hard gates:
 
-For security-sensitive changes, verify locally before editing auth, database,
-deployment, or secret-handling code.
+- No SSOT read = do not implement.
+- No relevant reference read = do not implement.
+- No brief notes = do not implement.
+- No verification = do not claim done.
+- No unrelated changes.
 
-## Boundaries
+## Boundary Rules
 
-Allowed by default:
+- Keep changes small, typed, reviewable, and reversible.
+- Prefer existing patterns over new abstractions.
+- Do not invent APIs, config keys, or project structure.
+- Use Context7 only for public framework, library, and API documentation.
+- For any work under `apps/`, read `apps/AGENTS.md` and follow
+  `apps/_governance/APP_BOUNDARY_PREFLIGHT.md` before implementation.
 
-- Small code fixes
-- Typed refactors within one clear area
-- Test, typecheck, lint, and verification improvements
-- Documentation updates that clarify current behavior
-- Local scripts that do not add production dependencies
+## Protected Areas
 
-Ask first:
+- `.agent/` is protected SSOT knowledge. Do not delete, clean, reset, or treat
+  it as junk.
+- `packages/sentra/**` is crown-jewel review-first territory. Diagnose first and
+  edit only with explicit approval.
+- Do not expose or commit secrets, `.env` values, PHI, or patient data.
+- Do not change auth, database schema, migrations, deployment, CI/CD, Docker,
+  Terraform, or secret-management without explicit approval.
+- For clinical, diagnosis, RAG, OCR, and healthcare workflows, keep human
+  review, uncertainty, and auditability visible.
 
-- New package dependencies
-- New production services or paid cloud services
-- Auth changes
-- Database schema or migration changes
-- Deployment, CI/CD, Terraform, Docker, or secret-management changes
-- SATUSEHAT, BPJS, external API, or third-party integration assumptions
-- Folder moves, renames, deletions, or large restructuring
+## Git Safety
 
-Forbidden:
+Allowed inspection:
 
-- Exposing or modifying secrets
-- Reading, printing, copying, or transmitting `.env` values
-- Committing credentials, PHI, or private patient data
-- Reverting user changes unless explicitly asked
-- Hiding verification failures
-- Claiming completion when build, typecheck, or tests fail
+```powershell
+git status --short
+git diff --stat
+git diff --name-status
+git diff
+git log --oneline -n 10
+```
 
-## Repository Shape
+Do not use broad staging commands such as `git add .` or `git add -A`.
 
-Keep new work within the existing structure:
+Forbidden unless explicitly requested:
 
-- `apps/` - applications
-- `packages/sentra/` - proprietary Sentra capabilities
-- `packages/platform/` - runtime infrastructure and platform services
-- `packages/clinical/` - clinical knowledge and safety substrate
-- `packages/shared/` - reusable shared primitives
-- `packages/tooling/` - developer and build tooling
-- `platform/` - platform applications and orchestrators
-- `infrastructure/` - Docker, ArgoCD, Terraform, and deployment assets
-- `flows/` - LangFlow definitions
-- `docs/` - human-readable project documentation
-- `.agent/` - operational SSOT knowledge and handoff state
-- `tooling/governance/agent/` - agent hooks, scripts, and workflows
-- `C:\Users\drclassy\.codex\` - global Codex config, scripts, and skills for
-  this workstation
+- `git reset`
+- `git clean`
+- `git push --force`
+- deleting untracked user files
+- rewriting history
+- reverting user changes
 
-Do not create a new top-level domain or package location unless Chief approves
-it.
+## Verification
 
-## Verification Gate
+Prefer the smallest meaningful check first:
 
-Before completing any coding task, run:
+1. Direct repro/runtime check
+2. Targeted test
+3. Behavioral test
+4. Focused lint
+5. Typecheck
+6. Build
+
+For documentation-only changes, verify with:
+
+```powershell
+git diff --stat
+git diff --name-status
+```
+
+For broader repo verification when needed, prefer:
 
 ```powershell
 pwsh -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.codex\scripts\verify-local.ps1"
 ```
 
-The global Codex verification script runs:
-
-```powershell
-pnpm build
-pnpm typecheck
-pnpm test
-git diff --stat
-```
-
-A task is done only when:
-
-- build passes
-- typecheck passes
-- tests pass
-- `git diff --stat` shows only intended files
-- no unrelated files changed
-- no forbidden dependency or boundary violation was introduced
-
-If verification fails:
-
-- Stop.
-- Report the failing command.
-- Summarize the root cause.
-- Propose the smallest safe fix.
-- Do not bypass verification unless Chief explicitly authorizes it.
-
-Use this fallback only when the workspace is incomplete or a package does not
-yet define all scripts:
+Use the safe fallback only when the workspace is incomplete:
 
 ```powershell
 pwsh -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.codex\scripts\verify-local-safe.ps1"
 ```
 
-## Definition Of Done
+Do not claim done without fresh verification evidence.
 
-Work is complete when:
-
-- The requested behavior is implemented.
-- Changes are minimal and scoped.
-- No secrets or PHI were exposed.
-- Relevant tests or checks were run.
-- Global Codex verification passes, or the blocker is clearly reported.
-- The final response includes what changed, how it was verified, risks, rollback
-  note, and next step.
-
-## Final Response Format
+## Final Report
 
 Use this structure:
 
-- Summary of what you found
-- Plan
-- Files changed
-- Changes made
-- Verification commands
-- Risks / rollback note
-- Next step
-
-## Primary stack:
-
-- Windows 11, PowerShell 7
-- Node.js 22+
-- pnpm 9.15.0
-- TypeScript
-- Turborepo
-- React / Next.js / Vite where applicable
-
-Last updated: 2026-05-16
+```text
+SSOT Used:
+Relevant Reference Used:
+Brief Notes:
+Files Changed:
+Changes Made:
+Verification:
+Checklist Recheck:
+Remaining Risk:
+Next Step:
+```
