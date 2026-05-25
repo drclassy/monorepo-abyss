@@ -1,0 +1,28 @@
+{
+  "schema": "abyss.app-boundary.draft.v1",
+  "draftStatus": "non-enforcing-owner-confirmation-draft",
+  "appId": "intelligenceboard",
+  "path": "apps/healthcare/intelligenceboard",
+  "domain": "healthcare",
+  "productClassification": "internal-operator-app",
+  "ownerDecision": "confirmed-monorepo-bound-jewel-surface",
+  "futureStandaloneRepo": false,
+  "crownJewelAccessTier": "CJ-4 internal-core-access",
+  "crownJewelAccessMode": "approved-internal-core-or-service-facade",
+  "ownsCrownJewelLogic": false,
+  "jewelDependency": "complete",
+  "allowedImports": [
+    "app-local code",
+    "approved public shared types",
+    "approved service facade",
+    "approved internal core access only within owner-confirmed scope"
+  ],
+  "forbiddenImports": [
+    "sibling apps",
+    "unapproved crown-jewel src/internal paths",
+    "copied or forked diagnosis/CDSS/RAG/OCR/document-intelligence algorithms",
+    "standalone extraction carrying jewel internals"
+  ],
+  "notes": "Confirmed by owner as completely using monorepo jewel. This does not make the app owner of the jewel algorithm.",
+  "lastOwnerReview": "2026-05-25"
+}

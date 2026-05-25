@@ -183,6 +183,9 @@ docs/superpowers/
 apps/
 !apps/
 apps/*
+!apps/AGENTS.md
+!apps/_governance/
+!apps/_governance/**
 !apps/corporate/
 apps/corporate/*
 !apps/corporate/ferdiiskandar/
@@ -241,6 +244,16 @@ apps/corporate/ferdiiskandar/pnpm-lock.yaml
 !.cursor/hooks/autofix-loop.mjs
 .cursor/hooks/edit-log.txt
 .cursor/hooks/session-log.txt
+
+# Keep healthcare app boundary manifests discoverable without exposing migrated app repos.
+!apps/healthcare/
+apps/healthcare/**
+!apps/healthcare/primary-healthcare/
+!apps/healthcare/primary-healthcare/app.boundary.json
+!apps/healthcare/sentra-main/
+!apps/healthcare/sentra-main/app.boundary.json
+!apps/healthcare/sidelab-project/
+!apps/healthcare/sidelab-project/app.boundary.json
 
 gha-creds-*.json
 

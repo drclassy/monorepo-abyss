@@ -1,0 +1,28 @@
+{
+  "schema": "abyss.app-boundary.draft.v1",
+  "draftStatus": "non-enforcing-owner-confirmation-draft",
+  "appId": "referralink",
+  "path": "apps/healthcare/referralink",
+  "domain": "healthcare",
+  "productClassification": "standalone-product-with-crown-jewel-consumption",
+  "ownerDecision": "pending-confirmation",
+  "futureStandaloneRepo": true,
+  "crownJewelAccessTier": "CJ-2 sdk-api-client",
+  "crownJewelAccessMode": "sdk-api-client",
+  "ownsCrownJewelLogic": false,
+  "jewelDependency": "partial",
+  "allowedImports": [
+    "app-local code",
+    "approved contracts",
+    "approved SDK/API client",
+    "app-owned referral workflow data"
+  ],
+  "forbiddenImports": [
+    "sibling apps",
+    "unapproved crown-jewel src/internal paths",
+    "copied or forked diagnosis/CDSS/RAG/OCR/document-intelligence algorithms",
+    "direct writes to core crown-jewel databases without owner decision"
+  ],
+  "notes": "Pending owner confirmation. Keep provisional CJ-2 while repo evidence shows diagnosis API/client concepts. If owner confirms pure referral workflow, downgrade to CJ-0 or CJ-1.",
+  "lastOwnerReview": "2026-05-25"
+}

@@ -1,0 +1,29 @@
+{
+  "status": "final-owner-approved",
+  "appId": "ferdiiskandar",
+  "detectedPath": "apps/corporate/ferdiiskandar",
+  "domain": "corporate",
+  "productClassification": "standalone-product-app",
+  "futureStandaloneRepo": true,
+  "crownJewelAccessTier": "CJ-0",
+  "crownJewelAccessMode": "none",
+  "ownsCrownJewelLogic": false,
+  "jewelDependency": "none",
+  "allowedCrownJewelCapabilities": [],
+  "allowedImports": [],
+  "forbiddenImports": [
+    "apps/*",
+    "@sentra/*/src/*",
+    "@sentra/*/internal/*",
+    "@the-abyss/database",
+    "@sentra/database"
+  ],
+  "databaseAccessPolicy": "no-direct-core-database-access",
+  "extractionPolicy": {
+    "canMoveToStandaloneRepo": true,
+    "requiresRemoteCrownJewelService": false,
+    "mustNotDependOnMonorepoPathAliases": true
+  },
+  "ownerDecision": "confirmed-standalone-cj0",
+  "notes": []
+}
