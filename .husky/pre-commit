@@ -90,6 +90,6 @@ echo "✓ PHI scan: clean"
 # 3. LINT-STAGED — auto-fix lint pada file staged saja
 # ─────────────────────────────────────────────────────────────
 echo "🎨 Running lint-staged on staged files..."
-pnpm exec lint-staged
+pnpm exec lint-staged --config "$REPO_ROOT/package.json"
 
 echo "✓ Pre-commit gate passed — commit proceeding"
