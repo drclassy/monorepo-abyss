@@ -8,7 +8,7 @@
 |-------|-------|
 | Name | Orchestrator |
 | Package | `@the-abyss/orchestrator` |
-| Path | `apps/orchestrator/` |
+| Path | `platform/orchestrator/` |
 | Purpose | Central AI coordination layer — LangFlow workflow execution, task routing, runtime contracts |
 | Owner | Dr. Ferdi Iskandar (Chief) |
 | Status | Active — critical infrastructure |

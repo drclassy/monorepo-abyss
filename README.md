@@ -65,8 +65,9 @@ Important repository state:
 - `pnpm build` currently sees 37 active workspace packages.
 - Workspace truth is still split between `pnpm-workspace.yaml`, `.gitignore`,
   and some documentation surfaces.
-- `packages/integration` exists on disk, while workspace-path alignment around
-  `packages/integration-bridge` is still under review.
+- `packages/integration` is the on-disk folder for package identity
+  `@the-abyss/integration-bridge`; any naming normalization remains a future
+  explicit decision.
 - `packages/sentra/**` contains the crown-jewel Sentra engines and remains
   review-first territory requiring explicit approval before edits.
 - Application surfaces live under `apps/` and reuse shared engines and tooling
@@ -162,24 +163,24 @@ Historical or design-era prototype references may still appear in older docs.
 
 ## Shared engines and packages
 
-| Package                           | Path                                     | Role                                                                                                                                                             |
-| --------------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@the-abyss/clinical-references`  | `packages/clinical/clinical-references`  | Shared clinical reference types and structured clinical data surfaces.                                                                                           |
-| `@the-abyss/config-eslint`        | `packages/tooling/config-eslint`         | Shared ESLint flat-config presets and repo lint boundaries.                                                                                                      |
-| `@the-abyss/config-typescript`    | `packages/tooling/config-typescript`     | Shared TypeScript configuration presets across workspaces.                                                                                                       |
-| `@the-abyss/database`             | `packages/platform/database`             | Prisma client, schema, and shared database access layer.                                                                                                         |
-| `@the-abyss/design-token`         | `packages/shared/design-token`           | Sentra design tokens for color, borders, typography, and spacing.                                                                                                |
-| `@the-abyss/document-ingestion`   | `packages/platform/document-ingestion`   | Canonical document ingestion surface with parsing, OCR-quality reporting, normalization, and source hashing.                                                     |
-| `@sentra/sandi`                   | `packages/sentra/sentra-sandi`           | FHIR validation, normalization, bundle projection, and interoperability engine.                                                                                  |
-| `@the-abyss/integration-bridge`   | `packages/integration`                   | Bridge layer for external integrations such as Notion and Linear. Current on-disk path is `packages/integration`; workspace-path alignment remains under review. |
-| `@sentra/bentara`                 | `packages/sentra/sentra-bentara`         | GO-gate and access-control enforcement surface.                                                                                                                  |
-| `@the-abyss/langflow-client`      | `packages/platform/langflow-client`      | TypeScript client for LangFlow API integration and flow execution.                                                                                               |
-| `@the-abyss/literature-harvester` | `packages/platform/literature-harvester` | Open-access literature harvesting and collection tooling.                                                                                                        |
-| `@sentra/pustaka`                 | `packages/sentra/sentra-pustaka`         | Sentra RAG engine for local-first medical knowledge retrieval, ingestion, evaluation, and pgvector-backed evidence lookup.                                       |
-| `@the-abyss/ui`                   | `packages/shared/sentra-ui`              | Shared Sentra UI component layer.                                                                                                                                |
-| `@the-abyss/shared-types`         | `packages/shared/shared-types`           | Cross-workspace TypeScript contracts and shared domain types.                                                                                                    |
-| `@sentra/nada`                    | `packages/sentra/sentra-nada`            | Clinical reasoning and orchestration layer with FHIR and CDS Hooks interoperability.                                                                             |
-| `@sentra/cermin`                  | `packages/sentra/sentra-cermin`          | Embedding-provider, ingest, and vector-store support utilities for retrieval workflows.                                                                          |
+| Package                           | Path                                     | Role                                                                                                                                                                                                                        |
+| --------------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@the-abyss/clinical-references`  | `packages/clinical/clinical-references`  | Shared clinical reference types and structured clinical data surfaces.                                                                                                                                                      |
+| `@the-abyss/config-eslint`        | `packages/tooling/config-eslint`         | Shared ESLint flat-config presets and repo lint boundaries.                                                                                                                                                                 |
+| `@the-abyss/config-typescript`    | `packages/tooling/config-typescript`     | Shared TypeScript configuration presets across workspaces.                                                                                                                                                                  |
+| `@the-abyss/database`             | `packages/platform/database`             | Prisma client, schema, and shared database access layer.                                                                                                                                                                    |
+| `@the-abyss/design-token`         | `packages/shared/design-token`           | Sentra design tokens for color, borders, typography, and spacing.                                                                                                                                                           |
+| `@the-abyss/document-ingestion`   | `packages/platform/document-ingestion`   | Canonical document ingestion surface with parsing, OCR-quality reporting, normalization, and source hashing.                                                                                                                |
+| `@sentra/sandi`                   | `packages/sentra/sentra-sandi`           | FHIR validation, normalization, bundle projection, and interoperability engine.                                                                                                                                             |
+| `@the-abyss/integration-bridge`   | `packages/integration`                   | Bridge layer for external integrations such as Notion and Linear. Current on-disk path is `packages/integration`; package identity remains `@the-abyss/integration-bridge` until an explicit naming-normalization decision. |
+| `@sentra/bentara`                 | `packages/sentra/sentra-bentara`         | GO-gate and access-control enforcement surface.                                                                                                                                                                             |
+| `@the-abyss/langflow-client`      | `packages/platform/langflow-client`      | TypeScript client for LangFlow API integration and flow execution.                                                                                                                                                          |
+| `@the-abyss/literature-harvester` | `packages/platform/literature-harvester` | Open-access literature harvesting and collection tooling.                                                                                                                                                                   |
+| `@sentra/pustaka`                 | `packages/sentra/sentra-pustaka`         | Sentra RAG engine for local-first medical knowledge retrieval, ingestion, evaluation, and pgvector-backed evidence lookup.                                                                                                  |
+| `@the-abyss/ui`                   | `packages/shared/sentra-ui`              | Shared Sentra UI component layer.                                                                                                                                                                                           |
+| `@the-abyss/shared-types`         | `packages/shared/shared-types`           | Cross-workspace TypeScript contracts and shared domain types.                                                                                                                                                               |
+| `@sentra/nada`                    | `packages/sentra/sentra-nada`            | Clinical reasoning and orchestration layer with FHIR and CDS Hooks interoperability.                                                                                                                                        |
+| `@sentra/cermin`                  | `packages/sentra/sentra-cermin`          | Embedding-provider, ingest, and vector-store support utilities for retrieval workflows.                                                                                                                                     |
 
 ### Engine focus
 

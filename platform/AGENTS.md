@@ -12,12 +12,12 @@ conflict.
 
 ---
 
-## Sub-apps (each has its own `AGENTS.md`)
+## Sub-apps
 
-| Package       | Path                                                   |
-| ------------- | ------------------------------------------------------ |
-| Orchestrator  | [`orchestrator/AGENTS.md`](./orchestrator/AGENTS.md)   |
-| Sentra Portal | [`sentra-portal/AGENTS.md`](./sentra-portal/AGENTS.md) |
+| Package       | Path                                                                         |
+| ------------- | ---------------------------------------------------------------------------- |
+| Orchestrator  | [`orchestrator/AGENTS.md`](./orchestrator/AGENTS.md)                         |
+| Sentra Portal | `sentra-portal/` — governed by this file until a scoped `AGENTS.md` is added |
 
 ---
 

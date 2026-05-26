@@ -17,9 +17,11 @@ This guide is implementation-oriented and designed for solo founder operation.
    - Surfaces: `AGENTS.md`, `.agent/*`, `.cursor/rules/*`, handbook exports.
    - Risk: inconsistent agent behavior and difficult mental model.
 
-2. Missing Codex persona anchor in workspace
-   - Handoff referenced `.codex/PERSONA.md` while file was absent.
-   - Risk: authority chain became partially implicit.
+2. Historical Codex persona-anchor drift
+   - Earlier handoff text referenced `.codex/PERSONA.md` while that file was
+     absent.
+   - Current authority is global Codex configuration plus root `AGENTS.md`,
+     `.agent/**` operational SSOT, and `.cursor/rules/**` for Cursor rules.
 
 ### High
 
@@ -48,7 +50,7 @@ This guide is implementation-oriented and designed for solo founder operation.
 - Operational state: `.agent/*`
 - Tool adapters:
   - Cursor: coding + verification
-  - Codex: execution persona and task discipline
+  - Codex: global runtime configuration plus repo `AGENTS.md` and `.agent/**`
 
 ### Two-mode UX
 
@@ -62,9 +64,10 @@ This guide is implementation-oriented and designed for solo founder operation.
 
 ## Implemented Changes
 
-1. Added Codex persona anchor
-   - File: `.codex/PERSONA.md`
-   - Outcome: explicit authority and mode behavior for Codex sessions.
+1. Historical Codex persona-anchor note
+   - Former target: `.codex/PERSONA.md`
+   - Current state: repo-local `.codex/**` is deprecated; Codex behavior comes
+     from global Codex configuration plus repo `AGENTS.md` and `.agent/**`.
 
 2. Reduced non-essential global rule load in Cursor
    - Files:
@@ -82,8 +85,9 @@ This guide is implementation-oriented and designed for solo founder operation.
 
 If needed, revert by file:
 
-- `.codex/PERSONA.md`
-  - Rollback: remove file if Codex persona anchor is intentionally moved elsewhere.
+- Historical `.codex/PERSONA.md` guidance
+  - Rollback: restore only if repo-local Codex governance is explicitly
+    reintroduced.
 - `.cursor/rules/04-state-machine-discipline.mdc`
 - `.cursor/rules/06-handoff-master.mdc`
 - `.cursor/rules/08-session-summarizer.mdc`
