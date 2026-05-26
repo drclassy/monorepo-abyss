@@ -198,6 +198,15 @@ apps/corporate/ferdiiskandar/.git.bak-standalone/
 apps/corporate/ferdiiskandar/.editorconfig
 apps/corporate/ferdiiskandar/.gitattributes
 apps/corporate/ferdiiskandar/.github/
+
+!apps/internal/
+apps/internal/*
+!apps/internal/unicom/
+!apps/internal/unicom/**
+apps/internal/unicom/node_modules/
+apps/internal/unicom/.next/
+apps/internal/unicom/.turbo/
+apps/internal/unicom/tsconfig.tsbuildinfo
 apps/corporate/ferdiiskandar/.gitignore
 apps/corporate/ferdiiskandar/.prettierrc
 apps/corporate/ferdiiskandar/AGENTS.md

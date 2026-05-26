@@ -1,0 +1,26 @@
+{
+  "status": "final-owner-approved",
+  "appId": "unicom",
+  "detectedPath": "apps/internal/unicom",
+  "domain": "internal",
+  "productClassification": "internal-operator-app",
+  "futureStandaloneRepo": false,
+  "crownJewelAccessTier": "CJ-2",
+  "crownJewelAccessMode": "SDK/API client",
+  "ownsCrownJewelLogic": false,
+  "jewelDependency": "none",
+  "allowedCrownJewelCapabilities": [],
+  "allowedImports": ["@the-abyss/unicom-client", "@the-abyss/unicom-core", "app-local modules", "shared UI primitives"],
+  "forbiddenImports": ["apps/*", "@sentra/*/src/*", "@sentra/*/internal/*", "@the-abyss/database", "@sentra/database"],
+  "databaseAccessPolicy": "no-direct-core-database-access",
+  "extractionPolicy": {
+    "canMoveToStandaloneRepo": false,
+    "requiresRemoteCrownJewelService": false,
+    "mustNotDependOnMonorepoPathAliases": false
+  },
+  "ownerDecision": "chief-approved-internal-unicom-cj2",
+  "notes": [
+    "Sentra UNICOM is an ABYSS-native internal operator cockpit, not a standalone product app.",
+    "This app may consume UNICOM capability only through public SDK/API client boundaries."
+  ]
+}

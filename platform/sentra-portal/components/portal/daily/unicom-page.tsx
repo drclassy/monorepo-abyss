@@ -36,8 +36,8 @@ export function UnicomDailyPage({
   const frameMode = embedded || panel || compact
   const { data } = useSWR('/api/portal/unicom', fetcher, { refreshInterval: 15000 })
   const unicom = data?.data
-  const title = 'UNICOM Hub'
-  const subtitle = 'Agent registry, delivery mode, and traffic metadata (no message bodies).'
+  const title = 'Sentra UNICOM'
+  const subtitle = 'Internal cockpit view for agent registry, delivery mode, and traffic metadata.'
 
   if (!data?.ok && data?.error) {
     return (
@@ -51,7 +51,8 @@ export function UnicomDailyPage({
       >
         <p className={t.error}>{data.error}</p>
         <p className={t.bodyMuted}>
-          Start hub: <code className={t.tableCellMono}>pnpm --filter @the-abyss/unicom dev</code>
+          Start cockpit:{' '}
+          <code className={t.tableCellMono}>pnpm --filter @the-abyss/unicom dev</code>
         </p>
       </DailyPageFrame>
     )
@@ -82,7 +83,7 @@ export function UnicomDailyPage({
       subtitle={subtitle}
     >
       <div className={cn('grid grid-cols-1 md:grid-cols-3', t.grid)}>
-        <PortalCard title="Hub Health">
+        <PortalCard title="UNICOM Health">
           <StatusBadge status={unicom.health.hubStatus} label={unicom.health.status} />
           <p className={cn(t.tableCellMono, 'mt-3')}>{unicom.baseUrl}</p>
         </PortalCard>

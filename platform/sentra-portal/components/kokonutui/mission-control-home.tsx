@@ -28,8 +28,8 @@ const CARDS = [
   },
   {
     href: '/dashboard/daily/unicom',
-    title: 'UNICOM Hub',
-    desc: 'Health, agents, delivery mode',
+    title: 'Sentra UNICOM',
+    desc: 'Cockpit health, agents, delivery mode',
     icon: MessageSquare,
   },
   {

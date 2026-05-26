@@ -1,6 +1,7 @@
 packages:
   - 'apps/*'
   - 'apps/*/*'
+  - 'packages/unicom/*'
   - 'packages/sentra/*'
   - 'packages/platform/*'
   - 'packages/clinical/*'
