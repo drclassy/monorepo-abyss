@@ -3,6 +3,37 @@
 Append-only for durable choices and repeated lessons. Add new entries at the
 top. Older full ledgers are preserved in `.agent/archive/legacy-root/`.
 
+## 2026-05-27 - Legacy platform UNICOM package is delete-confirmed
+
+Decision: `packages/platform/unicom/**` is obsolete legacy and remains deleted.
+Active runtime, workspace, hook, and portal surfaces must point only to the
+ABYSS-native Sentra UNICOM foundation at `docs/unicom/**`, `packages/unicom/*`,
+and `apps/internal/unicom`.
+
+Reason: The new foundation shipped in commit `74ddc226`, and the follow-up
+cleanup proved no active workspace, hook, or portal dependency required the old
+package. The pre-commit hook now resolves `lint-staged` from the root config,
+so cleanup no longer tries to read deleted legacy package metadata.
+
+Status: Active. Historical specs, plans, and notes may retain legacy references
+as archived context, but the package itself must not be restored without a new
+explicit architecture decision.
+
+## 2026-05-27 - Sentra UNICOM is now a monorepo-native subsystem
+
+Decision: UNICOM is no longer treated as the legacy Hub package under
+`packages/platform/unicom`. The official ABYSS-native structure is now:
+`docs/unicom/**`, `packages/unicom/*`, and `apps/internal/unicom`.
+
+Reason: Chief explicitly approved UNICOM as an internal ABYSS subsystem with a
+Chief cockpit, typed protocol, policy gating, agent SDK, local realtime server,
+client SDK, and append-only persistence scaffolding. Keeping the deleted legacy
+Hub as the architecture anchor would preserve the wrong ownership and boundary
+shape.
+
+Status: Active. Legacy references to `packages/platform/unicom/**` are
+superseded references and must not be restored as the primary foundation.
+
 ## 2026-05-26 - Repo architecture, not Git tracking, decides validity
 
 Decision: Git tracking is not proof that a file, folder, package, app,

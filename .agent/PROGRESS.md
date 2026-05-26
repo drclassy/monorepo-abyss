@@ -4,6 +4,29 @@ Update when a milestone moves. Keep this high-level; details belong in HANDOFF.m
 
 Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 
+## Sentra UNICOM Subsystem
+
+- [x] Phase 0 boundary-lock docs created under `docs/unicom/`.
+- [x] Phase 1 `@the-abyss/unicom-core` implemented with typed protocol,
+  validation, reducer, and contract tests.
+- [x] Phase 2 `@the-abyss/unicom-policy` implemented with approval/block rules
+  for evidence, destructive, crown-jewel, secret, external API, and clinical
+  boundaries.
+- [x] Phase 3 `@the-abyss/unicom-agent-sdk` and `@the-abyss/unicom-testkit`
+  implemented with fake transport coverage.
+- [x] Phase 4 `@the-abyss/unicom-server` and `@the-abyss/unicom-client`
+  implemented with local Socket.IO-backed realtime and an in-memory append-only
+  event store.
+- [x] Phase 5 `apps/internal/unicom` cockpit implemented and locally verified
+  against the UNICOM server.
+- [x] Phase 6 `@the-abyss/unicom-persistence` scaffolded for append-only
+  Postgres event storage without touching repo migrations.
+- [ ] Phase 7 real ABYSS agent integration not started.
+- [x] Active legacy `packages/platform/unicom/**` references were cleaned and
+  the legacy package was deleted in cleanup commit `fbe892a`.
+- [~] Historical specs, plans, and notes still contain legacy UNICOM Hub
+  references as archival context only.
+
 ## Repo Stabilization
 
 - [x] Academic solutions build blocker fixed.
@@ -98,10 +121,11 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
   merged into `master` (commit `e3868a5`, 2026-05-21). 12 conflicts resolved,
   8 ESLint errors fixed, branch deleted. Repo is on `master` and green.
 
-## UNICOM Hub
+## UNICOM Hub (Historical)
 
 ### v1 (Polling) — Complete
-- [x] `@the-abyss/unicom` v1 fully implemented — all 11 tasks done.
+- [x] Legacy UNICOM Hub v1 fully implemented in its original package era — all
+  11 tasks done.
 - [x] 29/29 tests pass, typecheck clean, binary smoke-tested.
 - [x] `.mcp.json` wired, root `tsconfig.json` path alias added.
 
@@ -128,7 +152,8 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 
 ## Current Summary
 
-Root build, typecheck, and test are green. UNICOM Hub is complete and verified.
-RAG Enhancement plan is ready for execution (Phase 1 → 2 → 3, mandatory order).
+Root build, typecheck, and test are green. Sentra UNICOM foundation is
+committed and verified, and active legacy platform references are removed. RAG
+Enhancement plan is ready for execution (Phase 1 → 2 → 3, mandatory order).
 
-Last updated: 2026-05-26
+Last updated: 2026-05-27

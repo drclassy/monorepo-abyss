@@ -3,16 +3,49 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-23 (session: RAG worktree recovery integrated into clean branch)
+Last updated: 2026-05-27 (session: UNICOM milestone preserved in SSOT)
 
 ## Snapshot
 
 - Repo: `D:\Devops\abyss-monorepo`
-- Branch: `integration/rag-recovery`
-- HEAD: current branch tip after clean RAG recovery integration and verification finalization
-- Active work: RAG recovery complete on clean integration branch; root `master` worktree remains intentionally untouched because it still carries unrelated `tooling/prompt-engine` changes.
-- Mode: READY FOR MAINLINE FAST-FORWARD once the dirty root `master` worktree is isolated or cleaned by Chief.
-- Next: Fast-forward `master` to this branch tip from a clean `master` checkout when the prompt-engine working tree no longer blocks branch movement.
+- Branch: `master`
+- HEAD: current master tip after UNICOM foundation `74ddc226` and legacy
+  cleanup `fbe892a`
+- Active work: Sentra UNICOM foundation and active legacy cleanup are committed.
+  The remaining UNICOM follow-up is SSOT preservation plus any future Phase 7
+  agent integration planning.
+- Mode: LOCAL COMMITS COMPLETE, CONTINUITY REVIEW
+- Next: Preserve `.agent` continuity for the UNICOM milestone, then decide
+  whether to do archival doc relabeling or start Phase 7 agent integration
+  planning.
+
+## Sentra UNICOM Foundation (2026-05-27)
+
+- Committed milestones:
+  - `74ddc226` `feat(unicom): add ABYSS-native realtime agent communication foundation`
+  - `fbe892a` `chore(unicom): remove legacy platform references`
+- Chief-approved target structure:
+  - `docs/unicom/**`
+  - `packages/unicom/core`
+  - `packages/unicom/policy`
+  - `packages/unicom/testkit`
+  - `packages/unicom/agent-sdk`
+  - `packages/unicom/server`
+  - `packages/unicom/client`
+  - `packages/unicom/persistence`
+  - `apps/internal/unicom`
+- Legacy `packages/platform/unicom/**` was deleted in cleanup commit
+  `fbe892a` and must not be restored as the foundation.
+- Local verification completed:
+  - package-level typecheck/test/build passes for the new `packages/unicom/*`
+    family
+  - `@the-abyss/unicom` app typecheck/build passes
+  - local server is runnable on `http://127.0.0.1:4318`
+  - local app is runnable on `http://127.0.0.1:3021`
+- Governance note:
+  - root `.gitignore` originally ignored `apps/*`, so `apps/internal/unicom`
+    needed an explicit allowlist entry and a local `app.boundary.json`
+    classification.
 
 ## RAG Recovery Integration (2026-05-23)
 
