@@ -1,6 +1,6 @@
-import { LogOut, MoveUpRight, Settings, CreditCard, FileText } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+import { LogOut, MoveUpRight, Settings, CreditCard, FileText } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 
 interface MenuItem {
   label: string
@@ -18,10 +18,10 @@ interface Profile01Props {
 }
 
 const defaultProfile = {
-  name: "Eugene An",
-  role: "Prompt Engineer",
-  avatar: "/avatars/abyss-doctor.png",
-  subscription: "Free Trial",
+  name: 'Eugene An',
+  role: 'Prompt Engineer',
+  avatar: '/avatars/abyss-doctor.png',
+  subscription: 'Free Trial',
 } satisfies Required<Profile01Props>
 
 export default function Profile01({
@@ -32,20 +32,20 @@ export default function Profile01({
 }: Partial<Profile01Props> = defaultProfile) {
   const menuItems: MenuItem[] = [
     {
-      label: "Subscription",
+      label: 'Subscription',
       value: subscription,
-      href: "#",
+      href: '#',
       icon: <CreditCard className="w-4 h-4" />,
       external: false,
     },
     {
-      label: "Settings",
-      href: "#",
+      label: 'Settings',
+      href: '#',
       icon: <Settings className="w-4 h-4" />,
     },
     {
-      label: "Terms & Policies",
-      href: "#",
+      label: 'Terms & Policies',
+      href: '#',
       icon: <FileText className="w-4 h-4" />,
       external: true,
     },
@@ -85,10 +85,16 @@ export default function Profile01({
               >
                 <div className="flex items-center gap-2">
                   {item.icon}
-                  <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.label}</span>
+                  <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    {item.label}
+                  </span>
                 </div>
                 <div className="flex items-center">
-                  {item.value && <span className="text-sm text-zinc-500 dark:text-zinc-400 mr-2">{item.value}</span>}
+                  {item.value && (
+                    <span className="text-sm text-zinc-500 dark:text-zinc-400 mr-2">
+                      {item.value}
+                    </span>
+                  )}
                   {item.external && <MoveUpRight className="w-4 h-4" />}
                 </div>
               </Link>

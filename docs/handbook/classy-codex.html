@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DCS — Codex Skills & Operating Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --white: #FDFDFD;
+      --graphite: #111318;
+      --slate: #2B2F38;
+      --silver: #A0A0A2;
+      --grid: #E8EAF0;
+      --blue: #0B1F3A;
+      --f-display: 'Space Grotesk', 'Inter', 'IBM Plex Sans', Arial, sans-serif;
+      --f-body: 'Inter', 'IBM Plex Sans', Arial, sans-serif;
+      --f-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+      --r-lg: 16px;
+      --r-md: 12px;
+      --r-sm: 8px;
+      --r-xl: 24px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+      --b: 1px solid var(--slate);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--black);
+      color: var(--white);
+      font-size: 13px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--f-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--white);
+    }
+
+    a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--slate); }
+    a:hover { text-decoration-color: var(--white); }
+
+    .page {
+      width: min(calc(100% - 20px), 760px);
+      margin: 0 auto;
+      padding: 18px 0 36px;
+    }
+
+    .hero, .panel, .card, .command, .source-item {
+      background: var(--graphite);
+      border: var(--b);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      border-radius: var(--r-xl);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -8% -28% auto;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04), transparent 62%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--silver);
+      font-family: var(--f-mono);
+      font-size: 0.84rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 38px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-family: var(--f-display);
+      font-weight: 600;
+      line-height: 1.05;
+    }
+
+    h1 { max-width: 560px; font-size: clamp(2rem, 4.2vw, 3rem); letter-spacing: -0.04em; }
+    h2 { font-size: clamp(1.25rem, 2.3vw, 1.75rem); letter-spacing: -0.03em; }
+    h3 { font-size: 1.02rem; letter-spacing: -0.02em; }
+
+    .hero-grid, .two-col, .flow-grid, .command-grid,
+    .practice-grid, .rules-grid, .source-grid { display: grid; gap: 16px; }
+
+    .hero-grid { grid-template-columns: 1fr; margin-top: 18px; align-items: start; }
+
+    .hero-copy p, .lede, .muted { margin: 0; color: rgba(253, 253, 253, 0.78); }
+    .hero-copy p { max-width: 100%; margin-top: 12px; font-size: 0.94rem; }
+
+    .hero-meta { display: grid; gap: 10px; }
+
+    .section-brand {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: var(--b);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .section-brand img {
+      display: block;
+      width: 92px;
+      height: auto;
+    }
+
+    .meta-box {
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
+      background: var(--blue);
+      border: var(--b);
+    }
+
+    .meta-box strong, .card strong, .command strong { display: block; margin-bottom: 4px; color: var(--white); }
+
+    .section { margin-top: 14px; }
+
+    .section-header {
+      display: flex; align-items: end; justify-content: space-between;
+      gap: 16px; margin-bottom: 14px;
+    }
+    .section-header p { max-width: 700px; }
+
+    .panel { border-radius: var(--r-xl); padding: 18px; }
+    .flow-grid { grid-template-columns: 1fr; }
+
+    .card {
+      border-radius: var(--r-lg);
+      padding: 14px; min-height: 0;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: rgba(160, 160, 162, 0.4); }
+
+    .card::before {
+      content: attr(data-step);
+      position: absolute; top: 14px; right: 14px;
+      font-family: var(--f-mono); font-size: 0.82rem;
+      color: var(--silver); letter-spacing: 0.16em;
+    }
+
+    .tag {
+      display: inline-flex; margin-bottom: 10px;
+      padding: 5px 9px; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: var(--b);
+      color: var(--silver);
+      font-family: var(--f-mono); font-size: 0.82rem; letter-spacing: 0.05em;
+    }
+
+    code, .mono { font-family: var(--f-mono); }
+
+    .command-grid { grid-template-columns: 1fr; }
+
+    .command {
+      border-radius: var(--r-lg); padding: 16px;
+      transition: border-color 0.2s;
+    }
+    .command:hover { border-color: rgba(160, 160, 162, 0.4); }
+
+    .cmd-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .copy-btn {
+      appearance: none;
+      border: var(--b);
+      background: transparent;
+      color: var(--white);
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      padding: 6px 10px;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(253, 253, 253, 0.08);
+      border-color: var(--silver);
+    }
+
+    .copy-btn.copied {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+
+    .command code {
+      display: inline-block; margin-bottom: 8px;
+      color: var(--white); font-size: 0.95rem; font-weight: 700;
+    }
+
+    .practice-grid { grid-template-columns: 1fr; }
+    .rules-grid { grid-template-columns: 1fr; }
+
+    .practice-list, .rule-list {
+      margin: 10px 0 0; padding-left: 18px;
+      color: rgba(253, 253, 253, 0.78);
+    }
+    .practice-list li, .rule-list li { margin: 0 0 8px; }
+
+    .rule-good { border-left: 3px solid var(--silver); }
+    .rule-watch { border-left: 3px solid var(--slate); }
+    .rule-stop { border-left: 3px solid var(--white); }
+
+    .source-grid { grid-template-columns: 1fr; }
+
+    .source-item {
+      border-radius: var(--r-md); padding: 14px 16px;
+      transition: border-color 0.2s;
+    }
+    .source-item:hover { border-color: rgba(160, 160, 162, 0.4); }
+    .source-item strong { display: block; margin-bottom: 6px; }
+
+    .footer-note {
+      margin-top: 18px; padding-top: 14px;
+      border-top: var(--b);
+      color: rgba(160, 160, 162, 0.6);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .flow-grid, .command-grid,
+      .practice-grid, .rules-grid, .source-grid { grid-template-columns: 1fr; }
+      .page { width: min(calc(100% - 16px), 760px); padding-top: 12px; }
+      .hero, .panel { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">DCS Codex OS</div>
+      <h1>DCS — Codex Skills & Operating Reference</h1>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p>This reference keeps the same Classy monochrome design, but updates the content for the current Codex setup: original Superpowers skill names, DCS guardrail skills, global AGENTS.md baseline, ABYSS SSOT rules, audit-first automation posture, and practical tips for safe engineering work.</p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-box">
+            <strong>Active workflow</strong>
+            Superpowers for execution flow, DCS skills for audit and safety.
+          </div>
+          <div class="meta-box">
+            <strong>Default contract</strong>
+            SSOT → reference → brief notes → scoped change → verification → checklist → report.
+          </div>
+          <div class="meta-box">
+            <strong>ABYSS rule</strong>
+            Read <span class="mono">AGENTS.md</span> first, then <span class="mono">.agent/README.md</span> and <span class="mono">.agent/HANDOFF.md</span>. Do not touch crown-jewel areas without explicit scope.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Mandatory Order</div>
+          <h2>Current DCS operating flow</h2>
+        </div>
+        <p class="lede">Use the original Superpowers names. Keep DCS names only for guardrail and audit skills. Small clear tasks may compress planning, but they must not skip SSOT, scope control, verification, or honest reporting.</p>
+      </div>
+      <div class="flow-grid">
+        <article class="card" data-step="01">
+          <span class="tag">/using-superpowers</span>
+          <h3>Load the skill discipline</h3>
+          <p class="muted">Use the original Superpowers registry. Confirm whether the task is idea, plan, implementation, debug, review, or finish.</p>
+        </article>
+        <article class="card" data-step="02">
+          <span class="tag">SSOT first</span>
+          <h3>Read the right authority</h3>
+          <p class="muted">ABYSS: read <span class="mono">AGENTS.md</span> first, then <span class="mono">.agent/README.md</span> and <span class="mono">.agent/HANDOFF.md</span>. Use <span class="mono">C:\Users\drclassy\.codex\</span> as the global baseline after repo guidance.</p>
+        </article>
+        <article class="card" data-step="03">
+          <span class="tag">/brainstorming</span>
+          <h3>Clarify before planning</h3>
+          <p class="muted">Use when the request is still fuzzy, strategic, risky, or mixed. End with options and one recommended direction.</p>
+        </article>
+        <article class="card" data-step="04">
+          <span class="tag">/writing-plans</span>
+          <h3>Plan non-trivial work</h3>
+          <p class="muted">Use for multi-file, repo, risky, or implementation tasks. Define scope, non-scope, verification, rollback, and acceptance.</p>
+        </article>
+        <article class="card" data-step="05">
+          <span class="tag">/executing-plans</span>
+          <h3>Implement the smallest safe change</h3>
+          <p class="muted">Edit only after SSOT, reference, and brief notes. Keep unrelated files untouched.</p>
+        </article>
+        <article class="card" data-step="06">
+          <span class="tag">/verification-before-completion</span>
+          <h3>Prove it before claiming done</h3>
+          <p class="muted">Run focused verification. For engines, test multiple inputs and prove the output is not hardcoded.</p>
+        </article>
+        <article class="card" data-step="07">
+          <span class="tag">/dcs-operating-contract-auditor</span>
+          <h3>Audit the final report</h3>
+          <p class="muted">Use for important work, questionable sessions, or when Codex may have skipped a gate.</p>
+        </article>
+        <article class="card" data-step="08">
+          <span class="tag">/finishing-a-development-branch</span>
+          <h3>Close cleanly</h3>
+          <p class="muted">Check branch, diff, staging, HOLD items, verification evidence, and push readiness.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Copy Ready</div>
+          <h2>Skill prompts</h2>
+        </div>
+        <div class="section-brand" aria-label="Sentra AI logo">
+          <img src="./logos/sentra-icon.svg" alt="Sentra AI logo">
+        </div>
+      </div>
+      <p class="lede">Copy a command, a prompt, or both together. Use these when Codex needs a clean entry point instead of a long custom instruction.</p>
+      <div class="command-grid">
+        <article class="command">
+          <code>/using-superpowers</code>
+          <strong>Use when Codex needs to choose the right skill flow.</strong>
+          Route this task through the correct Superpowers workflow. Read AGENTS.md and repo SSOT first, then decide the next skill.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/using-superpowers">Copy Command</button>
+            <button class="copy-btn" data-copy="Route this task through the correct Superpowers workflow. Read AGENTS.md and repo SSOT first, then decide the next skill.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/using-superpowers
+
+Route this task through the correct Superpowers workflow. Read AGENTS.md and repo SSOT first, then decide the next skill.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/brainstorming</code>
+          <strong>Use when the idea, scope, or risk is unclear.</strong>
+          Clarify the goal, constraints, non-scope, risks, and decision options before planning or editing.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/brainstorming">Copy Command</button>
+            <button class="copy-btn" data-copy="Clarify the goal, constraints, non-scope, risks, and decision options before planning or editing.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/brainstorming
+
+Clarify the goal, constraints, non-scope, risks, and decision options before planning or editing.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/writing-plans</code>
+          <strong>Use for non-trivial work before edits begin.</strong>
+          Write a scoped implementation plan with files, constraints, verification commands, rollback, and acceptance criteria.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/writing-plans">Copy Command</button>
+            <button class="copy-btn" data-copy="Write a scoped implementation plan with files, constraints, verification commands, rollback, and acceptance criteria.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/writing-plans
+
+Write a scoped implementation plan with files, constraints, verification commands, rollback, and acceptance criteria.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/executing-plans</code>
+          <strong>Use when the plan is approved and implementation is safe.</strong>
+          Execute the approved plan in the smallest complete change. Do not drift outside scope. Verify before reporting done.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/executing-plans">Copy Command</button>
+            <button class="copy-btn" data-copy="Execute the approved plan in the smallest complete change. Do not drift outside scope. Verify before reporting done.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/executing-plans
+
+Execute the approved plan in the smallest complete change. Do not drift outside scope. Verify before reporting done.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/systematic-debugging</code>
+          <strong>Use when something fails and the cause is unknown.</strong>
+          Reproduce the failure, isolate the cause, inspect evidence, fix the smallest proven issue, then verify the fix.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/systematic-debugging">Copy Command</button>
+            <button class="copy-btn" data-copy="Reproduce the failure, isolate the cause, inspect evidence, fix the smallest proven issue, then verify the fix.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/systematic-debugging
+
+Reproduce the failure, isolate the cause, inspect evidence, fix the smallest proven issue, then verify the fix.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/test-driven-development</code>
+          <strong>Use when behavior must be specified before implementation.</strong>
+          Write or identify the behavior check first, implement the smallest change, and verify against the test or scenario.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/test-driven-development">Copy Command</button>
+            <button class="copy-btn" data-copy="Write or identify the behavior check first, implement the smallest change, and verify against the test or scenario.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/test-driven-development
+
+Write or identify the behavior check first, implement the smallest change, and verify against the test or scenario.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/verification-before-completion</code>
+          <strong>Use before any completion claim.</strong>
+          Run the smallest relevant verification. Report exact command results and any gaps. Do not claim done without evidence.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/verification-before-completion">Copy Command</button>
+            <button class="copy-btn" data-copy="Run the smallest relevant verification. Report exact command results and any gaps. Do not claim done without evidence.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/verification-before-completion
+
+Run the smallest relevant verification. Report exact command results and any gaps. Do not claim done without evidence.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/requesting-code-review</code>
+          <strong>Use when work is verified and ready for external review.</strong>
+          Package the change for review with scope, evidence, risk, and what reviewers should focus on.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/requesting-code-review">Copy Command</button>
+            <button class="copy-btn" data-copy="Package the change for review with scope, evidence, risk, and what reviewers should focus on.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/requesting-code-review
+
+Package the change for review with scope, evidence, risk, and what reviewers should focus on.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/receiving-code-review</code>
+          <strong>Use when review feedback arrives.</strong>
+          Evaluate each review comment against repo reality. Apply only technically correct and scoped changes.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/receiving-code-review">Copy Command</button>
+            <button class="copy-btn" data-copy="Evaluate each review comment against repo reality. Apply only technically correct and scoped changes.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/receiving-code-review
+
+Evaluate each review comment against repo reality. Apply only technically correct and scoped changes.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/finishing-a-development-branch</code>
+          <strong>Use when closing branch or preparing final state.</strong>
+          Confirm diff scope, verification, branch readiness, HOLD items, and next action before merge or push.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/finishing-a-development-branch">Copy Command</button>
+            <button class="copy-btn" data-copy="Confirm diff scope, verification, branch readiness, HOLD items, and next action before merge or push.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/finishing-a-development-branch
+
+Confirm diff scope, verification, branch readiness, HOLD items, and next action before merge or push.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/dcs-operating-contract-auditor</code>
+          <strong>Use to audit a final report or questionable Codex session.</strong>
+          Classify the report as PASS, NEEDS WORK, or FAIL based on SSOT, reference, notes, scope, verification, checklist, and honesty.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/dcs-operating-contract-auditor">Copy Command</button>
+            <button class="copy-btn" data-copy="Classify the report as PASS, NEEDS WORK, or FAIL based on SSOT, reference, notes, scope, verification, checklist, and honesty.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/dcs-operating-contract-auditor
+
+Classify the report as PASS, NEEDS WORK, or FAIL based on SSOT, reference, notes, scope, verification, checklist, and honesty.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/dcs-session-reviewer</code>
+          <strong>Use to review a full session for drift or bad behavior.</strong>
+          Review recent session behavior for skipped gates, overengineering, unsupported claims, and unsafe repo actions.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/dcs-session-reviewer">Copy Command</button>
+            <button class="copy-btn" data-copy="Review recent session behavior for skipped gates, overengineering, unsupported claims, and unsafe repo actions.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/dcs-session-reviewer
+
+Review recent session behavior for skipped gates, overengineering, unsupported claims, and unsafe repo actions.">Copy Combined</button>
+          </div>
+        </article>
+        <article class="command">
+          <code>/dcs-skill-improver</code>
+          <strong>Use when a skill repeatedly fails or triggers poorly.</strong>
+          Review the skill and usage failure. Propose the smallest safe improvement. Do not edit unless explicitly authorized.
+          
+          <div class="cmd-actions">
+            <button class="copy-btn" data-copy="/dcs-skill-improver">Copy Command</button>
+            <button class="copy-btn" data-copy="Review the skill and usage failure. Propose the smallest safe improvement. Do not edit unless explicitly authorized.">Copy Prompt</button>
+            <button class="copy-btn" data-copy="/dcs-skill-improver
+
+Review the skill and usage failure. Propose the smallest safe improvement. Do not edit unless explicitly authorized.">Copy Combined</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Skill Registry</div>
+          <h2>Operational mapping</h2>
+        </div>
+        <p class="lede">Superpowers drives the workflow. DCS skills audit the workflow. Do not rename Superpowers into DCS; keep the namespaces separate.</p>
+      </div>
+      <div class="command-grid">
+        <article class="command"><code>/using-superpowers</code><strong>Maps to Superpowers: using-superpowers</strong>Use as the routing entry point when the next workflow step is unclear.</article>
+        <article class="command"><code>/brainstorming</code><strong>Maps to Superpowers: brainstorming</strong>Clarifies goal, constraints, options, risks, and success criteria before implementation.</article>
+        <article class="command"><code>/writing-plans</code><strong>Maps to Superpowers: writing-plans</strong>Turns approved direction into a file-level plan with verification and rollback.</article>
+        <article class="command"><code>/using-git-worktrees</code><strong>Maps to Superpowers: using-git-worktrees</strong>Use only when isolation is clearly useful and file/decision overlap is low.</article>
+        <article class="command"><code>/dispatching-parallel-agents</code><strong>Maps to Superpowers: dispatching-parallel-agents</strong>Use only for independent research/audit tasks with safe synthesis.</article>
+        <article class="command"><code>/subagent-driven-development</code><strong>Maps to Superpowers: subagent-driven-development</strong>Use for independent subtasks, not overlapping files or shared architecture decisions.</article>
+        <article class="command"><code>/executing-plans</code><strong>Maps to Superpowers: executing-plans</strong>Executes the approved plan with scoped edits and verification.</article>
+        <article class="command"><code>/test-driven-development</code><strong>Maps to Superpowers: test-driven-development</strong>Use when behavior should be locked with tests or examples before implementation.</article>
+        <article class="command"><code>/systematic-debugging</code><strong>Maps to Superpowers: systematic-debugging</strong>Use for unknown failures: reproduce, isolate, fix, verify.</article>
+        <article class="command"><code>/verification-before-completion</code><strong>Maps to Superpowers: verification-before-completion</strong>Required before any done claim.</article>
+        <article class="command"><code>/requesting-code-review</code><strong>Maps to Superpowers: requesting-code-review</strong>Prepare verified work for review.</article>
+        <article class="command"><code>/receiving-code-review</code><strong>Maps to Superpowers: receiving-code-review</strong>Triage incoming review feedback critically.</article>
+        <article class="command"><code>/finishing-a-development-branch</code><strong>Maps to Superpowers: finishing-a-development-branch</strong>Close branch safely with readiness checks.</article>
+        <article class="command"><code>/writing-skills</code><strong>Maps to Superpowers: writing-skills</strong>Use when creating or improving a reusable skill.</article>
+        <article class="command"><code>/dcs-operating-contract-auditor</code><strong>DCS guardrail skill</strong>Audits whether Codex followed SSOT → reference → notes → implement → verify → checklist → report.</article>
+        <article class="command"><code>/dcs-session-reviewer</code><strong>DCS guardrail skill</strong>Reviews a whole session for drift, unsafe actions, or unsupported completion claims.</article>
+        <article class="command"><code>/dcs-skill-improver</code><strong>DCS guardrail skill</strong>Improves skills only after failure evidence; propose-first, edit only with approval.</article>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Reference Router</div>
+          <h2>When the agent gets stuck</h2>
+        </div>
+        <p class="lede">Do not guess. Read the smallest relevant authority, write brief notes, then act only if the safe path is clear.</p>
+      </div>
+      <div class="practice-grid">
+        <article class="command">
+          <strong>1. Global Codex confusion</strong>
+          <ul class="practice-list">
+            <li>Read the global Codex guidance in <span class="mono">C:\Users\drclassy\.codex\</span>.</li>
+            <li>Use it for default behavior, reporting format, skill routing, and verification discipline.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <strong>2. ABYSS repo confusion</strong>
+          <ul class="practice-list">
+            <li>Read repo <span class="mono">AGENTS.md</span>, then <span class="mono">.agent/README.md</span> and <span class="mono">.agent/HANDOFF.md</span>.</li>
+            <li>Open <span class="mono">.agent/CONTEXT.md</span>, <span class="mono">.agent/PROGRESS.md</span>, and <span class="mono">.agent/DECISIONS.md</span> only when the task needs boundary, milestone, or durable-rule context.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <strong>3. Workflow confusion</strong>
+          <ul class="practice-list">
+            <li>Use <span class="mono">/using-superpowers</span> to route the task.</li>
+            <li>Use <span class="mono">/brainstorming</span> for unclear direction and <span class="mono">/writing-plans</span> for non-trivial work.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <strong>4. Config, skills, automation, or CLI confusion</strong>
+          <ul class="practice-list">
+            <li>Use official OpenAI Codex docs for AGENTS.md, skills, automations, config, and CLI flags.</li>
+            <li>Use Context7 for current docs evidence before changing behavior.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Tips & Tricks</div>
+          <h2>Practical Codex habits</h2>
+        </div>
+        <p class="lede">These are the habits that kept ABYSS safe during cleanup, merge conflict resolution, and push.</p>
+      </div>
+      <div class="practice-grid">
+        <article class="command">
+          <strong>1. Keep AGENTS.md thin</strong>
+          <ul class="practice-list">
+            <li>Put durable rules in AGENTS.md.</li>
+            <li>Put detailed routers, reports, and playbooks in reference docs or skills.</li>
+            <li>Never turn the global baseline into a giant handbook.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <strong>2. Treat dirty trees as evidence, not chaos</strong>
+          <ul class="practice-list">
+            <li>First classify changes: governance, config, workspace, prototype, session history, unknown.</li>
+            <li>Restore accidental deletions before committing anything.</li>
+            <li>Commit one coherent scope at a time.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <strong>3. Worktree and parallel mode are not defaults</strong>
+          <ul class="practice-list">
+            <li>Use worktrees only when isolation clearly helps.</li>
+            <li>Use parallel agents only when files, architecture decisions, dependencies, and verification do not overlap.</li>
+            <li>If overlap is real, stay serial.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <strong>4. Lockfile conflicts need special handling</strong>
+          <ul class="practice-list">
+            <li>Audit remote-only range before merging.</li>
+            <li>Prefer merge over rebase when local history is already meaningful and should not be rewritten.</li>
+            <li>For pnpm lock conflicts, resolve narrowly, regenerate lockfile, then run frozen-lockfile verification.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <strong>5. No “done” without fresh proof</strong>
+          <ul class="practice-list">
+            <li>Use the smallest relevant verification: targeted test, lint, typecheck, build, or behavior check.</li>
+            <li>If verification cannot run, report exactly why and what risk remains.</li>
+            <li>For engine-like work, test multiple inputs and prove outputs vary correctly.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <strong>6. Audit automation before edit automation</strong>
+          <ul class="practice-list">
+            <li>Recurring automations should start as review-only.</li>
+            <li>Never let automation do destructive git or repo changes without explicit scope.</li>
+            <li>Use DCS audit skills to find drift before changing AGENTS.md or skills.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Operating Rules</div>
+          <h2>Safety enforcement</h2>
+        </div>
+        <p class="lede">The goal is not more ceremony. The goal is fewer agent mistakes, cleaner commits, and verified progress.</p>
+      </div>
+      <div class="rules-grid">
+        <article class="command rule-good">
+          <strong>Do</strong>
+          <ul class="rule-list">
+            <li>Read SSOT before action.</li>
+            <li>Write brief notes before implementation.</li>
+            <li>Make the smallest complete change.</li>
+            <li>Verify with evidence before reporting completion.</li>
+            <li>Use scoped commits and clean push-readiness audits.</li>
+          </ul>
+        </article>
+        <article class="command rule-watch">
+          <strong>Be careful with</strong>
+          <ul class="rule-list">
+            <li><span class="mono">pnpm-lock.yaml</span>, <span class="mono">pnpm-workspace.yaml</span>, MCP config, hooks, and package manifests.</li>
+            <li>Repo-local vs global Codex setup.</li>
+            <li>Untracked session/history files.</li>
+            <li>Prototype files with local absolute paths or unused assets.</li>
+          </ul>
+        </article>
+        <article class="command rule-stop">
+          <strong>Do not allow</strong>
+          <ul class="rule-list">
+            <li>Force push, reset, clean, broad deletion, or rewrite history without explicit instruction.</li>
+            <li>Touching <span class="mono">packages/sentra/**</span> crown-jewel areas without explicit scope.</li>
+            <li>Claiming completion from appearance only.</li>
+            <li>Mixing unrelated changes into one commit.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <strong>Expected outcome</strong>
+          Every important task should end with SSOT used, reference used, brief notes, scoped changes, verification evidence, checklist recheck, remaining risk, and one next step.
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Sources</div>
+          <h2>Official reference basis</h2>
+        </div>
+        <p class="lede">Use these when Codex needs current documentation instead of guessing.</p>
+      </div>
+      <div class="source-grid">
+        <article class="source-item">
+          <strong>OpenAI Codex Best Practices</strong>
+          <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank" rel="noopener">developers.openai.com/codex/learn/best-practices</a>
+        </article>
+        <article class="source-item">
+          <strong>OpenAI Codex AGENTS.md Guidance</strong>
+          <a href="https://developers.openai.com/codex/guides/agents-md" target="_blank" rel="noopener">developers.openai.com/codex/guides/agents-md</a>
+        </article>
+        <article class="source-item">
+          <strong>OpenAI Codex Agent Skills</strong>
+          <a href="https://developers.openai.com/codex/skills" target="_blank" rel="noopener">developers.openai.com/codex/skills</a>
+        </article>
+        <article class="source-item">
+          <strong>OpenAI Codex Automations</strong>
+          <a href="https://developers.openai.com/codex/app/automations" target="_blank" rel="noopener">developers.openai.com/codex/app/automations</a>
+        </article>
+        <article class="source-item">
+          <strong>OpenAI Codex Configuration Reference</strong>
+          <a href="https://developers.openai.com/codex/config-reference" target="_blank" rel="noopener">developers.openai.com/codex/config-reference</a>
+        </article>
+        <article class="source-item">
+          <strong>OpenAI Codex CLI Reference</strong>
+          <a href="https://developers.openai.com/codex/cli/reference" target="_blank" rel="noopener">developers.openai.com/codex/cli/reference</a>
+        </article>
+      </div>
+      <div class="footer-note">
+        Sentra Artificial Intelligence 2026 — DCS Codex Operating Reference. Design preserved from the original Classy monochrome HTML.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const copyButtons = document.querySelectorAll('.copy-btn');
+
+    async function copyText(button) {
+      const text = button.getAttribute('data-copy') || '';
+      const originalLabel = button.textContent;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = 'Copied';
+        button.classList.add('copied');
+        window.setTimeout(() => {
+          button.textContent = originalLabel;
+          button.classList.remove('copied');
+        }, 1200);
+      } catch (error) {
+        button.textContent = 'Copy failed';
+        window.setTimeout(() => {
+          button.textContent = originalLabel;
+        }, 1200);
+      }
+    }
+
+    copyButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        copyText(button);
+      });
+    });
+  </script>
+</body>
+</html>

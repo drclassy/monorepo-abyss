@@ -2,7 +2,12 @@
 
 ## Executive Overview
 
-This document outlines the comprehensive design plan for a **monorepo digital factory dashboard** intended for monitoring multiple projects across four operational domains. The design preserves all existing visual elements (layout, positioning, colors, fonts) while introducing a cohesive structure that clearly differentiates the four main sections through strategic positioning and visual hierarchy.
+This document outlines the comprehensive design plan for a **monorepo digital
+factory dashboard** intended for monitoring multiple projects across four
+operational domains. The design preserves all existing visual elements (layout,
+positioning, colors, fonts) while introducing a cohesive structure that clearly
+differentiates the four main sections through strategic positioning and visual
+hierarchy.
 
 ---
 
@@ -11,6 +16,7 @@ This document outlines the comprehensive design plan for a **monorepo digital fa
 ### 1.1 Visual Identity (Preserved Elements)
 
 #### Color Palette
+
 - **Primary Neutral**: White (#FFFFFF) / Dark (#0F0F12)
 - **Secondary Neutral**: Light Gray (#F2F2F2) / Dark Gray (#1F1F23)
 - **Text Colors**: Dark gray (#374151) / Light gray (#D1D5DB)
@@ -23,6 +29,7 @@ This document outlines the comprehensive design plan for a **monorepo digital fa
   - Chart 5: Rose (#FB7185)
 
 #### Typography
+
 - **Font Family**: Inter (sans-serif)
 - **Heading Styles**:
   - Section Headers: 18px, bold (font-bold), dark gray/white
@@ -32,6 +39,7 @@ This document outlines the comprehensive design plan for a **monorepo digital fa
 - **Labels**: 12px, uppercase tracking-wider for section groupings
 
 #### Spacing & Border Radius
+
 - **Radius**: 0.5rem (standard rounded corners)
 - **Card Spacing**: p-6 (24px padding)
 - **Gap Between Sections**: gap-6 (24px)
@@ -58,9 +66,11 @@ This document outlines the comprehensive design plan for a **monorepo digital fa
 
 ### 2.2 Main Content Grid Structure
 
-The dashboard uses a **responsive grid system** with clear sectional organization:
+The dashboard uses a **responsive grid system** with clear sectional
+organization:
 
 #### Desktop Layout (lg: 1024px+)
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    SECTION 1 HEADER                          │
@@ -78,6 +88,7 @@ The dashboard uses a **responsive grid system** with clear sectional organizatio
 ```
 
 #### Tablet Layout (md: 768px+)
+
 ```
 ┌──────────────────────────────────────┐
 │  Operational Status (Full Width)     │
@@ -91,6 +102,7 @@ The dashboard uses a **responsive grid system** with clear sectional organizatio
 ```
 
 #### Mobile Layout (< 768px)
+
 All sections stack vertically (grid-cols-1)
 
 ---
@@ -99,11 +111,14 @@ All sections stack vertically (grid-cols-1)
 
 ### 3.1 SECTION 1: OPERATIONAL STATUS
 
-**Purpose**: Real-time overview of factory operations across all monitored projects
+**Purpose**: Real-time overview of factory operations across all monitored
+projects
 
-**Location**: Top-left (Desktop: 50% width, 2-column grid with Health Integration)
+**Location**: Top-left (Desktop: 50% width, 2-column grid with Health
+Integration)
 
 #### Structure
+
 ```
 ┌──────────────────────────────────────────────────┐
 │ 📊 Operational Status (icon + bold heading)      │
@@ -121,6 +136,7 @@ All sections stack vertically (grid-cols-1)
 ```
 
 #### Visual Elements
+
 - **Header Icon**: Briefcase or Factory icon (lucide-react)
 - **Card Background**: white / #0F0F12 (dark)
 - **Border**: gray-200 / #1F1F23
@@ -132,6 +148,7 @@ All sections stack vertically (grid-cols-1)
 - **Content Density**: Medium - balanced between data and readability
 
 #### Components Inside
+
 1. **Status Card List** (similar to existing List01/02 pattern)
    - Project Name | Status Icon | Health Percentage
    - Row spacing: gap-3
@@ -147,9 +164,11 @@ All sections stack vertically (grid-cols-1)
 
 **Purpose**: Monitor API health, integration status, and communication channels
 
-**Location**: Top-right (Desktop: 50% width, 2-column grid with Operational Status)
+**Location**: Top-right (Desktop: 50% width, 2-column grid with Operational
+Status)
 
 #### Structure
+
 ```
 ┌──────────────────────────────────────────────────┐
 │ 🔗 Health Integration & API (icon + heading)     │
@@ -167,10 +186,11 @@ All sections stack vertically (grid-cols-1)
 ```
 
 #### Visual Elements
+
 - **Header Icon**: Link or Zap icon (lucide-react)
 - **Card Background**: white / #0F0F12 (dark)
 - **Border**: gray-200 / #1F1F23
-- **Metric Colors**: 
+- **Metric Colors**:
   - Green (#10B981) = Healthy
   - Orange (#F59E0B) = Slow
   - Red (#EF4444) = Error
@@ -178,6 +198,7 @@ All sections stack vertically (grid-cols-1)
 - **Content Density**: Medium
 
 #### Components Inside
+
 1. **Integration Status List**
    - Service Name | Connected | Last Ping | Status
    - Visual indicator (dot) + text label
@@ -195,11 +216,13 @@ All sections stack vertically (grid-cols-1)
 
 ### 3.3 SECTION 3: KNOWLEDGE CAPACITY
 
-**Purpose**: Monitor data storage, processing capacity, and knowledge base metrics
+**Purpose**: Monitor data storage, processing capacity, and knowledge base
+metrics
 
 **Location**: Full-width (Spans below sections 1 & 2)
 
 #### Structure
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ 💾 Knowledge Capacity (icon + heading)                      │
@@ -221,16 +244,18 @@ All sections stack vertically (grid-cols-1)
 ```
 
 #### Visual Elements
+
 - **Header Icon**: Database or Brain icon (lucide-react)
 - **Card Background**: white / #0F0F12 (dark)
 - **Border**: gray-200 / #1F1F23
 - **Padding**: p-6, rounded-xl
 - **Content**: 2x2 or 3-column grid (responsive)
-- **Progress Bars**: 
+- **Progress Bars**:
   - Color progression: Green → Yellow → Red based on usage %
   - Height: h-2 or h-3
 
 #### Components Inside
+
 1. **Capacity Cards** (Each showing a metric)
    - Title | Chart/Visual | Percentage | Trend indicator (↑/↓)
    - Layout: flex column
@@ -253,6 +278,7 @@ All sections stack vertically (grid-cols-1)
 **Location**: Full-width (Bottom section)
 
 #### Structure
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ 🤖 Agent Activity (icon + heading)                          │
@@ -274,6 +300,7 @@ All sections stack vertically (grid-cols-1)
 ```
 
 #### Visual Elements
+
 - **Header Icon**: Zap or Workflow icon (lucide-react)
 - **Card Background**: white / #0F0F12 (dark)
 - **Border**: gray-200 / #1F1F23
@@ -286,6 +313,7 @@ All sections stack vertically (grid-cols-1)
   - ⏸ (Gray) = Paused
 
 #### Components Inside
+
 1. **Activity Table/List** (Similar to existing List01/02/03)
    - Columns: Agent Name | Task | Status | Duration | Action
    - Row alternation: subtle (not required)
@@ -315,6 +343,7 @@ All sections stack vertically (grid-cols-1)
 ## 4. COMPONENT REUSABILITY & PATTERNS
 
 ### 4.1 Shared Card Component Pattern
+
 All four sections use a consistent card pattern:
 
 ```tsx
@@ -324,38 +353,45 @@ All four sections use a consistent card pattern:
     <IconComponent className="w-3.5 h-3.5" />
     Section Title
   </h2>
-  
+
   {/* Content varies by section */}
 </div>
 ```
 
 ### 4.2 List Item Pattern
+
 For Activity and Status lists, maintain consistent row styling:
 
 ```tsx
 <div className="flex items-center gap-4 py-3 px-4 hover:bg-gray-50 dark:hover:bg-[#1F1F23] rounded-lg transition-colors">
   <div className="flex-1">
-    <p className="text-sm font-medium text-gray-900 dark:text-white">Name/Title</p>
+    <p className="text-sm font-medium text-gray-900 dark:text-white">
+      Name/Title
+    </p>
   </div>
-  <div className="text-sm text-gray-600 dark:text-gray-300">
-    Secondary Info
-  </div>
+  <div className="text-sm text-gray-600 dark:text-gray-300">Secondary Info</div>
   <StatusBadge status={status} />
   <ActionButton />
 </div>
 ```
 
 ### 4.3 Metric/Progress Pattern
+
 For capacity metrics:
 
 ```tsx
 <div className="bg-gray-50 dark:bg-[#1F1F23] p-4 rounded-lg">
   <div className="flex items-center justify-between mb-2">
-    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Label</span>
+    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+      Label
+    </span>
     <span className="text-sm font-bold text-gray-900 dark:text-white">85%</span>
   </div>
   <div className="h-2 bg-gray-200 dark:bg-[#2B2B30] rounded-full overflow-hidden">
-    <div className="h-full bg-green-500 rounded-full" style={{ width: '85%' }} />
+    <div
+      className="h-full bg-green-500 rounded-full"
+      style={{ width: '85%' }}
+    />
   </div>
 </div>
 ```
@@ -365,6 +401,7 @@ For capacity metrics:
 ## 5. VISUAL HIERARCHY & INFORMATION FLOW
 
 ### 5.1 Hierarchy Levels
+
 1. **Level 1**: Main section headers (18px bold, icon + text)
 2. **Level 2**: Card headers (16px bold)
 3. **Level 3**: Row/Item labels (14px regular)
@@ -372,15 +409,18 @@ For capacity metrics:
 5. **Level 5**: Micro-labels (12px, uppercase tracking-wider)
 
 ### 5.2 Scanning Pattern
+
 The layout follows an **F-pattern** scan for optimal information absorption:
 
-1. **Top horizontal**: Section 1 & 2 headers (Operational Status & Health Integration)
+1. **Top horizontal**: Section 1 & 2 headers (Operational Status & Health
+   Integration)
 2. **Vertical left**: Operational Status content
 3. **Vertical right**: Health Integration content
 4. **Horizontal middle**: Knowledge Capacity full-width section
 5. **Vertical full**: Agent Activity full-width section
 
 ### 5.3 Eye Movement Flow
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ START: Operational Status      Health Integration   │
@@ -401,11 +441,14 @@ The layout follows an **F-pattern** scan for optimal information absorption:
 ## 6. RESPONSIVE BEHAVIOR
 
 ### 6.1 Breakpoints
+
 - **Mobile** (< 768px): All sections full-width, stacked vertically
 - **Tablet** (768px - 1024px): Sections still full-width for clarity
-- **Desktop** (1024px+): Sections 1 & 2 in 2-column grid, Sections 3 & 4 full-width
+- **Desktop** (1024px+): Sections 1 & 2 in 2-column grid, Sections 3 & 4
+  full-width
 
 ### 6.2 Content Adaptation
+
 - **Mobile**: Reduce padding (p-4 instead of p-6), smaller font sizes
 - **Tablet**: Moderate spacing, visible icons
 - **Desktop**: Full padding, expanded layouts, visible action buttons
@@ -428,18 +471,22 @@ All sections automatically adapt without additional styling needed.
 ## 8. INTERACTION PATTERNS
 
 ### 8.1 Hover States
+
 - **Cards**: Subtle border color shift, shadow enhancement (optional)
 - **Rows/List Items**: bg-gray-50 (light) / bg-[#1F1F23] (dark)
 - **Buttons**: Standard UI button behavior (already in template)
 - **Badges**: Color intensification
 
 ### 8.2 Loading States
+
 - **Section Loading**: Skeleton loaders (optional enhancement)
 - **Real-time Updates**: Smooth transitions, no jarring jumps
 - **Activity Updates**: Subtle highlight/flash on new items
 
 ### 8.3 Empty States
+
 For sections with no data:
+
 - Centered icon + message
 - Sample action button
 - Light gray background (bg-gray-50 / bg-[#1F1F23])
@@ -449,6 +496,7 @@ For sections with no data:
 ## 9. IMPLEMENTATION SEQUENCE
 
 ### Phase 1: Core Structure
+
 1. Create section container components:
    - `OperationalStatusSection.tsx`
    - `HealthIntegrationSection.tsx`
@@ -461,12 +509,14 @@ For sections with no data:
    - Responsive grid-cols-1 for smaller screens
 
 ### Phase 2: Section-Specific Content
+
 1. Create reusable list components
 2. Add status indicators and badges
 3. Implement metric displays and progress bars
 4. Add action buttons and controls
 
 ### Phase 3: Polish & Refinement
+
 1. Dark mode verification
 2. Responsive design testing
 3. Animation/transition additions (optional)
@@ -476,33 +526,31 @@ For sections with no data:
 
 ## 10. PRESERVED ELEMENTS CHECKLIST
 
-✅ **Colors**: All existing color palette maintained
-✅ **Typography**: Inter font, sizing hierarchy preserved
-✅ **Layout System**: Flexbox + grid grid patterns
-✅ **Component Styling**: Rounded corners (rounded-xl), borders, shadows
-✅ **Spacing Scale**: Tailwind spacing utilities (gap-4, p-6, etc.)
-✅ **Dark Mode**: CSS custom properties + class-based toggle
-✅ **Icon Library**: Lucide-react icons consistent
-✅ **Sidebar Navigation**: Unchanged structure and positioning
-✅ **Top Navigation**: Unchanged header with breadcrumbs, notifications
-✅ **Theme Toggle**: Existing implementation preserved
+✅ **Colors**: All existing color palette maintained ✅ **Typography**: Inter
+font, sizing hierarchy preserved ✅ **Layout System**: Flexbox + grid grid
+patterns ✅ **Component Styling**: Rounded corners (rounded-xl), borders,
+shadows ✅ **Spacing Scale**: Tailwind spacing utilities (gap-4, p-6, etc.) ✅
+**Dark Mode**: CSS custom properties + class-based toggle ✅ **Icon Library**:
+Lucide-react icons consistent ✅ **Sidebar Navigation**: Unchanged structure and
+positioning ✅ **Top Navigation**: Unchanged header with breadcrumbs,
+notifications ✅ **Theme Toggle**: Existing implementation preserved
 
 ---
 
 ## 11. VISUAL SPECIFICATIONS SUMMARY
 
-| Element | Light Mode | Dark Mode | Font Size | Weight |
-|---------|-----------|-----------|-----------|--------|
-| Section Header | Gray-900 | White | 18px | Bold |
-| Card Header | Gray-900 | White | 16px | Bold |
-| Card Background | White | #0F0F12 | - | - |
-| Card Border | Gray-200 | #1F1F23 | - | - |
-| Body Text | Gray-600 | Gray-300 | 14px | Regular |
-| Secondary Text | Gray-500 | Gray-400 | 12px | Regular |
-| Padding (Cards) | p-6 (24px) | p-6 (24px) | - | - |
-| Gap (Sections) | gap-6 (24px) | gap-6 (24px) | - | - |
-| Border Radius | rounded-xl (0.5rem) | rounded-xl (0.5rem) | - | - |
-| Icon Size | w-3.5 h-3.5 (14px) | w-3.5 h-3.5 (14px) | - | - |
+| Element         | Light Mode          | Dark Mode           | Font Size | Weight  |
+| --------------- | ------------------- | ------------------- | --------- | ------- |
+| Section Header  | Gray-900            | White               | 18px      | Bold    |
+| Card Header     | Gray-900            | White               | 16px      | Bold    |
+| Card Background | White               | #0F0F12             | -         | -       |
+| Card Border     | Gray-200            | #1F1F23             | -         | -       |
+| Body Text       | Gray-600            | Gray-300            | 14px      | Regular |
+| Secondary Text  | Gray-500            | Gray-400            | 12px      | Regular |
+| Padding (Cards) | p-6 (24px)          | p-6 (24px)          | -         | -       |
+| Gap (Sections)  | gap-6 (24px)        | gap-6 (24px)        | -         | -       |
+| Border Radius   | rounded-xl (0.5rem) | rounded-xl (0.5rem) | -         | -       |
+| Icon Size       | w-3.5 h-3.5 (14px)  | w-3.5 h-3.5 (14px)  | -         | -       |
 
 ---
 

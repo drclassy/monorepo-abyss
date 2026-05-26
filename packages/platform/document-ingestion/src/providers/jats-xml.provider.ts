@@ -125,6 +125,9 @@ export class JatsXmlProvider implements DocumentParserProvider {
   }
 
   private stripTags(value: string): string {
-    return value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+    return value
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
   }
 }

@@ -5,13 +5,13 @@ import type { KafkaService } from '../kafka/kafka.service'
 import { BaseSaga } from './base.saga'
 
 export interface ReferralInput {
-  patientId: string;
-  sourceOrganizationId: string;
-  destinationOrganizationId: string;
-  referralReason: string;
-  urgency: 'routine' | 'urgent' | 'emergency';
-  referralId: string;
-  diagnosisCode?: string;
+  patientId: string
+  sourceOrganizationId: string
+  destinationOrganizationId: string
+  referralReason: string
+  urgency: 'routine' | 'urgent' | 'emergency'
+  referralId: string
+  diagnosisCode?: string
 }
 
 export interface ReferralOutput {
@@ -52,9 +52,7 @@ function normalizeError(error: unknown): Error {
 }
 
 function getTimeoutMs(urgency: ReferralInput['urgency']): number {
-  return urgency === 'emergency' || urgency === 'urgent'
-    ? URGENT_TIMEOUT_MS
-    : REFERRAL_TIMEOUT_MS
+  return urgency === 'emergency' || urgency === 'urgent' ? URGENT_TIMEOUT_MS : REFERRAL_TIMEOUT_MS
 }
 
 async function withTimeout<T>(fn: () => Promise<T>, timeoutMs: number): Promise<T> {
@@ -98,7 +96,7 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
     this.addStep({
       name: 'VALIDATE_PATIENT',
       invoke: async (input: ReferralInput) => {
-        const timeout = getTimeoutMs(input.urgency);
+        const timeout = getTimeoutMs(input.urgency)
 
         const validation = await withTimeout(async () => {
           // TODO: replace with real patient validation via @the-abyss/database
@@ -127,7 +125,7 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
     this.addStep({
       name: 'VALIDATE_DESTINATION',
       invoke: async (input: ReferralPatientState): Promise<ReferralDestinationState> => {
-        const timeout = getTimeoutMs(input.urgency);
+        const timeout = getTimeoutMs(input.urgency)
 
         const destValidation = await withTimeout(async () => {
           // TODO: replace with real facility capacity check
@@ -183,7 +181,10 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
 
         return { ...input, confirmationCode }
       },
-      compensate: async (input: ReferralDestinationState | ReferralNotificationState, error: Error) => {
+      compensate: async (
+        input: ReferralDestinationState | ReferralNotificationState,
+        error: Error
+      ) => {
         await this.emitDlq('NOTIFY_DESTINATION', input.referralId, error)
         await this.emitCompensationEvent('NOTIFY_CANCELLED', input.referralId, error)
       },
@@ -219,10 +220,7 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
   }
 
   private async emitCompensationEvent(
-    event:
-      | 'DESTINATION_UNAVAILABLE'
-      | 'NOTIFY_CANCELLED'
-      | 'REFERRAL_FAILED',
+    event: 'DESTINATION_UNAVAILABLE' | 'NOTIFY_CANCELLED' | 'REFERRAL_FAILED',
     referralId: string,
     error: Error
   ): Promise<void> {
@@ -240,19 +238,17 @@ export class ReferralFlowSaga extends BaseSaga<ReferralInput, ReferralOutput> {
     }
   }
 
-  private async emitDlq(
-    step: string,
-    referralId: string,
-    error: Error
-  ): Promise<void> {
-    await this.kafka.emit('referral-dlq', {
-      step,
-      referralId,
-      errorType: error.constructor.name,
-      errorName: error.name,
-      timestamp: new Date().toISOString(),
-    }).catch((dlqErr) => {
-      console.error('[ReferralFlowSaga] DLQ emit failed:', normalizeError(dlqErr).name)
-    })
+  private async emitDlq(step: string, referralId: string, error: Error): Promise<void> {
+    await this.kafka
+      .emit('referral-dlq', {
+        step,
+        referralId,
+        errorType: error.constructor.name,
+        errorName: error.name,
+        timestamp: new Date().toISOString(),
+      })
+      .catch((dlqErr) => {
+        console.error('[ReferralFlowSaga] DLQ emit failed:', normalizeError(dlqErr).name)
+      })
   }
 }

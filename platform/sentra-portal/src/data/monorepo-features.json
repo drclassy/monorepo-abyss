@@ -7,31 +7,66 @@
         "id": "ceo-office",
         "name": "CEO Executive Office",
         "apps": [
-          { "id": "kate-ai", "name": "Kate AI v1.4", "type": "Autonomous Assistant", "description": "CEO Personal Assistant & Task Orchestrator." }
+          {
+            "id": "kate-ai",
+            "name": "Kate AI v1.4",
+            "type": "Autonomous Assistant",
+            "description": "CEO Personal Assistant & Task Orchestrator."
+          }
         ]
       },
       {
         "id": "healthcare",
         "name": "Healthcare Division",
         "apps": [
-          { "id": "sentra-main", "name": "Sentra Main", "type": "Next.js 16", "description": "Layanan utama kesehatan & Rekam Medis." },
-          { "id": "referralink", "name": "Referralink", "type": "Next.js", "description": "Sistem rujukan antar fasilitas kesehatan." }
+          {
+            "id": "sentra-main",
+            "name": "Sentra Main",
+            "type": "Next.js 16",
+            "description": "Layanan utama kesehatan & Rekam Medis."
+          },
+          {
+            "id": "referralink",
+            "name": "Referralink",
+            "type": "Next.js",
+            "description": "Sistem rujukan antar fasilitas kesehatan."
+          }
         ]
       },
       {
         "id": "platform",
         "name": "Platform & Orchestration",
         "apps": [
-          { "id": "sentra-portal", "name": "Abyss Portal", "type": "Control Center", "description": "Pusat manajemen seluruh ekosistem Sentra." },
-          { "id": "orchestrator", "name": "Saga Engine", "type": "Otak Tengah", "description": "Pengelola aliran data (Kafka/Event)." }
+          {
+            "id": "sentra-portal",
+            "name": "Abyss Portal",
+            "type": "Control Center",
+            "description": "Pusat manajemen seluruh ekosistem Sentra."
+          },
+          {
+            "id": "orchestrator",
+            "name": "Saga Engine",
+            "type": "Otak Tengah",
+            "description": "Pengelola aliran data (Kafka/Event)."
+          }
         ]
       },
       {
         "id": "packages",
         "name": "The Weaponry (Packages)",
         "items": [
-          { "id": "sentra-rag", "name": "Sentra RAG", "capability": "Knowledge", "description": "Medical Library Connector (119 Books)." },
-          { "id": "symphony", "name": "SYMPHONY", "capability": "Clinical Reasoning", "description": "Canonical clinical engine and safety gate stack." }
+          {
+            "id": "sentra-rag",
+            "name": "Sentra RAG",
+            "capability": "Knowledge",
+            "description": "Medical Library Connector (119 Books)."
+          },
+          {
+            "id": "symphony",
+            "name": "SYMPHONY",
+            "capability": "Clinical Reasoning",
+            "description": "Canonical clinical engine and safety gate stack."
+          }
         ]
       }
     ]

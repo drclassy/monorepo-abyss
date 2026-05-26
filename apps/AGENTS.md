@@ -2,8 +2,8 @@
 
 ## Scope
 
-Read the root [`AGENTS.md`](../AGENTS.md) first. Root instructions win on any
-conflict.
+Read the root [`AGENTS.md`](../AGENTS.md) first. Root `AGENTS.md` is the SSOT
+for monorepo-wide rules, and root wins on any conflict.
 
 `apps/` is not a homogeneous application layer. It is a portfolio workspace
 containing independent product islands, future standalone repositories,

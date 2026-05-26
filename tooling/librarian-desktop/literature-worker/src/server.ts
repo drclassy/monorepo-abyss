@@ -67,7 +67,9 @@ function validateHarvestJob(body: unknown): HarvestJobRequest {
   }
 }
 
-export async function startLiteratureWorker(config: LiteratureWorkerConfig = {}): Promise<LiteratureWorkerHandle> {
+export async function startLiteratureWorker(
+  config: LiteratureWorkerConfig = {}
+): Promise<LiteratureWorkerHandle> {
   const host = config.host ?? '127.0.0.1'
   const port = config.port ?? Number(process.env.LITERATURE_WORKER_PORT ?? 8787)
   const harvester = new LiteratureHarvester(config.harvesterConfig)
@@ -75,7 +77,9 @@ export async function startLiteratureWorker(config: LiteratureWorkerConfig = {})
   const server = createServer(async (req, res) => {
     try {
       if (!req.url) {
-        jsonResponse(res, 400, { error: 'Missing request URL.' } satisfies LiteratureWorkerErrorResponse)
+        jsonResponse(res, 400, {
+          error: 'Missing request URL.',
+        } satisfies LiteratureWorkerErrorResponse)
         return
       }
 
@@ -146,4 +150,3 @@ export async function startLiteratureWorker(config: LiteratureWorkerConfig = {})
     },
   }
 }
-

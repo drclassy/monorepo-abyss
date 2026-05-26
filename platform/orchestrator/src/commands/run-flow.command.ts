@@ -3,6 +3,6 @@ export class RunFlowCommand {
     public readonly flowId: string,
     public readonly organizationId: string,
     public readonly input: Record<string, unknown>,
-    public readonly shadowMode?: boolean,
+    public readonly shadowMode?: boolean
   ) {}
 }

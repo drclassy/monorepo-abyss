@@ -26,7 +26,8 @@ async function main() {
   try {
     worker = await startLiteratureWorker({ host, port })
   } catch (error) {
-    const isAddressInUse = error instanceof Error && (error as NodeJS.ErrnoException).code === 'EADDRINUSE'
+    const isAddressInUse =
+      error instanceof Error && (error as NodeJS.ErrnoException).code === 'EADDRINUSE'
     const baseUrl = `http://${host}:${port ?? Number(process.env.LITERATURE_WORKER_PORT ?? 8787)}`
 
     if (isAddressInUse && (await checkHealth(baseUrl))) {
@@ -54,4 +55,3 @@ main().catch((error) => {
   console.error(error instanceof Error ? error.message : String(error))
   process.exitCode = 1
 })
-

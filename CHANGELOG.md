@@ -52,7 +52,11 @@ and this project adheres to
 
 ### Changed
 
-- N/A
+- Governance: `packages/sentra/**` is documented as crown-jewel review-first
+  territory that requires explicit approval before edits; `.husky/pre-commit`
+  blocks commits on secret or PHI findings and then runs `lint-staged`.
+- Docs: `.agent/` is the active SSOT for agent continuity, while public docs
+  stay separate from private session and report records.
 
 ### Deprecated
 

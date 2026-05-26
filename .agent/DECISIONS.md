@@ -61,8 +61,8 @@ Reason: The file lives under the design-token package tree, not
 behavior, so it should not be cleaned up as ordinary dirty-tree noise without a
 separate governance decision.
 
-Status: Active. Hold current diff until Chief explicitly asks to archive,
-promote, or rewrite it.
+Status: Active. Do not archive, promote, or rewrite this workflow template
+without an explicit Chief decision for that file.
 
 ## 2026-05-16 - Minimal `.agent/` SSOT adopted
 
@@ -170,8 +170,8 @@ Reason: Object-hash comparison confirmed identical content for
 `ARCHITECTURE.md`, `CURATION_TASKS.md`, `FEATURE.md`,
 `KNOWLEDGE CURATED.md`, and `PROTOCOL.md`.
 
-Status: Hold for a dedicated `.agent` migration commit after root SSOT files are
-reviewed. Do not restore the references unless the migration scope is rejected.
+Status: Historical migration decision. Do not restore the references unless the
+migration scope is explicitly rejected.
 
 ## 2026-05-20 - Root `.codex/` layer is the canonical SSOT enforcement path
 
@@ -184,7 +184,7 @@ Reason: `AGENTS.md` and `.agent/` define the rulebook and state, but durable
 cross-agent enforcement only becomes consistent when the project-local Codex
 layer validates and reloads the same lifecycle path every session.
 
-Status: Active.
+Status: Superseded by the 2026-05-25 repo-local `.codex/` deprecation decision.
 
 ## 2026-05-20 - Cross-agent SSOT parity uses the same active read pattern
 

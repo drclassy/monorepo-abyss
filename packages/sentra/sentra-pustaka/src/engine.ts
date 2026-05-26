@@ -1,6 +1,6 @@
 // Copyright 2026 Sentra. All rights reserved. Proprietary and confidential.
-import * as dotenv from 'dotenv'
 import { createVectorStore } from '@sentra/cermin'
+import * as dotenv from 'dotenv'
 import { Pool } from 'pg'
 
 import { GemmaEngine } from './assessment/gemma.js'

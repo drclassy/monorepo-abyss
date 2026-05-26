@@ -97,9 +97,10 @@ export async function getEmbeddingWithRetry(
   const { maxRetries = 3, baseDelayMs = 500, circuitBreaker } = retry
 
   if (circuitBreaker && isOpen(circuitBreaker)) {
+    const openedAt = circuitBreaker.windowStart ?? new Date()
     throw new EmbeddingCircuitOpenError(
       circuitBreaker.consecutiveFailures,
-      circuitBreaker.windowStart!,
+      openedAt,
     )
   }
 

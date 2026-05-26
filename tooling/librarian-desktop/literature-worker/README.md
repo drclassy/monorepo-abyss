@@ -15,11 +15,11 @@ Defaults:
 
 ## Endpoints
 
-| Method | Path | Description |
-| --- | --- | --- |
-| GET | `/health` | Liveness check |
-| GET | `/ready` | Readiness check |
-| POST | `/harvest` | Trigger an OA literature harvest |
+| Method | Path       | Description                      |
+| ------ | ---------- | -------------------------------- |
+| GET    | `/health`  | Liveness check                   |
+| GET    | `/ready`   | Readiness check                  |
+| POST   | `/harvest` | Trigger an OA literature harvest |
 
 `/harvest` expects JSON:
 

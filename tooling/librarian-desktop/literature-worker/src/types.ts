@@ -1,4 +1,8 @@
-import type { HarvestRunResult, HarvesterConfig, LiteratureSearchOptions } from '@the-abyss/literature-harvester'
+import type {
+  HarvestRunResult,
+  HarvesterConfig,
+  LiteratureSearchOptions,
+} from '@the-abyss/literature-harvester'
 
 export interface HarvestJobRequest extends LiteratureSearchOptions {
   query: string
@@ -27,4 +31,3 @@ export type LiteratureWorkerHarvestResponse = HarvestRunResult
 export interface LiteratureWorkerErrorResponse {
   error: string
 }
-

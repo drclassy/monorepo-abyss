@@ -1,13 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { prisma, type SagaExecution } from '@the-abyss/database'
 
-export type SagaJson =
-  | string
-  | number
-  | boolean
-  | null
-  | SagaJson[]
-  | { [key: string]: SagaJson }
+export type SagaJson = string | number | boolean | null | SagaJson[] | { [key: string]: SagaJson }
 
 type SagaPersistedJson = Exclude<SagaJson, null>
 
@@ -16,11 +10,7 @@ function isSagaJson(value: unknown): value is SagaJson {
     return true
   }
 
-  if (
-    typeof value === 'string' ||
-    typeof value === 'number' ||
-    typeof value === 'boolean'
-  ) {
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
     return true
   }
 

@@ -24,7 +24,9 @@ function main(): void {
   //   pnpm dlx tsx tooling/scripts/rag/trigger-import.ts
   void findRepoRoot()
   console.log('--- Trigger Import (Local RAG) ---')
-  console.log('Jalur RAG lama sudah dinonaktifkan. Gunakan packages/sentra-rag untuk ingest/query lokal.')
+  console.log(
+    'Jalur RAG lama sudah dinonaktifkan. Gunakan packages/sentra-rag untuk ingest/query lokal.'
+  )
   process.exit(0)
 }
 

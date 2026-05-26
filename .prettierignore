@@ -7,7 +7,11 @@ coverage
 pnpm-lock.yaml
 *.min.js
 *.min.css
-.agent/**
 docs/**
 flows/**
 infrastructure/**
+**/.agent/**
+apps/corporate/ferdiiskandar/**
+apps/healthcare/sidelab-project/**
+library/**
+packages/sentra/**

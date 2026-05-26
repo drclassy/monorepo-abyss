@@ -248,9 +248,13 @@ as part of the SSOT simplification.
   read pattern. Runtime proof now exists for Codex and Claude Code; Cursor CLI
   is blocked by missing auth, and Roo remains unproved from terminal because no
   local headless entrypoint was confirmed in this session.
-- `.cursor/rules/design.mdc` remains HOLD.
-- `apps/corporate/ferdiiskandar/**` app import remains HOLD.
-- Untracked noisy `.agent` reports/sessions remain HOLD unless curated.
+- Dirty-tree closure no longer uses deferred buckets. Every dirty or untracked
+  item must be classified as `KEEP_AND_COMMIT`, `FIX_AND_COMMIT`,
+  `MOVE_OUT_OF_REPO`, or `DELETE_OR_RESTORE`.
+- `.cursor/rules/design.mdc` and `apps/corporate/ferdiiskandar/**` are not
+  active dirty-tree items in the current closure mission.
+- Untracked `.agent` reports/sessions must be curated and committed or moved
+  out of the active repo; do not leave them as unresolved work.
 
 ## Important Changed Files From This Chain
 
@@ -299,8 +303,9 @@ diff because parts of `apps/` are ignored by the current repo rules.
    proven.
 6. Review `apps/corporate/ferdiiskandar/**` app import only after the dirty tree
    classification is refreshed.
-7. Keep untracked noisy `.agent` reports/sessions on HOLD unless Chief asks for
-   a curated SSOT history commit.
+7. Classify untracked `.agent` reports/sessions immediately during dirty-tree
+   closure; curate and commit valid continuity records or move them out of the
+   active repo.
 8. Verify the hardened session-stop gate and refreshed SessionStart/PostToolUse
    coverage in one real agent stop cycle before treating it as fully
    operational across tools.

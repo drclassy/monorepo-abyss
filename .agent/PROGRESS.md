@@ -36,6 +36,24 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 
 ## Today
 
+- Verification-gate stabilization follow-up reduced post-green warning noise:
+  - `apps/community/classy-transformer` package lint warnings were cleared.
+  - `apps/community/classy-transformer/website` package lint warnings were
+    cleared with a local config/typing cleanup.
+  - `packages/platform/document-ingestion` build warning from unreachable
+    `"types"` export ordering was cleared.
+  - `apps/healthcare/referralink` build CSS warnings from `print:*` utility
+    selectors were cleared by switching the affected letter preview to plain
+    print class names.
+  - `apps/healthcare/intelligenceboard` build still passes, but Turbopack NFT
+    tracing warnings remain deferred because they point into generated Prisma
+    client tracing and are not yet a smallest-safe cleanup.
+- Root verification remains green after the follow-up warning cleanup:
+  - `pnpm --filter @the-abyss/classy-transformer lint`
+  - `pnpm --filter @the-abyss/classy-transformer-website lint`
+  - `pnpm --filter @the-abyss/document-ingestion build`
+  - root `pnpm lint`
+  - root `pnpm build`
 - Post-stabilization verification passed.
 - Root monorepo verification now passes again via
   `pwsh -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.codex\scripts\verify-local.ps1"`.
@@ -113,4 +131,4 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 Root build, typecheck, and test are green. UNICOM Hub is complete and verified.
 RAG Enhancement plan is ready for execution (Phase 1 → 2 → 3, mandatory order).
 
-Last updated: 2026-05-21
+Last updated: 2026-05-26

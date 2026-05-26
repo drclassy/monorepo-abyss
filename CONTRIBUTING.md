@@ -55,7 +55,8 @@ pnpm dev
 
 ### For AI Agents
 
-1. **Read** [.agents/AGENTS.md](.agents/AGENTS.md)
+1. **Read** [AGENTS.md](AGENTS.md), then [`.agent/README.md`](.agent/README.md)
+   and [`.agent/HANDOFF.md`](.agent/HANDOFF.md)
 2. **Create HANDOFF.md**
    ```bash
    pnpm abyss init-task "Your task title"
@@ -157,6 +158,10 @@ Phase: 2
 - Use descriptive title
 - Link related issues
 - Fill out PR template
+- Before opening the PR, run `pnpm lint`, `pnpm typecheck`, and `pnpm build`,
+  and make sure the pre-commit hook passes on staged changes.
+- Attach `git diff --stat` in the PR body so reviewers can confirm the scope
+  quickly.
 
 ### 2. Status Checks
 
@@ -172,6 +177,8 @@ All PRs must pass:
 
 - At least 1 approval required
 - CODEOWNERS review for sensitive areas
+- Do not edit `packages/sentra/**` without explicit approval. That tree is
+  crown-jewel review-first territory in the repo contract.
 - Address all review comments
 
 ### 4. Merge
@@ -185,7 +192,8 @@ All PRs must pass:
 ## 📚 ADDITIONAL RESOURCES
 
 - [README.md](README.md) — Project overview
-- [.agents/AGENTS.md](.agents/AGENTS.md) — Agent steering
+- [AGENTS.md](AGENTS.md) — Repo rules and architecture authority
+- [`.agent/README.md`](.agent/README.md) — Active SSOT entrypoint
 - [docs/templates/001-handoff.md](docs/templates/001-handoff.md) — HANDOFF
   template
 - [CHANGELOG.md](CHANGELOG.md) — Version history

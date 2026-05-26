@@ -38,12 +38,17 @@ brochure, and it does not hide legacy, partial, or under-retirement surfaces.
 
 - Workspace membership: [`pnpm-workspace.yaml`](pnpm-workspace.yaml)
 - Repository rules and architecture: [`AGENTS.md`](AGENTS.md)
+- Active agent continuity SSOT: [`.agent/README.md`](.agent/README.md) and
+  [`.agent/HANDOFF.md`](.agent/HANDOFF.md)
 - Current docs index: [`docs/README.md`](docs/README.md)
 - Current agent handoff surface: [`.agent/HANDOFF.md`](.agent/HANDOFF.md)
 - Current executive repo snapshot:
   [`SENTRA_CURRENT_STATE.md`](SENTRA_CURRENT_STATE.md)
 - Current audit baseline:
   [`ABYSS_CURRENT_STATUS_REPORT.md`](ABYSS_CURRENT_STATUS_REPORT.md)
+
+Public docs should mirror committed repo behavior without exposing private
+session or report records from `.agent/`.
 
 ---
 
@@ -53,9 +58,7 @@ Current verified baseline from the latest audit:
 
 - Root `pnpm typecheck -- --pretty false`: `PASS`
 - Root `pnpm build`: `PASS`
-- Root `pnpm test`: `FAIL`
-  - current blocker: `@the-abyss/unicom` test startup fails with
-    `getaddrinfo ENOENT localhost`
+- Root `pnpm test`: `PASS`
 
 Important repository state:
 
@@ -64,6 +67,10 @@ Important repository state:
   and some documentation surfaces.
 - `packages/integration` exists on disk, while workspace-path alignment around
   `packages/integration-bridge` is still under review.
+- `packages/sentra/**` contains the crown-jewel Sentra engines and remains
+  review-first territory requiring explicit approval before edits.
+- Application surfaces live under `apps/` and reuse shared engines and tooling
+  from `packages/`.
 
 ---
 

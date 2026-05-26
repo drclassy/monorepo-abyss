@@ -1,8 +1,9 @@
 # Pre-Push Compliance Checklist
+
 # Sentra Healthcare AI — All Projects
 
-> Run this before every `git push`. All boxes must be checked.
-> For automation: run `validate.ps1`. For fixes: see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).
+> Run this before every `git push`. All boxes must be checked. For automation:
+> run `validate.ps1`. For fixes: see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).
 
 ---
 
@@ -15,7 +16,8 @@
 - [ ] `.gitignore` contains `docs/storybook/`
 - [ ] `.gitignore` contains `node_modules/`
 - [ ] `.gitignore` contains `.wxt/` (WXT projects only)
-- [ ] `git status` shows no staged files from `docs/api/`, `dist/`, or `.output/`
+- [ ] `git status` shows no staged files from `docs/api/`, `dist/`, or
+      `.output/`
 
 ---
 
@@ -23,8 +25,10 @@
 
 - [ ] `pnpm-lock.yaml` exists in project root
 - [ ] `grep "overrides:" pnpm-lock.yaml` returns at least one result
-- [ ] Override count in `pnpm-lock.yaml` matches `pnpm.overrides` count in `package.json`
-- [ ] Lockfile was regenerated in `/tmp/` (not inside monorepo root) if any override was changed
+- [ ] Override count in `pnpm-lock.yaml` matches `pnpm.overrides` count in
+      `package.json`
+- [ ] Lockfile was regenerated in `/tmp/` (not inside monorepo root) if any
+      override was changed
 
 ---
 
@@ -55,15 +59,18 @@
 
 - [ ] `.agent/HANDOFF.md` is up to date with current session plan
 - [ ] `.agent/PROGRESS.md` reflects completed work
-- [ ] No other agent has an open task on this file/branch (check `.agent/HANDOFF.md` owner field)
+- [ ] No other agent has an open task on this file/branch (check
+      `.agent/HANDOFF.md` owner field)
 
 ---
 
 ## Section G — Commit Hygiene
 
-- [ ] Commit message follows Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
+- [ ] Commit message follows Conventional Commits (`feat:`, `fix:`, `docs:`,
+      `chore:`)
 - [ ] No `.env.local`, credentials, or PHI/PII in staged files
-- [ ] Commit trailer present: `Agent: Claude · Phase: Execution · Handoff: [session-id]`
+- [ ] Commit trailer present:
+      `Agent: Claude · Phase: Execution · Handoff: [session-id]`
 
 ---
 
@@ -82,5 +89,4 @@
 
 ---
 
-*Maintained by Classy — dr. Ferdi Iskandar*
-*Last updated: April 2026*
+_Maintained by Classy — dr. Ferdi Iskandar_ _Last updated: April 2026_
