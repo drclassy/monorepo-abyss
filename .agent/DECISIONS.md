@@ -3,6 +3,32 @@
 Append-only for durable choices and repeated lessons. Add new entries at the
 top. Older full ledgers are preserved in `.agent/archive/legacy-root/`.
 
+## 2026-05-26 - Repo architecture, not Git tracking, decides validity
+
+Decision: Git tracking is not proof that a file, folder, package, app,
+workflow, or infrastructure artifact is valid in ABYSS. Git records the final
+accepted state after the repository architecture has been corrected.
+
+Rule: An item is valid only when purpose, owner, allowed location, workspace or
+workflow status, active reference, boundary safety, and relevant verification
+can be explained. If any point cannot be proven, classify the item as
+`ORPHAN_CANDIDATE` or the nearest explicit risk class such as
+`STALE_ARTIFACT`, `ARCHITECTURE_REVIEW_REQUIRED`, or `BOUNDARY_RISK`.
+
+Required resolution: every candidate must receive one final decision:
+`KEEP_AND_COMMIT`, `FIX_AND_COMMIT`, `MOVE_OUT_OF_REPO`, or
+`DELETE_OR_RESTORE`. Do not treat "tracked by Git" as a reason to keep
+anything in the active repo.
+
+Reason: ABYSS/Sentra requires clean architecture, crown-jewel isolation,
+clinical-grade governance, infrastructure separation, and evidence-backed
+verification. Old committed mistakes, prototypes, generated artifacts, stale
+docs, misplaced packages, or harmful boundary violations remain invalid even if
+Git tracks them.
+
+Status: Active. This is a permanent ABYSS operating principle for cleanup,
+audit, and architecture review.
+
 ## 2026-05-25 - Repo-local `.codex/` is deprecated; global Codex is the runtime layer
 
 Decision: ABYSS no longer treats root `.codex/` as an active governance layer.

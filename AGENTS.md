@@ -1,6 +1,6 @@
 # AGENTS.md — ABYSS Monorepo
 
-Last updated: 2026-05-25
+Last updated: 2026-05-26
 
 ## Purpose
 
@@ -57,6 +57,35 @@ Hard gates:
 - Use Context7 only for public framework, library, and API documentation.
 - For any work under `apps/`, read `apps/AGENTS.md` and follow
   `apps/_governance/APP_BOUNDARY_PREFLIGHT.md` before implementation.
+
+## Repository Validity and Orphan Rules
+
+Git tracking is not proof of validity. Git records the accepted state after
+architecture has been corrected; it is not the authority for whether a file,
+folder, app, package, workflow, or infrastructure artifact belongs in ABYSS.
+
+An item is valid only when all of these can be explained:
+
+- Purpose: why it exists now.
+- Owner: which app, package, workflow, or governance surface owns it.
+- Location: why its path matches the repo taxonomy.
+- Workspace status: how it belongs to pnpm, turbo, app/package registry, static
+  docs, tooling, or infrastructure.
+- Reference: how active build, test, docs, deployment, or workflow surfaces use
+  it.
+- Boundary safety: why it does not violate crown-jewel isolation, platform
+  boundaries, infrastructure separation, or governance rules.
+- Verification: which relevant gate proves it does not break the repo.
+
+If any point cannot be proven, classify the item as `ORPHAN_CANDIDATE` or the
+nearest explicit risk class such as `STALE_ARTIFACT`,
+`ARCHITECTURE_REVIEW_REQUIRED`, or `BOUNDARY_RISK`. Then resolve it with one
+final decision: `KEEP_AND_COMMIT`, `FIX_AND_COMMIT`, `MOVE_OUT_OF_REPO`, or
+`DELETE_OR_RESTORE`.
+
+Tracked files can still be orphaned, obsolete, misplaced, duplicated, generated,
+or harmful. Do not use "tracked by Git" as a reason to keep anything in the
+active repo.
 
 ## Protected Areas
 
