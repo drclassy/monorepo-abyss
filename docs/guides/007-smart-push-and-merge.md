@@ -224,8 +224,9 @@ for:
 Observed on 2026-05-27 from the local clone:
 
 - remote `origin` default branch: `master`
-- current local branch: `master`
-- current checked-in `ci.yml` branch filters: `main`, `develop`
+- current local rollout branch: `codex/master-ci-gate`
+- checked-in `ci.yml` branch filters in this rollout: `master` for `push` and
+  `pull_request`
 - current `CODEOWNERS` ownership is effectively single-owner: `@drclassy`
 
 Use the checklist below in GitHub UI so the repo becomes safer without
@@ -245,21 +246,19 @@ These are safe to enable immediately:
 
 ### Activate after branch and workflow alignment
 
-Do these only after the CI workflow that should gate `master` actually runs on
-`master` pull requests and protected-branch updates:
+Do these after this rollout branch is pushed and the `master`-targeted CI jobs
+have produced a fresh successful run:
 
 1. Protect branch `master`.
 2. Require a pull request before merging into `master`.
 3. Require status checks before merging into `master`.
-4. Use these exact required check names if `reusable-verify.yml` becomes the
-   active protected-branch gate:
-   - `CI / verify`
-   - `CI / build (affected)`
-   - `CI / test (affected)`
-   - `CI / lint & format`
-   - `CI / typecheck (affected)`
-   - `CI / security (blocking audit)`
-   - `CI / Langflow definitions`
+4. Use these exact required check names from the current `ci.yml` workflow:
+   - `Verify & GO-Gate Check`
+   - `Build Affected Projects`
+   - `Test Affected Projects`
+   - `Lint & Format Check`
+   - `Security Scan`
+   - `Test Langflow Definitions`
 5. Require conversation resolution before merge.
 6. Require branch to be up to date before merge if merge queue is still off.
 7. Require linear history if the repo wants a cleaner protected-branch history.
@@ -280,12 +279,12 @@ Do not enable these yet in the current observed repo state:
 
 ### One explicit cleanup before strict enforcement
 
-Before turning on required checks for `master`, normalize these mismatches first:
+Before turning on required checks for `master`, confirm these three conditions:
 
 1. The remote default branch is `master`.
-2. `ci.yml` currently targets `main` and `develop`.
-3. Required checks in GitHub must match real workflow job names that actually
-   run on the latest `master` PR commit SHA.
+2. `ci.yml` is already targeting `master` for `pull_request`.
+3. The required checks match real workflow job names that completed
+   successfully on the latest `master` PR commit SHA.
 
 If these three are not aligned first, GitHub branch protection can block merges
 for configuration reasons rather than code quality reasons.

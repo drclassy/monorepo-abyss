@@ -2,7 +2,7 @@ name: The Abyss CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [master]
     paths-ignore:
       - '**.md'
       - 'docs/**'
@@ -10,10 +10,7 @@ on:
       - '.github/*.svg'
       - '.github/logos/**'
   pull_request:
-    branches: [main, develop]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
+    branches: [master]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
