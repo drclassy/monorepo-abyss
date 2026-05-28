@@ -27,7 +27,10 @@
     "db:studio": "pnpm --filter @the-abyss/database db:studio",
     "flows:test": "turbo run flows:test",
     "governance:agents-check": "node tooling/governance/agent/healthcheck.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:tag": "changeset tag"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -43,6 +46,8 @@
   },
   "//hoisting-workaround": "baseline-browser-mapping, caniuse-lite, picocolors are pinned at root to ensure pnpm hoists them into root node_modules so the tailwindcss CLI (used by @the-abyss/ui#build) and browserslist toolchain can resolve them via parent traversal. Removing them breaks @the-abyss/ui build with 'Cannot find module picocolors'. See VERIFICATION-REPORT for context.",
   "devDependencies": {
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.5",
     "@the-abyss/config-eslint": "workspace:*",
     "@types/node": "22.19.19",
     "baseline-browser-mapping": "^2.10.24",

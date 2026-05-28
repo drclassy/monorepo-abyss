@@ -1,0 +1,21 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "drclassy/monorepo-abyss" }],
+  "commit": false,
+  "fixed": [
+    [
+      "@the-abyss/unicom-core",
+      "@the-abyss/unicom-policy",
+      "@the-abyss/unicom-server",
+      "@the-abyss/unicom-client",
+      "@the-abyss/unicom-agent-sdk",
+      "@the-abyss/unicom-persistence",
+      "@the-abyss/unicom-testkit"
+    ]
+  ],
+  "linked": [],
+  "access": "restricted",
+  "baseBranch": "master",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}
