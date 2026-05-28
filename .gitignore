@@ -234,6 +234,7 @@ flows/.langflow/
 docs/superpowers/
 docs/handbook/
 docs/architecture/
+docs/roo/
 
 # ---- AGENT OPERATIONAL SSOT ----
 # .agent/ is protected operational state, not cache or junk.
