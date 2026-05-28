@@ -1,5 +1,5 @@
 # Master Service Agreement (MSA) — Template
-**Sentra / PT [Nama Badan Hukum Sentra]**  
+**Sentra / PT [Nama Badan Hukum Sentra]**
 **Versi:** 1.0 · **Tanggal:** [TANGGAL]
 
 > Dokumen ini adalah template. Harus ditinjau dan ditandatangani oleh kuasa hukum
@@ -9,15 +9,15 @@
 
 ## Pihak-Pihak
 
-**Penyedia Layanan:**  
-Sentra / Dr. Ferdi Iskandar  
-Email: ferdi@sentrahai.com  
+**Penyedia Layanan:**
+Sentra / Dr. Ferdi Iskandar
+Email: drferdiiskandar@sentrahai.com
 (selanjutnya disebut "Sentra")
 
-**Klien:**  
-[Nama Instansi Pemerintah]  
-[Alamat Resmi]  
-[Nomor NPWP / Identitas Hukum]  
+**Klien:**
+[Nama Instansi Pemerintah]
+[Alamat Resmi]
+[Nomor NPWP / Identitas Hukum]
 (selanjutnya disebut "Klien")
 
 ---

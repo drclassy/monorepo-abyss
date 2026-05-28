@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "description": "AI-Native Monorepo for Sentra AI Ecosystem",
-  "author": "Dr. Ferdi Iskandar (Classy) <ferdi@sentra.ai>",
+  "author": "Dr. Ferdi Iskandar (Classy) <drferdiiskandar@sentrahai.com>",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=22.0.0",

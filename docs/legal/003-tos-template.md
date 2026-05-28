@@ -1,5 +1,5 @@
 # Terms of Service — Template
-**Sentra Platform — Edisi Pemerintah / Instansi**  
+**Sentra Platform — Edisi Pemerintah / Instansi**
 **Versi:** 1.0 · **Tanggal berlaku:** [TANGGAL]
 
 > Template untuk penggunaan oleh instansi pemerintah. Tinjau bersama kuasa hukum.
@@ -107,4 +107,4 @@ secara musyawarah akan diselesaikan melalui arbitrase di [KOTA].
 
 ---
 
-*Untuk pertanyaan terkait syarat layanan: ferdi@sentrahai.com*
+*Untuk pertanyaan terkait syarat layanan: drferdiiskandar@sentrahai.com*

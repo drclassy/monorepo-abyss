@@ -1,6 +1,6 @@
 # Non-Disclosure Agreement (NDA) — Template
-**Mutual / Bilateral**  
-**Sentra × [Nama Instansi Pemerintah]**  
+**Mutual / Bilateral**
+**Sentra × [Nama Instansi Pemerintah]**
 **Versi:** 1.0 · **Tanggal:** [TANGGAL]
 
 > Template ini bersifat mutual (kedua pihak saling menjaga kerahasiaan).
@@ -10,10 +10,10 @@
 
 ## Pihak-Pihak
 
-**Pihak Pertama:**  
-Sentra / Dr. Ferdi Iskandar · ferdi@sentrahai.com
+**Pihak Pertama:**
+Sentra / Dr. Ferdi Iskandar · drferdiiskandar@sentrahai.com
 
-**Pihak Kedua:**  
+**Pihak Kedua:**
 [Nama Instansi] · [Nama Pejabat] · [Email Resmi]
 
 ---
