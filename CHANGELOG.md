@@ -8,91 +8,83 @@ and this project adheres to
 
 ---
 
+## [0.1.0] — 2026-05-28
+
+### 🎉 First Public Release
+
+Initial open-source release of The Abyss — Healthcare AI Platform
+Infrastructure.
+
+### Added
+
+#### UNICOM Agent Coordination Subsystem (`packages/unicom/` — `0.1.0`)
+
+- `@the-abyss/unicom-core` — Typed agent coordination protocol, room state
+  reducer, Zod-validated event contracts
+- `@the-abyss/unicom-policy` — Policy engine with approve/block/human-approval
+  gates for evidence, destructive ops, crown-jewel access, clinical boundaries
+- `@the-abyss/unicom-server` — Socket.IO-backed coordination server with room
+  management and append-only event broadcasting
+- `@the-abyss/unicom-client` — TypeScript client library for connecting to
+  UNICOM server
+- `@the-abyss/unicom-agent-sdk` — Agent launcher with `codex-unicom-launcher`
+  and `claude-code-unicom-launcher` CLI binaries
+- `@the-abyss/unicom-persistence` — Append-only Postgres event store scaffold
+- `@the-abyss/unicom-testkit` — Fake transport and in-memory store for
+  deterministic agent testing
+
+#### Platform Services (`packages/platform/`)
+
+- `@the-abyss/database` — PostgreSQL schema with Prisma ORM and multi-tenancy
+  support
+- `@the-abyss/document-ingestion` — Multi-format document parser (JATS XML, PDF,
+  Markdown) with OCR quality gates and source hashing
+- `@the-abyss/langflow-client` — TypeScript client for programmatic LangFlow
+  flow execution
+- `@the-abyss/literature-harvester` — Open-access literature crawling, JATS
+  ingestion, and knowledge registry
+
+#### Clinical Knowledge (`packages/clinical/`)
+
+- `@the-abyss/clinical-references` — Clinical knowledge registry with citation
+  sources and supersession support
+
+#### Shared Infrastructure (`packages/shared/`)
+
+- `@the-abyss/shared-types` — Common TypeScript types across all packages
+- `@the-abyss/sentra-ui` — React component library with Tailwind CSS
+- `@the-abyss/design-token` — Design system tokens (spacing, typography, color)
+
+#### Tooling (`packages/tooling/`)
+
+- `@the-abyss/config-eslint` — Shared ESLint configuration for all workspace
+  packages
+- `@the-abyss/config-typescript` — Shared TypeScript base configuration
+
+#### Governance & Infrastructure
+
+- `AGENTS.md` — Root policy authority and operating contract
+- `.agent/` — Operational SSOT for continuity, handoff, and current state
+- `flows/` — LangFlow definitions for healthcare, academic, and platform
+  workflows
+- `infrastructure/` — Docker, Terraform, and ArgoCD deployment assets
+- `docs/` — ADRs, guides, specs, UNICOM protocol docs, legal templates
+
+### Infrastructure
+
+- pnpm 9.15.0 workspace with Turborepo 2.9.x build orchestration
+- TypeScript 5.9.x strict configuration across all packages
+- Vitest test suite for all packages
+- Husky pre-commit gates (secret scan, PHI scan, Prettier)
+- Renovate for automated dependency management
+- Changesets for future versioning and GitHub Releases
+
+---
+
 ## [Unreleased]
 
-### Added
-
-- Initial monorepo structure with pnpm workspace
-- Turborepo configuration for build orchestration
-- Classy Workflow integration (HANDOFF.md, GO-Gate)
-- Core packages:
-  - `@the-abyss/database` — Prisma schema with multi-tenancy
-  - `@the-abyss/langflow-client` — Langflow SDK
-  - `@the-abyss/ui` — Shadcn UI components
-  - `@the-abyss/fhir-engine` — FHIR R4 validation
-  - `@the-abyss/vector-store` — Vector search (RAG)
-  - `@the-abyss/iskandar-gatekeeper` — GO-Gate validator
-  - `@the-abyss/shared-types` — Shared TypeScript types
-- Abyss CLI with commands:
-  - `init-task` — Create task sessions
-  - `go` — Add GO approval
-  - `sync-flow` — Sync Langflow definitions
-  - `create app` — Scaffold new applications
-  - `status` — Check monorepo health
-- CI/CD pipelines:
-  - `ci.yml` — Main CI with GO-Gate validation
-  - `auto-fix.yml` — Auto-fix CI failures
-  - `security-scan.yml` — Security scanning
-- Domain steering documents:
-  - Healthcare (HIPAA, FHIR R4)
-  - Academic
-  - Internal
-  - Incubator (R&D)
-  - Orchestrator
-- Infrastructure as Code:
-  - Docker multi-stage builds
-  - Docker Compose for local development
-  - Terraform legacy environment scaffolds
-  - ArgoCD application template
-- Documentation:
-  - HANDOFF.md template
-  - AGENTS.md global steering
-  - Session logging in .agent/sessions
-  - Architecture Decision Records
-
-### Changed
-
-- Governance: `packages/sentra/**` is documented as crown-jewel review-first
-  territory that requires explicit approval before edits; `.husky/pre-commit`
-  blocks commits on secret or PHI findings and then runs `lint-staged`.
-- Docs: `.agent/` is the active SSOT for agent continuity, while public docs
-  stay separate from private session and report records.
-
-### Deprecated
-
-- N/A
-
-### Removed
-
-- `@the-abyss/ai-core` — retired legacy chatbot/orchestration package; runtime
-  ownership moved back to active domain packages and SYMPHONY-centered
-  architecture
-
-### Fixed
-
-- N/A
-
-### Security
-
-- GO-Gate CI/CD validation
-- Iskandar Gatekeeper for approval enforcement
-- CODEOWNERS for domain-specific access control
+<!-- New changes go here, managed by Changesets -->
 
 ---
 
-## [0.0.1] - 2026-03-30
-
-### Added
-
-- Initial release
-- Foundation structure
-- Core packages and tooling
-
----
-
-**Unreleased:**
-[Compare changes](https://github.com/drclassy/abyss-monorepo/compare/main...develop)
-
----
-
-© 2026 Sentra Artificial Intelligence
+[0.1.0]: https://github.com/drclassy/monorepo-abyss/releases/tag/v0.1.0
