@@ -9,6 +9,7 @@ import {
   ParticipantPayloadSchema,
   PolicyPayloadSchema,
   RoomCreatedPayloadSchema,
+  RoomLifecyclePayloadSchema,
   TaskAssignmentPayloadSchema,
   TaskPayloadSchema,
   UnicomCompletionClaimSchema,
@@ -49,6 +50,33 @@ export function reduceRoomState(events: UnicomEvent[]): UnicomRoomState {
         state.room = room
         state.mode = room.mode
         state.status = room.status
+        state.lifecycle = room.lifecycle
+        break
+      }
+      case 'room.archived': {
+        RoomLifecyclePayloadSchema.parse(event.payload)
+        state.lifecycle = 'archived'
+        if (state.room) {
+          state.room = {
+            ...state.room,
+            lifecycle: 'archived',
+            archivedAt: event.createdAt,
+            updatedAt: event.createdAt,
+          }
+        }
+        break
+      }
+      case 'room.deleted': {
+        RoomLifecyclePayloadSchema.parse(event.payload)
+        state.lifecycle = 'deleted'
+        if (state.room) {
+          state.room = {
+            ...state.room,
+            lifecycle: 'deleted',
+            deletedAt: event.createdAt,
+            updatedAt: event.createdAt,
+          }
+        }
         break
       }
       case 'room.paused':

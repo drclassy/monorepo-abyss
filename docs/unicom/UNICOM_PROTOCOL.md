@@ -38,6 +38,8 @@ type UnicomEvent = {
 
 ```text
 room.created
+room.archived
+room.deleted
 room.paused
 room.resumed
 room.frozen
@@ -71,6 +73,9 @@ system.error
 - Event lama tidak dimutasi.
 - Koreksi dilakukan dengan event baru yang menunjuk `parentEventId` atau
   `correlationId`.
+- Lifecycle room berubah secara append-only melalui `room.archived` dan
+  `room.deleted`; dashboard aktif hanya menampilkan room dengan lifecycle
+  `active`.
 - Completion claim tidak valid bila `evidenceIds` kosong.
 
 ## Realtime Contract

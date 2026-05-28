@@ -37,6 +37,9 @@ export const UnicomRoomStatusSchema = z.enum([
 ])
 export type UnicomRoomStatus = z.infer<typeof UnicomRoomStatusSchema>
 
+export const UnicomRoomLifecycleSchema = z.enum(['active', 'archived', 'deleted'])
+export type UnicomRoomLifecycle = z.infer<typeof UnicomRoomLifecycleSchema>
+
 export const UnicomRoomSchema = z.object({
   id: z.string(),
   slug: z.string(),
@@ -44,9 +47,12 @@ export const UnicomRoomSchema = z.object({
   description: z.string().optional(),
   mode: UnicomRoomModeSchema.default('approval-gated'),
   status: UnicomRoomStatusSchema.default('active'),
+  lifecycle: UnicomRoomLifecycleSchema.default('active'),
   objective: z.string().optional(),
   createdAt: z.string(),
   updatedAt: z.string(),
+  archivedAt: z.string().optional(),
+  deletedAt: z.string().optional(),
   risk: RiskLevelSchema.default('medium'),
   allowedPaths: z.array(z.string()).default([]),
   forbiddenPaths: z.array(z.string()).default([]),
@@ -160,6 +166,8 @@ export type UnicomIntervention = z.infer<typeof UnicomInterventionSchema>
 
 export const UnicomEventTypeSchema = z.enum([
   'room.created',
+  'room.archived',
+  'room.deleted',
   'room.paused',
   'room.resumed',
   'room.frozen',
@@ -205,6 +213,9 @@ export const UnicomEventSchema = z.object({
 export type UnicomEvent = z.infer<typeof UnicomEventSchema>
 
 export const RoomCreatedPayloadSchema = UnicomRoomSchema
+export const RoomLifecyclePayloadSchema = z.object({
+  note: z.string().optional(),
+})
 export const ParticipantPayloadSchema = z.object({
   participant: UnicomActorSchema,
 })

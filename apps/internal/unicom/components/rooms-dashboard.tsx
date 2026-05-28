@@ -233,7 +233,7 @@ export function RoomsDashboard() {
               <div className="mt-3 text-sm leading-6 text-[var(--soft)]">
                 Base URL:{' '}
                 <span className="font-mono text-[var(--text)]">
-                  {process.env.NEXT_PUBLIC_UNICOM_BASE_URL ?? 'http://127.0.0.1:4318'}
+                  {process.env.NEXT_PUBLIC_UNICOM_BASE_URL ?? 'http://127.0.0.1:4327'}
                 </span>
               </div>
             </div>

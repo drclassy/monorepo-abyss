@@ -3,13 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "bin": {
+    "codex-unicom-launcher": "./dist/bin/codex-unicom-launcher.js",
+    "claude-code-unicom-launcher": "./dist/bin/claude-code-unicom-launcher.js"
+  },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean",
+    "build": "tsup src/index.ts src/bin/codex-unicom-launcher.ts src/bin/claude-code-unicom-launcher.ts --format esm --dts --clean",
+    "codex-unicom-launcher": "node dist/bin/codex-unicom-launcher.js",
+    "claude-code-unicom-launcher": "node dist/bin/claude-code-unicom-launcher.js",
     "test": "vitest run src/__tests__",
     "test:watch": "vitest src/__tests__",
     "typecheck": "tsc --noEmit",

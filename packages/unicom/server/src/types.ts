@@ -4,6 +4,7 @@ import type {
   UnicomDecision,
   UnicomEvent,
   UnicomIntervention,
+  UnicomRoomLifecycle,
   UnicomRoom,
   UnicomRoomMode,
   UnicomRoomState,
@@ -27,11 +28,27 @@ export interface RoomSummary {
   title: string
   status: UnicomRoomState['status']
   mode: UnicomRoomState['mode']
+  lifecycle: UnicomRoomLifecycle
   participantCount: number
   pendingApprovalCount: number
   messageCount: number
   decisionCount: number
   lastEventAt?: string
+}
+
+export type AgentMonitorId = 'codex' | 'claude-code'
+export type AgentMonitorStatus = 'running' | 'stopped' | 'error'
+
+export interface AgentMonitorState {
+  id: AgentMonitorId
+  label: string
+  roomId: string
+  status: AgentMonitorStatus
+  pid?: number
+  startedAt?: string
+  stoppedAt?: string
+  lastError?: string
+  aliases: string[]
 }
 
 export interface UnicomPublishResult {
@@ -75,6 +92,7 @@ export function toRoomSummary(state: UnicomRoomState): RoomSummary {
     title: 'Unknown Room',
     mode: state.mode,
     status: state.status,
+    lifecycle: state.lifecycle,
     createdAt: '',
     updatedAt: '',
     risk: 'medium',
@@ -88,6 +106,7 @@ export function toRoomSummary(state: UnicomRoomState): RoomSummary {
     title: room.title,
     status: state.status,
     mode: state.mode,
+    lifecycle: state.lifecycle,
     participantCount: Object.keys(state.participants).length,
     pendingApprovalCount: state.pendingApprovalEventIds.length,
     messageCount: state.messages.length,

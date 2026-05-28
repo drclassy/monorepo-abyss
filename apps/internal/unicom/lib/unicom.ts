@@ -18,7 +18,7 @@ export const chiefActor = {
 }
 
 export function getUnicomBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_UNICOM_BASE_URL?.trim() || 'http://127.0.0.1:4318'
+  return process.env.NEXT_PUBLIC_UNICOM_BASE_URL?.trim() || 'http://127.0.0.1:4327'
 }
 
 export function getUnicomClient() {

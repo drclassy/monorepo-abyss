@@ -17,11 +17,27 @@ export interface RoomSummary {
   title: string
   status: string
   mode: string
+  lifecycle: 'active' | 'archived' | 'deleted'
   participantCount: number
   pendingApprovalCount: number
   messageCount: number
   decisionCount: number
   lastEventAt?: string
+}
+
+export type AgentMonitorId = 'codex' | 'claude-code'
+export type AgentMonitorStatus = 'running' | 'stopped' | 'error'
+
+export interface AgentMonitorState {
+  id: AgentMonitorId
+  label: string
+  roomId: string
+  status: AgentMonitorStatus
+  pid?: number
+  startedAt?: string
+  stoppedAt?: string
+  lastError?: string
+  aliases: string[]
 }
 
 export interface CreateRoomRequest {

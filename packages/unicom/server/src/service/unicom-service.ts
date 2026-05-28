@@ -5,6 +5,7 @@ import {
   DecisionPayloadSchema,
   EvidencePayloadSchema,
   InterventionPayloadSchema,
+  RoomLifecyclePayloadSchema,
   UnicomEventSchema,
   type UnicomActor,
   type UnicomEvent,
@@ -110,7 +111,7 @@ export class UnicomService {
 
   async listRooms(): Promise<RoomSummary[]> {
     const states = await this.store.listRoomStates()
-    return states.map(toRoomSummary)
+    return states.filter((state) => state.lifecycle === 'active').map(toRoomSummary)
   }
 
   async getRoomState(roomId: string) {
@@ -132,6 +133,7 @@ export class UnicomService {
       objective: input.objective,
       mode: input.mode ?? 'approval-gated',
       status: 'active',
+      lifecycle: 'active',
       createdAt,
       updatedAt: createdAt,
       risk: input.risk ?? 'medium',
@@ -298,6 +300,38 @@ export class UnicomService {
     return { accepted: true, event: second, state }
   }
 
+  async archiveRoom(input: InterventionCommandInput): Promise<UnicomPublishResult> {
+    return this.publishEvent({
+      id: randomUUID(),
+      roomId: input.roomId,
+      type: 'room.archived',
+      actor: input.actor,
+      payload: RoomLifecyclePayloadSchema.parse({
+        note: input.note,
+      }),
+      risk: 'medium',
+      requiresApproval: false,
+      createdAt: now(),
+      evidenceIds: [],
+    })
+  }
+
+  async deleteRoom(input: InterventionCommandInput): Promise<UnicomPublishResult> {
+    return this.publishEvent({
+      id: randomUUID(),
+      roomId: input.roomId,
+      type: 'room.deleted',
+      actor: input.actor,
+      payload: RoomLifecyclePayloadSchema.parse({
+        note: input.note,
+      }),
+      risk: 'high',
+      requiresApproval: false,
+      createdAt: now(),
+      evidenceIds: [],
+    })
+  }
+
   async approveDecision(input: DecisionActionInput): Promise<UnicomPublishResult> {
     const targetEventId = await this.resolveDecisionTargetEventId(
       input.roomId,
@@ -382,9 +416,9 @@ export class UnicomService {
     })
 
     const state = await this.createRoom({
-      slug: 'unicom-build-room',
-      title: 'UNICOM Build Room',
-      objective: 'Lock UNICOM subsystem boundary and build the first core packages.',
+      slug: 'unicom-hub',
+      title: 'UNICOM HUB',
+      objective: 'Coordinate live agent communication, approval, and audit inside ABYSS.',
       mode: 'approval-gated',
       risk: 'medium',
       allowedPaths: ['docs/unicom/', 'packages/unicom/', 'apps/internal/unicom/'],
@@ -484,7 +518,7 @@ export class UnicomService {
     await this.sendMessage({
       roomId: state.room.id,
       actor: chief,
-      body: 'Keep UNICOM inside ABYSS boundaries and leave crown jewels alone.',
+      body: 'Chief established UNICOM HUB. Keep communication inside ABYSS boundaries and leave crown jewels alone.',
     })
     await this.publishEvent({
       id: randomUUID(),
@@ -545,8 +579,9 @@ export class UnicomService {
         decision: {
           id: randomUUID(),
           roomId: state.room.id,
-          title: 'Approve persistence package scaffolding',
-          summary: 'Need approval before crossing into durable event-store territory.',
+          title: 'Approve UNICOM persistence scaffolding',
+          summary:
+            'Need approval before crossing into durable event-store territory inside UNICOM HUB.',
           status: 'proposed',
           createdAt: now(),
           updatedAt: now(),

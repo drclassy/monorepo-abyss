@@ -4,6 +4,7 @@ import { createFixtureActor } from '@the-abyss/unicom-testkit'
 import { io as createSocket } from 'socket.io-client'
 import { afterEach, describe, expect, it } from 'vitest'
 
+import type { AgentMonitorController } from '../runtime/monitor-controller.js'
 import { createUnicomHttpServer } from '../server.js'
 
 const servers: HttpServer[] = []
@@ -17,6 +18,89 @@ async function startServer(port = 0) {
     throw new Error('Server address is unavailable.')
   }
   return { server, baseUrl: `http://127.0.0.1:${address.port}` }
+}
+
+async function startServerWithMonitors(monitorController: AgentMonitorController, port = 0) {
+  const server = createUnicomHttpServer({
+    port,
+    seedDemo: false,
+    monitorController,
+  })
+  servers.push(server)
+  await new Promise((resolve) => server.once('listening', resolve))
+  const address = server.address()
+  if (!address || typeof address === 'string') {
+    throw new Error('Server address is unavailable.')
+  }
+  return { server, baseUrl: `http://127.0.0.1:${address.port}` }
+}
+
+class FakeMonitorController implements AgentMonitorController {
+  private readonly states = new Map<
+    string,
+    {
+      id: 'codex' | 'claude-code'
+      label: string
+      roomId: string
+      status: 'running' | 'stopped' | 'error'
+      aliases: string[]
+    }
+  >()
+
+  listRoomMonitors(roomId: string) {
+    return [
+      this.snapshot(roomId, 'codex', 'Codex', ['@codex', 'codex']),
+      this.snapshot(roomId, 'claude-code', 'Claude Code', ['@claude', '@claude-code']),
+    ]
+  }
+
+  async startRoomMonitor(roomId: string, monitorId: 'codex' | 'claude-code') {
+    const label = monitorId === 'codex' ? 'Codex' : 'Claude Code'
+    const aliases = monitorId === 'codex' ? ['@codex', 'codex'] : ['@claude', '@claude-code']
+    const state = {
+      id: monitorId,
+      label,
+      roomId,
+      status: 'running' as const,
+      aliases,
+    }
+    this.states.set(`${roomId}:${monitorId}`, state)
+    return state
+  }
+
+  async stopRoomMonitor(roomId: string, monitorId: 'codex' | 'claude-code') {
+    const current = this.states.get(`${roomId}:${monitorId}`)
+    if (current) {
+      current.status = 'stopped'
+      return current
+    }
+    return this.snapshot(
+      roomId,
+      monitorId,
+      monitorId === 'codex' ? 'Codex' : 'Claude Code',
+      monitorId === 'codex' ? ['@codex', 'codex'] : ['@claude', '@claude-code']
+    )
+  }
+
+  buildWakeMessage(monitorId: 'codex' | 'claude-code', actorName: string) {
+    return monitorId === 'codex'
+      ? `${actorName}: @codex mohon monitor room ini.`
+      : `${actorName}: @claude tolong monitor room ini.`
+  }
+
+  async dispose(): Promise<void> {}
+
+  private snapshot(roomId: string, id: 'codex' | 'claude-code', label: string, aliases: string[]) {
+    return (
+      this.states.get(`${roomId}:${id}`) ?? {
+        id,
+        label,
+        roomId,
+        status: 'stopped' as const,
+        aliases,
+      }
+    )
+  }
 }
 
 afterEach(async () => {
@@ -364,5 +448,139 @@ describe('UNICOM server contract', () => {
     } finally {
       socket.close()
     }
+  })
+
+  it('lists, starts, wakes, and stops agent monitors through HTTP control endpoints', async () => {
+    const { baseUrl } = await startServerWithMonitors(new FakeMonitorController())
+    const chief = createFixtureActor({
+      type: 'human',
+      id: 'chief',
+      displayName: 'Chief',
+      role: 'chief',
+      capabilities: ['approve', 'intervene'],
+    })
+
+    const roomState = await fetch(`${baseUrl}/rooms`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slug: 'monitor-room',
+        title: 'Monitor Room',
+        actor: chief,
+        allowedPaths: ['packages/unicom/'],
+        forbiddenPaths: ['packages/sentra/'],
+      }),
+    }).then((response) => response.json() as Promise<{ room: { id: string } }>)
+
+    const roomId = roomState.room.id
+
+    const initialMonitors = await fetch(`${baseUrl}/rooms/${roomId}/monitors`).then(
+      (response) =>
+        response.json() as Promise<Array<{ id: string; status: string; aliases: string[] }>>
+    )
+    const startedMonitor = await fetch(`${baseUrl}/rooms/${roomId}/monitors/codex/start`, {
+      method: 'POST',
+    }).then(
+      (response) => response.json() as Promise<{ id: string; status: string; aliases: string[] }>
+    )
+    const wakeResult = await fetch(`${baseUrl}/rooms/${roomId}/monitors/codex/wake`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ actor: chief }),
+    }).then(
+      (response) =>
+        response.json() as Promise<{
+          accepted: boolean
+          event: { type: string; payload: { message: { body: string } } }
+        }>
+    )
+    const stoppedMonitor = await fetch(`${baseUrl}/rooms/${roomId}/monitors/codex/stop`, {
+      method: 'POST',
+    }).then(
+      (response) => response.json() as Promise<{ id: string; status: string; aliases: string[] }>
+    )
+
+    expect(initialMonitors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'codex', status: 'stopped' }),
+        expect.objectContaining({ id: 'claude-code', status: 'stopped' }),
+      ])
+    )
+    expect(startedMonitor).toEqual(expect.objectContaining({ id: 'codex', status: 'running' }))
+    expect(wakeResult.accepted).toBe(true)
+    expect(wakeResult.event.type).toBe('message.sent')
+    expect(wakeResult.event.payload.message.body).toContain('@codex')
+    expect(stoppedMonitor).toEqual(expect.objectContaining({ id: 'codex', status: 'stopped' }))
+  })
+
+  it('archives and soft-deletes test rooms while keeping their direct state auditable', async () => {
+    const { baseUrl } = await startServer()
+    const chief = createFixtureActor({
+      type: 'human',
+      id: 'chief',
+      displayName: 'Chief',
+      role: 'chief',
+      capabilities: ['approve', 'intervene'],
+    })
+
+    const archivedRoom = await fetch(`${baseUrl}/rooms`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slug: 'archive-me',
+        title: 'Archive Me',
+        actor: chief,
+      }),
+    }).then((response) => response.json() as Promise<{ room: { id: string } }>)
+
+    const deletedRoom = await fetch(`${baseUrl}/rooms`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slug: 'delete-me',
+        title: 'Delete Me',
+        actor: chief,
+      }),
+    }).then((response) => response.json() as Promise<{ room: { id: string } }>)
+
+    const archiveResult = await fetch(`${baseUrl}/rooms/${archivedRoom.room.id}/archive`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        actor: chief,
+        note: 'Archive temporary room.',
+      }),
+    }).then(
+      (response) => response.json() as Promise<{ accepted: boolean; state: { lifecycle: string } }>
+    )
+
+    const deleteResult = await fetch(`${baseUrl}/rooms/${deletedRoom.room.id}/delete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        actor: chief,
+        note: 'Delete temporary room from active dashboard.',
+      }),
+    }).then(
+      (response) => response.json() as Promise<{ accepted: boolean; state: { lifecycle: string } }>
+    )
+
+    const activeRooms = await fetch(`${baseUrl}/rooms`).then(
+      (response) => response.json() as Promise<Array<{ id: string }>>
+    )
+    const archivedState = await fetch(`${baseUrl}/rooms/${archivedRoom.room.id}`).then(
+      (response) => response.json() as Promise<{ room: { lifecycle: string; archivedAt?: string } }>
+    )
+    const deletedState = await fetch(`${baseUrl}/rooms/${deletedRoom.room.id}`).then(
+      (response) => response.json() as Promise<{ room: { lifecycle: string; deletedAt?: string } }>
+    )
+
+    expect(archiveResult.accepted).toBe(true)
+    expect(deleteResult.accepted).toBe(true)
+    expect(activeRooms).toHaveLength(0)
+    expect(archivedState.room.lifecycle).toBe('archived')
+    expect(archivedState.room.archivedAt).toBeTruthy()
+    expect(deletedState.room.lifecycle).toBe('deleted')
+    expect(deletedState.room.deletedAt).toBeTruthy()
   })
 })

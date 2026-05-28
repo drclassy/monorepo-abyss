@@ -4,7 +4,10 @@ import http from 'node:http'
 import { UnicomEventSchema, type UnicomActor } from '@the-abyss/unicom-core'
 
 import { SocketIoTransportAdapter } from './realtime/socket-io-transport.js'
+import type { AgentMonitorController } from './runtime/monitor-controller.js'
+import { LocalAgentMonitorController } from './runtime/monitor-controller.js'
 import { UnicomService } from './service/unicom-service.js'
+import type { AgentMonitorId } from './types.js'
 import { decisionListFromState, evidenceListFromState, interventionListFromState } from './types.js'
 
 async function readBody(req: http.IncomingMessage): Promise<string> {
@@ -51,6 +54,8 @@ export function createUnicomHttpServer(options: {
   port: number
   socketPath?: string
   seedDemo?: boolean
+  repoRoot?: string
+  monitorController?: AgentMonitorController
 }): http.Server {
   const transport = new SocketIoTransportAdapter({ path: options.socketPath })
   const service = new UnicomService({ transport, seedDemo: options.seedDemo })
@@ -67,8 +72,13 @@ export function createUnicomHttpServer(options: {
     const url = new URL(req.url ?? '/', 'http://127.0.0.1')
     const pathname = url.pathname
     const roomIdMatch = pathname.match(/^\/rooms\/([^/]+)$/)
+    const roomLifecycleMatch = pathname.match(/^\/rooms\/([^/]+)\/(archive|delete)$/)
     const roomEventsMatch = pathname.match(/^\/rooms\/([^/]+)\/events$/)
     const roomMessagesMatch = pathname.match(/^\/rooms\/([^/]+)\/messages$/)
+    const roomMonitorsMatch = pathname.match(/^\/rooms\/([^/]+)\/monitors$/)
+    const roomMonitorActionMatch = pathname.match(
+      /^\/rooms\/([^/]+)\/monitors\/([^/]+)\/(start|stop|wake)$/
+    )
     const roomPauseMatch = pathname.match(
       /^\/rooms\/([^/]+)\/interventions\/(pause|resume|freeze)$/
     )
@@ -159,6 +169,82 @@ export function createUnicomHttpServer(options: {
         return
       }
 
+      if (roomLifecycleMatch && req.method === 'POST') {
+        const roomId = roomLifecycleMatch[1] ?? ''
+        const state = await service.getRoomState(roomId)
+        if (!state) {
+          notFound(res)
+          return
+        }
+
+        const body = JSON.parse(await readBody(req)) as Record<string, unknown>
+        const actor = normalizeActor((body.actor as Record<string, unknown>) ?? {})
+        const note = typeof body.note === 'string' ? body.note : undefined
+        const result =
+          roomLifecycleMatch[2] === 'archive'
+            ? await service.archiveRoom({ roomId, actor, note })
+            : await service.deleteRoom({ roomId, actor, note })
+        json(res, 200, result)
+        return
+      }
+
+      if (roomMonitorsMatch && req.method === 'GET') {
+        const roomId = roomMonitorsMatch[1] ?? ''
+        const state = await service.getRoomState(roomId)
+        if (!state) {
+          notFound(res)
+          return
+        }
+        json(res, 200, monitorController.listRoomMonitors(roomId))
+        return
+      }
+
+      if (roomMonitorActionMatch && req.method === 'POST') {
+        const roomId = roomMonitorActionMatch[1] ?? ''
+        const monitorId = roomMonitorActionMatch[2] ?? ''
+        const action = roomMonitorActionMatch[3] ?? ''
+        const roomState = await service.getRoomState(roomId)
+        if (!roomState) {
+          notFound(res)
+          return
+        }
+
+        if (action === 'start') {
+          json(
+            res,
+            200,
+            await monitorController.startRoomMonitor(roomId, monitorId as AgentMonitorId)
+          )
+          return
+        }
+
+        if (action === 'stop') {
+          json(
+            res,
+            200,
+            await monitorController.stopRoomMonitor(roomId, monitorId as AgentMonitorId)
+          )
+          return
+        }
+
+        const body = JSON.parse(await readBody(req)) as Record<string, unknown>
+        const actor = normalizeActor((body.actor as Record<string, unknown>) ?? {})
+        const messageBody =
+          typeof body.note === 'string' && body.note.trim()
+            ? body.note.trim()
+            : monitorController.buildWakeMessage(monitorId as AgentMonitorId, actor.displayName)
+        json(
+          res,
+          200,
+          await service.sendMessage({
+            roomId,
+            actor,
+            body: messageBody,
+          })
+        )
+        return
+      }
+
       if (roomEventsMatch && req.method === 'GET') {
         json(res, 200, await service.getRoomEvents(roomEventsMatch[1] ?? ''))
         return
@@ -234,9 +320,23 @@ export function createUnicomHttpServer(options: {
     notFound(res)
   })
 
+  const monitorController =
+    options.monitorController ??
+    new LocalAgentMonitorController({
+      repoRoot: options.repoRoot,
+      getBaseUrl: () => {
+        const address = server.address()
+        if (!address || typeof address === 'string') {
+          return `http://127.0.0.1:${options.port}`
+        }
+        return `http://127.0.0.1:${address.port}`
+      },
+    })
+
   transport.attach(server)
   server.listen(options.port)
   server.on('close', () => {
+    void monitorController.dispose()
     void transport.dispose()
   })
   return server

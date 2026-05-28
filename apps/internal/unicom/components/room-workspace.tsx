@@ -1,8 +1,10 @@
 'use client'
 
+import type { AgentMonitorId, AgentMonitorState } from '@the-abyss/unicom-client'
 import type { UnicomDecision, UnicomEvent, UnicomRoomState } from '@the-abyss/unicom-core'
-import { ArrowLeft, RefreshCcw } from 'lucide-react'
+import { Archive, ArrowLeft, RefreshCcw, Trash2 } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 
 import {
@@ -14,6 +16,7 @@ import {
   humanTime,
 } from '../lib/unicom'
 
+import { AgentMonitorPanel } from './agent-monitor-panel'
 import { AgentRoster } from './agent-roster'
 import { AuditTimeline } from './audit-timeline'
 import { DecisionLog } from './decision-log'
@@ -31,9 +34,11 @@ type RoomResponse = UnicomRoomState & {
 
 export function RoomWorkspace({ roomId }: { roomId: string }) {
   const client = useMemo(() => getUnicomClient(), [])
+  const router = useRouter()
   const [state, setState] = useState<RoomResponse | null>(null)
   const [events, setEvents] = useState<UnicomEvent[]>([])
   const [draft, setDraft] = useState('')
+  const [monitors, setMonitors] = useState<AgentMonitorState[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -99,6 +104,44 @@ export function RoomWorkspace({ roomId }: { roomId: string }) {
     }
   }, [client, roomId])
 
+  useEffect(() => {
+    let active = true
+
+    async function loadMonitors() {
+      try {
+        const next = await client.monitors.list(roomId)
+        if (active) {
+          setMonitors(next)
+        }
+      } catch (monitorError) {
+        if (active) {
+          setError(
+            monitorError instanceof Error ? monitorError.message : 'Failed to load monitor state'
+          )
+        }
+      }
+    }
+
+    void loadMonitors()
+    const timer = setInterval(() => {
+      void loadMonitors()
+    }, 3000)
+
+    return () => {
+      active = false
+      clearInterval(timer)
+    }
+  }, [client, roomId])
+
+  function upsertMonitor(nextMonitor: AgentMonitorState) {
+    setMonitors((current) => {
+      const remaining = current.filter((monitor) => monitor.id !== nextMonitor.id)
+      return [...remaining, nextMonitor].sort((left, right) =>
+        left.label.localeCompare(right.label)
+      )
+    })
+  }
+
   async function refresh() {
     setLoading(true)
     try {
@@ -155,6 +198,59 @@ export function RoomWorkspace({ roomId }: { roomId: string }) {
     }
   }
 
+  async function archiveRoom() {
+    try {
+      await client.rooms.archive(roomId, chiefActor, 'Chief archived this room after review.')
+      router.push('/rooms')
+      router.refresh()
+    } catch (archiveError) {
+      setError(archiveError instanceof Error ? archiveError.message : 'Failed to archive room')
+    }
+  }
+
+  async function deleteRoom() {
+    try {
+      await client.rooms.delete(
+        roomId,
+        chiefActor,
+        'Chief deleted this test room from the active dashboard.'
+      )
+      router.push('/rooms')
+      router.refresh()
+    } catch (deleteError) {
+      setError(deleteError instanceof Error ? deleteError.message : 'Failed to delete room')
+    }
+  }
+
+  async function startMonitor(monitorId: AgentMonitorId) {
+    try {
+      const nextMonitor = await client.monitors.start(roomId, monitorId)
+      upsertMonitor(nextMonitor)
+      setError(null)
+    } catch (startError) {
+      setError(startError instanceof Error ? startError.message : 'Failed to start monitor')
+    }
+  }
+
+  async function stopMonitor(monitorId: AgentMonitorId) {
+    try {
+      const nextMonitor = await client.monitors.stop(roomId, monitorId)
+      upsertMonitor(nextMonitor)
+      setError(null)
+    } catch (stopError) {
+      setError(stopError instanceof Error ? stopError.message : 'Failed to stop monitor')
+    }
+  }
+
+  async function wakeMonitor(monitorId: AgentMonitorId) {
+    try {
+      await client.monitors.wake(roomId, monitorId, chiefActor)
+      setError(null)
+    } catch (wakeError) {
+      setError(wakeError instanceof Error ? wakeError.message : 'Failed to wake monitor')
+    }
+  }
+
   async function approveDecisionEntry(decision: UnicomDecision) {
     try {
       await client.decisions.approve(
@@ -207,6 +303,8 @@ export function RoomWorkspace({ roomId }: { roomId: string }) {
 
   const decisions = decisionList(state)
   const evidence = evidenceList(state)
+  const isHubRoom = state.room?.slug === 'unicom-hub'
+  const canCleanupRoom = !isHubRoom && state.room?.lifecycle === 'active'
 
   return (
     <main className="min-h-screen bg-[var(--bg)]">
@@ -237,6 +335,12 @@ export function RoomWorkspace({ roomId }: { roomId: string }) {
                 }
               />
               <StatusChip label={state.mode} />
+              {state.room?.lifecycle && state.room.lifecycle !== 'active' ? (
+                <StatusChip
+                  label={state.room.lifecycle}
+                  tone={state.room.lifecycle === 'deleted' ? 'danger' : 'warn'}
+                />
+              ) : null}
             </div>
             <div className="mt-3 text-sm text-[var(--muted)]">
               {state.room?.slug} · last event {humanTime(state.lastEventAt)}
@@ -252,6 +356,26 @@ export function RoomWorkspace({ roomId }: { roomId: string }) {
               <RefreshCcw className="h-4 w-4" />
               Refresh
             </button>
+            {canCleanupRoom ? (
+              <button
+                type="button"
+                onClick={() => void archiveRoom()}
+                className="inline-flex h-11 items-center gap-2 rounded-md border border-[var(--line)] bg-[var(--panel)] px-4 text-sm text-[var(--text)] transition hover:border-[var(--accent)]"
+              >
+                <Archive className="h-4 w-4" />
+                Archive
+              </button>
+            ) : null}
+            {canCleanupRoom ? (
+              <button
+                type="button"
+                onClick={() => void deleteRoom()}
+                className="inline-flex h-11 items-center gap-2 rounded-md border border-[rgba(212,109,92,0.32)] bg-[rgba(212,109,92,0.08)] px-4 text-sm text-[var(--danger)] transition hover:border-[var(--danger)]"
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete Test Room
+              </button>
+            ) : null}
             <StatusChip label={`${events.length} events`} />
             <StatusChip
               label={`${state.pendingApprovalEventIds.length} pending`}
@@ -275,6 +399,13 @@ export function RoomWorkspace({ roomId }: { roomId: string }) {
           />
           <AgentRoster state={state} />
         </section>
+
+        <AgentMonitorPanel
+          monitors={monitors}
+          onStart={startMonitor}
+          onStop={stopMonitor}
+          onWake={wakeMonitor}
+        />
 
         <section className="grid gap-4 xl:grid-cols-[1fr,1fr]">
           <TaskBoard state={state} />

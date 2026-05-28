@@ -19,6 +19,7 @@ terlebih dahulu sebelum masuk ke plan per-workstream.
 - `010-2026-04-30-sentra-rag-database-hardening.md`
 - `011-2026-05-15-guard1-smart-autoinject.md`
 - `012-2026-05-19-context-capsule-implementation.md`
+- `013-2026-05-27-smart-push-reliability-gate-implementation.md`
 
 ## Rule
 

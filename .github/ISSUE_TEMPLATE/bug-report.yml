@@ -1,0 +1,75 @@
+name: Bug report
+description: Report a reproducible defect in ABYSS.
+title: 'bug: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please keep this report factual and sanitized.
+
+        Do not include secrets, credentials, PHI, patient data, or other
+        sensitive security details in a public issue. If the report is a
+        security or privacy issue, use the private reporting path in
+        `SECURITY.md` instead.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: One sentence that states the problem.
+      placeholder: Docs-only push is being classified as a code change
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: Affected path or surface
+      description: Name the app, package, workflow, doc, or file path involved.
+      placeholder: tooling/governance/agent or docs/guides/007-smart-push-and-merge.md
+    validations:
+      required: true
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current behavior
+      description: What happened instead of the expected result?
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What should have happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      description: List the smallest set of steps needed to reproduce the issue.
+      placeholder: |
+        1. Create a docs-only change
+        2. Commit it
+        3. Push the branch
+        4. Observe the gate output
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification evidence
+      description: Include commands run, results observed, and any sanitized output.
+      placeholder: |
+        Command: pnpm format:check
+        Result: pass
+
+        Command: git diff --name-status
+        Result: docs-only scope confirmed
+    validations:
+      required: true
+  - type: checkboxes
+    id: sensitive-data-check
+    attributes:
+      label: Sensitive data check
+      options:
+        - label: I confirm this issue does not include secrets, credentials, PHI, or patient data.
+          required: true

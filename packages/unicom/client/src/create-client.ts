@@ -2,6 +2,8 @@ import type { UnicomActor, UnicomEvent, UnicomRoomState } from '@the-abyss/unico
 import { io, type Socket } from 'socket.io-client'
 
 import type {
+  AgentMonitorId,
+  AgentMonitorState,
   CreateRoomRequest,
   CreateUnicomClientOptions,
   MessageRequest,
@@ -62,6 +64,25 @@ export function createUnicomClient(options: CreateUnicomClientOptions = {}) {
           body: JSON.stringify(agent),
         }),
     },
+    monitors: {
+      list: (roomId: string) => request<AgentMonitorState[]>(`/rooms/${roomId}/monitors`),
+      start: (roomId: string, monitorId: AgentMonitorId) =>
+        request<AgentMonitorState>(`/rooms/${roomId}/monitors/${monitorId}/start`, {
+          method: 'POST',
+        }),
+      stop: (roomId: string, monitorId: AgentMonitorId) =>
+        request<AgentMonitorState>(`/rooms/${roomId}/monitors/${monitorId}/stop`, {
+          method: 'POST',
+        }),
+      wake: (roomId: string, monitorId: AgentMonitorId, actor: UnicomActor, note?: string) =>
+        request<{ accepted: boolean; event: UnicomEvent; state: UnicomRoomState }>(
+          `/rooms/${roomId}/monitors/${monitorId}/wake`,
+          {
+            method: 'POST',
+            body: JSON.stringify({ actor, note }),
+          }
+        ),
+    },
     rooms: {
       list: () => request<RoomSummary[]>('/rooms'),
       create: (input: CreateRoomRequest) =>
@@ -69,6 +90,22 @@ export function createUnicomClient(options: CreateUnicomClientOptions = {}) {
           method: 'POST',
           body: JSON.stringify(input),
         }),
+      archive: (roomId: string, actor: UnicomActor, note?: string) =>
+        request<{ accepted: boolean; event: UnicomEvent; state: UnicomRoomState }>(
+          `/rooms/${roomId}/archive`,
+          {
+            method: 'POST',
+            body: JSON.stringify({ actor, note }),
+          }
+        ),
+      delete: (roomId: string, actor: UnicomActor, note?: string) =>
+        request<{ accepted: boolean; event: UnicomEvent; state: UnicomRoomState }>(
+          `/rooms/${roomId}/delete`,
+          {
+            method: 'POST',
+            body: JSON.stringify({ actor, note }),
+          }
+        ),
       get: (roomId: string) =>
         request<
           UnicomRoomState & {

@@ -67,6 +67,12 @@ Setiap room berisi:
 - audit timeline;
 - final outcome.
 
+Lifecycle room yang didukung:
+
+- `active`
+- `archived`
+- `deleted`
+
 Mode operasi yang didukung:
 
 - `observe`

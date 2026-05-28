@@ -52,6 +52,19 @@ session or report records from `.agent/`.
 
 ---
 
+## Contributing and change flow
+
+- Contributor workflow: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- Security reporting: [`SECURITY.md`](SECURITY.md)
+- Smart push and merge guide:
+  [`docs/guides/007-smart-push-and-merge.md`](docs/guides/007-smart-push-and-merge.md)
+
+Branch authority normalization is still pending. The repo currently shows mixed
+branch signals across local state, workflows, and remote metadata, so final
+protected-branch rollout and required-check mapping are not complete yet.
+
+---
+
 ## Current status
 
 Current verified baseline from the latest audit:

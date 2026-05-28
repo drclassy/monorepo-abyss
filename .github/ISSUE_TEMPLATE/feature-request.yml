@@ -1,0 +1,60 @@
+name: Feature request
+description: Propose a scoped improvement for ABYSS.
+title: 'feat: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please describe the problem, the desired outcome, and the affected
+        scope as clearly as possible.
+
+        Do not include secrets, credentials, PHI, patient data, or private
+        security details in a public issue.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: One sentence that states the requested improvement.
+      placeholder: Add a docs-only verification shortcut for push guidance
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: What operator or contributor problem exists today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the smallest useful improvement.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Affected scope
+      description: List the likely apps, packages, docs, workflows, or paths involved.
+      placeholder: README.md, CONTRIBUTING.md, .github/PULL_REQUEST_TEMPLATE.md
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance or verification
+      description: How should we know this request is complete?
+      placeholder: |
+        - Docs clearly explain commit, push, and merge behavior
+        - Contributors know when to use private security reporting
+        - Branch-authority pending status remains explicit
+    validations:
+      required: true
+  - type: checkboxes
+    id: risk-check
+    attributes:
+      label: Review-first surfaces
+      options:
+        - label: This request may touch governance, GitHub templates, or other review-first surfaces.
+        - label: This request may touch crown-jewel paths under packages/sentra/**.

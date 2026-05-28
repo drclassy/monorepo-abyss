@@ -1,209 +1,124 @@
 # Contributing to The Abyss
 
-Thank you for your interest in contributing to The Abyss monorepo!
+Use this guide for day-to-day contribution flow in ABYSS. Keep changes small,
+use `pnpm`, and prefer the smallest relevant verification before you push.
 
-## 📋 TABLE OF CONTENTS
+## Before you start
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Development Workflow](#development-workflow)
-- [Commit Guidelines](#commit-guidelines)
-- [Pull Request Process](#pull-request-process)
+- Use `pnpm`, not `npm` or `yarn`, unless a package explicitly proves otherwise.
+- Read [`AGENTS.md`](AGENTS.md), [`.agent/README.md`](.agent/README.md), and
+  [`.agent/HANDOFF.md`](.agent/HANDOFF.md) before repo-wide work.
+- Keep scope tight. Do not mix feature work with unrelated cleanup.
+- Do not commit secrets, credentials, PHI, patient data, or local-only machine
+  state.
+- Treat `packages/sentra/**` as crown-jewel review-first territory. Do not edit
+  it without explicit approval.
 
----
+## Branch flow
 
-## 🎯 CODE OF CONDUCT
+Work on a non-protected working branch, push that branch, and open a pull
+request for shared review.
 
-- Be respectful and inclusive
-- Follow Classy Workflow (HANDOFF.md, GO-Gate)
-- Maintain traceability in all work
-- Prioritize security and compliance
+Branch authority normalization is still pending. During planning, ABYSS showed
+mixed branch signals across local state, workflow triggers, and remote metadata.
+Until that is normalized, do not assume `master`, `main`, `develop`, or
+`abyss-core` is the final protected-branch truth.
 
----
+Practical default:
 
-## 🚀 GETTING STARTED
+- Use task-focused branches such as `feat/*`, `fix/*`, `docs/*`, or `chore/*`.
+- Avoid direct pushes to any branch that may become protected.
+- Treat GitHub pull requests as the required path for shared work.
 
-### 1. Fork and Clone
+## What happens at commit
 
-```bash
-git clone https://github.com/drclassy/abyss-monorepo.git
-cd abyss-monorepo
-```
+Commit-time checks should stay fast and focused on staged files only. The commit
+gate is expected to handle staged-file hygiene such as:
 
-### 2. Install Dependencies
+- secret scanning
+- PHI scanning
+- formatting
+- lint-staged fixes
 
-```bash
-pnpm install
-```
+If the commit hook blocks, fix the staged scope first instead of forcing the
+commit through.
 
-### 3. Setup Environment
+Before you commit:
 
-```bash
-cp .env.example .env.local
-# Edit .env.local with your configuration
-```
+- review `git diff --staged`
+- confirm the staged files match the intended task scope
+- run the smallest relevant local verification when the change obviously needs
+  it
 
-### 4. Start Development
+## What happens at push
 
-```bash
-pnpm dev
-```
+ABYSS is standardizing on a three-layer reliability model:
 
----
+1. `pre-commit` for staged-file hygiene
+2. `pre-push` for path-aware local verification
+3. GitHub PR and merge checks for protected-branch enforcement
 
-## 📝 DEVELOPMENT WORKFLOW
+The push gate should classify the change before deciding what to run:
 
-### For AI Agents
+- docs-only changes should stay light
+- governance changes should receive extra scrutiny
+- ordinary code changes should run targeted verification
+- crown-jewel changes should stay visible and review-first
 
-1. **Read** [AGENTS.md](AGENTS.md), then [`.agent/README.md`](.agent/README.md)
-   and [`.agent/HANDOFF.md`](.agent/HANDOFF.md)
-2. **Create HANDOFF.md**
-   ```bash
-   pnpm abyss init-task "Your task title"
-   ```
-3. **Wait for GO approval**
-   ```bash
-   pnpm abyss go .agent/sessions/SESSION-... --by "Chief"
-   ```
-4. **Implement changes** following domain guidelines
-5. **Run verification**
-   ```bash
-   pnpm lint
-   pnpm test
-   pnpm typecheck
-   ```
-6. **Commit with trailers**
+If push is blocked, read the gate output and fix the specific reason. Do not
+solve a narrow blocker by widening the change.
 
-   ```bash
-   git commit -m "feat: your change
+## AI artifacts and sensitive surfaces
 
-   Description of what changed
+Use plain judgment here:
 
-   Agent: your-agent
-   Phase: 1
-   Handoff: .agent/sessions/SESSION-.../HANDOFF.md"
-   ```
+- Keep canonical source code, tracked docs, templates, and governance
+  instructions in Git.
+- Keep disposable AI transcripts, local reports, caches, temporary outputs, and
+  machine-specific state out of commits unless the repo explicitly classifies
+  them as canonical.
+- If an AI-assisted change touches healthcare-sensitive or crown-jewel logic,
+  treat it as higher review risk, not lower.
+- Regenerate or redact AI-generated artifacts before sharing them if they might
+  contain sensitive content.
 
-### For Humans
+## Pull requests and merge
 
-1. Create feature branch
-   ```bash
-   git checkout -b feature/my-feature
-   ```
-2. Make changes
-3. Follow HANDOFF.md workflow (recommended)
-4. Commit and push
-5. Create Pull Request
+Use the pull request template and keep the description factual. Every pull
+request should state:
 
----
+- the objective
+- the exact scope
+- the local verification actually run
+- manual verification when relevant
+- screenshots or recordings when UI changed
 
-## ✍️ COMMIT GUIDELINES
+Review expectations:
 
-### Commit Message Format
+- required checks must pass
+- CODEOWNERS review applies where configured
+- crown-jewel paths need explicit approval
+- sensitive data must stay out of the PR body, logs, and screenshots
 
-We follow [Conventional Commits](https://www.conventionalcommits.org/):
+GitHub is the final merge gate for protected branches. Branch authority
+normalization is still pending, so final protected-branch rollout and required
+check mapping are not complete yet.
 
-```
-<type>(<scope>): <description>
+## Useful commands
 
-[optional body]
-
-[optional footer]
-Agent: <name>
-Phase: <number>
-Handoff: <path>
-```
-
-### Types
-
-- `feat:` New feature
-- `fix:` Bug fix
-- `docs:` Documentation changes
-- `style:` Code style changes (formatting, etc.)
-- `refactor:` Code refactoring
-- `test:` Test additions or changes
-- `chore:` Maintenance tasks
-- `ci:` CI/CD changes
-- `perf:` Performance improvements
-
-### Examples
+Run the smallest command that proves the change:
 
 ```bash
-feat(healthcare): implement FHIR patient validation
-
-- Add FhirValidator class
-- Integrate with referralink-api
-- Add unit tests
-
-Agent: coder-agent
-Phase: 3
-Handoff: .agent/sessions/SESSION-2026-03-30-fhir/HANDOFF.md
+pnpm format:check
+pnpm typecheck -- --pretty false
+pnpm build
+pnpm test
+git diff --stat
+git diff --name-status
 ```
 
-```bash
-fix(database): resolve Prisma client generation issue
+## Related docs
 
-Fixed missing Prisma client export in package.json
-
-Agent: fix-agent
-Phase: 2
-```
-
----
-
-## 🔀 PULL REQUEST PROCESS
-
-### 1. Create PR
-
-- Use descriptive title
-- Link related issues
-- Fill out PR template
-- Before opening the PR, run `pnpm lint`, `pnpm typecheck`, and `pnpm build`,
-  and make sure the pre-commit hook passes on staged changes.
-- Attach `git diff --stat` in the PR body so reviewers can confirm the scope
-  quickly.
-
-### 2. Status Checks
-
-All PRs must pass:
-
-- ✅ CI build
-- ✅ Tests
-- ✅ Lint
-- ✅ Security scan
-- ✅ GO-Gate validation
-
-### 3. Code Review
-
-- At least 1 approval required
-- CODEOWNERS review for sensitive areas
-- Do not edit `packages/sentra/**` without explicit approval. That tree is
-  crown-jewel review-first territory in the repo contract.
-- Address all review comments
-
-### 4. Merge
-
-- Squash and merge for feature branches
-- Rebase and merge for bug fixes
-- Delete branch after merge
-
----
-
-## 📚 ADDITIONAL RESOURCES
-
-- [README.md](README.md) — Project overview
-- [AGENTS.md](AGENTS.md) — Repo rules and architecture authority
-- [`.agent/README.md`](.agent/README.md) — Active SSOT entrypoint
-- [docs/templates/001-handoff.md](docs/templates/001-handoff.md) — HANDOFF
-  template
-- [CHANGELOG.md](CHANGELOG.md) — Version history
-
----
-
-## 🙏 THANK YOU!
-
-Your contributions make The Abyss better for everyone.
-
----
-
-© 2026 Sentra Artificial Intelligence
+- [README.md](README.md)
+- [SECURITY.md](SECURITY.md)
+- [docs/guides/007-smart-push-and-merge.md](docs/guides/007-smart-push-and-merge.md)

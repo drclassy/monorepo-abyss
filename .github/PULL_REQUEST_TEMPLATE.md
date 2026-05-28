@@ -1,28 +1,31 @@
-# 📝 PULL REQUEST
+# Pull request
 
-## 🎯 Objective
+## Objective
 
-<!-- Jelaskan tujuan PR secara ringkas -->
+<!-- State the problem this PR solves and the intended outcome. -->
 
-## 📦 Changes
+## Scope
 
-- [ ] Change 1
-- [ ] Change 2
+<!-- List the paths, packages, apps, or docs changed. Note anything intentionally out of scope. -->
 
-## 🧪 Testing
+## Verification
 
-- [ ] Unit tests passing
-- [ ] Manual testing completed
-- [ ] No breaking changes
+### Automated
 
-## 📸 Screenshots (if UI changes)
+<!-- List the exact commands you ran and the result for each one. -->
 
-<!-- Attach screenshots -->
+### Manual
 
-## 🔗 Related Issues
+<!-- Describe any manual checks. If not applicable, write N/A. -->
 
-Closes #
+## Screenshots or recordings
 
----
+<!-- Required for UI changes. Otherwise write N/A. -->
 
-_Created with Classy-PR workflow_
+## Risk notes
+
+<!-- Note crown-jewel paths, governance impacts, or sensitive follow-up if relevant. -->
+
+## Related context
+
+<!-- Link the issue, spec, task, or handoff that drove this change. -->

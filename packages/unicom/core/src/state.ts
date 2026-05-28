@@ -4,6 +4,7 @@ import type {
   UnicomDecision,
   UnicomEvidence,
   UnicomIntervention,
+  UnicomRoomLifecycle,
   UnicomMessage,
   UnicomRoom,
   UnicomRoomMode,
@@ -15,6 +16,7 @@ export interface UnicomRoomState {
   room: UnicomRoom | null
   status: UnicomRoomStatus
   mode: UnicomRoomMode
+  lifecycle: UnicomRoomLifecycle
   participants: Record<string, UnicomActor>
   messages: UnicomMessage[]
   tasks: Record<string, UnicomTask>
@@ -32,6 +34,7 @@ export function createEmptyRoomState(): UnicomRoomState {
     room: null,
     status: 'idle',
     mode: 'collaborative',
+    lifecycle: 'active',
     participants: {},
     messages: [],
     tasks: {},

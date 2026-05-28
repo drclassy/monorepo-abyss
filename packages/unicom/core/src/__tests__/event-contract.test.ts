@@ -36,10 +36,11 @@ describe('UNICOM event contract', () => {
       type: 'room.created',
       payload: {
         id: 'room-1',
-        slug: 'unicom-build-room',
-        title: 'UNICOM Build Room',
+        slug: 'unicom-hub',
+        title: 'UNICOM HUB',
         mode: 'approval-gated',
         status: 'active',
+        lifecycle: 'active',
         createdAt: '2026-05-27T00:00:00.000Z',
         updatedAt: '2026-05-27T00:00:00.000Z',
         risk: 'medium',
@@ -124,10 +125,11 @@ describe('UNICOM event contract', () => {
         type: 'room.created',
         payload: {
           id: 'room-1',
-          slug: 'unicom-build-room',
-          title: 'UNICOM Build Room',
+          slug: 'unicom-hub',
+          title: 'UNICOM HUB',
           mode: 'approval-gated',
           status: 'active',
+          lifecycle: 'active',
           createdAt: '2026-05-27T00:00:00.000Z',
           updatedAt: '2026-05-27T00:00:00.000Z',
           risk: 'medium',
@@ -176,10 +178,45 @@ describe('UNICOM event contract', () => {
 
     const state = reduceRoomState(events)
 
-    expect(state.room?.slug).toBe('unicom-build-room')
+    expect(state.room?.slug).toBe('unicom-hub')
     expect(state.participants[actor.id]?.displayName).toBe(actor.displayName)
     expect(state.messages).toHaveLength(1)
     expect(state.decisions['decision-1']?.status).toBe('proposed')
     expect(state.pendingApprovalEventIds).toHaveLength(1)
+  })
+
+  it('reconstructs archived room lifecycle from append-only events', () => {
+    const events: UnicomEvent[] = [
+      createEvent({
+        type: 'room.created',
+        payload: {
+          id: 'room-1',
+          slug: 'temporary-room',
+          title: 'Temporary Room',
+          mode: 'approval-gated',
+          status: 'active',
+          lifecycle: 'active',
+          createdAt: '2026-05-27T00:00:00.000Z',
+          updatedAt: '2026-05-27T00:00:00.000Z',
+          risk: 'medium',
+          allowedPaths: ['packages/unicom'],
+          forbiddenPaths: ['packages/sentra'],
+        },
+        risk: 'medium',
+      }),
+      createEvent({
+        type: 'room.archived',
+        payload: {
+          note: 'Archive temporary room after review.',
+        },
+        createdAt: '2026-05-27T00:05:00.000Z',
+      }),
+    ]
+
+    const state = reduceRoomState(events)
+
+    expect(state.lifecycle).toBe('archived')
+    expect(state.room?.lifecycle).toBe('archived')
+    expect(state.room?.archivedAt).toBe('2026-05-27T00:05:00.000Z')
   })
 })
