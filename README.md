@@ -18,7 +18,7 @@ battle-tested monorepo architecture ready for production-oriented teams._
 <table>
 <tr>
 <td valign="middle" width="180">
-  <img src=".github/abyss.png" alt="The Abyss" width="160" />
+  <img src="https://i.postimg.cc/LsLBPbDz/s-abyss.png" alt="The Abyss" width="160" />
 </td>
 <td valign="top">
 
