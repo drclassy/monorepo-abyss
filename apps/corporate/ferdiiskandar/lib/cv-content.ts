@@ -1,7 +1,7 @@
 export const cvHero = {
   sectionLabel: 'Curriculum Vitae / Bagian 07',
   name: 'dr. Ferdi Iskandar',
-  credentials: 'dr., SH, MKN, CLM, CMDC, C.AIS, CDS, MLE, Gen AI',
+  credentials: 'dr., SH, MKN, APEPC™, CAIPC®, Google Dev, Minimax AI',
   profileEyebrow: 'Profil Profesional',
   profileIntersectionLines: ['Di pertemuan antara', 'hukum, kode, dan kognisi.'] as const,
   profileBody:
@@ -155,31 +155,25 @@ export const cvCredentials = [
   { code: 'dr.', label: 'Dokter', source: 'Universitas Wijaya Kusuma' },
   { code: 'SH', label: 'Sarjana Hukum', source: 'Universitas Ubaya' },
   { code: 'MKN', label: 'Magister Kenotariatan', source: 'Universitas Ubaya' },
-  { code: 'CLM', label: 'Certified Leadership Mastery', source: 'Sertifikasi profesional' },
   {
-    code: 'CMDC',
-    label: 'Certified Medical Doctor Consultant',
+    code: 'APEPC™',
+    label: 'AI Prompt Engineering Professional Certificate',
     source: 'Sertifikasi profesional',
   },
   {
-    code: 'C.AIS',
-    label: 'Certified Artificial Intelligence Specialist',
+    code: 'CAIPC®',
+    label: 'Certified Artificial Intelligence Prompt Creator',
     source: 'Sertifikasi profesional',
   },
   {
-    code: 'CDS',
-    label: 'Certified Data Scientist',
-    source: 'Sertifikasi profesional',
+    code: 'Google Dev',
+    label: 'Google Developer Certification',
+    source: 'Google',
   },
   {
-    code: 'MLE',
-    label: 'Machine Learning Engineer',
-    source: 'Sertifikasi profesional',
-  },
-  {
-    code: 'Gen AI',
-    label: 'Generative AI',
-    source: 'Praktik profesional',
+    code: 'Minimax AI',
+    label: 'Minimax AI Certification',
+    source: 'Minimax',
   },
 ] as const
 
@@ -190,7 +184,11 @@ export const cvGlanceSections = [
   },
   {
     title: 'Kredensial',
-    items: ['dr. · SH · MKN · CLM · CMDC · C.AIS · CDS · MLE · Gen AI'],
+    items: ['dr. · SH · MKN'],
+  },
+  {
+    title: 'Sertifikasi',
+    items: ['APEPC™', 'CAIPC®', 'Google Dev', 'Minimax AI'],
   },
   {
     title: 'Pendidikan',
