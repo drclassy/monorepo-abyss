@@ -7,8 +7,7 @@
     "LANGFLOW_API_URL",
     "OPENAI_API_KEY",
     "ANTHROPIC_API_KEY",
-    "CLASSY_PLUS_API_KEY",
-    "RESPAN_API_KEY"
+    "CLASSY_PLUS_API_KEY"
   ],
   "tasks": {
     "build": {
