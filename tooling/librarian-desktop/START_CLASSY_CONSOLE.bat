@@ -9,7 +9,7 @@ set "WORKER_DIR=%REPO_ROOT%\tooling\librarian-desktop\literature-worker"
 set "WORKER_URL=http://127.0.0.1:8787/health"
 
 echo -----------------------------------------------
-echo   AVVCENNA GUARDIAN CONSOLE
+echo   CLASSY GUARDIAN CONSOLE
 echo   Guardian Repo + Sentinel Library
 echo -----------------------------------------------
 

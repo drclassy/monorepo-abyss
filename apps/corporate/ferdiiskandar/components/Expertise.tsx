@@ -249,7 +249,7 @@ function ThinkingTerminal() {
   const [activeTab, setActiveTab] = useState('sentra-core')
   const [lines, setLines] = useState<TerminalLine[]>([])
 
-  const tabs = useMemo(() => ['sentra-core', 'melinda-dhai', 'avvcenna-plus'], [])
+  const tabs = useMemo(() => ['sentra-core', 'melinda-dhai', 'classy-plus'], [])
 
   useEffect(() => {
     let cancelled = false
