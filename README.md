@@ -1,13 +1,13 @@
 <div align="center">
 
-# The Abyss
+# The Abyss — Monorepo
 
-**Where clinical intelligence meets engineering discipline — AI-native
-infrastructure that thinks _with_ the clinician, not behind them.**
+**Healthcare AI platform infrastructure — engineered to think _with_ the
+clinician, not behind them.**
 
-_The single monorepo powering Sentra's healthcare AI ecosystem: crown-jewel
-reasoning engines, retrieval-augmented knowledge, FHIR interoperability, agent
-coordination, and governed multi-tenant deployment — all in one workspace._
+_Open platform foundation for healthcare AI systems: governed agent coordination
+(UNICOM), typed platform services, clinical document pipelines, and a
+battle-tested monorepo architecture ready for production-oriented teams._
 
 </div>
 
@@ -22,20 +22,22 @@ coordination, and governed multi-tenant deployment — all in one workspace._
 </td>
 <td valign="top">
 
-The Abyss is the production engineering workspace for **Sentra**, an AI-native
-healthcare intelligence platform designed for Indonesian primary-care facilities
-and the specialists who support them. It is not a chatbot bolted onto an EMR. It
-is a boundary-enforced, governance-first monorepo where **crown-jewel AI
-engines** — clinical reasoning (`@sentra/nada`), retrieval-augmented generation
-(`@sentra/pustaka`), FHIR interoperability (`@sentra/sandi`), access control
-(`@sentra/bentara`), and embedding infrastructure (`@sentra/cermin`) — coexist
-with platform services, application surfaces, and an ABYSS-native agent
-coordination subsystem (**UNICOM**) under a single pnpm workspace governed by
-Turborepo.
+**The Abyss** is the open-platform layer of the Sentra healthcare AI ecosystem —
+a production-oriented pnpm + Turborepo monorepo that ships the infrastructure
+any serious healthcare AI project needs but rarely builds well: a typed
+multi-agent coordination subsystem, governed document ingestion pipelines,
+clinical knowledge registries, shared UI primitives, and enforced package
+taxonomy.
 
-Every package, every import boundary, every deployment artifact is subject to
-taxonomy rules, crown-jewel isolation, and verifiable governance — because
-healthcare AI demands engineering honesty, not marketing polish.
+What it does _not_ include are the proprietary Sentra clinical AI engines
+(`@sentra/*`). Those live in a separate licensed tier. What it _does_ include is
+every governed, reusable infrastructure piece that makes building on top of
+clinical AI tractable — without the usual "glue everything together yourself"
+tax.
+
+Every package ships with TypeScript, Zod-validated contracts, Vitest tests, and
+a governance tier tag. Because healthcare AI that cannot be audited is a
+liability, not a product.
 
 </td>
 </tr>
@@ -45,15 +47,15 @@ healthcare AI demands engineering honesty, not marketing polish.
 
 <div align="center">
 
+![License](https://img.shields.io/badge/license-MIT-green)
 ![Node](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen)
 ![pnpm](https://img.shields.io/badge/pnpm-9.15.0-yellow)
 ![TypeScript](https://img.shields.io/badge/typescript-5.9.x-blue)
 ![Turborepo](https://img.shields.io/badge/turborepo-2.9.x-black)
-![Next.js](https://img.shields.io/badge/next.js-15%2F16-black)
-![NestJS](https://img.shields.io/badge/nestjs-11-red)
-![License](https://img.shields.io/badge/license-Apache%202.0-blue)
+![Socket.IO](https://img.shields.io/badge/socket.io-4.x-black)
+![PostgreSQL](https://img.shields.io/badge/postgresql-16-blue)
 
-**Architect:** Dr. Ferdi Iskandar (Classy) · <drferdiiskandar@sentrahai.com>
+**Architect:** Dr. Ferdi Iskandar · <drferdiiskandar@sentrahai.com>
 
 > _"Healthcare AI that cannot explain its reasoning, cannot prove its
 > provenance, and cannot be audited by a human — is not healthcare AI. It is a
@@ -63,48 +65,46 @@ healthcare AI demands engineering honesty, not marketing polish.
 
 ---
 
-## Why Sentra — Generic AI Platform vs. The Abyss
+## Why The Abyss — Generic AI Monorepo vs. This
 
-| Dimension               | Generic AI Platform           | The Abyss                                                                                                                                             |
-| ----------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Clinical reasoning**  | LLM prompt + hope             | Deterministic pattern engine (`@sentra/nada`) with 30+ clinical patterns, NEWS2, traffic-light triage, confidence scoring, and CDS-Hooks export       |
-| **Knowledge retrieval** | Vector DB + raw search        | Local-first RAG pipeline (`@sentra/pustaka`) with pgvector, citation grounding, knowledge registry, supersession, and evaluation artifacts            |
-| **Interoperability**    | REST API, custom schema       | FHIR R4 validation and bundle projection (`@sentra/sandi`) targeting SatuSehat and CDS-Hooks contracts                                                |
-| **Access control**      | Role-based at the gateway     | GO-gate enforcement (`@sentra/bentara`) with multi-tenant RBAC, tenant isolation, rate limiting, and audit logging at every engine boundary           |
-| **Agent coordination**  | Third-party orchestration SDK | ABYSS-native UNICOM subsystem with room-based collaboration, policy-gated risk, human-in-the-loop approval, and append-only event store               |
-| **Governance**          | README + good intentions      | `AGENTS.md` supreme instruction set, `.agent/` SSOT, `apps/_governance/` boundary classification, crown-jewel isolation tiers, orphan detection rules |
-| **Build orchestration** | Ad-hoc scripts                | Turborepo 2.x with caching, dependency-aware pipelines, and pnpm workspace integrity                                                                  |
-| **Clinical safety**     | "Don't hallucinate" (vibes)   | Explicit safety gates, uncertainty visibility, shadow comparison, explainability exports, and human-oversight enforcement                             |
+| Dimension                  | Generic AI Monorepo                         | The Abyss                                                                                                                        |
+| -------------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Agent coordination**     | No protocol — agents talk ad-hoc or via LLM | UNICOM: typed protocol, room-based collaboration, policy-gated risk, human-in-the-loop approval, append-only event store         |
+| **Package governance**     | Conventional commits + good intentions      | `AGENTS.md` supreme contract, `.agent/` SSOT, boundary classification, crown-jewel isolation tiers, orphan detection rules       |
+| **Clinical document flow** | Custom parser per project                   | `@the-abyss/document-ingestion` — multi-format (JATS XML, PDF, Markdown), OCR quality gates, source hashing, normalization seam  |
+| **Type safety**            | `any` at integration boundaries             | Zod-validated contracts at every package boundary, shared `@the-abyss/shared-types`, strict `tsconfig` enforced by Turborepo     |
+| **Build orchestration**    | npm scripts or Make                         | Turborepo 2.x — dependency-aware pipeline, remote caching, affected-only builds, workspace integrity enforced by pnpm            |
+| **PHI / clinical safety**  | "Don't log passwords" (vibes)               | Explicit `.gitignore` blocks for DICOM, HL7, FHIR dumps, vector stores, and PHI fixture paths; clinical boundary preflight gates |
+| **Testing infrastructure** | Jest + manual mocks                         | Vitest across all packages; `@the-abyss/unicom-testkit` for agent fake transports; deterministic contract tests                  |
+| **Literature + knowledge** | Manual copy-paste from PubMed               | `@the-abyss/literature-harvester` — open-access crawling, JATS ingestion, knowledge registry with supersession                   |
 
 ---
 
 ## Executive Summary
 
-- **Unified workspace** — 34 tracked workspace packages across apps, engines,
-  platform, clinical, shared, tooling, and UNICOM subsystems in a single
-  Turborepo-managed pnpm workspace.
-- **Crown-jewel AI engines** — Five proprietary `@sentra/*` packages powering
-  clinical reasoning, RAG, FHIR interop, access control, and embeddings.
-- **Production orchestration** — NestJS orchestrator with CQRS/Saga patterns,
-  Kafka event streaming, Socket.IO real-time, and LangFlow integration.
-- **Governed agent coordination** — UNICOM subsystem providing room-based
-  collaboration, policy-gated risk management, and human-in-the-loop oversight
-  for AI agents.
-- **Healthcare-grade interoperability** — FHIR R4 bundle generation, CDS-Hooks
-  mapping, and SatuSehat-ready export.
-- **Boundary-enforced architecture** — Package taxonomy rules, ESLint restricted
-  imports, crown-jewel access tiers, and formal preflight for all app work.
+- **Open infrastructure layer** — 17+ MIT-licensed packages across UNICOM,
+  platform, clinical, shared, and tooling namespaces.
+- **UNICOM agent coordination** — The only open, typed, policy-aware multi-agent
+  coordination subsystem built specifically for healthcare AI workflows.
+- **Document pipeline** — End-to-end ingestion from PDF/JATS/HTML to structured
+  knowledge, ready to feed any embedding or RAG layer.
+- **Clinical knowledge registry** — Structured clinical references with
+  supersession support, citation grounding, and audit trail.
+- **Production-grade monorepo** — pnpm workspaces + Turborepo + strict
+  TypeScript + shared ESLint config + Husky hooks, all pre-configured.
+- **Sentra Professional tier** — Clinical reasoning, RAG, FHIR interop,
+  embedding infrastructure, and access control engines available separately
+  (proprietary).
 
 ### Who builds on The Abyss
 
-| Persona                      | Role                                           | Pain Point Solved                                                                         |
-| ---------------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Primary-care physician**   | End user via IntelligenceBoard / Sentra Assist | AI-assisted diagnosis, emergency detection, and EMR automation at the point of care       |
-| **Clinical informatician**   | CDSS integrator                                | FHIR/CDS-Hooks exports, retrieval evaluation pipelines, and auditable reasoning traces    |
-| **Platform engineer**        | Infrastructure operator                        | Unified build, Docker Compose local stack, Kafka orchestration, and observability hooks   |
-| **AI researcher**            | Engine contributor                             | Local-first RAG with pgvector, embedding evaluation, and knowledge registry management    |
-| **Agent developer**          | UNICOM extension author                        | Typed protocol, policy SDK, room state reducers, and agent launcher with monitoring       |
-| **Healthcare administrator** | Decision maker                                 | Clinical dashboards, referral analytics, telemedicine workflows, and compliance reporting |
+| Persona                     | Role                           | Pain Point Solved                                                                |
+| --------------------------- | ------------------------------ | -------------------------------------------------------------------------------- |
+| **Agent developer**         | UNICOM extension author        | Typed protocol, policy SDK, room state reducers, fake transports for testing     |
+| **Platform engineer**       | Infrastructure operator        | Unified build, shared configs, Turborepo pipeline, Docker Compose local stack    |
+| **AI researcher**           | Knowledge pipeline contributor | Document ingestion, literature harvester, clinical reference registry            |
+| **Clinical informatician**  | CDSS integrator                | Governed package boundaries, PHI-safe workspace, auditable architecture patterns |
+| **Open source contributor** | Ecosystem builder              | Clean TypeScript monorepo, AGENTS.md contract, standardized governance           |
 
 ---
 
@@ -112,41 +112,47 @@ healthcare AI demands engineering honesty, not marketing polish.
 
 1. [Features Overview](#features-overview)
 2. [Quickstart](#quickstart)
-3. [Detailed Features](#detailed-features)
+3. [UNICOM Agent Coordination](#unicom-agent-coordination)
 4. [System Architecture](#system-architecture)
 5. [Project Structure](#project-structure)
-6. [API Reference](#api-reference)
+6. [Package Reference](#package-reference)
 7. [Security & Privacy](#security--privacy)
-8. [Operations & Deployment](#operations--deployment)
-9. [Developer Guide](#developer-guide)
-10. [Assumptions & Open Questions](#assumptions--open-questions)
-11. [Related Documentation](#related-documentation)
-12. [License](#license)
+8. [Developer Guide](#developer-guide)
+9. [Assumptions & Open Questions](#assumptions--open-questions)
+10. [Sentra Professional](#sentra-professional)
+11. [License](#license)
 
 ---
 
 ## Features Overview
 
-| #   | Feature                                                                                                                         | Status  | Primary User             |
-| --- | ------------------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------ |
-| 1   | **Clinical Reasoning Engine** (`@sentra/nada`) — 30+ patterns, NEWS2, traffic-light triage, confidence scoring, CDS-Hooks       | ✅ Live | Clinical informatician   |
-| 2   | **RAG Pipeline** (`@sentra/pustaka`) — PDF ingest, chunking, embedding, pgvector retrieval, citation grounding, evaluation      | ✅ Live | AI researcher            |
-| 3   | **FHIR Interoperability** (`@sentra/sandi`) — R4 validation, bundle projection, normalization seam, R5 version strategy         | ✅ Live | Clinical informatician   |
-| 4   | **Access Control** (`@sentra/bentara`) — GO-gate, multi-tenant RBAC, rate limiting, audit logging                               | ✅ Live | Platform engineer        |
-| 5   | **Embedding Infrastructure** (`@sentra/cermin`) — Vector store abstraction, embedding provider, circuit breaker, citation views | ✅ Live | AI researcher            |
-| 6   | **UNICOM Agent Coordination** — Room-based collaboration, policy-gated risk, human-in-the-loop, append-only event store         | ✅ Live | Agent developer          |
-| 7   | **NestJS Orchestrator** — CQRS/Saga, Kafka events, Socket.IO, LangFlow integration, Swagger docs                                | ✅ Live | Platform engineer        |
-| 8   | **IntelligenceBoard** — CDSS, EMR auto-fill (Playwright RPA), telemedicine, ICD-X lookup, LB1 reports                           | ✅ Live | Primary-care physician   |
-| 9   | **Sentra Assist** — Browser extension with emergency detection, Iskandar diagnosis engine, DAS adaptive extraction              | ✅ Live | Primary-care physician   |
-| 10  | **ReferraLink** — AI-assisted referral routing, semantic cache, diagnosis endpoint                                              | ✅ Live | Healthcare administrator |
-| 11  | **Document Ingestion** — Parser providers, OCR quality, markdown normalization, source hashing                                  | ✅ Live | AI researcher            |
-| 12  | **LangFlow Integration** — TypeScript client for programmatic flow execution                                                    | ✅ Live | Platform engineer        |
-| 13  | **Sentra Portal** — Next.js dashboard and mission control interface                                                             | ✅ Live | Healthcare administrator |
-| 14  | **Literature Harvester** — Open-access literature collection and ingestion tooling                                              | ✅ Live | AI researcher            |
-| 15  | **Integration Bridge** — External system connectivity (Notion, Linear)                                                          | ✅ Live | Platform engineer        |
-| 16  | **Abyss CLI** — Task init, GO flow, status, scaffolding, flow sync                                                              | ✅ Live | Developer                |
-| 17  | **Design System** — Shared UI components, design tokens, typography, spacing                                                    | ✅ Live | Frontend developer       |
-| 18  | **Flow Definitions** — LangFlow definitions for healthcare, academic, and platform workflows                                    | ✅ Live | Platform engineer        |
+| #   | Package / Feature                                                                             | Status        | Namespace                         | Primary User           |
+| --- | --------------------------------------------------------------------------------------------- | ------------- | --------------------------------- | ---------------------- |
+| 1   | **UNICOM Core** — Typed agent coordination protocol, room state reducer, event contracts      | ✅ Live       | `@the-abyss/unicom-*`             | Agent developer        |
+| 2   | **UNICOM Policy** — Approval/block rules for evidence, destructive, crown-jewel, clinical ops | ✅ Live       | `@the-abyss/unicom-*`             | Agent developer        |
+| 3   | **UNICOM Agent SDK** — Agent launcher, CLI tools, fake transport for testing                  | ✅ Live       | `@the-abyss/unicom-*`             | Agent developer        |
+| 4   | **UNICOM Server** — Socket.IO-backed server, rooms, event broadcasting, append-only store     | ✅ Live       | `@the-abyss/unicom-*`             | Platform engineer      |
+| 5   | **UNICOM Persistence** — Append-only Postgres event storage scaffold                          | ✅ Live       | `@the-abyss/unicom-*`             | Platform engineer      |
+| 6   | **UNICOM Testkit** — Fake transport, in-memory store, test helpers                            | ✅ Live       | `@the-abyss/unicom-*`             | Agent developer        |
+| 7   | **Database** — PostgreSQL schema, Prisma migrations, seed data                                | ✅ Live       | `@the-abyss/database`             | Platform engineer      |
+| 8   | **Document Ingestion** — JATS XML, PDF, multi-format parser, source hashing                   | ✅ Live       | `@the-abyss/document-ingestion`   | AI researcher          |
+| 9   | **Literature Harvester** — Open-access literature crawling, indexing                          | ✅ Live       | `@the-abyss/literature-harvester` | AI researcher          |
+| 10  | **LangFlow Client** — TypeScript client for programmatic LangFlow execution                   | ✅ Live       | `@the-abyss/langflow-client`      | Platform engineer      |
+| 11  | **Clinical References** — Clinical knowledge registry, citation sources                       | ✅ Live       | `@the-abyss/clinical-references`  | Clinical informatician |
+| 12  | **Shared Types** — Common TypeScript types across all packages                                | ✅ Live       | `@the-abyss/shared-types`         | All                    |
+| 13  | **Sentra UI** — Shared React component library with Tailwind                                  | ✅ Live       | `@the-abyss/sentra-ui`            | Frontend developer     |
+| 14  | **Design Token** — Design system tokens, spacing, typography                                  | ✅ Live       | `@the-abyss/design-token`         | Frontend developer     |
+| 15  | **Config ESLint** — Shared ESLint configuration for all packages                              | ✅ Live       | `@the-abyss/config-eslint`        | Developer              |
+| 16  | **Config TypeScript** — Shared `tsconfig` base for all packages                               | ✅ Live       | `@the-abyss/config-typescript`    | Developer              |
+| 17  | **Flow Definitions** — LangFlow definitions for healthcare, academic, platform workflows      | ✅ Live       | `flows/`                          | Platform engineer      |
+| 18  | **Clinical Reasoning Engine** (`@sentra/nada`)                                                | 🔒 Sentra Pro | `packages/sentra/`                | Clinical informatician |
+| 19  | **RAG Engine** (`@sentra/pustaka`)                                                            | 🔒 Sentra Pro | `packages/sentra/`                | AI researcher          |
+| 20  | **FHIR Interoperability** (`@sentra/sandi`)                                                   | 🔒 Sentra Pro | `packages/sentra/`                | Clinical informatician |
+| 21  | **Access Control** (`@sentra/bentara`)                                                        | 🔒 Sentra Pro | `packages/sentra/`                | Platform engineer      |
+| 22  | **Embedding Infrastructure** (`@sentra/cermin`)                                               | 🔒 Sentra Pro | `packages/sentra/`                | AI researcher          |
+
+> 🔒 **Sentra Professional** packages are not included in this public
+> repository. See [Sentra Professional](#sentra-professional).
 
 ---
 
@@ -154,233 +160,119 @@ healthcare AI demands engineering honesty, not marketing polish.
 
 ### Prerequisites
 
-| Requirement             | Minimum Version | Purpose              |
-| ----------------------- | --------------- | -------------------- |
-| Node.js                 | 22.0.0          | Runtime              |
-| pnpm                    | 9.15.0          | Package manager      |
-| Docker & Docker Compose | Latest          | Local infrastructure |
-| Git                     | Latest          | Version control      |
+| Requirement | Minimum Version | Purpose                          |
+| ----------- | --------------- | -------------------------------- |
+| Node.js     | 22.0.0          | Runtime                          |
+| pnpm        | 9.15.0          | Package manager (required)       |
+| PostgreSQL  | 16+             | Database (for platform packages) |
+| Git         | 2.x             | Version control                  |
+
+> ⚠️ **Use `pnpm` only.** This monorepo uses pnpm workspaces. Do not use `npm`
+> or `yarn`.
 
 ### Installation
 
 ```bash
-git clone https://github.com/drclassy/abyss-monorepo.git
-cd abyss-monorepo
+# Clone the repository
+git clone https://github.com/drclassy/monorepo-abyss.git
+cd monorepo-abyss
+
+# Install all workspace dependencies
 pnpm install
-```
-
-> **Windows note:** If `pnpm install` fails on drives without copy-on-write
-> support, use: `pnpm install --package-import-method=copy`
-
-### Environment Variables
-
-Copy `.env.example` to `.env` and configure:
-
-| Variable              | Purpose                                            |
-| --------------------- | -------------------------------------------------- |
-| `NODE_ENV`            | Runtime environment (`development` / `production`) |
-| `DATABASE_URL`        | PostgreSQL connection string                       |
-| `LANGFLOW_API_URL`    | LangFlow inference endpoint                        |
-| `OPENAI_API_KEY`      | OpenAI API key for LLM integration                 |
-| `ANTHROPIC_API_KEY`   | Anthropic API key for Claude models                |
-| `CLASSY_PLUS_API_KEY` | Classy Plus clinical API key                       |
-
-> ⚠️ **Never commit real credentials.** Always use placeholders in examples.
-
-### Local Infrastructure
-
-```bash
-cd infrastructure/docker
-docker-compose up -d
-```
-
-This starts: PostgreSQL, Kafka + Zookeeper, Redis, LangFlow, and the
-Orchestrator.
-
-### Run
-
-```bash
-# Full workspace development servers
-pnpm dev
 
 # Build all packages
 pnpm build
 
-# Typecheck entire workspace
-pnpm typecheck
-
-# Run all tests
+# Run tests across all packages
 pnpm test
+```
+
+### Environment Setup
+
+Copy the example environment file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+| Variable            | Required | Description                            |
+| ------------------- | -------- | -------------------------------------- |
+| `DATABASE_URL`      | ✅       | PostgreSQL connection string           |
+| `NODE_ENV`          | ✅       | `development` / `production` / `test`  |
+| `UNICOM_PORT`       | Optional | UNICOM server port (default: `3100`)   |
+| `LANGFLOW_BASE_URL` | Optional | LangFlow server URL for flow execution |
+
+### Run UNICOM Server (local dev)
+
+```bash
+# Start the UNICOM coordination server
+pnpm --filter @the-abyss/unicom-server dev
+
+# In another terminal: run the UNICOM cockpit UI (apps/internal/unicom — local only)
+# pnpm --filter unicom dev
 ```
 
 ---
 
-## Detailed Features
+## UNICOM Agent Coordination
 
-### Clinical Reasoning Engine (`@sentra/nada`)
+UNICOM is the ABYSS-native multi-agent coordination subsystem. It provides a
+typed protocol for agents to communicate, collaborate, and operate under
+policy-gated risk management — with human-in-the-loop approval for high-risk
+operations.
 
-The clinical reasoning engine processes patient data through 30+ deterministic
-clinical patterns, producing differential diagnoses with confidence scores,
-traffic-light triage classifications, and actionable recommendations — all
-exportable to FHIR and CDS-Hooks formats.
-
-```mermaid
-flowchart TD
-    Start(["Clinical Data Input"]) --> Gate["Instant Screening Gates"]
-    Gate --> Traffic["Traffic Light Classification"]
-    Traffic --> Early["Early Warning Detection"]
-    Early --> NEWS2["NEWS2 Score Calculation"]
-    NEWS2 --> Synd["Syndrome Classification"]
-    Synd --> Patterns["30+ Clinical Pattern Evaluation"]
-    Patterns --> Diff["Native Differential Diagnosis"]
-    Diff --> Confidence["Confidence Engine"]
-    Confidence --> Alert["Composite Deterioration Alerts"]
-    Alert --> Protocol["Action Protocols"]
-    Protocol --> CDS["CDS-Hooks Response"]
-    CDS --> FHIR["FHIR Bundle via @sentra/sandi"]
-    FHIR --> End(["Structured Output"])
-```
-
-**Key capabilities:**
-
-| Capability              | Description                                                         |
-| ----------------------- | ------------------------------------------------------------------- |
-| Composite deterioration | Multi-vital sign deterioration scoring                              |
-| NEWS2                   | National Early Warning Score 2 calculation                          |
-| Traffic-light triage    | Red / Amber / Green classification with safety gates                |
-| Clinical patterns       | 30+ pattern evaluations including syndromes and disease classifiers |
-| Confidence engine       | Per-diagnosis confidence scoring with explainability                |
-| Shadow comparison       | Parallel deterministic vs. LLM reasoning for validation             |
-| CDS-Hooks mapping       | Standardized FHIR service definitions and bundle assembly           |
-
-### RAG Pipeline (`@sentra/pustaka`)
-
-Local-first retrieval-augmented generation pipeline for medical knowledge.
-Documents are ingested, chunked, embedded via local providers, stored in
-pgvector, and retrieved with citation grounding for auditable, evidence-based
-answers.
-
-```mermaid
-flowchart TD
-    Doc["Medical Document (PDF)"] --> Parse["Parse + Quality Report"]
-    Parse --> Normalize["Markdown Normalization"]
-    Normalize --> Hash["Source Hashing"]
-    Hash --> Chunk["Chunking + Metadata"]
-    Chunk --> Embed["Embedding (Ollama / local)"]
-    Embed --> Store["pgvector Write + Registry"]
-    Store --> Query(["User Query"])
-    Query --> Semantic["Semantic Retrieval"]
-    Semantic --> Hybrid["Optional: Keyword Rerank"]
-    Hybrid --> Citation["Attach Grounded Citations"]
-    Citation --> Answer["Evidence-Based Answer"]
-    Answer --> Eval["Evaluation Artifacts"]
-```
-
-**Key capabilities:**
-
-| Capability           | Description                                                  |
-| -------------------- | ------------------------------------------------------------ |
-| Ingestion pipeline   | PDF parsing, chunking, quality scoring, dry-run mode         |
-| Embedding            | Ollama + Gemma with retry, circuit breaker, and guard engine |
-| pgvector storage     | IVFFlat-indexed vector writes with pool adapter              |
-| Knowledge registry   | Tracking, eligibility gating, supersession management        |
-| Hybrid retrieval     | Vector + keyword for Indonesia-aware medical terms           |
-| Evaluation pipeline  | Retrieval evaluation, evidence validation, quality scoring   |
-| Literature connector | Harvested literature ingestion from open-access sources      |
-
-### FHIR Interoperability (`@sentra/sandi`)
-
-Bounded FHIR R4 structural validation and normalization seam. Validates Patient,
-Observation, Condition, RiskAssessment, and DiagnosticReport resources,
-assembles AADI V2 FHIR bundles, and provides a version strategy toward R5.
-
-```mermaid
-flowchart TD
-    Input(["Incoming Resource"]) --> Validate["Validate FHIR Resource"]
-    Validate --> Valid{"Valid?"}
-    Valid -->|No| Reject["Reject + Validation Errors"]
-    Valid -->|Yes| Normalize["Bounded Normalization"]
-    Normalize --> Bundle["Assemble AADI V2 Bundle"]
-    Bundle --> Export(["Outgoing FHIR Bundle"])
-    Reject --> Export
-```
-
-### UNICOM Agent Coordination
-
-ABYSS-native subsystem for real-time AI agent communication with human
-oversight. Provides room-based collaboration, policy-gated risk management, and
-append-only event sourcing.
+### UNICOM Flow
 
 ```mermaid
 sequenceDiagram
-    participant Chief as "Chief (Human)"
-    participant Cockpit as "UNICOM Cockpit"
-    participant Server as "UNICOM Server"
-    participant Policy as "UNICOM Policy"
-    participant Agent as "AI Agent"
-    participant Store as "Event Store"
-    Chief->>Cockpit: Monitor and control
-    Cockpit->>Server: Subscribe to room stream
-    Agent->>Server: Emit event (proposal/evidence)
-    Server->>Policy: Policy evaluation
-    Policy->>Policy: Risk assessment and approval check
-    alt Allow
-        Policy->>Server: Allow event
-        Server->>Store: Append to event log
-        Server->>Cockpit: Broadcast event
-        Server->>Agent: Acknowledge
-    else Requires Approval
-        Policy->>Server: Stage event
-        Server->>Cockpit: decision.proposed
-        Chief->>Cockpit: Approve or Reject
-    else Block
-        Policy->>Server: Block event
-        Server->>Agent: policy.blocked
+    participant Agent as AI Agent
+    participant SDK as unicom-agent-sdk
+    participant Server as unicom-server
+    participant Policy as unicom-policy
+    participant Store as unicom-persistence
+
+    Agent->>SDK: send(message, roomId)
+    SDK->>Server: WebSocket event
+    Server->>Policy: evaluate(message)
+    alt APPROVE
+        Policy-->>Server: approved
+        Server->>Store: append event
+        Server-->>SDK: broadcast to room
+    else BLOCK
+        Policy-->>Server: blocked (reason)
+        Server-->>SDK: rejection + reason
+    else HUMAN_APPROVAL
+        Policy-->>Server: requires human
+        Server-->>SDK: pending approval
+        Note over SDK,Server: Human reviews via UNICOM cockpit
     end
 ```
 
-**Operating modes:** Observe, Collaborative, Approval-gated, Autonomous-safe,
-Clinical-safety, Freeze.
+### UNICOM Package Map
 
-| Package                         | Path                          | Role                                                  |
-| ------------------------------- | ----------------------------- | ----------------------------------------------------- |
-| `@the-abyss/unicom-core`        | `packages/unicom/core`        | Typed protocol, event contracts, reducers, room state |
-| `@the-abyss/unicom-policy`      | `packages/unicom/policy`      | Boundary and approval rules for risky agent actions   |
-| `@the-abyss/unicom-agent-sdk`   | `packages/unicom/agent-sdk`   | Agent client, launcher, transport, monitoring         |
-| `@the-abyss/unicom-server`      | `packages/unicom/server`      | Local realtime server and service runtime             |
-| `@the-abyss/unicom-client`      | `packages/unicom/client`      | UI/runtime client for cockpit and integrations        |
-| `@the-abyss/unicom-persistence` | `packages/unicom/persistence` | Append-only Postgres persistence scaffolding          |
-| `@the-abyss/unicom-testkit`     | `packages/unicom/testkit`     | Fixtures and fake transport for contract tests        |
+```mermaid
+graph LR
+    SDK["@the-abyss/unicom-agent-sdk\nAgent launcher + CLI"] --> CORE
+    CLIENT["@the-abyss/unicom-client\nClient library"] --> CORE
+    SERVER["@the-abyss/unicom-server\nSocket.IO + rooms"] --> CORE
+    SERVER --> POLICY
+    SERVER --> PERSIST
+    CORE["@the-abyss/unicom-core\nProtocol types + reducer"]
+    POLICY["@the-abyss/unicom-policy\nApproval / block rules"]
+    PERSIST["@the-abyss/unicom-persistence\nEvent store scaffold"]
+    TESTKIT["@the-abyss/unicom-testkit\nFake transport + helpers"] --> CORE
+```
 
-### IntelligenceBoard
+### Policy Gate Dimensions
 
-Full-stack clinical operations platform for Indonesian primary healthcare
-(`puskesmas`). Integrates CDSS, telemedicine, EMR automation, and real-time
-observability.
-
-| Feature               | Description                                         |
-| --------------------- | --------------------------------------------------- |
-| EMR auto-fill         | Playwright RPA with Socket.IO streaming progress    |
-| ICD-X lookup          | Multi-version support with fuzzy search             |
-| LB1 report automation | Validation, mapping, and output generation pipeline |
-| Telemedicine          | WebRTC with STUN/TURN, AI-generated SOAP notes      |
-| ACARS messaging       | Real-time internal chat events                      |
-| CDSS diagnosis        | Deterministic + LLM reasoning with safety gates     |
-| Clinical trajectory   | NEWS2 early warning, disease classifiers            |
-| Crew access portal    | HMAC-signed session cookies, rate limiting          |
-
-### Sentra Assist
-
-Browser extension connecting ePuskesmas to AI-powered CDSS. Built with WXT
-MV3/MV2.
-
-| Feature                 | Description                                                      |
-| ----------------------- | ---------------------------------------------------------------- |
-| Emergency detection     | 4 gates: TTV inference, HTN crisis, Glucose crisis, occult shock |
-| Iskandar diagnosis      | 8-step pipeline, traffic-light safety gate, ICD-10 validation    |
-| DAS adaptive extraction | Confidence scoring, self-healing remapping                       |
-| RME transfer            | Orchestrator with retry, dedup, dashboard bridge sync            |
-| PII anonymization       | Dashboard-backed authentication and audit trail                  |
+| Policy Dimension   | Default Action   | Override           |
+| ------------------ | ---------------- | ------------------ |
+| Evidence-required  | `BLOCK`          | Human approval     |
+| Destructive ops    | `HUMAN_APPROVAL` | Chief-only         |
+| Crown-jewel access | `BLOCK`          | Explicit grant     |
+| Secret exposure    | `BLOCK`          | None               |
+| External API call  | `HUMAN_APPROVAL` | Context-based      |
+| Clinical boundary  | `HUMAN_APPROVAL` | Clinician override |
 
 ---
 
@@ -388,59 +280,47 @@ MV3/MV2.
 
 ```mermaid
 graph TB
-    subgraph "Applications"
-        IB["IntelligenceBoard<br/>(clinical ops)"]
-        SA["Sentra Assist<br/>(browser extension)"]
-        RL["ReferraLink<br/>(referral routing)"]
-        MAIN["Sentra Main<br/>(public site)"]
-        UNICOM_APP["UNICOM Cockpit<br/>(agent oversight)"]
+    subgraph "Public Platform Layer (MIT)"
+        UC["UNICOM Subsystem\nunicom-core · policy · server\nclient · agent-sdk · persistence · testkit"]
+        PL["Platform Services\ndatabase · document-ingestion\nliterature-harvester · langflow-client"]
+        SH["Shared Infrastructure\nshared-types · sentra-ui\ndesign-token"]
+        TL["Tooling\nconfig-eslint · config-typescript"]
     end
-    subgraph "Crown Jewels (@sentra/*)"
-        NADA["@sentra/nada<br/>Clinical Reasoning"]
-        PUST["@sentra/pustaka<br/>RAG Pipeline"]
-        SANDI["@sentra/sandi<br/>FHIR Interop"]
-        BENTARA["@sentra/bentara<br/>Access Control"]
-        CERMIN["@sentra/cermin<br/>Embeddings"]
+
+    subgraph "Sentra Professional (Proprietary)"
+        SE["@sentra/nada — Clinical Reasoning"]
+        SP["@sentra/pustaka — RAG Engine"]
+        SS["@sentra/sandi — FHIR Interop"]
+        SB["@sentra/bentara — Access Control"]
+        SC["@sentra/cermin — Embeddings"]
     end
-    subgraph "Platform Services"
-        ORCH["Orchestrator<br/>NestJS + Kafka + Socket.IO"]
-        PORTAL["Sentra Portal<br/>Next.js Dashboard"]
-    end
+
     subgraph "Infrastructure"
-        PG["PostgreSQL + pgvector"]
-        KAFKA["Kafka + Zookeeper"]
-        REDIS["Redis"]
-        LF["LangFlow"]
+        DB[(PostgreSQL 16)]
+        LF[LangFlow Server]
+        SK[Socket.IO]
     end
-    IB --> BENTARA
-    SA --> BENTARA
-    RL --> BENTARA
-    UNICOM_APP --> BENTARA
-    BENTARA --> ORCH
-    ORCH --> NADA
-    ORCH --> PUST
-    ORCH --> LF
-    NADA --> SANDI
-    NADA --> PUST
-    PUST --> CERMIN
-    PUST --> PG
-    ORCH --> KAFKA
-    ORCH --> PG
-    PORTAL --> ORCH
-    REDIS -.-> IB
-    REDIS -.-> SA
+
+    UC --> SK
+    UC --> PL
+    PL --> DB
+    PL --> LF
+    SE --> SP
+    SE --> SC
+    SP --> DB
 ```
 
 ### Deployment Recommendation
 
-| Component    | Strategy                            | Scaling                         |
-| ------------ | ----------------------------------- | ------------------------------- |
-| Orchestrator | Stateless pods behind load balancer | HPA on CPU + Kafka consumer lag |
-| PostgreSQL   | Managed instance (Neon / RDS)       | Read replicas for retrieval     |
-| Kafka        | 3-broker cluster                    | Partition per flow type         |
-| Redis        | Cluster mode for cache              | Horizontal scaling              |
-| LangFlow     | Container per worker                | Scale on inference demand       |
-| Applications | Vercel / Docker per app             | Independent scaling             |
+| Layer              | Technology          | Recommendation       |
+| ------------------ | ------------------- | -------------------- |
+| Runtime            | Node.js 22+, pnpm   | ✅ Required          |
+| Database           | PostgreSQL 16+      | ✅ Required          |
+| Agent coordination | UNICOM server       | ✅ Self-hosted       |
+| Flow orchestration | LangFlow (optional) | Optional             |
+| Container          | Docker Compose      | ✅ Recommended local |
+| CI/CD              | GitHub Actions      | ✅ Included          |
+| Monorepo build     | Turborepo           | ✅ Required          |
 
 ---
 
@@ -448,286 +328,251 @@ graph TB
 
 ```
 abyss-monorepo/
-├── apps/                          # Deployable applications
-│   ├── healthcare/
-│   │   ├── intelligenceboard/     # Clinical ops platform (Next.js 16)
-│   │   ├── sentra-assist/         # Browser extension (WXT MV3/MV2)
-│   │   ├── sentra-main/           # Public marketing site (Next.js)
-│   │   ├── referralink/           # Referral routing (Next.js)
-│   │   └── primary-healthcare/    # Puskesmas website + DB
-│   ├── academic/
-│   │   ├── clinical-simulator/    # AI clinical-case training
-│   │   └── evaluation-engine/     # Competency assessment
-│   ├── community/
-│   │   ├── classy-transformer/    # Multi-provider LLM workspace
-│   │   └── classy-memory/         # Memory runtime (TS + Python)
-│   ├── corporate/
-│   │   └── ferdiiskandar/         # Corporate website (Next.js 15)
-│   ├── internal/
-│   │   └── unicom/                # UNICOM operator cockpit
-│   └── _governance/               # Boundary classification and preflight
 ├── packages/
-│   ├── sentra/                    # Crown-jewel engines (review-first)
-│   │   ├── sentra-nada/           # Clinical reasoning + CDS-Hooks
-│   │   ├── sentra-pustaka/        # RAG pipeline + pgvector
-│   │   ├── sentra-sandi/          # FHIR interoperability
-│   │   ├── sentra-bentara/        # Access control + GO-gate
-│   │   └── sentra-cermin/         # Embeddings + vector store
-│   ├── unicom/                    # UNICOM coordination subsystem
-│   │   ├── core/                  # Protocol, events, reducers
-│   │   ├── policy/                # Boundary and approval rules
-│   │   ├── agent-sdk/             # Agent launcher and transport
-│   │   ├── server/                # Realtime server runtime
-│   │   ├── client/                # UI/runtime client
-│   │   ├── persistence/           # Append-only Postgres persistence
-│   │   └── testkit/               # Contract test fixtures
-│   ├── platform/                  # Runtime infrastructure
-│   │   ├── database/              # Prisma client + schema
-│   │   ├── document-ingestion/    # Parser + OCR + normalization
-│   │   ├── langflow-client/       # LangFlow API client
-│   │   └── literature-harvester/  # Open-access harvesting
-│   ├── clinical/
-│   │   └── clinical-references/   # Clinical reference data
-│   ├── shared/                    # Low-level primitives
-│   │   ├── sentra-ui/             # Shared UI components
-│   │   ├── design-token/          # Design tokens
-│   │   └── shared-types/          # Cross-workspace TS contracts
-│   ├── tooling/
-│   │   ├── config-eslint/         # Shared ESLint presets
-│   │   └── config-typescript/     # Shared TS config
-│   └── integration/               # External integrations bridge
-├── platform/
-│   ├── orchestrator/              # NestJS orchestrator (CQRS + Kafka)
-│   └── sentra-portal/             # Next.js dashboard
-├── flows/definitions/             # LangFlow workflow definitions
-│   ├── healthcare/                # Healthcare flows
-│   ├── academic/                  # Academic flows
-│   └── platform/                  # Platform orchestration flows
-├── infrastructure/
-│   ├── docker/                    # Dockerfiles + docker-compose
-│   ├── argocd/                    # GitOps manifests
-│   └── terraform/                 # Legacy IaC (under retirement)
-├── tooling/
-│   ├── abyss-cli/                 # Monorepo CLI
-│   ├── governance/                # Compliance and validation
-│   ├── prompt-engine/             # Prompt composer
-│   ├── handbook/                  # VS Code handbook launcher
-│   ├── librarian-desktop/         # Electron literature worker
-│   └── scripts/                   # Governance + maintenance scripts
-├── docs/                          # Architecture, guides, specs, ADRs
-│   ├── unicom/                    # UNICOM subsystem documentation
-│   ├── adr/                       # Architectural decision records
-│   ├── guides/                    # Active guides and onboarding
-│   └── specs/                     # Specifications and contracts
-├── .agent/                        # Protected SSOT (governance memory)
-├── AGENTS.md                      # Supreme repo instruction set
-├── pnpm-workspace.yaml            # Workspace membership authority
-└── turbo.json                     # Turborepo pipeline configuration
+│   ├── unicom/              # UNICOM agent coordination subsystem (7 packages, MIT)
+│   │   ├── core/            #   Protocol types, room state reducer, event contracts
+│   │   ├── policy/          #   Approval/block policy engine
+│   │   ├── server/          #   Socket.IO-backed coordination server
+│   │   ├── client/          #   Client library
+│   │   ├── agent-sdk/       #   Agent launcher + CLI tools
+│   │   ├── persistence/     #   Append-only Postgres event storage
+│   │   └── testkit/         #   Fake transport, test helpers
+│   ├── platform/            # Platform infrastructure (MIT)
+│   │   ├── database/        #   PostgreSQL schema + Prisma migrations
+│   │   ├── document-ingestion/ # JATS XML, PDF, multi-format ingestion
+│   │   ├── langflow-client/ #   TypeScript client for LangFlow
+│   │   └── literature-harvester/ # Open-access literature crawling
+│   ├── clinical/            # Clinical knowledge (MIT)
+│   │   └── clinical-references/ # Clinical knowledge registry + citation sources
+│   ├── shared/              # Shared primitives (MIT)
+│   │   ├── shared-types/    #   Common TypeScript types
+│   │   ├── sentra-ui/       #   React UI component library
+│   │   └── design-token/    #   Design system tokens
+│   ├── tooling/             # Build tooling (MIT)
+│   │   ├── config-eslint/   #   Shared ESLint config
+│   │   └── config-typescript/ # Shared tsconfig base
+│   └── sentra/              # 🔒 Proprietary clinical AI engines (local dev only)
+│       ├── sentra-nada/     #   Clinical reasoning engine
+│       ├── sentra-pustaka/  #   RAG engine
+│       ├── sentra-sandi/    #   FHIR R4 interoperability
+│       ├── sentra-bentara/  #   Access control (GO-gate)
+│       └── sentra-cermin/   #   Embedding infrastructure
+│
+├── flows/                   # LangFlow definitions (MIT)
+│   └── definitions/
+│       ├── healthcare/      #   Healthcare domain flows
+│       ├── academic/        #   Academic domain flows
+│       └── platform/        #   Platform flows
+│
+├── infrastructure/          # IaC (Terraform, Docker, ArgoCD) — Chief-only gates
+│   ├── docker/
+│   ├── terraform/
+│   └── argocd/
+│
+├── docs/                    # Project documentation
+│   ├── adr/                 #   Architectural Decision Records
+│   ├── guides/              #   Developer guides
+│   ├── specs/               #   Product specifications
+│   ├── unicom/              #   UNICOM protocol documentation
+│   ├── legal/               #   Legal templates
+│   ├── roo/                 #   AI tool guardrails
+│   ├── blueprint/           #   Bootstrap patterns
+│   └── templates/           #   Reusable templates
+│
+├── tooling/                 # Repo tooling and governance
+│   ├── governance/          #   Agent governance healthchecks
+│   ├── scripts/             #   Utility scripts
+│   └── prompt-engine/       #   Prompt engineering tooling
+│
+├── .agent/                  # Operational SSOT (continuity + governance knowledge)
+│   ├── HANDOFF.md           #   Current state, next actions
+│   ├── CONTEXT.md           #   Repo identity and boundaries
+│   ├── DECISIONS.md         #   Durable decisions and lessons
+│   └── PROGRESS.md          #   Milestone status
+│
+├── AGENTS.md                # Root policy authority — READ FIRST
+├── CLAUDE.md                # Claude Code entry point
+├── CONTRIBUTING.md          # Contribution guide
+├── SECURITY.md              # Security policy + disclosure
+└── turbo.json               # Turborepo pipeline config
 ```
 
 ---
 
-## API Reference
+## Package Reference
 
-### Orchestrator REST API
+### UNICOM Subsystem (`packages/unicom/`)
 
-| Method | Endpoint                     | Module  | Description                              |
-| ------ | ---------------------------- | ------- | ---------------------------------------- |
-| `POST` | `/flows/:flowId/run`         | Flows   | Execute an AI flow via Saga Orchestrator |
-| `GET`  | `/flows/:executionId/status` | Flows   | Get saga execution status                |
-| `GET`  | `/health`                    | Health  | Health check (readiness/liveness)        |
-| `GET`  | `/docs`                      | Swagger | Interactive API documentation            |
+| Package                         | Version | Description                                           |
+| ------------------------------- | ------- | ----------------------------------------------------- |
+| `@the-abyss/unicom-core`        | 0.1.0   | Protocol types, room state reducer, Zod event schemas |
+| `@the-abyss/unicom-policy`      | 0.1.0   | Policy engine — approve / block / human-approval      |
+| `@the-abyss/unicom-server`      | 0.1.0   | Socket.IO server, rooms, event broadcasting           |
+| `@the-abyss/unicom-client`      | 0.1.0   | Client library for connecting to UNICOM server        |
+| `@the-abyss/unicom-agent-sdk`   | 0.1.0   | Agent launcher, codex-unicom-launcher CLI             |
+| `@the-abyss/unicom-persistence` | 0.1.0   | Append-only Postgres event store (scaffold)           |
+| `@the-abyss/unicom-testkit`     | 0.1.0   | Fake transport, in-memory store, test utilities       |
 
-### Sentra Portal APIs
+### Platform Services (`packages/platform/`)
 
-| Namespace | Path                    | Description                            |
-| --------- | ----------------------- | -------------------------------------- |
-| RAG       | `/api/portal/rag/*`     | Knowledge retrieval and ingestion      |
-| SSOT      | `/api/portal/ssot/*`    | Single source of truth synchronization |
-| Context   | `/api/portal/context/*` | Context management for AI sessions     |
-| Ops       | `/api/portal/ops/*`     | Operational commands and status        |
-| Prompt    | `/api/portal/prompt/*`  | Prompt composition and management      |
-| Verify    | `/api/portal/verify/*`  | Verification and validation endpoints  |
-| Summary   | `/api/portal/summary/*` | Clinical summary generation            |
-| UNICOM    | `/api/portal/unicom/*`  | Agent coordination and room management |
+| Package                           | Version | Description                                   |
+| --------------------------------- | ------- | --------------------------------------------- |
+| `@the-abyss/database`             | 0.1.0   | PostgreSQL schema, Prisma ORM, seed data      |
+| `@the-abyss/document-ingestion`   | 0.1.0   | JATS XML, PDF, multi-format document parser   |
+| `@the-abyss/langflow-client`      | 0.1.0   | TypeScript client for LangFlow flow execution |
+| `@the-abyss/literature-harvester` | 0.1.0   | Open-access literature crawling and indexing  |
 
-### Authentication
+### Shared Infrastructure (`packages/shared/`, `packages/clinical/`, `packages/tooling/`)
 
-All orchestrator endpoints require `x-api-key` header. Swagger UI supports
-Bearer Auth. Application-level auth uses HMAC-signed session cookies with
-`HttpOnly`, `Secure`, and `SameSite=Strict` flags.
+| Package                          | Version | Description                             |
+| -------------------------------- | ------- | --------------------------------------- |
+| `@the-abyss/shared-types`        | 0.1.0   | Common TypeScript types across packages |
+| `@the-abyss/sentra-ui`           | 0.1.0   | React component library with Tailwind   |
+| `@the-abyss/design-token`        | 0.1.0   | Design system tokens                    |
+| `@the-abyss/clinical-references` | 0.1.0   | Clinical knowledge registry + citations |
+| `@the-abyss/config-eslint`       | 0.1.0   | Shared ESLint configuration             |
+| `@the-abyss/config-typescript`   | 0.1.0   | Shared TypeScript base configuration    |
 
 ---
 
 ## Security & Privacy
 
-| Dimension                 | Implementation                                                              |
-| ------------------------- | --------------------------------------------------------------------------- |
-| **Authentication**        | HMAC-signed session cookies, API key guards, Bearer tokens                  |
-| **Authorization**         | Multi-tenant RBAC via `@sentra/bentara` GO-gate enforcement                 |
-| **Tenant isolation**      | Per-tenant scoping at every engine boundary                                 |
-| **Rate limiting**         | Per-tenant rate limits at the gateway layer                                 |
-| **Audit logging**         | All requests logged; UNICOM append-only event store for agent actions       |
-| **PHI protection**        | No PHI in Kafka DLQ topics; PII anonymization in Sentra Assist              |
-| **Crown-jewel isolation** | `@sentra/*` packages require explicit approval for edits                    |
-| **Secret management**     | `.env` values never committed; `.env.example` with placeholders only        |
-| **Clinical safety**       | Human-in-the-loop enforcement, uncertainty visibility, shadow comparison    |
-| **Dependency security**   | pnpm overrides for known vulnerabilities (minimatch, rollup, esbuild, xlsx) |
+### PHI & Clinical Data Protection
 
-> ⚠️ **Clinical Disclaimer:** All AI-generated clinical outputs require human
-> review before patient-facing use. The system surfaces uncertainty and
-> confidence scores to support — never replace — clinical judgment.
+> ⚠️ **Clinical Data Notice:** This repository is PHI-free by design. All
+> `.gitignore` patterns explicitly block DICOM, HL7, FHIR dumps, patient data
+> directories, and clinical fixture paths. Never commit patient-identifiable
+> data.
 
----
+| Threat                  | Mitigation                                                                                    |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
+| PHI in git history      | `.gitignore` blocks `*.dicom`, `*.hl7`, `data/phi/`, `fixtures/phi/` at root                  |
+| Secret exposure         | `.env` blocked; `.env.example` only; `gha-creds-*.json` blocked; `.secrets/` blocked          |
+| ML model weight leakage | `*.pt`, `*.safetensors`, `*.gguf`, `*.pkl`, `checkpoints/` all gitignored                     |
+| Crown-jewel source leak | `packages/sentra/` gitignored — local dev only, never pushed                                  |
+| Agent policy bypass     | UNICOM policy engine enforces BLOCK/HUMAN_APPROVAL gates; no bypass without explicit override |
 
-## Operations & Deployment
+### Security Reporting
 
-### Local Stack
+Report vulnerabilities privately to: **drferdiiskandar@sentrahai.com**
 
-```bash
-cd infrastructure/docker
-docker-compose up -d
-```
-
-| Service      | Port | Purpose                     |
-| ------------ | ---- | --------------------------- |
-| PostgreSQL   | 5432 | Primary database + pgvector |
-| Kafka        | 9092 | Event streaming             |
-| Zookeeper    | 2181 | Kafka coordination          |
-| Redis        | 6379 | Cache layer                 |
-| LangFlow     | 7860 | AI inference engine         |
-| Orchestrator | 3001 | NestJS API + Swagger        |
-
-### CI/CD
-
-- GitHub Actions workflows under `.github/workflows/`
-- ArgoCD GitOps manifests under `infrastructure/argocd/`
-- Docker multi-stage builds with `APP_NAME` build argument
-
-### Observability
-
-| Tool             | Purpose                                               |
-| ---------------- | ----------------------------------------------------- |
-| Langfuse         | LLM observability and trace analysis                  |
-| Sentry           | Error tracking and performance monitoring             |
-| Kafka DLQ topics | Failure diagnostics (`diagnosis-dlq`, `referral-dlq`) |
-| Health endpoints | `/health` readiness and liveness probes               |
+See [SECURITY.md](SECURITY.md) for the full responsible disclosure process.
 
 ---
 
 ## Developer Guide
 
-### Commands
+### Workspace Commands
 
-```bash
-# Development
-pnpm dev                    # Start all development servers
-pnpm build                  # Build all packages
-pnpm test                   # Run all tests
-pnpm lint                   # Lint all workspaces
-pnpm format                 # Format with Prettier
-pnpm typecheck              # Typecheck entire workspace
+| Command                    | Description                                        |
+| -------------------------- | -------------------------------------------------- |
+| `pnpm install`             | Install all workspace dependencies                 |
+| `pnpm build`               | Build all packages (Turborepo, dependency-ordered) |
+| `pnpm test`                | Run all tests                                      |
+| `pnpm lint`                | Lint all packages                                  |
+| `pnpm typecheck`           | Type-check all packages                            |
+| `pnpm format`              | Format all files with Prettier                     |
+| `pnpm --filter <pkg> dev`  | Start a specific package in dev mode               |
+| `pnpm --filter <pkg> test` | Run tests for a specific package                   |
 
-# Database
-pnpm db:generate            # Generate Prisma client
-pnpm db:push                # Push schema to database
-pnpm db:migrate             # Run database migrations
-pnpm db:studio              # Open Prisma Studio
+### Adding a New Package
 
-# Governance
-pnpm governance:agents-check  # Agent health validation
-
-# CLI
-pnpm abyss init-task "Describe the task"
-pnpm abyss go .agent/sessions/YYYY-MM-DD --by "Chief"
-pnpm abyss status
-```
+1. Create directory under the appropriate namespace: `packages/unicom/`,
+   `packages/platform/`, `packages/shared/`
+2. Copy `packages/tooling/config-typescript/tsconfig.base.json` as your tsconfig
+   base
+3. Add `@the-abyss/config-eslint` and `@the-abyss/config-typescript` as
+   devDependencies
+4. Register in `pnpm-workspace.yaml` (already includes `packages/**`)
+5. Follow `AGENTS.md` boundary rules — do not invent new top-level namespaces
 
 ### Commit Convention
 
-Pre-commit hooks run via Husky + lint-staged:
+```
+<type>(<scope>): <subject>
 
-- TypeScript files: ESLint fix + Prettier
-- JavaScript files: Prettier
-- JSON/Markdown/YAML: Prettier
+Types: feat, fix, chore, docs, refactor, test, perf
+Scope: package name or area (unicom, platform, docs, etc.)
 
-### Adding a Package
+Example: feat(unicom-server): add room expiry TTL
+```
 
-Agents must not create packages directly under `packages/*`. Allowed locations:
+### Pull Request Checklist
 
-| Path                  | Purpose                              |
-| --------------------- | ------------------------------------ |
-| `packages/sentra/*`   | Proprietary crown-jewel capabilities |
-| `packages/unicom/*`   | Agent communication and coordination |
-| `packages/platform/*` | Runtime infrastructure               |
-| `packages/clinical/*` | Clinical knowledge and safety        |
-| `packages/shared/*`   | Low-level primitives                 |
-| `packages/tooling/*`  | Developer and build tooling          |
-
-If classification is unclear, stop and request Chief decision.
+- [ ] `pnpm build` passes without errors
+- [ ] `pnpm test` passes for changed packages
+- [ ] `pnpm typecheck` passes
+- [ ] No `.env` or PHI added to tracked files
+- [ ] AGENTS.md boundary rules respected
+- [ ] No new top-level directories without Chief approval
 
 ---
 
 ## Assumptions & Open Questions
 
-### Assumptions
-
-| Assumption                                            | Impact if Wrong                                                  |
-| ----------------------------------------------------- | ---------------------------------------------------------------- |
-| PostgreSQL is available for pgvector operations       | RAG pipeline fails silently; retrieval returns empty             |
-| Kafka broker is reachable for orchestrator            | Flow events are lost; saga state cannot progress                 |
-| Ollama is available for local embeddings              | Embedding falls back to remote provider; higher latency and cost |
-| ePuskesmas DOM structure is stable for Playwright RPA | EMR auto-fill breaks; requires DAS remmapping                    |
-| FHIR R4 resources conform to published profiles       | Sandi validation rejects valid clinical data                     |
+| Assumption                                                        | Impact if Wrong                                                      |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Community consumers clone the repo and use packages locally       | If npm-publish is needed, `"private": true` must be removed per pkg  |
+| PostgreSQL 16 is available in the deployment environment          | `@the-abyss/database` migrations will fail; needs adapter            |
+| LangFlow is optional — platform packages work without it          | `langflow-client` gracefully no-ops without a server                 |
+| `packages/sentra/` will always remain gitignored (local dev only) | Any accidental push would expose proprietary clinical AI source code |
+| Socket.IO v4 transport is stable for UNICOM server                | Breaking change in socket.io would require UNICOM protocol update    |
 
 ### Open Questions
 
-1. **Branch authority normalization** — Protected-branch rollout and
-   required-check mapping are not yet complete across local state, workflows,
-   and remote metadata.
-2. **Package naming normalization** — `packages/integration` carries legacy
-   package identity `@the-abyss/integration-bridge`; explicit decision pending.
-3. **Terraform retirement** — Legacy Terraform modules remain in-tree; timeline
-   for complete removal not yet committed.
-4. **UNICOM persistence** — Append-only Postgres scaffolding exists; production
-   persistence strategy needs final validation.
-5. **App boundary push scope** — Final list of which app packages are part of
-   the public monorepo push surface is still being normalized.
+1. Should UNICOM packages be published to npm registry (remove
+   `"private": true`)? Currently community must clone.
+2. Should `apps/` be re-included in a future milestone as separate public apps?
+3. What is the Sentra Professional licensing model for `packages/sentra/`?
+4. Should `@the-abyss/unicom-persistence` Postgres integration be promoted from
+   scaffold to full implementation?
+5. Are there community contributors who should be added to CODEOWNERS?
 
 ---
 
-## Related Documentation
+## Sentra Professional
 
-| Document          | Path                                                                                       | Description                                        |
-| ----------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------- |
-| Repository Rules  | [`AGENTS.md`](AGENTS.md)                                                                   | Supreme instruction set and architecture authority |
-| Active SSOT       | [`.agent/README.md`](.agent/README.md)                                                     | Governance memory and handoff surfaces             |
-| Contributor Guide | [`CONTRIBUTING.md`](CONTRIBUTING.md)                                                       | Workflow and change flow                           |
-| Security Policy   | [`SECURITY.md`](SECURITY.md)                                                               | Vulnerability reporting                            |
-| Docs Index        | [`docs/README.md`](docs/README.md)                                                         | Architecture, guides, specs                        |
-| UNICOM Spec       | [`docs/unicom/SENTRA_UNICOM_SPEC.md`](docs/unicom/SENTRA_UNICOM_SPEC.md)                   | UNICOM scope and protocol                          |
-| UNICOM Safety     | [`docs/unicom/UNICOM_SAFETY_BOUNDARY.md`](docs/unicom/UNICOM_SAFETY_BOUNDARY.md)           | Safety rules and boundaries                        |
-| ADR Index         | [`docs/adr/`](docs/adr/)                                                                   | Architectural decision records                     |
-| Smart Push Guide  | [`docs/guides/007-smart-push-and-merge.md`](docs/guides/007-smart-push-and-merge.md)       | Push and merge best practices                      |
-| Workspace Setup   | [`docs/guides/002-workspace-setup.md`](docs/guides/002-workspace-setup.md)                 | Workspace configuration                            |
-| App Governance    | [`apps/_governance/APP_BOUNDARY_PREFLIGHT.md`](apps/_governance/APP_BOUNDARY_PREFLIGHT.md) | Boundary classification preflight                  |
+The following packages are proprietary and not included in this public
+repository. They are developed and maintained by
+[Sentra Healthcare Solutions](mailto:drferdiiskandar@sentrahai.com).
+
+| Package           | Capability                                                            |
+| ----------------- | --------------------------------------------------------------------- |
+| `@sentra/nada`    | Clinical reasoning engine — 30+ patterns, NEWS2, traffic-light triage |
+| `@sentra/pustaka` | RAG engine — local-first, pgvector, citation grounding, evaluation    |
+| `@sentra/sandi`   | FHIR R4 interoperability — bundle validation, SatuSehat-ready export  |
+| `@sentra/bentara` | Access control — GO-gate, multi-tenant RBAC, audit logging            |
+| `@sentra/cermin`  | Embedding infrastructure — vector store abstraction, circuit breaker  |
+
+For licensing enquiries: **drferdiiskandar@sentrahai.com**
 
 ---
 
 ## License
 
-| Who You Are                 | License                                                                                                                  |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| **Community / open-source** | [Apache License 2.0](LICENSE) — use, modify, distribute freely with attribution and patent grant                         |
-| **Commercial use**          | Apache 2.0 — no separate commercial license required                                                                     |
-| **Trademark**               | "Sentra" and "The Abyss" names are not covered by the license; contact <drferdiiskandar@sentrahai.com> for trademark use |
+| Who You Are                    | License                                          |
+| ------------------------------ | ------------------------------------------------ |
+| Anyone using platform packages | [MIT](LICENSE) — free to use, modify, distribute |
+| Sentra Professional users      | Proprietary license — contact for terms          |
+| Contributors                   | Contributions accepted under MIT                 |
+
+See [LICENSE](LICENSE) for the full MIT license text.
+
+> **Note:** `packages/sentra/` (excluded from this repo) is proprietary and not
+> covered by this MIT license. Infrastructure packages (`packages/unicom/`,
+> `packages/platform/`, `packages/shared/`, `packages/tooling/`,
+> `packages/clinical/`) are MIT-licensed.
 
 ---
 
 <div align="center">
 
-**Version:** 0.0.1 **Last updated:** 2026-05-28
+**Version:** 0.0.1 · **Last Updated:** 2026-05-28
 
-_Engineering honesty in healthcare AI — one governed commit at a time._
+_The Abyss — open infrastructure for healthcare AI that takes engineering
+honesty seriously._
+
+**Contact:** <drferdiiskandar@sentrahai.com> · **Repo:**
+<https://github.com/drclassy/monorepo-abyss>
 
 </div>

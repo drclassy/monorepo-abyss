@@ -4,46 +4,37 @@
 # Global Owners
 * @drclassy
 
-# AI Steering & Governance
-.agents/ @drclassy
-.agents/AGENTS.md @drclassy
-.agents/MCP-CONFIG.json @drclassy
+# Governance & Agent SSOT
+.agent/ @drclassy
+AGENTS.md @drclassy
+CLAUDE.md @drclassy
 
-# CI/CD & Automation
+# CI/CD & Build
 .github/ @drclassy
 .github/workflows/ @drclassy
 turbo.json @drclassy
 pnpm-workspace.yaml @drclassy
 
-# Healthcare Domain (Strict Compliance)
-apps/healthcare/ @drclassy
-packages/sentra/sentra-sandi/ @drclassy
-packages/platform/database/ @drclassy
+# UNICOM Subsystem
+packages/unicom/ @drclassy
 
-# Academic Domain
-apps/academic/ @drclassy
+# Platform Services
+packages/platform/ @drclassy
+packages/clinical/ @drclassy
 
-# Internal Tools
-apps/internal/ @drclassy
-tooling/ @drclassy
+# Shared Infrastructure
+packages/shared/ @drclassy
+packages/tooling/ @drclassy
 
-# Incubator (R&D)
-apps/incubator/ @drclassy
-
-# Orchestrator & AI Flows
-platform/orchestrator/ @drclassy
+# AI Flows
 flows/ @drclassy
-packages/platform/langflow-client/ @drclassy
 
-# Shared Packages
-packages/shared/sentra-ui/ @drclassy
-packages/shared/shared-types/ @drclassy
-packages/sentra/sentra-cermin/ @drclassy
-packages/sentra/sentra-bentara/ @drclassy
-
-# Infrastructure
+# Infrastructure (Chief-only gates)
 infrastructure/ @drclassy
-docs/ @drclassy
 
 # Documentation
+docs/ @drclassy
 *.md @drclassy
+
+# Tooling
+tooling/ @drclassy

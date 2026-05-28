@@ -3,21 +3,54 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-28 (session: public push hygiene)
+Last updated: 2026-05-28 (session: public-push-hygiene)
 
 ## Snapshot
 
 - Repo: `D:\Devops\abyss-monorepo`
-- Branch: `master`
-- HEAD: current master tip after UNICOM foundation `74ddc226` and legacy
-  cleanup `fbe892a`
-- Active work: Sentra UNICOM foundation and active legacy cleanup are committed.
-  The remaining UNICOM follow-up is SSOT preservation plus any future Phase 7
-  agent integration planning.
-- Mode: LOCAL COMMITS COMPLETE, CONTINUITY REVIEW
-- Next: Preserve `.agent` continuity for the UNICOM milestone, then decide
-  whether to do archival doc relabeling or start Phase 7 agent integration
-  planning.
+- Branch: `codex/master-ci-gate`
+- GitHub target: `https://github.com/drclassy/monorepo-abyss`
+- Active work: Public push hygiene complete — awaiting Chief review and push.
+- Mode: STAGED FOR PUSH — all changes locally committed, not yet pushed
+- Next: Chief reviews changes, then pushes to `https://github.com/drclassy/monorepo-abyss`
+
+## Public Push Hygiene (2026-05-28)
+
+- `.roo/` folder deleted from filesystem (was already gitignored).
+- `apps/` fully excluded from git index (`git rm -r --cached apps/`).
+  - All applications now excluded; each lives in private repos.
+  - `.gitignore` simplified from complex selective rules to single `apps/` entry.
+- `packages/sentra/` (crown-jewel clinical AI engines) excluded from git index.
+  - Added `packages/sentra/` to `.gitignore`.
+  - Local development unaffected — files remain on filesystem.
+- `LICENSE` changed from Apache 2.0 → MIT.
+- Root `package.json` license field → `"MIT"`.
+- All 7 `packages/unicom/*/package.json` → `"license": "MIT"` added.
+- `.agent/archive/`, `.agent/hooks/`, `.agent/scripts/` excluded from index.
+- `.agent/reports/ssot-daily/`, `.roomodes` excluded from index.
+- `docs/handbook/`, `docs/architecture/`, `docs/superpowers/` removed from index and filesystem.
+- `CODEOWNERS` updated to remove stale apps/ and packages/sentra/ references.
+- `README.md` rewritten with sentra-readme skill — community positioning, MIT badge,
+  UNICOM feature focus, Sentra Professional tier disclosure.
+- All email references verified: `drferdiiskandar@sentrahai.com` is the canonical contact.
+
+## Sentra README Skill Install (2026-05-28)
+
+- Chief provided `C:\Users\drclassy\Downloads\files.zip` containing the
+  `sentra-readme` skill package.
+- Skill installed to `C:\Users\drclassy\.claude\skills\sentra-readme\`:
+  - `SKILL.md` — main skill content (positioning-driven README master pattern)
+  - `references/patterns.md` — component snippet library (badges, Mermaid, tables)
+  - `references/template.md` — ready-to-fill README template
+- `~/.claude/skills/` is auto-scanned by Claude Code — no `settings.json`
+  registration required.
+- Skill confirmed active in session; visible as `sentra-readme` in skill listing.
+- Plugin cache copy also placed at
+  `C:\Users\drclassy\.claude\plugins\cache\local\sentra-readme\1.0.0\`
+  (redundant — `skills/` dir is the authoritative copy).
+- Mode: IDLE — no repo code was changed; this session was tooling/skills only.
+- Next: Continue with prior agenda — Phase 7 agent integration planning or
+  archival doc relabeling.
 
 ## Public Push Hygiene (2026-05-28)
 

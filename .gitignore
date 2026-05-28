@@ -1,18 +1,18 @@
-# ========================================
+﻿# ========================================
 # ABYSS-MONOREPO — ROOT .gitignore
 # Generated: 2026-04-15 · Audit: 2026-04-15-audit-clearance
-# Owner: Dr. Ferdi Iskandar (Avvcenna+)
+# Owner: Dr. Ferdi Iskandar (drClassy)
 # ========================================
 #
-# GOLDEN RULE: core `.agent/` governance docs, `CLAUDE.md`, `pnpm-lock.yaml`,
-#              shared `.cursor/` project config (rules, agents, hooks
-#              entrypoints), `.cursorignore`, and `mcp.json.example` are
-#              TRACKED BY DESIGN. Operational agent logs, reports, workflow
-#              libraries, generated repo-wiki output, screenshots, and local
-#              planning artifacts stay LOCAL ONLY. See the load-bearing
-#              negations at the end. Local-only: `.mcp.json` (secrets),
-#              `.claude/`, `.qoder/`, `.agent/sessions/`, `.agent/reports/`,
-#              `.agent/workflows/`, and `docs/superpowers/`.
+# GOLDEN RULE: core `.agent/` governance docs (HANDOFF, CONTEXT, DECISIONS,
+#              PROGRESS, README), `CLAUDE.md`, `pnpm-lock.yaml`, shared `.cursor/`
+#              project config, `.cursorignore`, and `mcp.json.example` are
+#              TRACKED BY DESIGN. apps/ and packages/sentra/ are excluded
+#              (private/proprietary). Operational agent logs, archive, hooks,
+#              scripts, and local planning artifacts stay LOCAL ONLY.
+#              Local-only: `.mcp.json`, `.claude/`, `.agent/archive/`,
+#              `.agent/hooks/`, `.agent/sessions/`, `.agent/reports/`,
+#              `docs/superpowers/`, `.roomodes`.
 # ========================================
 
 # ---- SECRETS & ENV (NEVER COMMIT) ----
@@ -232,6 +232,8 @@ flows/.langflow/
 .github/instructions/codacy.instructions.md
 .mcp.json
 docs/superpowers/
+docs/handbook/
+docs/architecture/
 
 # ---- AGENT OPERATIONAL SSOT ----
 # .agent/ is protected operational state, not cache or junk.
@@ -243,61 +245,13 @@ docs/superpowers/
 .agent/reports/*.log
 
 # ---- CROWN JEWEL — packages/sentra ----
-# Source code is tracked. These runtime / derived artifacts must not be pushed.
-packages/sentra/**/dist/
-packages/sentra/**/*.tsbuildinfo
-packages/sentra/**/coverage/
-# If any sentra package embeds local model weights or PHI fixtures, block them:
-packages/sentra/**/models/
-packages/sentra/**/data/embedding-artifacts/
-packages/sentra/**/data/retrieval-evaluation/latest-run.json
-packages/sentra/**/data/retrieval-evaluation/runs/
-packages/sentra/**/data/phi/
-packages/sentra/**/fixtures/phi/
+# Proprietary clinical AI engines — excluded from public push, local dev only.
+packages/sentra/
 
-# ---- POLYREPO SPLIT — apps/ MIGRATED TO SEPARATE REPOS ----
-# apps/ is excluded from abyss-core. Each app lives in its own repo.
-# See .agent/references/ARCHITECTURE.md §8 for the polyrepo plan.
+# ---- APPS — ALL PRIVATE, NOT FOR PUBLIC PUSH ----
+# All applications are excluded from this public platform monorepo.
+# Each app lives in its own private repo.
 apps/
-!apps/
-apps/*
-!apps/AGENTS.md
-!apps/_governance/
-!apps/_governance/**
-!apps/corporate/
-apps/corporate/*
-!apps/corporate/ferdiiskandar/
-!apps/corporate/ferdiiskandar/**
-apps/corporate/ferdiiskandar/node_modules/
-apps/corporate/ferdiiskandar/.next/
-apps/corporate/ferdiiskandar/.turbo/
-apps/corporate/ferdiiskandar/.abyss-backup/
-apps/corporate/ferdiiskandar/.git.bak-standalone/
-apps/corporate/ferdiiskandar/.editorconfig
-apps/corporate/ferdiiskandar/.gitattributes
-apps/corporate/ferdiiskandar/.github/
-
-!apps/internal/
-apps/internal/*
-!apps/internal/unicom/
-!apps/internal/unicom/**
-apps/internal/unicom/node_modules/
-apps/internal/unicom/.next/
-apps/internal/unicom/.turbo/
-apps/internal/unicom/tsconfig.tsbuildinfo
-apps/corporate/ferdiiskandar/.gitignore
-apps/corporate/ferdiiskandar/.prettierrc
-apps/corporate/ferdiiskandar/AGENTS.md
-apps/corporate/ferdiiskandar/CHANGELOG.md
-apps/corporate/ferdiiskandar/CODE_OF_CONDUCT.md
-apps/corporate/ferdiiskandar/COMMIT_CONVENTION.md
-apps/corporate/ferdiiskandar/CONTRIBUTING.md
-apps/corporate/ferdiiskandar/LICENSE
-apps/corporate/ferdiiskandar/REVIEW_REPORT.md
-apps/corporate/ferdiiskandar/SECURITY.md
-apps/corporate/ferdiiskandar/docs/architecture.md
-apps/corporate/ferdiiskandar/docs/superpowers/
-apps/corporate/ferdiiskandar/pnpm-lock.yaml
 
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
@@ -305,10 +259,7 @@ apps/corporate/ferdiiskandar/pnpm-lock.yaml
 # KEPT: core `.agent/` governance memory + `CLAUDE.md` (Claude Code project instructions)
 !.agent/
 !.agent/**
-!.agent/hooks/
-!.agent/hooks/**
 !pnpm-lock.yaml
-apps/corporate/ferdiiskandar/pnpm-lock.yaml
 
 # KEPT: Cursor project rules, subagents, hooks — team parity (cursor.com/docs)
 !.cursor/README.md
@@ -324,16 +275,6 @@ apps/corporate/ferdiiskandar/pnpm-lock.yaml
 !.cursor/hooks/autofix-loop.mjs
 .cursor/hooks/edit-log.txt
 .cursor/hooks/session-log.txt
-
-# Keep healthcare app boundary manifests discoverable without exposing migrated app repos.
-!apps/healthcare/
-apps/healthcare/**
-!apps/healthcare/primary-healthcare/
-!apps/healthcare/primary-healthcare/app.boundary.json
-!apps/healthcare/sentra-main/
-!apps/healthcare/sentra-main/app.boundary.json
-!apps/healthcare/sidelab-project/
-!apps/healthcare/sidelab-project/app.boundary.json
 
 gha-creds-*.json
 
@@ -353,7 +294,11 @@ docs/handbook/classy-qoder.html
 # ---- RE-IGNORE GENERATED LOCAL AGENT / CURSOR ARTIFACTS ----
 # Curated SSOT files stay tracked, but these generated/noisy outputs remain local-only
 # unless explicitly force-added for a one-off archival reason.
+.agent/archive/
+.agent/hooks/
+.agent/scripts/
 .agent/DIGEST.md
+.roomodes
 .agent/reports/ssot-daily/*.md
 .agent/reports/ssot-daily/*-backup/
 .agent/reports/ssot-suggestions/
