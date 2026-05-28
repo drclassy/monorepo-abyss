@@ -136,6 +136,10 @@ coverage/
 test-results/
 playwright-report/
 
+# ---- JUPYTER ----
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
 # ---- DATABASE & LOCAL STORES ----
 *.sqlite
 *.sqlite3
@@ -147,11 +151,66 @@ vector-store/local/
 chroma-data/
 pinecone-cache/
 embeddings-cache/
+# Vector index files — can be hundreds of MB, regenerated from source
+*.faiss
+*.index
+*.annoy
+*.hnsw
 
-# ---- LOCAL KNOWLEDGE BASES ----
+# ---- LOCAL KNOWLEDGE BASES & PHI / CLINICAL DATA ----
 # Raw medical documents are processed locally by Vertex pipelines.
-# They must not be tracked in Git.
+# They must never be tracked in Git.
 repository/medical-raw/
+# DICOM, HL7, FHIR export dumps — always PHI
+*.dicom
+*.dcm
+*.hl7
+*.hl7v2
+*.fhir.json
+# Clinical data directories — runtime only, never commit
+data/phi/
+data/patient/
+data/clinical-raw/
+data/clinical/
+fixtures/phi/
+tests/fixtures/phi/
+# Large dataset/training files — use DVC or cloud storage
+*.parquet
+*.jsonl
+# ML training data dumps — never commit raw patient-derived data
+training-data/
+dataset/
+datasets/
+
+# ---- AI / ML MODEL WEIGHTS (never commit — use model registry or DVC) ----
+# PyTorch
+*.pt
+*.pth
+*.bin
+# ONNX
+*.onnx
+# Hugging Face / Safetensors
+*.safetensors
+# Keras / TF
+*.h5
+*.hdf5
+*.keras
+# scikit-learn / general
+*.pkl
+*.pickle
+*.joblib
+# NumPy arrays
+*.npy
+*.npz
+# Model directories
+models/weights/
+models/checkpoints/
+checkpoints/
+*.ckpt
+# LLM quantised / GGUF local models
+*.gguf
+*.ggml
+*.bin.gz
 
 # ---- INFRASTRUCTURE & DOCKER ----
 docker-compose.override.yml
@@ -176,6 +235,19 @@ docs/superpowers/
 # Track the curated SSOT. Only generated local helper output stays ignored.
 .agent/reports/ssot-suggestions/
 .agent/reports/digest/
+.agent/reports/portal-verify-status.json
+.agent/reports/*.json
+.agent/reports/*.log
+
+# ---- CROWN JEWEL — packages/sentra ----
+# Source code is tracked. These runtime / derived artifacts must not be pushed.
+packages/sentra/**/dist/
+packages/sentra/**/*.tsbuildinfo
+packages/sentra/**/coverage/
+# If any sentra package embeds local model weights or PHI fixtures, block them:
+packages/sentra/**/models/
+packages/sentra/**/data/phi/
+packages/sentra/**/fixtures/phi/
 
 # ---- POLYREPO SPLIT — apps/ MIGRATED TO SEPARATE REPOS ----
 # apps/ is excluded from abyss-core. Each app lives in its own repo.
@@ -288,6 +360,23 @@ tooling/prompt-engine/*.vsix
 .agent/sessions/2026-05-19.md
 .agent/sessions/2026-05-20.md
 .agent/sessions/2026-05-21.md
+.agent/sessions/2026-05-22.md
+.agent/sessions/2026-05-23.md
+.agent/sessions/2026-05-24.md
+.agent/sessions/2026-05-25.md
+.agent/sessions/2026-05-26.md
+.agent/sessions/2026-05-27.md
+.agent/sessions/2026-05-28.md
+.agent/sessions/2026-05-29.md
+.agent/sessions/2026-05-30.md
+.agent/sessions/2026-05-31.md
+.agent/sessions/2026-06-*.md
+.agent/sessions/2026-07-*.md
+.agent/sessions/2026-08-*.md
+.agent/sessions/2026-09-*.md
+.agent/sessions/2026-10-*.md
+.agent/sessions/2026-11-*.md
+.agent/sessions/2026-12-*.md
 .cursor/rules/kluster-code-verify.mdc
 
 # Kimi Proxy (BYOK)
