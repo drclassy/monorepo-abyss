@@ -485,7 +485,46 @@ forbidden.
 
 ## License
 
-**UNLICENSED** — all rights reserved by dr. Ferdi Iskandar / Sentra AI.
+This project uses a **dual-license model**:
+
+### Community Edition (Free)
+
+The standalone UNICOM subsystem at
+[github.com/drclassy/unicom](https://github.com/drclassy/unicom) is released
+under the **MIT License** for community, open-source, and personal use.
+
+```
+MIT License
+
+Copyright (c) 2026 dr. Ferdi Iskandar / Sentra AI
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+### Commercial / Enterprise Edition
+
+The version embedded inside the **Sentra Human-AI Operating System**
+(`apps/internal/unicom` in this monorepo) and all proprietary Sentra
+integrations remain **UNLICENSED** — all rights reserved by dr. Ferdi Iskandar /
+Sentra AI.
+
+For commercial licensing enquiries, contact **claudesy.id@gmail.com**.
 
 ---
 
