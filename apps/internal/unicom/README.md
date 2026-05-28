@@ -77,13 +77,13 @@ NEXT_PUBLIC_UNICOM_BASE_URL=http://127.0.0.1:4327
 
 ## Connecting an Agent (SDK)
 
-Install the agent SDK into your own project:
+> **Note:** All packages are `private` and not published to npm. The SDK must be
+> used **from within the cloned workspace**. Add your agent script inside the
+> repo and reference the SDK via the workspace protocol.
 
-```bash
-pnpm add @the-abyss/unicom-agent-sdk
-```
+### Step 1 — create your agent script inside the repo
 
-Minimal agent example:
+Create a file anywhere inside the cloned workspace, e.g. `scripts/my-agent.ts`:
 
 ```ts
 import { createAgent } from '@the-abyss/unicom-agent-sdk'
@@ -96,10 +96,10 @@ const agent = createAgent({
   baseUrl: 'http://127.0.0.1:4327',
 })
 
-// Join a room
-await agent.join('room-id')
+// Join an existing room (get the room ID from the Chief Cockpit)
+await agent.join('your-room-id')
 
-// Emit a low-risk proposal
+// Emit a low-risk proposal — goes straight through in approval-gated mode
 await agent.emit({
   type: 'agent.proposal',
   payload: {
@@ -110,7 +110,7 @@ await agent.emit({
   requiresApproval: false,
 })
 
-// Submit evidence before a completion claim
+// Always emit evidence before a completion claim
 await agent.emit({
   type: 'agent.evidence',
   payload: {
@@ -122,8 +122,27 @@ await agent.emit({
 })
 ```
 
-High-risk actions (`risk: 'high' | 'critical'`) will automatically pause for
-Chief approval in `approval-gated` mode before the event is appended.
+### Step 2 — run with tsx (already installed in the workspace)
+
+```bash
+pnpm dlx tsx scripts/my-agent.ts
+```
+
+### How risk gating works
+
+| Risk level | Default behaviour in `approval-gated` mode                 |
+| ---------- | ---------------------------------------------------------- |
+| `low`      | Appended immediately.                                      |
+| `medium`   | Appended immediately.                                      |
+| `high`     | Held in pending queue — Chief must approve in the Cockpit. |
+| `critical` | Held in pending queue — Chief must approve in the Cockpit. |
+
+### Data persistence note
+
+The server uses an **in-memory store** by default. All rooms and events are
+cleared when the server restarts. For durable storage, configure the PostgreSQL
+adapter in `packages/unicom/persistence` and point the server to your database
+via environment variables.
 
 ---
 
