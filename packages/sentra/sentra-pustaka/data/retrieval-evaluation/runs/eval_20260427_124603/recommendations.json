@@ -1,7 +1,0 @@
-[
-  {
-    "type": "ACTION",
-    "message": "Knowledge base is NOT ready for AADI. No queries evaluated",
-    "action": "Resolve all blocking issues before proceeding to AADI integration."
-  }
-]

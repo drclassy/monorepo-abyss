@@ -14,7 +14,7 @@
 
 1. `docs/specs/aadi-v2/004-2026-04-27-aadi-v2-design.md`
 2. `docs/specs/aadi-v2/005-2026-04-27-aadi-v2-feature-coverage-matrix.md`
-3. `.agent/FEATURE.md`
+3. `.agent/archive/references/FEATURE.md`
 4. `.agent/HANDOFF.md`
 5. `AGENTS.md`
 
@@ -32,7 +32,7 @@
 
 Before starting any task in this plan:
 
-- [ ] Open `.agent/FEATURE.md`
+- [ ] Open `.agent/archive/references/FEATURE.md`
 - [ ] Open `docs/specs/aadi-v2/005-2026-04-27-aadi-v2-feature-coverage-matrix.md`
 - [ ] Confirm affected features have mapping rows
 - [ ] Update the matrix first if mapping is incomplete

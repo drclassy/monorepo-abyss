@@ -1,7 +1,10 @@
 # Data directories — contain PDFs and generated artifacts (not committed)
 data/raw-pdf/
+data/embedding-artifacts/
 data/knowledge-artifacts/
 data/knowledge-registry/
+data/retrieval-evaluation/latest-run.json
+data/retrieval-evaluation/runs/
 
 # Keep directory structure
 !data/raw-pdf/.gitkeep

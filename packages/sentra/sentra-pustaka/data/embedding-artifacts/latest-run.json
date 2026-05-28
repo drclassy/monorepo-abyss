@@ -1,9 +1,0 @@
-{
-  "embedding_run_id": "emb_20260521_060519",
-  "run_dir": "runs\\emb_20260521_060519",
-  "completed_at": "2026-05-21T06:05:19.750Z",
-  "status": "completed",
-  "write_mode": "dry_run",
-  "embedded_documents": 0,
-  "embedded_chunks": 0
-}

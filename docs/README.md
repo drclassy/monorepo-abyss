@@ -6,8 +6,9 @@ notes and agent session records belong under `.agent/`, not `docs/`.
 ## Repo-wide entrypoints
 
 - Root repo overview: `README.md`
-- Current executive repo snapshot: `SENTRA_CURRENT_STATE.md`
-- Current audit baseline: `ABYSS_CURRENT_STATUS_REPORT.md`
+- Repo operating contract: `AGENTS.md`
+- Active continuity state: `.agent/HANDOFF.md`
+- Current progress and decisions: `.agent/PROGRESS.md` and `.agent/DECISIONS.md`
 
 ## Active folders
 
@@ -23,6 +24,7 @@ notes and agent session records belong under `.agent/`, not `docs/`.
 | `docs/specs/aadi-v2/` | Numbered AADI V2 and FHIR modernization specs. |
 | `docs/specs/clinical-trajectory-v1/` | Clinical Trajectory source documents retained as product context. |
 | `docs/templates/` | Reusable templates for new guides, specs, and handoff documents. |
+| `docs/unicom/` | Active Sentra UNICOM subsystem docs for scope, protocol, safety, and agent contracts. |
 
 Other retained folders currently present on disk:
 
@@ -44,6 +46,7 @@ Other retained folders currently present on disk:
 - New operational or onboarding guides: `docs/guides/`
 - New canonical specifications: `docs/specs/`
 - New reusable templates: `docs/templates/`
+- New UNICOM subsystem documentation: `docs/unicom/`
 
 If a document is only useful as historical evidence after a task closes, keep it
 under `.agent/` instead of the active docs tree.
@@ -53,3 +56,10 @@ under `.agent/` instead of the active docs tree.
 Agent-specific execution notes and temporary planning bundles belong under
 `.agent/`, unless they are promoted into a numbered guide, spec, or
 implementation plan.
+
+## Recommended starting points
+
+- `docs/guides/002-workspace-setup.md` for local workspace setup
+- `docs/guides/003-code-quality.md` for validation expectations
+- `docs/guides/007-smart-push-and-merge.md` for push and merge readiness
+- `docs/unicom/SENTRA_UNICOM_SPEC.md` for the active UNICOM subsystem

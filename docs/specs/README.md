@@ -3,7 +3,8 @@
 These files are the active canonical specifications in the root `docs/specs/`
 surface.
 
-For repo-wide status, start at `README.md` and `SENTRA_CURRENT_STATE.md` before drilling into individual specs.
+For repo-wide status, start at `README.md`, `.agent/HANDOFF.md`, and
+`.agent/PROGRESS.md` before drilling into individual specs.
 
 ## Current specs
 
@@ -15,6 +16,8 @@ For repo-wide status, start at `README.md` and `SENTRA_CURRENT_STATE.md` before 
 - `docs/specs/006-context-capsule-v1.md` defines the Context Capsule v1 specification.
 - `docs/specs/007-unicom-hub-v1.md` is the root Unicom Hub v1 specification entrypoint.
 - `docs/specs/008-smart-push-reliability-gate-v1.md` defines the ABYSS smart local push and protected-branch merge gate model.
+- `docs/unicom/` is the active Sentra UNICOM subsystem documentation surface;
+  legacy Unicom Hub v1 specs are retained as historical context.
 - `docs/specs/aadi-v2/` contains numbered AADI V2 and FHIR modernization specs.
 - `docs/specs/clinical-trajectory-v1/` contains numbered Clinical Trajectory source documents.
 - `docs/specs/007-unicom-hub-v1/` contains retained implementation artifacts for the Unicom Hub v1 workstream.

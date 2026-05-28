@@ -2,8 +2,8 @@
 
 Numbered source documents for the Clinical Trajectory product and modeling workstream.
 
-Untuk baseline status repo, lihat `README.md` dan `SENTRA_CURRENT_STATE.md`
-terlebih dahulu sebelum masuk ke detail workstream ini.
+Untuk baseline status repo, lihat `README.md`, `.agent/HANDOFF.md`, dan
+`.agent/PROGRESS.md` terlebih dahulu sebelum masuk ke detail workstream ini.
 
 ## Current documents
 

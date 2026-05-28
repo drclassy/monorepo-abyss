@@ -2,8 +2,8 @@
 
 Dokumen ini adalah pintu masuk tunggal untuk seluruh materi `AADI V2` di repo ini.
 
-Untuk baseline status repo, lihat `README.md` dan `SENTRA_CURRENT_STATE.md`
-terlebih dahulu sebelum masuk ke detail workstream ini.
+Untuk baseline status repo, lihat `README.md`, `.agent/HANDOFF.md`, dan
+`.agent/PROGRESS.md` terlebih dahulu sebelum masuk ke detail workstream ini.
 
 Tujuannya:
 - memudahkan Chief membuka seluruh konteks dari satu file
@@ -39,7 +39,7 @@ Urutan baca yang direkomendasikan:
 12. `docs/specs/aadi-v2/013-2026-04-29-fhir-engine-resource-validation-claude-instructions.md`
 13. `docs/specs/aadi-v2/014-2026-04-29-aadi-v2-cds-hooks-formalization.md`
 14. `docs/guides/implementation-plans/009-2026-04-29-cds-hooks-formalization-implementation.md`
-15. `.agent/FEATURE.md`
+15. `.agent/archive/references/FEATURE.md`
 
 Kalau hanya butuh ringkasannya:
 
@@ -246,7 +246,7 @@ Kalau hanya butuh ringkasannya:
 
 ### 16. Master Inventory
 
-- File: `.agent/FEATURE.md`
+- File: `.agent/archive/references/FEATURE.md`
 - Fungsi:
   - inventaris feature existing dari Dashboard dan Assist
   - sumber utama untuk memastikan tidak ada capability lama yang hilang
@@ -290,7 +290,7 @@ Sebelum implementasi:
 
 1. baca `docs/specs/aadi-v2/004-2026-04-27-aadi-v2-design.md`
 2. baca `docs/specs/aadi-v2/005-2026-04-27-aadi-v2-feature-coverage-matrix.md`
-3. cek `.agent/FEATURE.md`
+3. cek `.agent/archive/references/FEATURE.md`
 4. baru buka `docs/guides/implementation-plans/006-2026-04-27-aadi-v2-implementation.md`
 
 Saat implementasi:

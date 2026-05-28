@@ -1,7 +1,0 @@
-[
-  {
-    "type": "INFO",
-    "message": "DRY_RUN: No vector queries executed. Results are structural placeholders only.",
-    "action": "Run with writeMode=eval and a database client to generate retrieval quality metrics."
-  }
-]

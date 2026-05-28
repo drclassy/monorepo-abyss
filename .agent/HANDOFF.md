@@ -3,7 +3,7 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-27 (session: UNICOM milestone preserved in SSOT)
+Last updated: 2026-05-28 (session: public push hygiene)
 
 ## Snapshot
 
@@ -18,6 +18,25 @@ Last updated: 2026-05-27 (session: UNICOM milestone preserved in SSOT)
 - Next: Preserve `.agent` continuity for the UNICOM milestone, then decide
   whether to do archival doc relabeling or start Phase 7 agent integration
   planning.
+
+## Public Push Hygiene (2026-05-28)
+
+- Current push-prep task removed local AI tool surfaces from the Git index with
+  `git rm --cached` while preserving files on disk:
+  - `.qoder/**`
+  - `.qoderignore`
+  - `.claude/**`
+- Root `.gitignore` now keeps Qoder repo-wiki output, local screenshots,
+  scratch query scripts, `.qoder/`, `.qoderignore`, `.claude/`, and local
+  `.vscode/settings.json` / `.vscode/tasks.json` out of default push scope.
+- Generated crown-jewel runtime artifacts under
+  `packages/sentra/sentra-pustaka/data/embedding-artifacts/**` and
+  `packages/sentra/sentra-pustaka/data/retrieval-evaluation/runs/**` were
+  removed from the index only; source, tests, and curated eval query fixtures
+  remain tracked.
+- README and docs indexes were refreshed to use existing `.agent` status files,
+  include the active `docs/unicom/**` subsystem, and describe `apps/` as a
+  curated boundary rather than a bulk public app surface.
 
 ## Sentra UNICOM Foundation (2026-05-27)
 

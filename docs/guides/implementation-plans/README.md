@@ -2,8 +2,8 @@
 
 Numbered implementation plans retained because code, tests, or active workstreams still reference them.
 
-Untuk baseline status repo, lihat `README.md` dan `SENTRA_CURRENT_STATE.md`
-terlebih dahulu sebelum masuk ke plan per-workstream.
+Untuk baseline status repo, lihat `README.md`, `.agent/HANDOFF.md`, dan
+`.agent/PROGRESS.md` terlebih dahulu sebelum masuk ke plan per-workstream.
 
 ## Current plans
 

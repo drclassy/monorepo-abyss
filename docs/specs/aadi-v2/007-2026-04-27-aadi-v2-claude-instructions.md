@@ -65,7 +65,7 @@ Sebelum menulis atau mengubah kode apa pun, baca dalam urutan ini:
 8. `docs/specs/aadi-v2/004-2026-04-27-aadi-v2-design.md`
 9. `docs/specs/aadi-v2/005-2026-04-27-aadi-v2-feature-coverage-matrix.md`
 10. `docs/guides/implementation-plans/006-2026-04-27-aadi-v2-implementation.md`
-11. `.agent/FEATURE.md`
+11. `.agent/archive/references/FEATURE.md`
 
 Kalau belum membaca semuanya, jangan mulai implementasi.
 
@@ -80,7 +80,7 @@ Untuk pekerjaan AADI V2, anggap ini sebagai truth hierarchy:
 3. `docs/specs/aadi-v2/004-2026-04-27-aadi-v2-design.md`
 4. `docs/specs/aadi-v2/005-2026-04-27-aadi-v2-feature-coverage-matrix.md`
 5. `docs/guides/implementation-plans/006-2026-04-27-aadi-v2-implementation.md`
-6. `.agent/FEATURE.md`
+6. `.agent/archive/references/FEATURE.md`
 
 Kalau ada implementasi lokal yang tampak bertentangan dengan arah AADI V2,
 jangan berimprovisasi diam-diam. Cocokkan dulu dengan hierarchy di atas.
@@ -286,7 +286,7 @@ Read first:
 8. docs/specs/aadi-v2/004-2026-04-27-aadi-v2-design.md
 9. docs/specs/aadi-v2/005-2026-04-27-aadi-v2-feature-coverage-matrix.md
 10. docs/guides/implementation-plans/006-2026-04-27-aadi-v2-implementation.md
-11. .agent/FEATURE.md
+11. .agent/archive/references/FEATURE.md
 
 Rules:
 - SYMPHONY is the only canonical reasoning engine.

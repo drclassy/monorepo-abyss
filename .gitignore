@@ -8,9 +8,10 @@
 #              shared `.cursor/` project config (rules, agents, hooks
 #              entrypoints), `.cursorignore`, and `mcp.json.example` are
 #              TRACKED BY DESIGN. Operational agent logs, reports, workflow
-#              libraries, and local planning artifacts stay LOCAL ONLY. See the
-#              load-bearing negations at the end. Local-only: `.mcp.json`
-#              (secrets), `.claude/`, `.agent/sessions/`, `.agent/reports/`,
+#              libraries, generated repo-wiki output, screenshots, and local
+#              planning artifacts stay LOCAL ONLY. See the load-bearing
+#              negations at the end. Local-only: `.mcp.json` (secrets),
+#              `.claude/`, `.qoder/`, `.agent/sessions/`, `.agent/reports/`,
 #              `.agent/workflows/`, and `docs/superpowers/`.
 # ========================================
 
@@ -41,6 +42,8 @@ gcp-*.json
 # ---- AI TOOL CONFIG — NOT PUSHED (tool-specific, local) ----
 # (.agent/ and CLAUDE.md are TRACKED — see exemptions at bottom)
 .claude/
+.qoder/
+.qoderignore
 # Ignore all of .cursor/ then re-include shared paths at bottom (negations cannot
 # pierce a parent .cursor/ rule — use .cursor/** + explicit !.cursor/...).
 .cursor/**
@@ -246,6 +249,9 @@ packages/sentra/**/*.tsbuildinfo
 packages/sentra/**/coverage/
 # If any sentra package embeds local model weights or PHI fixtures, block them:
 packages/sentra/**/models/
+packages/sentra/**/data/embedding-artifacts/
+packages/sentra/**/data/retrieval-evaluation/latest-run.json
+packages/sentra/**/data/retrieval-evaluation/runs/
 packages/sentra/**/data/phi/
 packages/sentra/**/fixtures/phi/
 
@@ -301,15 +307,8 @@ apps/corporate/ferdiiskandar/pnpm-lock.yaml
 !.agent/**
 !.agent/hooks/
 !.agent/hooks/**
-!.codex/
-.codex/*
-!.codex/hooks.json
 !pnpm-lock.yaml
 apps/corporate/ferdiiskandar/pnpm-lock.yaml
-!.claude/
-.claude/**
-!.claude/commands/
-!.claude/commands/class-postcode.md
 
 # KEPT: Cursor project rules, subagents, hooks — team parity (cursor.com/docs)
 !.cursor/README.md
@@ -346,6 +345,10 @@ gha-creds-*.json
 conductor/
 tooling/handbook/*.vsix
 tooling/prompt-engine/*.vsix
+_query_rules_db.js
+qoder-*.png
+docs/guides/008-qoder-codex-workflow.md
+docs/handbook/classy-qoder.html
 
 # ---- RE-IGNORE GENERATED LOCAL AGENT / CURSOR ARTIFACTS ----
 # Curated SSOT files stay tracked, but these generated/noisy outputs remain local-only

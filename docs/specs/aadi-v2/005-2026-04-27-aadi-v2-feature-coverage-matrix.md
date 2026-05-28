@@ -3,7 +3,7 @@
 **Date:** 2026-04-27  
 **Status:** Draft working matrix for sprint execution  
 **Owner:** Codex/Dexton  
-**Primary source of truth:** `.agent/FEATURE.md`  
+**Primary source of truth:** `.agent/archive/references/FEATURE.md`
 **Companion spec:** `docs/specs/aadi-v2/004-2026-04-27-aadi-v2-design.md`
 
 ---
@@ -142,12 +142,12 @@ features that must be honored when AADI V2 is implemented.
 
 | Feature group | Current source | AADI V2 expectation | Decision | Target module | Sprint | Proof | Status |
 |---|---|---|---|---|---|---|---|
-| CDSS Engine V2 orchestration | `.agent/FEATURE.md` section 1.1 | Keep as consumer/orchestration context, but native core authority shifts into SYMPHONY | `CONSUMER_ONLY` | Dashboard integration layer | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
-| Knowledge base context builder | `.agent/FEATURE.md` section 1.1 | May remain consumer-side retrieval/context helper, but cannot become final reasoning authority | `CONSUMER_ONLY` | Dashboard bridge | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
-| Learning loop / quality metrics | `.agent/FEATURE.md:1116` | Preserve as downstream observability and feedback surface | `CONSUMER_ONLY` | Dashboard/observability | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
-| Emergency override layer | `.agent/FEATURE.md:1130` | Keep working at host/UI layer; AADI V2 must continue emitting signals needed to trigger it | `CONSUMER_ONLY` | Dashboard UI bridge | Sprint 4 | `spec: FEATURE.md` | `LOCKED` |
-| Intelligence layer (Socket.IO / Langfuse / Sentry) | `.agent/FEATURE.md:1129` | Preserve as infrastructure around SYMPHONY outputs | `CONSUMER_ONLY` | Dashboard instrumentation | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
-| EMR visualization / chart layer | `.agent/FEATURE.md` sections 1.7, 1.11 | Continue consuming AADI V2 outputs, not replaced by core logic work | `CONSUMER_ONLY` | Dashboard UI bridge | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
+| CDSS Engine V2 orchestration | `.agent/archive/references/FEATURE.md` section 1.1 | Keep as consumer/orchestration context, but native core authority shifts into SYMPHONY | `CONSUMER_ONLY` | Dashboard integration layer | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
+| Knowledge base context builder | `.agent/archive/references/FEATURE.md` section 1.1 | May remain consumer-side retrieval/context helper, but cannot become final reasoning authority | `CONSUMER_ONLY` | Dashboard bridge | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
+| Learning loop / quality metrics | `.agent/archive/references/FEATURE.md:1116` | Preserve as downstream observability and feedback surface | `CONSUMER_ONLY` | Dashboard/observability | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
+| Emergency override layer | `.agent/archive/references/FEATURE.md:1130` | Keep working at host/UI layer; AADI V2 must continue emitting signals needed to trigger it | `CONSUMER_ONLY` | Dashboard UI bridge | Sprint 4 | `spec: FEATURE.md` | `LOCKED` |
+| Intelligence layer (Socket.IO / Langfuse / Sentry) | `.agent/archive/references/FEATURE.md:1129` | Preserve as infrastructure around SYMPHONY outputs | `CONSUMER_ONLY` | Dashboard instrumentation | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
+| EMR visualization / chart layer | `.agent/archive/references/FEATURE.md` sections 1.7, 1.11 | Continue consuming AADI V2 outputs, not replaced by core logic work | `CONSUMER_ONLY` | Dashboard UI bridge | Sprint 4 | `spec: FEATURE.md` | `PLANNED` |
 
 ---
 
@@ -225,7 +225,7 @@ This checklist must be copied into every implementation plan and sprint closeout
 
 ### Before Starting a Sprint
 
-- [ ] Identify all affected features from `.agent/FEATURE.md`
+- [ ] Identify all affected features from `.agent/archive/references/FEATURE.md`
 - [ ] Map each affected feature in this matrix
 - [ ] Assign `Decision`, `Target module`, `Sprint`, `Status`
 - [ ] Confirm no clinically relevant feature is left unmapped
@@ -246,7 +246,7 @@ This checklist must be copied into every implementation plan and sprint closeout
 
 When implementing any AADI V2 task:
 
-1. open `.agent/FEATURE.md`
+1. open `.agent/archive/references/FEATURE.md`
 2. locate the affected feature group
 3. update this matrix first if the mapping is incomplete
 4. only then write or change code

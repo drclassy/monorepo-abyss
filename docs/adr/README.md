@@ -2,8 +2,9 @@
 
 This directory contains the active Architecture Decision Records for the ABYSS monorepo.
 
-Untuk baseline status repo, lihat `README.md` dan `SENTRA_CURRENT_STATE.md`
-terlebih dahulu sebelum membaca keputusan arsitektur satu per satu.
+Untuk baseline status repo, lihat `README.md`, `.agent/HANDOFF.md`, dan
+`.agent/PROGRESS.md` terlebih dahulu sebelum membaca keputusan arsitektur satu
+per satu.
 
 ## Current ADRs
 
