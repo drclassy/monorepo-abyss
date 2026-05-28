@@ -1,8 +1,40 @@
 # Repository Guidelines
 
 ## Monorepo Authority
-Root [`AGENTS.md`](../../../../AGENTS.md) is the monorepo SSOT and repository policy authority.
-If anything here conflicts with root governance, root wins.
+
+Root [`AGENTS.md`](../../../../AGENTS.md) is the monorepo SSOT and repository
+policy authority. If anything here conflicts with root governance, root wins.
+
+**Instruction authority:** Current user → nearest `AGENTS.override.md` → this
+file → root `AGENTS.md` → `C:\Users\drclassy\.codex\` global guidance.
+
+## Required Workflow (from root)
+
+For every real task: (1) Read SSOT. (2) Read relevant code, docs, tests, config.
+(3) Write brief notes before implementation. (4) Make the smallest complete
+change. (5) Run the smallest relevant verification. (6) Recheck scope and diff.
+(7) Report only after verification.
+
+Hard gates: No SSOT read = do not implement. No verification = do not claim done.
+
+## Git Safety (from root)
+
+Allowed: `git status --short`, `git diff --stat`, `git diff`, `git log --oneline -n 10`.
+Forbidden unless explicitly requested: `git reset`, `git clean`, `git push --force`, rewriting history.
+
+## Final Report (from root)
+
+```text
+SSOT Used:
+Relevant Reference Used:
+Brief Notes:
+Files Changed:
+Changes Made:
+Verification:
+Checklist Recheck:
+Remaining Risk:
+Next Step:
+```
 
 ## Project Structure & Module Organization
 This repository is a Vite + React + TypeScript app with a small Node API layer.

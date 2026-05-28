@@ -8,11 +8,14 @@
 ## 0. Monorepo root (SSOT)
 
 **Authoritative monorepo rules:** read the root
-[`AGENTS.md`](../../../AGENTS.md) first (JET, contract-first, memory protocol,
-technical conventions).
+[`AGENTS.md`](../../../AGENTS.md) first (Required Workflow, Boundary Rules,
+Protected Areas, Git Safety, Verification).
 
 This file adds **scoped** instructions for this package only. If anything
 conflicts, **root `AGENTS.md` wins**.
+
+**Instruction authority:** Current user → nearest `AGENTS.override.md` → this
+file → root `AGENTS.md` → `C:\Users\drclassy\.codex\` global guidance.
 
 **Also:** `packages/shared-types` for shared contracts; **never** run
 `terraform apply` / `terraform destroy` (Chief only).
@@ -35,11 +38,11 @@ handoff when work spans the monorepo.
 
 ---
 
-## 3. JET workflow
+## 3. Required Workflow
 
-Non-trivial tasks follow JET (root [`AGENTS.md`](../../../AGENTS.md) §2). No
-execution before **J5 "GO"** when that gate applies per root §2.1 task
-classification (Class A auto, Class B checkpoint, Class C hard J5).
+Non-trivial tasks follow the **Required Workflow** from root
+[`AGENTS.md`](../../../AGENTS.md). No execution before all pre-implementation
+gates pass (read SSOT, read relevant code, write brief notes).
 
 ---
 
@@ -68,8 +71,48 @@ blocks.
 
 ## 6. Pre-PR checklist
 
-Align with root [`AGENTS.md`](../../../AGENTS.md) §7: tests, lint, typecheck, no
+Align with root [`AGENTS.md`](../../../AGENTS.md): tests, lint, typecheck, no
 secrets/PII, `.agent/` updates when applicable, commit trailer when required.
+
+---
+
+## 7. Git Safety
+
+Allowed inspection:
+
+```powershell
+git status --short
+git diff --stat
+git diff --name-status
+git diff
+git log --oneline -n 10
+```
+
+Do not use `git add .` or `git add -A`. Forbidden unless explicitly requested:
+`git reset`, `git clean`, `git push --force`, rewriting history.
+
+---
+
+## 8. Verification
+
+Prefer the smallest meaningful check: direct repro → targeted test → lint →
+typecheck → build. Do not claim done without fresh verification evidence.
+
+---
+
+## 9. Final Report
+
+```text
+SSOT Used:
+Relevant Reference Used:
+Brief Notes:
+Files Changed:
+Changes Made:
+Verification:
+Checklist Recheck:
+Remaining Risk:
+Next Step:
+```
 
 ---
 
