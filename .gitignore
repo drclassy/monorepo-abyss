@@ -252,7 +252,12 @@ packages/sentra/
 # ---- APPS — ALL PRIVATE, NOT FOR PUBLIC PUSH ----
 # All applications are excluded from this public platform monorepo.
 # Each app lives in its own private repo.
-apps/
+apps/*
+!apps/community/
+apps/community/*
+!apps/community/classy-transformer/
+apps/community/classy-transformer/**
+!apps/community/classy-transformer/next.config.mjs
 
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
