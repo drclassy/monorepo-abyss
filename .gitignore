@@ -333,6 +333,22 @@ docs/handbook/classy-qoder.html
 .agent/sessions/2026-12-*.md
 .cursor/rules/kluster-code-verify.mdc
 
+# ABYSS CT approved scoped app tracking
+# Fail-closed: keep Intelligenceboard app internals ignored, expose only approved CT adapter bridge files and the app-local boundary file.
+!apps/healthcare/
+apps/healthcare/*
+!apps/healthcare/intelligenceboard/
+apps/healthcare/intelligenceboard/**
+!apps/healthcare/intelligenceboard/.gitignore
+!apps/healthcare/intelligenceboard/src/
+apps/healthcare/intelligenceboard/src/**
+!apps/healthcare/intelligenceboard/src/lib/
+apps/healthcare/intelligenceboard/src/lib/**
+!apps/healthcare/intelligenceboard/src/lib/clinical/
+apps/healthcare/intelligenceboard/src/lib/clinical/**
+!apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+!apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+
 # Kimi Proxy (BYOK)
 kimi_proxy.py
 start_kimi_proxy.bat
