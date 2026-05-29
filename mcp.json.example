@@ -15,5 +15,13 @@
     "neon": "Cursor Marketplace → Neon Postgres plugin",
     "slack": "Cursor Marketplace → Slack plugin (team notifications)"
   },
+  "_claude_code": {
+    "_doc": "Claude Code reads a local (gitignored) .mcp.json with a different schema than this Cursor template. Copy the snippet below into .mcp.json. New servers prompt for approval on next start; .claude/settings.json wires the governance hooks (session-start, pre-tool-use, pre-tool-use-protect, post-tool-use, session-stop, user-prompt-submit).",
+    "mcpServers_example": {
+      "context7": { "type": "http", "url": "https://mcp.context7.com/mcp" },
+      "playwright": { "command": "npx", "args": ["-y", "@playwright/mcp@latest"] }
+    },
+    "_playwright_note": "Playwright MCP drives/inspects a browser for E2E triage across apps that already use Playwright (sentra-main, classy-memory, sentra-assist, intelligenceboard). Local-only; never point an MCP server at a live PHI database."
+  },
   "_unicom_reference": "docs/specs/007-unicom-hub-v1.md"
 }
