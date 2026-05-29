@@ -17,22 +17,19 @@ inventing new types.
 
 ## Packages in this workspace
 
-| Package / folder        | Role                                           |
-| ----------------------- | ---------------------------------------------- |
-| `config-eslint/`        | Shared ESLint config                           |
-| `config-typescript/`    | Shared TypeScript config                       |
-| `database/`             | `@the-abyss/database` (Prisma)                 |
-| `design-token/`         | Design tokens                                  |
-| `literature-harvester/` | `@the-abyss/literature-harvester`              |
-| `fhir-engine/`          | `@the-abyss/fhir-engine` (compliance-critical) |
-| `integration/`          | `@the-abyss/integration-bridge`                |
-| `sentra-ui/`            | `@the-abyss/sentra-ui`                         |
-| `shared-types/`         | `@the-abyss/shared-types` (contract layer)     |
-| `vector-store/`         | `@the-abyss/vector-store`                      |
+| Package / folder | Role                                    |
+| ---------------- | --------------------------------------- |
+| `clinical/`      | Clinical workflows and healthcare logic |
+| `integration/`   | `@the-abyss/integration-bridge`         |
+| `library/`       | Shared library utilities                |
+| `platform/`      | Platform-specific packages              |
+| `sentra/`        | Crown-jewel Sentra packages             |
+| `shared/`        | Shared configs, design tokens, types    |
+| `tooling/`       | Development tooling packages            |
+| `unicom/`        | UNICOM integration packages             |
 
-Root [`AGENTS.md`](../AGENTS.md) §4 also names packages such as
-`langflow-client`, `iskandar-gatekeeper`, and `literature-harvester` — keep them
-listed here whenever those folders exist in `packages/`.
+Root [`AGENTS.md`](../AGENTS.md) §4 names additional packages — keep them listed
+here whenever those folders exist in `packages/`.
 
 ---
 

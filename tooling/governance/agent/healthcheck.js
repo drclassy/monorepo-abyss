@@ -28,6 +28,7 @@ const GOVERNANCE_HOOKS_DIR = join(ROOT, 'tooling', 'governance', 'agent', 'hooks
 const SESSION_START_HOOK = join(GOVERNANCE_HOOKS_DIR, 'session-start.ps1')
 const POST_TOOL_USE_HOOK = join(GOVERNANCE_HOOKS_DIR, 'post-tool-use.ps1')
 const SESSION_STOP_HOOK = join(GOVERNANCE_HOOKS_DIR, 'session-stop.ps1')
+const KILO_CONFIG = join(ROOT, '.kilo', 'kilo.jsonc')
 
 const REQUIRED_AGENT_FILES_V2 = [
   'README.md',
@@ -233,6 +234,48 @@ function checkStopContinuityHookExists() {
   }
 }
 
+function checkKiloOverlayOrder() {
+  if (!existsSync(KILO_CONFIG)) {
+    return {
+      file: KILO_CONFIG,
+      pass: true,
+      rule: 'Kilo overlay order',
+      detail: 'Skipped — .kilo/kilo.jsonc not present on this workstation',
+    }
+  }
+
+  let parsed
+  try {
+    parsed = JSON.parse(readFileSync(KILO_CONFIG, 'utf-8'))
+  } catch (error) {
+    return {
+      file: KILO_CONFIG,
+      pass: false,
+      rule: 'Kilo overlay order',
+      detail: `.kilo/kilo.jsonc is not valid JSON (${error.message})`,
+    }
+  }
+
+  const instructions = Array.isArray(parsed.instructions) ? parsed.instructions : []
+  const expectedPrefix = [
+    'C:/Users/drclassy/.codex/AGENTS.md',
+    'D:/Devops/abyss-monorepo/AGENTS.md',
+    'D:/Devops/abyss-monorepo/.agent/README.md',
+    'D:/Devops/abyss-monorepo/.agent/HANDOFF.md',
+  ]
+
+  const hasExpectedPrefix = expectedPrefix.every((value, index) => instructions[index] === value)
+
+  return {
+    file: KILO_CONFIG,
+    pass: hasExpectedPrefix,
+    rule: 'Kilo overlay order',
+    detail: hasExpectedPrefix
+      ? undefined
+      : `Expected instructions prefix: ${expectedPrefix.join(' -> ')}`,
+  }
+}
+
 // ─── Runner ──────────────────────────────────────────────────────────────────
 
 const checks = [
@@ -249,6 +292,7 @@ const rootChecks = [
   checkSessionStartHookExists,
   checkPostToolUseHookExists,
   checkStopContinuityHookExists,
+  checkKiloOverlayOrder,
 ]
 
 function main() {

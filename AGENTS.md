@@ -159,13 +159,11 @@ Do not claim done without fresh verification evidence.
 Use this structure:
 
 ```text
-SSOT Used:
-Relevant Reference Used:
-Brief Notes:
-Files Changed:
-Changes Made:
+Result:
+What Changed:
 Verification:
-Checklist Recheck:
-Remaining Risk:
+Risks:
 Next Step:
+Context Used:
+Checklist:
 ```
