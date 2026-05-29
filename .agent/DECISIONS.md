@@ -3,6 +3,43 @@
 Append-only for durable choices and repeated lessons. Add new entries at the
 top. Older full ledgers are preserved in `.agent/archive/legacy-root/`.
 
+## 2026-05-30 - Intelligenceboard CT wiring closure is complete but bounded
+
+Decision: The Intelligenceboard CT adapter runtime wiring chain is considered
+complete only for its approved scope: tracked adapter boundary, tracked
+trajectory route baseline, additive `clinicalTrajectory` response wiring,
+injectable route seam, and route contract test coverage.
+
+Reason: The implementation chain now has a verified closure record plus clean
+root verification. However, this does not authorize broad follow-up changes or
+promote Intelligenceboard into clinical authority.
+
+Status: Active. This closure does not declare Simphony complete, does not
+declare a canonical 52-trajectory CT engine complete, and does not authorize
+UI, Sentra Assist, shared-types, DB, or external-integration drift in the same
+mission.
+
+## 2026-05-30 - CT route boundary and hook lessons are now durable guardrails
+
+Decision: Future agents must treat the Intelligenceboard trajectory route
+tracking boundary and hook-normalized baseline lessons as durable guardrails.
+
+Required rules:
+- `git status clean` is insufficient when route files may still be ignored.
+- Runtime route files must be tracked before runtime wiring.
+- Root `.gitignore` must use scoped fail-closed unignore rules.
+- App-local `.gitignore` may override root expectations.
+- `lint-staged` may mutate staged TypeScript and Markdown files.
+- Hook-normalized baselines require explicit approval when content changes.
+- Never use `git add -f`, `git add .`, or `git add -A` as a shortcut for
+  clinical/runtime file missions.
+
+Reason: The CT mission chain repeatedly hit false-clean, ignored-route, and
+hook-mutation traps before the approved path was stabilized and closed out.
+
+Status: Active. Use the closure handoff doc as context and start any next CT
+phase with a separate single-mission prompt.
+
 ## 2026-05-27 - Legacy platform UNICOM package is delete-confirmed
 
 Decision: `packages/platform/unicom/**` is obsolete legacy and remains deleted.
@@ -269,4 +306,4 @@ Status: Active.
 - Binary PDFs must be transferred as binary; text-mode corruption is not
   reversible.
 
-Last updated: 2026-05-21
+Last updated: 2026-05-30

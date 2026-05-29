@@ -27,6 +27,24 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 - [~] Historical specs, plans, and notes still contain legacy UNICOM Hub
   references as archival context only.
 
+## Clinical Trajectory / Intelligenceboard CT Wiring
+
+- [x] Intelligenceboard CT adapter boundary is tracked.
+- [x] Intelligenceboard CT adapter tests are tracked.
+- [x] Hook-normalized snapshot artifacts are synchronized.
+- [x] Trajectory route baseline is tracked.
+- [x] Minimal runtime wiring is active in
+  `apps/healthcare/intelligenceboard/src/app/api/patients/[id]/trajectory/route.ts`.
+- [x] Success response now returns additive `clinicalTrajectory` while
+  preserving `success`, `data`, `visit_history`, `momentum_history`, and `meta`.
+- [x] Injectable route test seam exists.
+- [x] Route contract test exists for `clinicalTrajectory` and preserved legacy
+  fields.
+- [x] Final closure and next-phase handoff doc exists at
+  `docs/specs/clinical-trajectory-v1/CT_WIRING_FINAL_CLOSURE_AND_NEXT_PHASE_HANDOFF.md`.
+- [~] Independent final audit is recommended as the next CT step
+  (`ABYSS-CT-AUDIT-013`).
+
 ## Repo Stabilization
 
 - [x] Academic solutions build blocker fixed.
@@ -156,4 +174,7 @@ Root build, typecheck, and test are green. Sentra UNICOM foundation is
 committed and verified, and active legacy platform references are removed. RAG
 Enhancement plan is ready for execution (Phase 1 → 2 → 3, mandatory order).
 
-Last updated: 2026-05-27
+Intelligenceboard CT adapter runtime wiring is also complete and
+contract-tested, with final closure recorded before any next CT phase starts.
+
+Last updated: 2026-05-30

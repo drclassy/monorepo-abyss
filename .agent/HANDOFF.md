@@ -3,16 +3,47 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-28 (session: public-push-hygiene)
+Last updated: 2026-05-30 (session: ct-closure-handoff)
 
 ## Snapshot
 
 - Repo: `D:\Devops\abyss-monorepo`
 - Branch: `codex/master-ci-gate`
 - GitHub target: `https://github.com/drclassy/monorepo-abyss`
-- Active work: Public push hygiene complete — awaiting Chief review and push.
-- Mode: STAGED FOR PUSH — all changes locally committed, not yet pushed
-- Next: Chief reviews changes, then pushes to `https://github.com/drclassy/monorepo-abyss`
+- Active work: Intelligenceboard CT adapter runtime wiring closure recorded and clean.
+- Mode: READY FOR NEXT SINGLE MISSION — latest CT closure and handoff doc committed
+- Next: Start from `ABYSS-CT-AUDIT-013` unless Chief explicitly chooses another next-phase option
+
+## Intelligenceboard CT Wiring Closure (2026-05-30)
+
+- Latest verified CT closure commit: `d07b1c3a`
+  - `docs(ct): record final wiring closure handoff`
+- Prior implementation chain locked in:
+  - `8b2f6254` `chore(ct): track hook-normalized intelligenceboard ct adapter boundary`
+  - `7dd1d9c7` `docs(ct): plan intelligenceboard ct adapter runtime wiring boundary`
+  - `fb1750ea` `chore: expand intelligenceboard trajectory route tracking boundary`
+  - `5861d752` `chore(ct): track hook-normalized intelligenceboard trajectory route baseline`
+  - `dd62ae57` `feat(ct): wire intelligenceboard ct adapter response`
+  - `97066718` `test(ct): cover intelligenceboard clinicalTrajectory response`
+- Final closure record lives at:
+  - `docs/specs/clinical-trajectory-v1/CT_WIRING_FINAL_CLOSURE_AND_NEXT_PHASE_HANDOFF.md`
+- Verified final state:
+  - CT adapter source and test are tracked
+  - trajectory route baseline is tracked
+  - route runtime wiring is active and returns additive `clinicalTrajectory`
+  - legacy route response fields remain preserved
+  - injectable route test seam exists
+  - route contract test exists
+  - targeted app verification and root `typecheck` / `lint` / `build` / `test` all passed
+  - working tree was clean at final closure report
+- Boundary meaning remains strict:
+  - Simphony = diagnosis / clinical reasoning authority
+  - CT = trajectory capability and contract
+  - Intelligenceboard / Dashboard = consumer, not authority
+  - Sentra Assist = consumer, not authority
+  - `ct-adapter.ts` = transitional bridge, not authority
+- Do not reopen the old route tracking / hook-normalization loop. The approved
+  boundary and closure lessons are now captured in the final closure doc.
 
 ## Respan Observability — Shared Package (2026-05-29)
 

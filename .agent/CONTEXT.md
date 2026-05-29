@@ -49,12 +49,17 @@ Do not create a new top-level domain without Chief approval.
 
 ## Current Technical Facts
 
-- The stabilization chain has passed root build blockers.
+- Root verification is currently green (`pnpm typecheck`, `pnpm lint`,
+  `pnpm build`, `pnpm test`) in the latest verified local state.
+- Intelligenceboard CT adapter runtime wiring is complete and contract-tested
+  within its approved boundary; the final closure record is
+  `docs/specs/clinical-trajectory-v1/CT_WIRING_FINAL_CLOSURE_AND_NEXT_PHASE_HANDOFF.md`.
 - Prisma client generation for orchestrator was made explicit because Turbo
   cache could leave Prisma exports stale.
 - DAF website standalone output is now opt-in for Windows local verification.
-- Root typecheck still has remaining review items under `packages/sentra/**`.
-- Root governance and agent SSOT cleanup are active work.
+- Root governance and agent SSOT cleanup remain active work, but the old claim
+  that root typecheck still has open review blockers is no longer the active
+  state.
 
 ## Historical Notes
 
@@ -65,4 +70,4 @@ Previous `.agent` root files and static references are preserved under:
 
 Use them for history, not as active instructions.
 
-Last updated: 2026-05-16
+Last updated: 2026-05-30

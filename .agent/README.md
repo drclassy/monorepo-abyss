@@ -36,10 +36,19 @@ It stores knowledge and continuity only. Tooling lives in `tooling/governance/ag
 
 ## Current Digest
 
-ABYSS is a production-oriented Sentra monorepo. The current work is repo
-stabilization and SSOT simplification, not a new architecture. Build blockers
-have been cleared through orchestrator and DAF website. Typecheck still has
-remaining crown-jewel review items under `packages/sentra/**`. `.agent/` is the
-active SSOT; `AGENTS.md` is the public rulebook.
+ABYSS is a production-oriented Sentra monorepo. `.agent/` remains the active
+operational SSOT and `AGENTS.md` remains the public rulebook. The latest
+verified closure recorded Intelligenceboard CT adapter runtime wiring as
+complete and contract-tested through:
 
-Last updated: 2026-05-16
+- tracked CT adapter boundary and baseline route history
+- active route response wiring with additive `clinicalTrajectory`
+- injectable route test seam and direct contract test coverage
+- clean root verification (`pnpm typecheck`, `pnpm lint`, `pnpm build`,
+  `pnpm test`)
+
+This does not declare all ABYSS, Simphony, or the canonical CT engine complete.
+Use `.agent/HANDOFF.md` for the active next action before starting any new
+mission.
+
+Last updated: 2026-05-30
