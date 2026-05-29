@@ -1,0 +1,73 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+# env files
+.env*
+!.env.example
+# ABYSS CT tracking boundary: keep env example ignored while root tracks only approved CT adapter files.
+.env.example
+
+# typescript
+*.tsbuildinfo
+
+# runtime artifacts
+/runtime/
+*.ndjson
+emr-session.json
+rme-session.json
+crew-access-*.json
+
+# generated outputs
+/output/
+test-*.png
+
+# lockfiles — commit pnpm-lock.yaml, ignore others
+package-lock.json
+yarn.lock
+
+# local AI / planning metadata
+.taskmaster/
+.aider*
+.cursor/
+.lanes/
+.vscode/
+.claude/audits/
+
+# archived files (local only)
+.archieved/
+
+# docs (local only, not for production)
+docs/document-extraction-engine.md
+docs/extraction-quality-scoring-system.md
+.vercel
+
+# Semgrep local JSON output
+.semgrep-out.json
+
+# VibeCheck
+.vibecheck/screenshots/
+.vibecheck/scan-results.json
+.vibecheck/context-engine-ledger.json

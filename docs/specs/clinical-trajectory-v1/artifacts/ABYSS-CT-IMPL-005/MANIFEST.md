@@ -26,8 +26,8 @@ Captured for owner review.
 
 | Source file | Snapshot file | Source hash | Snapshot hash | Match |
 |---|---|---|---|---|
-| `apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts` | `ct-adapter.ts.snapshot.txt` | `DA96976C29F767F76791F5187305B7C10DEDC18A68308FA553C3389DDA7DB372` | `DA96976C29F767F76791F5187305B7C10DEDC18A68308FA553C3389DDA7DB372` | YES |
-| `apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts` | `ct-adapter.test.ts.snapshot.txt` | `E36014AF6EC650AE806059E60586395982322F72E6E3D059329D98F87324F3E6` | `E36014AF6EC650AE806059E60586395982322F72E6E3D059329D98F87324F3E6` | YES |
+| `apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts` | `ct-adapter.ts.snapshot.txt` | `5B0852EEB55067ED11F666A58135B820FC85B11BF0812067280254ACEAACCE18` | `5B0852EEB55067ED11F666A58135B820FC85B11BF0812067280254ACEAACCE18` | YES |
+| `apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts` | `ct-adapter.test.ts.snapshot.txt` | `FB8B0F1864F86D16C02B15D0783DE78E876A397F4307E917E638856415B52B97` | `FB8B0F1864F86D16C02B15D0783DE78E876A397F4307E917E638856415B52B97` | YES |
 
 ## Implementation features captured
 

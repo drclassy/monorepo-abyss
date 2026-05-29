@@ -9,8 +9,8 @@
 | `git status --ignored target files` | PASS | `!! apps/healthcare/` |
 | `git ls-files --stage target files` | PASS | `(empty)` |
 | `git check-ignore target files` | PASS | `.gitignore:255:apps/* apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts` and `.gitignore:255:apps/* apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts` |
-| `source file hash before capture` | PASS | `ct-adapter.ts = DA96976C29F767F76791F5187305B7C10DEDC18A68308FA553C3389DDA7DB372`; `ct-adapter.test.ts = E36014AF6EC650AE806059E60586395982322F72E6E3D059329D98F87324F3E6` |
-| `snapshot file hash after capture` | PASS | `ct-adapter.ts.snapshot.txt = DA96976C29F767F76791F5187305B7C10DEDC18A68308FA553C3389DDA7DB372`; `ct-adapter.test.ts.snapshot.txt = E36014AF6EC650AE806059E60586395982322F72E6E3D059329D98F87324F3E6` |
+| `source file hash before capture` | PASS | `ct-adapter.ts = 5B0852EEB55067ED11F666A58135B820FC85B11BF0812067280254ACEAACCE18`; `ct-adapter.test.ts = FB8B0F1864F86D16C02B15D0783DE78E876A397F4307E917E638856415B52B97` |
+| `snapshot file hash after capture` | PASS | `ct-adapter.ts.snapshot.txt = 5B0852EEB55067ED11F666A58135B820FC85B11BF0812067280254ACEAACCE18`; `ct-adapter.test.ts.snapshot.txt = FB8B0F1864F86D16C02B15D0783DE78E876A397F4307E917E638856415B52B97` |
 | `source/snapshot hash match` | PASS | Both source/snapshot pairs match exactly |
 | `pnpm typecheck` | PASS | Completed successfully from repo root |
 | `pnpm lint` | PASS | Completed successfully; non-failing `baseline-browser-mapping` warning present |

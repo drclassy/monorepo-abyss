@@ -259,6 +259,22 @@ apps/community/*
 apps/community/classy-transformer/**
 !apps/community/classy-transformer/next.config.mjs
 
+# ABYSS CT approved scoped app tracking
+# Fail-closed: keep Intelligenceboard app internals ignored, expose only approved CT adapter bridge files and the app-local boundary file.
+!apps/healthcare/
+apps/healthcare/*
+!apps/healthcare/intelligenceboard/
+apps/healthcare/intelligenceboard/**
+!apps/healthcare/intelligenceboard/.gitignore
+!apps/healthcare/intelligenceboard/src/
+apps/healthcare/intelligenceboard/src/**
+!apps/healthcare/intelligenceboard/src/lib/
+apps/healthcare/intelligenceboard/src/lib/**
+!apps/healthcare/intelligenceboard/src/lib/clinical/
+apps/healthcare/intelligenceboard/src/lib/clinical/**
+!apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
+!apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
 # Git evaluates .gitignore top-down; trailing negations override earlier rules.
@@ -266,6 +282,10 @@ apps/community/classy-transformer/**
 !.agent/
 !.agent/**
 !pnpm-lock.yaml
+
+# Re-ignore nested app agent memory after the global .agent exemptions above.
+apps/healthcare/intelligenceboard/.agent/
+apps/healthcare/intelligenceboard/.agent/**
 
 # KEPT: Cursor project rules, subagents, hooks — team parity (cursor.com/docs)
 !.cursor/README.md
