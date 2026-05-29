@@ -274,6 +274,18 @@ apps/healthcare/intelligenceboard/src/lib/**
 apps/healthcare/intelligenceboard/src/lib/clinical/**
 !apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.ts
 !apps/healthcare/intelligenceboard/src/lib/clinical/ct-adapter.test.ts
+!apps/healthcare/intelligenceboard/src/app/
+apps/healthcare/intelligenceboard/src/app/**
+!apps/healthcare/intelligenceboard/src/app/api/
+apps/healthcare/intelligenceboard/src/app/api/**
+!apps/healthcare/intelligenceboard/src/app/api/patients/
+apps/healthcare/intelligenceboard/src/app/api/patients/**
+!apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/
+apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/**
+!apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/trajectory/
+apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/trajectory/**
+!apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/trajectory/route.ts
+!apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/trajectory/route.test.ts
 
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
