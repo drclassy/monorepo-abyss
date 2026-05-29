@@ -44,13 +44,20 @@ export async function registerObservability(
     return false
   }
 
-  const { Respan } = await import('@respan/respan')
+  // Use RespanTelemetry (the low-level @respan/tracing engine), not the
+  // @respan/respan `Respan` wrapper: only RespanTelemetry accepts
+  // `instrumentModules`, and the wrapper additionally disables openAI/anthropic
+  // by default. `instrumentModules` is Respan's documented Next.js/bundler
+  // workaround — patching the passed module objects instead of relying on
+  // require-hooks that break under a bundler.
+  const { RespanTelemetry } = await import('@respan/tracing')
 
-  const respan = new Respan({
+  const telemetry = new RespanTelemetry({
     apiKey: process.env.RESPAN_API_KEY,
+    appName: 'the-abyss',
     ...(instrumentModules ? { instrumentModules } : {}),
   })
-  await respan.initialize()
+  await telemetry.initialize()
 
   initialized = true
   return true

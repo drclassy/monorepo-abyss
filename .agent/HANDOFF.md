@@ -35,8 +35,24 @@ Last updated: 2026-05-28 (session: public-push-hygiene)
 - Auth nuance: SDK uses `RESPAN_API_KEY` (set) to **send** traces; CLI browsing
   needs separate `npx @respan/cli auth login` (not done). `auth status` reports
   "Not authenticated" — expected; does not block SDK tracing.
-- NOT committed yet. Live trace verification (run app + real LLM call) pending
-  Chief decision (needs provider key + incurs cost).
+
+### Live-test fix (2026-05-29, follow-up)
+
+- Live test exposed: the `@respan/respan` `Respan` wrapper **silently ignores**
+  `instrumentModules` (not in its options type) and **disables openAI/anthropic
+  by default** → 0 useful instrumentations under Next.js bundler.
+- Fix: switch to **`RespanTelemetry` from `@respan/tracing@1.1.6`** (the class
+  that supports `instrumentModules` — Respan's documented Next.js/bundler
+  workaround). The app's `instrumentation.ts` imports its own `openai` /
+  `@anthropic-ai/sdk` and passes them in; `next.config.mjs` adds
+  `serverExternalPackages` for the Respan/OTEL runtime (fixes `Can't resolve
+  'stream'`).
+- **Verified (no LLM call):** plain-Node smoke + Next dev both show
+  `instrumentModulesKeys: ['openAI','anthropic']` and
+  `successfully loaded instrumentations: ['OpenAIInstrumentation','AnthropicInstrumentation']`,
+  `Respan tracing initialized successfully`, no `stream` error.
+- **Still pending:** actual trace emission (one real LLM call → span at
+  platform.respan.ai) — needs provider key + cost, with Chief.
 
 ## Public Push Hygiene (2026-05-28)
 
