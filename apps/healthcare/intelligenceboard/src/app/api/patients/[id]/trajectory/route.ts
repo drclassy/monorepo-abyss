@@ -22,6 +22,7 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
+import { legacyIBToCtV1 } from '@/lib/clinical/ct-adapter'
 import { computeMomentum } from '@/lib/clinical/momentum-engine'
 import { analyzeTrajectory } from '@/lib/clinical/trajectory-analyzer'
 import type { VisitRecord } from '@/lib/clinical/trajectory-analyzer'
@@ -125,6 +126,17 @@ export async function GET(
     )
   }
 
+  let clinicalTrajectory: ReturnType<typeof legacyIBToCtV1> | null = null
+  try {
+    clinicalTrajectory = legacyIBToCtV1(analysis, visitRecords, patientIdentifier)
+  } catch (err) {
+    console.error(
+      '[trajectory] legacyIBToCtV1 failed for patient hash:',
+      patientIdentifier.slice(0, 8),
+      err
+    )
+  }
+
   // 6. Build visit_history — PHI-safe vital snapshots per visit
   const visit_history: VitalSnapshot[] = entries.map((e) => ({
     visitDate: e.recordedAt instanceof Date ? e.recordedAt.toISOString() : String(e.recordedAt),
@@ -161,6 +173,7 @@ export async function GET(
     data: analysis,
     visit_history,
     momentum_history,
+    clinicalTrajectory,
     meta: {
       patientIdentifier: patientIdentifier.slice(0, 8) + '…', // truncated for logs
       visitCount: entries.length,
