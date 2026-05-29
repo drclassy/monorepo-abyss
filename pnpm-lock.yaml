@@ -1729,12 +1729,6 @@ importers:
 
   packages/shared/observability:
     dependencies:
-      '@respan/instrumentation-anthropic':
-        specifier: 1.1.2
-        version: 1.1.2(@anthropic-ai/sdk@0.39.0)
-      '@respan/instrumentation-openai':
-        specifier: 1.0.2
-        version: 1.0.2(@opentelemetry/api@1.9.1)(@traceloop/instrumentation-openai@0.14.6)(openai@6.39.0(ws@8.20.1(bufferutil@4.1.0))(zod@4.4.3))
       '@respan/respan':
         specifier: 2.1.0
         version: 2.1.0(@anthropic-ai/sdk@0.39.0)(@traceloop/instrumentation-openai@0.14.6)(openai@6.39.0(ws@8.20.1(bufferutil@4.1.0))(zod@4.4.3))
@@ -17686,6 +17680,7 @@ snapshots:
   '@opentelemetry/api-logs@0.203.0':
     dependencies:
       '@opentelemetry/api': 1.9.1
+    optional: true
 
   '@opentelemetry/api-logs@0.207.0':
     dependencies:
@@ -17961,6 +17956,7 @@ snapshots:
       require-in-the-middle: 7.5.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   '@opentelemetry/instrumentation@0.207.0(@opentelemetry/api@1.9.1)':
     dependencies:
@@ -21413,12 +21409,14 @@ snapshots:
       '@traceloop/ai-semantic-conventions': 0.13.0
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   '@respan/instrumentation-openai@1.0.2(@opentelemetry/api@1.9.1)(@traceloop/instrumentation-openai@0.14.6)(openai@6.39.0(ws@8.20.1(bufferutil@4.1.0))(zod@4.4.3))':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@traceloop/instrumentation-openai': 0.14.6
       openai: 6.39.0(ws@8.20.1(bufferutil@4.1.0))(zod@4.4.3)
+    optional: true
 
   '@respan/respan-sdk@1.1.8':
     dependencies:
@@ -22203,6 +22201,7 @@ snapshots:
   '@traceloop/ai-semantic-conventions@0.14.0':
     dependencies:
       '@opentelemetry/api': 1.9.1
+    optional: true
 
   '@traceloop/ai-semantic-conventions@0.22.5':
     dependencies:
@@ -22306,6 +22305,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   '@traceloop/instrumentation-pinecone@0.13.0(@opentelemetry/api@1.9.1)':
     dependencies:
@@ -26710,6 +26710,7 @@ snapshots:
   js-tiktoken@1.0.21:
     dependencies:
       base64-js: 1.5.1
+    optional: true
 
   js-tokens@4.0.0: {}
 

@@ -46,31 +46,42 @@ Add the dependency:
 
 ### Next.js (App Router)
 
-Next runs `instrumentation.ts` `register()` at server startup. Keep the hook
-thin and delegate to this package:
+Next runs `instrumentation.ts` `register()` at server startup. The app imports
+its **own** LLM SDKs and passes them in — under Next's bundler, Respan's
+auto-discovery cannot bind to the SDKs, so the modules must be handed over
+explicitly (Respan's `instrumentModules` workaround):
 
 ```typescript
 // instrumentation.ts
 export async function register() {
   if (process.env.NEXT_RUNTIME !== 'nodejs') return
-  const { registerObservability } = await import('@the-abyss/observability')
-  await registerObservability()
+  const [{ registerObservability }, openai, anthropic] = await Promise.all([
+    import('@the-abyss/observability'),
+    import('openai'),
+    import('@anthropic-ai/sdk'),
+  ])
+  await registerObservability({
+    openAI: openai.default,
+    anthropic: anthropic.default,
+  })
 }
 ```
 
-Because this package is shipped as TypeScript source, add it to
-`transpilePackages` in `next.config`:
+Config in `next.config`: transpile this TS-source package, and keep the Respan
+runtime out of the bundle so it doesn't try to bundle Node built-ins:
 
 ```js
 // next.config.js
 const nextConfig = {
   transpilePackages: ['@the-abyss/observability'],
+  serverExternalPackages: ['@respan/respan'],
 }
 ```
 
 ### Node service / script
 
-Call it once, before any LLM client is created:
+In a plain (non-bundled) Node process, auto-discovery works — call it once,
+before any LLM client is created, no modules needed:
 
 ```typescript
 import { registerObservability } from '@the-abyss/observability'
@@ -80,11 +91,15 @@ await registerObservability()
 
 ## API
 
-### `registerObservability(): Promise<boolean>`
+### `registerObservability(instrumentModules?): Promise<boolean>`
 
 Initializes Respan tracing once per process. **Idempotent** — repeated calls are
 no-ops after the first success. Returns `true` when tracing is active, `false`
 when disabled (`RESPAN_API_KEY` unset).
+
+`instrumentModules` (optional): `{ openAI?, anthropic? }` — the SDK module
+objects to instrument. Required in bundled environments (Next.js); omit in plain
+Node where auto-discovery binds on its own.
 
 ## Verifying traces
 
