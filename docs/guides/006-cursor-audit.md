@@ -141,3 +141,14 @@ Run one **Safe-Quick** then one **Safe-Execute** task and compare:
 - unnecessary file touches
 
 Record outcomes in `.agent/sessions/YYYY-MM-DD.md`.
+
+## Auto-review Run Mode (Cursor 3.6+)
+
+1. Open **Cursor Settings** (`Ctrl+Shift+J`)
+2. Go to **Agents → Run Mode**
+3. Select **Auto-review** (classifier approves Shell/MCP/Fetch)
+4. Enable **Sandbox** if shown
+5. Paste classifier steering text from [`.cursor/README.md`](../../.cursor/README.md#run-mode-auto-review)
+6. Confirm repo [`.cursor/permissions.json`](../../.cursor/permissions.json) is present
+
+Do **not** use Full auto / YOLO for ABYSS healthcare work.

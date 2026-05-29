@@ -22,6 +22,7 @@ Automation catalog:
 | `.cursor/skills/`                | Repo-scoped ABYSS workflow skills (`SKILL.md` per skill).                     |
 | `.cursor/agents/`                | Repo-scoped subagent profiles for delegation.                                 |
 | `.cursor/sandbox.json`           | Cursor Agent read/write path configuration.                                   |
+| `.cursor/permissions.json`       | Shell/MCP allowlist + classifier block instructions (healthcare guardrails).  |
 
 ## Rule policy
 
@@ -96,6 +97,31 @@ machines. Legacy paths (`.codex/**`, `.agents/**`) were removed in the
   agent communication MCP wiring.
 
 Per `AGENTS.md`, use Context7 for public framework/library documentation only.
+
+## Run Mode (Auto-review)
+
+Configure in **Cursor Settings → Agents → Run Mode → Auto-review** (Cursor
+3.6+). This uses a classifier for Shell, MCP, and Fetch calls:
+allowlisted/sandboxed actions run automatically; sensitive actions require
+approval.
+
+Recommended for ABYSS:
+
+1. Enable **Auto-review** (not Full auto / YOLO).
+2. Enable **Sandbox** when available for agent file/shell isolation.
+3. Keep [`.cursor/permissions.json`](permissions.json) tracked — block
+   instructions steer the classifier for healthcare/repo guardrails.
+4. Optional: add custom classifier instructions in Run Mode settings:
+
+```text
+Healthcare monorepo (ABYSS). Block auto-approval for: git push/reset/clean,
+terraform apply, DB migrations, auth changes, .env/secrets access, MCP writes
+to production, and any edit under packages/sentra/** without explicit GO.
+Prefer scoped pnpm --filter verification over root-wide commands when possible.
+```
+
+User-level `~/.cursor/permissions.json` may add personal allowlist entries; repo
+policy in `.cursor/permissions.json` takes precedence for this workspace.
 
 ## Automations
 

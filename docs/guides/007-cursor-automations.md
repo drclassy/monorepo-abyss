@@ -81,6 +81,25 @@ For local recurring checks (Cursor 3.6 `/loop` skill), example prompt:
 3. Keep automations read-only until Chief approves write/CI actions.
 4. Record activation date in `.agent/sessions/YYYY-MM-DD.md`.
 
+## Activation checklist (operator)
+
+Automations cannot be committed to Git — create them in the Agents Window.
+
+| Step | Automation 1: PR verify | Automation 2: SSOT nudge |
+| --- | --- | --- |
+| Name | `abyss-pr-verify-reminder` | `abyss-ssot-handoff-nudge` |
+| Trigger | Git → PR opened/sync on `drclassy/monorepo-abyss` | Cron → weekly Mon 09:00 |
+| Tools | Read, Shell (read-only) | Read |
+| Mode | Read-only | Read-only |
+| Instructions | Copy from section above | Copy from section above |
+| Activate | Toggle on after review | Toggle on after review |
+
+After activation, append to `.agent/sessions/YYYY-MM-DD.md`:
+
+```text
+Automations activated: abyss-pr-verify-reminder (Y/N), abyss-ssot-handoff-nudge (Y/N)
+```
+
 ## Related docs
 
 - [`.cursor/README.md`](../../.cursor/README.md) — hooks, skills, MCP policy

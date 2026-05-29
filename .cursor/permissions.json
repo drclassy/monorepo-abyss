@@ -1,0 +1,36 @@
+{
+  "approvalMode": "allowlist",
+  "terminalAllowlist": [
+    "git status",
+    "git diff",
+    "git log",
+    "git show",
+    "git branch",
+    "pnpm install",
+    "pnpm run",
+    "pnpm --filter",
+    "pnpm typecheck",
+    "pnpm lint",
+    "pnpm test",
+    "pnpm build",
+    "pwsh -NoProfile -ExecutionPolicy Bypass -File",
+    "node .cursor/hooks/",
+    "Get-ChildItem",
+    "Get-Content",
+    "Select-String"
+  ],
+  "autoRun": {
+    "allow_instructions": [
+      "Auto-run read-only repo inspection: git status/diff/log, rg, read files, scoped pnpm typecheck/lint/test/build for the package being edited.",
+      "Auto-run ABYSS verification helpers when the mission is code change: pnpm --filter <pkg> typecheck|lint|test|build, verify-local.ps1 when scoped checks pass first."
+    ],
+    "block_instructions": [
+      "Never auto-run destructive git: git reset, git clean, git push --force, history rewrite, or broad git add.",
+      "Never auto-run deployment, terraform apply/destroy, database migrations, auth changes, or CI/CD writes without explicit Chief GO in chat.",
+      "Never auto-run MCP or shell actions that expose secrets, .env values, credentials, PHI, or patient data.",
+      "Never auto-edit packages/sentra/** without explicit Chief GO — crown-jewel is review-first.",
+      "Never auto-run git push, gh pr merge, or production-impacting infra commands.",
+      "For MCP tools touching production databases, auth, billing, or external write APIs: require human approval even under Auto-review."
+    ]
+  }
+}
