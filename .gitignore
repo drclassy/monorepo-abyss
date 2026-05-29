@@ -305,6 +305,7 @@ apps/healthcare/intelligenceboard/.agent/**
 !.cursor/hooks.json
 !.cursor/sandbox.json
 !.cursor/permissions.json
+!.cursor/permissions.user.example.json
 !.cursor/rules/
 !.cursor/rules/**
 !.cursor/agents/

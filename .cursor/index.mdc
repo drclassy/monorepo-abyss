@@ -1,12 +1,12 @@
 ---
-description: "Sentra Cursor index: compact always-on pointer to the merged rule set."
+description: 'Sentra Cursor index: compact always-on pointer to the merged rule set.'
 priority: highest
 version: 8
 labels:
   - sentra
   - governance
 globs:
-  - "**/*"
+  - '**/*'
 alwaysApply: true
 ---
 
@@ -24,13 +24,17 @@ Cursor rules are supplementary. They do not override `AGENTS.md`.
 
 ## Rule Set
 
-| File | Purpose |
-| --- | --- |
-| `.cursor/rules/00-core.mdc` | Identity, context guard, task class, GO gate, communication, session logging, verification. |
-| `.cursor/rules/10-backend.mdc` | API, database, Prisma, NestJS, CQRS, FHIR, PHI/PII backend guardrails. |
-| `.cursor/rules/20-frontend.mdc` | React, Next.js, UI components, accessibility, design tokens. |
-| `.cursor/rules/30-quality.mdc` | TypeScript, tests, monorepo conventions, verification, review, gold-standard references. |
+| File                            | Purpose                                                                                     |
+| ------------------------------- | ------------------------------------------------------------------------------------------- |
+| `.cursor/rules/00-core.mdc`     | Identity, context guard, task class, GO gate, communication, session logging, verification. |
+| `.cursor/rules/10-backend.mdc`  | API, database, Prisma, NestJS, CQRS, FHIR, PHI/PII backend guardrails.                      |
+| `.cursor/rules/20-frontend.mdc` | React, Next.js, UI components, accessibility, design tokens.                                |
+| `.cursor/rules/30-quality.mdc`  | TypeScript, tests, monorepo conventions, verification, review, gold-standard references.    |
+| `.cursor/permissions.json`      | Team allowlist + block rules (Run Mode UI lock in Settings).                                |
+| `.cursor/skills/`               | Repo workflow skills — verify, handoff, app-boundary preflight.                             |
 
 ## Operating Rule
 
 Use the smallest applicable rule set. Attach target app/package paths with `@path` when context is thin.
+
+Workflow + permissions: [`docs/guides/008-cursor-permissions-and-workflows.md`](../docs/guides/008-cursor-permissions-and-workflows.md).

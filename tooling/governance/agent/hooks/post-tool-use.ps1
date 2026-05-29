@@ -39,6 +39,13 @@ function Add-SessionLine {
 $date = (Get-Date).ToString("yyyy-MM-dd")
 $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm")
 $sessionFile = Join-Path $sessionsDir "$date.md"
-Add-SessionLine -Path $sessionFile -Value "## File change logged: $timestamp (PostToolUse hook)"
+$logLine = "- File change logged: $timestamp (PostToolUse hook)"
+if (Test-Path $sessionFile) {
+    $tail = Get-Content -Path $sessionFile -Tail 1 -ErrorAction SilentlyContinue | Select-Object -Last 1
+    if ($tail -and [string]$tail -notmatch '^- File change logged:') {
+        $logLine = "`n$logLine"
+    }
+}
+Add-SessionLine -Path $sessionFile -Value $logLine
 Write-Output "POST TOOL LOG OK: $sessionFile"
 Write-Output "SSOT REMINDER: If mission state changed, update .agent/HANDOFF.md and .agent/PROGRESS.md before session stop. Use .agent/DECISIONS.md only for durable decisions or repeated mistakes."

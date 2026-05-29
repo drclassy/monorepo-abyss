@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude IDE — Maximization Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --black: #000000;
+      --white: #fdfdfd;
+      --graphite: #111318;
+      --slate: #2b2f38;
+      --silver: #a0a0a2;
+      --grid: #e8eaf0;
+      --blue: #0b1f3a;
+      --f-display: "Space Grotesk", "Inter", "IBM Plex Sans", Arial, sans-serif;
+      --f-body: "Inter", "IBM Plex Sans", Arial, sans-serif;
+      --f-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      --r-lg: 16px;
+      --r-md: 12px;
+      --r-sm: 8px;
+      --r-xl: 24px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+      --b: 1px solid var(--slate);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--black);
+      color: var(--white);
+      font-size: 13px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--f-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--white);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0) 180px),
+        var(--black);
+    }
+
+    a {
+      color: var(--white);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--slate);
+    }
+
+    a:hover { text-decoration-color: var(--white); }
+
+    .page {
+      width: min(calc(100% - 20px), 860px);
+      margin: 0 auto;
+      padding: 18px 0 36px;
+    }
+
+    .hero, .panel, .card, .command, .source-item, .table-wrap, .pill-row a {
+      background: var(--graphite);
+      border: var(--b);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      border-radius: var(--r-xl);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -8% -28% auto;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04), transparent 62%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--silver);
+      font-family: var(--f-mono);
+      font-size: 0.84rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 38px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-family: var(--f-display);
+      font-weight: 600;
+      line-height: 1.05;
+    }
+
+    h1 { max-width: 620px; font-size: clamp(2rem, 4.5vw, 3.2rem); letter-spacing: -0.04em; }
+    h2 { font-size: clamp(1.25rem, 2.4vw, 1.8rem); letter-spacing: -0.03em; }
+    h3 { font-size: 1.04rem; letter-spacing: -0.02em; }
+
+    .hero-grid, .hero-meta, .grid-2, .grid-3, .source-grid, .decision-grid, .ops-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero-grid { grid-template-columns: 1.35fr 0.65fr; margin-top: 18px; align-items: start; }
+    .hero-copy p, .lede, .muted { margin: 0; color: rgba(253, 253, 253, 0.78); }
+    .hero-copy p { margin-top: 12px; font-size: 0.96rem; }
+    .hero-meta { grid-template-columns: 1fr; }
+
+    .meta-box {
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
+      background: var(--blue);
+      border: var(--b);
+    }
+
+    .meta-box strong,
+    .card strong,
+    .command strong,
+    .decision strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--white);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .pill-row a {
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--silver);
+      text-decoration: none;
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .section { margin-top: 14px; }
+
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .section-header p { max-width: 700px; }
+
+    .panel {
+      border-radius: var(--r-xl);
+      padding: 18px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card, .command, .decision {
+      border-radius: var(--r-lg);
+      padding: 14px;
+      min-height: 0;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover, .command:hover, .source-item:hover, .decision:hover {
+      border-color: rgba(160, 160, 162, 0.4);
+    }
+
+    .card::before {
+      content: attr(data-step);
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-family: var(--f-mono);
+      font-size: 0.82rem;
+      color: var(--silver);
+      letter-spacing: 0.16em;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-bottom: 10px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: var(--b);
+      color: var(--silver);
+      font-family: var(--f-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+    }
+
+    code, .mono { font-family: var(--f-mono); }
+
+    .command code {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--white);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: rgba(253, 253, 253, 0.78);
+    }
+
+    .list li { margin: 0 0 8px; }
+
+    .decision-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .decision {
+      border-left: 3px solid var(--silver);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+    }
+
+    .decision p {
+      color: rgba(253, 253, 253, 0.76);
+      margin-top: 6px;
+    }
+
+    .decision small {
+      display: block;
+      margin-top: 10px;
+      color: rgba(160, 160, 162, 0.9);
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+    }
+
+    .table-wrap {
+      border-radius: var(--r-lg);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: var(--b);
+      color: rgba(253, 253, 253, 0.82);
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--silver);
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .ops-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .source-grid { grid-template-columns: 1fr; }
+
+    .source-item {
+      border-radius: var(--r-md);
+      padding: 14px 16px;
+      transition: border-color 0.2s;
+    }
+
+    .source-item strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: var(--b);
+      color: rgba(160, 160, 162, 0.72);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .decision-grid,
+      .ops-grid { grid-template-columns: 1fr; }
+
+      .page {
+        width: min(calc(100% - 16px), 860px);
+        padding-top: 12px;
+      }
+
+      .hero, .panel { padding: 16px; }
+      .section-header { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero" id="top">
+      <div class="eyebrow">Claude Code — IDE Guide</div>
+      <h1>Maximize Claude in Your IDE</h1>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p>Workflow lengkap untuk memaksimalkan Claude di IDE: dari brainstorming sampai shipping. Panduan ini mencakup 47 skills tersedia, 2 plugin MCP, 3 model Claude, anti-patterns, dan tips praktis untuk kerja sehari-hari tanpa overthinking. Semua didasarkan pada sesi Claude Code aktual per 30 Mei 2026.</p>
+          <div class="pill-row">
+            <a href="#principles">Principles</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#tips">Tips &amp; Tricks</a>
+            <a href="#skills">Skills</a>
+            <a href="#plugins">Plugins</a>
+            <a href="#antipatterns">Anti-Patterns</a>
+            <a href="#snippets">Snippets</a>
+            <a href="#models">Models</a>
+            <a href="#sources">Sources</a>
+          </div>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-box">
+            <strong>47 Skills</strong>
+            Available dalam sesi ini — dari brainstorming, TDD, debugging, sampai specialized tools.
+          </div>
+          <div class="meta-box">
+            <strong>2 Plugins</strong>
+            MCP Servers: Context7 (library docs), Microsoft Learn (Azure docs).
+          </div>
+          <div class="meta-box">
+            <strong>3 Models</strong>
+            Opus 4.8, Sonnet 4.6, Haiku 4.5 — pilih sesuai kompleksitas task.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section panel" id="principles">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Core Principles</div>
+          <h2>Prinsip fundamental untuk kerja lebih efektif dengan Claude</h2>
+        </div>
+        <p class="lede">Enam prinsip ini membentuk foundation dari workflow yang healthy: skill-driven, design-first, systematic debugging, dan verification sebelum ship.</p>
+      </div>
+      <div class="decision-grid">
+        <article class="decision">
+          <strong>Think First, Code Second</strong>
+          <p>Brainstorm sebelum implementation — skill harus di-invoke sebelum baris pertama kode ditulis. Creative work wajib melalui design cycle.</p>
+          <small>Skill: superpowers:brainstorming</small>
+        </article>
+        <article class="decision">
+          <strong>Skills Override Defaults</strong>
+          <p>Jika skill tersedia, gunakan. Bukan pilihan, bukan opsional — bahkan 1% kemungkinan skill berlaku adalah trigger untuk invoke.</p>
+          <small>Minimal viable solution dimulai dari skill yang tepat.</small>
+        </article>
+        <article class="decision">
+          <strong>One Question at a Time</strong>
+          <p>Jangan banjiri user dengan pertanyaan — satu per pesan. Ini mencegah cognitive overload dan membuat brainstorming lebih focused.</p>
+          <small>Multiple choice preferred untuk clarity, tapi satu saja per turn.</small>
+        </article>
+        <article class="decision">
+          <strong>Advisor Before Commitment</strong>
+          <p>Panggil `advisor()` sebelum langkah substansial, bukan setelah. Ini membuat keputusan approach lebih terdokumentasi dan durable.</p>
+          <small>Conversation history tersimpan — gunakan untuk reference setelah session berakhir.</small>
+        </article>
+        <article class="decision">
+          <strong>Prefer Existing Patterns</strong>
+          <p>Cari fungsi/utilitas yang sudah ada sebelum menulis baru. YAGNI ruthlessly — solve immediate problem, extend when needed.</p>
+          <small>Reuse patterns dari skill atau existing codebase sebelum abstraksi baru.</small>
+        </article>
+        <article class="decision">
+          <strong>Durable Over Ephemeral</strong>
+          <p>Simpan hasil kerja ke file/commit sebelum advisory — session bisa berakhir kapan saja. Plan file, spec docs, dan commit messages adalah contracts.</p>
+          <small>Memory system ada untuk context lintas session — dokumentasikan lessons learned.</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="workflow">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Daily Workflow</div>
+          <h2>Urutan kerja dari start sampai ship</h2>
+        </div>
+        <p class="lede">Six-step workflow yang health untuk repo nyata: Session Setup, Skill Check, Design, Implement, Debug, Ship. Setiap step punya entry point dan exit criteria yang jelas.</p>
+      </div>
+      <div class="ops-grid">
+        <article class="card" data-step="01">
+          <span class="tag">SESSION START</span>
+          <h3>Invoke using-superpowers</h3>
+          <p class="muted">Dibaca otomatis setiap sesi — establishes skill discovery rules dan mengingatkan work mode utama. Ini adalah "warm-up" sebelum apa pun.</p>
+        </article>
+        <article class="card" data-step="02">
+          <span class="tag">CHECK SKILLS</span>
+          <h3>Scan applicable skills</h3>
+          <p class="muted">Bahkan 1% kemungkinan skill berlaku → invoke dulu. Skills tell HOW to approach; jangan skip hanya karena terasa simple atau immediate.</p>
+        </article>
+        <article class="card" data-step="03">
+          <span class="tag">DESIGN</span>
+          <h3>brainstorming → spec → writing-plans</h3>
+          <p class="muted">Creative work wajib melalui brainstorm; design spec → plan sebelum kode. Ini prevents rework dan membuat scope lebih clear untuk implementation.</p>
+        </article>
+        <article class="card" data-step="04">
+          <span class="tag">IMPLEMENT</span>
+          <h3>TDD / executing-plans</h3>
+          <p class="muted">Test dulu, kode kemudian. Gunakan subagent-driven-development untuk task paralel; prefer parallel agents untuk independent work.</p>
+        </article>
+        <article class="card" data-step="05">
+          <span class="tag">DEBUG</span>
+          <h3>systematic-debugging</h3>
+          <p class="muted">Setiap bug/test failure → debugging skill sebelum propose fix. Systematic approach prevents blind guessing dan documents root cause.</p>
+        </article>
+        <article class="card" data-step="06">
+          <span class="tag">SHIP</span>
+          <h3>finishing-a-development-branch</h3>
+          <p class="muted">Merge, PR, atau cleanup — guided structured options. Verification closes loop: build, test, focused lint sebelum close-out.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="tips">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Tips &amp; Tricks</div>
+          <h2>Power-user habits yang bikin Claude lebih efisien</h2>
+        </div>
+        <p class="lede">Kebiasaan ini paling terasa efeknya di hari ke hari: lebih sedikit prompt berulang, lebih sedikit approval melelahkan, dan lebih tajam saat memilih tool.</p>
+      </div>
+      <div class="grid-2">
+        <article class="command">
+          <code>/code-review ultra</code>
+          <strong>Deep Cloud Review</strong>
+          <ul class="list">
+            <li>Multi-agent cloud review untuk PR besar atau refactor kompleks.</li>
+            <li>Pakai saat perlu perspektif mendalam dari berbagai sudut (architecture, performance, security).</li>
+            <li>Billed per run — gunakan strategis, bukan di setiap PR trivial.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>/code-review --fix</code>
+          <strong>Auto-Apply Fixes</strong>
+          <ul class="list">
+            <li>Review + langsung apply ke working tree; medium/high effort untuk coverage lebih luas.</li>
+            <li>Useful untuk cleanup, simplification, dan efficiency improvements saat ready to commit.</li>
+            <li>Review dulu sebelum apply jika ada risiko behavioral change.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>/loop 5m /command</code>
+          <strong>Recurring Tasks</strong>
+          <ul class="list">
+            <li>Jalankan command berulang setiap N menit; omit interval = self-paced polling.</li>
+            <li>Great untuk long-running checks: deploy monitoring, status polling, log tailing.</li>
+            <li>Returns single notification saat done, atau periodic updates sesuai command output.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>advisor()</code>
+          <strong>Expert Second Opinion</strong>
+          <ul class="list">
+            <li>Lihat seluruh conversation history; panggil sebelum commit approach ke git.</li>
+            <li>Useful untuk architecture review, design validation, dan risk gate sebelum big change.</li>
+            <li>Creates documented record — reference setelah session berakhir via memory system.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>/schedule</code>
+          <strong>Cron Agents</strong>
+          <ul class="list">
+            <li>Remote agent yang jalan terjadwal; satu-kali atau recurring pada cron interval.</li>
+            <li>Useful untuk nightly jobs, weekly syncs, atau automated checks yang consistent.</li>
+            <li>Limited to durable artifacts (e.g., flags with cleanup dates, instrumentation with "remove after X").</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>agent-browser</code>
+          <strong>Browser Automation</strong>
+          <ul class="list">
+            <li>Web interaction, form fill, screenshot, Electron app automation — e.g., VS Code, Slack, Discord.</li>
+            <li>Use untuk exploratory testing, dogfooding, QA, bug hunts, atau reviewing app quality.</li>
+            <li>Also for Vercel Sandbox microVMs dan AWS Bedrock AgentCore cloud browsers.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="skills">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Available Skills</div>
+          <h2>47 Skills yang tersedia saat ini</h2>
+        </div>
+        <p class="lede">Skills diorganisir per kategori — gunakan Skill tool untuk invoke sesuai kebutuhan task. ALWAYS check applicable skills sebelum response pertama, terlepas kompleksitas task.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Skill Name</th>
+              <th>Category</th>
+              <th>Trigger Condition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>superpowers:brainstorming</code></td>
+              <td>🧠 Superpowers Core</td>
+              <td>Creative work, feature building, adding functionality</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:writing-plans</code></td>
+              <td>🧠 Superpowers Core</td>
+              <td>Multi-step task planning, implementation strategy</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:executing-plans</code></td>
+              <td>🧠 Superpowers Core</td>
+              <td>Running implementation plans, execution</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:finishing-a-development-branch</code></td>
+              <td>🧠 Superpowers Core</td>
+              <td>Integration, merge, PR, cleanup after implementation</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:using-superpowers</code></td>
+              <td>🧠 Superpowers Core</td>
+              <td>Session start, always — establishes workflow rules</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:test-driven-development</code></td>
+              <td>🔄 Development Workflow</td>
+              <td>Any feature/bugfix implementation</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:systematic-debugging</code></td>
+              <td>🔄 Development Workflow</td>
+              <td>Any bug, test failure, unexpected behavior</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:subagent-driven-development</code></td>
+              <td>🔄 Development Workflow</td>
+              <td>Independent parallel tasks in current session</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:using-git-worktrees</code></td>
+              <td>🔄 Development Workflow</td>
+              <td>Isolated branch work, explicit user request</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:verification-before-completion</code></td>
+              <td>🔄 Development Workflow</td>
+              <td>Before marking task done, final verification</td>
+            </tr>
+            <tr>
+              <td><code>code-review</code></td>
+              <td>🔍 Code Quality &amp; Review</td>
+              <td>Review diff at effort level (low/medium/high/ultra)</td>
+            </tr>
+            <tr>
+              <td><code>simplify</code></td>
+              <td>🔍 Code Quality &amp; Review</td>
+              <td>Reuse/simplification/efficiency cleanup</td>
+            </tr>
+            <tr>
+              <td><code>zen-review</code> / <code>zen-comprehensive-review</code></td>
+              <td>🔍 Code Quality &amp; Review</td>
+              <td>Alternative deep review style</td>
+            </tr>
+            <tr>
+              <td><code>cross-review</code></td>
+              <td>🔍 Code Quality &amp; Review</td>
+              <td>Cross-perspective review</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:requesting-code-review</code></td>
+              <td>🔍 Code Quality &amp; Review</td>
+              <td>Before pushing, get review feedback</td>
+            </tr>
+            <tr>
+              <td><code>superpowers:receiving-code-review</code></td>
+              <td>🔍 Code Quality &amp; Review</td>
+              <td>Processing feedback dari reviewer</td>
+            </tr>
+            <tr>
+              <td><code>agent-browser</code></td>
+              <td>🌐 Specialized Tools</td>
+              <td>Browser/Electron automation, QA, exploratory testing</td>
+            </tr>
+            <tr>
+              <td><code>respan</code></td>
+              <td>🌐 Specialized Tools</td>
+              <td>Tracing, evals, prompts, gateway, SDK setup</td>
+            </tr>
+            <tr>
+              <td><code>claude-api</code></td>
+              <td>🌐 Specialized Tools</td>
+              <td>Anthropic SDK, Claude API integration, prompt caching</td>
+            </tr>
+            <tr>
+              <td><code>sentra-readme</code></td>
+              <td>🌐 Specialized Tools</td>
+              <td>README writing (Sentra style, healthcare domain)</td>
+            </tr>
+            <tr>
+              <td><code>research</code></td>
+              <td>🌐 Specialized Tools</td>
+              <td>Complex research tasks, multiple-angle investigation</td>
+            </tr>
+            <tr>
+              <td><code>plan</code></td>
+              <td>🌐 Specialized Tools</td>
+              <td>Architecture planning, design planning</td>
+            </tr>
+            <tr>
+              <td><code>understand-anything:understand</code></td>
+              <td>🏗️ Understand Codebase</td>
+              <td>Full codebase knowledge graph, architecture analysis</td>
+            </tr>
+            <tr>
+              <td><code>understand-anything:understand-chat</code></td>
+              <td>🏗️ Understand Codebase</td>
+              <td>Q&amp;A about codebase, interactive queries</td>
+            </tr>
+            <tr>
+              <td><code>understand-anything:understand-onboard</code></td>
+              <td>🏗️ Understand Codebase</td>
+              <td>Onboarding tour, learning path through repo</td>
+            </tr>
+            <tr>
+              <td><code>understand-anything:understand-diff</code></td>
+              <td>🏗️ Understand Codebase</td>
+              <td>Diff analysis, understanding changes</td>
+            </tr>
+            <tr>
+              <td><code>understand-anything:understand-domain</code></td>
+              <td>🏗️ Understand Codebase</td>
+              <td>Business domain mapping, process extraction</td>
+            </tr>
+            <tr>
+              <td><code>understand-anything:understand-explain</code></td>
+              <td>🏗️ Understand Codebase</td>
+              <td>Explain components, architecture explanation</td>
+            </tr>
+            <tr>
+              <td><code>update-config</code></td>
+              <td>🛠️ Config &amp; Setup</td>
+              <td>settings.json, hooks, permissions configuration</td>
+            </tr>
+            <tr>
+              <td><code>init</code></td>
+              <td>🛠️ Config &amp; Setup</td>
+              <td>Project initialization</td>
+            </tr>
+            <tr>
+              <td><code>keybindings-help</code></td>
+              <td>🛠️ Config &amp; Setup</td>
+              <td>Keyboard shortcut customization</td>
+            </tr>
+            <tr>
+              <td><code>fewer-permission-prompts</code></td>
+              <td>🛠️ Config &amp; Setup</td>
+              <td>Reduce permission prompts, build allowlist</td>
+            </tr>
+            <tr>
+              <td><code>loop</code></td>
+              <td>🛠️ Config &amp; Setup</td>
+              <td>Recurring tasks on interval (e.g. /loop 5m /foo)</td>
+            </tr>
+            <tr>
+              <td><code>schedule</code></td>
+              <td>🛠️ Config &amp; Setup</td>
+              <td>Cron agents, scheduled remote execution</td>
+            </tr>
+            <tr>
+              <td><code>run</code></td>
+              <td>🛠️ Config &amp; Setup</td>
+              <td>Run app and verify changes, launch development</td>
+            </tr>
+            <tr>
+              <td><code>verify</code></td>
+              <td>🛠️ Config &amp; Setup</td>
+              <td>Manual verification, test changes in browser</td>
+            </tr>
+            <tr>
+              <td><code>skill-creator</code> / <code>superpowers:writing-skills</code></td>
+              <td>🛠️ Config &amp; Setup</td>
+              <td>Create new skills, skill development</td>
+            </tr>
+            <tr>
+              <td><code>superpowers-lab:finding-duplicate-functions</code></td>
+              <td>💡 Labs (Experimental)</td>
+              <td>Find duplicated code patterns</td>
+            </tr>
+            <tr>
+              <td><code>superpowers-lab:mcp-cli</code></td>
+              <td>💡 Labs (Experimental)</td>
+              <td>MCP server CLI operations</td>
+            </tr>
+            <tr>
+              <td><code>superpowers-lab:slack-messaging</code></td>
+              <td>💡 Labs (Experimental)</td>
+              <td>Slack integration and messaging</td>
+            </tr>
+            <tr>
+              <td><code>superpowers-lab:using-tmux-for-interactive-commands</code></td>
+              <td>💡 Labs (Experimental)</td>
+              <td>Interactive command execution via tmux</td>
+            </tr>
+            <tr>
+              <td><code>superpowers-lab:windows-vm</code></td>
+              <td>💡 Labs (Experimental)</td>
+              <td>Windows VM automation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section panel" id="plugins">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">MCP Plugins</div>
+          <h2>2 Plugin MCP Servers tersedia</h2>
+        </div>
+        <p class="lede">Plugins memperluas kemampuan Claude dengan akses ke dokumentasi dan tools eksternal. Setiap plugin punya tools specific — lihat MCP server docs untuk detail lengkap.</p>
+      </div>
+      <div class="source-grid">
+        <article class="source-item">
+          <strong>Context7 — Library Documentation</strong>
+          <p style="margin-top: 6px; color: rgba(253, 253, 253, 0.78);">Fetch current documentation untuk library, framework, SDK, API, CLI tool. Meliputi React, Next.js, Prisma, Express, Tailwind, Django, Spring Boot, dll. Gunakan untuk API syntax, config, migration, library-specific debugging.</p>
+          <small style="display: block; margin-top: 8px; color: rgba(160, 160, 162, 0.9);">Use: API syntax, library setup, version migration</small>
+        </article>
+        <article class="source-item">
+          <strong>Microsoft Learn — Azure &amp; Microsoft Docs</strong>
+          <p style="margin-top: 6px; color: rgba(253, 253, 253, 0.78);">Official Microsoft/Azure documentation dengan 3 tools: search, code-sample-search, fetch. Gunakan untuk Azure services, Microsoft SDKs, .NET, Windows APIs, cloud infrastructure.</p>
+          <small style="display: block; margin-top: 8px; color: rgba(160, 160, 162, 0.9);">Use: Azure services, Microsoft SDKs, cloud setup</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="antipatterns">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Anti-Patterns</div>
+          <h2>Red flags yang sering bikin workflow ngaco</h2>
+        </div>
+        <p class="lede">Ini adalah "thoughts yang bikin overthinking" — setiap satu adalah signal untuk check skill applicable atau change approach.</p>
+      </div>
+      <div class="decision-grid">
+        <article class="decision">
+          <strong>"This is just a simple question"</strong>
+          <p>Reality: Questions are tasks. Bahkan simple questions sering butuh skill untuk answer dengan baik.</p>
+          <small>→ Check for skills BEFORE first response</small>
+        </article>
+        <article class="decision">
+          <strong>"I need more context first"</strong>
+          <p>Reality: Skill check comes BEFORE clarifying questions. Skills tell HOW to gather context — jangan skip dulu.</p>
+          <small>→ Invoke skill dulu, context gathering baru setelah</small>
+        </article>
+        <article class="decision">
+          <strong>"Let me explore the codebase first"</strong>
+          <p>Reality: Skills tell HOW to explore. Undirected exploration buang waktu — use skill untuk efficient discovery.</p>
+          <small>→ Use Explore subagent atau skill-guided investigation</small>
+        </article>
+        <article class="decision">
+          <strong>"I remember this skill"</strong>
+          <p>Reality: Skills evolve. Training data != current skill version. Baca current skill content dari CLI dulu.</p>
+          <small>→ Always invoke Skill tool; jangan rely on memory</small>
+        </article>
+        <article class="decision">
+          <strong>"This is too simple to need a design"</strong>
+          <p>Reality: Every project goes through design. "Simple" projects paling sering bikin assumption errors. Design bisa short, tapi MUST present.</p>
+          <small>→ Even todo list wajib design cycle</small>
+        </article>
+        <article class="decision">
+          <strong>"I'll just do this one thing first"</strong>
+          <p>Reality: Check BEFORE doing anything. Undisciplined action = wasted rework. Skills prevent this.</p>
+          <small>→ Skill check is prerequisite, not nice-to-have</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="snippets">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Skill Workflows</div>
+          <h2>Common workflow snippets using skills</h2>
+        </div>
+        <p class="lede">Ini bukan template sakti, tapi urutan skill yang common dan biasanya effective untuk different scenarios.</p>
+      </div>
+      <div class="grid-2">
+        <article class="command">
+          <code>PLANNING</code>
+          <strong>Start a Feature</strong>
+          <ul class="list">
+            <li>brainstorming → spec write → writing-plans → executing-plans</li>
+            <li>Workflow ini paling sehat untuk feature baru atau significant refactor.</li>
+            <li>Spec file stored di docs/superpowers/specs/ untuk reference post-session.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>REVIEW</code>
+          <strong>Code Review Flow</strong>
+          <ul class="list">
+            <li>/code-review low/medium/high untuk iterative feedback;</li>
+            <li>/code-review ultra untuk deep multi-agent review (billed);</li>
+            <li>superpowers:requesting-code-review sebelum push.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>DEBUGGING</code>
+          <strong>Debug Workflow</strong>
+          <ul class="list">
+            <li>systematic-debugging → diagnose → fix → verify → commit</li>
+            <li>Never guess; always root-cause analysis dulu.</li>
+            <li>Documentation step: commit message menjelaskan WHY, bukan WHAT.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>SCHEDULING</code>
+          <strong>Automate Tasks</strong>
+          <ul class="list">
+            <li>/loop N interval /command untuk recurring checks;</li>
+            <li>/schedule untuk cron agents dengan durable artifacts;</li>
+            <li>Jangan gunakan untuk ephemeral task — gunakan untuk long-running atau event-driven.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="models">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Claude Models</div>
+          <h2>3 Claude Models tersedia</h2>
+        </div>
+        <p class="lede">Choose model berdasarkan complexity: Opus untuk reasoning mendalam, Sonnet untuk balanced work, Haiku untuk quick tasks. Default saat ini adalah Sonnet 4.6.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>ID</th>
+              <th>Speed</th>
+              <th>Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Claude Opus 4.8</td>
+              <td><code>claude-opus-4-8</code></td>
+              <td>Slower</td>
+              <td>Most complex tasks, deep reasoning, ultra code review, architecture planning</td>
+            </tr>
+            <tr>
+              <td>Claude Sonnet 4.6</td>
+              <td><code>claude-sonnet-4-6</code></td>
+              <td>Balanced</td>
+              <td>Default production work, feature implementation, most tasks (current model)</td>
+            </tr>
+            <tr>
+              <td>Claude Haiku 4.5</td>
+              <td><code>claude-haiku-4-5-20251001</code></td>
+              <td>Fastest</td>
+              <td>Simple tasks, commit messages, quick answers, triage, lightweight operations</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid-2" style="margin-top: 16px;">
+        <article class="command">
+          <code>/fast Mode</code>
+          <strong>Faster Output from Stronger Model</strong>
+          <ul class="list">
+            <li>Menggunakan Opus dengan output lebih cepat — tidak downgrade ke model lebih kecil.</li>
+            <li>Useful saat butuh reasoning depth tapi response speed juga penting.</li>
+            <li>Available di Opus 4.8 / 4.7 / 4.6; toggle dengan /fast command.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Model Selection</code>
+          <strong>How to Choose</strong>
+          <ul class="list">
+            <li>Start dari Auto-select jika uncertain — biar system pick optimal model.</li>
+            <li>Explicit choice saat tahu task complexity level (simple → Haiku, complex → Opus).</li>
+            <li>Cost scales dengan model — prefer Haiku untuk triage, Sonnet untuk production.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="sources">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Sources</div>
+          <h2>Reference basis</h2>
+        </div>
+        <p class="lede">Semua content di halaman ini didasarkan pada official Claude Code resources, system reminders dari sesi aktual, dan superpowers skill definitions per 30 Mei 2026.</p>
+      </div>
+      <div class="source-grid">
+        <article class="source-item">
+          <strong>Claude Code Documentation</strong>
+          <a href="https://docs.anthropic.com/claude-code" target="_blank" rel="noopener">docs.anthropic.com/claude-code</a>
+        </article>
+        <article class="source-item">
+          <strong>Anthropic API Reference</strong>
+          <a href="https://docs.anthropic.com" target="_blank" rel="noopener">docs.anthropic.com</a>
+        </article>
+        <article class="source-item">
+          <strong>Claude Code Superpowers Skills</strong>
+          <a href="file:///.claude/plugins/cache/claude-plugins-official/superpowers/" target="_blank">Local: C:\Users\drclassy\.claude\plugins\</a>
+        </article>
+        <article class="source-item">
+          <strong>MCP Servers</strong>
+          <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">modelcontextprotocol.io</a>
+        </article>
+      </div>
+      <div class="footer-note">
+        Sentra Artificial Intelligence 2026 — same visual system as index.html.
+        Typography: Space Grotesk for display, Inter for body, JetBrains Mono for labels and code.
+      </div>
+    </section>
+  </main>
+</body>
+</html>

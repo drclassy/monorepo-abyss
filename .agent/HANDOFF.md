@@ -3,16 +3,16 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-30 (session: cursor-ide-hardening)
+Last updated: 2026-05-30 (session: cursor-permissions-workflows)
 
 ## Snapshot
 
 - Repo: `D:\Devops\abyss-monorepo`
 - Branch: `codex/master-ci-gate`
 - GitHub target: `https://github.com/drclassy/monorepo-abyss`
-- Active work: Cursor IDE hardening (Mei 2026) — hooks, skills, subagents, MCP template, docs.
-- Mode: READY FOR PILOT OR NEXT SINGLE MISSION — Cursor config aligned to 3.x baseline; CT closure remains recorded
-- Next: Run one Cursor Safe-Quick and one Safe-Execute pilot per `docs/guides/006-cursor-audit.md`, or resume `ABYSS-CT-AUDIT-013`
+- Active work: Cursor permissions SSOT + 2026 workflow guide (`008`); hardening baseline committed.
+- Mode: READY — repo Cursor stack aligned; Chief should reload window after user permissions slim
+- Next: Activate Automations in Agents Window per `007`; optional Safe-Quick/Safe-Execute pilot log
 
 ## Cursor IDE Hardening (2026-05-30)
 
@@ -30,6 +30,7 @@ Last updated: 2026-05-30 (session: cursor-ide-hardening)
 - kluster rule remains **local-only** (gitignored); not part of shared four-rule baseline.
 - Hook smoke: `post-tool-use.ps1` OK; `after-edit.mjs` OK via spawnSync stdin test.
 - Automations: documented only — create in Agents Window (not committed as runtime config).
+- Permissions SSOT: consolidated `.cursor/permissions.json`; slim user file applied; guide `008-cursor-permissions-and-workflows.md`.
 - Cursor Agent CLI auth still unproved for headless parity.
 
 ## Intelligenceboard CT Wiring Closure (2026-05-30)
@@ -159,7 +160,7 @@ Last updated: 2026-05-30 (session: cursor-ide-hardening)
 - Next: Continue with prior agenda — Phase 7 agent integration planning or
   archival doc relabeling.
 
-## Public Push Hygiene (2026-05-28)
+## Public Push Hygiene — AI Tool Surfaces (2026-05-28)
 
 - Current push-prep task removed local AI tool surfaces from the Git index with
   `git rm --cached` while preserving files on disk:
@@ -226,7 +227,7 @@ Last updated: 2026-05-30 (session: cursor-ide-hardening)
 `/code-review` high-effort (3 subagents: Reuse, Quality, Efficiency) reviewed commits `8bfc968` + `98ee717`. Findings applied:
 
 | Finding | File | Fix |
-|---|---|---|
+| --- | --- | --- |
 | HIGH — Disposable leak | `extension.ts:300` | Capture `messageListener`, dispose on `panel.onDidDispose` |
 | NOTABLE — dispatch table | `extension.ts:303-337` | 3 if-chains → `messageHandlers` Record dispatch |
 | MEDIUM — uncached root walk | `portal-audit-log.ts:14` | Module-level `_rootCache Map` caches up to 28 existsSync calls |
@@ -235,6 +236,7 @@ Last updated: 2026-05-30 (session: cursor-ide-hardening)
 | LOW — hand-rolled compact fmt | `sentra-context-engine.html:1391` | `formatCompactNumber` → `Intl.NumberFormat(notation:'compact')` |
 
 Skipped (deferred):
+
 - `findMonorepoRoot` triple-copy (cross-package, needs coordination)
 - `audit.ts` declarative rules (7× pattern, risky behavior-parity refactor)
 - `layout.tsx` missionHome consolidation (false positive — checks serve different purposes)
@@ -249,7 +251,7 @@ Skipped (deferred):
 **All 5 tasks completed:**
 
 | Task | Commit | What |
-|---|---|---|
+| --- | --- | --- |
 | Task 1 | `9f7f39a` + `2ccadb6` | `SseManager` class + 10 unit tests (keepalive, lifecycle, mock) |
 | Task 2 | `67ed18c` + `0656dd9` | `routeMessage` dual-path delivery (SSE push jika online, inbox fallback) + options object refactor + TOCTOU guard |
 | Task 3 | `f9dfacb` | Thread `SseManager` through MCP tool handlers (`send_message`, `broadcast`, `update_status`) |
@@ -257,16 +259,19 @@ Skipped (deferred):
 | Task 5 | `ef67406` | Export `SseManager` + `createSseManager` dari `index.ts`, build + smoke test |
 
 **Verification:**
+
 - 47/47 tests pass (8 test files)
 - `pnpm typecheck` clean
 - `pnpm build` sukses — `dist/bin/unicom.js` + `dist/src/index.js`
 - Smoke test: `curl /health` → `{"status":"ok","agents":0,"sseConnected":0}`
 
 **Files changed/created:**
+
 - CREATE: `src/sse-manager.ts`, `src/feed.ts`, `tests/sse-manager.test.ts`, `tests/server-sse.test.ts`
 - MODIFY: `src/router.ts`, `src/server.ts`, `src/index.ts`, `src/tools/*.ts`, `tests/router.test.ts`, `tests/server.test.ts`
 
 **Code Quality Review Fixes (commit `0874a98`):**
+
 - `readBody()` error handling + `setEncoding('utf8')` — prevent request hangs
 - `/mcp` JSON parse error guard — 400 response instead of crash
 - SSE connection limit (`MAX_SSE_CONNECTIONS=100`) — DoS protection
@@ -277,12 +282,14 @@ Skipped (deferred):
 - `deliver()` signature cleanup — removed redundant type parameter
 
 **Verification after fixes:**
+
 - 49/49 tests pass (8 test files, +2 new tests)
 - `pnpm typecheck` clean
 - `pnpm build` sukses
 - Smoke test: `curl /health` → `{"status":"ok","agents":0,"sseConnected":0}`
 
 **Endpoints:**
+
 - `GET /subscribe/:agentId` — SSE stream untuk real-time push
 - `POST /send` — kirim pesan (dual-path: SSE jika online, inbox jika offline)
 - `POST /receive` — drain inbox untuk agent offline
@@ -293,6 +300,7 @@ Skipped (deferred):
 - `POST /mcp` — MCP Streamable HTTP endpoint
 
 **Next Action:**
+
 - ~~Menunggu keputusan Chief: finishing branch~~ → **DONE**: branch merged to `master` (commit `e3868a5`) dan deleted.
 - Lanjut ke RAG Enhancement Phase 1 (Pipeline Hardening) sesuai PROGRESS.md.
 
@@ -311,11 +319,13 @@ Three-phase RAG enhancement plan for `@sentra/pustaka`, `@sentra/cermin`, `@the-
 **Codex instructions:** Use `superpowers:executing-plans` or `superpowers:subagent-driven-development`. Follow plan step by step. Run Vitest after each task. Commit after each task passes. Working dir: `D:\Devops\abyss-monorepo`.
 
 **Key packages touched:**
+
 - `packages/sentra/sentra-cermin/` — crown-jewel
 - `packages/sentra/sentra-pustaka/` — crown-jewel
 - `packages/platform/document-ingestion/`
 
 **Session 2026-05-21:** UNICOM verification + 2 fixes committed (`f9daf5c`). RAG plan unchanged — no code written yet.
+
 - **Merge COMPLETE:** `refactor/ABYSS-REPO-STRUCTURE-002-corporate-ferdiiskandar` → `master` (`e3868a5`). 12 conflicts resolved, 8 ESLint fixes applied. Branch deleted.
 - `.agent/` is the operational SSOT; `AGENTS.md` is the public rulebook.
 - `.agent/` has been simplified to knowledge files only. Tooling now belongs in

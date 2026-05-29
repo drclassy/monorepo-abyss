@@ -1,0 +1,8 @@
+{
+  "_doc": "Optional user-level file at ~/.cursor/permissions.json. For ABYSS work, keep this MINIMAL so repo .cursor/permissions.json stays SSOT. Do not duplicate approvalMode or terminalAllowlist here unless you need the same policy in every repo on this machine.",
+  "autoRun": {
+    "block_instructions": [
+      "Machine-local: never auto-run diskpart, format, registry edits, or OS-wide security changes without explicit chat approval."
+    ]
+  }
+}

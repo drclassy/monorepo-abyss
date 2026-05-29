@@ -3,6 +3,20 @@
 Append-only for durable choices and repeated lessons. Add new entries at the
 top. Older full ledgers are preserved in `.agent/archive/legacy-root/`.
 
+## 2026-05-30 - ABYSS Cursor permissions SSOT is repo Allowlist, not UI Auto-review
+
+Decision: For ABYSS, agent shell/MCP approval policy is owned by tracked
+`.cursor/permissions.json` (`approvalMode: allowlist` + `autoRun.block_instructions`).
+User `~/.cursor/permissions.json` must stay minimal (machine-local blocks only)
+so the monorepo file is the visible enforced policy in Cursor Settings.
+
+Reason: Chief confirmed Settings UI is read-only under permissions enforcement.
+That behavior is correct for healthcare/version-controlled policy. Duplicating
+allowlists in the user file hid repo SSOT and bloated the UI allowlist.
+
+Status: Active. Operator guide: `docs/guides/008-cursor-permissions-and-workflows.md`.
+Template: `.cursor/permissions.user.example.json`.
+
 ## 2026-05-30 - Intelligenceboard CT wiring closure is complete but bounded
 
 Decision: The Intelligenceboard CT adapter runtime wiring chain is considered

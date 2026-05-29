@@ -85,7 +85,7 @@ shared four-rule baseline.
 | `/best-of-n` | Optional for high-risk crown-jewel or CT changes |
 | `/multitask` | Dirty-tree classification, multi-package fixes |
 | `/loop` | Local recurring verify (see `007-cursor-automations.md`) |
-| Auto-review run mode | Stricter approvals for shell/MCP in healthcare repo |
+| Auto-review run mode | Prefer repo **Allowlist** via `.cursor/permissions.json` (UI locked — by design) |
 | Automations | PR verify reminder, SSOT handoff nudge (Agents Window) |
 | Marketplace MCP plugins | Context7, Supabase, Prisma, Sentry — local `.mcp.json` |
 | Repo skills / subagents | `.cursor/skills/`, `.cursor/agents/` |
@@ -142,13 +142,17 @@ Run one **Safe-Quick** then one **Safe-Execute** task and compare:
 
 Record outcomes in `.agent/sessions/YYYY-MM-DD.md`.
 
-## Auto-review Run Mode (Cursor 3.6+)
+## Permissions & Run Mode (Cursor 3.6+)
 
-1. Open **Cursor Settings** (`Ctrl+Shift+J`)
-2. Go to **Agents → Run Mode**
-3. Select **Auto-review** (classifier approves Shell/MCP/Fetch)
-4. Enable **Sandbox** if shown
-5. Paste classifier steering text from [`.cursor/README.md`](../../.cursor/README.md#run-mode-auto-review)
-6. Confirm repo [`.cursor/permissions.json`](../../.cursor/permissions.json) is present
+ABYSS uses **repo Allowlist** in [`.cursor/permissions.json`](../../.cursor/permissions.json),
+not an unlocked Settings dropdown. See
+[`008-cursor-permissions-and-workflows.md`](./008-cursor-permissions-and-workflows.md).
 
-Do **not** use Full auto / YOLO for ABYSS healthcare work.
+Quick operator steps:
+
+1. Slim `~/.cursor/permissions.json` from [`.cursor/permissions.user.example.json`](../../.cursor/permissions.user.example.json)
+2. Reload Cursor window
+3. Confirm **Approvals & Execution** shows repo-enforced allowlist
+4. Change policy via PR to `.cursor/permissions.json` only
+
+Do **not** use Run Everything / YOLO. Do **not** duplicate allowlists in the user file.

@@ -103,5 +103,5 @@ Automations activated: abyss-pr-verify-reminder (Y/N), abyss-ssot-handoff-nudge 
 ## Related docs
 
 - [`.cursor/README.md`](../../.cursor/README.md) — hooks, skills, MCP policy
-- [`006-cursor-audit.md`](./006-cursor-audit.md) — operator audit guide
+- [008-cursor-permissions-and-workflows.md](./008-cursor-permissions-and-workflows.md) — permissions SSOT + 2026 workflow checklist
 - [`docs/specs/007-unicom-hub-v1.md`](../specs/007-unicom-hub-v1.md) — UNICOM MCP hub

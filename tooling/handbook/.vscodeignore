@@ -1,7 +1,0 @@
-src/
-out/
-node_modules/
-tsconfig.json
-esbuild.mjs
-.vscodeignore
-*.vsix

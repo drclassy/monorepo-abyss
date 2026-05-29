@@ -1,36 +1,59 @@
 {
   "approvalMode": "allowlist",
   "terminalAllowlist": [
-    "git status",
+    "cat",
+    "cd",
+    "dir",
+    "docker compose logs",
+    "docker compose ps",
+    "docker ps",
+    "fd",
+    "findstr",
+    "Get-ChildItem",
+    "Get-Content",
+    "git branch",
     "git diff",
     "git log",
     "git show",
-    "git branch",
-    "pnpm install",
-    "pnpm run",
-    "pnpm --filter",
-    "pnpm typecheck",
-    "pnpm lint",
-    "pnpm test",
-    "pnpm build",
-    "pwsh -NoProfile -ExecutionPolicy Bypass -File",
+    "git status",
+    "gh pr checks",
+    "gh pr view",
+    "gh issue list",
+    "kubectl get",
+    "ls",
     "node .cursor/hooks/",
-    "Get-ChildItem",
-    "Get-Content",
-    "Select-String"
+    "pnpm --filter",
+    "pnpm build",
+    "pnpm dlx",
+    "pnpm install",
+    "pnpm lint",
+    "pnpm run",
+    "pnpm test",
+    "pnpm typecheck",
+    "pwd",
+    "pwsh -NoProfile -ExecutionPolicy Bypass -File",
+    "rg",
+    "Select-String",
+    "terraform plan",
+    "type",
+    "where",
+    "which"
   ],
+  "mcpAllowlist": [],
   "autoRun": {
     "allow_instructions": [
-      "Auto-run read-only repo inspection: git status/diff/log, rg, read files, scoped pnpm typecheck/lint/test/build for the package being edited.",
-      "Auto-run ABYSS verification helpers when the mission is code change: pnpm --filter <pkg> typecheck|lint|test|build, verify-local.ps1 when scoped checks pass first."
+      "Auto-run read-only repo inspection: git status/diff/log, rg/fd/findstr, read files, scoped pnpm typecheck/lint/test/build for the package being edited.",
+      "Auto-run ABYSS verification helpers when the mission is code change: pnpm --filter <pkg> typecheck|lint|test|build, verify-local.ps1 when scoped checks pass first.",
+      "Auto-run read-only GitHub CLI: gh pr checks, gh pr view, gh issue list."
     ],
     "block_instructions": [
+      "Healthcare monorepo (ABYSS). Block auto-approval for: git push/reset/clean, terraform apply/destroy, database migrations, auth changes, .env/secrets access, MCP writes to production, and any edit under packages/sentra/** without explicit Chief GO.",
       "Never auto-run destructive git: git reset, git clean, git push --force, history rewrite, or broad git add.",
-      "Never auto-run deployment, terraform apply/destroy, database migrations, auth changes, or CI/CD writes without explicit Chief GO in chat.",
+      "Never auto-run deployment, docker compose up/down on production stacks, CI/CD writes, or infra changes without explicit Chief GO in chat.",
       "Never auto-run MCP or shell actions that expose secrets, .env values, credentials, PHI, or patient data.",
       "Never auto-edit packages/sentra/** without explicit Chief GO — crown-jewel is review-first.",
-      "Never auto-run git push, gh pr merge, or production-impacting infra commands.",
-      "For MCP tools touching production databases, auth, billing, or external write APIs: require human approval even under Auto-review."
+      "Never auto-run git push, gh pr merge, gh release, or production-impacting commands.",
+      "For MCP tools touching production databases, auth, billing, or external write APIs: require human approval even when allowlisted."
     ]
   }
 }

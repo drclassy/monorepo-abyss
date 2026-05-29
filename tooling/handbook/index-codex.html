@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codex Covernant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --black: #000000;
+      --white: #fbfbfc;
+      --graphite: #101319;
+      --ink: #171c26;
+      --slate: #2d3440;
+      --steel: #7f8a9f;
+      --mist: #dde3ee;
+      --cobalt: #0e2647;
+      --cyan: #8ec5ff;
+      --grid: rgba(255, 255, 255, 0.05);
+      --glow: rgba(142, 197, 255, 0.14);
+      --f-display: "Space Grotesk", "Inter", "IBM Plex Sans", Arial, sans-serif;
+      --f-body: "Inter", "IBM Plex Sans", Arial, sans-serif;
+      --f-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      --r-xl: 26px;
+      --r-lg: 18px;
+      --r-md: 12px;
+      --r-sm: 8px;
+      --border: 1px solid rgba(127, 138, 159, 0.26);
+      --shadow: 0 24px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--black);
+      color: var(--white);
+      font-size: 13px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--f-body);
+      line-height: 1.62;
+      color: var(--white);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 180px),
+        linear-gradient(90deg, transparent 0, transparent calc(100% - 1px), var(--grid) calc(100% - 1px)),
+        linear-gradient(0deg, transparent 0, transparent calc(100% - 1px), var(--grid) calc(100% - 1px)),
+        var(--black);
+      background-size: auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a {
+      color: var(--white);
+      text-decoration: underline;
+      text-decoration-color: rgba(127, 138, 159, 0.7);
+      text-underline-offset: 3px;
+    }
+
+    a:hover { text-decoration-color: var(--white); }
+
+    code, .mono { font-family: var(--f-mono); }
+
+    .page {
+      width: min(calc(100% - 22px), 980px);
+      margin: 0 auto;
+      padding: 18px 0 42px;
+    }
+
+    .hero,
+    .panel,
+    .card,
+    .command,
+    .token-card,
+    .source-item,
+    .table-wrap,
+    .model-card,
+    .plugin-card,
+    .pill-row a {
+      background: var(--graphite);
+      border: var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .hero,
+    .panel {
+      border-radius: var(--r-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 22px;
+      background:
+        radial-gradient(circle at top right, var(--glow), transparent 32%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+        var(--graphite);
+    }
+
+    .hero::after,
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -28% auto;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.05), transparent 64%);
+      pointer-events: none;
+    }
+
+    .panel {
+      padding: 18px;
+      margin-top: 14px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--steel);
+      font-family: var(--f-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+      display: inline-block;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-family: var(--f-display);
+      font-weight: 600;
+      line-height: 1.04;
+    }
+
+    h1 {
+      max-width: 710px;
+      font-size: clamp(2rem, 5vw, 3.55rem);
+      letter-spacing: -0.05em;
+    }
+
+    h2 {
+      font-size: clamp(1.22rem, 2.6vw, 1.92rem);
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      font-size: 1.03rem;
+      letter-spacing: -0.02em;
+    }
+
+    p { color: rgba(251, 251, 252, 0.8); }
+
+    strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .hero-grid,
+    .hero-meta,
+    .token-grid,
+    .grid-2,
+    .grid-3,
+    .skills-grid,
+    .plugins-grid,
+    .models-grid,
+    .source-grid,
+    .workflow-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1.3fr 0.7fr;
+      margin-top: 18px;
+      align-items: start;
+    }
+
+    .hero-copy p {
+      max-width: 660px;
+      margin-top: 12px;
+      font-size: 0.98rem;
+    }
+
+    .hero-meta {
+      grid-template-columns: 1fr;
+    }
+
+    .meta-box,
+    .token-card,
+    .plugin-card,
+    .model-card,
+    .card,
+    .command {
+      border-radius: var(--r-lg);
+      padding: 14px;
+      position: relative;
+    }
+
+    .meta-box {
+      background: linear-gradient(180deg, rgba(14, 38, 71, 0.94), rgba(12, 28, 50, 0.94));
+      border: var(--border);
+    }
+
+    .meta-box strong,
+    .token-card strong,
+    .plugin-card strong,
+    .model-card strong,
+    .card strong,
+    .command strong,
+    .source-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .pill-row a {
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--mist);
+      text-decoration: none;
+      font-family: var(--f-mono);
+      font-size: 0.77rem;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .section-header p {
+      max-width: 720px;
+    }
+
+    .token-grid,
+    .grid-3,
+    .skills-grid,
+    .plugins-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-2,
+    .workflow-grid,
+    .models-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card,
+    .command,
+    .model-card {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+        var(--graphite);
+    }
+
+    .card::before {
+      content: attr(data-step);
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      color: var(--steel);
+      font-family: var(--f-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--steel);
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+    }
+
+    .mini-label {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--cyan);
+      font-family: var(--f-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .token-stack,
+    .skill-tags,
+    .bullet-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .token-chip,
+    .skill-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(251, 251, 252, 0.84);
+      font-family: var(--f-mono);
+      font-size: 0.76rem;
+    }
+
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: inline-block;
+    }
+
+    .list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: rgba(251, 251, 252, 0.79);
+    }
+
+    .list li { margin-bottom: 8px; }
+
+    .command code {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--white);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .plugin-card,
+    .source-item {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.018));
+    }
+
+    .repo-skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .repo-skill-card {
+      position: relative;
+      border-radius: var(--r-lg);
+      padding: 14px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+        var(--graphite);
+      border: var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .repo-skill-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .skill-file-path {
+      margin-top: 8px;
+      color: var(--steel);
+      font-size: 0.77rem;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    .copy-button {
+      appearance: none;
+      border: var(--border);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--white);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-family: var(--f-mono);
+      font-size: 0.76rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    }
+
+    .copy-button:hover {
+      border-color: rgba(142, 197, 255, 0.52);
+      background: rgba(142, 197, 255, 0.12);
+    }
+
+    .copy-button[data-copied="true"] {
+      border-color: rgba(142, 197, 255, 0.52);
+      background: rgba(142, 197, 255, 0.14);
+      color: var(--cyan);
+    }
+
+    .copy-status {
+      margin-top: 10px;
+      min-height: 1.5em;
+      color: var(--steel);
+      font-size: 0.82rem;
+    }
+
+    .copy-payload {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .table-wrap {
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      margin-top: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: var(--border);
+      color: rgba(251, 251, 252, 0.82);
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--steel);
+      font-family: var(--f-mono);
+      font-size: 0.77rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .source-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .source-item {
+      border-radius: var(--r-md);
+      padding: 14px 16px;
+    }
+
+    .snippet {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: var(--r-md);
+      background: rgba(0, 0, 0, 0.32);
+      border: var(--border);
+      overflow: auto;
+    }
+
+    .snippet pre {
+      margin: 0;
+      color: rgba(251, 251, 252, 0.86);
+      white-space: pre-wrap;
+      font-family: var(--f-mono);
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: var(--border);
+      color: rgba(127, 138, 159, 0.88);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .token-grid,
+      .grid-2,
+      .grid-3,
+      .skills-grid,
+      .repo-skills-grid,
+      .plugins-grid,
+      .workflow-grid,
+      .models-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .page {
+        width: min(calc(100% - 16px), 980px);
+        padding-top: 12px;
+      }
+
+      .hero,
+      .panel {
+        padding: 16px;
+      }
+
+      .repo-skill-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero" id="top">
+      <div class="eyebrow">Codex IDE Field Manual</div>
+      <h1>Codex Covernant</h1>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p>
+            Handbook ini merangkum cara paling sehat memakai Codex langsung di editor
+            seperti VS Code, Cursor, dan editor kompatibel lain: bagaimana menyusun
+            prompt, kapan memakai plan, kapan naik ke cloud, bagaimana menyalakan
+            skill dan plugin, model mana yang paling masuk akal, dan anti-pattern
+            apa yang paling sering bikin agent terasa "ngawur".
+          </p>
+          <p>
+            Fokus halaman ini adalah <strong>penggunaan harian di IDE</strong>,
+            dengan pondasi resmi dari dokumentasi OpenAI dan snapshot kemampuan yang
+            memang tersedia di sesi Codex saat halaman ini dibuat pada
+            <strong>30 Mei 2026</strong>.
+          </p>
+          <div class="pill-row">
+            <a href="#tokens">Token DNA</a>
+            <a href="#principles">Principles</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#tips">Tips &amp; Tricks</a>
+            <a href="#skills">Skills</a>
+            <a href="#plugins">Plugins</a>
+            <a href="#anti-patterns">Anti-Patterns</a>
+            <a href="#snippets">Snippets</a>
+            <a href="#models">Models</a>
+            <a href="#sources">Sources</a>
+          </div>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-box">
+            <strong>Default prompt frame</strong>
+            Goal, Context, Constraints, Done when.
+          </div>
+          <div class="meta-box">
+            <strong>Safer autonomy baseline</strong>
+            Mulai dari <span class="mono">workspace-write</span> + <span class="mono">on-request</span>,
+            lalu naikkan otonomi hanya bila memang perlu.
+          </div>
+          <div class="meta-box">
+            <strong>Best local loop</strong>
+            Buka file relevan, tag konteks, minta plan untuk tugas sulit, verifikasi
+            sebelum close-out.
+          </div>
+          <div class="meta-box">
+            <strong>Session snapshot</strong>
+            Skills dan plugin di bawah adalah roster yang tersedia di sesi Codex
+            lokal ini, bukan daftar universal yang abadi.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="tokens">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Token DNA</div>
+          <h2>Sistem visual yang dipinjam dari handbook referensi</h2>
+        </div>
+        <p>
+          Halaman ini sengaja mempertahankan keluarga visual
+          <span class="mono">index.html</span>: gelap, editorial, panel berat, dan
+          tipografi teknis yang enak dibaca lama.
+        </p>
+      </div>
+      <div class="token-grid">
+        <article class="token-card">
+          <span class="mini-label">Color</span>
+          <strong>Palet basis</strong>
+          <p>Kontras tinggi, gelap, dan tidak terlalu neon. Dipakai untuk kesan handbook teknis, bukan landing page marketing.</p>
+          <div class="token-stack">
+            <span class="token-chip"><span class="swatch" style="background:#000000;"></span>#000000</span>
+            <span class="token-chip"><span class="swatch" style="background:#101319;"></span>#101319</span>
+            <span class="token-chip"><span class="swatch" style="background:#171c26;"></span>#171c26</span>
+            <span class="token-chip"><span class="swatch" style="background:#0e2647;"></span>#0e2647</span>
+            <span class="token-chip"><span class="swatch" style="background:#8ec5ff;"></span>#8ec5ff</span>
+          </div>
+        </article>
+        <article class="token-card">
+          <span class="mini-label">Typography</span>
+          <strong>Display, body, code</strong>
+          <p><span class="mono">Space Grotesk</span> untuk heading, <span class="mono">Inter</span> untuk body, dan <span class="mono">JetBrains Mono</span> untuk command, mode, model, serta ID skill.</p>
+          <div class="token-stack">
+            <span class="token-chip">Display: Space Grotesk</span>
+            <span class="token-chip">Body: Inter</span>
+            <span class="token-chip">Code: JetBrains Mono</span>
+          </div>
+        </article>
+        <article class="token-card">
+          <span class="mini-label">Surface</span>
+          <strong>Panel berat, radius sedang</strong>
+          <p>Panel pakai radius besar, border tipis dingin, dan shadow dalam untuk nuansa ops dashboard yang tetap elegan.</p>
+          <div class="token-stack">
+            <span class="token-chip">Radius: 26 / 18 / 12</span>
+            <span class="token-chip">Border: steel 26%</span>
+            <span class="token-chip">Shadow: 0 24px 50px</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="principles">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Principles</div>
+          <h2>Prinsip dasar supaya Codex terasa seperti teammate, bukan mesin tebak</h2>
+        </div>
+        <p>
+          Hampir semua hasil buruk datang dari konteks yang kabur, izin yang
+          kelewat longgar, atau definisi selesai yang tidak eksplisit.
+        </p>
+      </div>
+      <div class="grid-3">
+        <article class="command">
+          <code>Layered instructions</code>
+          <strong>Biarkan AGENTS bekerja berlapis</strong>
+          <ul class="list">
+            <li>Codex membaca <span class="mono">~/.codex/AGENTS.md</span> dulu, lalu file project dari root sampai folder kerja.</li>
+            <li>File yang lebih dekat ke direktori aktif override aturan yang lebih umum.</li>
+            <li>Taruh instruksi spesifik sedekat mungkin ke area kerja yang memang membutuhkannya.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Prompt anatomy</code>
+          <strong>Pakai empat blok inti di prompt</strong>
+          <ul class="list">
+            <li><strong>Goal</strong>: apa yang mau dibangun atau diubah.</li>
+            <li><strong>Context</strong>: file, error, docs, caller, atau screenshot yang penting.</li>
+            <li><strong>Constraints</strong>: style, safety, boundary, atau standar repo.</li>
+            <li><strong>Done when</strong>: kondisi selesai yang bisa diverifikasi.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Plan first</code>
+          <strong>Untuk tugas sulit, planning lebih murah daripada rework</strong>
+          <ul class="list">
+            <li>OpenAI merekomendasikan plan dulu untuk task kompleks, ambigu, atau susah dijelaskan.</li>
+            <li>Di IDE, <span class="mono">/plan</span> atau pola plan mode cocok untuk membangun batas kerja sebelum eksekusi.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Deliberate autonomy</code>
+          <strong>Pilih izin dan network dengan sengaja</strong>
+          <ul class="list">
+            <li><span class="mono">workspace-write</span> adalah mode rendah friksi yang sehat untuk kerja lokal.</li>
+            <li>Network tetap mati secara default pada baseline ini kecuali Boss menyalakannya di konfigurasi.</li>
+            <li><span class="mono">danger-full-access</span> hanya masuk akal saat memang mau melepas semua boundary.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Clean context</code>
+          <strong>Jaga thread utama tetap bersih</strong>
+          <ul class="list">
+            <li>Subagent berguna untuk eksplorasi, tes, triage, dan summarization yang read-heavy.</li>
+            <li>Parallel writer di file yang sama justru bikin konflik dan overhead koordinasi.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Verify always</code>
+          <strong>Jangan tutup task pakai narasi doang</strong>
+          <ul class="list">
+            <li>Workflow resmi Codex selalu menaruh verifikasi sebagai bagian eksplisit dari loop kerja.</li>
+            <li>Minimal: repro ulang, test terkecil yang relevan, lalu review diff sebelum handoff.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="workflow">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Workflow</div>
+          <h2>Loop harian yang paling waras di IDE</h2>
+        </div>
+        <p>
+          Ini pola yang paling konsisten: eksplorasi cepat di IDE, eksekusi dengan
+          prompt yang punya done-criteria, lalu review dan verifikasi sebelum keluar.
+        </p>
+      </div>
+      <div class="workflow-grid">
+        <article class="card" data-step="01">
+          <span class="tag">Open Context</span>
+          <h3>Buka file yang paling relevan</h3>
+          <p>Panduan workflow resmi menekankan bahwa IDE extension otomatis memasukkan file terbuka sebagai konteks. Jadi buka caller, target file, dan test terdekat dulu.</p>
+        </article>
+        <article class="card" data-step="02">
+          <span class="tag">Attach Precisely</span>
+          <h3>Tambahkan konteks selektif</h3>
+          <p>Pilih blok kode lalu gunakan <span class="mono">Add to Codex Thread</span>, atau tag file dengan <span class="mono">@path</span>. Lebih baik tiga file yang tepat daripada tiga puluh file yang asal.</p>
+        </article>
+        <article class="card" data-step="03">
+          <span class="tag">Prompt Well</span>
+          <h3>Kasih Goal, Context, Constraints, Done when</h3>
+          <p>Kalau bug bisa direpro, sertakan resep reproduksi. Kalau UI, sertakan screenshot plus batas implementasi seperti framework, route, dan requirement mobile.</p>
+        </article>
+        <article class="card" data-step="04">
+          <span class="tag">Pick Mode</span>
+          <h3>Pilih local, cloud, atau review mode</h3>
+          <p>Pakai <span class="mono">/local</span> untuk kerja di workspace saat ini, <span class="mono">/cloud</span> untuk pekerjaan panjang yang ingin diparalelkan, dan <span class="mono">/review</span> sebelum commit.</p>
+        </article>
+        <article class="card" data-step="05">
+          <span class="tag">Run Small Loops</span>
+          <h3>Iterasi kecil menang atas prompt raksasa</h3>
+          <p>Untuk UI, minta 2-3 opsi lalu pilih satu. Untuk refactor besar, mulai dengan plan atau milestone, bukan "rewrite semuanya".</p>
+        </article>
+        <article class="card" data-step="06">
+          <span class="tag">Close Cleanly</span>
+          <h3>Verifikasi, review, baru handoff</h3>
+          <p>Minta Codex menjalankan check terkecil yang relevan, lalu pakai <span class="mono">/status</span> bila perlu untuk melihat konteks dan limit thread sebelum lanjut.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="tips">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Tips &amp; Tricks</div>
+          <h2>Kebiasaan kecil yang efeknya besar</h2>
+        </div>
+        <p>
+          Banyak peningkatan kualitas Codex datang dari ergonomi: shortcut, slash
+          command, tagging file, dan pemilihan reasoning effort yang pas.
+        </p>
+      </div>
+      <div class="grid-2">
+        <article class="command">
+          <code>@file references</code>
+          <strong>Tag file langsung di prompt</strong>
+          <ul class="list">
+            <li>Contoh resmi: <span class="mono">@example.tsx</span> dan <span class="mono">@resources.ts</span> untuk menambah halaman baru dengan referensi yang jelas.</li>
+            <li>Ini membuat prompt lebih pendek tapi tetap tepat sasaran.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Reasoning effort</code>
+          <strong>Mulai dari medium, naik hanya bila perlu</strong>
+          <ul class="list">
+            <li>Di IDE, switcher model juga mengatur reasoning effort.</li>
+            <li><span class="mono">Low</span> untuk task sempit, <span class="mono">Medium</span> default, <span class="mono">High</span> untuk debugging atau perubahan rumit.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Slash commands</code>
+          <strong>Biasakan hidup di chat input</strong>
+          <ul class="list">
+            <li><span class="mono">/auto-context</span> untuk konteks IDE otomatis.</li>
+            <li><span class="mono">/status</span> untuk thread ID, usage, dan rate limit.</li>
+            <li><span class="mono">/review</span> untuk review working tree atau diff.</li>
+            <li><span class="mono">/goal</span> untuk objective yang persisten.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Key bindings</code>
+          <strong>Hilangkan friction di command palette</strong>
+          <ul class="list">
+            <li><span class="mono">chatgpt.newChat</span> sudah default ke <span class="mono">Ctrl+N</span> di Windows/Linux.</li>
+            <li>Bind juga <span class="mono">chatgpt.addToThread</span> dan <span class="mono">chatgpt.addFileToThread</span> kalau Boss sering kerja selection-based.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Cloud delegation</code>
+          <strong>Lokal untuk desain, cloud untuk long-run</strong>
+          <ul class="list">
+            <li>Dokumen workflow resmi menyarankan desain hati-hati secara lokal lalu delegasi milestone implementasi ke cloud.</li>
+            <li>Bagus untuk refactor panjang yang tidak perlu terus memenuhi thread utama.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Permissions hygiene</code>
+          <strong>Network dan full access itu keputusan, bukan default</strong>
+          <ul class="list">
+            <li>Secara lokal, network mati pada mode default sampai diaktifkan di konfigurasi.</li>
+            <li>Kalau perlu network, lebih aman batasi juga lewat proxy domain policy bila workflow mengizinkan.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="skills">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Skills</div>
+          <h2>Skills yang tersedia dan paling bernilai untuk kerja di IDE</h2>
+        </div>
+        <p>
+          Skill adalah paket instruksi + resources + script opsional. Di IDE/CLI,
+          Boss bisa invoke skill secara eksplisit dengan <span class="mono">$</span>
+          atau membiarkan Codex memilihnya secara implisit dari deskripsinya.
+        </p>
+      </div>
+      <div class="repo-skills-grid">
+        <article class="repo-skill-card">
+          <div class="repo-skill-head">
+            <div>
+              <span class="mini-label">Repo Skill File</span>
+              <strong>abyss-verify</strong>
+              <div class="skill-file-path mono">.cursor/skills/abyss-verify/SKILL.md</div>
+            </div>
+            <button class="copy-button" type="button" data-copy-target="copy-skill-abyss-verify" data-default-label="Copy">Copy</button>
+          </div>
+          <p>Menyalin isi penuh skill verifikasi ABYSS supaya Boss bisa langsung paste ke agent saat butuh bukti verifikasi.</p>
+          <div class="copy-status" data-copy-status>Siap disalin ke clipboard.</div>
+          <textarea class="copy-payload" id="copy-skill-abyss-verify" aria-hidden="true">---
+name: abyss-verify
+description:
+  Run ABYSS verification before claiming work is done. Use when verifying,
+  typechecking, linting, testing, or saying a task is complete.
+---
+
+# ABYSS Verify
+
+Evidence before assertions. Do not claim done without fresh command output.
+
+## Choose the smallest check
+
+1. **Scoped change** — run the relevant package script:
+
+```powershell
+pnpm --filter &lt;package-name&gt; typecheck
+pnpm --filter &lt;package-name&gt; lint
+pnpm --filter &lt;package-name&gt; test
+pnpm --filter &lt;package-name&gt; build
+```
+
+2. **Broad or repo-wide change** — run global verifier:
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.codex\scripts\verify-local.ps1"
+```
+
+3. **Incomplete workspace** — safe fallback:
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.codex\scripts\verify-local-safe.ps1"
+```
+
+4. **Documentation-only** — sufficient evidence:
+
+```powershell
+git diff --stat
+git diff --name-status
+```
+
+## Report format
+
+```text
+Verification:
+- Command: &lt;exact command&gt;
+- Result: pass | fail
+- Evidence: &lt;one-line summary of output&gt;
+```
+
+If a check fails, classify: code issue, environment issue, or pre-existing
+blocker. Do not fabricate results.</textarea>
+        </article>
+        <article class="repo-skill-card">
+          <div class="repo-skill-head">
+            <div>
+              <span class="mini-label">Repo Skill File</span>
+              <strong>abyss-handoff</strong>
+              <div class="skill-file-path mono">.cursor/skills/abyss-handoff/SKILL.md</div>
+            </div>
+            <button class="copy-button" type="button" data-copy-target="copy-skill-abyss-handoff" data-default-label="Copy">Copy</button>
+          </div>
+          <p>Menyalin isi penuh skill handoff ABYSS supaya Boss bisa paste ke agent ketika mau menutup sesi atau menyerahkan konteks.</p>
+          <div class="copy-status" data-copy-status>Siap disalin ke clipboard.</div>
+          <textarea class="copy-payload" id="copy-skill-abyss-handoff" aria-hidden="true">---
+name: abyss-handoff
+description:
+  Update ABYSS SSOT continuity at session end or when handing off to the next
+  agent. Use when finishing a mission, recording blockers, or preparing HANDOFF.
+---
+
+# ABYSS Handoff
+
+`.agent/` is operational SSOT. Do not delete or reset it.
+
+## Before stopping (if files were edited)
+
+Update at least one active continuity file when mission state changed:
+
+- `.agent/HANDOFF.md` — current state, blockers, next action
+- `.agent/PROGRESS.md` — milestone status
+- `.agent/DECISIONS.md` — durable decisions only (append-only)
+
+Append session notes to `.agent/sessions/YYYY-MM-DD.md`.
+
+## Read order for next agent
+
+1. `.agent/README.md`
+2. `.agent/HANDOFF.md`
+3. `.agent/CONTEXT.md` when touching boundaries or protected areas
+4. `.agent/PROGRESS.md` for milestone status
+5. `.agent/DECISIONS.md` when prior rules matter
+
+Do not use legacy `.agent/DIGEST.md`, `.agent/LESSONS.md`, or
+`.agent/SESSION_STATE.md` as active SSOT unless Chief asks for history.
+
+## Handoff snippet (minimal)
+
+```markdown
+## Snapshot
+
+- Branch:
+- Mission completed:
+- Verified:
+- Blockers:
+- Next action:
+```
+
+Keep `HANDOFF.md` short and active. Move long history to `sessions/` or
+`archive/`.</textarea>
+        </article>
+        <article class="repo-skill-card">
+          <div class="repo-skill-head">
+            <div>
+              <span class="mini-label">Repo Skill File</span>
+              <strong>app-boundary-preflight</strong>
+              <div class="skill-file-path mono">.cursor/skills/app-boundary-preflight/SKILL.md</div>
+            </div>
+            <button class="copy-button" type="button" data-copy-target="copy-skill-app-boundary-preflight" data-default-label="Copy">Copy</button>
+          </div>
+          <p>Menyalin isi penuh skill preflight boundary app supaya Boss bisa paste ke agent sebelum menyentuh area `apps/`.</p>
+          <div class="copy-status" data-copy-status>Siap disalin ke clipboard.</div>
+          <textarea class="copy-payload" id="copy-skill-app-boundary-preflight" aria-hidden="true">---
+name: app-boundary-preflight
+description:
+  Classify app boundary before editing anything under apps/. Use when working on
+  apps, app imports, or crown-jewel consumption from an app.
+---
+
+# App Boundary Preflight
+
+`apps/` is a portfolio of independent product islands — not one homogeneous
+layer.
+
+## Required reads (in order)
+
+1. Root `AGENTS.md`
+2. `apps/AGENTS.md`
+3. `apps/_governance/APP_BOUNDARY_PREFLIGHT.md`
+4. `apps/_governance/APP_CLASSIFICATION.md`
+5. Nearest app-level `AGENTS.md` if present
+
+## Report before implementing
+
+```text
+App boundary preflight:
+- Target app path:
+- Classification:
+- Crown-jewel access tier (if any):
+- Allowed integration shape:
+- Forbidden paths confirmed:
+```
+
+## Hard rules
+
+- Apps must not import sibling apps.
+- Apps must not import crown-jewel `src`, `internal`, or private implementation
+  paths.
+- Allowed: `app → contracts / SDK / API / service facade → crown-jewel core`
+- Direct crown-jewel edits require explicit Chief GO (`packages/sentra/**` is
+  review-first).
+
+Do not implement until preflight is written and boundary is clear.</textarea>
+        </article>
+      </div>
+      <div class="skills-grid">
+        <article class="plugin-card">
+          <span class="mini-label">Core</span>
+          <strong>Fondasi paling sering dipakai</strong>
+          <div class="skill-tags">
+            <span class="skill-chip">plan</span>
+            <span class="skill-chip">research</span>
+            <span class="skill-chip">init</span>
+            <span class="skill-chip">openai-docs</span>
+            <span class="skill-chip">imagegen</span>
+          </div>
+          <p>Mulai dari sini untuk orientasi repo, planning, docs resmi OpenAI, dan asset visual cepat.</p>
+        </article>
+        <article class="plugin-card">
+          <span class="mini-label">Superpowers</span>
+          <strong>Workflow engineering</strong>
+          <div class="skill-tags">
+            <span class="skill-chip">superpowers:brainstorming</span>
+            <span class="skill-chip">superpowers:writing-plans</span>
+            <span class="skill-chip">superpowers:executing-plans</span>
+            <span class="skill-chip">superpowers:systematic-debugging</span>
+            <span class="skill-chip">superpowers:verification-before-completion</span>
+            <span class="skill-chip">superpowers:subagent-driven-development</span>
+          </div>
+          <p>Paling kuat saat Boss ingin agent lebih disiplin di plan, debug, eksekusi, dan verifikasi.</p>
+        </article>
+        <article class="plugin-card">
+          <span class="mini-label">Review</span>
+          <strong>Code review dan kualitas</strong>
+          <div class="skill-tags">
+            <span class="skill-chip">zen-review</span>
+            <span class="skill-chip">zen-comprehensive-review</span>
+            <span class="skill-chip">cross-review</span>
+            <span class="skill-chip">github:gh-fix-ci</span>
+            <span class="skill-chip">github:gh-address-comments</span>
+            <span class="skill-chip">github:yeet</span>
+          </div>
+          <p>Gunakan saat butuh review tajam, perbaikan CI, atau eksekusi feedback PR dengan konteks yang rapi.</p>
+        </article>
+        <article class="plugin-card">
+          <span class="mini-label">Security</span>
+          <strong>Scan, validasi, perbaikan finding</strong>
+          <div class="skill-tags">
+            <span class="skill-chip">codex-security:security-scan</span>
+            <span class="skill-chip">codex-security:security-diff-scan</span>
+            <span class="skill-chip">codex-security:fix-finding</span>
+            <span class="skill-chip">codex-security:validation</span>
+            <span class="skill-chip">codex-security:threat-model</span>
+          </div>
+          <p>Cocok untuk audit repo, review security PR, dan pembuktian temuan sebelum ada perubahan lebih luas.</p>
+        </article>
+        <article class="plugin-card">
+          <span class="mini-label">Frontend</span>
+          <strong>UI, browser, design implementation</strong>
+          <div class="skill-tags">
+            <span class="skill-chip">frontend-design</span>
+            <span class="skill-chip">browser:control-in-app-browser</span>
+            <span class="skill-chip">chrome:control-chrome</span>
+            <span class="skill-chip">vercel:verification</span>
+            <span class="skill-chip">vercel:react-best-practices</span>
+            <span class="skill-chip">figma:figma-use</span>
+          </div>
+          <p>Ideal untuk screenshot-to-UI, verifikasi localhost, dan iterasi desain yang perlu proof visual.</p>
+        </article>
+        <article class="plugin-card">
+          <span class="mini-label">Docs &amp; Artifacts</span>
+          <strong>Dokumen, deck, sheet, handbook</strong>
+          <div class="skill-tags">
+            <span class="skill-chip">documents:documents</span>
+            <span class="skill-chip">presentations:Presentations</span>
+            <span class="skill-chip">spreadsheets:Spreadsheets</span>
+            <span class="skill-chip">google-drive:google-docs</span>
+            <span class="skill-chip">google-drive:google-sheets</span>
+            <span class="skill-chip">google-drive:google-slides</span>
+          </div>
+          <p>Bagus untuk hasil yang harus dibaca manusia lain, bukan hanya difs atau terminal transcript.</p>
+        </article>
+        <article class="plugin-card">
+          <span class="mini-label">Product Systems</span>
+          <strong>Ticket, spec, dan workspace knowledge</strong>
+          <div class="skill-tags">
+            <span class="skill-chip">linear:linear</span>
+            <span class="skill-chip">notion:notion-spec-to-implementation</span>
+            <span class="skill-chip">notion:notion-research-documentation</span>
+            <span class="skill-chip">gmail:gmail</span>
+            <span class="skill-chip">google-calendar:google-calendar</span>
+          </div>
+          <p>Memperluas Codex dari coding agent jadi operator kerja lintas tiket, spec, inbox, dan kalender.</p>
+        </article>
+        <article class="plugin-card">
+          <span class="mini-label">App &amp; Infra</span>
+          <strong>Backend, deployment, ML, platform</strong>
+          <div class="skill-tags">
+            <span class="skill-chip">supabase:supabase</span>
+            <span class="skill-chip">vercel:nextjs</span>
+            <span class="skill-chip">vercel:ai-sdk</span>
+            <span class="skill-chip">vercel:vercel-cli</span>
+            <span class="skill-chip">hugging-face:hf-cli</span>
+            <span class="skill-chip">microsoft-foundry</span>
+          </div>
+          <p>Pilih bundle ini saat pekerjaan sudah menyentuh deploy, storage, auth, inference, atau observability.</p>
+        </article>
+        <article class="plugin-card">
+          <span class="mini-label">Meta Tools</span>
+          <strong>Bikin skill dan plugin sendiri</strong>
+          <div class="skill-tags">
+            <span class="skill-chip">skill-creator</span>
+            <span class="skill-chip">skill-installer</span>
+            <span class="skill-chip">plugin-creator</span>
+            <span class="skill-chip">dcs-skill-improver</span>
+            <span class="skill-chip">openai-developers:build-chatgpt-app</span>
+          </div>
+          <p>Saat workflow mulai berulang, inilah titik di mana Codex berubah dari assistant menjadi platform kerja yang bisa dikustom.</p>
+        </article>
+      </div>
+      <div class="footer-note">
+        Catatan: roster skill di sesi ini sangat panjang. Section ini sengaja
+        menonjolkan skill yang paling leverage untuk pemakaian Codex sehari-hari di IDE.
+      </div>
+    </section>
+
+    <section class="panel" id="plugins">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Plugins</div>
+          <h2>Plugin yang tersedia di sesi ini</h2>
+        </div>
+        <p>
+          Plugin membundel skill, app integration, dan MCP server menjadi workflow
+          reusable. Setelah diinstal, Boss bisa minta hasilnya langsung atau invoke
+          plugin tertentu dengan awalan <span class="mono">@</span>.
+        </p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Plugin</th>
+              <th>Fungsi paling kuat</th>
+              <th>Kapan dipakai</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Browser</td><td>Open, inspect, test, screenshot localhost atau tab in-app</td><td>Saat verifikasi frontend lokal atau butuh browser loop ringan</td></tr>
+            <tr><td>Build Web Data Visualization</td><td>Desain dan implement chart/dashboard</td><td>Untuk laporan visual, dashboard, dan data storytelling</td></tr>
+            <tr><td>Canva</td><td>Generate dan edit design asset</td><td>Social post, poster, deck, atau branded visual</td></tr>
+            <tr><td>Chrome</td><td>Automasi Chrome pada halaman remote atau auth-heavy</td><td>Saat state browser asli penting dan in-app browser kurang cukup</td></tr>
+            <tr><td>Codex Security</td><td>Security scan dan validasi finding</td><td>Audit repo, diff security, threat modeling</td></tr>
+            <tr><td>Computer Use</td><td>Kontrol aplikasi desktop Windows</td><td>Task lintas app lokal yang tidak cukup lewat shell atau browser</td></tr>
+            <tr><td>Documents</td><td>Buat/edit dokumen Word dan Google Docs</td><td>Spec, memo, redline, dan dokumen formal</td></tr>
+            <tr><td>Figma</td><td>Bridge code dan design dua arah</td><td>Design system, UI generation, dan code connect</td></tr>
+            <tr><td>GitHub</td><td>Inspect repo, issue, PR, CI</td><td>Review, triage, dan publish work ke GitHub</td></tr>
+            <tr><td>Gmail</td><td>Baca dan kelola email</td><td>Inbox triage, draft balasan, cari thread penting</td></tr>
+            <tr><td>Google Calendar</td><td>Jadwal, availability, briefing harian</td><td>Meeting prep, scheduling, dan free-up time</td></tr>
+            <tr><td>Google Drive</td><td>Drive, Docs, Sheets, Slides</td><td>Cari file kerja, edit doc, analisis sheet, update slides</td></tr>
+            <tr><td>Hugging Face</td><td>Model, dataset, Spaces, training workflows</td><td>Eksplorasi model dan eksperimen ML</td></tr>
+            <tr><td>Linear</td><td>Search dan update issue/project</td><td>Draft PRD, update status, dan sinkronisasi product work</td></tr>
+            <tr><td>Notion</td><td>Knowledge capture dan spec-to-implementation</td><td>Dokumentasi, research synthesis, meeting prep</td></tr>
+            <tr><td>OpenAI Developers</td><td>Build dengan API OpenAI, Agents SDK, Apps</td><td>Docs resmi, app building, troubleshooting OpenAI stack</td></tr>
+            <tr><td>Presentations</td><td>Buat dan edit slide deck</td><td>PPT, PPTX, deck internal, export slide</td></tr>
+            <tr><td>Spreadsheets</td><td>Workbook analisis dan visualisasi</td><td>Sheet operasional, reporting, angka, tabel</td></tr>
+            <tr><td>Statsig</td><td>Inspect dan ubah experiments / feature gates</td><td>Eksperimen produk dan rollout</td></tr>
+            <tr><td>Supabase</td><td>Query DB, schema, logs, functions</td><td>Task Postgres, auth, storage, edge functions</td></tr>
+            <tr><td>Superpowers</td><td>Framework workflow agentic</td><td>Planning, TDD, debugging, review, verification</td></tr>
+            <tr><td>Vercel</td><td>Next.js, deploy, AI SDK, storage, observability</td><td>Web app production workflow end-to-end</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="anti-patterns">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Anti-Patterns</div>
+          <h2>Pola yang paling sering membuat Codex tampak "kurang pintar"</h2>
+        </div>
+        <p>
+          Biasanya masalahnya bukan modelnya, tetapi cara kita memberi konteks,
+          izin, dan scope.
+        </p>
+      </div>
+      <div class="grid-2">
+        <article class="command">
+          <code>Prompt kabur</code>
+          <strong>Tidak menyebut Goal, Constraints, atau Done when</strong>
+          <ul class="list">
+            <li>Codex jadi menebak standar keberhasilan sendiri.</li>
+            <li>Hasilnya sering terlihat "bagus" tetapi salah boundary.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Single giant thread</code>
+          <strong>Semua hal dipaksa masuk satu percakapan panjang</strong>
+          <ul class="list">
+            <li>Ini resep context rot: thread utama dipenuhi log, eksperimen, dan asumsi lama.</li>
+            <li>Mulai thread baru saat fase kerja benar-benar berganti.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Auto-context abuse</code>
+          <strong>Membuka terlalu banyak file dan berharap agent memilah sendiri</strong>
+          <ul class="list">
+            <li>Auto context membantu, tapi tetap perlu seleksi manusia.</li>
+            <li>Buka file yang relevan, bukan seluruh repo.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Premature full access</code>
+          <strong>Langsung menyalakan network atau full access tanpa alasan</strong>
+          <ul class="list">
+            <li>Default lokal sudah cukup untuk banyak task coding biasa.</li>
+            <li>Naikkan izin hanya saat bottleneck-nya memang boundary teknis.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Write-heavy parallelism</code>
+          <strong>Banyak subagent mengedit area yang sama</strong>
+          <ul class="list">
+            <li>OpenAI menyarankan subagent paralel terutama untuk eksplorasi, tes, triage, dan summarization.</li>
+            <li>Penulisan paralel di file yang sama sering menambah konflik, bukan kecepatan.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>No verification</code>
+          <strong>Menutup task hanya dari ringkasan agent</strong>
+          <ul class="list">
+            <li>Selalu minta command, repro, atau review yang membuktikan perubahan.</li>
+            <li>Kalau tidak bisa diverifikasi, tulis jelas risiko yang masih tersisa.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="snippets">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Snippets</div>
+          <h2>Prompt pattern yang efektif dipakai langsung di IDE</h2>
+        </div>
+        <p>
+          Gunakan sebagai starter. Kuncinya bukan panjang prompt, tapi kejelasan
+          goal dan verifikasinya.
+        </p>
+      </div>
+      <div class="grid-2">
+        <article class="command">
+          <code>Onboarding codebase</code>
+          <strong>Memahami area baru dengan cepat</strong>
+          <div class="snippet"><pre>Goal: pahami request flow modul ini.
+Context: @route.ts @service.ts @schema.ts
+Constraints: jangan ubah file.
+Done when: beri saya ringkasan alur, validasi penting, dan 2 gotcha perubahan.</pre></div>
+        </article>
+        <article class="command">
+          <code>Bugfix dengan repro</code>
+          <strong>Memaksa loop perbaikan tetap objektif</strong>
+          <div class="snippet"><pre>Bug: tombol Save menampilkan sukses tapi perubahan tidak tersimpan.
+Repro:
+1. Jalankan app
+2. Buka /settings
+3. Toggle Enable alerts
+4. Click Save
+5. Refresh, state kembali
+Constraints: jangan ubah API shape; fix minimal; tambah regression test bila masuk akal.
+Done when: repro sudah hijau dan jelaskan cara verifikasinya.</pre></div>
+        </article>
+        <article class="command">
+          <code>UI iteration</code>
+          <strong>Meminta opsi dulu sebelum memilih arah</strong>
+          <div class="snippet"><pre>Review halaman landing ini dan usulkan 3 peningkatan visual.
+Jaga struktur konten tetap sama.
+Setelah itu tunggu saya pilih satu arah sebelum mengubah kode.</pre></div>
+        </article>
+        <article class="command">
+          <code>Plan-first</code>
+          <strong>Untuk pekerjaan yang rumit atau masih kabur</strong>
+          <div class="snippet"><pre>/plan
+Kita mau memecah auth subsystem menjadi parsing token, session loading,
+dan permissions. Tolong susun plan, file yang mungkin disentuh, risiko,
+dan verifikasi sebelum implementasi.</pre></div>
+        </article>
+        <article class="command">
+          <code>Skill invocation</code>
+          <strong>Memaksa workflow tertentu</strong>
+          <div class="snippet"><pre>$openai-docs
+Cari panduan resmi terbaru OpenAI untuk model yang tepat,
+lalu rangkum rekomendasi teknis yang relevan untuk tugas ini.</pre></div>
+        </article>
+        <article class="command">
+          <code>Pre-commit review</code>
+          <strong>Second set of eyes sebelum push</strong>
+          <div class="snippet"><pre>/review Focus on regressions, edge cases, and security concerns.
+Setelah itu ringkas temuan berdasarkan severity, lalu beri saran verifikasi.</pre></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="models">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Models</div>
+          <h2>Model selection untuk Codex di IDE</h2>
+        </div>
+        <p>
+          Per dokumentasi Codex resmi yang current pada 30 Mei 2026, pemilihan
+          model sebaiknya sederhana: satu default kuat, satu opsi ringan, dan satu
+          lane coding-native untuk kasus khusus.
+        </p>
+      </div>
+      <div class="models-grid">
+        <article class="model-card">
+          <span class="mini-label">Default best pick</span>
+          <strong><span class="mono">gpt-5.5</span></strong>
+          <p>OpenAI merekomendasikan model ini untuk mayoritas task Codex. Paling kuat untuk coding kompleks, computer use, knowledge work, dan research workflow.</p>
+          <div class="token-stack">
+            <span class="token-chip">Gunakan untuk: task utama</span>
+            <span class="token-chip">Cocok untuk: planning, debugging, synthesis</span>
+          </div>
+        </article>
+        <article class="model-card">
+          <span class="mini-label">Fast / lighter lane</span>
+          <strong><span class="mono">gpt-5.4-mini</span></strong>
+          <p>Opsi cepat dan lebih hemat untuk tugas ringan, iterasi kecil, atau subagent yang hanya perlu bounded reasoning.</p>
+          <div class="token-stack">
+            <span class="token-chip">Gunakan untuk: quick edits</span>
+            <span class="token-chip">Cocok untuk: triage, ref kecil, subagents</span>
+          </div>
+        </article>
+        <article class="model-card">
+          <span class="mini-label">Coding-native</span>
+          <strong><span class="mono">gpt-5.3-codex</span></strong>
+          <p>Model coding khusus dengan kemampuan software engineering yang sangat kuat. Dokumentasi resmi bahkan menyebut kemampuan coding-nya kini juga menjadi tenaga inti di balik <span class="mono">gpt-5.4</span>.</p>
+          <div class="token-stack">
+            <span class="token-chip">Gunakan untuk: engineering berat</span>
+            <span class="token-chip">Cocok untuk: refactor kompleks, code reasoning</span>
+          </div>
+        </article>
+        <article class="model-card">
+          <span class="mini-label">Near-instant preview</span>
+          <strong><span class="mono">gpt-5.3-codex-spark</span></strong>
+          <p>Research preview untuk iterasi coding hampir instan. Lebih cocok buat loop cepat, bukan default universal. Tersedia untuk ChatGPT Pro pada snapshot docs ini.</p>
+          <div class="token-stack">
+            <span class="token-chip">Gunakan untuk: realtime iteration</span>
+            <span class="token-chip">Catatan: preview / availability terbatas</span>
+          </div>
+        </article>
+      </div>
+      <div class="grid-2" style="margin-top: 16px;">
+        <article class="command">
+          <code>Reasoning effort</code>
+          <strong>Atur kedalaman berpikir, bukan hanya nama model</strong>
+          <ul class="list">
+            <li><span class="mono">Low</span> untuk task yang sudah sangat terdefinisi.</li>
+            <li><span class="mono">Medium</span> sebagai default aman untuk mayoritas pekerjaan IDE.</li>
+            <li><span class="mono">High</span> untuk debugging rumit, root-cause analysis, atau perubahan lintas modul.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Practical heuristic</code>
+          <strong>Heuristik cepat memilih model</strong>
+          <ul class="list">
+            <li>Kalau Boss ragu: mulai di <span class="mono">gpt-5.5 / medium</span>.</li>
+            <li>Kalau task terlalu kecil untuk model berat: turun ke <span class="mono">gpt-5.4-mini</span>.</li>
+            <li>Kalau butuh fokus engineering yang kuat: uji <span class="mono">gpt-5.3-codex</span>.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="sources">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Sources</div>
+          <h2>Sumber resmi yang menjadi dasar halaman ini</h2>
+        </div>
+        <p>
+          Seluruh tautan di bawah berasal dari dokumentasi dan materi resmi OpenAI.
+          Tanggal acuan untuk pembacaan halaman ini adalah <strong>30 Mei 2026</strong>.
+        </p>
+      </div>
+      <div class="source-grid">
+        <article class="source-item">
+          <strong>Codex IDE overview</strong>
+          <a href="https://developers.openai.com/codex/ide" target="_blank" rel="noopener">developers.openai.com/codex/ide</a>
+        </article>
+        <article class="source-item">
+          <strong>Codex IDE features</strong>
+          <a href="https://developers.openai.com/codex/ide/features" target="_blank" rel="noopener">developers.openai.com/codex/ide/features</a>
+        </article>
+        <article class="source-item">
+          <strong>IDE commands</strong>
+          <a href="https://developers.openai.com/codex/ide/commands" target="_blank" rel="noopener">developers.openai.com/codex/ide/commands</a>
+        </article>
+        <article class="source-item">
+          <strong>IDE slash commands</strong>
+          <a href="https://developers.openai.com/codex/ide/slash-commands" target="_blank" rel="noopener">developers.openai.com/codex/ide/slash-commands</a>
+        </article>
+        <article class="source-item">
+          <strong>AGENTS.md guidance</strong>
+          <a href="https://developers.openai.com/codex/guides/agents-md" target="_blank" rel="noopener">developers.openai.com/codex/guides/agents-md</a>
+        </article>
+        <article class="source-item">
+          <strong>Agent Skills</strong>
+          <a href="https://developers.openai.com/codex/skills" target="_blank" rel="noopener">developers.openai.com/codex/skills</a>
+        </article>
+        <article class="source-item">
+          <strong>Plugins</strong>
+          <a href="https://developers.openai.com/codex/plugins" target="_blank" rel="noopener">developers.openai.com/codex/plugins</a>
+        </article>
+        <article class="source-item">
+          <strong>Models for Codex</strong>
+          <a href="https://developers.openai.com/codex/models" target="_blank" rel="noopener">developers.openai.com/codex/models</a>
+        </article>
+        <article class="source-item">
+          <strong>Best practices</strong>
+          <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank" rel="noopener">developers.openai.com/codex/learn/best-practices</a>
+        </article>
+        <article class="source-item">
+          <strong>Workflow examples</strong>
+          <a href="https://developers.openai.com/codex/workflows" target="_blank" rel="noopener">developers.openai.com/codex/workflows</a>
+        </article>
+        <article class="source-item">
+          <strong>Approvals, sandbox, and network controls</strong>
+          <a href="https://developers.openai.com/codex/agent-approvals-security" target="_blank" rel="noopener">developers.openai.com/codex/agent-approvals-security</a>
+        </article>
+        <article class="source-item">
+          <strong>Sandboxing concepts</strong>
+          <a href="https://developers.openai.com/codex/concepts/sandboxing" target="_blank" rel="noopener">developers.openai.com/codex/concepts/sandboxing</a>
+        </article>
+      </div>
+      <div class="footer-note">
+        Visual direction mempertahankan keluarga desain handbook referensi di
+        <span class="mono">tooling/handbook/index.html</span>, tetapi isi halaman ini
+        ditulis ulang khusus untuk workflow Codex di IDE.
+      </div>
+    </section>
+  </main>
+  <script>
+    document.querySelectorAll("[data-copy-target]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const targetId = button.getAttribute("data-copy-target");
+        const payload = document.getElementById(targetId);
+        const status = button.closest(".repo-skill-card")?.querySelector("[data-copy-status]");
+        const defaultLabel = button.getAttribute("data-default-label") || "Copy";
+
+        if (!payload) {
+          if (status) status.textContent = "Payload tidak ditemukan.";
+          return;
+        }
+
+        const text = payload.value;
+
+        try {
+          await navigator.clipboard.writeText(text);
+          if (status) status.textContent = "Isi SKILL.md tersalin. Tinggal paste ke agent.";
+        } catch (error) {
+          payload.focus();
+          payload.select();
+          payload.setSelectionRange(0, text.length);
+          const copied = document.execCommand("copy");
+          if (status) {
+            status.textContent = copied
+              ? "Isi SKILL.md tersalin via fallback copy."
+              : "Copy gagal. Silakan salin manual dari file.";
+          }
+          payload.blur();
+        }
+
+        button.textContent = "Copied";
+        button.dataset.copied = "true";
+
+        window.clearTimeout(button.copyResetTimer);
+        button.copyResetTimer = window.setTimeout(() => {
+          button.textContent = defaultLabel;
+          button.dataset.copied = "false";
+          if (status && status.textContent !== "Copy gagal. Silakan salin manual dari file.") {
+            status.textContent = "Siap disalin ke clipboard.";
+          }
+        }, 1800);
+      });
+    });
+  </script>
+</body>
+</html>

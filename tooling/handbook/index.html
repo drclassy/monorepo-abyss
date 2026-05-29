@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cursor Agent Ops Manual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --black: #000000;
+      --white: #fdfdfd;
+      --graphite: #111318;
+      --slate: #2b2f38;
+      --silver: #a0a0a2;
+      --grid: #e8eaf0;
+      --blue: #0b1f3a;
+      --f-display: "Space Grotesk", "Inter", "IBM Plex Sans", Arial, sans-serif;
+      --f-body: "Inter", "IBM Plex Sans", Arial, sans-serif;
+      --f-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      --r-lg: 16px;
+      --r-md: 12px;
+      --r-sm: 8px;
+      --r-xl: 24px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+      --b: 1px solid var(--slate);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--black);
+      color: var(--white);
+      font-size: 13px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--f-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--white);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0) 180px),
+        var(--black);
+    }
+
+    a {
+      color: var(--white);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--slate);
+    }
+
+    a:hover { text-decoration-color: var(--white); }
+
+    .page {
+      width: min(calc(100% - 20px), 860px);
+      margin: 0 auto;
+      padding: 18px 0 36px;
+    }
+
+    .hero, .panel, .card, .command, .source-item, .table-wrap, .pill-row a {
+      background: var(--graphite);
+      border: var(--b);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      border-radius: var(--r-xl);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -8% -28% auto;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04), transparent 62%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--silver);
+      font-family: var(--f-mono);
+      font-size: 0.84rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 38px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-family: var(--f-display);
+      font-weight: 600;
+      line-height: 1.05;
+    }
+
+    h1 { max-width: 620px; font-size: clamp(2rem, 4.5vw, 3.2rem); letter-spacing: -0.04em; }
+    h2 { font-size: clamp(1.25rem, 2.4vw, 1.8rem); letter-spacing: -0.03em; }
+    h3 { font-size: 1.04rem; letter-spacing: -0.02em; }
+
+    .hero-grid, .hero-meta, .grid-2, .grid-3, .source-grid, .decision-grid, .ops-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero-grid { grid-template-columns: 1.35fr 0.65fr; margin-top: 18px; align-items: start; }
+    .hero-copy p, .lede, .muted { margin: 0; color: rgba(253, 253, 253, 0.78); }
+    .hero-copy p { margin-top: 12px; font-size: 0.96rem; }
+    .hero-meta { grid-template-columns: 1fr; }
+
+    .meta-box {
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
+      background: var(--blue);
+      border: var(--b);
+    }
+
+    .meta-box strong,
+    .card strong,
+    .command strong,
+    .decision strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--white);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .pill-row a {
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--silver);
+      text-decoration: none;
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .section { margin-top: 14px; }
+
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .section-header p { max-width: 700px; }
+
+    .panel {
+      border-radius: var(--r-xl);
+      padding: 18px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card, .command, .decision {
+      border-radius: var(--r-lg);
+      padding: 14px;
+      min-height: 0;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover, .command:hover, .source-item:hover, .decision:hover {
+      border-color: rgba(160, 160, 162, 0.4);
+    }
+
+    .card::before {
+      content: attr(data-step);
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-family: var(--f-mono);
+      font-size: 0.82rem;
+      color: var(--silver);
+      letter-spacing: 0.16em;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-bottom: 10px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: var(--b);
+      color: var(--silver);
+      font-family: var(--f-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+    }
+
+    code, .mono { font-family: var(--f-mono); }
+
+    .command code {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--white);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: rgba(253, 253, 253, 0.78);
+    }
+
+    .list li { margin: 0 0 8px; }
+
+    .decision-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .decision {
+      border-left: 3px solid var(--silver);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+    }
+
+    .decision p {
+      color: rgba(253, 253, 253, 0.76);
+      margin-top: 6px;
+    }
+
+    .decision small {
+      display: block;
+      margin-top: 10px;
+      color: rgba(160, 160, 162, 0.9);
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+    }
+
+    .table-wrap {
+      border-radius: var(--r-lg);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: var(--b);
+      color: rgba(253, 253, 253, 0.82);
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--silver);
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .ops-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .source-grid { grid-template-columns: 1fr; }
+
+    .source-item {
+      border-radius: var(--r-md);
+      padding: 14px 16px;
+      transition: border-color 0.2s;
+    }
+
+    .source-item strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: var(--b);
+      color: rgba(160, 160, 162, 0.72);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .decision-grid,
+      .ops-grid { grid-template-columns: 1fr; }
+
+      .page {
+        width: min(calc(100% - 16px), 860px);
+        padding-top: 12px;
+      }
+
+      .hero, .panel { padding: 16px; }
+      .section-header { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero" id="top">
+      <div class="eyebrow">Cursor Agent Ops</div>
+      <h1>Cursor Agent Workflow + Models Manual</h1>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p>Handbook satu halaman untuk menjalankan Cursor Agent dengan lebih disiplin dari awal sampai close-out. Fokusnya adalah best practice operasional per <strong>30 Mei 2026</strong>: kapan mulai di Ask, kapan pindah ke Agent, kapan memakai `/multitask`, `worktrees`, `/loop`, automations, dan model mana yang paling masuk akal untuk tiap fase kerja tanpa membiarkan section model mengambil alih seluruh handbook.</p>
+          <div class="pill-row">
+            <a href="#principles">Principles</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#tactics">Tips &amp; Tricks</a>
+            <a href="#anti-patterns">Anti-Patterns</a>
+            <a href="#snippets">Snippets</a>
+            <a href="#models">Models</a>
+            <a href="#sources">Sources</a>
+          </div>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-box">
+            <strong>Display baseline</strong>
+            13px text, single-scroll, internal-browser friendly.
+          </div>
+          <div class="meta-box">
+            <strong>Reference date</strong>
+            Dirangkum dari docs dan changelog resmi Cursor yang tersedia pada 30 Mei 2026.
+          </div>
+          <div class="meta-box">
+            <strong>Operator scope</strong>
+            Workflow harian, prompt hygiene, feature escalation, dan model selection yang cukup untuk keputusan cepat.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section panel" id="principles">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Core Principles</div>
+          <h2>Prinsip yang bikin Cursor Agent terasa waras</h2>
+        </div>
+        <p class="lede">Kalau enam prinsip ini dipegang, hasil Cursor biasanya lebih stabil: lebih sedikit rework, lebih sedikit konteks mubazir, dan lebih jelas kapan harus naik ke fitur agent yang lebih kuat.</p>
+      </div>
+      <div class="decision-grid">
+        <article class="decision">
+          <strong>Start with context, not code</strong>
+          <p>Mode `Ask` paling aman untuk orientasi awal: pahami boundary, cari file, dan minta peta area kerja dulu sebelum membiarkan agent mengubah banyak file.</p>
+          <small>Docs mode Cursor menggambarkan Ask sebagai read-only exploration.</small>
+        </article>
+        <article class="decision">
+          <strong>Choose the mode on purpose</strong>
+          <p>`Agent` untuk pekerjaan otonom lintas file, `Manual` untuk edit presisi, `Ask` untuk diagnosis, dan `Custom Modes` untuk setup berulang yang sudah terbukti cocok.</p>
+          <small>Jangan semua hal dilempar ke Agent hanya karena bisa.</small>
+        </article>
+        <article class="decision">
+          <strong>Auto is a legitimate default</strong>
+          <p>Saat belum yakin mau model apa, `Auto-select` adalah pilihan aman. Docs Cursor menyebutnya sebagai default yang solid jika Boss tidak yakin harus memilih apa.</p>
+          <small>Bagus untuk menjaga flow tanpa overthinking model di tiap chat.</small>
+        </article>
+        <article class="decision">
+          <strong>Keep context intentionally small</strong>
+          <p>Chat yang kegendutan bikin agent makin mahal dan makin liar. Reset thread saat fase kerja berubah, dan taruh instruksi stabil di rules atau `AGENTS.md`.</p>
+          <small>Rules memang dirancang sebagai persistent prompt-level context.</small>
+        </article>
+        <article class="decision">
+          <strong>Escalate features, do not spam them</strong>
+          <p>`/multitask`, `worktrees`, `multi-root`, `/loop`, dan automations sangat kuat, tapi paling sehat dipakai ketika pekerjaan memang paralel, terisolasi, atau berulang.</p>
+          <small>Feature baru 2026 itu multiplier, bukan default wajib.</small>
+        </article>
+        <article class="decision">
+          <strong>Verification closes the loop</strong>
+          <p>Agent yang terlihat pintar tetap harus diverifikasi. Build, test, focused lint, dan runtime repro kecil tetap jadi penutup yang sehat sebelum close-out.</p>
+          <small>Auto-review Run Mode mengurangi friction, bukan menggantikan verifikasi.</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="workflow">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Daily Workflow</div>
+          <h2>Workflow Cursor Agent yang paling sehat untuk kerja harian</h2>
+        </div>
+        <p class="lede">Urutan ini paling masuk akal untuk repo nyata: pahami dulu, edit seperlunya, baru eskalasi ke fitur yang lebih otonom atau lebih mahal saat ada alasan yang jelas.</p>
+      </div>
+      <div class="ops-grid">
+        <article class="card" data-step="01">
+          <span class="tag">Warm Up</span>
+          <h3>Bersihkan konteks dan boundary dulu</h3>
+          <p class="muted">Pastikan repo terindeks, rules dan `AGENTS.md` relevan, lalu minta agent menjelaskan area kerja, file penting, dan risiko sebelum menyentuh implementasi.</p>
+        </article>
+        <article class="card" data-step="02">
+          <span class="tag">Ask First</span>
+          <h3>Mulai di Ask untuk orientasi</h3>
+          <p class="muted">Gunakan `Ask` untuk mapping codebase, minta shortlist file, atau ringkasan dependency path. Ini mengurangi edit ngawur saat nanti pindah ke Agent.</p>
+        </article>
+        <article class="card" data-step="03">
+          <span class="tag">Agent Next</span>
+          <h3>Pindah ke Agent saat scope sudah cukup jelas</h3>
+          <p class="muted">Begitu batas tugas mulai rapi, barulah pakai `Agent` untuk implementasi, refactor terarah, menjalankan command, dan memperbaiki error dengan loop kerja yang lebih otonom.</p>
+        </article>
+        <article class="card" data-step="04">
+          <span class="tag">Parallelism</span>
+          <h3>Pakai `/multitask` atau worktrees hanya untuk kerja paralel nyata</h3>
+          <p class="muted">Fitur tanggal 24 April 2026 ini ideal saat ada sub-tugas independen, branch terisolasi, atau perubahan lintas repo yang memang tidak enak dikerjakan serial.</p>
+        </article>
+        <article class="card" data-step="05">
+          <span class="tag">Long Runs</span>
+          <h3>Pakai `/loop`, automations, atau cloud agent untuk kerja berulang</h3>
+          <p class="muted">Kalau task-nya polling status, cek deploy, atau automasi berbasis event, jangan paksa chat biasa. Pakai loop lokal, automation, atau surface seperti Jira jika itu sumber kerja aslinya.</p>
+        </article>
+        <article class="card" data-step="06">
+          <span class="tag">Close</span>
+          <h3>Tutup dengan verifikasi dan handoff singkat</h3>
+          <p class="muted">Minta agent merangkum apa yang berubah, lalu jalankan test, build, atau repro kecil yang paling relevan. Jangan tutup thread dengan narasi tanpa evidence.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="tactics">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Tips &amp; Tricks</div>
+          <h2>Kebiasaan power-user yang bikin Cursor lebih efisien</h2>
+        </div>
+        <p class="lede">Ini bagian yang paling terasa efeknya di hari ke hari: lebih sedikit prompt berulang, lebih sedikit approval yang melelahkan, dan lebih tajam saat memilih surface kerja.</p>
+      </div>
+      <div class="grid-2">
+        <article class="command">
+          <code>Rules + AGENTS.md</code>
+          <strong>Taruh instruksi stabil di tempat yang persisten</strong>
+          <ul class="list">
+            <li>Project rules untuk kebijakan repo, style, dan boundary.</li>
+            <li>`AGENTS.md` untuk operating contract yang mudah dibaca agent.</li>
+            <li>Jangan copy-paste instruksi panjang di setiap thread kalau bisa dibuat reusable.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Auto-select + Custom Modes</code>
+          <strong>Jadikan kombinasi yang berhasil sebagai preset</strong>
+          <ul class="list">
+            <li>`Auto-select` aman saat Boss belum yakin model mana yang cocok.</li>
+            <li>Kalau sudah ketemu pola yang pas, simpan sebagai `Custom Mode` dengan model dan instruction yang sesuai.</li>
+            <li>Ini lebih hemat daripada mengulang prompt yang sama terus-menerus.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Run Mode</code>
+          <strong>Paksa friction hanya di tempat yang memang berisiko</strong>
+          <ul class="list">
+            <li>Update `3.6` pada 29 Mei 2026 menambahkan `Auto-review Run Mode` untuk shell, MCP, dan fetch.</li>
+            <li>Bagus untuk kerja lebih lama dengan approval lebih sedikit, tapi tetap butuh allowlist dan boundary yang waras.</li>
+            <li>Anggap ini akselerator, bukan alasan untuk membiarkan agent bebas total.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Surface Match</code>
+          <strong>Pilih permukaan kerja yang sesuai sumber masalah</strong>
+          <ul class="list">
+            <li>Gunakan editor dan Agents Window untuk coding langsung.</li>
+            <li>Gunakan Jira integration untuk tiket yang memang lahir dari Jira.</li>
+            <li>Gunakan automations untuk pemantauan atau tugas event-driven, bukan chat manual berulang.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Artifacts</code>
+          <strong>Pakai canvas saat output perlu dibaca orang lain</strong>
+          <ul class="list">
+            <li>Canvases cocok untuk report, dashboard, atau interface hasil kerja agent.</li>
+            <li>Shared canvases dari 20 Mei 2026 enak untuk handoff tanpa membagikan seluruh thread.</li>
+            <li>Pilih ini saat output-nya lebih penting daripada percakapan mentahnya.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Context Hygiene</code>
+          <strong>Potong thread lama sebelum ia memotong kualitas</strong>
+          <ul class="list">
+            <li>Satu thread untuk satu fase kerja lebih sehat daripada satu thread untuk segalanya.</li>
+            <li>Thread baru lebih baik saat tujuan berubah dari audit ke implementasi, atau dari implementasi ke release verification.</li>
+            <li>Ini sering lebih murah daripada memaksa Max Mode di thread lama.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="anti-patterns">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Anti-Patterns</div>
+          <h2>Hal yang paling sering bikin Cursor terasa mengecewakan</h2>
+        </div>
+        <p class="lede">Biasanya bukan modelnya yang jelek, tapi workflow-nya yang salah. Empat pola ini paling sering bikin hasil berantakan, mahal, atau misleading.</p>
+      </div>
+      <div class="grid-2">
+        <article class="command">
+          <code>Ambiguous start</code>
+          <strong>Langsung suruh Agent implement tanpa orientasi</strong>
+          <ul class="list">
+            <li>Akibatnya agent mencari jalur tercepat versinya sendiri.</li>
+            <li>Untuk task abu-abu, selalu mulai dari pertanyaan orientasi lebih dulu.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Mode mismatch</code>
+          <strong>Menggunakan Agent untuk edit kecil yang butuh presisi</strong>
+          <ul class="list">
+            <li>`Manual` atau prompt yang lebih terarah sering lebih bagus untuk edit kecil.</li>
+            <li>Otonomi tinggi tidak selalu sama dengan hasil yang lebih presisi.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Feature overkill</code>
+          <strong>Memakai Max, `/multitask`, atau `/loop` untuk masalah yang tidak membutuhkannya</strong>
+          <ul class="list">
+            <li>Parallelism, long-running loops, dan context jumbo itu powerful, tapi ada cost dan complexity-nya.</li>
+            <li>Pakai hanya jika task memang paralel, berulang, atau sangat context-heavy.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>No evidence close-out</code>
+          <strong>Menutup task berdasarkan narasi, bukan bukti</strong>
+          <ul class="list">
+            <li>Ringkasan agent yang rapi tetap bukan pengganti `test`, `build`, atau repro langsung.</li>
+            <li>Ini kesalahan paling mahal karena kelihatan selesai padahal belum aman.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="snippets">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Prompt Patterns</div>
+          <h2>Snippets yang enak dipakai langsung di Cursor</h2>
+        </div>
+        <p class="lede">Bukan template sakti, tapi pola prompt yang cukup pendek dan biasanya memberi agent jalur kerja yang lebih sehat.</p>
+      </div>
+      <div class="grid-2">
+        <article class="command">
+          <code>Ask Mode</code>
+          <strong>Prompt orientasi awal</strong>
+          <ul class="list">
+            <li><span class="mono">Jelaskan boundary area ini, file kunci yang perlu saya lihat, dan risiko kalau saya edit sekarang. Jangan ubah file dulu.</span></li>
+            <li>Bagus untuk repo yang belum familiar atau task yang masih kabur.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Agent Mode</code>
+          <strong>Prompt implementasi terarah</strong>
+          <ul class="list">
+            <li><span class="mono">Implement perubahan ini dengan scope sekecil mungkin, jelaskan rencana singkat, lalu jalankan verifikasi paling relevan sebelum merangkum hasilnya.</span></li>
+            <li>Bagus untuk fix atau refactor yang sudah jelas boundary-nya.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>/multitask</code>
+          <strong>Prompt saat tugas bisa dipecah</strong>
+          <ul class="list">
+            <li><span class="mono">Pecah pekerjaan ini menjadi sub-tugas independen dan kerjakan paralel hanya jika tidak saling konflik. Satukan hasil dan sisa risiko di akhir.</span></li>
+            <li>Pakai hanya jika benar-benar ada paralelisme nyata.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>/loop</code>
+          <strong>Prompt untuk tugas yang berulang</strong>
+          <ul class="list">
+            <li><span class="mono">Pantau status deploy ini setiap 5 menit sampai sehat, lalu hentikan loop dan ringkas hasilnya.</span></li>
+            <li>Contoh resmi changelog memang mengarah ke pola seperti ini.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Model escalation</code>
+          <strong>Prompt saat mau naik model</strong>
+          <ul class="list">
+            <li><span class="mono">Mulai dari Auto. Kalau konteks terlalu besar atau reasoning terlalu dangkal, rekomendasikan model berikutnya dan alasan teknisnya sebelum lanjut.</span></li>
+            <li>Membantu mengontrol cost dan mengurangi impuls langsung ke model termahal.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>Close-out</code>
+          <strong>Prompt penutup yang sehat</strong>
+          <ul class="list">
+            <li><span class="mono">Ringkas apa yang berubah, apa yang diverifikasi, apa yang belum diverifikasi, dan risiko sisa tanpa melebih-lebihkan status selesai.</span></li>
+            <li>Bagus untuk menjaga honesty pada akhir thread.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="models">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Model Guide</div>
+          <h2>Roster model Cursor yang current per 30 Mei 2026</h2>
+        </div>
+        <p class="lede">Section ini sekarang memakai route resmi `models-and-pricing` yang current, bukan daftar lama yang dulu masih berpusat di `GPT-4.1`, `o3`, `Gemini 2.5 Pro`, atau `Claude 4 Sonnet` saja. Tujuannya tetap ringkas: roster yang aktual plus pembacaan operasional yang cukup untuk keputusan cepat.</p>
+      </div>
+      <div class="decision-grid">
+        <article class="decision">
+          <strong>Safe default</strong>
+          <p>`Auto-select` tetap paling aman kalau Boss belum punya preferensi model atau hanya ingin tetap mengalir.</p>
+          <small>Bagus saat roster model berubah cepat dan Boss tidak ingin mengurusi routing manual setiap saat.</small>
+        </article>
+        <article class="decision">
+          <strong>OpenAI coding lane</strong>
+          <p>`GPT-5.3 Codex` sekarang jauh lebih relevan daripada referensi lama. Meta docs menyebutnya sebagai <span class="mono">top benchmark scorer</span> dan <span class="mono">cost-effective all-rounder</span>.</p>
+          <small>Ini kandidat paling masuk akal untuk coding all-rounder yang current.</small>
+        </article>
+        <article class="decision">
+          <strong>Highest persistence</strong>
+          <p>`GPT-5.5` kini muncul sebagai model OpenAI paling cerdas di roster current, dengan deskripsi resmi <span class="mono">stronger persistence</span>.</p>
+          <small>Masuk akal saat tugas panjang butuh konsistensi lebih besar.</small>
+        </article>
+        <article class="decision">
+          <strong>Balanced Claude lane</strong>
+          <p>`Claude 4.6 Sonnet` sekarang lebih relevan daripada referensi Sonnet lama. Docs menyebutnya balanced Claude model dengan thinking support.</p>
+          <small>Dari page resmi: 200k default context, bisa diperluas ke 1M di Max Mode.</small>
+        </article>
+        <article class="decision">
+          <strong>Fast / compact lane</strong>
+          <p>Roster current menonjolkan `GPT-5 Fast`, `GPT-5 Mini`, `GPT-5.4 Mini`, `GPT-5.4 Nano`, dan `Claude 4.5 Haiku` sebagai jalur ringan atau cepat.</p>
+          <small>Cocok untuk triage, drafting, dan task yang tidak layak membakar model berat.</small>
+        </article>
+        <article class="decision">
+          <strong>New provider spread</strong>
+          <p>Cursor current roster sekarang juga mencakup `Gemini 3.x`, `Grok 4.x`, `Grok Build 0.1`, `Kimi K2.5`, dan keluarga `Cursor Composer`.</p>
+          <small>Jadi section model handbook harus dibaca sebagai moving roster, bukan daftar permanen.</small>
+        </article>
+      </div>
+      <div class="table-wrap" style="margin-top: 16px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Family</th>
+              <th>Current Models Seen</th>
+              <th>Operator Read</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI</td>
+              <td>`gpt-5`, `gpt-5-fast`, `gpt-5-mini`, `gpt-5-4`, `gpt-5-4-mini`, `gpt-5-4-nano`, `gpt-5-5`</td>
+              <td>Core GPT-5 roster untuk general usage.</td>
+              <td>`GPT-5.5` paling intelligence-heavy; `Fast/Mini/Nano` lebih ringan.</td>
+            </tr>
+            <tr>
+              <td>OpenAI Codex</td>
+              <td>`gpt-5-codex`, `gpt-5-1-codex`, `gpt-5-1-codex-mini`, `gpt-5-1-codex-max`, `gpt-5-2-codex`, `gpt-5-3-codex`</td>
+              <td>Jalur coding-native yang paling relevan untuk Agent coding saat ini.</td>
+              <td>`GPT-5.3 Codex` kini paling menarik; beberapa varian lama sudah ditandai previous generation.</td>
+            </tr>
+            <tr>
+              <td>Anthropic Claude</td>
+              <td>`claude-4-5-haiku`, `claude-4-5-sonnet`, `claude-4-6-sonnet`, `claude-4-sonnet`, `claude-4-sonnet-1m`, `claude-opus-4-5`, `claude-opus-4-6`, `claude-opus-4-6-fast`, `claude-opus-4-7`, `claude-opus-4-7-fast`, `claude-opus-4-8`</td>
+              <td>Rosternya jauh lebih granular daripada handbook versi lama.</td>
+              <td>`Claude 4.6 Sonnet` balanced; `Claude Opus 4.8` digambarkan sebagai frontier autonomous reasoning.</td>
+            </tr>
+            <tr>
+              <td>Google Gemini</td>
+              <td>`gemini-2-5-flash`, `gemini-3-flash`, `gemini-3-5-flash`, `gemini-3-1-pro`, `gemini-3-pro`, `gemini-3-pro-image-preview`</td>
+              <td>Gemini roster juga sudah naik generasi ke keluarga 3.x.</td>
+              <td>`Gemini 3.5 Flash` resmi dideskripsikan sebagai latest Flash with stronger reasoning.</td>
+            </tr>
+            <tr>
+              <td>xAI / Moonshot</td>
+              <td>`grok-4-3`, `grok-4-20`, `grok-build-0-1`, `kimi-k2-5`</td>
+              <td>Alternatif provider yang sekarang benar-benar muncul di roster current.</td>
+              <td>`Grok Build 0.1` dijelaskan sebagai fast coding model trained for agentic coding; `Kimi K2.5` datang dari Moonshot.</td>
+            </tr>
+            <tr>
+              <td>Cursor Internal</td>
+              <td>`cursor-composer-1`, `cursor-composer-1-5`, `cursor-composer-2`, `cursor-composer-2-5`</td>
+              <td>Masih ada keluarga model Cursor internal di docs.</td>
+              <td>Gunakan jika workflow atau mode tertentu di Cursor memang mengarah ke Composer lineage.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid-2" style="margin-top: 16px;">
+        <article class="command">
+          <code>What changed</code>
+          <strong>Roster lama di handbook sudah tidak bisa dianggap current</strong>
+          <ul class="list">
+            <li>Referensi lama seperti `GPT-4.1`, `o3`, `Gemini 2.5 Pro`, `DeepSeek V3`, atau `GPT-4o mini` tidak lagi mewakili roster utama docs current.</li>
+            <li>Mereka mungkin pernah ada atau masih relevan di guide lama, tapi bukan lagi titik tengah roster resmi yang sekarang.</li>
+          </ul>
+        </article>
+        <article class="command">
+          <code>How to read this</code>
+          <strong>Gunakan roster ini sebagai snapshot, bukan kontrak permanen</strong>
+          <ul class="list">
+            <li>Page `selecting-models` masih berguna untuk behavioral intuition, tapi roster model terbarunya sudah tertinggal.</li>
+            <li>Untuk nama model yang current, route `models-and-pricing` lebih authoritative daripada guide rekomendasi lama.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="sources">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Sources</div>
+          <h2>Reference basis</h2>
+        </div>
+        <p class="lede">Semua link di bawah ini adalah sumber resmi Cursor yang saya pakai untuk mengembalikan halaman ini ke intent awal Boss dan tetap menjaga akurasi per Mei 2026.</p>
+      </div>
+      <div class="source-grid">
+        <article class="source-item">
+          <strong>Modes</strong>
+          <a href="https://docs.cursor.com/agent" target="_blank" rel="noopener">docs.cursor.com/agent</a>
+        </article>
+        <article class="source-item">
+          <strong>Rules</strong>
+          <a href="https://docs.cursor.com/en/context" target="_blank" rel="noopener">docs.cursor.com/en/context</a>
+        </article>
+        <article class="source-item">
+          <strong>Using Agent in CLI</strong>
+          <a href="https://docs.cursor.com/en/cli/using" target="_blank" rel="noopener">docs.cursor.com/en/cli/using</a>
+        </article>
+        <article class="source-item">
+          <strong>Selecting Models</strong>
+          <a href="https://docs.cursor.com/en/guides/selecting-models" target="_blank" rel="noopener">docs.cursor.com/en/guides/selecting-models</a>
+        </article>
+        <article class="source-item">
+          <strong>Models &amp; Pricing (current roster authority)</strong>
+          <a href="https://cursor.com/docs/models-and-pricing" target="_blank" rel="noopener">cursor.com/docs/models-and-pricing</a>
+        </article>
+        <article class="source-item">
+          <strong>Changelog - Multitask, Worktrees, and Multi-root Workspaces (24 Apr 2026)</strong>
+          <a href="https://cursor.com/changelog/04-24-26" target="_blank" rel="noopener">cursor.com/changelog/04-24-26</a>
+        </article>
+        <article class="source-item">
+          <strong>Changelog - Shared Canvases, /loop, Automations, Jira, Composer 2.5, Auto-review (May 2026)</strong>
+          <a href="https://cursor.com/changelog" target="_blank" rel="noopener">cursor.com/changelog</a>
+        </article>
+        <article class="source-item">
+          <strong>Blog - Cursor agents can now control their own computers (24 Feb 2026)</strong>
+          <a href="https://cursor.com/blog/agent-computer-use" target="_blank" rel="noopener">cursor.com/blog/agent-computer-use</a>
+        </article>
+      </div>
+      <div class="footer-note">
+        Sentra Artificial Intelligence 2026 - same visual system as `classy.html`.
+        Typography: Space Grotesk for display, Inter for body, JetBrains Mono for labels and code.
+      </div>
+    </section>
+  </main>
+</body>
+</html>

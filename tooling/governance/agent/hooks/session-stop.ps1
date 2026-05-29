@@ -88,7 +88,7 @@ $linesSinceLastStop = if ($lastStopIndex -ge 0) {
 } else {
     $linesBeforeStop
 }
-$hasEditsSinceLastStop = @($linesSinceLastStop | Where-Object { $_ -match '^## File change logged:' }).Count -gt 0
+$hasEditsSinceLastStop = @($linesSinceLastStop | Where-Object { $_ -match '^(- |## )File change logged:' }).Count -gt 0
 
 function Get-LastSessionStopTime {
     param(
@@ -119,7 +119,7 @@ function Get-FirstFileChangeTime {
 
     foreach ($line in $Lines) {
         $text = [string]$line
-        $match = [regex]::Match($text, '^## File change logged: (?<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2})')
+        $match = [regex]::Match($text, '^(?:## File change logged:|- File change logged:) (?<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2})')
         if (-not $match.Success) { continue }
 
         try {

@@ -2,27 +2,30 @@
 
 This folder keeps the shared Cursor configuration for The Abyss monorepo.
 
-Operator guide:
-[`docs/guides/006-cursor-audit.md`](../docs/guides/006-cursor-audit.md)
+Operator guides:
+[`docs/guides/006-cursor-audit.md`](../docs/guides/006-cursor-audit.md),
+[`docs/guides/008-cursor-permissions-and-workflows.md`](../docs/guides/008-cursor-permissions-and-workflows.md)
+
 Automation catalog:
 [`docs/guides/007-cursor-automations.md`](../docs/guides/007-cursor-automations.md)
 
 ## Active files
 
-| Path                             | Purpose                                                                       |
-| -------------------------------- | ----------------------------------------------------------------------------- |
-| `.cursor/index.mdc`              | Always-on compact index and precedence reminder.                              |
-| `.cursor/rules/00-core.mdc`      | Core operating rule: identity, guard, GO gate, session logging, verification. |
-| `.cursor/rules/10-backend.mdc`   | Backend/API/database/NestJS/FHIR/PHI guardrails.                              |
-| `.cursor/rules/20-frontend.mdc`  | Frontend/UI/design-token guardrails.                                          |
-| `.cursor/rules/30-quality.mdc`   | TypeScript, tests, monorepo conventions, verification, references.            |
-| `.cursor/hooks.json`             | Cursor hook entrypoint (afterFileEdit chain + stop autofix).                  |
-| `.cursor/hooks/after-edit.mjs`   | Logs edited files to `.cursor/hooks/edit-log.txt`.                            |
-| `.cursor/hooks/autofix-loop.mjs` | Stop hook: lint/typecheck follow-up when recent edits exist.                  |
-| `.cursor/skills/`                | Repo-scoped ABYSS workflow skills (`SKILL.md` per skill).                     |
-| `.cursor/agents/`                | Repo-scoped subagent profiles for delegation.                                 |
-| `.cursor/sandbox.json`           | Cursor Agent read/write path configuration.                                   |
-| `.cursor/permissions.json`       | Shell/MCP allowlist + classifier block instructions (healthcare guardrails).  |
+| Path                                    | Purpose                                                                        |
+| --------------------------------------- | ------------------------------------------------------------------------------ |
+| `.cursor/index.mdc`                     | Always-on compact index and precedence reminder.                               |
+| `.cursor/rules/00-core.mdc`             | Core operating rule: identity, guard, GO gate, session logging, verification.  |
+| `.cursor/rules/10-backend.mdc`          | Backend/API/database/NestJS/FHIR/PHI guardrails.                               |
+| `.cursor/rules/20-frontend.mdc`         | Frontend/UI/design-token guardrails.                                           |
+| `.cursor/rules/30-quality.mdc`          | TypeScript, tests, monorepo conventions, verification, references.             |
+| `.cursor/hooks.json`                    | Cursor hook entrypoint (afterFileEdit chain + stop autofix).                   |
+| `.cursor/hooks/after-edit.mjs`          | Logs edited files to `.cursor/hooks/edit-log.txt`.                             |
+| `.cursor/hooks/autofix-loop.mjs`        | Stop hook: lint/typecheck follow-up when recent edits exist.                   |
+| `.cursor/skills/`                       | Repo-scoped ABYSS workflow skills (`SKILL.md` per skill).                      |
+| `.cursor/agents/`                       | Repo-scoped subagent profiles for delegation.                                  |
+| `.cursor/sandbox.json`                  | Cursor Agent read/write path configuration.                                    |
+| `.cursor/permissions.json`              | Team SSOT: allowlist + Smart Mode block rules (locks Run Mode UI — by design). |
+| `.cursor/permissions.user.example.json` | Template for minimal `~/.cursor/permissions.json` (no duplicate allowlist).    |
 
 ## Rule policy
 
@@ -98,30 +101,30 @@ machines. Legacy paths (`.codex/**`, `.agents/**`) were removed in the
 
 Per `AGENTS.md`, use Context7 for public framework/library documentation only.
 
-## Run Mode (Auto-review)
+## Run Mode & permissions (2026 posture)
 
-Configure in **Cursor Settings → Agents → Run Mode → Auto-review** (Cursor
-3.6+). This uses a classifier for Shell, MCP, and Fetch calls:
-allowlisted/sandboxed actions run automatically; sensitive actions require
-approval.
+**ABYSS uses repo Allowlist via [`.cursor/permissions.json`](permissions.json),
+not an unlocked Auto-review dropdown.** When that file is present, Cursor
+Settings → Agents → **Approvals & Execution** shows a read-only row:
 
-Recommended for ABYSS:
+`Run Mode (enforced by …/.cursor/permissions.json)`
 
-1. Enable **Auto-review** (not Full auto / YOLO).
-2. Enable **Sandbox** when available for agent file/shell isolation.
-3. Keep [`.cursor/permissions.json`](permissions.json) tracked — block
-   instructions steer the classifier for healthcare/repo guardrails.
-4. Optional: add custom classifier instructions in Run Mode settings:
+That is correct. Edit policy in Git; reload the window after changes.
 
-```text
-Healthcare monorepo (ABYSS). Block auto-approval for: git push/reset/clean,
-terraform apply, DB migrations, auth changes, .env/secrets access, MCP writes
-to production, and any edit under packages/sentra/** without explicit GO.
-Prefer scoped pnpm --filter verification over root-wide commands when possible.
-```
+| Layer         | Path                         | Purpose                                                                                          |
+| ------------- | ---------------------------- | ------------------------------------------------------------------------------------------------ |
+| Repo SSOT     | `.cursor/permissions.json`   | Team allowlist + healthcare block rules                                                          |
+| User optional | `~/.cursor/permissions.json` | Machine-local blocks only — see [`permissions.user.example.json`](permissions.user.example.json) |
 
-User-level `~/.cursor/permissions.json` may add personal allowlist entries; repo
-policy in `.cursor/permissions.json` takes precedence for this workspace.
+Settings location: **Cursor Settings** (`Ctrl+Shift+J`) → **Agents** → scroll to
+**Approvals & Execution for commands, MCP and more**. Search: `Approvals`,
+`Execution`, `command execution`.
+
+Per-agent shortcut: run/approval control in the Agent composer (same modes when
+UI is not file-locked).
+
+Full workflow checklist:
+[`docs/guides/008-cursor-permissions-and-workflows.md`](../docs/guides/008-cursor-permissions-and-workflows.md)
 
 ## Automations
 
