@@ -1,12 +1,12 @@
-# ============================================================
-# AVVCENNA+ — Documentation Guard v2
+﻿# ============================================================
+# drClassy — Documentation Guard v2
 # Rebuilt by Classy — 2026-04-11
 # ============================================================
 # Runs on every push/PR to main or develop.
 # Checks that documentation is complete and healthy.
 # ============================================================
 
-name: ⚡ AVVCENNA+ — Doc Guard
+name: ⚡ drClassy — Doc Guard
 
 on:
   push:
@@ -175,7 +175,7 @@ jobs:
         run: |
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "  ⚡ AVVCENNA+ Doc Guard — Results"
+          echo "  ⚡ drClassy Doc Guard — Results"
           echo "  Rebuilt by Classy — 2026"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "  Doc Completeness : ${{ needs.doc-completeness.result }}"
