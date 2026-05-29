@@ -14,6 +14,30 @@ Last updated: 2026-05-28 (session: public-push-hygiene)
 - Mode: STAGED FOR PUSH — all changes locally committed, not yet pushed
 - Next: Chief reviews changes, then pushes to `https://github.com/drclassy/monorepo-abyss`
 
+## Respan Observability — Shared Package (2026-05-29)
+
+- Verified Chief's `npx @respan/cli setup` left **only** `RESPAN_API_KEY` in
+  `.env` (41 char, valid). No SDK/CLI/config/init code — prior per-app install
+  (`7eb308b4`) was reverted (`ca587cb4`, "wrong approach").
+- Implemented Respan as a **root-level shared feature** (per Chief's direction),
+  not per-app:
+  - NEW `packages/shared/observability` (`@the-abyss/observability`) — owns
+    pinned Respan deps (`@respan/respan@2.1.0`,
+    `@respan/instrumentation-anthropic@1.1.2`,
+    `@respan/instrumentation-openai@1.0.2`) and exports idempotent
+    `registerObservability(): Promise<boolean>`. TDD: 3/3 tests, typecheck,
+    lint all green.
+  - MODIFY `turbo.json` globalEnv += `RESPAN_API_KEY`; `.env.example` += Respan block.
+- Pilot wiring (LOCAL/PRIVATE — `apps/` is git-excluded) in
+  `apps/community/classy-transformer`: `instrumentation.ts` delegates to the
+  shared package, `next.config.mjs` `transpilePackages`, dep added. App
+  typecheck passes.
+- Auth nuance: SDK uses `RESPAN_API_KEY` (set) to **send** traces; CLI browsing
+  needs separate `npx @respan/cli auth login` (not done). `auth status` reports
+  "Not authenticated" — expected; does not block SDK tracing.
+- NOT committed yet. Live trace verification (run app + real LLM call) pending
+  Chief decision (needs provider key + incurs cost).
+
 ## Public Push Hygiene (2026-05-28)
 
 - `.roo/` folder deleted from filesystem (was already gitignored).
@@ -333,6 +357,12 @@ as part of the SSOT simplification.
   read pattern. Runtime proof now exists for Codex and Claude Code; Cursor CLI
   is blocked by missing auth, and Roo remains unproved from terminal because no
   local headless entrypoint was confirmed in this session.
+- `.kilo/kilo.jsonc` now needs to preserve the same overlay order explicitly:
+  global Codex `AGENTS.md`, then repo `AGENTS.md`, then `.agent/README.md`,
+  then `.agent/HANDOFF.md`, so Kilo does not stop at the global baseline.
+- `tooling/governance/agent/healthcheck.js` now needs to validate that Kilo
+  overlay order automatically when `.kilo/kilo.jsonc` exists on the local
+  workstation.
 - Dirty-tree closure no longer uses deferred buckets. Every dirty or untracked
   item must be classified as `KEEP_AND_COMMIT`, `FIX_AND_COMMIT`,
   `MOVE_OUT_OF_REPO`, or `DELETE_OR_RESTORE`.
