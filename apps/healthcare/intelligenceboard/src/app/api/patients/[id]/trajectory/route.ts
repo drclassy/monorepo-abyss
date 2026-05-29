@@ -35,6 +35,17 @@ import type { VitalSnapshot, MomentumSnapshot } from '@/types/abyss/trajectory'
 
 export const runtime = 'nodejs'
 
+export type TrajectoryRouteContext = {
+  params: Promise<{ id: string }>
+}
+
+export type TrajectoryRouteDeps = {
+  getPatientVitalHistory: typeof getPatientVitalHistory
+  analyzeTrajectory: typeof analyzeTrajectory
+  computeMomentum: typeof computeMomentum
+  legacyIBToCtV1: typeof legacyIBToCtV1
+}
+
 // ── Mapper: VitalHistoryEntry → VisitRecord ───────────────────────────────────
 
 function toVisitRecord(entry: VitalHistoryEntry): VisitRecord {
@@ -65,119 +76,135 @@ function toVisitRecord(entry: VitalHistoryEntry): VisitRecord {
 
 // ── Handler ───────────────────────────────────────────────────────────────────
 
+export function createTrajectoryRouteHandler(deps: TrajectoryRouteDeps) {
+  return async function trajectoryRouteHandler(
+    req: NextRequest,
+    { params }: TrajectoryRouteContext
+  ): Promise<NextResponse> {
+    // 1. Auth
+    if (!isCrewAuthorizedRequest(req)) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // 2. Validate patient identifier
+    const { id } = await params
+    const identifierResult = PatientIdentifierSchema.safeParse(id)
+    if (!identifierResult.success) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid patient identifier format' },
+        { status: 400 }
+      )
+    }
+    const patientIdentifier = identifierResult.data
+
+    // 3. Validate query params
+    const rawVisits = req.nextUrl.searchParams.get('visits')
+    const queryResult = TrajectoryQuerySchema.safeParse({ visits: rawVisits ?? undefined })
+    const visitCount = queryResult.success ? queryResult.data.visits : 5
+
+    // 4. Fetch vital history
+    const historyResult = await deps.getPatientVitalHistory(patientIdentifier, visitCount)
+    if (!historyResult.success) {
+      return NextResponse.json(
+        { success: false, error: 'Failed to retrieve vital history' },
+        { status: 500 }
+      )
+    }
+
+    const entries = historyResult.data
+    if (entries.length < 1) {
+      return NextResponse.json(
+        { success: false, error: 'Insufficient visit data for trajectory analysis' },
+        { status: 422 }
+      )
+    }
+
+    // 5. Convert to VisitRecord[] and run trajectory analysis
+    const visitRecords: VisitRecord[] = entries.map(toVisitRecord)
+
+    let analysis
+    try {
+      analysis = deps.analyzeTrajectory(visitRecords)
+    } catch (err) {
+      // Log internally — never expose clinical computation errors to client
+      console.error(
+        '[trajectory] analyzeTrajectory failed for patient hash:',
+        patientIdentifier.slice(0, 8),
+        err
+      )
+      return NextResponse.json(
+        { success: false, error: 'Trajectory analysis unavailable' },
+        { status: 500 }
+      )
+    }
+
+    let clinicalTrajectory: ReturnType<TrajectoryRouteDeps['legacyIBToCtV1']> | null = null
+    try {
+      clinicalTrajectory = deps.legacyIBToCtV1(analysis, visitRecords, patientIdentifier)
+    } catch (err) {
+      console.error(
+        '[trajectory] legacyIBToCtV1 failed for patient hash:',
+        patientIdentifier.slice(0, 8),
+        err
+      )
+    }
+
+    // 6. Build visit_history — PHI-safe vital snapshots per visit
+    const visit_history: VitalSnapshot[] = entries.map((e) => ({
+      visitDate: e.recordedAt instanceof Date ? e.recordedAt.toISOString() : String(e.recordedAt),
+      sbp: e.vitals.sbp ?? null,
+      dbp: e.vitals.dbp ?? null,
+      hr: e.vitals.hr ?? null,
+      rr: e.vitals.rr ?? null,
+      temp: e.vitals.temp ?? null,
+      glucose:
+        typeof e.vitals.glucose === 'number' ? e.vitals.glucose : (e.vitals.glucose?.value ?? null),
+      spo2: e.vitals.spo2 ?? null,
+    }))
+
+    // 7. Build momentum_history — retroactive momentum score per visit subset
+    const momentum_history: MomentumSnapshot[] =
+      visitRecords.length >= 3
+        ? visitRecords
+            .map((_, i) => {
+              if (i < 1) return null
+              const subset = visitRecords.slice(0, i + 1)
+              const m = deps.computeMomentum(subset)
+              return {
+                visitDate: visitRecords[i].timestamp,
+                score: m.score,
+                level: m.level,
+              } satisfies MomentumSnapshot
+            })
+            .filter((s): s is MomentumSnapshot => s !== null)
+        : []
+
+    // 8. Return
+    return NextResponse.json({
+      success: true,
+      data: analysis,
+      visit_history,
+      momentum_history,
+      clinicalTrajectory,
+      meta: {
+        patientIdentifier: patientIdentifier.slice(0, 8) + '…', // truncated for logs
+        visitCount: entries.length,
+        analyzedAt: new Date().toISOString(),
+      },
+    })
+  }
+}
+
+const defaultTrajectoryRouteHandler = createTrajectoryRouteHandler({
+  getPatientVitalHistory,
+  analyzeTrajectory,
+  computeMomentum,
+  legacyIBToCtV1,
+})
+
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: TrajectoryRouteContext
 ): Promise<NextResponse> {
-  // 1. Auth
-  if (!isCrewAuthorizedRequest(req)) {
-    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
-  }
-
-  // 2. Validate patient identifier
-  const { id } = await params
-  const identifierResult = PatientIdentifierSchema.safeParse(id)
-  if (!identifierResult.success) {
-    return NextResponse.json(
-      { success: false, error: 'Invalid patient identifier format' },
-      { status: 400 }
-    )
-  }
-  const patientIdentifier = identifierResult.data
-
-  // 3. Validate query params
-  const rawVisits = req.nextUrl.searchParams.get('visits')
-  const queryResult = TrajectoryQuerySchema.safeParse({ visits: rawVisits ?? undefined })
-  const visitCount = queryResult.success ? queryResult.data.visits : 5
-
-  // 4. Fetch vital history
-  const historyResult = await getPatientVitalHistory(patientIdentifier, visitCount)
-  if (!historyResult.success) {
-    return NextResponse.json(
-      { success: false, error: 'Failed to retrieve vital history' },
-      { status: 500 }
-    )
-  }
-
-  const entries = historyResult.data
-  if (entries.length < 1) {
-    return NextResponse.json(
-      { success: false, error: 'Insufficient visit data for trajectory analysis' },
-      { status: 422 }
-    )
-  }
-
-  // 5. Convert to VisitRecord[] and run trajectory analysis
-  const visitRecords: VisitRecord[] = entries.map(toVisitRecord)
-
-  let analysis
-  try {
-    analysis = analyzeTrajectory(visitRecords)
-  } catch (err) {
-    // Log internally — never expose clinical computation errors to client
-    console.error(
-      '[trajectory] analyzeTrajectory failed for patient hash:',
-      patientIdentifier.slice(0, 8),
-      err
-    )
-    return NextResponse.json(
-      { success: false, error: 'Trajectory analysis unavailable' },
-      { status: 500 }
-    )
-  }
-
-  let clinicalTrajectory: ReturnType<typeof legacyIBToCtV1> | null = null
-  try {
-    clinicalTrajectory = legacyIBToCtV1(analysis, visitRecords, patientIdentifier)
-  } catch (err) {
-    console.error(
-      '[trajectory] legacyIBToCtV1 failed for patient hash:',
-      patientIdentifier.slice(0, 8),
-      err
-    )
-  }
-
-  // 6. Build visit_history — PHI-safe vital snapshots per visit
-  const visit_history: VitalSnapshot[] = entries.map((e) => ({
-    visitDate: e.recordedAt instanceof Date ? e.recordedAt.toISOString() : String(e.recordedAt),
-    sbp: e.vitals.sbp ?? null,
-    dbp: e.vitals.dbp ?? null,
-    hr: e.vitals.hr ?? null,
-    rr: e.vitals.rr ?? null,
-    temp: e.vitals.temp ?? null,
-    glucose:
-      typeof e.vitals.glucose === 'number' ? e.vitals.glucose : (e.vitals.glucose?.value ?? null),
-    spo2: e.vitals.spo2 ?? null,
-  }))
-
-  // 7. Build momentum_history — retroactive momentum score per visit subset
-  const momentum_history: MomentumSnapshot[] =
-    visitRecords.length >= 3
-      ? visitRecords
-          .map((_, i) => {
-            if (i < 1) return null
-            const subset = visitRecords.slice(0, i + 1)
-            const m = computeMomentum(subset)
-            return {
-              visitDate: visitRecords[i].timestamp,
-              score: m.score,
-              level: m.level,
-            } satisfies MomentumSnapshot
-          })
-          .filter((s): s is MomentumSnapshot => s !== null)
-      : []
-
-  // 8. Return
-  return NextResponse.json({
-    success: true,
-    data: analysis,
-    visit_history,
-    momentum_history,
-    clinicalTrajectory,
-    meta: {
-      patientIdentifier: patientIdentifier.slice(0, 8) + '…', // truncated for logs
-      visitCount: entries.length,
-      analyzedAt: new Date().toISOString(),
-    },
-  })
+  return defaultTrajectoryRouteHandler(req, context)
 }
