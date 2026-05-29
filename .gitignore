@@ -311,6 +311,8 @@ apps/healthcare/intelligenceboard/.agent/**
 !.cursor/hooks/
 !.cursor/hooks/after-edit.mjs
 !.cursor/hooks/autofix-loop.mjs
+!.cursor/skills/
+!.cursor/skills/**
 .cursor/hooks/edit-log.txt
 .cursor/hooks/session-log.txt
 

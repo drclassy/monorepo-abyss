@@ -1,3 +1,19 @@
 {
-  "mcpServers": {}
+  "$schema": "https://cursor.com/schemas/mcp.json",
+  "_comment": "Template only. Copy to .mcp.json locally and add secrets. Never commit tokens.",
+  "mcpServers": {
+    "context7": {
+      "_doc": "Public framework/library docs only (per AGENTS.md). Install Context7 from Cursor Marketplace or add URL below.",
+      "url": "https://mcp.context7.com/mcp"
+    }
+  },
+  "_optional_marketplace_plugins": {
+    "supabase": "Cursor Marketplace → Supabase plugin (database, auth, RLS)",
+    "prisma": "Cursor Marketplace → Prisma plugin (schema, migrate, studio)",
+    "sentry": "Cursor Marketplace → Sentry plugin (errors, traces)",
+    "vercel": "Cursor Marketplace → Vercel plugin (deploy, env)",
+    "neon": "Cursor Marketplace → Neon Postgres plugin",
+    "slack": "Cursor Marketplace → Slack plugin (team notifications)"
+  },
+  "_unicom_reference": "docs/specs/007-unicom-hub-v1.md"
 }

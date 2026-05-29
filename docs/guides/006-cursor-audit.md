@@ -1,46 +1,58 @@
-# Cursor AI Enhancement Audit (Solo Founder)
+# Cursor AI Enhancement Audit (ABYSS)
+
+Last updated: 2026-05-30
 
 ## Scope
 
 Audit and hardening for:
-- Cursor setup
-- Codex setup
-- rules, workflow discipline, verification, rollback, and cognitive load
 
-This guide is implementation-oriented and designed for solo founder operation.
+- Cursor setup (rules, hooks, skills, subagents, MCP, automations)
+- Cross-tool SSOT parity with Codex / Claude Code
+- Workflow discipline, verification, rollback, and cognitive load
 
-## Severity Findings
+This guide is the operator reference for the shared `.cursor/` configuration.
 
-### Critical
+## Current Rule Layout (2026-05-30)
 
-1. Multi-authority instruction overlap
-   - Surfaces: `AGENTS.md`, `.agent/*`, `.cursor/rules/*`, handbook exports.
-   - Risk: inconsistent agent behavior and difficult mental model.
+| File | alwaysApply | Scope |
+| --- | --- | --- |
+| `.cursor/index.mdc` | yes | Pointer + authority order |
+| `.cursor/rules/00-core.mdc` | yes | Identity, SSOT guard, task class, GO gate |
+| `.cursor/rules/10-backend.mdc` | no | API, Prisma, NestJS, FHIR, PHI |
+| `.cursor/rules/20-frontend.mdc` | no | React, Next.js, UI, design tokens |
+| `.cursor/rules/30-quality.mdc` | no | TS, tests, pnpm, verification |
 
-2. Historical Codex persona-anchor drift
-   - Earlier handoff text referenced `.codex/PERSONA.md` while that file was
-     absent.
-   - Current authority is global Codex configuration plus root `AGENTS.md`,
-     `.agent/**` operational SSOT, and `.cursor/rules/**` for Cursor rules.
+Retired rules (`04-state-machine-discipline`, `06-handoff-master`,
+`08-session-summarizer`) were merged into `00-core` and `.agent/` SSOT. Do not
+restore them unless a targeted mission requires always-on process layers again.
 
-### High
+### kluster (local workstation)
 
-1. Global rule load too heavy
-   - Multiple `.cursor/rules/*` were `alwaysApply: true` for process/logging layers.
-   - Risk: over-procedural responses for low-risk tasks.
+`.cursor/rules/kluster-code-verify.mdc` is **gitignored** (see `.gitignore`).
+Install via kluster plugin or local copy per machine. It is not part of the
+shared four-rule baseline.
 
-2. Legacy tool guidance drift
-   - Some handbook and guide surfaces still referenced retired tool adapters.
-   - Risk: readers may follow obsolete workflow instructions.
+## Severity Findings (historical + residual)
 
-### Medium
+### Critical (mitigated)
 
-1. Hook quality gate can feel heavy
-   - `.cursor/hooks/autofix-loop.mjs` runs lint + typecheck on stop.
-   - Benefit is high, but can feel slow for doc-only work.
+1. **Multi-authority overlap** — Mitigated by AGENTS-first hierarchy and lean
+   always-on rules. Residual risk: handbook exports outside repo still drift.
+2. **Codex persona drift** — Repo-local `.codex/**` deprecated; use global Codex +
+   `AGENTS.md` + `.agent/`.
 
-2. Handbook and runtime rules can drift
-   - HTML handbook pages can lag behind actual rule behavior.
+### High (mitigated 2026-05-30)
+
+1. **Hooks unwired** — Fixed: `after-edit.mjs` + `post-tool-use.ps1` chain +
+   `stop` → `autofix-loop.mjs`.
+2. **Empty skills/agents/MCP** — Fixed: repo skills, subagents, `mcp.json.example`
+   stubs, automation catalog.
+
+### Medium (ongoing)
+
+1. **Autofix loop latency** — `autofix-loop.mjs` skips when no recent edits
+   (`edit-log.txt` age > 30 min). Doc-only sessions stay light.
+2. **Cursor Agent CLI** — Headless parity blocked on auth per `.agent/HANDOFF.md`.
 
 ## Target Operating Model
 
@@ -48,66 +60,84 @@ This guide is implementation-oriented and designed for solo founder operation.
 
 - Policy authority: `AGENTS.md`
 - Operational state: `.agent/*`
-- Tool adapters:
-  - Cursor: coding + verification
-  - Codex: global runtime configuration plus repo `AGENTS.md` and `.agent/**`
+- Cursor adapter: `.cursor/` (rules, hooks, skills, agents — supplementary only)
+- Codex: global runtime + repo `AGENTS.md` and `.agent/**`
 
 ### Two-mode UX
 
-1. Safe-Quick
+1. **Safe-Quick** (Class A)
    - Read-only inspect, planning, docs, risk map
    - Short structured outputs
+   - Delegate to `explore-readonly` subagent when useful
 
-2. Safe-Execute
+2. **Safe-Execute** (Class B/C)
    - Explicit implementation request
-   - Sequence: inspect -> plan -> implement minimal diff -> verify -> rollback note
+   - Sequence: inspect → plan → minimal diff → verify → rollback note
+   - Class C stops for Chief GO (auth, schema, deploy, PHI, crown-jewel)
 
-## Implemented Changes
+## Cursor 3.x Features Map for ABYSS
 
-1. Historical Codex persona-anchor note
-   - Former target: `.codex/PERSONA.md`
-   - Current state: repo-local `.codex/**` is deprecated; Codex behavior comes
-     from global Codex configuration plus repo `AGENTS.md` and `.agent/**`.
+| Feature | ABYSS use |
+| --- | --- |
+| Agents Window | Primary agent surface; parallel missions |
+| Plan / Debug / Ask mode | Align with Class A/B/C in `00-core.mdc` |
+| `/worktree` | Isolated agent runs without dirtying main tree |
+| `/best-of-n` | Optional for high-risk crown-jewel or CT changes |
+| `/multitask` | Dirty-tree classification, multi-package fixes |
+| `/loop` | Local recurring verify (see `007-cursor-automations.md`) |
+| Auto-review run mode | Stricter approvals for shell/MCP in healthcare repo |
+| Automations | PR verify reminder, SSOT handoff nudge (Agents Window) |
+| Marketplace MCP plugins | Context7, Supabase, Prisma, Sentry — local `.mcp.json` |
+| Repo skills / subagents | `.cursor/skills/`, `.cursor/agents/` |
 
-2. Reduced non-essential global rule load in Cursor
-   - Files:
-     - `.cursor/rules/04-state-machine-discipline.mdc`
-     - `.cursor/rules/06-handoff-master.mdc`
-     - `.cursor/rules/08-session-summarizer.mdc`
-   - Change: `alwaysApply: true` -> `alwaysApply: false` with scoped `globs`.
-   - Outcome: lighter prompt overhead while preserving strict safety layers.
+## Hook Chain (active)
 
-3. Updated Cursor README to reflect hardening model
-   - File: `.cursor/README.md`
-   - Outcome: clearer operational guidance for team/tooling.
+```text
+afterFileEdit → after-edit.mjs (edit-log.txt)
+             → post-tool-use.ps1 (.agent/sessions/YYYY-MM-DD.md)
+
+stop → autofix-loop.mjs (lint + typecheck if recent edits; max 5 loops)
+```
+
+Smoke test:
+
+```powershell
+'{"file_path":".cursor/README.md","edits":[{}]}' | node .cursor/hooks/after-edit.mjs
+pwsh -NoProfile -ExecutionPolicy Bypass -File tooling/governance/agent/hooks/post-tool-use.ps1
+Get-Content .cursor/hooks/edit-log.txt -Tail 3
+Get-Content .agent/sessions/$(Get-Date -Format yyyy-MM-dd).md -Tail 5
+```
 
 ## Rollback Map
 
-If needed, revert by file:
+Revert by file if hardening causes problems:
 
-- Historical `.codex/PERSONA.md` guidance
-  - Rollback: restore only if repo-local Codex governance is explicitly
-    reintroduced.
-- `.cursor/rules/04-state-machine-discipline.mdc`
-- `.cursor/rules/06-handoff-master.mdc`
-- `.cursor/rules/08-session-summarizer.mdc`
-  - Rollback: set `alwaysApply: true` again if strict always-on governance is preferred.
-- `.cursor/README.md`
-  - Rollback: remove "Solo founder hardening model" section.
+| Change | Rollback |
+| --- | --- |
+| `.cursor/hooks.json` | Remove `after-edit.mjs` and `stop` entries; keep `post-tool-use.ps1` only |
+| `.cursor/hooks/autofix-loop.mjs` | Remove `stop` hook from `hooks.json` |
+| `.cursor/skills/` | Delete directory; remove gitignore negations |
+| `.cursor/agents/` | Delete agent `.md` files |
+| `mcp.json.example` | Restore `{}` |
+| `.vscode/settings.shared.json` | Delete file |
+| `docs/guides/007-cursor-automations.md` | Delete if automations not adopted |
 
 ## Verification Checklist (Operator)
 
 For each implementation task:
+
 1. Scope (what will and will not change)
 2. Risk level (low/medium/high)
 3. Verification command (smallest relevant)
-4. Rollback command/path
+4. Rollback path (table above)
 5. Done criteria
 
-## Recommended Next Step
+## Pilot Protocol
 
-Run one short pilot task using `Safe-Quick` then one implementation task using
-`Safe-Execute`, and compare:
-- response clarity,
-- time-to-result,
-- number of unnecessary file touches.
+Run one **Safe-Quick** then one **Safe-Execute** task and compare:
+
+- response clarity
+- time-to-result
+- unnecessary file touches
+
+Record outcomes in `.agent/sessions/YYYY-MM-DD.md`.

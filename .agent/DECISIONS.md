@@ -293,6 +293,34 @@ another still depends on historical or superseded files.
 
 Status: Active.
 
+## 2026-05-30 - Cursor IDE hardening baseline (Mei 2026)
+
+Decision: ABYSS shared Cursor config follows a four-rule team baseline
+(`index.mdc`, `00/10/20/30`) plus repo skills, subagents, and a wired hook chain.
+`hooks.json` runs `after-edit.mjs` → `post-tool-use.ps1` on `afterFileEdit`, and
+`autofix-loop.mjs` on `stop` (max 5 loops, skips without recent edits).
+`mcp.json.example` holds documented stubs only; secrets stay in gitignored
+`.mcp.json` or Marketplace plugins. Cursor Automations are documented in
+`docs/guides/007-cursor-automations.md` and configured in the Agents Window —
+not committed as runtime secrets.
+
+Reason: Align repo with Cursor 3.x best practice (skills, subagents, automations,
+hooks) while keeping `AGENTS.md` as authority and avoiding team drift from
+local-only tooling.
+
+Status: Active.
+
+## 2026-05-30 - kluster rules stay local-only
+
+Decision: `.cursor/rules/kluster-code-verify.mdc` remains gitignored. It is an
+optional per-workstation kluster plugin overlay, not part of the shared
+four-rule Cursor baseline documented in `.cursor/README.md`.
+
+Reason: Teammates without kluster should not inherit mandatory review rules that
+are not in the tracked repo config.
+
+Status: Active.
+
 ## Lessons to Keep
 
 - Never do broad global replacements at monorepo root.

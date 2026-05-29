@@ -69,10 +69,14 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 - [x] Governance healthcheck now validates repo governance tooling without requiring root `.codex/`.
 - [x] Claude Code project entrypoint and hook settings now point to the active SSOT shape and governance tooling paths.
 - [x] Cursor core rule and Roo mode rules now use the same active SSOT read pattern as Codex.
+- [x] Cursor shared hardening baseline now includes wired hooks, repo skills,
+  repo subagents, committed MCP template notes, and automation starter docs.
 - [x] Claude Code runtime smoke run proved the aligned repo SSOT path operationally.
 - [!] Cursor Agent CLI runtime smoke run is blocked by missing CLI authentication on this workstation.
 - [!] Roo runtime proof is still blocked from terminal because no proven local headless entrypoint was found; current evidence remains extension-only.
 - [~] Daily SSOT helper simplified to one local model call plus script-rendered files.
+- [~] Cursor Automations remain operator-configured in the Agents Window; the
+  repo only commits starter recipes and guardrails.
 - [!] Governance healthcheck still reports stale references in apps/corporate/ferdiiskandar/AGENTS.md.
 
 ## Today

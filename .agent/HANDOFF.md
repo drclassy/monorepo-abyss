@@ -3,16 +3,34 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-30 (session: ct-closure-handoff)
+Last updated: 2026-05-30 (session: cursor-ide-hardening)
 
 ## Snapshot
 
 - Repo: `D:\Devops\abyss-monorepo`
 - Branch: `codex/master-ci-gate`
 - GitHub target: `https://github.com/drclassy/monorepo-abyss`
-- Active work: Intelligenceboard CT adapter runtime wiring closure recorded and clean.
-- Mode: READY FOR NEXT SINGLE MISSION — latest CT closure and handoff doc committed
-- Next: Start from `ABYSS-CT-AUDIT-013` unless Chief explicitly chooses another next-phase option
+- Active work: Cursor IDE hardening (Mei 2026) — hooks, skills, subagents, MCP template, docs.
+- Mode: READY FOR PILOT OR NEXT SINGLE MISSION — Cursor config aligned to 3.x baseline; CT closure remains recorded
+- Next: Run one Cursor Safe-Quick and one Safe-Execute pilot per `docs/guides/006-cursor-audit.md`, or resume `ABYSS-CT-AUDIT-013`
+
+## Cursor IDE Hardening (2026-05-30)
+
+- Wired [`.cursor/hooks.json`](.cursor/hooks.json):
+  - `afterFileEdit` → `after-edit.mjs` then `post-tool-use.ps1`
+  - `stop` → `autofix-loop.mjs` (max 5 loops; skips without recent edits)
+- Fixed `after-edit.mjs` synchronous stdin read for Windows hook reliability.
+- Added repo skills: `abyss-verify`, `abyss-handoff`, `app-boundary-preflight`.
+- Added repo subagents: `explore-readonly`, `ci-investigator`, `crown-jewel-reviewer`.
+- Populated [`mcp.json.example`](mcp.json.example) with Context7 stub + optional plugin notes.
+- Refreshed [`docs/guides/006-cursor-audit.md`](docs/guides/006-cursor-audit.md).
+- Added [`docs/guides/007-cursor-automations.md`](docs/guides/007-cursor-automations.md).
+- Added [`.vscode/settings.shared.json`](.vscode/settings.shared.json).
+- Cleaned [`.cursor/sandbox.json`](.cursor/sandbox.json) (removed `.codex/**`, `.agents/**`).
+- kluster rule remains **local-only** (gitignored); not part of shared four-rule baseline.
+- Hook smoke: `post-tool-use.ps1` OK; `after-edit.mjs` OK via spawnSync stdin test.
+- Automations: documented only — create in Agents Window (not committed as runtime config).
+- Cursor Agent CLI auth still unproved for headless parity.
 
 ## Intelligenceboard CT Wiring Closure (2026-05-30)
 
