@@ -71,6 +71,13 @@ Legend: [x] done, [~] in progress, [ ] not started, [!] blocked.
 - [x] Cursor core rule and Roo mode rules now use the same active SSOT read pattern as Codex.
 - [x] Cursor shared hardening baseline now includes wired hooks, repo skills,
   repo subagents, committed MCP template notes, and automation starter docs.
+- [x] Claude Code parity baseline added: `.claude/settings.json` wires the
+  canonical `tooling/governance/agent/hooks/*` lifecycle hooks, a new
+  `pre-tool-use-protect.ps1` guards Edit/Write to Protected Areas, plus local
+  Claude subagents (`phi-safety-reviewer`, `orphan-classifier`), skills
+  (`agent-handoff`, `jet-verify`), and `.mcp.json` (Playwright + Context7).
+  `.claude/**` + `.mcp.json` stay local-only per public-push hygiene; tracked
+  additions are the protect hook and `mcp.json.example` docs.
 - [x] Claude Code runtime smoke run proved the aligned repo SSOT path operationally.
 - [!] Cursor Agent CLI runtime smoke run is blocked by missing CLI authentication on this workstation.
 - [!] Roo runtime proof is still blocked from terminal because no proven local headless entrypoint was found; current evidence remains extension-only.
