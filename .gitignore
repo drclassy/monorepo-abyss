@@ -328,7 +328,13 @@ gha-creds-*.json
 conductor/
 tooling/handbook/*.vsix
 tooling/prompt-engine/*.vsix
-_query_rules_db.js
+# Local tooling scratch surface:
+# keep documentation/index files trackable, keep runnable local helpers ignored.
+tooling/scripts/local/**
+!tooling/scripts/local/
+!tooling/scripts/local/**/
+!tooling/scripts/local/README.md
+!tooling/scripts/local/**/README.md
 qoder-*.png
 docs/guides/008-qoder-codex-workflow.md
 docs/handbook/classy-qoder.html

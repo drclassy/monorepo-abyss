@@ -3,7 +3,7 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-30 (session: cursor-permissions-workflows)
+Last updated: 2026-05-30 (sessions: cursor-permissions-workflows, claude-code-parity)
 
 ## Snapshot
 
@@ -11,8 +11,59 @@ Last updated: 2026-05-30 (session: cursor-permissions-workflows)
 - Branch: `codex/master-ci-gate`
 - GitHub target: `https://github.com/drclassy/monorepo-abyss`
 - Active work: Cursor permissions SSOT + 2026 workflow guide (`008`); hardening baseline committed.
+- Also landed: Claude Code governance parity — lifecycle hooks wired + new Edit/Write
+  protect guard; tracked pieces committed `e0915001` / `0f4be36` (details in
+  "Claude Code Parity Hardening" section below).
 - Mode: READY — repo Cursor stack aligned; Chief should reload window after user permissions slim
-- Next: Activate Automations in Agents Window per `007`; optional Safe-Quick/Safe-Execute pilot log
+- Next: Activate Automations in Agents Window per `007`; reload Claude Code to activate hooks; optional Safe-Quick/Safe-Execute pilot log
+
+## Claude Code Parity Hardening (2026-05-30)
+
+Brought Claude Code to parity with the existing Cursor governance baseline.
+
+- Discovery: the canonical cross-agent hooks already existed and were maintained
+  in `tooling/governance/agent/hooks/` (`session-start`, `pre-tool-use`,
+  `post-tool-use`, `session-stop`, `user-prompt-submit`), but **Claude Code had
+  no `.claude/settings.json`** wiring them. Of these, only `post-tool-use.ps1`
+  was actually wired anywhere before (Cursor `afterFileEdit`); the other four
+  were maintained-but-unwired until now.
+- NEW tracked: `tooling/governance/agent/hooks/pre-tool-use-protect.ps1` — a
+  PreToolUse guard for `Edit|Write|MultiEdit|NotebookEdit` that denies writes to
+  Protected Areas (`.env*`, `packages/sentra/**`, `wxt.config.ts`,
+  `prisma/migrations/**` + `schema.prisma`, `*.tf`/`*.tfvars` + `infrastructure/`,
+  secret material). Closes the gap where the Bash-only `pre-tool-use.ps1` let
+  protected-file *edits* through. Smoke-tested 6/6 (deny protected, allow normal
+  + `.example`).
+- NEW local-only (`.claude/` is gitignored by design — public-push hygiene):
+  - `.claude/settings.json` — wires all 6 hooks into Claude events
+    (SessionStart, UserPromptSubmit, PreToolUse[Bash], PreToolUse[Edit/Write],
+    PostToolUse[Edit/Write], Stop).
+  - `.claude/agents/phi-safety-reviewer.md`, `.claude/agents/orphan-classifier.md`
+    (read-only reviewers; PHI keys mirror `sentra-assist/utils/logger.ts`;
+    orphan classes mirror the Repo Validity rules).
+  - `.claude/skills/agent-handoff/SKILL.md`, `.claude/skills/jet-verify/SKILL.md`
+    (Claude mirrors of Cursor `abyss-handoff` / `abyss-verify`; user-only).
+  - `.mcp.json` — Playwright + Context7 for Claude (gitignored; prompts for
+    approval on next start). No live-DB MCP (PHI egress risk).
+- MODIFIED tracked: `mcp.json.example` — documented the Claude `.mcp.json` shape.
+- Hooks take effect on the next Claude Code session/reload (settings load at
+  session start). `.claude/settings.json` is gitignored, so this is per-
+  workstation; making it team-shared would need a `.gitignore` allowlist +
+  explicit Chief decision (it reverses the 2026-05-28 public-push hygiene).
+- Verification status of the wired hooks:
+  - `pre-tool-use.ps1` (Bash) + new `pre-tool-use-protect.ps1` (Edit/Write):
+    smoke-tested directly (deny/allow matrices pass).
+  - `session-start.ps1`, `user-prompt-submit.ps1`, `session-stop.ps1`: verified
+    in **isolation** (temp git repo + fake `.agent/`). `session-stop` fail-closed
+    gate confirmed across all 3 branches (no-edits→allow, edits+fresh
+    continuity→allow, edits+stale continuity→exit 2 block).
+  - CAVEAT (ties to Remaining Follow-Up #8): the `Stop` gate is **fail-closed**
+    and not yet exercised in a real Claude stop cycle. Known narrow edge case: if
+    a continuity file is updated *early* in a session and then more files are
+    edited, its mtime can predate the first-file-change baseline and the gate may
+    block at stop — fix is to re-touch HANDOFF/PROGRESS at the end (normal handoff
+    flow). If it ever blocks spuriously, remove the `Stop` block from
+    `.claude/settings.json`; the other hooks are independent.
 
 ## Cursor IDE Hardening (2026-05-30)
 
@@ -170,6 +221,15 @@ Last updated: 2026-05-30 (session: cursor-permissions-workflows)
 - Root `.gitignore` now keeps Qoder repo-wiki output, local screenshots,
   scratch query scripts, `.qoder/`, `.qoderignore`, `.claude/`, and local
   `.vscode/settings.json` / `.vscode/tasks.json` out of default push scope.
+- `tooling/scripts/local/**` is now the shared repo convention for
+  workstation-only helpers:
+  - runnable local helpers remain gitignored by default
+  - tracked `README.md` files document purpose and manual usage
+  - promote a helper out of `tooling/scripts/local/` before treating it as
+    shared tooling
+- Local Qoder scratch DB inspector now lives at
+  `tooling/scripts/local/qoder/query-rules-db.js` under that convention; it
+  remains outside runtime, build, test, and `pnpm` flows.
 - Generated crown-jewel runtime artifacts under
   `packages/sentra/sentra-pustaka/data/embedding-artifacts/**` and
   `packages/sentra/sentra-pustaka/data/retrieval-evaluation/runs/**` were

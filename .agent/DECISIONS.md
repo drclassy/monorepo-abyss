@@ -335,6 +335,20 @@ are not in the tracked repo config.
 
 Status: Active.
 
+## 2026-05-30 - tooling/scripts/local is the local helper surface
+
+Decision: `tooling/scripts/local/**` is reserved for workstation-local helper
+scripts and diagnostics. Runnable files in that subtree stay gitignored by
+default. Only surface documentation such as `README.md` files is kept trackable
+so the repo can explain purpose and manual usage without turning machine-local
+helpers into shared tooling.
+
+Reason: Replace one-off root scratch files and per-file ignore rules with a
+clear repo-owned local helper surface. This keeps local diagnostics discoverable
+without implying runtime, build, test, or `pnpm` support.
+
+Status: Active.
+
 ## Lessons to Keep
 
 - Never do broad global replacements at monorepo root.
