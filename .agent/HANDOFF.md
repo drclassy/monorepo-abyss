@@ -51,8 +51,26 @@ Last updated: 2026-05-28 (session: public-push-hygiene)
   `instrumentModulesKeys: ['openAI','anthropic']` and
   `successfully loaded instrumentations: ['OpenAIInstrumentation','AnthropicInstrumentation']`,
   `Respan tracing initialized successfully`, no `stream` error.
-- **Still pending:** actual trace emission (one real LLM call → span at
-  platform.respan.ai) — needs provider key + cost, with Chief.
+- **Trace emission PROVEN (2026-05-29):** ran one real LLM call through the
+  instrumented OpenAI SDK pointed at local Ollama (`granite4.1:3b`, zero cloud
+  cost). Log: `Processing LLM instrumentation span: openai.chat` →
+  `Sending span "openai.chat" to processor "default"` → exported to
+  `https://api.respan.ai/api/v2/traces`. End-to-end pipeline works.
+  (Chief to confirm the span visually at platform.respan.ai.)
+
+### Pre-existing app bug found (NOT Respan; classy-transformer)
+
+- classy-transformer local dev homepage 500s: Next's edge middleware tracer
+  (`next/dist/.../server/lib/trace/tracer.js`) throws
+  `Native module not found: @opentelemetry/api` in the Edge runtime.
+- **Proven pre-existing by elimination:** with our `instrumentation.ts`
+  disabled AND `next.config` reverted to original, the 500 persists. Adding
+  `@opentelemetry/api` as a direct dep did NOT fix it (reverted). It is a
+  Next 15.2.6 + pnpm + Edge-runtime resolution issue, independent of Respan.
+- Respan tracing itself initializes fine (Node runtime) regardless of this bug.
+- **Recommend:** triage separately under classy-transformer's own JET workflow
+  (may only affect local Windows dev, not prod/Vercel). Out of scope for the
+  shared observability package.
 
 ## Public Push Hygiene (2026-05-28)
 
