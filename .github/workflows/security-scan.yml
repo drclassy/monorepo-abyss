@@ -1,4 +1,4 @@
-# Scheduled + branch security: blocking npm audit; Snyk/Trivy/TruffleHog informational where noted.
+# Scheduled + branch security: blocking pnpm audit; Snyk/Trivy/TruffleHog informational where noted.
 name: Security Scan
 
 on:
@@ -40,8 +40,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: npm audit (high or above fails the job)
-        run: npm audit --audit-level=high
+      - name: pnpm audit (high or above fails the job)
+        run: pnpm audit --audit-level high
 
   dependency-advisories-snyk:
     name: Security Scan / Snyk (informational)

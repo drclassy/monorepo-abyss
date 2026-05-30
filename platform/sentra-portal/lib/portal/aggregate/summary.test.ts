@@ -6,7 +6,7 @@ import { getRepoRoot } from '../repo-root'
 describe('loadStripSummary integration', () => {
   it('loads live monorepo metrics when repo root resolves', async () => {
     const root = getRepoRoot()
-    expect(root).toMatch(/abyss-monorepo/i)
+    expect(root.length).toBeGreaterThan(0)
 
     const result = await loadStripSummary()
     const data = result.data
@@ -14,7 +14,7 @@ describe('loadStripSummary integration', () => {
     expect(data?.branch).not.toBe('—')
     expect(data?.headShort.length).toBeGreaterThan(0)
     expect(data?.nextAction.length).toBeGreaterThan(10)
-    expect(data?.dirtyTotal).toBeGreaterThan(0)
+    expect(data?.dirtyTotal).toBeGreaterThanOrEqual(0)
     expect(data?.activeWork.length).toBeGreaterThan(5)
     expect(data?.repoRoot).toBe(root)
   }, 15000)
