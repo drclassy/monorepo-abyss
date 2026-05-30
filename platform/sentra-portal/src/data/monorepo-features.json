@@ -56,14 +56,14 @@
         "name": "The Weaponry (Packages)",
         "items": [
           {
-            "id": "sentra-rag",
-            "name": "Sentra RAG",
+            "id": "sentra-pustaka",
+            "name": "Sentra-pustaka",
             "capability": "Knowledge",
             "description": "Medical Library Connector (119 Books)."
           },
           {
-            "id": "symphony",
-            "name": "SYMPHONY",
+            "id": "sentra-nada",
+            "name": "Sentra-nada",
             "capability": "Clinical Reasoning",
             "description": "Canonical clinical engine and safety gate stack."
           }
