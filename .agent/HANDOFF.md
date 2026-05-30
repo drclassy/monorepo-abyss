@@ -3,7 +3,7 @@
 Update every meaningful session. This is the first active file the next agent
 should read after `.agent/README.md`.
 
-Last updated: 2026-05-28 (session: public-push-hygiene)
+Last updated: 2026-05-30 (session: stop-hook-json-fix)
 
 ## Snapshot
 
@@ -13,6 +13,21 @@ Last updated: 2026-05-28 (session: public-push-hygiene)
 - Active work: Public push hygiene complete — awaiting Chief review and push.
 - Mode: STAGED FOR PUSH — all changes locally committed, not yet pushed
 - Next: Chief reviews changes, then pushes to `https://github.com/drclassy/monorepo-abyss`
+
+## Stop Hook JSON Fix (2026-05-30)
+
+- `tooling/governance/agent/hooks/session-stop.ps1` emitted invalid hook JSON:
+  `hookSpecificOutput.additionalContext` with `hookEventName: "Stop"`. That shape
+  is only valid for UserPromptSubmit/PostToolUse/PostToolBatch, so every Stop
+  surfaced a "stop hook error — Hook JSON output validation failed".
+- Fix: `Write-StopJson` now emits a minimal valid payload
+  `{"continue":true,"suppressOutput":true}` and no longer sends
+  `hookSpecificOutput`. The SSOT continuity gate and session-end logging are
+  unchanged.
+- Verified: emitted JSON round-trips and carries no `hookSpecificOutput`;
+  `Parser::ParseFile` reports 0 parse errors on the edited script.
+- Scope: governance tooling only; no `.agent/` knowledge semantics, app, or
+  `packages/sentra/**` change.
 
 ## Public Push Hygiene (2026-05-28)
 

@@ -58,12 +58,15 @@ function Write-StopJson {
         [Parameter(Mandatory)][string]$Message
     )
 
+    # Stop hooks must NOT emit hookSpecificOutput.additionalContext — that field
+    # is only valid for UserPromptSubmit/PostToolUse/PostToolBatch. On a Stop
+    # event it fails schema validation and surfaces a "stop hook error" every
+    # turn. Emit a minimal valid payload so the hook succeeds silently. $Message
+    # is retained for caller intent/diagnostics but is intentionally not sent.
+    $null = $Message
     $payload = @{
-        continue = $true
-        hookSpecificOutput = @{
-            hookEventName    = "Stop"
-            additionalContext = $Message
-        }
+        continue       = $true
+        suppressOutput = $true
     } | ConvertTo-Json -Compress -Depth 5
 
     [Console]::Out.WriteLine($payload)
