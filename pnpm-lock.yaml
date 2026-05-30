@@ -2331,8 +2331,8 @@ importers:
   tooling/librarian-desktop:
     dependencies:
       electron:
-        specifier: ^30.5.1
-        version: 30.5.1
+        specifier: ^39.8.10
+        version: 39.8.10
 
   tooling/librarian-desktop/literature-worker:
     dependencies:
@@ -9368,8 +9368,8 @@ packages:
   electron-to-chromium@1.5.361:
     resolution: {integrity: sha512-Q6Hts7N9FnJc5LeGRINFvLhCI9xZmNtTDe5ZbcVezQz7cU4a8Aua3GH1b8J2XY8Al9PF+OCwYqhgsOOheMdvkA==}
 
-  electron@30.5.1:
-    resolution: {integrity: sha512-AhL7+mZ8Lg14iaNfoYTkXQ2qee8mmsQyllKdqxlpv/zrKgfxz6jNVtcRRbQtLxtF8yzcImWdfTQROpYiPumdbw==}
+  electron@39.8.10:
+    resolution: {integrity: sha512-zbYtGPYUI7PzqLAzkk21Rk6j67WN0hxn0Mq/njErZo1d0HSf33is4f8ICI5fMLy5vYe0JtCtM5sYunNOaochSQ==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -23380,10 +23380,10 @@ snapshots:
 
   electron-to-chromium@1.5.361: {}
 
-  electron@30.5.1:
+  electron@39.8.10:
     dependencies:
       '@electron/get': 2.0.3
-      '@types/node': 20.19.41
+      '@types/node': 22.19.19
       extract-zip: 2.0.1
     transitivePeerDependencies:
       - supports-color
