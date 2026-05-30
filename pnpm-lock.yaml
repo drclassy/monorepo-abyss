@@ -482,6 +482,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.49.0
         version: 2.106.1
+      '@the-abyss/observability':
+        specifier: workspace:*
+        version: link:../../../packages/shared/observability
       '@vercel/analytics':
         specifier: ^1.3.1
         version: 1.6.1(next@15.2.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react@19.2.6)
@@ -1723,6 +1726,8 @@ importers:
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
+
+  packages/shared/observability: {}
 
   packages/shared/sentra-ui:
     dependencies:
