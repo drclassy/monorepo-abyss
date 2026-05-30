@@ -229,8 +229,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: npm audit (blocking — high+)
-        run: npm audit --audit-level=high
+      - name: pnpm audit (blocking — high+)
+        run: pnpm audit --audit-level high
 
       - name: Snyk test (informational)
         uses: snyk/actions/node@master
