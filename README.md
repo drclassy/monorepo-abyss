@@ -544,6 +544,12 @@ repository. They are developed and maintained by
 | `@sentra/bentara` | Access control — GO-gate, multi-tenant RBAC, audit logging            |
 | `@sentra/cermin`  | Embedding infrastructure — vector store abstraction, circuit breaker  |
 
+`@the-abyss/orchestrator` currently integrates with `@sentra/nada`, so public
+root build/test gates exclude the orchestrator package. Validate orchestrator in
+a private checkout that includes `packages/sentra/**` until the clinical
+reasoning boundary is decoupled behind an explicit public contract or service
+facade.
+
 For licensing enquiries: **drferdiiskandar@sentrahai.com**
 
 ---
