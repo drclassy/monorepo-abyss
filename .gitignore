@@ -260,7 +260,7 @@ apps/community/classy-transformer/**
 !apps/community/classy-transformer/next.config.mjs
 
 # ABYSS CT approved scoped app tracking
-# Fail-closed: keep Intelligenceboard app internals ignored, expose only approved CT adapter bridge files and the app-local boundary file.
+# Fail-closed: keep Intelligenceboard app internals ignored, expose only approved CT bridge, route, and dashboard consumption files.
 !apps/healthcare/
 apps/healthcare/*
 !apps/healthcare/intelligenceboard/
@@ -286,6 +286,23 @@ apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/**
 apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/trajectory/**
 !apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/trajectory/route.ts
 !apps/healthcare/intelligenceboard/src/app/api/patients/[[]id]/trajectory/route.test.ts
+
+# ABYSS CT approved scoped dashboard consumption tracking
+# Keep the app private by default; expose only the CT hook-to-panel seam files.
+!apps/healthcare/intelligenceboard/src/hooks/
+apps/healthcare/intelligenceboard/src/hooks/**
+!apps/healthcare/intelligenceboard/src/hooks/useTrajectoryAnalysis.ts
+!apps/healthcare/intelligenceboard/src/hooks/useTrajectoryAnalysis.test.ts
+!apps/healthcare/intelligenceboard/src/components/
+apps/healthcare/intelligenceboard/src/components/**
+!apps/healthcare/intelligenceboard/src/components/features/
+apps/healthcare/intelligenceboard/src/components/features/**
+!apps/healthcare/intelligenceboard/src/components/features/trajectory/
+apps/healthcare/intelligenceboard/src/components/features/trajectory/**
+!apps/healthcare/intelligenceboard/src/components/features/trajectory/TrajectoryIntelligencePanel.tsx
+!apps/healthcare/intelligenceboard/scripts/
+apps/healthcare/intelligenceboard/scripts/**
+!apps/healthcare/intelligenceboard/scripts/test-suite.ts
 
 # ---- EXPLICIT EXEMPTIONS (TRACKED BY DESIGN) ----
 # Load-bearing negations — DO NOT REMOVE.
