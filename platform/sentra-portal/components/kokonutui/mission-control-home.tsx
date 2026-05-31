@@ -22,7 +22,7 @@ const CARDS = [
   },
   {
     href: '/dashboard/daily/rag',
-    title: 'Sentra RAG',
+    title: 'Sentra-pustaka',
     desc: 'Registry, AADI readiness, eval runs',
     icon: BookOpen,
   },
