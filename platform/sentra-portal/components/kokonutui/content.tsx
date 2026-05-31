@@ -167,7 +167,7 @@ export default function Content() {
                   status: 'DONE',
                 },
                 {
-                  node: 'Sentra RAG',
+                  node: 'Sentra-pustaka',
                   task: 'Syncing Medical Guidelines',
                   duration: '32m',
                   status: 'SYNCING',
